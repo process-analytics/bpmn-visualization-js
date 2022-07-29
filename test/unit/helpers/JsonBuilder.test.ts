@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-import type { BuildEventDefinitionParameter, OtherBuildEventKind } from './JsonBuilder';
+import { ShapeBpmnElementKind } from '../../../src/model/bpmn/internal';
+
+import type { BuildEventDefinitionParameter, OtherBuildEventKind, BuildGatewayKind } from './JsonBuilder';
 import { buildDefinitions, EventDefinitionOn } from './JsonBuilder';
 
 describe('build json', () => {
@@ -84,8 +86,9 @@ describe('build json', () => {
               },
             },
           ],
-          exclusiveGateway: {
+          gateway: {
             id: 'exclusiveGateway',
+            bpmnKind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
           },
         },
         {
@@ -2976,101 +2979,106 @@ describe('build json', () => {
     });
   });
 
-  describe('build json with exclusive gateway', () => {
-    it('build json of definitions containing one process with exclusive gateway (with id)', () => {
-      const json = buildDefinitions({
-        process: {
-          exclusiveGateway: {
-            id: 'exclusive_gateway_id_4',
+  describe.each(['complexGateway', 'eventBasedGateway', 'exclusiveGateway', 'inclusiveGateway', 'parallelGateway'] as BuildGatewayKind[])(
+    'build json with %s',
+    (bpmnKind: BuildGatewayKind) => {
+      it(`build json of definitions containing one process with ${bpmnKind} (with id & name)`, () => {
+        const json = buildDefinitions({
+          process: {
+            gateway: {
+              id: 'exclusive_gateway_id_4',
+              bpmnKind,
+              name: `${bpmnKind} name`,
+            },
           },
-        },
-      });
+        });
 
-      expect(json).toEqual({
-        definitions: {
-          targetNamespace: '',
-          collaboration: {
-            id: 'collaboration_id_0',
-          },
-          process: { id: '0', exclusiveGateway: { id: 'exclusive_gateway_id_4', name: 'exclusiveGateway name' } },
-          BPMNDiagram: {
-            name: 'process 0',
-            BPMNPlane: {
-              BPMNShape: {
-                id: 'shape_exclusive_gateway_id_4',
-                bpmnElement: 'exclusive_gateway_id_4',
-                Bounds: { x: 567, y: 345, width: 25, height: 25 },
+        expect(json).toEqual({
+          definitions: {
+            targetNamespace: '',
+            collaboration: {
+              id: 'collaboration_id_0',
+            },
+            process: { id: '0', [bpmnKind]: { id: 'exclusive_gateway_id_4', name: `${bpmnKind} name` } },
+            BPMNDiagram: {
+              name: 'process 0',
+              BPMNPlane: {
+                BPMNShape: {
+                  id: 'shape_exclusive_gateway_id_4',
+                  bpmnElement: 'exclusive_gateway_id_4',
+                  Bounds: { x: 567, y: 345, width: 25, height: 25 },
+                },
               },
             },
           },
-        },
-      });
-    });
-
-    it('build json of definitions containing one process with exclusive gateway (without id)', () => {
-      const json = buildDefinitions({
-        process: {
-          exclusiveGateway: {},
-        },
+        });
       });
 
-      expect(json).toEqual({
-        definitions: {
-          targetNamespace: '',
-          collaboration: {
-            id: 'collaboration_id_0',
+      it(`build json of definitions containing one process with ${bpmnKind} (without id & name)`, () => {
+        const json = buildDefinitions({
+          process: {
+            gateway: { bpmnKind },
           },
-          process: { id: '0', exclusiveGateway: { id: 'exclusiveGateway_id_0_0', name: 'exclusiveGateway name' } },
-          BPMNDiagram: {
-            name: 'process 0',
-            BPMNPlane: {
-              BPMNShape: {
-                id: 'shape_exclusiveGateway_id_0_0',
-                bpmnElement: 'exclusiveGateway_id_0_0',
-                Bounds: { x: 567, y: 345, width: 25, height: 25 },
+        });
+
+        expect(json).toEqual({
+          definitions: {
+            targetNamespace: '',
+            collaboration: {
+              id: 'collaboration_id_0',
+            },
+            process: { id: '0', [bpmnKind]: { id: `${bpmnKind}_id_0_0`, name: `${bpmnKind} name` } },
+            BPMNDiagram: {
+              name: 'process 0',
+              BPMNPlane: {
+                BPMNShape: {
+                  id: `shape_${bpmnKind}_id_0_0`,
+                  bpmnElement: `${bpmnKind}_id_0_0`,
+                  Bounds: { x: 567, y: 345, width: 25, height: 25 },
+                },
               },
             },
           },
-        },
-      });
-    });
-
-    it('build json of definitions containing 2 processes with exclusive gateway (without id)', () => {
-      const json = buildDefinitions({
-        process: [{ exclusiveGateway: {} }, { exclusiveGateway: {} }],
+        });
       });
 
-      expect(json).toEqual({
-        definitions: {
-          targetNamespace: '',
-          collaboration: {
-            id: 'collaboration_id_0',
-          },
-          process: [
-            { id: '0', exclusiveGateway: { id: 'exclusiveGateway_id_0_0', name: 'exclusiveGateway name' } },
-            { id: '1', exclusiveGateway: { id: 'exclusiveGateway_id_1_0', name: 'exclusiveGateway name' } },
-          ],
-          BPMNDiagram: {
-            name: 'process 0',
-            BPMNPlane: {
-              BPMNShape: [
-                {
-                  id: 'shape_exclusiveGateway_id_0_0',
-                  bpmnElement: 'exclusiveGateway_id_0_0',
-                  Bounds: { x: 567, y: 345, width: 25, height: 25 },
-                },
-                {
-                  id: 'shape_exclusiveGateway_id_1_0',
-                  bpmnElement: 'exclusiveGateway_id_1_0',
-                  Bounds: { x: 567, y: 345, width: 25, height: 25 },
-                },
-              ],
+      it(`build json of definitions containing 2 processes with ${bpmnKind} (without id)`, () => {
+        const json = buildDefinitions({
+          process: [{ gateway: { bpmnKind } }, { gateway: { bpmnKind } }],
+        });
+
+        expect(json).toEqual({
+          definitions: {
+            targetNamespace: '',
+            collaboration: {
+              id: 'collaboration_id_0',
+            },
+            process: [
+              { id: '0', [bpmnKind]: { id: `${bpmnKind}_id_0_0`, name: `${bpmnKind} name` } },
+              { id: '1', [bpmnKind]: { id: `${bpmnKind}_id_1_0`, name: `${bpmnKind} name` } },
+            ],
+            BPMNDiagram: {
+              name: 'process 0',
+              BPMNPlane: {
+                BPMNShape: [
+                  {
+                    id: `shape_${bpmnKind}_id_0_0`,
+                    bpmnElement: `${bpmnKind}_id_0_0`,
+                    Bounds: { x: 567, y: 345, width: 25, height: 25 },
+                  },
+                  {
+                    id: `shape_${bpmnKind}_id_1_0`,
+                    bpmnElement: `${bpmnKind}_id_1_0`,
+                    Bounds: { x: 567, y: 345, width: 25, height: 25 },
+                  },
+                ],
+              },
             },
           },
-        },
+        });
       });
-    });
-  });
+    },
+  );
 
   describe('build json with call activity', () => {
     it('build json of definitions containing one process with call activity (with id)', () => {
@@ -3261,13 +3269,15 @@ describe('build json', () => {
         },
         process: [
           {
-            exclusiveGateway: {
+            gateway: {
               id: 'source_id_0',
+              bpmnKind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
             },
           },
           {
-            exclusiveGateway: {
+            gateway: {
               id: 'target_id_0',
+              bpmnKind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
             },
           },
         ],
@@ -3365,14 +3375,16 @@ describe('build json', () => {
         process: [
           {
             id: 'source_id_0',
-            exclusiveGateway: {
+            gateway: {
               id: 'source_id_1',
+              bpmnKind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
             },
           },
           {
             id: 'target_id_0',
-            exclusiveGateway: {
+            gateway: {
               id: 'target_id_1',
+              bpmnKind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
             },
           },
         ],

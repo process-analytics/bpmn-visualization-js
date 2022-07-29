@@ -25,6 +25,11 @@ import type { TProcess } from '../../../src/model/bpmn/json/baseElement/rootElem
 import type { BpmnJsonModel } from '../../../src/model/bpmn/json/BPMN20';
 import type { BPMNEdge, BPMNPlane, BPMNShape } from '../../../src/model/bpmn/json/BPMNDI';
 
+type BuildFlownodeParameter = TFlowNode & {
+  index: number;
+  processIndex: number;
+};
+
 type BPMNTEvent = TCatchEvent | TThrowEvent | TBoundaryEvent;
 type BPMNEventDefinition = string | TEventDefinition | (string | TEventDefinition)[];
 
@@ -87,18 +92,19 @@ export interface BuildCallActivityParameter {
   id?: string;
 }
 
-export interface BuildExclusiveGatewayParameter {
-  /**
-   * If it sets, the default id is override.
-   * Otherwise, the id has the format: `exclusiveGateway_id_${processIndex}_${index}`
-   */
-  id?: string;
+export type BuildGatewayKind = 'complexGateway' | 'eventBasedGateway' | 'exclusiveGateway' | 'inclusiveGateway' | 'parallelGateway';
+/**
+ * If the id field is set, the default id is override.
+ * Otherwise, the id has the format: `exclusiveGateway_id_${processIndex}_${index}`
+ */
+export interface BuildGatewayParameter extends TFlowElement {
+  bpmnKind: BuildGatewayKind;
 }
 
 export interface BuildProcessParameter {
   task?: BuildTaskParameter | BuildTaskParameter[];
   event?: BuildEventsParameter | BuildEventsParameter[];
-  exclusiveGateway?: BuildExclusiveGatewayParameter | BuildExclusiveGatewayParameter[];
+  gateway?: BuildGatewayParameter | BuildGatewayParameter[];
   callActivity?: BuildCallActivityParameter | BuildCallActivityParameter[];
 
   /**
@@ -219,7 +225,6 @@ function addParticipantProcessAndElements(processParameter: BuildProcessParamete
 
 function addParticipant(id: string, jsonModel: BpmnJsonModel): void {
   const collaboration: TCollaboration = getElementOfArray<TProcess>(jsonModel.definitions.collaboration as TCollaboration);
-
   updateBpmnElement(collaboration.participant, { id: id, processRef: `process_${id}` }, (value: TParticipant | TParticipant[]) => (collaboration.participant = value));
 
   const shape = {
@@ -252,9 +257,9 @@ function addElementsOnProcess(processParameter: BuildProcessParameter, json: Bpm
   if (processParameter.task) {
     (Array.isArray(processParameter.task) ? processParameter.task : [processParameter.task]).forEach((taskParameter, index) => addTask(json, taskParameter, index, processIndex));
   }
-  if (processParameter.exclusiveGateway) {
-    (Array.isArray(processParameter.exclusiveGateway) ? processParameter.exclusiveGateway : [processParameter.exclusiveGateway]).forEach((exclusiveGatewayParameter, index) =>
-      addExclusiveGateway(json, exclusiveGatewayParameter, index, processIndex),
+  if (processParameter.gateway) {
+    (Array.isArray(processParameter.gateway) ? processParameter.gateway : [processParameter.gateway]).forEach(({ bpmnKind, ...rest }, index) =>
+      addFlownodeAndShape(json, bpmnKind, { ...rest, name: `${bpmnKind} name`, index, processIndex }, { Bounds: { x: 567, y: 345, width: 25, height: 25 } }),
     );
   }
   if (processParameter.callActivity) {
@@ -289,7 +294,17 @@ function updateBpmnElement<T>(parentElement: T | T[], childElement: T, setValue:
   }
 }
 
-function addFlownode(jsonModel: BpmnJsonModel, bpmnKind: string, flowNode: TFlowNode, processIndex: number): void {
+function addFlownodeAndShape(jsonModel: BpmnJsonModel, bpmnKind: keyof TProcess, { id, name, index, processIndex, ...rest }: BuildFlownodeParameter, bpmnShape: BPMNShape): void {
+  const flowNode = {
+    id: id ? id : `${bpmnKind}_id_${processIndex}_${index}`,
+    name,
+    ...rest,
+  };
+  addFlownode(jsonModel, bpmnKind, flowNode, processIndex);
+  addShape(jsonModel, { id: `shape_${flowNode.id}`, bpmnElement: flowNode.id, ...bpmnShape });
+}
+
+function addFlownode(jsonModel: BpmnJsonModel, bpmnKind: keyof TProcess, flowNode: TFlowNode, processIndex: number): void {
   const process: TProcess = getElementOfArray<TProcess>(jsonModel.definitions.process as TProcess | TProcess[], processIndex);
   updateBpmnElement(process[bpmnKind], flowNode, (value: TFlowNode | TFlowNode[]) => (process[bpmnKind] = value));
 }
@@ -317,21 +332,6 @@ function addTask(jsonModel: BpmnJsonModel, taskParameter: BuildTaskParameter, in
     Bounds: { x: 362, y: 232, width: 36, height: 45 },
   };
   addShape(jsonModel, taskShape);
-}
-
-function addExclusiveGateway(jsonModel: BpmnJsonModel, exclusiveGatewayParameter: BuildExclusiveGatewayParameter, index: number, processIndex: number): void {
-  const exclusiveGateway = {
-    id: exclusiveGatewayParameter.id ? exclusiveGatewayParameter.id : `exclusiveGateway_id_${processIndex}_${index}`,
-    name: 'exclusiveGateway name',
-  };
-  addFlownode(jsonModel, 'exclusiveGateway', exclusiveGateway, processIndex);
-
-  const shape = {
-    id: `shape_${exclusiveGateway.id}`,
-    bpmnElement: exclusiveGateway.id,
-    Bounds: { x: 567, y: 345, width: 25, height: 25 },
-  };
-  addShape(jsonModel, shape);
 }
 
 function addCallActivity(jsonModel: BpmnJsonModel, callActivityParameter: BuildCallActivityParameter, index: number, processIndex: number): void {
@@ -439,12 +439,6 @@ function addEvent(
     case EventDefinitionOn.NONE:
       break;
   }
-  addFlownode(jsonModel, bpmnKind, event, processIndex);
 
-  const eventShape = {
-    id: `shape_${event.id}`,
-    bpmnElement: event.id,
-    Bounds: { x: 362, y: 232, width: 36, height: 45 },
-  };
-  addShape(jsonModel, eventShape);
+  addFlownodeAndShape(jsonModel, bpmnKind, { ...event, index, processIndex }, { Bounds: { x: 362, y: 232, width: 36, height: 45 } });
 }
