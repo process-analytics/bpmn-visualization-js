@@ -30,10 +30,10 @@ class FilterPoolsImageSnapshotConfigurator extends ImageSnapshotConfigurator {
 describe('Filter pools', () => {
   const diagramSubfolder = 'filter';
   const imageSnapshotConfigurator = new FilterPoolsImageSnapshotConfigurator(
-    // chromium: 0 max
+    // chromium: 0.00011636443620899328% max
     // firefox: 0.012128385807519404% max
     // webkit: 0.160355447672067% max
-    new MultiBrowserImageSnapshotThresholds({ chromium: 0 / 100, firefox: 0.013 / 100, webkit: 0.17 / 100 }),
+    new MultiBrowserImageSnapshotThresholds({ chromium: 0.00012 / 100, firefox: 0.013 / 100, webkit: 0.17 / 100 }),
     diagramSubfolder,
   );
   const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder }, <Page>page);
