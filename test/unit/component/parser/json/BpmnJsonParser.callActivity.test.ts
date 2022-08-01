@@ -403,6 +403,34 @@ describe('parse bpmn as json for callActivity', () => {
           bounds: { x: 346, y: 856, width: 45, height: 56 },
         });
       });
+
+      it(`should convert as Shape, when a ${expandedKind} call activity calling a not existing process`, () => {
+        const json: BpmnJsonModel = buildDefinitions({
+          process: [
+            {
+              id: 'process_1',
+              callActivity: {
+                id: `call_activity_id_0`,
+                calledElement: 'process_2',
+                isExpanded,
+              },
+            },
+          ],
+        });
+
+        const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+
+        verifyShape(model.flowNodes[0], {
+          shapeId: 'shape_call_activity_id_0',
+          parentId: undefined,
+          bpmnElementId: 'call_activity_id_0',
+          bpmnElementName: undefined,
+          bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
+          bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
+          bpmnElementMarkers: expectedBpmnElementMarkers,
+          bounds: { x: 346, y: 856, width: 45, height: 56 },
+        });
+      });
     });
   });
 
