@@ -66,6 +66,35 @@ describe('parse bpmn as json for callActivity', () => {
         },
       );
 
+      it(`should convert as Shape, when a ${expandedKind} call activity calling a process without`, () => {
+        const json: BpmnJsonModel = buildDefinitions({
+          process: [
+            { id: 'participant_1' },
+            {
+              id: 'process_2',
+              callActivity: {
+                id: `call_activity_id_0`,
+                calledElement: 'process_participant_1',
+                isExpanded,
+              },
+            },
+          ],
+        });
+
+        const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+
+        verifyShape(model.flowNodes[0], {
+          shapeId: 'shape_call_activity_id_0',
+          parentId: undefined,
+          bpmnElementId: 'call_activity_id_0',
+          bpmnElementName: undefined,
+          bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
+          bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
+          bpmnElementMarkers: expectedBpmnElementMarkers,
+          bounds: { x: 346, y: 856, width: 45, height: 56 },
+        });
+      });
+
       it(`should convert as Shape, when a ${expandedKind} call activity calling a process with Pool`, () => {
         const json: BpmnJsonModel = buildDefinitions({
           process: [
