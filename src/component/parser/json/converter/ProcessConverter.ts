@@ -81,7 +81,7 @@ export default class ProcessConverter {
         pool.parentId = callActivity.id;
       }
 
-      this.elementsWithoutParentByProcessId.get(process.id)?.forEach(element => {
+      this.elementsWithoutParentByProcessId.get(process.id).forEach(element => {
         element.parentId = callActivity.id;
       });
     }
