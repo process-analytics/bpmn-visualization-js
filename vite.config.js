@@ -22,7 +22,6 @@ export default defineConfig(({ mode }) => {
   process.env['NODE_ENV'] = mode;
 
   return {
-    base: './', // Base public path when served in development or production. https://vitejs.dev/config/#base
     server: {
       port: 10001,
     },
