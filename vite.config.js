@@ -35,7 +35,7 @@ export default defineConfig(({ mode }) => {
           'elements-identification': resolve(__dirname, 'dev/public/elements-identification.html'),
         },
         // No hash in asset names. We make the demo publicly available via the examples repository and served by statically.io
-        // New versions are accessed using tags. The master branch is cachecd by statically.io and updated once a day.
+        // New versions are accessed using tags. The master branch is cached by statically.io and updated once a day.
         // see https://github.com/vitejs/vite/issues/378#issuecomment-768816653
         output: {
           entryFileNames: `assets/[name].js`,
