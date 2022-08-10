@@ -20,7 +20,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ env.ARTIFACT_NAME }}
-          path: build/demo
+          path: build/demo/dev/public
       - name: Notify bpmn-visualization-examples repository of new BPMN visualization version
         uses: ./.github/actions/notify-PA-repo-of-new-version
         with:
