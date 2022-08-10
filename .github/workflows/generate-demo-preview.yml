@@ -11,6 +11,7 @@ on:
       - '.github/workflows/generate-demo-preview.yml'
       - 'config/**/*'
       - 'dev/**/*'
+      - 'scripts/prepare-demo-for-publish.mjs'
       - 'src/**/*'
       - 'package.json'
       - 'package-lock.json'
