@@ -14,26 +14,29 @@
  * limitations under the License.
  */
 
-import { readdirSync, renameSync, rmSync, writeFileSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { readdirSync, writeFileSync, readFileSync, copyFileSync } from 'node:fs';
+import { join, extname } from 'node:path';
 
 const updateAssetsLoadingFile = path => {
   let content = readFileSync(path, 'utf8').toString();
-  content = content.replaceAll('"/assets/', '"assets/');
+  content = content.replaceAll('"/dev/public/assets/', '"assets/');
   writeFileSync(path, content);
   // eslint-disable-next-line no-console
   console.info('Content of page updated', path);
 };
 
 const demoRootDirectory = './build/demo';
-const relPathToHtmlPages = 'dev/public';
-const pages = readdirSync(join(demoRootDirectory, relPathToHtmlPages));
-pages.forEach(page => {
-  // eslint-disable-next-line no-console
-  console.info('Managing', page);
-  // move page out of the dev/public directory
-  renameSync(join(demoRootDirectory, relPathToHtmlPages, page), join(demoRootDirectory, page));
-  updateAssetsLoadingFile(join(demoRootDirectory, page));
-});
+const htmlPagesPath = join(demoRootDirectory, 'dev/public');
+const pages = readdirSync(htmlPagesPath);
+pages
+  .filter(file => extname(file).toLowerCase() === '.html')
+  .forEach(page => {
+    // eslint-disable-next-line no-console
+    console.info('Managing', page);
 
-rmSync(join(demoRootDirectory, 'dev'), { recursive: true });
+    // change the path of the assets in the current html page
+    updateAssetsLoadingFile(join(htmlPagesPath, page));
+  });
+
+// copy ./index.html in build/demo directory, to reproduce the hierarchy on the examples' repo, on the demo preview in GitHub
+copyFileSync('./index.html', join(demoRootDirectory, 'index.html'));
