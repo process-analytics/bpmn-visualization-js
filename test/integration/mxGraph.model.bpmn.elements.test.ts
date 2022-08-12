@@ -1529,10 +1529,7 @@ describe('mxGraph model - BPMN elements', () => {
       expectTotalEdgesInModel(2);
     });
 
-    // TODO: Need to fix the filtering. We want to display the BPMN elements of a not displayed pool after filter.
-    // BUG : https://github.com/process-analytics/bpmn-visualization-js/issues/2131
-    // eslint-disable-next-line jest/no-disabled-tests
-    it.skip('Filter a not displayed pool (without shape) with elements', () => {
+    it('Filter a not displayed pool (without shape) with elements', () => {
       // load BPMN
       const bpmnDiagramToFilter = readFileSync('../fixtures/bpmn/filter/pools.not.displayed.with.elements.bpmn');
       bpmnVisualization.load(bpmnDiagramToFilter, {
