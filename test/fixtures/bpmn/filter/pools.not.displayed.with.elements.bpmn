@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI">
+  <bpmn:process id="process_1" isExecutable="false">
+    <bpmn:startEvent id="start_event_1"/>
+    <bpmn:task id="task_1"/>
+    <bpmn:endEvent id="end_event_1"/>
+    <bpmn:sequenceFlow id="sequence_flow_1" sourceRef="start_event_1" targetRef="task_1"/>
+    <bpmn:sequenceFlow id="sequence_flow_2" sourceRef="task_1" targetRef="end_event_1"/>
+  </bpmn:process>
+  <bpmn:collaboration id="collaboration_1">
+    <bpmn:participant id="participant_1" processRef="process_1"/>
+  </bpmn:collaboration>
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="collaboration_1">
+      <bpmndi:BPMNEdge id="edge_sequence_flow_1" bpmnElement="sequence_flow_1">
+        <di:waypoint x="192" y="99" />
+        <di:waypoint x="280" y="99" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_sequence_flow_2" bpmnElement="sequence_flow_2">
+        <di:waypoint x="380" y="99" />
+        <di:waypoint x="452" y="99" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="shape_start_event_1" bpmnElement="start_event_1">
+        <dc:Bounds x="156" y="81" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_task_1" bpmnElement="task_1">
+        <dc:Bounds x="280" y="59" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_end_event_1" bpmnElement="end_event_1">
+        <dc:Bounds x="452" y="81" width="36" height="36" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
