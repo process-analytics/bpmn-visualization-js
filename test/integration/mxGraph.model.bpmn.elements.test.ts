@@ -1467,10 +1467,9 @@ describe('mxGraph model - BPMN elements', () => {
   // We have few tests here, to only test the integration within the mxGraph model.
   // The details are checked directly in the unit tests of the filtering.
   describe('Filtered pools at load time', () => {
-    const bpmnDiagramToFilter = readFileSync('../fixtures/bpmn/filter/pools.bpmn');
-
     it('Filter a single pool by id', () => {
       // load BPMN
+      const bpmnDiagramToFilter = readFileSync('../fixtures/bpmn/filter/pools.bpmn');
       bpmnVisualization.load(bpmnDiagramToFilter, {
         modelFilter: {
           pools: {
@@ -1502,6 +1501,38 @@ describe('mxGraph model - BPMN elements', () => {
         verticalAlign: 'bottom',
       });
       expectEdgesInModel('Participant_1', 2);
+      expectTotalEdgesInModel(2);
+    });
+
+    // TODO: Need to fix the filtering. We want to display the BPMN elements of a not displayed pool after filter.
+    // BUG : https://github.com/process-analytics/bpmn-visualization-js/issues/2131
+    // eslint-disable-next-line jest/no-disabled-tests
+    it.skip('Filter a not displayed pool with elements', () => {
+      // load BPMN
+      const bpmnDiagramToFilter = readFileSync('../fixtures/bpmn/filter/pools.not.displayed.with.elements.bpmn');
+      bpmnVisualization.load(bpmnDiagramToFilter, {
+        modelFilter: {
+          pools: {
+            id: 'participant_1',
+          },
+        },
+      });
+
+      expectPoolsInModel(0);
+
+      expect('start_event_1').toBeStartEvent({
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
+        parentId: 'participant_1',
+        verticalAlign: 'middle',
+      });
+      expect('task_1').toBeTask({ parentId: 'participant_1' });
+      expectShapesInModel('participant_1', 3);
+      // pool and its children
+      expectTotalShapesInModel(4);
+
+      // only check one sequence flow in details
+      expect('edge_sequence_flow_1').toBeSequenceFlow({ parentId: 'participant_1', verticalAlign: 'bottom' });
+      expectEdgesInModel('participant_1', 2);
       expectTotalEdgesInModel(2);
     });
   });
