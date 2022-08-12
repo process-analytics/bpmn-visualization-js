@@ -56,10 +56,7 @@ describe('Filter pools', () => {
     expect(image).toMatchImageSnapshot(config);
   });
 
-  // TODO: Need to fix the filtering. We want to display the BPMN elements of a not displayed pool after filter. The test fails before to generate a screenshot.
-  // BUG : https://github.com/process-analytics/bpmn-visualization-js/issues/2131
-  // eslint-disable-next-line jest/no-disabled-tests
-  it.skip('Filter a not displayed pool (without shape) with elements', async () => {
+  it('Filter a not displayed pool (without shape) with elements', async () => {
     await pageTester.gotoPageAndLoadBpmnDiagram('pools.not.displayed.with.elements', {
       poolIdsToFilter: 'participant_1',
     });
