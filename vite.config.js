@@ -42,8 +42,13 @@ export default defineConfig(({ mode }) => {
           entryFileNames: `dev/public/assets/[name].js`,
           chunkFileNames: `dev/public/assets/[name].js`,
           assetFileNames: `dev/public/assets/[name].[ext]`,
+          manualChunks: {
+            // put mxgraph code in a dedicated file. As it is eol, it doesn't change from release to release, so it reduces the changes when uploading the demo to the examples repository
+            mxgraph: ['mxgraph'],
+          },
         },
       },
+      chunkSizeWarningLimit: 820, // mxgraph
     },
     preview: {
       port: 10002,
