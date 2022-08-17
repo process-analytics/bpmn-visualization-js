@@ -101,10 +101,12 @@ We support various module formats such as:
 
 ### 📌 Project usage
 
-* Install the dependency in your **package.json** file:
+Install the dependency in your **package.json** file:
 ```shell script
 npm i bpmn-visualization
 ```
+
+//TODO Add sentence
 
 ```javascript
 import { BpmnVisualization } from 'bpmn-visualization';
@@ -157,7 +159,7 @@ For more details, see the TypeScript projects in the [bpmn-visualization-example
 
 ### 💠 Browser usage
 
-* In the HTML page:
+In the HTML page:
    * Load `bpmn-visualization` (replace `{version}` by the recent version)
    * Define the container that displays the BPMN diagram, here _bpmn-container_
 ```html
@@ -165,7 +167,7 @@ For more details, see the TypeScript projects in the [bpmn-visualization-example
     ...
     <div id="bpmn-container"></div>
 ```
-* Put this Javascript snippet within the HTML page
+Put this Javascript snippet within the HTML page
 ```javascript
     let bpmnContent; // your BPMN 2.0 XML content
     // initialize BpmnVisualization and load the diagram
