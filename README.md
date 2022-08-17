@@ -49,7 +49,8 @@ Please check the [__⏩ live environment__](https://cdn.statically.io/gh/process
 You will find there basic usage as well as detailed examples showing possible rendering customizations.
 
 
-## 📌 Project Status
+## 🔆 Project Status
+
 `bpmn-visualization` is actively developed and maintained.
 
 Prior to the `1.0.0` version, there may be some breaking changes. We avoid having them as much as possible, and we carefully document them in the related release notes.
@@ -111,12 +112,12 @@ Install `bpmn-visualization` in the project:
 npm i bpmn-visualization
 ```
 
-Put this JavaScript snippet in a JS file to initialize `bpmn-visualization` and to load the BPMN diagram:
+Then use this snippet to load your BPMN diagram in a page:
 ```javascript
 import { BpmnVisualization } from 'bpmn-visualization';
 
 let bpmnContent; // your BPMN 2.0 XML content
-// initialize BpmnVisualization and load the diagram
+// initialize `bpmn-visualization` and load the BPMN diagram
 // 'bpmn-container' is the id of the HTMLElement that renders the BPMN Diagram
 const bpmnVisualization = new BpmnVisualization({ container: 'bpmn-container' });
 bpmnVisualization.load(bpmnContent);
@@ -166,18 +167,19 @@ Alternatively, you can set [`skipLibCheck`](https://www.typescriptlang.org/tscon
 In the HTML page:
    * Load `bpmn-visualization` (replace `{version}` by the recent version)
    * Define the container that displays the BPMN diagram, here _bpmn-container_
+   * Load your BPMN diagram in a page
 ```html
 <script src="https://cdn.jsdelivr.net/npm/bpmn-visualization@{version}/dist/bpmn-visualization.min.js"></script>
 ...
 <div id="bpmn-container"></div>
-```
-
-Put this JavaScript snippet within the HTML page to initialize `bpmn-visualization` and to load the BPMN diagram:
-```javascript
-let bpmnContent; // your BPMN 2.0 XML content
-// initialize BpmnVisualization and load the diagram
-const bpmnVisualization = new bpmnvisu.BpmnVisualization({ container: 'bpmn-container'});
-bpmnVisualization.load(bpmnContent);
+...
+<script>
+  let bpmnContent; // your BPMN 2.0 XML content
+  // initialize `bpmn-visualization` and load the BPMN diagram
+  // 'bpmn-container' is the id of the HTMLElement that renders the BPMN Diagram
+  const bpmnVisualization = new bpmnvisu.BpmnVisualization({ container: 'bpmn-container'});
+  bpmnVisualization.load(bpmnContent);
+</script>
 ```
 
 
