@@ -162,16 +162,16 @@ In the HTML page:
    * Load `bpmn-visualization` (replace `{version}` by the recent version)
    * Define the container that displays the BPMN diagram, here _bpmn-container_
 ```html
-    <script src="https://cdn.jsdelivr.net/npm/bpmn-visualization@{version}/dist/bpmn-visualization.min.js"></script>
-    ...
-    <div id="bpmn-container"></div>
+<script src="https://cdn.jsdelivr.net/npm/bpmn-visualization@{version}/dist/bpmn-visualization.min.js"></script>
+...
+<div id="bpmn-container"></div>
 ```
 Put this Javascript snippet within the HTML page
 ```javascript
-    let bpmnContent; // your BPMN 2.0 XML content
-    // initialize BpmnVisualization and load the diagram
-    const bpmnVisualization = new bpmnvisu.BpmnVisualization({ container: 'bpmn-container'});
-    bpmnVisualization.load(bpmnContent);
+let bpmnContent; // your BPMN 2.0 XML content
+// initialize BpmnVisualization and load the diagram
+const bpmnVisualization = new bpmnvisu.BpmnVisualization({ container: 'bpmn-container'});
+bpmnVisualization.load(bpmnContent);
 ```
 
 ### 👤 User documentation
