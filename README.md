@@ -37,13 +37,11 @@
 
 `bpmn-visualization` is a TypeScript library for visualizing processes, in the [BPMN diagram](https://www.omg.org/spec/BPMN/2.0.2/) format, with simplicity.
 
-Based on the customization capability, it provides a set of diagram visualization features, and helps developers to create applications for process visualization and analysis. \
+Based on the customization capability, it provides a set of diagram visualization features, and helps developers to create applications for process visualization and analysis. 
 It also focuses on execution data:
 - highlighting of some elements
 - adding customizable overlays
 - personalized interactions
-
-<br>
 
 ## 🎮 Demo and examples 
 
@@ -53,8 +51,8 @@ You will find there basic usage as well as detailed examples showing possible re
 
 ## 🎨 Features
 
-The `bpmn-visualization` is in early development stage and is subject to change prior to the `1.0.0` release.\
-\
+The `bpmn-visualization` is in early development stage and is subject to change prior to the `1.0.0` release. 
+
 Already available features:
 - [Supported BPMN Elements](https://process-analytics.github.io/bpmn-visualization-js/#supported-bpmn-elements).
 - [Navigate through the BPMN diagram](https://process-analytics.github.io/bpmn-visualization-js/#diagram-navigation)
@@ -188,7 +186,7 @@ repository.
 
 ## 🔧 Contributing
 
-To contribute to `bpmn-visualization`, fork and clone this repository locally and commit your code on a separate branch. \
+To contribute to `bpmn-visualization`, fork and clone this repository locally and commit your code on a separate branch.  
 Please write tests for your code before opening a pull-request:
 
 ```sh
@@ -202,7 +200,7 @@ You can find more detail in our [Contributing guide](CONTRIBUTING.md). Participa
 
 ## 📃 License
 
-`bpmn-visualization` is released under the [Apache 2.0](LICENSE) license. \
+`bpmn-visualization` is released under the [Apache 2.0](LICENSE) license.  
 Copyright &copy; 2020-present, Bonitasoft S.A.
 
 Some BPMN icons used by `bpmn-visualization` are derived from existing projects. See the [BPMN Support documentation](https://process-analytics.github.io/bpmn-visualization-js/#supported-bpmn-elements)
