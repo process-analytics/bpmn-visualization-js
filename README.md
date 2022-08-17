@@ -105,8 +105,7 @@ Install the dependency in your **package.json** file:
 npm i bpmn-visualization
 ```
 
-//TODO Add sentence
-
+Put this JavaScript snippet in a JS file to initialize `bpmn-visualization` and to load the BPMN diagram:
 ```javascript
 import { BpmnVisualization } from 'bpmn-visualization';
 
@@ -165,7 +164,8 @@ In the HTML page:
 ...
 <div id="bpmn-container"></div>
 ```
-Put this JavaScript snippet within the HTML page to initialize `bpmn-visualization` and to load the BPMN diagram
+
+Put this JavaScript snippet within the HTML page to initialize `bpmn-visualization` and to load the BPMN diagram:
 ```javascript
 let bpmnContent; // your BPMN 2.0 XML content
 // initialize BpmnVisualization and load the diagram
