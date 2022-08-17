@@ -150,10 +150,9 @@ This is also mandatory for users who want to extend the `mxGraph` integration.
 
 ---
 
-Alternatively, you can set `skipLibCheck` to `true` in the `tsconfig.json` file, but this limits the definition checks.
-For more details, see the [skipLibCheck documentation](https://www.typescriptlang.org/tsconfig#skipLibCheck).
+Alternatively, you can set [`skipLibCheck`](https://www.typescriptlang.org/tsconfig#skipLibCheck) to `true` in the `tsconfig.json` file, but this limits the definition checks.
 
-For more details, see the TypeScript projects in the [bpmn-visualization-examples repository](https://github.com/process-analytics/bpmn-visualization-examples/).
+ℹ️ For more details, see the TypeScript projects in the [bpmn-visualization-examples repository](https://github.com/process-analytics/bpmn-visualization-examples/#bpmn-visualization-usage-in-projects).
 
 
 ### 💠 Browser usage
