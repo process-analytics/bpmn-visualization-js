@@ -1,7 +1,7 @@
 = Overview
 :icons: font
 
-== Repository
+== Source Code
 `bpmn-visualization` is an open source library. +
 You can find the source code on https://github.com/process-analytics/bpmn-visualization-js[Github].
 
