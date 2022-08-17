@@ -53,8 +53,8 @@ You will find there basic usage as well as detailed examples showing possible re
 
 `bpmn-visualization` is actively developed and maintained.
 
-Prior to the `1.0.0` version, there may be some breaking changes. We avoid having them as much as possible, and we carefully document them in the related release notes.
-Wherever possible, we maintain compatibility for a few minor versions.
+Before the release of version `1.0.0`, there may be some breaking changes. We avoid these as much as possible, and carefully document them in the release notes.
+As far as possible, we maintain compatibility for some minor versions.
 
 
 ## 🤩 Why using bpmn-visualization?
