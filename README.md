@@ -90,10 +90,10 @@ Planned features:
 **Notes**:
 - Internet Explorer and Legacy Edge will never be supported.
 - Chromium based browsers should work (automatic tests are run with Chromium canary releases). In particular, the following
-browsers are known working with `bpmn-visualization@0.23.0`:
-  - Brave 1.36.119
-  - Chromium 100.0.4863.0
-  - Opera 85.0.4341.18
+browsers are known working with `bpmn-visualization@0.25.2`:
+  - Brave 1.42.95
+  - Chromium 104.0.5112.48
+  - Opera 89.0.4447.83
 - The library may work with the other browsers. They must at least support ES6.
 
 
