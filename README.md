@@ -165,7 +165,7 @@ In the HTML page:
 ...
 <div id="bpmn-container"></div>
 ```
-Put this Javascript snippet within the HTML page
+Put this JavaScript snippet within the HTML page to initialize `bpmn-visualization` and to load the BPMN diagram
 ```javascript
 let bpmnContent; // your BPMN 2.0 XML content
 // initialize BpmnVisualization and load the diagram
