@@ -39,7 +39,7 @@
 
 Based on the customization capability, it provides a set of diagram visualization features that includes additional display options for execution data (_highlighting of some elements_, _adding customizable overlays_, and more) as well as personalized interactive capabilities (_mouse hover_, _click_, and more).
 
-We hope it will help developers to create applications for process visualization and analysis 🙂
+We hope it will help you to create applications for process visualization and analysis 🙂
 
 ## 🎮 Demo and examples 
 
