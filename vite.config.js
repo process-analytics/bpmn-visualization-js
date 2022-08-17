@@ -22,7 +22,6 @@ export default defineConfig(({ mode }) => {
   process.env['NODE_ENV'] = mode;
 
   return {
-    base: './', // Base public path when served in development or production. https://vitejs.dev/config/#base
     server: {
       port: 10001,
     },
@@ -30,18 +29,19 @@ export default defineConfig(({ mode }) => {
     // Configuration to build the demo
     build: {
       outDir: 'build/demo',
+      assetsDir: 'build/demo/dev/public/assets',
       rollupOptions: {
         input: {
           index: resolve(__dirname, 'dev/public/index.html'),
           'elements-identification': resolve(__dirname, 'dev/public/elements-identification.html'),
         },
         // No hash in asset names. We make the demo publicly available via the examples repository and served by statically.io
-        // New versions are accessed using tags. The master branch is cachecd by statically.io and updated once a day.
+        // New versions are accessed using tags. The master branch is cached by statically.io and updated once a day.
         // see https://github.com/vitejs/vite/issues/378#issuecomment-768816653
         output: {
-          entryFileNames: `assets/[name].js`,
-          chunkFileNames: `assets/[name].js`,
-          assetFileNames: `assets/[name].[ext]`,
+          entryFileNames: `dev/public/assets/[name].js`,
+          chunkFileNames: `dev/public/assets/[name].js`,
+          assetFileNames: `dev/public/assets/[name].[ext]`,
         },
       },
     },

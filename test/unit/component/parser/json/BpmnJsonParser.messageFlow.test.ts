@@ -26,7 +26,7 @@ import * as bpmndi from '../../../../../src/model/bpmn/json/BPMNDI';
 
 /** Test utils */
 import { parseJson, parseJsonAndExpectOnlyEdges } from '../../../helpers/JsonTestUtils';
-import type { BuildEventParameter, BuildProcessParameter } from '../../../helpers/JsonBuilder';
+import type { BuildProcessParameter, BuildEventsParameter, OtherBuildEventKind } from '../../../helpers/JsonBuilder';
 import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilder';
 import { verifyEdge } from '../../../helpers/bpmn-model-expect';
 
@@ -326,7 +326,6 @@ describe('parse bpmn as json for message flow', () => {
       [ShapeBpmnElementKind.EVENT_END, ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH],
     ])(`should convert as Edge, when an message flow has %s as source and %s as target`, (sourceKind, targetKind) => {
       const json: BpmnJsonModel = buildDefinitions({
-        withParticipant: true,
         messageFlows: {
           id: 'messageFlow_id_0',
           name: 'Message Flow 0',
@@ -352,31 +351,26 @@ describe('parse bpmn as json for message flow', () => {
 
   function buildProcessParameter(kind: ShapeBpmnElementKind, id: string): BuildProcessParameter {
     if (kind === ShapeBpmnElementKind.POOL) {
-      return {
-        id,
-      };
+      return { id, withParticipant: true };
     } else if (ShapeUtil.isEvent(kind)) {
       const isBoundaryEvent = kind === ShapeBpmnElementKind.EVENT_BOUNDARY;
-      const eventParameter: BuildEventParameter = isBoundaryEvent
+      const eventParameter: BuildEventsParameter = isBoundaryEvent
         ? {
-            bpmnKind: kind,
+            id,
+            bpmnKind: kind as 'boundaryEvent',
             isInterrupting: true,
             attachedToRef: 'task_id_0',
             eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT },
           }
         : {
-            bpmnKind: kind,
+            id,
+            bpmnKind: kind as OtherBuildEventKind | 'startEvent',
             eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT },
           };
 
-      return {
-        event: eventParameter,
-        task: isBoundaryEvent ? { id: 'task_id_0' } : undefined,
-      };
+      return { withParticipant: true, event: eventParameter, task: isBoundaryEvent ? { id: 'task_id_0' } : undefined };
     } else {
-      return {
-        task: { id },
-      };
+      return { withParticipant: true, task: { id } };
     }
   }
 });
