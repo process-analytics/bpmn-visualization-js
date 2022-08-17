@@ -16,7 +16,7 @@
 
 /**
  * Options to configure the `bpmn-visualization` initialization.
- * @category Initialization
+ * @category Initialization & Configuration
  */
 export interface GlobalOptions {
   /** The id of a DOM element or an HTML node where the BPMN diagram is rendered. */
@@ -27,7 +27,7 @@ export interface GlobalOptions {
 
 /**
  * Configure the BPMN diagram navigation (panning and zoom).
- * @category Initialization
+ * @category Initialization & Configuration
  */
 export interface NavigationConfiguration {
   /**
@@ -41,7 +41,7 @@ export interface NavigationConfiguration {
 
 /**
  * Zoom specific options.
- * @category Initialization
+ * @category Initialization & Configuration
  */
 export interface ZoomConfiguration {
   /**
@@ -86,7 +86,7 @@ export interface ZoomConfiguration {
  * });
  * ```
  *
- * @category Initialization
+ * @category Initialization & Configuration
  */
 export interface ModelFilter {
   pools?: PoolFilter | PoolFilter[];
@@ -96,7 +96,7 @@ export interface ModelFilter {
  * Pool filtering configuration.
  *
  * A Pool is the graphical representation of a Participant in a Collaboration.
- * @category Initialization
+ * @category Initialization & Configuration
  */
 export interface PoolFilter {
   /** id of the Participant related to the Pool to display */
@@ -111,7 +111,7 @@ export interface PoolFilter {
 
 /**
  * Options when loading a BPMN Diagram.
- * @category Initialization
+ * @category Initialization & Configuration
  */
 export interface LoadOptions {
   fit?: FitOptions;
@@ -119,7 +119,7 @@ export interface LoadOptions {
 }
 
 /**
- * @category Initialization
+ * @category Initialization & Configuration
  */
 export interface FitOptions {
   /** @default {@link FitType.None} */

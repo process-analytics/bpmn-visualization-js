@@ -44,29 +44,39 @@
 
 ## 🎮 Demo and examples 
 
-Please check the [__⏩ live environment__](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html). \
+Please check the [__⏩ live environment__](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html).
+
 You will find there basic usage as well as detailed examples showing possible rendering customizations.
+
+
+## 🔆 Project Status
+
+`bpmn-visualization` is actively developed and maintained.
+
+Before the release of version `1.0.0`, there may be some breaking changes. We avoid these as much as possible, and carefully document them in the release notes.
+As far as possible, we maintain compatibility for some minor versions.
+
+
+## 🤩 Why using bpmn-visualization?
+
+- ✨ True opensource license without watermark display
+- ⚡️ Strong identity: the only BPMN viewer with a woman icon in the User Tasks
+- 🎸 Fully documented and with a lot of integration examples
+- 👓 Highly customizable rendering in a simple way
+- 🔥 TypeScript support
+- 🎯 Battle tested: high test coverage, thousands of tests, including tests on all supported browsers for Linux, macOS and Windows
+
 
 ## 🎨 Features
 
-The `bpmn-visualization` is in early development stage and is subject to change prior to the `1.0.0` release.\
-\
 Already available features:
 - [Supported BPMN Elements](https://process-analytics.github.io/bpmn-visualization-js/#supported-bpmn-elements).
 - [Navigate through the BPMN diagram](https://process-analytics.github.io/bpmn-visualization-js/#diagram-navigation)
 - [Display options for execution data with interactive capacities](https://process-analytics.github.io/bpmn-visualization-js/#process_data)
 
 Planned features:
+- Additional BPMN styling capabilities
 - Library extension points
-
-## 🤩 Why using bpmn-visualization?
-
-- ✨ True opensource license without watermark display 
-- ⚡️ Strong identity: the only BPMN viewer with a woman icon in the User Tasks
-- 🎸 Fully documented and with a lot of integration examples
-- 👓 Highly customizable rendering in a simple way
-- 🔥 TypeScript support
-- 🎯 Battle tested: high test coverage, thousands of tests, including tests on all supported browsers for Linux, macOS and Windows
 
 
 ## 🌏 Browsers Support
@@ -80,10 +90,10 @@ Planned features:
 **Notes**:
 - Internet Explorer and Legacy Edge will never be supported.
 - Chromium based browsers should work (automatic tests are run with Chromium canary releases). In particular, the following
-browsers are known working with `bpmn-visualization@0.23.0`:
-  - Brave 1.36.119
-  - Chromium 100.0.4863.0
-  - Opera 85.0.4341.18
+browsers are known working with `bpmn-visualization@0.25.2`:
+  - Brave 1.42.95
+  - Chromium 104.0.5112.48
+  - Opera 89.0.4447.83
 - The library may work with the other browsers. They must at least support ES6.
 
 
@@ -97,16 +107,17 @@ We support various module formats such as:
 
 ### 📌 Project usage
 
-* Install the dependency in your **package.json** file:
+Install `bpmn-visualization` in the project:
 ```shell script
 npm i bpmn-visualization
 ```
 
+Then use this snippet to load your BPMN diagram in a page:
 ```javascript
 import { BpmnVisualization } from 'bpmn-visualization';
 
 let bpmnContent; // your BPMN 2.0 XML content
-// initialize BpmnVisualization and load the diagram
+// initialize `bpmn-visualization` and load the BPMN diagram
 // 'bpmn-container' is the id of the HTMLElement that renders the BPMN Diagram
 const bpmnVisualization = new BpmnVisualization({ container: 'bpmn-container' });
 bpmnVisualization.load(bpmnContent);
@@ -117,16 +128,16 @@ You can set the BPMN content using one of the following ways:
   * Load it from an url, like this [example](https://github.com/process-analytics/bpmn-visualization-examples/blob/master/examples/display-bpmn-diagram/load-remote-bpmn-diagrams/index.html)
   * Load from your computer, like the [demo example](https://github.com/process-analytics/bpmn-visualization-examples/tree/master/examples/display-bpmn-diagram/load-local-bpmn-diagrams/index.html)
 
+
 #### 📜 TypeScript Support
 
 `bpmn-visualization` provides type definitions, so the integration should work out of the box in TypeScript projects.
 
-Depending on the build system used by the TypeScript project, it may get the following type errors 
+Depending on the build system used by the TypeScript project, it may get the following type errors:
 - error TS2688: Cannot find type definition file for 'typed-mxgraph'
 - error TS7016: Could not find a declaration file for module 'mxgraph'
 
-In this case, 
-- Declare the `typed-mxgraph` types in the `tsconfig.json` as in the following (see the [typeRoots](https://www.typescriptlang.org/tsconfig#typeRoots) documentation for more explanations) 👇
+In this case, declare the `typed-mxgraph` types in the `tsconfig.json` as in the following (see the [typeRoots](https://www.typescriptlang.org/tsconfig#typeRoots) documentation for more explanations) 👇
 
 ```json
 {
@@ -139,34 +150,42 @@ In this case,
 }
 ```
 
-Alternatively, you can set `skipLibCheck` to `true` in the `tsconfig.json` file, but this limits the definition checks.
-For more details, see the [skipLibCheck documentation](https://www.typescriptlang.org/tsconfig#skipLibCheck).
+---
+**NOTE**
 
-Advanced users that want to extend the `mxGraph` integration must add `typed-mxgraph` to `typeRoots`.
+This is also mandatory for users who want to extend the `mxGraph` integration.
 
-For more details, see the TypeScript projects in the [bpmn-visualization-examples repository](https://github.com/process-analytics/bpmn-visualization-examples/).
+---
+
+Alternatively, you can set [`skipLibCheck`](https://www.typescriptlang.org/tsconfig#skipLibCheck) to `true` in the `tsconfig.json` file, but this limits the definition checks.
+
+ℹ️ For more details, see the TypeScript projects in the [bpmn-visualization-examples repository](https://github.com/process-analytics/bpmn-visualization-examples/#bpmn-visualization-usage-in-projects).
 
 
 ### 💠 Browser usage
 
-* In the HTML page:
+In the HTML page:
    * Load `bpmn-visualization` (replace `{version}` by the recent version)
    * Define the container that displays the BPMN diagram, here _bpmn-container_
+   * Load your BPMN diagram in a page
 ```html
-    <script src="https://cdn.jsdelivr.net/npm/bpmn-visualization@{version}/dist/bpmn-visualization.min.js"></script>
-    ...
-    <div id="bpmn-container"></div>
+<script src="https://cdn.jsdelivr.net/npm/bpmn-visualization@{version}/dist/bpmn-visualization.min.js"></script>
+...
+<div id="bpmn-container"></div>
+...
+<script>
+  let bpmnContent; // your BPMN 2.0 XML content
+  // initialize `bpmn-visualization` and load the BPMN diagram
+  // 'bpmn-container' is the id of the HTMLElement that renders the BPMN Diagram
+  const bpmnVisualization = new bpmnvisu.BpmnVisualization({ container: 'bpmn-container'});
+  bpmnVisualization.load(bpmnContent);
+</script>
 ```
-* Put this Javascript snippet within the HTML page
-```javascript
-    let bpmnContent; // your BPMN 2.0 XML content
-    // initialize BpmnVisualization and load the diagram
-    const bpmnVisualization = new bpmnvisu.BpmnVisualization({ container: 'bpmn-container'});
-    bpmnVisualization.load(bpmnContent);
-```
+
 
 ### 👤 User documentation
 The User documentation (with the feature list & the public API) is available in the [documentation site](https://process-analytics.github.io/bpmn-visualization-js/).
+
 
 ### ⚒️ More
 
@@ -176,9 +195,10 @@ The User documentation (with the feature list & the public API) is available in 
 For more technical details and how-to, go to the [bpmn-visualization-examples](https://github.com/process-analytics/bpmn-visualization-examples/)
 repository.
 
+
 ## 🔧 Contributing
 
-To contribute to `bpmn-visualization`, fork and clone this repository locally and commit your code on a separate branch. \
+To contribute to `bpmn-visualization`, fork and clone this repository locally and commit your code on a separate branch.  
 Please write tests for your code before opening a pull-request:
 
 ```sh
@@ -192,7 +212,7 @@ You can find more detail in our [Contributing guide](CONTRIBUTING.md). Participa
 
 ## 📃 License
 
-`bpmn-visualization` is released under the [Apache 2.0](LICENSE) license. \
+`bpmn-visualization` is released under the [Apache 2.0](LICENSE) license.  
 Copyright &copy; 2020-present, Bonitasoft S.A.
 
 Some BPMN icons used by `bpmn-visualization` are derived from existing projects. See the [BPMN Support documentation](https://process-analytics.github.io/bpmn-visualization-js/#supported-bpmn-elements)

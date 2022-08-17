@@ -29,7 +29,7 @@ export const version = (): Version => {
 
 /**
  * Version of `bpmn-visualization` and its dependencies.
- * @category Initialization
+ * @category Initialization & Configuration
  */
 export interface Version {
   /** The `bpmn-visualization` version. */
