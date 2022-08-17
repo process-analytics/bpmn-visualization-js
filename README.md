@@ -51,9 +51,8 @@ You will find there basic usage as well as detailed examples showing possible re
 
 `bpmn-visualization` is actively developed and maintained.
 
-We avoid breaking changes as much as possible, but it is subject to change prior to the `1.0.0` release.  
-When there is one, it is carefully documented in the related release notes. In addition, we keep compatibility for a few minority versions whenever possible.
-
+Prior to the `1.0.0` version, there may be some breaking changes. We avoid having them as much as possible, and we carefully document them in the related release notes.
+Wherever possible, we maintain compatibility for a few minor versions.
 
 Already available features:
 - [Supported BPMN Elements](https://process-analytics.github.io/bpmn-visualization-js/#supported-bpmn-elements).
