@@ -41,18 +41,32 @@ Based on the customization capability, it provides a set of diagram visualizatio
 
 We hope it will help you to create applications for process visualization and analysis 🙂
 
+
 ## 🎮 Demo and examples 
 
 Please check the [__⏩ live environment__](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html).
 
 You will find there basic usage as well as detailed examples showing possible rendering customizations.
 
-## 🎨 Features
 
+## 📌 Project Status
 `bpmn-visualization` is actively developed and maintained.
 
 Prior to the `1.0.0` version, there may be some breaking changes. We avoid having them as much as possible, and we carefully document them in the related release notes.
 Wherever possible, we maintain compatibility for a few minor versions.
+
+
+## 🤩 Why using bpmn-visualization?
+
+- ✨ True opensource license without watermark display
+- ⚡️ Strong identity: the only BPMN viewer with a woman icon in the User Tasks
+- 🎸 Fully documented and with a lot of integration examples
+- 👓 Highly customizable rendering in a simple way
+- 🔥 TypeScript support
+- 🎯 Battle tested: high test coverage, thousands of tests, including tests on all supported browsers for Linux, macOS and Windows
+
+
+## 🎨 Features
 
 Already available features:
 - [Supported BPMN Elements](https://process-analytics.github.io/bpmn-visualization-js/#supported-bpmn-elements).
@@ -60,16 +74,8 @@ Already available features:
 - [Display options for execution data with interactive capacities](https://process-analytics.github.io/bpmn-visualization-js/#process_data)
 
 Planned features:
+- Additional BPMN styling capabilities
 - Library extension points
-
-## 🤩 Why using bpmn-visualization?
-
-- ✨ True opensource license without watermark display 
-- ⚡️ Strong identity: the only BPMN viewer with a woman icon in the User Tasks
-- 🎸 Fully documented and with a lot of integration examples
-- 👓 Highly customizable rendering in a simple way
-- 🔥 TypeScript support
-- 🎯 Battle tested: high test coverage, thousands of tests, including tests on all supported browsers for Linux, macOS and Windows
 
 
 ## 🌏 Browsers Support
@@ -120,6 +126,7 @@ You can set the BPMN content using one of the following ways:
   * Copy/Paste directly the XML content in a variable
   * Load it from an url, like this [example](https://github.com/process-analytics/bpmn-visualization-examples/blob/master/examples/display-bpmn-diagram/load-remote-bpmn-diagrams/index.html)
   * Load from your computer, like the [demo example](https://github.com/process-analytics/bpmn-visualization-examples/tree/master/examples/display-bpmn-diagram/load-local-bpmn-diagrams/index.html)
+
 
 #### 📜 TypeScript Support
 
@@ -173,8 +180,10 @@ const bpmnVisualization = new bpmnvisu.BpmnVisualization({ container: 'bpmn-cont
 bpmnVisualization.load(bpmnContent);
 ```
 
+
 ### 👤 User documentation
 The User documentation (with the feature list & the public API) is available in the [documentation site](https://process-analytics.github.io/bpmn-visualization-js/).
+
 
 ### ⚒️ More
 
@@ -183,6 +192,7 @@ The User documentation (with the feature list & the public API) is available in 
 
 For more technical details and how-to, go to the [bpmn-visualization-examples](https://github.com/process-analytics/bpmn-visualization-examples/)
 repository.
+
 
 ## 🔧 Contributing
 
