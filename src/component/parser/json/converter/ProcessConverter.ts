@@ -44,8 +44,8 @@ import type { TActivity, TCallActivity, TSubProcess } from '../../../../model/bp
 import type { TLane, TLaneSet } from '../../../../model/bpmn/json/baseElement/baseElement';
 import type { TFlowNode, TSequenceFlow } from '../../../../model/bpmn/json/baseElement/flowElement';
 import type { TAssociation, TGroup, TTextAnnotation } from '../../../../model/bpmn/json/baseElement/artifact';
-import { buildShapeBpmnGroup } from './utils';
 import type { ConvertedElements } from './utils';
+import { buildShapeBpmnGroup } from './utils';
 import type { TEventBasedGateway } from '../../../../model/bpmn/json/baseElement/flowNode/gateway';
 import type { TReceiveTask } from '../../../../model/bpmn/json/baseElement/flowNode/activity/task';
 import { ensureIsArray } from '../../../helpers/array-utils';
@@ -72,14 +72,14 @@ export default class ProcessConverter {
   }
 
   private parseProcess(process: TProcess): void {
-    const pool = this.convertedElements.findPoolByProcessRef(process.id);
-    /*   TODO: Do we want to keep this old behavior (not in the BPMN spec)?
-    Corresponding test in BpmnJsonParser.process.test: 'json containing one participant without name and the related process has a name'
+    const processRef = process.id;
+    const pool = this.convertedElements.findPoolByProcessRef(processRef);
 
-    if (pool) {
-       pool.name = pool.name || process.name;
+    // for pool without name, use the process name instead
+    if (pool && !pool.name) {
+      this.convertedElements.registerPool(new ShapeBpmnElement(pool.id, process.name, ShapeBpmnElementKind.POOL), processRef);
     }
-    */
+
     this.buildProcessInnerElements(process, pool?.id);
   }
 
