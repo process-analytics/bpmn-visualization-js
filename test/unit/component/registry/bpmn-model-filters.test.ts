@@ -518,15 +518,4 @@ describe('Bpmn Model filters', () => {
       bpmnElementKind: ShapeBpmnElementKind.POOL,
     });
   });
-
-  it('Filter a black pool (No processRef)', () => {
-    const originalBpmnModel = toBpmnModel({
-      pools: {
-        id: 'participant_id_1',
-        name: 'Participant 1',
-      },
-    });
-
-    expect(modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } })).toStrictEqual(originalBpmnModel);
-  });
 });
