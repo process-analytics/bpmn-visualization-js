@@ -1,10 +1,19 @@
 = Overview
 :icons: font
 
+
 == Live Examples
 
 To see `bpmn-visualization` in action, give a try to the https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html[**icon:forward[] examples live environment**]. +
 You will quickly have an overview of the `bpmn-visualization` capabilities.
+
+
+== Source Code
+`bpmn-visualization` is an open source library. +
+You can find the source code on https://github.com/process-analytics/bpmn-visualization-js[GitHub].
+
+We will be more than happy to exchange ideas and more with you on the subject. +
+Because who knows, if you feel like contributing (feature, bug, doc, etc), you are very welcome to do so! 🙂
 
 
 == Usage
