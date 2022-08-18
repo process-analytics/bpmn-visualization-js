@@ -1290,7 +1290,7 @@ describe('mxGraph model - BPMN elements', () => {
 
     it('Diagram with a not displayed pool (without shape) with elements', () => {
       // load BPMN
-      const bpmnDiagramToFilter = readFileSync('../fixtures/bpmn/filter/pools.not.displayed.with.elements.bpmn');
+      const bpmnDiagramToFilter = readFileSync('../fixtures/bpmn/bpmn-rendering/pools.04.not.displayed.with.elements.bpmn');
       bpmnVisualization.load(bpmnDiagramToFilter);
 
       expectPoolsInModel(0);
