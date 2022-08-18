@@ -37,6 +37,7 @@ describe('Filter pools', () => {
     diagramSubfolder,
   );
   const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder }, <Page>page);
+  const bpmnDiagramName = 'pools';
 
   // Participant_1 start/task/end
   // Participant_2 black box pool
@@ -48,23 +49,11 @@ describe('Filter pools', () => {
     ${'one-with-expanded-call-activity'} | ${'Participant_5'}
     ${'all'}                             | ${['Participant_1', 'Participant_2', 'Participant_3', 'Participant_4', 'Participant_5']}
   `('Filter $name', async ({ name, pools }: { name: string; pools: string | string[] }) => {
-    await pageTester.gotoPageAndLoadBpmnDiagram('pools', {
+    await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName, {
       poolIdsToFilter: pools,
     });
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(name);
-    expect(image).toMatchImageSnapshot(config);
-  });
-
-  // TODO: Need to fix the filtering. We want to display the BPMN elements of a not displayed pool after filter. The test fails before to generate a screenshot.
-  // BUG : https://github.com/process-analytics/bpmn-visualization-js/issues/2131
-  // eslint-disable-next-line jest/no-disabled-tests
-  it.skip('Filter a not displayed pool (without shape) with elements', async () => {
-    await pageTester.gotoPageAndLoadBpmnDiagram('pools.not.displayed.with.elements', {
-      poolIdsToFilter: 'participant_1',
-    });
-    const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig('not-displayed-with-elements');
     expect(image).toMatchImageSnapshot(config);
   });
 });
