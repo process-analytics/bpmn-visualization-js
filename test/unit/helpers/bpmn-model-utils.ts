@@ -88,32 +88,36 @@ const newGroup = (parent: string, id: string, name: string): Shape => new Shape(
 const newSubProcess = (parent: string, id: string, name: string, isExpanded: boolean): Shape =>
   new Shape(buildShapeId(id), new ShapeBpmnSubProcess(id, name, ShapeBpmnSubProcessKind.EMBEDDED, parent, isExpanded ? undefined : [ShapeBpmnMarkerKind.EXPAND]));
 
-const addContainerElements = (bpmnModel: BpmnModel, containerWithLanes: ContainerWithLanes & BaseElement, parentId: string): void => {
+const addContainerElements = (bpmnModel: BpmnModel, containerWithLanes: ContainerWithLanes & BaseElement): void => {
   if (containerWithLanes.lanes) {
-    bpmnModel.lanes.push(newLane(parentId, containerWithLanes.lanes.id, containerWithLanes.lanes.name));
-    addContainerElements(bpmnModel, containerWithLanes.lanes, containerWithLanes.lanes.id);
+    bpmnModel.lanes.push(newLane(containerWithLanes.id, containerWithLanes.lanes.id, containerWithLanes.lanes.name));
+    addContainerElements(bpmnModel, containerWithLanes.lanes);
   }
   if (containerWithLanes.subProcesses) {
-    bpmnModel.flowNodes.push(newSubProcess(parentId, containerWithLanes.subProcesses.id, containerWithLanes.subProcesses.name, containerWithLanes.subProcesses.isExpanded));
-    addContainerElements(bpmnModel, containerWithLanes.subProcesses, containerWithLanes.subProcesses.id);
+    bpmnModel.flowNodes.push(
+      newSubProcess(containerWithLanes.id, containerWithLanes.subProcesses.id, containerWithLanes.subProcesses.name, containerWithLanes.subProcesses.isExpanded),
+    );
+    addContainerElements(bpmnModel, containerWithLanes.subProcesses);
   }
   if (containerWithLanes.callActivities) {
-    bpmnModel.flowNodes.push(newCallActivity(parentId, containerWithLanes.callActivities.id, containerWithLanes.callActivities.name, containerWithLanes.callActivities.isExpanded));
-    addContainerElements(bpmnModel, containerWithLanes.callActivities, containerWithLanes.callActivities.id);
+    bpmnModel.flowNodes.push(
+      newCallActivity(containerWithLanes.id, containerWithLanes.callActivities.id, containerWithLanes.callActivities.name, containerWithLanes.callActivities.isExpanded),
+    );
+    addContainerElements(bpmnModel, containerWithLanes.callActivities);
   }
   if (containerWithLanes.startEvents) {
-    bpmnModel.flowNodes.push(newStartEvent(parentId, containerWithLanes.startEvents.id, containerWithLanes.startEvents.name));
+    bpmnModel.flowNodes.push(newStartEvent(containerWithLanes.id, containerWithLanes.startEvents.id, containerWithLanes.startEvents.name));
   }
   const tasks = containerWithLanes.tasks;
   if (tasks) {
-    bpmnModel.flowNodes.push(newTask(parentId, tasks.id, tasks.name));
+    bpmnModel.flowNodes.push(newTask(containerWithLanes.id, tasks.id, tasks.name));
 
     if (tasks.boundaryEvents) {
       bpmnModel.flowNodes.push(newBoundaryEvent(tasks.id, tasks.boundaryEvents.id, tasks.boundaryEvents.name));
     }
   }
   if (containerWithLanes.groups) {
-    bpmnModel.flowNodes.push(newGroup(parentId, containerWithLanes.groups.id, containerWithLanes.groups.name));
+    bpmnModel.flowNodes.push(newGroup(containerWithLanes.id, containerWithLanes.groups.id, containerWithLanes.groups.name));
   }
   if (containerWithLanes.sequenceFlows) {
     const sequenceFlow = containerWithLanes.sequenceFlows;
@@ -126,10 +130,8 @@ export const toBpmnModel = (model: BpmnModelTestRepresentation): BpmnModel => {
   const pools = ensureIsArray(model.pools);
 
   pools.forEach(pool => {
-    if (!pool.hidden) {
-      addNewPool(bpmnModel, pool.id, pool.name);
-    }
-    addContainerElements(bpmnModel, pool, pool.id);
+    addNewPool(bpmnModel, pool.id, pool.name);
+    addContainerElements(bpmnModel, pool);
   });
 
   if (model.messageFlows) {
@@ -137,7 +139,7 @@ export const toBpmnModel = (model: BpmnModelTestRepresentation): BpmnModel => {
   }
 
   if (model.process) {
-    addContainerElements(bpmnModel, model.process, undefined);
+    addContainerElements(bpmnModel, model.process);
   }
 
   return bpmnModel;
@@ -155,7 +157,7 @@ interface BaseElement {
   name?: string;
 }
 
-type Pool = ContainerWithLanes & BaseElement & { hidden?: boolean };
+type Pool = ContainerWithLanes & BaseElement;
 
 type ContainerElement = BaseElement & Container;
 
