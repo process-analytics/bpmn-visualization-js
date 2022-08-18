@@ -72,7 +72,7 @@ As far as possible, we maintain compatibility for some minor versions.
 Already available features:
 - [Supported BPMN Elements](https://process-analytics.github.io/bpmn-visualization-js/#supported-bpmn-elements).
 - [Navigate through the BPMN diagram](https://process-analytics.github.io/bpmn-visualization-js/#diagram-navigation)
-- [Display options for execution data with interactive capabilities](https://process-analytics.github.io/bpmn-visualization-js/#process_data)
+- [Display execution data with interactive capabilities](https://process-analytics.github.io/bpmn-visualization-js/#process_data)
 
 Planned features:
 - Additional BPMN styling capabilities
