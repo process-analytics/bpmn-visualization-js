@@ -69,7 +69,7 @@ export default class ProcessConverter {
 
   deserialize(processes: string | TProcess | (string | TProcess)[]): void {
     ensureIsArray(processes).forEach(process => this.parseProcess(process));
-    // Need to call this after all processes have been parsed
+    // Need to call this after all processes have been parsed, because to link a call activity to the elements of the called process, we have to parse all processes before.
     ensureIsArray(processes).forEach(process => this.assignParentOfProcessElementsCalledByCallActivity(process));
   }
 
