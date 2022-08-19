@@ -5,6 +5,6 @@
   "excludeInternal": true,
   "excludeExternals": true,
   "excludePrivate": true,
-  "categoryOrder": ["Initialization", "BPMN", "Navigation","Custom Behavior", "Overlays", "BPMN Theme", "*"],
+  "categoryOrder": ["Initialization & Configuration", "BPMN", "Navigation","Custom Behavior", "Overlays", "BPMN Theme", "*"],
   "categorizeByGroup": false
 }

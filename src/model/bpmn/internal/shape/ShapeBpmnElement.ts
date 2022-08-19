@@ -93,10 +93,3 @@ export class ShapeBpmnEventBasedGateway extends ShapeBpmnElement {
     super(id, name, ShapeBpmnElementKind.GATEWAY_EVENT_BASED, parentId, instantiate);
   }
 }
-
-/**
- * @internal
- */
-export class Participant {
-  constructor(readonly id: string, readonly name?: string, public processRef?: string) {}
-}
