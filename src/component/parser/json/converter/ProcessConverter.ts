@@ -71,18 +71,18 @@ export default class ProcessConverter {
   deserialize(processes: string | TProcess | (string | TProcess)[]): void {
     ensureIsArray(processes).forEach(process => this.parseProcess(process));
     // Need to call this after all processes have been parsed, because to link a call activity to the elements of the called process, we have to parse all processes before.
-    ensureIsArray(processes).forEach(process => this.assignParentOfProcessElementsCalledByCallActivity(process));
+    ensureIsArray(processes).forEach(process => this.assignParentOfProcessElementsCalledByCallActivity(process.id));
   }
 
-  private assignParentOfProcessElementsCalledByCallActivity(process: TProcess): void {
-    const callActivity = this.callActivitiesCallingProcess.get(process.id);
+  private assignParentOfProcessElementsCalledByCallActivity(processId: string): void {
+    const callActivity = this.callActivitiesCallingProcess.get(processId);
     if (callActivity) {
-      const pool = this.convertedElements.findPoolByProcessRef(process.id);
+      const pool = this.convertedElements.findPoolByProcessRef(processId);
       if (pool) {
         pool.parentId = callActivity.id;
       }
 
-      this.elementsWithoutParentByProcessId.get(process.id).forEach(element => {
+      this.elementsWithoutParentByProcessId.get(processId).forEach(element => {
         element.parentId = callActivity.id;
       });
     }
