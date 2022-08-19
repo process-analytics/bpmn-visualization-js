@@ -64,6 +64,7 @@ type FlowNode = TFlowNode | TActivity | TReceiveTask | TEventBasedGateway | TTex
 export default class ProcessConverter {
   private defaultSequenceFlowIds: string[] = [];
   private elementsWithoutParentByProcessId: Map<string, ShapeBpmnElement[]> = new Map();
+  private callActivitiesCallingProcess: Map<string, ShapeBpmnElement> = new Map();
 
   constructor(private convertedElements: ConvertedElements, private parsingMessageCollector: ParsingMessageCollector) {}
 
@@ -74,7 +75,7 @@ export default class ProcessConverter {
   }
 
   private assignParentOfProcessElementsCalledByCallActivity(process: TProcess): void {
-    const callActivity = this.convertedElements.findCallActivityCallingProcessByProcess(process.id);
+    const callActivity = this.callActivitiesCallingProcess.get(process.id);
     if (callActivity) {
       const pool = this.convertedElements.findPoolByProcessRef(process.id);
       if (pool) {
@@ -179,7 +180,7 @@ export default class ProcessConverter {
     const globalTaskKind = this.convertedElements.findGlobalTask(bpmnElement.calledElement);
     if (!globalTaskKind) {
       const shapeBpmnCallActivity = new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, ShapeBpmnCallActivityKind.CALLING_PROCESS, parentId, markers);
-      this.convertedElements.registerCallActivityCallingProcessByProcess(shapeBpmnCallActivity, bpmnElement.calledElement);
+      this.callActivitiesCallingProcess.set(bpmnElement.calledElement, shapeBpmnCallActivity);
       return shapeBpmnCallActivity;
     }
     return new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK, parentId, markers, globalTaskKind);
