@@ -39,7 +39,7 @@ describe('parse bpmn as json for callActivity', () => {
         ['object', callActivityJson],
         ['array', [callActivityJson]],
       ])(
-        `should convert as Shape, when a ${expandedKind} call activity (calling process) is an attribute (as %s) of 'process' (as array)`,
+        `should convert as Shape, when a process contains a ${expandedKind} call activity calling another existing process`,
         (title, callActivity: BuildCallActivityParameter | BuildCallActivityParameter[]) => {
           const json: BpmnJsonModel = buildDefinitions({
             process: [
@@ -66,15 +66,65 @@ describe('parse bpmn as json for callActivity', () => {
         },
       );
 
-      it(`should convert as Shape, when a ${expandedKind} call activity calling a process without`, () => {
+      it(`should convert as Shape, when a process contains a ${expandedKind} call activity with name`, () => {
+        const json = buildDefinitions({
+          process: [
+            { id: 'process_1' },
+            {
+              id: 'process_2',
+              callActivity: { id: `call_activity_id_0`, name: 'call activity name', calledElement: 'process_1', isExpanded },
+            },
+          ],
+        });
+
+        const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+
+        verifyShape(model.flowNodes[0], {
+          shapeId: `shape_call_activity_id_0`,
+          parentId: undefined,
+          bpmnElementId: `call_activity_id_0`,
+          bpmnElementName: 'call activity name',
+          bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
+          bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
+          bpmnElementMarkers: expectedBpmnElementMarkers,
+          bounds: { x: 346, y: 856, width: 45, height: 56 },
+        });
+      });
+
+      it(`should convert as Shape, when a process contains a ${expandedKind} call activity without name'`, () => {
+        const json = buildDefinitions({
+          process: [
+            { id: 'process_1' },
+            {
+              id: 'process_2',
+              callActivity: { id: `call_activity_id_1`, calledElement: 'process_1', isExpanded },
+            },
+          ],
+        });
+
+        const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+
+        verifyShape(model.flowNodes[0], {
+          shapeId: `shape_call_activity_id_1`,
+          parentId: undefined,
+          bpmnElementId: `call_activity_id_1`,
+          bpmnElementName: undefined,
+          bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
+          bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
+          bpmnElementMarkers: expectedBpmnElementMarkers,
+          bounds: { x: 346, y: 856, width: 45, height: 56 },
+        });
+      });
+
+      it(`should convert as Shape, when a process contains a ${expandedKind} call activity calling a process without participant`, () => {
         const json: BpmnJsonModel = buildDefinitions({
           process: [
-            { id: 'participant_1' },
+            { id: 'process_1' },
             {
               id: 'process_2',
               callActivity: {
                 id: `call_activity_id_0`,
-                calledElement: 'process_participant_1',
+                calledElement: 'process_1',
                 isExpanded,
               },
             },
@@ -95,7 +145,7 @@ describe('parse bpmn as json for callActivity', () => {
         });
       });
 
-      it(`should convert as Shape, when a ${expandedKind} call activity calling a process with Pool`, () => {
+      it(`should convert as Shape, when a process contains a ${expandedKind} call activity calling a process with participant`, () => {
         const json: BpmnJsonModel = buildDefinitions({
           process: [
             { withParticipant: true, id: 'participant_1' },
@@ -125,7 +175,7 @@ describe('parse bpmn as json for callActivity', () => {
         });
       });
 
-      it(`should convert as Shape, when a ${expandedKind} call activity calling a process with Lane`, () => {
+      it(`should convert as Shape, when a process contains a ${expandedKind} call activity calling a process containing a lane`, () => {
         const json: BpmnJsonModel = buildDefinitions({
           process: [
             {
@@ -159,7 +209,7 @@ describe('parse bpmn as json for callActivity', () => {
       });
 
       it.each([ShapeBpmnElementKind.EVENT_START, ShapeBpmnElementKind.EVENT_END, ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW])(
-        `should convert as Shape, when a ${expandedKind} call activity calling a process with %s`,
+        `should convert as Shape, when a process contains a ${expandedKind} call activity calling a process with %s`,
         (expectedBpmnElementKind: ShapeBpmnElementKind) => {
           const json: BpmnJsonModel = buildDefinitions({
             process: [
@@ -207,7 +257,7 @@ describe('parse bpmn as json for callActivity', () => {
         ShapeBpmnElementKind.TASK_SEND,
         ShapeBpmnElementKind.TASK_SERVICE,
         ShapeBpmnElementKind.TASK_USER,
-      ])(`should convert as Shape, when a ${expandedKind} call activity calling a process with %s`, (expectedBpmnElementKind: ShapeBpmnElementKind) => {
+      ])(`should convert as Shape, when a process contains a ${expandedKind} call activity calling a process containing a %s`, (expectedBpmnElementKind: ShapeBpmnElementKind) => {
         const json: BpmnJsonModel = buildDefinitions({
           process: [
             {
@@ -244,7 +294,7 @@ describe('parse bpmn as json for callActivity', () => {
       });
 
       it.each([ShapeBpmnElementKind.GATEWAY_EVENT_BASED, ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, ShapeBpmnElementKind.GATEWAY_INCLUSIVE, ShapeBpmnElementKind.GATEWAY_PARALLEL])(
-        `should convert as Shape, when a ${expandedKind} call activity calling a process with %s`,
+        `should convert as Shape, when a process contains a ${expandedKind} call activity calling a process with %s`,
         (expectedBpmnElementKind: ShapeBpmnElementKind) => {
           const json: BpmnJsonModel = buildDefinitions({
             process: [
@@ -282,7 +332,7 @@ describe('parse bpmn as json for callActivity', () => {
         },
       );
 
-      it(`should convert as Shape, when a ${expandedKind} call activity calling a process with subprocess`, () => {
+      it(`should convert as Shape, when a process contains a ${expandedKind} call activity calling a process containing a subprocess`, () => {
         const json: BpmnJsonModel = buildDefinitions({
           process: [
             {
@@ -315,7 +365,7 @@ describe('parse bpmn as json for callActivity', () => {
         });
       });
 
-      it(`should convert as Shape, when a ${expandedKind} call activity calling a process with boundary event`, () => {
+      it(`should convert as Shape, when a process contains a ${expandedKind} call activity calling a process containing a boundary event`, () => {
         const json: BpmnJsonModel = buildDefinitions({
           process: [
             {
@@ -355,7 +405,7 @@ describe('parse bpmn as json for callActivity', () => {
         });
       });
 
-      it(`should convert as Shape, when a ${expandedKind} call activity calling a process with sequence flow`, () => {
+      it(`should convert as Shape, when a process contains a ${expandedKind} call activity calling a process containing a sequence flow`, () => {
         const json = buildDefinitions({
           process: [
             { id: 'process_1', sequenceFlow: { id: 'flow_2_id', sourceRef: 'event_2_id', targetRef: 'task_2_id' } },
@@ -395,45 +445,7 @@ describe('parse bpmn as json for callActivity', () => {
         });
       });
 
-      it(`should convert as Shape, when a ${expandedKind} call activity (calling process) (with/without name) is an attribute of 'process'`, () => {
-        const json = buildDefinitions({
-          process: [
-            { id: 'process_1' },
-            {
-              id: 'process_2',
-              callActivity: [
-                { id: `call_activity_id_0`, name: 'call activity name', calledElement: 'process_1', isExpanded },
-                { id: `call_activity_id_1`, calledElement: 'process_1', isExpanded },
-              ],
-            },
-          ],
-        });
-
-        const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
-
-        verifyShape(model.flowNodes[0], {
-          shapeId: `shape_call_activity_id_0`,
-          parentId: undefined,
-          bpmnElementId: `call_activity_id_0`,
-          bpmnElementName: 'call activity name',
-          bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
-          bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
-          bpmnElementMarkers: expectedBpmnElementMarkers,
-          bounds: { x: 346, y: 856, width: 45, height: 56 },
-        });
-        verifyShape(model.flowNodes[1], {
-          shapeId: `shape_call_activity_id_1`,
-          parentId: undefined,
-          bpmnElementId: `call_activity_id_1`,
-          bpmnElementName: undefined,
-          bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
-          bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
-          bpmnElementMarkers: expectedBpmnElementMarkers,
-          bounds: { x: 346, y: 856, width: 45, height: 56 },
-        });
-      });
-
-      it(`should convert as Shape, when a ${expandedKind} call activity calling a not existing process`, () => {
+      it(`should convert as Shape, when a process contains a ${expandedKind} call activity calling a not existing process`, () => {
         const json: BpmnJsonModel = buildDefinitions({
           process: [
             {
