@@ -37,6 +37,12 @@ const styleOptionsPerUseCase = new Map<string, StyleOptions>([
       theme: 'brown',
     },
   ],
+  [
+    'theme-light-blue',
+    {
+      theme: 'light-blue',
+    },
+  ],
 ]);
 
 describe('BPMN theme', () => {
