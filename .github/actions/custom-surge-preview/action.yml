@@ -17,7 +17,7 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - uses: bonitasoft/actions/packages/surge-preview-tools@v1.2.0
+    - uses: bonitasoft/actions/packages/surge-preview-tools@v1
       id: surge-preview-tools
       with:
         surge-token: ${{ inputs.surge-token }}
