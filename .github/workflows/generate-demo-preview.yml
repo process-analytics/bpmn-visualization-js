@@ -8,6 +8,7 @@ on:
       - master
     paths:
       - '.github/actions/build-setup/**/*'
+      - '.github/actions/custom-surge-preview/**/*'
       - '.github/workflows/generate-demo-preview.yml'
       - 'config/**/*'
       - 'dev/**/*'
