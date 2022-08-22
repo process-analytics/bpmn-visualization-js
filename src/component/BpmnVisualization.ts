@@ -33,7 +33,7 @@ import { version, type Version } from './version';
  * ```
  * For more options, see {@link GlobalOptions}
  *
- * @category Initialization
+ * @category Initialization & Configuration
  */
 export class BpmnVisualization {
   /**

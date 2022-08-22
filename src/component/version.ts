@@ -18,7 +18,7 @@ import { mxgraph } from './mxgraph/initializer';
 
 // WARN: this constant is automatically updated at release time by the 'manage-version-in-files.mjs' script.
 // So, if you modify the name of this file or this constant, please update the script accordingly.
-const libVersion = '0.25.3-post';
+const libVersion = '0.26.0-post';
 
 /**
  * @internal
@@ -29,7 +29,7 @@ export const version = (): Version => {
 
 /**
  * Version of `bpmn-visualization` and its dependencies.
- * @category Initialization
+ * @category Initialization & Configuration
  */
 export interface Version {
   /** The `bpmn-visualization` version. */

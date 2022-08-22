@@ -85,7 +85,7 @@ export default class DiagramConverter {
         return;
       }
       // pool
-      if (this.deserializeShapeAndStoreIfFound(shape, convertedShapes.pools, (bpmnElementId: string) => this.convertedElements.findProcess(bpmnElementId))) {
+      if (this.deserializeShapeAndStoreIfFound(shape, convertedShapes.pools, (bpmnElementId: string) => this.convertedElements.findPoolById(bpmnElementId))) {
         return;
       }
       // not found
@@ -108,13 +108,6 @@ export default class DiagramConverter {
     const bpmnElement = findShapeElement(shape.bpmnElement);
     if (bpmnElement) {
       const bounds = DiagramConverter.deserializeBounds(shape);
-
-      if (bpmnElement.parentId) {
-        const participant = this.convertedElements.findParticipantByProcessRef(bpmnElement.parentId);
-        if (participant) {
-          bpmnElement.parentId = participant.id;
-        }
-      }
 
       if (
         (bpmnElement instanceof ShapeBpmnSubProcess ||

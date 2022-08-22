@@ -9,7 +9,7 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
-NOTE: The BPMN support roadmap is available in https://github.com/process-analytics/bpmn-visualization-js/milestones[Github milestones]
+NOTE: The BPMN support roadmap is available in https://github.com/process-analytics/bpmn-visualization-js/milestones[GitHub milestones]
 
 
 The following presents BPMN elements that can be rendered by the `bpmn-visualization` and states which is their rendering status i.e. if

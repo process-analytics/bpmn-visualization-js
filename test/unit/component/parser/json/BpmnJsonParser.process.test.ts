@@ -112,7 +112,7 @@ describe('parse bpmn as json for process/pool', () => {
     });
   });
 
-  it("json containing one participant referencing a process without 'isHorizontal' attribute", () => {
+  it("json containing one participant referencing a process (without 'isHorizontal' attribute)", () => {
     const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
@@ -202,7 +202,7 @@ describe('parse bpmn as json for process/pool', () => {
     });
   });
 
-  it('json containing one process with pool and a single lane without flowNodeRef', () => {
+  it('json containing one participant referencing a process (with a single lane without flowNodeRef)', () => {
     const json = {
       definitions: {
         targetNamespace: '',
@@ -270,7 +270,7 @@ describe('parse bpmn as json for process/pool', () => {
     });
   });
 
-  it('json containing several processes and participants (with lane or laneset)', () => {
+  it('json containing several participants referencing processes (with lane or laneset)', () => {
     const json = {
       definitions: {
         targetNamespace: '',
@@ -389,14 +389,14 @@ describe('parse bpmn as json for process/pool', () => {
     });
   });
 
-  it('participant without processRef are not considered as pool', () => {
+  it('json containing participants with and without processRef (black box pool)', () => {
     const json = {
       definitions: {
         targetNamespace: '',
         collaboration: {
           participant: [
             { id: 'Participant_1', name: 'Pool 1', processRef: 'Process_1' },
-            { id: 'Participant_2', name: 'Not a process' },
+            { id: 'Participant_2', name: 'Pool 2 without processRef' },
           ],
         },
         process: {
@@ -413,16 +413,21 @@ describe('parse bpmn as json for process/pool', () => {
                 isHorizontal: true,
                 Bounds: { x: 158, y: 50, width: 1620, height: 430 },
               },
+              {
+                id: 'shape_Participant_2',
+                bpmnElement: 'Participant_2',
+                isHorizontal: true,
+                Bounds: { x: 10158, y: 50, width: 1620, height: 430 },
+              },
             ],
           },
         },
       },
     };
 
-    const model = parseJsonAndExpectOnlyPools(json, 1);
+    const model = parseJsonAndExpectOnlyPools(json, 2);
 
-    const pool = model.pools[0];
-    verifyShape(pool, {
+    verifyShape(model.pools[0], {
       shapeId: 'shape_Participant_1',
       bpmnElementId: 'Participant_1',
       bpmnElementName: 'Pool 1',
@@ -436,16 +441,30 @@ describe('parse bpmn as json for process/pool', () => {
         height: 430,
       },
     });
+    verifyShape(model.pools[1], {
+      shapeId: 'shape_Participant_2',
+      bpmnElementId: 'Participant_2',
+      bpmnElementName: 'Pool 2 without processRef',
+      bpmnElementKind: ShapeBpmnElementKind.POOL,
+      parentId: undefined,
+      isHorizontal: true,
+      bounds: {
+        x: 10158,
+        y: 50,
+        width: 1620,
+        height: 430,
+      },
+    });
   });
 
-  it('json containing one process and flownode without lane and related participant', () => {
+  it('json containing one participant referencing a process (with flowNode and without lane)', () => {
     const json = {
       definitions: {
         targetNamespace: '',
         collaboration: {
           participant: [
             { id: 'Participant_1', name: 'Pool 1', processRef: 'Process_1' },
-            { id: 'Participant_2', name: 'Not a process' },
+            { id: 'Participant_2', name: 'Missing shape so not in present in the BpmnModel' },
           ],
         },
         process: {
@@ -508,7 +527,52 @@ describe('parse bpmn as json for process/pool', () => {
     });
   });
 
-  it('json containing one process, bpmn elements but no participant', () => {
+  it('json containing one participant referencing a process (without displaying the participant/pool, but with displaying process elements)', () => {
+    const json = {
+      definitions: {
+        targetNamespace: '',
+        collaboration: {
+          participant: [{ id: 'Participant_1', name: 'Pool 1', processRef: 'Process_1' }],
+        },
+        process: {
+          id: 'Process_1',
+          name: 'Process 1',
+          isExecutable: false,
+          startEvent: { id: 'event_id_0' },
+        },
+        BPMNDiagram: {
+          BPMNPlane: {
+            BPMNShape: [
+              {
+                id: 'shape_startEvent_id_0',
+                bpmnElement: 'event_id_0',
+                Bounds: { x: 362, y: 232, width: 36, height: 45 },
+              },
+            ],
+          },
+        },
+      },
+    };
+
+    const model = parseJsonAndExpectOnlyPoolsAndFlowNodes(json, 0, 1);
+
+    const flowNode = model.flowNodes[0];
+    verifyShape(flowNode, {
+      shapeId: 'shape_startEvent_id_0',
+      bpmnElementId: 'event_id_0',
+      bpmnElementName: undefined,
+      bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
+      parentId: 'Participant_1',
+      bounds: {
+        x: 362,
+        y: 232,
+        width: 36,
+        height: 45,
+      },
+    });
+  });
+
+  it('json containing no participant, but one process (with bpmn elements)', () => {
     // json generated from https://github.com/bpmn-miwg/bpmn-miwg-test-suite/blob/b1569235563b58d7216caa880c447bafee3e23cf/Reference/A.1.0.bpmn
     const json = {
       definitions: {
@@ -776,6 +840,6 @@ describe('parse bpmn as json for process/pool', () => {
 
     const model = parseJsonAndExpect(json, 0, 0, 5, 4);
 
-    model.flowNodes.map(flowNode => flowNode.bpmnElement).forEach(bpmnElement => expect(bpmnElement.parentId).toBe('WFP-6-'));
+    model.flowNodes.map(flowNode => flowNode.bpmnElement).forEach(bpmnElement => expect(bpmnElement.parentId).toBeUndefined());
   });
 });
