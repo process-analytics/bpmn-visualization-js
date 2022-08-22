@@ -1,6 +1,6 @@
 {
   "name": "bpmn-visualization",
-  "version": "0.25.3-post",
+  "version": "0.26.0-post",
   "description": "A TypeScript library for visualizing process execution data on BPMN diagrams",
   "keywords": [
     "bpmn2",
@@ -133,12 +133,12 @@
     "minimist": "~1.2.6",
     "npm-run-all": "~4.1.5",
     "pinst": "~3.0.0",
-    "playwright": "~1.24.2",
+    "playwright": "~1.25.0",
     "postcss": "~8.4.14",
     "postcss-cli": "~10.0.0",
     "prettier": "~2.7.1",
     "rimraf": "~3.0.2",
-    "rollup": "~2.78.0",
+    "rollup": "~2.78.1",
     "rollup-plugin-auto-external": "~2.0.0",
     "rollup-plugin-node-externals": "~4.1.1",
     "rollup-plugin-sizes": "~1.0.4",
