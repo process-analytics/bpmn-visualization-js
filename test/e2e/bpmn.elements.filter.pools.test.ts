@@ -56,7 +56,7 @@ describe('Filter pools', () => {
     expect(image).toMatchImageSnapshot(config);
   });
 
-  it('Filter a not displayed pool (without shape) with elements', async () => {
+  it('Filter a "not displayed" pool with elements', async () => {
     await pageTester.gotoPageAndLoadBpmnDiagram('pools.not.displayed.with.elements', {
       poolIdsToFilter: 'participant_1',
     });

@@ -1529,7 +1529,7 @@ describe('mxGraph model - BPMN elements', () => {
       expectTotalEdgesInModel(2);
     });
 
-    it('Filter a not displayed pool (without shape) with elements', () => {
+    it('Filter a "not displayed" pool with elements', () => {
       // load BPMN
       const bpmnDiagramToFilter = readFileSync('../fixtures/bpmn/filter/pools.not.displayed.with.elements.bpmn');
       bpmnVisualization.load(bpmnDiagramToFilter, {

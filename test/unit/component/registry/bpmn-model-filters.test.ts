@@ -519,9 +519,10 @@ describe('Bpmn Model filters', () => {
     });
   });
 
-  it('Filter a black pool (No processRef)', () => {
+  it('Filter a black box pool', () => {
     const originalBpmnModel = toBpmnModel({
       pools: {
+        // the black box pool = a pool without elements
         id: 'participant_id_1',
         name: 'Participant 1',
       },
@@ -530,7 +531,7 @@ describe('Bpmn Model filters', () => {
     expect(modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } })).toStrictEqual(originalBpmnModel);
   });
 
-  it('Filter a NOT displayed pool containing BPMN elements', () => {
+  it('Filter a "not displayed" pool containing BPMN elements', () => {
     const originalBpmnModel = toBpmnModel({
       pools: {
         id: 'participant_id_1',
