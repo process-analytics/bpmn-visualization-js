@@ -26,7 +26,6 @@ import ShapeBpmnElement, {
 } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import type { AssociationDirectionKind, BpmnEventKind } from '../../../../model/bpmn/internal';
 import {
-  FlowKind,
   SequenceFlowKind,
   ShapeBpmnCallActivityKind,
   ShapeBpmnElementKind,
@@ -64,11 +63,29 @@ type FlowNode = TFlowNode | TActivity | TReceiveTask | TEventBasedGateway | TTex
  */
 export default class ProcessConverter {
   private defaultSequenceFlowIds: string[] = [];
+  private elementsWithoutParentByProcessId: Map<string, ShapeBpmnElement[]> = new Map();
+  private callActivitiesCallingProcess: Map<string, ShapeBpmnElement> = new Map();
 
   constructor(private convertedElements: ConvertedElements, private parsingMessageCollector: ParsingMessageCollector) {}
 
   deserialize(processes: string | TProcess | (string | TProcess)[]): void {
     ensureIsArray(processes).forEach(process => this.parseProcess(process));
+    // Need to call this after all processes have been parsed, because to link a call activity to the elements of the called process, we have to parse all processes before.
+    ensureIsArray(processes).forEach(process => this.assignParentOfProcessElementsCalledByCallActivity(process.id));
+  }
+
+  private assignParentOfProcessElementsCalledByCallActivity(processId: string): void {
+    const callActivity = this.callActivitiesCallingProcess.get(processId);
+    if (callActivity) {
+      const pool = this.convertedElements.findPoolByProcessRef(processId);
+      if (pool) {
+        pool.parentId = callActivity.id;
+      }
+
+      this.elementsWithoutParentByProcessId.get(processId).forEach(element => {
+        element.parentId = callActivity.id;
+      });
+    }
   }
 
   private parseProcess(process: TProcess): void {
@@ -84,23 +101,26 @@ export default class ProcessConverter {
   }
 
   private buildProcessInnerElements(process: TProcess | TSubProcess, parentId: string): void {
+    this.elementsWithoutParentByProcessId.set(process.id, []);
+
     // flow nodes
     ShapeUtil.flowNodeKinds()
       .filter(kind => kind != ShapeBpmnElementKind.EVENT_BOUNDARY)
-      .forEach(kind => this.buildFlowNodeBpmnElements(process[kind], kind, parentId));
+      .forEach(kind => this.buildFlowNodeBpmnElements(process[kind], kind, parentId, process.id));
     // process boundary events afterwards as we need its parent activity to be available when building it
-    this.buildFlowNodeBpmnElements(process.boundaryEvent, ShapeBpmnElementKind.EVENT_BOUNDARY, parentId);
+    this.buildFlowNodeBpmnElements(process.boundaryEvent, ShapeBpmnElementKind.EVENT_BOUNDARY, parentId, process.id);
 
     // containers
-    this.buildLaneBpmnElements(process[ShapeBpmnElementKind.LANE], parentId);
-    this.buildLaneSetBpmnElements(process['laneSet'], parentId);
+    this.buildLaneBpmnElements(process[ShapeBpmnElementKind.LANE], parentId, process.id);
+
+    this.buildLaneSetBpmnElements(process.laneSet, parentId, process.id);
 
     // flows
-    this.buildSequenceFlows(process[FlowKind.SEQUENCE_FLOW]);
-    this.buildAssociationFlows(process[FlowKind.ASSOCIATION_FLOW]);
+    this.buildSequenceFlows(process.sequenceFlow);
+    this.buildAssociationFlows(process.association);
   }
 
-  private buildFlowNodeBpmnElements(bpmnElements: Array<FlowNode> | FlowNode, kind: ShapeBpmnElementKind, parentId: string): void {
+  private buildFlowNodeBpmnElements(bpmnElements: Array<FlowNode> | FlowNode, kind: ShapeBpmnElementKind, parentId: string, processId: string): void {
     ensureIsArray(bpmnElements).forEach(bpmnElement => {
       let shapeBpmnElement;
 
@@ -134,6 +154,9 @@ export default class ProcessConverter {
 
       if (shapeBpmnElement) {
         this.convertedElements.registerFlowNode(shapeBpmnElement);
+        if (!parentId) {
+          this.elementsWithoutParentByProcessId.get(processId).push(shapeBpmnElement);
+        }
       }
     });
   }
@@ -152,10 +175,12 @@ export default class ProcessConverter {
     return this.buildShapeBpmnCallActivity(bpmnElement, parentId, markers);
   }
 
-  private buildShapeBpmnCallActivity(bpmnElement: TActivity, parentId: string, markers: ShapeBpmnMarkerKind[]): ShapeBpmnCallActivity {
-    const globalTaskKind = this.convertedElements.findGlobalTask((bpmnElement as TCallActivity).calledElement);
+  private buildShapeBpmnCallActivity(bpmnElement: TCallActivity, parentId: string, markers: ShapeBpmnMarkerKind[]): ShapeBpmnCallActivity {
+    const globalTaskKind = this.convertedElements.findGlobalTask(bpmnElement.calledElement);
     if (!globalTaskKind) {
-      return new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, ShapeBpmnCallActivityKind.CALLING_PROCESS, parentId, markers);
+      const shapeBpmnCallActivity = new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, ShapeBpmnCallActivityKind.CALLING_PROCESS, parentId, markers);
+      this.callActivitiesCallingProcess.set(bpmnElement.calledElement, shapeBpmnCallActivity);
+      return shapeBpmnCallActivity;
     }
     return new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK, parentId, markers, globalTaskKind);
   }
@@ -223,16 +248,21 @@ export default class ProcessConverter {
     return convertedSubProcess;
   }
 
-  private buildLaneSetBpmnElements(laneSets: Array<TLaneSet> | TLaneSet, parentId: string): void {
-    ensureIsArray(laneSets).forEach(laneSet => this.buildLaneBpmnElements(laneSet.lane, parentId));
+  private buildLaneSetBpmnElements(laneSets: Array<TLaneSet> | TLaneSet, parentId: string, processId: string): void {
+    ensureIsArray(laneSets).forEach(laneSet => this.buildLaneBpmnElements(laneSet.lane, parentId, processId));
   }
 
-  private buildLaneBpmnElements(lanes: Array<TLane> | TLane, parentId: string): void {
+  private buildLaneBpmnElements(lanes: Array<TLane> | TLane, parentId: string, processId: string): void {
     ensureIsArray(lanes).forEach(lane => {
-      this.convertedElements.registerLane(new ShapeBpmnElement(lane.id, lane.name, ShapeBpmnElementKind.LANE, parentId));
+      const shapeBpmnElement = new ShapeBpmnElement(lane.id, lane.name, ShapeBpmnElementKind.LANE, parentId);
+      this.convertedElements.registerLane(shapeBpmnElement);
+      if (!parentId) {
+        this.elementsWithoutParentByProcessId.get(processId).push(shapeBpmnElement);
+      }
+
       this.assignParentOfLaneFlowNodes(lane);
       if (lane.childLaneSet?.lane) {
-        this.buildLaneBpmnElements(lane.childLaneSet.lane, lane.id);
+        this.buildLaneBpmnElements(lane.childLaneSet.lane, lane.id, processId);
       }
     });
   }
