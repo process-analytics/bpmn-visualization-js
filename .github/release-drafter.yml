@@ -69,13 +69,14 @@ template: |
   **TODO: add milestone id when publishing**
   See [milestone $NEXT_PATCH_VERSION](https://github.com/process-analytics/bpmn-visualization-js/milestone/x?closed=1) to get the list of issues covered by this release.
 
+  **TODO: check previous and next tag in the "full changelog" link in the "What's changed section"**
+
   # Highlights
 
   **TODO: add screenshots and user oriented info**
 
   # What's Changed
-  $CHANGES
-
-  **TODO: check previous and next tag in the link below**
 
   **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$NEXT_PATCH_VERSION
+
+  $CHANGES
