@@ -111,7 +111,6 @@ export default class ProcessConverter {
     this.buildFlowNodeBpmnElements(process.boundaryEvent, ShapeBpmnElementKind.EVENT_BOUNDARY, parentId, process.id);
 
     // containers
-    // TODO: There is no 'lane' property in a Process in the BPMN spec, but we parse it here. Why ?
     this.buildLaneBpmnElements(process[ShapeBpmnElementKind.LANE], parentId, process.id);
 
     this.buildLaneSetBpmnElements(process.laneSet, parentId, process.id);
