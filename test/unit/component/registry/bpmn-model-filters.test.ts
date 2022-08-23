@@ -93,7 +93,7 @@ describe('Bpmn Model filters', () => {
     it('Filter model that does not have participant', () => {
       // generated from node ./scripts/utils/dist/utils.mjs test/fixtures/bpmn/simple-start-task-end.bpmn --output model
       const originalBpmnModel = toBpmnModel({
-        process: {
+        elementsWithoutPool: {
           id: 'process_id',
           startEvents: {
             id: 'startEvent_1',
@@ -535,7 +535,7 @@ describe('Bpmn Model filters', () => {
       pools: {
         id: 'participant_id_1',
         name: 'Participant 1',
-        hidden: true,
+        isDisplayed: false,
         tasks: {
           id: 'task_1',
           name: 'Task 1',
