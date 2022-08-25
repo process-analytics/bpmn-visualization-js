@@ -205,6 +205,8 @@ export class BpmnGraph extends mxgraph.mxGraph {
   }
 
   private getEventRelativeCoordinates(evt: MouseEvent): [number, number] {
+    // TODO EXTRA mouse zoom impl probably better with call of mxUtils.convertPoint
+    // mxgraph.mxUtils.convertPoint(this.container, mxgraph.mxEvent.getClientX(evt), mxgraph.mxEvent.getClientY(evt));
     const rect = this.container.getBoundingClientRect();
     const x = evt.clientX - rect.left;
     const y = evt.clientY - rect.top;
