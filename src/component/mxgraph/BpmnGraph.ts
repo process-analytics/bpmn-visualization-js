@@ -175,6 +175,7 @@ export class BpmnGraph extends mxgraph.mxGraph {
     } else {
       // TODO implementation
       console.warn('@@@@@registerMouseWheelZoomListeners detected useCssTransforms - no mouse Zoom for now!!!!!!!');
+      mxgraph.mxEvent.addMouseWheelListener(this.createMouseWheelZoomListenerForCssTransforms(), this.container);
     }
   }
 
@@ -189,6 +190,35 @@ export class BpmnGraph extends mxgraph.mxGraph {
       this.view.scaleAndTranslate(newScale, this.view.translate.x + dx, this.view.translate.y + dy);
       mxgraph.mxEvent.consume(evt);
     }
+  }
+  // TODO duplication with createMouseWheelZoomListener
+  private createMouseWheelZoomListenerForCssTransforms() {
+    return (event: Event, up: boolean) => {
+      if (mxgraph.mxEvent.isConsumed(event)) {
+        return;
+      }
+      const evt = event as MouseEvent;
+      // only the ctrl key
+      const isZoomWheelEvent = evt.ctrlKey && !evt.altKey && !evt.shiftKey && !evt.metaKey;
+      if (isZoomWheelEvent) {
+        this.manageMouseWheelZoomEventForCssTransforms(up, evt);
+      }
+    };
+  }
+
+  private manageMouseWheelZoomEventForCssTransforms(up: boolean, evt: MouseEvent): void {
+    const factor = up ? zoomFactorIn : zoomFactorOut;
+    console.warn('==========manageMouseWheelZoomEventForCssTransforms - factor', factor);
+
+    // or view.scale?
+    const newScale = this.currentScale * factor;
+
+    const [offsetX, offsetY] = this.getEventRelativeCoordinates(evt);
+    // const [newScale, dx, dy] = this.getScaleAndTranslationDeltas(offsetX, offsetY);
+    const [dx, dy] = this.calculateTranslationDeltas(factor, newScale, offsetX * 2, offsetY * 2);
+
+    this.view.scaleAndTranslate(newScale, this.view.translate.x + dx, this.view.translate.y + dy);
+    mxgraph.mxEvent.consume(evt);
   }
 
   private createMouseWheelZoomListener(performScaling: boolean) {
