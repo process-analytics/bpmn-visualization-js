@@ -21,12 +21,34 @@ import debounce from 'lodash.debounce';
 import throttle from 'lodash.throttle';
 import { mxgraph } from './initializer';
 import type { mxCellState, mxGraphView, mxPoint } from 'mxgraph';
+import type { mxCell } from 'mxgraph';
+import type { mxRectangle } from 'mxgraph';
 
 const zoomFactorIn = 1.25;
 const zoomFactorOut = 1 / zoomFactorIn;
 
 export class BpmnGraph extends mxgraph.mxGraph {
   private currentZoomLevel = 1;
+
+  // ===========================================================================
+  // POC transform with CSS
+  // ===========================================================================
+  /**
+   * Uses CSS transforms for scale and translate.
+   */
+  // TODO test with true
+  useCssTransforms = false;
+
+  /**
+   * Contains the scale.
+   */
+  currentScale = 1;
+
+  /**
+   * Contains the offset.
+   */
+  currentTranslate = new mxgraph.mxPoint(0, 0);
+  // ===========================================================================
 
   /**
    * @internal
@@ -204,6 +226,113 @@ export class BpmnGraph extends mxgraph.mxGraph {
     const factor = scale / this.view.scale;
     return [factor, scale];
   }
+
+  // ===========================================================================
+  // POC transform with CSS
+  // ===========================================================================
+
+  /**
+   * Function: getCellAt
+   *
+   * Needs to modify original method for recursive call.
+   */
+  // eslint-disable-next-line @typescript-eslint/ban-types -- Function is type is required by typed-mxgraph
+  override getCellAt(x: number, y: number, parent?: mxCell, vertices?: boolean, edges?: boolean, ignoreFn?: Function): mxCell {
+    // getCellAt = function(x, y, parent, vertices, edges, ignoreFn)
+    if (this.useCssTransforms) {
+      x = x / this.currentScale - this.currentTranslate.x;
+      y = y / this.currentScale - this.currentTranslate.y;
+    }
+
+    return this.getScaledCellAt(x, y, parent, vertices, edges, ignoreFn);
+    // return null;
+  }
+
+  /**
+   * Function: getScaledCellAt
+   *
+   * Overridden for recursion.
+   */
+  // eslint-disable-next-line @typescript-eslint/ban-types -- Function is type is required by typed-mxgraph
+  private getScaledCellAt(x: number, y: number, parent?: mxCell, vertices?: boolean, edges?: boolean, ignoreFn?: Function): mxCell {
+    vertices = vertices != null ? vertices : true;
+    edges = edges != null ? edges : true;
+
+    if (parent == null) {
+      parent = this.getCurrentRoot();
+
+      if (parent == null) {
+        parent = this.getModel().getRoot();
+      }
+    }
+
+    if (parent != null) {
+      const childCount = this.model.getChildCount(parent);
+
+      for (let i = childCount - 1; i >= 0; i--) {
+        const cell = this.model.getChildAt(parent, i);
+        const result = this.getScaledCellAt(x, y, cell, vertices, edges, ignoreFn);
+
+        if (result != null) {
+          return result;
+        } else if (this.isCellVisible(cell) && ((edges && this.model.isEdge(cell)) || (vertices && this.model.isVertex(cell)))) {
+          const state = this.view.getState(cell);
+
+          if (state != null && (ignoreFn == null || !ignoreFn(state, x, y)) && this.intersects(state, x, y)) {
+            return cell;
+          }
+        }
+      }
+    }
+
+    return null;
+  }
+
+  // TODO check scrollRectToVisible - not used by bpmn-visualization today
+  // override scrollRectToVisible(r: mxRectangle): boolean
+
+  /**
+   * Only foreignObject supported for now (no IE11). Safari disabled as it ignores
+   * overflow visible on foreignObject in negative space (lightbox and viewer).
+   * Check the following test case on page 1 before enabling this in production:
+   * https://devhost.jgraph.com/git/drawio/etc/embed/sf-math-fo-clipping.html?dev=1
+   */
+  // TODO test if Safari still fails
+  isCssTransformsSupported(): boolean {
+    // this.updateCssTransform
+    return this.dialect == mxgraph.mxConstants.DIALECT_SVG && !mxgraph.mxClient.NO_FO && !mxgraph.mxClient.IS_SF;
+    // return this.dialect == mxgraph.mxConstants.DIALECT_SVG && !mxgraph.mxClient.NO_FO && (!this.lightbox || !mxgraph.mxClient.IS_SF);
+  }
+
+  /**
+   * Zooms out of the graph by <zoomFactor>.
+   */
+  updateCssTransform(): void {
+    console.warn('@@@@@updateCssTransform - start');
+    const temp = this.view.getDrawPane();
+
+    if (temp != null) {
+      const g = <SVGElement>temp.parentNode;
+
+      if (!this.useCssTransforms) {
+        g.removeAttribute('transformOrigin');
+        g.removeAttribute('transform');
+      } else {
+        // const prev = g.getAttribute('transform');
+        g.setAttribute('transformOrigin', '0 0');
+        const s = Math.round(this.currentScale * 100) / 100;
+        const dx = Math.round(this.currentTranslate.x * 100) / 100;
+        const dy = Math.round(this.currentTranslate.y * 100) / 100;
+        g.setAttribute('transform', 'scale(' + s + ',' + s + ')' + 'translate(' + dx + ',' + dy + ')');
+
+        // Applies workarounds only if translate has changed
+        // TODO make the implem pass type check, disable 'cssTransformChanged' event firing for now
+        // if (prev != g.getAttribute('transform')) {
+        //   this.fireEvent(new mxgraph.mxEventObject('cssTransformChanged'), 'transform', g.getAttribute('transform'));
+        // }
+      }
+    }
+  }
 }
 
 class BpmnGraphView extends mxgraph.mxGraphView {
@@ -218,4 +347,89 @@ class BpmnGraphView extends mxgraph.mxGraphView {
     const pts = edge.absolutePoints;
     return source ? pts[1] : pts[pts.length - 2];
   }
+
+  // ===========================================================================
+  // POC transform with CSS
+  // ===========================================================================
+  // TODO improve types: make this.graph considered as BpmnGraph out of the box
+
+  /**
+   * Overrides getGraphBounds to use bounding box from SVG.
+   */
+  override getGraphBounds(): mxRectangle {
+    let b = this.graphBounds;
+
+    if ((<BpmnGraph>this.graph).useCssTransforms) {
+      const t = (<BpmnGraph>this.graph).currentTranslate;
+      const s = (<BpmnGraph>this.graph).currentScale;
+
+      b = new mxgraph.mxRectangle((b.x + t.x) * s, (b.y + t.y) * s, b.width * s, b.height * s);
+    }
+    return b;
+  }
+
+  /**
+   * Overrides to bypass full cell tree validation.
+   * TODO: Check if this improves performance
+   */
+  override viewStateChanged(): void {
+    if ((<BpmnGraph>this.graph).useCssTransforms) {
+      this.validate();
+      this.graph.sizeDidChange();
+    } else {
+      this.revalidate();
+      this.graph.sizeDidChange();
+    }
+  }
+
+  /**
+   * Overrides validate to normalize validation view state and pass
+   * current state to CSS transform.
+   */
+  // var graphViewValidate = mxGraphView.prototype.validate;
+  override validate(cell?: mxCell): void {
+    if ((<BpmnGraph>this.graph).useCssTransforms) {
+      (<BpmnGraph>this.graph).currentScale = this.scale;
+      (<BpmnGraph>this.graph).currentTranslate.x = this.translate.x;
+      (<BpmnGraph>this.graph).currentTranslate.y = this.translate.y;
+
+      this.scale = 1;
+      this.translate.x = 0;
+      this.translate.y = 0;
+    }
+
+    // graphViewValidate.apply(this, arguments);
+    super.validate(cell);
+
+    if ((<BpmnGraph>this.graph).useCssTransforms) {
+      (<BpmnGraph>this.graph).updateCssTransform();
+
+      this.scale = (<BpmnGraph>this.graph).currentScale;
+      this.translate.x = (<BpmnGraph>this.graph).currentTranslate.x;
+      this.translate.y = (<BpmnGraph>this.graph).currentTranslate.y;
+    }
+  }
+
+  // TODO check if validateBackgroundPage is used by bpmn-visualization today, otherwise remove override
+  // var graphViewValidateBackgroundPage = mxGraphView.prototype.validateBackgroundPage;
+  override validateBackgroundPage(): void {
+    const useCssTransforms = (<BpmnGraph>this.graph).useCssTransforms,
+      scale = this.scale,
+      translate = this.translate;
+
+    if (useCssTransforms) {
+      this.scale = (<BpmnGraph>this.graph).currentScale;
+      this.translate = (<BpmnGraph>this.graph).currentTranslate;
+    }
+
+    // graphViewValidateBackgroundPage.apply(this, arguments);
+    super.validateBackgroundPage();
+
+    if (useCssTransforms) {
+      this.scale = scale;
+      this.translate = translate;
+    }
+  }
+
+  // TODO check updatePageBreaks - not used by bpmn-visualization today
 }
