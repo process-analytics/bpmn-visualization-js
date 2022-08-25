@@ -37,7 +37,7 @@ export class BpmnGraph extends mxgraph.mxGraph {
    * Uses CSS transforms for scale and translate.
    */
   // TODO test with true
-  useCssTransforms = false;
+  useCssTransforms = true;
 
   /**
    * Contains the scale.
@@ -76,6 +76,8 @@ export class BpmnGraph extends mxgraph.mxGraph {
   override fit(border: number, keepOrigin?: boolean, margin?: number, enabled?: boolean, ignoreWidth?: boolean, ignoreHeight?: boolean, maxHeight?: number): number {
     const scale = super.fit(border, keepOrigin, margin, enabled, ignoreWidth, ignoreHeight, maxHeight);
     this.setCurrentZoomLevel(scale);
+    console.warn('#####fit done, computed scale', scale);
+    console.warn('#####fit done,  currentScale', this.currentScale);
     return scale;
   }
 
@@ -90,6 +92,7 @@ export class BpmnGraph extends mxgraph.mxGraph {
   override zoomActual(): void {
     super.zoomActual();
     this.setCurrentZoomLevel();
+    console.warn('#####zoomActual done,  currentScale', this.currentScale);
   }
 
   /**
@@ -161,9 +164,17 @@ export class BpmnGraph extends mxgraph.mxGraph {
    * @internal
    */
   registerMouseWheelZoomListeners(config: ZoomConfiguration): void {
-    config = ensureValidZoomConfiguration(config);
-    mxgraph.mxEvent.addMouseWheelListener(debounce(this.createMouseWheelZoomListener(true), config.debounceDelay), this.container);
-    mxgraph.mxEvent.addMouseWheelListener(throttle(this.createMouseWheelZoomListener(false), config.throttleDelay), this.container);
+    console.warn('@@@@@registerMouseWheelZoomListeners start');
+    console.warn('@@@@@registerMouseWheelZoomListeners isFirefox?', mxgraph.mxClient.IS_FF);
+    if (!this.useCssTransforms) {
+      console.warn('@@@@@registerMouseWheelZoomListeners NO useCssTransforms - use throttle/debounce for zoom');
+      config = ensureValidZoomConfiguration(config);
+      mxgraph.mxEvent.addMouseWheelListener(debounce(this.createMouseWheelZoomListener(true), config.debounceDelay), this.container);
+      mxgraph.mxEvent.addMouseWheelListener(throttle(this.createMouseWheelZoomListener(false), config.throttleDelay), this.container);
+    } else {
+      // TODO implementation
+      console.warn('@@@@@registerMouseWheelZoomListeners detected useCssTransforms - no mouse Zoom for now!!!!!!!');
+    }
   }
 
   // Update the currentZoomLevel when performScaling is false, use the currentZoomLevel to set the scale otherwise
@@ -289,7 +300,10 @@ export class BpmnGraph extends mxgraph.mxGraph {
   }
 
   // TODO check scrollRectToVisible - not used by bpmn-visualization today
-  // override scrollRectToVisible(r: mxRectangle): boolean
+  override scrollRectToVisible(r: mxRectangle): boolean {
+    console.warn('#######Called scrollRectToVisible!');
+    return super.scrollRectToVisible(r);
+  }
 
   /**
    * Only foreignObject supported for now (no IE11). Safari disabled as it ignores
@@ -312,27 +326,230 @@ export class BpmnGraph extends mxgraph.mxGraph {
     const temp = this.view.getDrawPane();
 
     if (temp != null) {
+      // TODO consistency, the parentNode is supposed to be this.view.getCanvas(), why not calling it directly?
       const g = <SVGElement>temp.parentNode;
 
+      // TODO this check is probably not needed in our implementation as updateCssTransform is only called when useCssTransforms is true
       if (!this.useCssTransforms) {
+        console.warn('@@@@@updateCssTransform - useCssTransforms = false');
         g.removeAttribute('transformOrigin');
         g.removeAttribute('transform');
       } else {
-        // const prev = g.getAttribute('transform');
+        console.warn('@@@@@updateCssTransform - useCssTransforms');
+        const prev = g.getAttribute('transform');
+
+        // the transformOrigin attribute seems specific to the draw.io/mxgraph EditorUI implementation
         g.setAttribute('transformOrigin', '0 0');
         const s = Math.round(this.currentScale * 100) / 100;
         const dx = Math.round(this.currentTranslate.x * 100) / 100;
         const dy = Math.round(this.currentTranslate.y * 100) / 100;
-        g.setAttribute('transform', 'scale(' + s + ',' + s + ')' + 'translate(' + dx + ',' + dy + ')');
+        const computedTransformDirective = `scale(${s},${s})translate(${dx},${dy})`;
+        console.warn('@@@@updateCssTransform - computed transform directive', computedTransformDirective);
+        g.setAttribute('transform', computedTransformDirective);
 
         // Applies workarounds only if translate has changed
-        // TODO make the implem pass type check, disable 'cssTransformChanged' event firing for now
-        // if (prev != g.getAttribute('transform')) {
-        //   this.fireEvent(new mxgraph.mxEventObject('cssTransformChanged'), 'transform', g.getAttribute('transform'));
-        // }
+        if (prev != g.getAttribute('transform')) {
+          console.warn('@@@@@updateCssTransform - transform value changed');
+          // TODO make the implem pass type check, disable 'cssTransformChanged' event firing for now
+          // this.fireEvent(new mxgraph.mxEventObject('cssTransformChanged'), 'transform', g.getAttribute('transform'));
+        }
       }
     }
   }
+
+  // ===========================================================================
+  // custom for bpmn-visualization, draw.io is using scrollbar, without scrollbar, the original mxGraph implementation doesn't work
+  // ===========================================================================
+
+  /**
+   * Function: panGraph
+   *
+   * Shifts the graph display by the given amount. This is used to preview
+   * panning operations, use <mxGraphView.setTranslate> to set a persistent
+   * translation of the view. Fires <mxEvent.PAN>.
+   *
+   * Parameters:
+   *
+   * dx - Amount to shift the graph along the x-axis.
+   * dy - Amount to shift the graph along the y-axis.
+   */
+  override panGraph(dx: number, dy: number): void {
+    if (!this.useCssTransforms) {
+      console.warn('@@@@panGraph - no useCssTransforms');
+      super.panGraph(dx, dy);
+    } else {
+      console.warn('@@@@panGraph - useCssTransforms');
+      if (this.useScrollbarsForPanning && mxgraph.mxUtils.hasScrollbars(this.container)) {
+        console.warn('@@@@panGraph - has scrollbars');
+        this.container.scrollLeft = -dx;
+        this.container.scrollTop = -dy;
+      } else {
+        // at the end of pan, panning handler does
+        // var scale = this.graph.getView().scale;
+        // var t = this.graph.getView().translate;
+        // <panningHandler>this.panGraph(t.x + this.dx / scale, t.y + this.dy / scale);
+        // <panningHandler>panGraph = function(dx, dy) ==> this.graph.getView().setTranslate(dx, dy);
+
+        console.warn(`@@@@panGraph - useCssTransforms - dx=${dx} dy=${dy}`);
+        // TODO manage rounding duplication with updateCssTransform (introduce private method)
+        const roundedCurrentScale = Math.round(this.currentScale * 100) / 100;
+        const roundedPannedTranslateX = Math.round((this.currentTranslate.x + dx / this.currentScale) * 100) / 100;
+        const roundedPannedTranslateY = Math.round((this.currentTranslate.y + dy / this.currentScale) * 100) / 100;
+        const computedTransformDirective = `scale(${roundedCurrentScale},${roundedCurrentScale})translate(${roundedPannedTranslateX},${roundedPannedTranslateY})`;
+        // const roundedCurrentTranslateX = Math.round(this.currentTranslate.x * 100) / 100;
+        // const roundedCurrentTranslateY = Math.round(this.currentTranslate.y * 100) / 100;
+        // const computedTransformDirective = `scale(${roundedCurrentScale},${roundedCurrentScale})translate(${roundedCurrentTranslateX + dx},${roundedCurrentTranslateY + dy})`;
+        console.warn('@@@@panGraph - computed transform directive', computedTransformDirective);
+
+        const canvas = this.view.getCanvas();
+        canvas.setAttribute('transform', computedTransformDirective);
+      }
+
+      this.panDx = dx;
+      this.panDy = dy;
+
+      this.fireEvent(new mxgraph.mxEventObject(mxgraph.mxEvent.PAN), undefined);
+
+      // DEBUG code
+      // console.warn(`@@@@panGraph - useCssTransforms - dx=${dx} dy=${dy}`);
+      // //console.warn(`@@@@panGraph - useCssTransforms - currentScale=${this.currentScale} currentTranslate=${this.currentTranslate.x}/${this.currentTranslate.y}`);
+      // console.warn(`@@@@panGraph - useCssTransforms - before pan - panDx=${this.panDx} panDy=${this.panDy}`);
+      // // this.panDx = dx;
+      // //     this.panDy
+      // super.panGraph(dx, dy);
+      // console.warn(`@@@@panGraph - useCssTransforms - after pan - panDx=${this.panDx} panDy=${this.panDy}`);
+    }
+  }
+
+  // mxGraph.prototype.panGraph = function(dx, dy)
+  // {
+  //   if (this.useScrollbarsForPanning && mxUtils.hasScrollbars(this.container))
+  //   {
+  //     this.container.scrollLeft = -dx;
+  //     this.container.scrollTop = -dy;
+  //   }
+  //   else
+  //   {
+  //     var canvas = this.view.getCanvas();
+  //
+  //     if (this.dialect == mxConstants.DIALECT_SVG)
+  //     {
+  //       // Puts everything inside the container in a DIV so that it
+  //       // can be moved without changing the state of the container
+  //       if (dx == 0 && dy == 0)
+  //       {
+  //         // Workaround for ignored removeAttribute on SVG element in IE9 standards
+  //         if (mxClient.IS_IE)
+  //         {
+  //           canvas.setAttribute('transform', 'translate(' + dx + ',' + dy + ')');
+  //         }
+  //         else
+  //         {
+  //           canvas.removeAttribute('transform');
+  //         }
+  //
+  //         if (this.shiftPreview1 != null)
+  //         {
+  //           var child = this.shiftPreview1.firstChild;
+  //
+  //           while (child != null)
+  //           {
+  //             var next = child.nextSibling;
+  //             this.container.appendChild(child);
+  //             child = next;
+  //           }
+  //
+  //           if (this.shiftPreview1.parentNode != null)
+  //           {
+  //             this.shiftPreview1.parentNode.removeChild(this.shiftPreview1);
+  //           }
+  //
+  //           this.shiftPreview1 = null;
+  //
+  //           this.container.appendChild(canvas.parentNode);
+  //
+  //           child = this.shiftPreview2.firstChild;
+  //
+  //           while (child != null)
+  //           {
+  //             var next = child.nextSibling;
+  //             this.container.appendChild(child);
+  //             child = next;
+  //           }
+  //
+  //           if (this.shiftPreview2.parentNode != null)
+  //           {
+  //             this.shiftPreview2.parentNode.removeChild(this.shiftPreview2);
+  //           }
+  //
+  //           this.shiftPreview2 = null;
+  //         }
+  //       }
+  //       else
+  //       {
+  //         canvas.setAttribute('transform', 'translate(' + dx + ',' + dy + ')');
+  //
+  //         if (this.shiftPreview1 == null)
+  //         {
+  //           // Needs two divs for stuff before and after the SVG element
+  //           this.shiftPreview1 = document.createElement('div');
+  //           this.shiftPreview1.style.position = 'absolute';
+  //           this.shiftPreview1.style.overflow = 'visible';
+  //
+  //           this.shiftPreview2 = document.createElement('div');
+  //           this.shiftPreview2.style.position = 'absolute';
+  //           this.shiftPreview2.style.overflow = 'visible';
+  //
+  //           var current = this.shiftPreview1;
+  //           var child = this.container.firstChild;
+  //
+  //           while (child != null)
+  //           {
+  //             var next = child.nextSibling;
+  //
+  //             // SVG element is moved via transform attribute
+  //             if (child != canvas.parentNode)
+  //             {
+  //               current.appendChild(child);
+  //             }
+  //             else
+  //             {
+  //               current = this.shiftPreview2;
+  //             }
+  //
+  //             child = next;
+  //           }
+  //
+  //           // Inserts elements only if not empty
+  //           if (this.shiftPreview1.firstChild != null)
+  //           {
+  //             this.container.insertBefore(this.shiftPreview1, canvas.parentNode);
+  //           }
+  //
+  //           if (this.shiftPreview2.firstChild != null)
+  //           {
+  //             this.container.appendChild(this.shiftPreview2);
+  //           }
+  //         }
+  //
+  //         this.shiftPreview1.style.left = dx + 'px';
+  //         this.shiftPreview1.style.top = dy + 'px';
+  //         this.shiftPreview2.style.left = dx + 'px';
+  //         this.shiftPreview2.style.top = dy + 'px';
+  //       }
+  //     }
+  //     else
+  //     {
+  //       canvas.style.left = dx + 'px';
+  //       canvas.style.top = dy + 'px';
+  //     }
+  //
+  //     this.panDx = dx;
+  //     this.panDy = dy;
+  //
+  //     this.fireEvent(new mxEventObject(mxEvent.PAN));
+  //   }
+  // };
 }
 
 class BpmnGraphView extends mxgraph.mxGraphView {
@@ -413,6 +630,7 @@ class BpmnGraphView extends mxgraph.mxGraphView {
   // TODO check if validateBackgroundPage is used by bpmn-visualization today, otherwise remove override
   // var graphViewValidateBackgroundPage = mxGraphView.prototype.validateBackgroundPage;
   override validateBackgroundPage(): void {
+    console.warn('****validateBackgroundPage - start');
     const useCssTransforms = (<BpmnGraph>this.graph).useCssTransforms,
       scale = this.scale,
       translate = this.translate;
