@@ -24,7 +24,8 @@ import type { mxCellState, mxGraphView, mxPoint } from 'mxgraph';
 import type { mxCell } from 'mxgraph';
 import type { mxRectangle } from 'mxgraph';
 
-const zoomFactorIn = 1.25;
+// TODO change value when using CSS transform (was 1.25) (we should have different values depending on the useCssTransforms value
+const zoomFactorIn = 1.05;
 const zoomFactorOut = 1 / zoomFactorIn;
 
 export class BpmnGraph extends mxgraph.mxGraph {
@@ -36,7 +37,7 @@ export class BpmnGraph extends mxgraph.mxGraph {
   /**
    * Uses CSS transforms for scale and translate.
    */
-  // TODO test with true
+  // TODO make this configurable
   useCssTransforms = true;
 
   /**
