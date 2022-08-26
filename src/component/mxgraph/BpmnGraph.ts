@@ -302,14 +302,12 @@ export class BpmnGraph extends mxgraph.mxGraph {
    */
   // eslint-disable-next-line @typescript-eslint/ban-types -- Function is type is required by typed-mxgraph
   override getCellAt(x: number, y: number, parent?: mxCell, vertices?: boolean, edges?: boolean, ignoreFn?: Function): mxCell {
-    // getCellAt = function(x, y, parent, vertices, edges, ignoreFn)
     if (this.useCssTransforms) {
       x = x / this.currentScale - this.currentTranslate.x;
       y = y / this.currentScale - this.currentTranslate.y;
     }
 
     return this.getScaledCellAt(x, y, parent, vertices, edges, ignoreFn);
-    // return null;
   }
 
   /**
@@ -365,12 +363,12 @@ export class BpmnGraph extends mxgraph.mxGraph {
    * Check the following test case on page 1 before enabling this in production:
    * https://devhost.jgraph.com/git/drawio/etc/embed/sf-math-fo-clipping.html?dev=1
    */
-  // TODO test if Safari still fails
-  isCssTransformsSupported(): boolean {
-    // this.updateCssTransform
-    return this.dialect == mxgraph.mxConstants.DIALECT_SVG && !mxgraph.mxClient.NO_FO && !mxgraph.mxClient.IS_SF;
-    // return this.dialect == mxgraph.mxConstants.DIALECT_SVG && !mxgraph.mxClient.NO_FO && (!this.lightbox || !mxgraph.mxClient.IS_SF);
-  }
+  // we test no Safari latest and it works
+  // isCssTransformsSupported(): boolean {
+  //   // this.updateCssTransform
+  //   return this.dialect == mxgraph.mxConstants.DIALECT_SVG && !mxgraph.mxClient.NO_FO && !mxgraph.mxClient.IS_SF;
+  //   // return this.dialect == mxgraph.mxConstants.DIALECT_SVG && !mxgraph.mxClient.NO_FO && (!this.lightbox || !mxgraph.mxClient.IS_SF);
+  // }
 
   /**
    * Zooms out of the graph by <zoomFactor>.
