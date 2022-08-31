@@ -106,7 +106,7 @@
     "@types/lodash.throttle": "~4.1.7",
     "@types/minimist": "~1.2.2",
     "@typescript-eslint/eslint-plugin": "~5.35.1",
-    "@typescript-eslint/parser": "~5.35.1",
+    "@typescript-eslint/parser": "~5.36.1",
     "asciidoctor": "~2.2.6",
     "autoprefixer": "~10.4.8",
     "clipboardy": "~3.0.0",
@@ -146,7 +146,7 @@
     "rollup-plugin-typescript2": "~0.33.0",
     "tailwindcss": "~3.1.8",
     "ts-jest": "~27.1.4",
-    "typedoc": "~0.23.11",
+    "typedoc": "~0.23.12",
     "typescript": "~4.8.2",
     "vite": "~3.0.9"
   },
