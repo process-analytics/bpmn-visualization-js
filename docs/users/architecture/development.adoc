@@ -1,4 +1,4 @@
-=== Development
+== Development
 :icons: font
 ifdef::env-github[]
 :tip-caption: :bulb:

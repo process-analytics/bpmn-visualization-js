@@ -1,4 +1,4 @@
-=== Architecture Overview
+== Architecture Overview
 
 `bpmn-visualization` consists on 3 main modules:
 
