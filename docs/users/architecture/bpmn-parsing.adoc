@@ -1,12 +1,12 @@
-=== BPMN Parsing
+== BPMN Parsing
 
-==== XML Parser
+=== XML Parser
 
 To parse XML data, we use the https://github.com/NaturalIntelligence/fast-xml-parser[fast-xml-parser] library.
 
 You can see the implementation in *BpmnXmlParser.ts*.
 
-==== Json Parser
+=== Json Parser
 
 To parse a JSON data, we use a custom parser.
 
