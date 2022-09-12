@@ -98,7 +98,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "~22.0.2",
-    "@rollup/plugin-node-resolve": "~14.0.1",
+    "@rollup/plugin-node-resolve": "~14.1.0",
     "@types/debug": "~4.1.7",
     "@types/jest": "~27.5.0",
     "@types/jest-image-snapshot": "~5.1.0",
@@ -113,7 +113,7 @@
     "cross-env": "~7.0.3",
     "cssnano": "~5.1.13",
     "debug": "~4.3.4",
-    "eslint": "~8.23.0",
+    "eslint": "~8.23.1",
     "eslint-config-prettier": "~8.5.0",
     "eslint-plugin-jest": "~27.0.4",
     "eslint-plugin-notice": "~0.9.10",
