@@ -98,7 +98,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "~22.0.2",
-    "@rollup/plugin-node-resolve": "~14.0.1",
+    "@rollup/plugin-node-resolve": "~14.1.0",
     "@types/debug": "~4.1.7",
     "@types/jest": "~27.5.0",
     "@types/jest-image-snapshot": "~5.1.0",
