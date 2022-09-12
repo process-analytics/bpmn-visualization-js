@@ -20,6 +20,9 @@ import type BpmnModel from '../../model/bpmn/internal/BpmnModel';
 import type { ModelFilter } from '../options';
 import { ensureIsArray } from '../helpers/array-utils';
 
+/**
+ * @internal
+ */
 export class ModelFiltering {
   filter(bpmnModel: BpmnModel, modelFilter?: ModelFilter): BpmnModel {
     const poolIdsFilter: string[] = [];
