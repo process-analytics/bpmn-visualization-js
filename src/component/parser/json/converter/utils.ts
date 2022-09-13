@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import type { Participant } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import ShapeBpmnElement from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import type { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/flows';
 import type { GlobalTaskKind, ShapeBpmnEventDefinitionKind } from '../../../../model/bpmn/internal';
@@ -27,41 +26,18 @@ import { GroupUnknownCategoryValueWarning } from '../warnings';
  * @internal
  */
 export class ConvertedElements {
-  private participantsById: Map<string, Participant> = new Map();
-  private findParticipantById(id: string): Participant {
-    return this.participantsById.get(id);
+  private poolsById: Map<string, ShapeBpmnElement> = new Map();
+  findPoolById(id: string): ShapeBpmnElement {
+    return this.poolsById.get(id);
   }
-
-  private participantsByProcessRef: Map<string, Participant> = new Map();
-  findParticipantByProcessRef(processRef: string): Participant {
-    return this.participantsByProcessRef.get(processRef);
+  private poolsByProcessRef: Map<string, ShapeBpmnElement> = new Map();
+  findPoolByProcessRef(processRef: string): ShapeBpmnElement {
+    return this.poolsByProcessRef.get(processRef);
   }
-
-  registerParticipant(participant: Participant): void {
-    this.participantsById.set(participant.id, participant);
-    if (participant.processRef) {
-      this.participantsByProcessRef.set(participant.processRef, participant);
-    }
-  }
-
-  private processes: Map<string, ShapeBpmnElement> = new Map();
-  private _findProcess(id: string): ShapeBpmnElement {
-    return this.processes.get(id);
-  }
-  registerProcess(process: ShapeBpmnElement): void {
-    this.processes.set(process.id, process);
-  }
-
-  findProcess(participantId: string): ShapeBpmnElement | undefined {
-    const participant = this.findParticipantById(participantId);
-    if (participant) {
-      const process = this._findProcess(participant.processRef);
-      if (process) {
-        const name = participant.name || process.name;
-        return new ShapeBpmnElement(participant.id, name, process.kind, process.parentId);
-      }
-      // black box pool
-      return new ShapeBpmnElement(participant.id, participant.name, ShapeBpmnElementKind.POOL);
+  registerPool(pool: ShapeBpmnElement, processRef: string): void {
+    this.poolsById.set(pool.id, pool);
+    if (processRef) {
+      this.poolsByProcessRef.set(processRef, pool);
     }
   }
 

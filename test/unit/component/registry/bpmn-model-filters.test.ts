@@ -93,7 +93,7 @@ describe('Bpmn Model filters', () => {
     it('Filter model that does not have participant', () => {
       // generated from node ./scripts/utils/dist/utils.mjs test/fixtures/bpmn/simple-start-task-end.bpmn --output model
       const originalBpmnModel = toBpmnModel({
-        process: {
+        elementsWithoutPool: {
           id: 'process_id',
           startEvents: {
             id: 'startEvent_1',
@@ -118,7 +118,7 @@ describe('Bpmn Model filters', () => {
         modelFiltering.filter(originalBpmnModel, {
           pools: { id: 'process_id' },
         }),
-      ).toThrow('It is not possible to filter pools of the BPMN model because it does not contain any pool');
+      ).toThrow('No matching pools for ids [process_id]');
     });
   });
 
@@ -516,6 +516,50 @@ describe('Bpmn Model filters', () => {
       bpmnElementId: 'participant_id_1',
       bpmnElementName: 'Participant 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
+    });
+  });
+
+  it('Filter a black box pool', () => {
+    const originalBpmnModel = toBpmnModel({
+      pools: {
+        // the black box pool = a pool without elements
+        id: 'participant_id_1',
+        name: 'Participant 1',
+      },
+    });
+
+    expect(modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } })).toStrictEqual(originalBpmnModel);
+  });
+
+  it('Filter a "not displayed" pool containing BPMN elements', () => {
+    const originalBpmnModel = toBpmnModel({
+      pools: {
+        id: 'participant_id_1',
+        name: 'Participant 1',
+        isDisplayed: false,
+        tasks: {
+          id: 'task_1',
+          name: 'Task 1',
+        },
+        startEvents: {
+          id: 'start_event_1',
+        },
+        sequenceFlows: {
+          id: 'sequence_flow_1',
+          source: 'start_event_1',
+          target: 'task_1',
+        },
+        lanes: {
+          id: 'lane_1',
+        },
+      },
+    });
+
+    expect(modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } })).toStrictEqual({
+      pools: [],
+      lanes: originalBpmnModel.lanes,
+      flowNodes: originalBpmnModel.flowNodes,
+      edges: originalBpmnModel.edges,
     });
   });
 });

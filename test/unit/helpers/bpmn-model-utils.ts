@@ -89,35 +89,32 @@ const newSubProcess = (parent: string, id: string, name: string, isExpanded: boo
   new Shape(buildShapeId(id), new ShapeBpmnSubProcess(id, name, ShapeBpmnSubProcessKind.EMBEDDED, parent, isExpanded ? undefined : [ShapeBpmnMarkerKind.EXPAND]));
 
 const addContainerElements = (bpmnModel: BpmnModel, containerWithLanes: ContainerWithLanes & BaseElement): void => {
+  const parentId = containerWithLanes.id;
   if (containerWithLanes.lanes) {
-    bpmnModel.lanes.push(newLane(containerWithLanes.id, containerWithLanes.lanes.id, containerWithLanes.lanes.name));
+    bpmnModel.lanes.push(newLane(parentId, containerWithLanes.lanes.id, containerWithLanes.lanes.name));
     addContainerElements(bpmnModel, containerWithLanes.lanes);
   }
   if (containerWithLanes.subProcesses) {
-    bpmnModel.flowNodes.push(
-      newSubProcess(containerWithLanes.id, containerWithLanes.subProcesses.id, containerWithLanes.subProcesses.name, containerWithLanes.subProcesses.isExpanded),
-    );
+    bpmnModel.flowNodes.push(newSubProcess(parentId, containerWithLanes.subProcesses.id, containerWithLanes.subProcesses.name, containerWithLanes.subProcesses.isExpanded));
     addContainerElements(bpmnModel, containerWithLanes.subProcesses);
   }
   if (containerWithLanes.callActivities) {
-    bpmnModel.flowNodes.push(
-      newCallActivity(containerWithLanes.id, containerWithLanes.callActivities.id, containerWithLanes.callActivities.name, containerWithLanes.callActivities.isExpanded),
-    );
+    bpmnModel.flowNodes.push(newCallActivity(parentId, containerWithLanes.callActivities.id, containerWithLanes.callActivities.name, containerWithLanes.callActivities.isExpanded));
     addContainerElements(bpmnModel, containerWithLanes.callActivities);
   }
   if (containerWithLanes.startEvents) {
-    bpmnModel.flowNodes.push(newStartEvent(containerWithLanes.id, containerWithLanes.startEvents.id, containerWithLanes.startEvents.name));
+    bpmnModel.flowNodes.push(newStartEvent(parentId, containerWithLanes.startEvents.id, containerWithLanes.startEvents.name));
   }
   const tasks = containerWithLanes.tasks;
   if (tasks) {
-    bpmnModel.flowNodes.push(newTask(containerWithLanes.id, tasks.id, tasks.name));
+    bpmnModel.flowNodes.push(newTask(parentId, tasks.id, tasks.name));
 
     if (tasks.boundaryEvents) {
       bpmnModel.flowNodes.push(newBoundaryEvent(tasks.id, tasks.boundaryEvents.id, tasks.boundaryEvents.name));
     }
   }
   if (containerWithLanes.groups) {
-    bpmnModel.flowNodes.push(newGroup(containerWithLanes.id, containerWithLanes.groups.id, containerWithLanes.groups.name));
+    bpmnModel.flowNodes.push(newGroup(parentId, containerWithLanes.groups.id, containerWithLanes.groups.name));
   }
   if (containerWithLanes.sequenceFlows) {
     const sequenceFlow = containerWithLanes.sequenceFlows;
@@ -130,7 +127,9 @@ export const toBpmnModel = (model: BpmnModelTestRepresentation): BpmnModel => {
   const pools = ensureIsArray(model.pools);
 
   pools.forEach(pool => {
-    addNewPool(bpmnModel, pool.id, pool.name);
+    if (pool.isDisplayed !== false) {
+      addNewPool(bpmnModel, pool.id, pool.name);
+    }
     addContainerElements(bpmnModel, pool);
   });
 
@@ -138,8 +137,9 @@ export const toBpmnModel = (model: BpmnModelTestRepresentation): BpmnModel => {
     ensureIsArray(model.messageFlows).forEach(messageFlow => bpmnModel.edges.push(newMessageFlow(messageFlow.id, messageFlow.name, messageFlow.source, messageFlow.target)));
   }
 
-  if (model.process) {
-    addContainerElements(bpmnModel, model.process);
+  if (model.elementsWithoutPool) {
+    // Here, as there is no pool, all the elements must have no parent
+    addContainerElements(bpmnModel, { ...model.elementsWithoutPool, id: undefined });
   }
 
   return bpmnModel;
@@ -149,7 +149,7 @@ export interface BpmnModelTestRepresentation {
   pools?: Pool | Pool[];
   messageFlows?: Flow | Flow[];
   // to define a process without participant
-  process?: ContainerWithLanes & BaseElement;
+  elementsWithoutPool?: ContainerWithLanes & BaseElement;
 }
 
 interface BaseElement {
@@ -157,7 +157,7 @@ interface BaseElement {
   name?: string;
 }
 
-type Pool = ContainerWithLanes & BaseElement;
+type Pool = ContainerWithLanes & BaseElement & { isDisplayed?: boolean };
 
 type ContainerElement = BaseElement & Container;
 

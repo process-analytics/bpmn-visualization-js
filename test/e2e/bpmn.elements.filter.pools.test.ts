@@ -30,14 +30,13 @@ class FilterPoolsImageSnapshotConfigurator extends ImageSnapshotConfigurator {
 describe('Filter pools', () => {
   const diagramSubfolder = 'filter';
   const imageSnapshotConfigurator = new FilterPoolsImageSnapshotConfigurator(
-    // chromium: 0 max
+    // chromium: 0.000598274637497731% max
     // firefox: 0.012128385807519404% max
     // webkit: 0.160355447672067% max
-    new MultiBrowserImageSnapshotThresholds({ chromium: 0 / 100, firefox: 0.013 / 100, webkit: 0.17 / 100 }),
+    new MultiBrowserImageSnapshotThresholds({ chromium: 0.0006 / 100, firefox: 0.013 / 100, webkit: 0.17 / 100 }),
     diagramSubfolder,
   );
   const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder }, <Page>page);
-  const bpmnDiagramName = 'pools';
 
   // Participant_1 start/task/end
   // Participant_2 black box pool
@@ -49,11 +48,20 @@ describe('Filter pools', () => {
     ${'one-with-expanded-call-activity'} | ${'Participant_5'}
     ${'all'}                             | ${['Participant_1', 'Participant_2', 'Participant_3', 'Participant_4', 'Participant_5']}
   `('Filter $name', async ({ name, pools }: { name: string; pools: string | string[] }) => {
-    await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName, {
+    await pageTester.gotoPageAndLoadBpmnDiagram('pools', {
       poolIdsToFilter: pools,
     });
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(name);
+    expect(image).toMatchImageSnapshot(config);
+  });
+
+  it('Filter a "not displayed" pool with elements', async () => {
+    await pageTester.gotoPageAndLoadBpmnDiagram('pools.not.displayed.with.elements', {
+      poolIdsToFilter: 'participant_1',
+    });
+    const image = await page.screenshot({ fullPage: true });
+    const config = imageSnapshotConfigurator.getConfig('not-displayed-with-elements');
     expect(image).toMatchImageSnapshot(config);
   });
 });

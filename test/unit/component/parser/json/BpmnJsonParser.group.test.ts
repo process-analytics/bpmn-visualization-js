@@ -68,7 +68,7 @@ describe('parse bpmn as json for group', () => {
       bpmnElementId: 'Group_0',
       bpmnElementName: 'Group 0 label',
       bpmnElementKind: ShapeBpmnElementKind.GROUP,
-      parentId: 'process_0',
+      parentId: undefined,
       bounds: {
         x: 160,
         y: 110,
@@ -144,7 +144,7 @@ describe('parse bpmn as json for group', () => {
       bpmnElementId: 'Group_0',
       bpmnElementName: 'Another Group 0 label',
       bpmnElementKind: ShapeBpmnElementKind.GROUP,
-      parentId: 'process_1',
+      parentId: undefined,
       bounds: {
         x: 160,
         y: 110,
@@ -157,7 +157,7 @@ describe('parse bpmn as json for group', () => {
       bpmnElementId: 'Group_1',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.GROUP,
-      parentId: 'process_1',
+      parentId: undefined,
       bounds: {
         x: 1160,
         y: 1110,

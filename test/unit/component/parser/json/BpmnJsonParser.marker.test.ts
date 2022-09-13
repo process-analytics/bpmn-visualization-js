@@ -80,6 +80,7 @@ describe.each([
         const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
         verifyShape(model.flowNodes[0], {
+          parentId: expectedShapeBpmnElementKind === ShapeBpmnElementKind.CALL_ACTIVITY ? `${bpmnKind}_id_0` : undefined,
           shapeId: `shape_${bpmnKind}_id_0`,
           bpmnElementId: `${bpmnKind}_id_0`,
           bpmnElementName: `${bpmnKind} name`,
@@ -175,6 +176,7 @@ describe.each([
         const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
         verifyShape(model.flowNodes[0], {
+          parentId: expectedShapeBpmnElementKind === ShapeBpmnElementKind.CALL_ACTIVITY ? `${bpmnKind}_id_0` : undefined,
           shapeId: `shape_${bpmnKind}_id_0`,
           bpmnElementId: `${bpmnKind}_id_0`,
           bpmnElementName: `${bpmnKind} name`,
@@ -219,6 +221,7 @@ describe.each([
         const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
         verifyShape(model.flowNodes[0], {
+          parentId: expectedShapeBpmnElementKind === ShapeBpmnElementKind.CALL_ACTIVITY ? `${bpmnKind}_id_0` : undefined,
           shapeId: `shape_${bpmnKind}_id_0`,
           bpmnElementId: `${bpmnKind}_id_0`,
           bpmnElementName: `${bpmnKind} name`,

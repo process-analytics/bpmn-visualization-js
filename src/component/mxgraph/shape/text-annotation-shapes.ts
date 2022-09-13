@@ -22,14 +22,21 @@ import type { mxAbstractCanvas2D } from 'mxgraph';
  * @internal
  */
 export class TextAnnotationShape extends mxgraph.mxRectangleShape {
-  override paintBackground(c: mxAbstractCanvas2D, x: number, y: number, _w: number, h: number): void {
+  override paintForeground(c: mxAbstractCanvas2D, x: number, y: number, _w: number, h: number): void {
     // paint sort of left square bracket shape - for text annotation
     c.begin();
     c.moveTo(x + StyleDefault.TEXT_ANNOTATION_BORDER_LENGTH, y);
     c.lineTo(x, y);
     c.lineTo(x, y + h);
     c.lineTo(x + StyleDefault.TEXT_ANNOTATION_BORDER_LENGTH, y + h);
+    c.stroke();
+  }
 
-    c.fillAndStroke();
+  override paintBackground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+    c.save(); // ensure we can later restore the configuration
+    c.setStrokeColor('none'); // we have a special stroke shape managed in 'paintForeground'
+    super.paintBackground(c, x, y, w, h);
+    // Restore original configuration, otherwise 'paintForeground' styles are affected by the style changes done here
+    c.restore();
   }
 }

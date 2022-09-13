@@ -24,6 +24,6 @@ export default {
   },
   plugins: [
     typescript(),
-    externals(), // Make all Node builtins, deps, devDeps, peerDeps and optDeps external
+    externals({ devDeps: true }), // Make all Node builtins, deps, devDeps, peerDeps and optDeps external
   ],
 };

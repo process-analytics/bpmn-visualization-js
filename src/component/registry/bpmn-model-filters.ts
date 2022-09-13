@@ -31,28 +31,30 @@ export class ModelFiltering {
     if (poolIdsFilter.length == 0 && poolNamesFilter.length == 0) {
       return bpmnModel;
     }
-    if (bpmnModel.pools.length == 0) {
-      throw new Error('It is not possible to filter pools of the BPMN model because it does not contain any pool');
-    }
 
-    const { filteredPools, filteredPoolsIds } = filterPools(bpmnModel, poolIdsFilter, poolNamesFilter);
-    const { filteredLanes, filteredLaneIds, filteredFlowNodes, filteredFlowNodeIds } = filterLanesAndFlowNodes(bpmnModel.lanes, bpmnModel.flowNodes, filteredPoolsIds);
-    const filteredEdges = filterEdges(bpmnModel.edges, [...filteredPoolsIds, ...filteredLaneIds, ...filteredFlowNodeIds]);
+    const { filteredPools, filteredPoolIds } = filterPools(bpmnModel, poolIdsFilter, poolNamesFilter);
+    const filteredPoolAndBlackPoolIds = [...poolIdsFilter, ...filteredPoolIds];
+    const { filteredLanes, filteredLaneIds, filteredFlowNodes, filteredFlowNodeIds } = filterLanesAndFlowNodes(bpmnModel.lanes, bpmnModel.flowNodes, filteredPoolAndBlackPoolIds);
+    const filteredEdges = filterEdges(bpmnModel.edges, [...filteredPoolAndBlackPoolIds, ...filteredLaneIds, ...filteredFlowNodeIds]);
+
+    // For the NOT displayed Pool, there is no Shape for it, but we need to filter the flow nodes, the lanes and the edges which are in the NOT displayed Pool
+    // If there is no shape associated to a Pool, no flow nodes, no lanes and no edges, there is no ShapeBPMNElement associated to the pool id to filter.
+    // So we need to throw an error.
+    if (filteredPools.length == 0 && filteredLanes.length == 0 && filteredFlowNodes.length == 0 && filteredEdges.length == 0) {
+      let errorMsgSuffix = poolIdsFilter.length > 0 ? ` for ids [${poolIdsFilter}]` : '';
+      const msgSeparator = errorMsgSuffix ? ' and' : '';
+      errorMsgSuffix += poolNamesFilter.length > 0 ? `${msgSeparator} for names [${poolNamesFilter}]` : '';
+      throw new Error('No matching pools' + errorMsgSuffix);
+    }
 
     return { lanes: filteredLanes, flowNodes: filteredFlowNodes, pools: filteredPools, edges: filteredEdges };
   }
 }
 
-function filterPools(bpmnModel: BpmnModel, poolIdsFilter: string[], poolNamesFilter: string[]): { filteredPools: Shape[]; filteredPoolsIds: string[] } {
+function filterPools(bpmnModel: BpmnModel, poolIdsFilter: string[], poolNamesFilter: string[]): { filteredPools: Shape[]; filteredPoolIds: string[] } {
   const filteredPools = bpmnModel.pools.filter(pool => poolIdsFilter.includes(pool.bpmnElement.id) || poolNamesFilter.includes(pool.bpmnElement.name));
-  if (filteredPools.length == 0) {
-    let errorMsgSuffix = poolIdsFilter.length > 0 ? ` for ids [${poolIdsFilter}]` : '';
-    const msgSeparator = errorMsgSuffix ? ' and' : '';
-    errorMsgSuffix += poolNamesFilter.length > 0 ? `${msgSeparator} for names [${poolNamesFilter}]` : '';
-    throw new Error('No matching pools' + errorMsgSuffix);
-  }
-  const filteredPoolsIds = filteredPools.map(shape => shape.bpmnElement.id);
-  return { filteredPools, filteredPoolsIds };
+  const filteredPoolIds = filteredPools.map(shape => shape.bpmnElement.id);
+  return { filteredPools, filteredPoolIds };
 }
 
 function filterLanesAndFlowNodes(
