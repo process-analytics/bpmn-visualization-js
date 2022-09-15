@@ -105,7 +105,7 @@ You should add visual tests when:
 tests are supposed to fail in that case).
 <br/><br/>
 `bpmn.rendering.test.ts` drives all visual tests for this part. A visual test only requires a BPMN diagram as input, stored in the
-`test/fixtures/bpmn/non-regression` folder. It is automatically considered and use as test input.
+`test/fixtures/bpmn/bpmn-rendering` folder. It is automatically considered and use as test input.
 <br/><br/>
 * You have added an interface for handling custom behaviors that manipulates the visible diagram.
 <br/><br/>
