@@ -62,7 +62,7 @@ export enum ShapeBpmnElementKind {
   // test/unit/component/parser/json/BpmnJsonParser.label.font.test.ts
   // test/unit/component/parser/json/BpmnJsonParser.label.test.ts
   // Uncomment corresponding line in src/model/bpmn/shape/utils.ts FLOW_NODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS
-  // GATEWAY_COMPLEX = 'complexGateway',
+  GATEWAY_COMPLEX = 'complexGateway',
 
   EVENT_START = 'startEvent',
   EVENT_END = 'endEvent',
