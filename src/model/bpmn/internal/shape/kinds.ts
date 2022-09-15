@@ -53,15 +53,6 @@ export enum ShapeBpmnElementKind {
   GATEWAY_EXCLUSIVE = 'exclusiveGateway',
   GATEWAY_INCLUSIVE = 'inclusiveGateway',
   GATEWAY_EVENT_BASED = 'eventBasedGateway',
-
-  // When adding support for GATEWAY_COMPLEX, uncomment corresponding test in the following files
-  // test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.default.test.ts
-  // test/unit/component/parser/json/BpmnJsonParser.sequenceFlow.conditional.test.ts
-  // test/unit/component/parser/json/BpmnJsonParser.flowNode.test.ts
-  // test/unit/component/parser/json/BpmnJsonParser.label.bounds.test.ts
-  // test/unit/component/parser/json/BpmnJsonParser.label.font.test.ts
-  // test/unit/component/parser/json/BpmnJsonParser.label.test.ts
-  // Uncomment corresponding line in src/model/bpmn/shape/utils.ts FLOW_NODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS
   GATEWAY_COMPLEX = 'complexGateway',
 
   EVENT_START = 'startEvent',
