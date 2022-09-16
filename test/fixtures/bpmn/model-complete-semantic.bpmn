@@ -1687,9 +1687,9 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_complex_gateway_id" bpmnElement="complex_gateway_id">
-        <dc:Bounds x="2545" y="1290" width="50" height="50" />
+        <dc:Bounds x="2545" y="1320" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="2525" y="1320" width="90" height="14" />
+          <dc:Bounds x="2525" y="1370" width="90" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
 
