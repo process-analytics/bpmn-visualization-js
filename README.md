@@ -129,9 +129,11 @@ You can set the BPMN content using one of the following ways:
 
 #### 📜 TypeScript Support
 
-`bpmn-visualization` provides type definitions, so the integration should work out of the box in TypeScript projects.
+`bpmn-visualization` provides type definitions, so the integration works out of the box in TypeScript projects.
 
-Depending on the build system used by the TypeScript project, it may get the following type errors:
+`bpmn-visualization` requires **TypeScript 4.5** or greater.
+
+Depending on the TypeScript configuration of the project, the following errors can occur:
 - error TS2688: Cannot find type definition file for 'typed-mxgraph'
 - error TS7016: Could not find a declaration file for module 'mxgraph'
 
