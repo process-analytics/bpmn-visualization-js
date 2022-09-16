@@ -133,7 +133,7 @@ You can set the BPMN content using one of the following ways:
 
 `bpmn-visualization` requires **TypeScript 4.5** or greater.
 
-Depending on the build system used by the TypeScript project, it may get the following type errors:
+Depending on the TypeScript configuration of the project, the following errors can occur:
 - error TS2688: Cannot find type definition file for 'typed-mxgraph'
 - error TS7016: Could not find a declaration file for module 'mxgraph'
 
