@@ -129,15 +129,18 @@ You can set the BPMN content using one of the following ways:
 
 #### 📜 TypeScript Support
 
-`bpmn-visualization` provides type definitions, so the integration works out of the box in TypeScript projects.
-
+The `bpmn-visualization` npm package includes type definitions, so the integration works out of the box in TypeScript projects.
 `bpmn-visualization` requires **TypeScript 4.5** or greater.
 
-Depending on the TypeScript configuration of the project, the following errors can occur:
-- error TS2688: Cannot find type definition file for 'typed-mxgraph'
-- error TS7016: Could not find a declaration file for module 'mxgraph'
+ℹ️ If you are looking for examples of projects integrating `bpmn-visualization` with TypeScript, see the [bpmn-visualization-examples repository](https://github.com/process-analytics/bpmn-visualization-examples/#bpmn-visualization-usage-in-projects).
 
-In this case, declare the `typed-mxgraph` types in the `tsconfig.json` as in the following (see the [typeRoots](https://www.typescriptlang.org/tsconfig#typeRoots) documentation for more explanations) 👇
+Users who want to extend the `mxGraph` integration have to declare the `typed-mxgraph` types. To do so, create a `typed-mxgraph.d.ts` file at the root of the source folder of your project and include the following line:
+```typescript
+// Use mxgraph types
+/// <reference types="@typed-mxgraph/typed-mxgraph" />
+```
+
+Alternatively, declare the `typed-mxgraph` types in the `tsconfig.json` as in the following (see the [typeRoots](https://www.typescriptlang.org/tsconfig#typeRoots) documentation for more explanations) 👇
 
 ```json
 {
@@ -153,13 +156,9 @@ In this case, declare the `typed-mxgraph` types in the `tsconfig.json` as in the
 ---
 **NOTE**
 
-This is also mandatory for users who want to extend the `mxGraph` integration.
+Prior version 0.27.0, `bpmn-visualization` required extra configuration for TypeScript projects as explained in the [v0.26.2 README](https://github.com/process-analytics/bpmn-visualization-js/tree/v0.26.2#-typescript-support).
 
 ---
-
-Alternatively, you can set [`skipLibCheck`](https://www.typescriptlang.org/tsconfig#skipLibCheck) to `true` in the `tsconfig.json` file, but this limits the definition checks.
-
-ℹ️ For more details, see the TypeScript projects in the [bpmn-visualization-examples repository](https://github.com/process-analytics/bpmn-visualization-examples/#bpmn-visualization-usage-in-projects).
 
 
 ### 💠 Browser usage

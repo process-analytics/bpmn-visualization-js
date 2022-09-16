@@ -1,0 +1,14 @@
+{
+  "name": "check-lowest-typescript-version",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "test": "tsc"
+  },
+  "dependencies": {
+    "bpmn-visualization": "../../"
+  },
+  "devDependencies": {
+    "typescript": "~4.5"
+  }
+}

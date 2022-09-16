@@ -9,6 +9,7 @@ on:
       - '.github/workflows/upload-npm-package.yml'
       - 'scripts/**/*'
       - 'src/**/*'
+      - 'test/typescript-support/**/*'
       - 'package.json'
       - 'package-lock.json'
       - 'rollup.config.js'
@@ -21,6 +22,7 @@ on:
       - '.github/workflows/upload-npm-package.yml'
       - 'scripts/**/*'
       - 'src/**/*'
+      - 'test/typescript-support/**/*'
       - 'package.json'
       - 'package-lock.json'
       - 'rollup.config.js'
@@ -41,3 +43,9 @@ jobs:
         with:
           name: bpmn-visualization-npm-package-${{github.sha}}
           path: bpmn-visualization-*.tgz
+      - name: Setup typescript-support test
+        working-directory: 'test/typescript-support'
+        run: npm ci
+      - name: Run typescript-support test
+        working-directory: 'test/typescript-support'
+        run: npm test

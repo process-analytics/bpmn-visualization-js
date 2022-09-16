@@ -15,10 +15,6 @@
     "sourceMap": false,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "typeRoots": [
-      "node_modules/@types",
-      "node_modules/@typed-mxgraph"
-    ],
     "stripInternal": true,
     "noImplicitOverride": true,
     // Vitejs requirements https://vitejs.dev/guide/features.html#typescript-compiler-options
