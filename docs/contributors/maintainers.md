@@ -83,8 +83,8 @@ ___
   - at least add/update a link to the related milestone
   - put screenshots/gif of the new features
 - If an old `Notes for next release notes` exists, use its content and delete this release
-- Assign the new tag as release target and save the draft (this may have been already managed by `release-drafter`). Do it only just before
-publishing especially if you update an already set tag for minor version. Once you change the tag and save, the update date of the release
+- Assign the new tag as release target and save the draft (this may have been already managed by `release-drafter`). **Do it only just before
+publishing** especially if you update an already set tag for minor version. Once you change the tag and save, the update date of the release
 is updated making it the newest one. This is the one that is updated by release-drafter so there is a risk to loose the whole content of
 the release notes.
 - Publish the release **only when you are done** with the release content. At any time, you can save the draft
