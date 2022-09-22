@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "test": "tsc"
+    "test": "tsc --version && tsc"
   },
   "dependencies": {
     "bpmn-visualization": "../../"
