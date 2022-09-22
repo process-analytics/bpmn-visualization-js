@@ -573,6 +573,11 @@ The event definition can be defined on the event or on the definitions.
 ^.^|icon:check-circle-o[]
 ^.^|image:images/icons/gateway_event_based.svg[Event-Based icon,30] image:images/icons/gateway_event_based_exclusive.svg[Exclusive Event-Based icon,30] image:images/icons/gateway_event_based_parallel.svg[Parallel Event-Based icon,30]
 .^|Support the `event gateway type` (Exclusive and Parallel) and the `instantiate` status
+
+.^|Complex
+^.^|icon:check-circle-o[]
+^.^|
+.^|
 |===
 
 
