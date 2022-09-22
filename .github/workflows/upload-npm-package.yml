@@ -45,7 +45,7 @@ jobs:
           path: bpmn-visualization-*.tgz
       - name: Setup typescript-support test
         working-directory: 'test/typescript-support'
-        run: npm ci
+        run: npm ci --ignore-scripts --prefer-offline --audit false
       - name: Run typescript-support test
         working-directory: 'test/typescript-support'
         run: npm test
