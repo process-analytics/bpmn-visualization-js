@@ -33,7 +33,7 @@ Overview of tasks to be achieved:
 - Update the json parsing to store the new element in the BPMN model
 - Add arbitrary rendering
 - Add/Update tests
-- Update the BPMN support documentation
+- Update the BPMN support documentation. Add the element with the [experimental icon](https://process-analytics.github.io/bpmn-visualization-js/#supported-bpmn-elements).
 
 Refer to existing Pull Requests to have a better view about the work to do, for instance:
 
@@ -119,7 +119,7 @@ Overview of tasks to be achieved:
 
 - Use the final icon chosen for the BPMN Elements.
 - Add/Update visual tests
-- Update the BPMN support documentation (see also [icons license](#icons-license))
+- Update the BPMN support documentation (see also [icons license](#icons-license)). Add the element with the [early access icon](https://process-analytics.github.io/bpmn-visualization-js/#supported-bpmn-elements)
 
 Refer to existing Pull Requests to have a better view about the work to do, for instance:
 
