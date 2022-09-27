@@ -105,7 +105,7 @@ You should add visual tests when:
 tests are supposed to fail in that case).
 <br/><br/>
 `bpmn.rendering.test.ts` drives all visual tests for this part. A visual test only requires a BPMN diagram as input, stored in the
-`test/fixtures/bpmn/non-regression` folder. It is automatically considered and use as test input.
+  `test/fixtures/bpmn/bpmn-rendering` folder. It is automatically considered and use as test input.
 <br/><br/>
 * You have added an interface for handling custom behaviors that manipulates the visible diagram.
 <br/><br/>
@@ -184,7 +184,7 @@ as the diagrams are served by the dev server. The parameter name is `url` and th
 `/test/fixtures/bpmn/simple-start-task-end.bpmn`. This works with all test pages of the project.
 
 Example: 
-> http://localhost:10001/dev/public/index.html?url=/test/fixtures/bpmn/non-regression/associations.and.annotations.01.general.bpmn
+> http://localhost:10001/dev/public/index.html?url=/test/fixtures/bpmn/bpmn-rendering/associations.and.annotations.01.general.bpmn
 
 In tests, convenient methods exist to only pass the name of the diagram without having to manage the folder tree to the file.
 

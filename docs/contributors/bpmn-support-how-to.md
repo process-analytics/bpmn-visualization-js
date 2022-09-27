@@ -32,12 +32,12 @@ Overview of tasks to be achieved:
 * Update the json parsing to store the new element in the BPMN model
 * Add arbitrary rendering
 * Add/Update tests
-* Update the BPMN support documentation
+* Update the BPMN support documentation. Add the element with the [experimental icon](https://process-analytics.github.io/bpmn-visualization-js/#supported-bpmn-elements).
 
 Refer to existing Pull Requests to have a better view about the work to do, for instance:
-- [Link Event Detection Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/501/files)
-- [Manual Task Detection Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/582/files)
-
+- [Detect Complex Gateway Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/2250/files)
+- [Detect and Render Group Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/1462/files)
+- [Detect call activities calling different global tasks Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/1447/files)
 
 ### BPMN model update
 
@@ -119,7 +119,7 @@ So before committing the modification, verify that some elements/configuration a
 Overview of tasks to be achieved:
 - Use the final icon chosen for the BPMN Elements.
 - Add/Update visual tests
-- Update the BPMN support documentation (see also [icons license](#icons-license))
+- Update the BPMN support documentation (see also [icons license](#icons-license)). Add the element with the [early access icon](https://process-analytics.github.io/bpmn-visualization-js/#supported-bpmn-elements)
 
 Refer to existing Pull Requests to have a better view about the work to do, for instance:
 - [Error Event Rendering Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/505/files)
