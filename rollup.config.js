@@ -32,8 +32,9 @@ const pluginsBundleIIFE = [
   // to have sizes of dependencies listed at the end of build log
   sizes(),
 ];
+const iifeBundleFile = 'dist/bpmn-visualization.min.js';
 const outputIIFE = {
-  file: pkg.browser.replace('.min.js', '.js'),
+  file: iifeBundleFile.replace('.min.js', '.js'),
   name: 'bpmnvisu',
   format: 'iife',
 };
@@ -47,7 +48,7 @@ const configIIFEMinified = {
   input: libInput,
   output: {
     ...outputIIFE,
-    file: pkg.browser,
+    file: iifeBundleFile,
   },
   plugins: withMinification(pluginsBundleIIFE),
 };
