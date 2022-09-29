@@ -8,7 +8,7 @@
 *.jest-image-snapshot-touched-files
 /build/
 /dist/
-/node_modules/
+node_modules/
 /scripts/utils/dist/
 
 # npm build
