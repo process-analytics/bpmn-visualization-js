@@ -40,6 +40,13 @@ describe('Bpmn Elements registry - CSS class management', () => {
       htmlElementLookup.expectServiceTask('serviceTask_1_2', { label: 'Service Task 1.2', additionalClasses: ['class1', 'class2', 'class3'] });
       htmlElementLookup.expectEndEvent('endEvent_message_1', ShapeBpmnEventDefinitionKind.MESSAGE, { label: 'message end 2', additionalClasses: ['class2', 'class3'] });
       htmlElementLookup.expectSequenceFlow('Flow_1bewc4s', { label: 'link', additionalClasses: ['class2', 'class3'] });
+
+      // add several classes by passing classes in a single string separated with spaces
+      // not documented in the API but this is working
+      bpmnVisualization.bpmnElementsRegistry.addCssClasses(['endEvent_message_1'], ['extra-class1 extra-class2 extra-class3']);
+      htmlElementLookup.expectEndEvent('endEvent_message_1', ShapeBpmnEventDefinitionKind.MESSAGE, {
+        additionalClasses: ['class2', 'class3', 'extra-class1', 'extra-class2', 'extra-class3'],
+      });
     });
 
     it('BPMN element does not exist', () => {
@@ -91,6 +98,20 @@ describe('Bpmn Elements registry - CSS class management', () => {
       bpmnVisualization.bpmnElementsRegistry.removeCssClasses(['lane_01', 'userTask_0'], ['class1', 'class3']);
       htmlElementLookup.expectLane('lane_01', { label: 'Lane 3', additionalClasses: ['class2'] });
       htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0', additionalClasses: ['class2'] });
+
+      // remove several classes by passing classes in a single string separated with spaces
+      // this is not working (remember this is working for 'add css classes')
+      bpmnVisualization.bpmnElementsRegistry.addCssClasses(['userTask_0'], ['extra-class1', 'extra-class2', 'extra-class3']);
+      htmlElementLookup.expectUserTask('userTask_0', { additionalClasses: ['class2', 'extra-class1', 'extra-class2', 'extra-class3'] });
+      bpmnVisualization.bpmnElementsRegistry.removeCssClasses(['userTask_0'], ['extra-class1 extra-class2 extra-class3']);
+      htmlElementLookup.expectUserTask('userTask_0', { additionalClasses: ['class2', 'extra-class1', 'extra-class2', 'extra-class3'] });
+
+      // add the class with spaces and remove them with spaces
+      const extraClassNamesToAddThenRemove = ['extra-class1 extra-class2 extra-class3'];
+      bpmnVisualization.bpmnElementsRegistry.addCssClasses(['lane_01'], extraClassNamesToAddThenRemove);
+      htmlElementLookup.expectLane('lane_01', { additionalClasses: ['class2', 'extra-class1', 'extra-class2', 'extra-class3'] });
+      bpmnVisualization.bpmnElementsRegistry.removeCssClasses(['lane_01'], extraClassNamesToAddThenRemove);
+      htmlElementLookup.expectLane('lane_01', { additionalClasses: ['class2'] });
     });
 
     it('BPMN element does not exist', () => {
@@ -117,6 +138,20 @@ describe('Bpmn Elements registry - CSS class management', () => {
       bpmnVisualization.bpmnElementsRegistry.toggleCssClasses(['lane_02', 'gateway_01'], ['class1', 'class3', 'class4']);
       htmlElementLookup.expectLane('lane_02', { label: 'Lane 2', additionalClasses: ['class2', 'class4'] });
       htmlElementLookup.expectExclusiveGateway('gateway_01', { label: 'gateway 1', additionalClasses: ['class4'] });
+
+      // toggle several classes by passing classes in a single string separated with spaces
+      // this is not working (remember this is working for 'add css classes')
+      bpmnVisualization.bpmnElementsRegistry.toggleCssClasses(['gateway_01'], ['extra-class1', 'extra-class2']);
+      htmlElementLookup.expectExclusiveGateway('gateway_01', { additionalClasses: ['class4', 'extra-class1', 'extra-class2'] });
+      bpmnVisualization.bpmnElementsRegistry.toggleCssClasses(['gateway_01'], ['extra-class1 extra-class2']);
+      htmlElementLookup.expectExclusiveGateway('gateway_01', { additionalClasses: ['class4', 'extra-class1', 'extra-class2', 'extra-class1', 'extra-class2'] });
+
+      // add the class with spaces and remove them with spaces
+      const extraClassNamesToAddThenRemove = ['extra-class1 extra-class3'];
+      bpmnVisualization.bpmnElementsRegistry.toggleCssClasses(['lane_02'], extraClassNamesToAddThenRemove);
+      htmlElementLookup.expectLane('lane_02', { additionalClasses: ['class2', 'class4', 'extra-class1', 'extra-class3'] });
+      bpmnVisualization.bpmnElementsRegistry.toggleCssClasses(['lane_02'], extraClassNamesToAddThenRemove);
+      htmlElementLookup.expectLane('lane_02', { additionalClasses: ['class2', 'class4'] });
     });
 
     it('BPMN element does not exist', () => {

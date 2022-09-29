@@ -79,6 +79,16 @@ export class InclusiveGatewayShape extends GatewayShape {
 /**
  * @internal
  */
+export class ComplexGatewayShape extends GatewayShape {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  protected paintInnerShape(paintParameter: PaintParameter): void {
+    this.fill = 'red';
+  }
+}
+
+/**
+ * @internal
+ */
 export class EventBasedGatewayShape extends GatewayShape {
   protected paintInnerShape(paintParameter: PaintParameter): void {
     paintParameter = { ...paintParameter, iconStyleConfig: { ...paintParameter.iconStyleConfig, strokeWidth: 1 } };

@@ -77,6 +77,16 @@ describe('manage css classes for BPMN cells', () => {
       expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(classNames);
     });
 
+    it('register several classes with a single string parameter', () => {
+      const bpmnElementId = 'bpmn-id';
+      const classNames = ['class-name-1 class-name-2'];
+
+      const result = cssRegistry.addClassNames(bpmnElementId, classNames);
+
+      expect(result).toBeTruthy();
+      expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(classNames);
+    });
+
     it('a class name should be registered only once, when add it twice', () => {
       const bpmnElementId = 'bpmn-id';
       cssRegistry.addClassNames(bpmnElementId, ['class-name-1', 'class-name-2']);
@@ -87,7 +97,7 @@ describe('manage css classes for BPMN cells', () => {
       expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class-name-1', 'class-name-2']);
     });
 
-    it('the unregistered class names should be registered, when the other are already registered', () => {
+    it('register several classes several times, check classes order', () => {
       const bpmnElementId = 'bpmn-id';
       cssRegistry.addClassNames(bpmnElementId, ['class-name-1', 'class-name-2']);
 

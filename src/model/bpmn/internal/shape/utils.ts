@@ -117,8 +117,7 @@ const FLOW_NODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS = [
   ...ACTIVITY_KINDS,
   ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
   ShapeBpmnElementKind.GATEWAY_INCLUSIVE,
-  // Uncomment when supported
-  // ShapeBpmnElementKind.GATEWAY_COMPLEX,
+  ShapeBpmnElementKind.GATEWAY_COMPLEX,
 ];
 
 /**

@@ -26,8 +26,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
   it.each([
     ['exclusiveGateway', SequenceFlowKind.CONDITIONAL_FROM_GATEWAY],
     ['inclusiveGateway', SequenceFlowKind.CONDITIONAL_FROM_GATEWAY],
-    // To uncomment when we support complex gateway
-    // ['complexGateway', SequenceFlowKind.CONDITIONAL_FROM_GATEWAY],
+    ['complexGateway', SequenceFlowKind.CONDITIONAL_FROM_GATEWAY],
     ['task', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     ['userTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
     ['serviceTask', SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY],
