@@ -134,25 +134,6 @@ The `bpmn-visualization` npm package includes type definitions, so the integrati
 
 ℹ️ If you are looking for examples of projects integrating `bpmn-visualization` with TypeScript, see the [bpmn-visualization-examples repository](https://github.com/process-analytics/bpmn-visualization-examples/#bpmn-visualization-usage-in-projects).
 
-Users who want to extend the `mxGraph` integration have to declare the `typed-mxgraph` types. To do so, create a `mxgraph.d.ts` file at the root of the source folder of your project and include the following line:
-```typescript
-// Use mxgraph types
-/// <reference types="@typed-mxgraph/typed-mxgraph" />
-```
-
-Alternatively, declare the `typed-mxgraph` types in the `tsconfig.json` as in the following (see the [typeRoots](https://www.typescriptlang.org/tsconfig#typeRoots) documentation for more explanations) 👇
-
-```json
-{
-  "compilerOptions": {
-    "typeRoots": [
-      "node_modules/@types",
-      "node_modules/@typed-mxgraph"
-    ]
-  }
-}
-```
-
 ---
 **NOTE**
 
