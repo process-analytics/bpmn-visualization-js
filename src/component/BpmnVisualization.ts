@@ -18,7 +18,7 @@ import GraphConfigurator from './mxgraph/GraphConfigurator';
 import { newBpmnRenderer } from './mxgraph/BpmnRenderer';
 import { newBpmnParser } from './parser/BpmnParser';
 import type { BpmnGraph } from './mxgraph/BpmnGraph';
-import type { FitOptions, GlobalOptions, LoadOptions } from './options';
+import type { GlobalOptions, LoadOptions } from './options';
 import type { BpmnElementsRegistry } from './registry';
 import { newBpmnElementsRegistry } from './registry/bpmn-elements-registry';
 import { BpmnModelRegistry } from './registry/bpmn-model-registry';
