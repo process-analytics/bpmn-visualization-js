@@ -89,13 +89,6 @@ export class BpmnVisualization {
     newBpmnRenderer(this.graph).render(renderedModel, options?.fit);
   }
 
-  /**
-   * @deprecated Starting from version `0.24.0`, use `navigation.fit` instead. This method may be removed in version `0.27.0`.
-   */
-  fit(options?: FitOptions): void {
-    this.navigation.fit(options);
-  }
-
   getVersion(): Version {
     return version();
   }
