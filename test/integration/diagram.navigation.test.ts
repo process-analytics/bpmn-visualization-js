@@ -29,8 +29,7 @@ describe('diagram navigation', () => {
   // The following tests ensure there is no error when calling the fit method
   describe('Fit', () => {
     it('Fit no options', async () => {
-      // use the deprecated method on purpose, switch to `navigation.fit` when removing the deprecated one.
-      bpmnVisualization.fit();
+      bpmnVisualization.navigation.fit();
     });
 
     it.each(allTestedFitTypes)('Fit with %s', (fitType: string) => {

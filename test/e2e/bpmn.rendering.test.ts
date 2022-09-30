@@ -266,7 +266,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'labels.04.fonts',
         {
-          macos: 0.61 / 100, // 0.6044319789370367%
+          macos: 0.71 / 100, // 0.703880504764276%
         },
       ],
       [

@@ -34,7 +34,7 @@ describe.each([
   ['inclusiveGateway', ShapeBpmnElementKind.GATEWAY_INCLUSIVE],
   ['parallelGateway', ShapeBpmnElementKind.GATEWAY_PARALLEL],
   ['eventBasedGateway', ShapeBpmnElementKind.GATEWAY_EVENT_BASED],
-  // ['complexGateway', ShapeBpmnElementKind.GATEWAY_COMPLEX],
+  ['complexGateway', ShapeBpmnElementKind.GATEWAY_COMPLEX],
 ])('parse bpmn as json for %s', (bpmnKind: string, expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
   const processWithFlowNodeAsObject = {} as TProcess;
   processWithFlowNodeAsObject[`${bpmnKind}`] = {

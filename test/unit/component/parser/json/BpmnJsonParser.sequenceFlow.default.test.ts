@@ -25,8 +25,7 @@ describe('parse bpmn as json for default sequence flow', () => {
   it.each([
     ['exclusiveGateway'],
     ['inclusiveGateway'],
-    // To uncomment when we support complex gateway
-    // ['complexGateway'],
+    ['complexGateway'],
     ['task'],
     ['userTask'],
     ['serviceTask'],

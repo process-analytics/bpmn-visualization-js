@@ -647,6 +647,7 @@
     <semantic:eventBasedGateway id="gateway_event_based_id" name="Event-Based Gateway" />
     <semantic:eventBasedGateway id="gateway_event_based_instantiate_id" name="Event-Based Gateway Instantiate" instantiate="true" />
     <semantic:eventBasedGateway id="gateway_event_based_instantiate_parallel_id" name="Event-Based Gateway Instantiate Parallel" instantiate="true" eventGatewayType="Parallel" />
+    <semantic:complexGateway id="complex_gateway_id" name="Complex Gateway" />
 
     <!-- Artifact -->
     <semantic:textAnnotation id="text_annotation_id">
@@ -1683,6 +1684,12 @@
         <dc:Bounds x="2545" y="1190" width="50" height="50" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="2525" y="1250" width="90" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_complex_gateway_id" bpmnElement="complex_gateway_id">
+        <dc:Bounds x="2545" y="1320" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2525" y="1370" width="90" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
 
