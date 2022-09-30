@@ -123,7 +123,7 @@ jobs:
         uses: ./.github/actions/build-setup
       # Ensure we can build working bundles
       - name: Build bundles
-        run: npm run build-bundles
+        run: npm pack
       # install OS dependencies required by browsers on the GitHub runner
       # to be sure that the browser is correctly installed: https://github.com/microsoft/playwright/issues/5801
       - name: Install ${{matrix.browser}} and its dependencies only
