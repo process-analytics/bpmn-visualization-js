@@ -41,7 +41,14 @@
   "browser": "dist/bpmn-visualization.esm.js",
   "main": "dist/bpmn-visualization.cjs.js",
   "module": "dist/bpmn-visualization.esm.js",
-  "types": "dist/bpmn-visualization.d.ts",
+  "types": "dist/not-supported-ts-versions.d.ts",
+  "typesVersions": {
+    ">=4.5.0": {
+      "*": [
+        "dist/bpmn-visualization.d.ts"
+      ]
+    }
+  },
   "files": [
     "dist",
     "NOTICE"
@@ -52,7 +59,10 @@
     "clean": "rimraf build dist",
     "build": "tsc --noEmit",
     "build-bundles": "rollup -c",
-    "prepack": "run-s clean build-bundles",
+    "generate-types": "run-s generate-types:*",
+    "generate-types:dist": "tsc --project tsconfig.npm-package.json --declaration --emitDeclarationOnly",
+    "generate-types:not-supported-ts-versions": "node scripts/generate-types-for-not-supported-ts-versions.mjs",
+    "prepack": "run-s clean generate-types build-bundles",
     "demo": "run-s demo:*",
     "demo:build": "tsc --noEmit && vite build",
     "demo:prepare": "node scripts/prepare-demo-for-publish.mjs",
