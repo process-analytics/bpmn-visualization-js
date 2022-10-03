@@ -92,17 +92,10 @@ export default [configIIFE, configIIFEMinified, configBundles, configBundlesMini
 // =====================================================================================================================
 
 function typescriptPlugin() {
-  const tsconfigOverride = { compilerOptions: { sourceMap: false, declaration: true } };
-
-  const options = {
+  return typescript({
     typescript: require('typescript'),
-    tsconfigOverride: tsconfigOverride,
-  };
-
-  // Ensure we only bundle production sources
-  options.tsconfig = './tsconfig.bundle.json';
-
-  return typescript(options);
+    tsconfig: './tsconfig.npm-package.json',
+  });
 }
 
 function withMinification(plugins) {
