@@ -31,6 +31,7 @@ runs:
       if: github.event.action != 'closed'
     - name: Build preview
       if: github.event.action != 'closed'
+      shel: bash
       run: ${{ inputs.build-preview-command }}
     - name: Manage surge preview
       if: steps.surge-preview-tools.outputs.can-run-surge-command == 'true'
