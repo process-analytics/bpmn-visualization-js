@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig",
+  "compilerOptions": {
+    "declarationDir": "dist",
+    "declaration": false,
+    "sourceMap": false
+  },
+  "include": [
+    // Ensure we only bundle production sources
+    "src/**/*"
+  ]
+}

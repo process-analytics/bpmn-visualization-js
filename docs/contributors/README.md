@@ -15,8 +15,9 @@ Here are some tips to help during development.
 - [how to support new BPMN elements](bpmn-support-how-to.md)
 - [how to submit your work](pull-request.md)
 - [demo page css](demo-page-css.md)
-- [mxgraph integration](mxgraph-integration.md)
-- [mxgraph version bump](mxgraph-version-bump.md)
+- [TypeScript version](supported-typescript-version.md)
+- [mxGraph integration](mxgraph-integration.md)
+- [mxGraph version bump](mxgraph-version-bump.md)
 
 ## Misc
 - [documentation guidelines](documentation-guidelines.md)
