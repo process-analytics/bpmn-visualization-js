@@ -1,6 +1,9 @@
 name: 'Custom surge preview'
 description: 'Simplify usage of surge-preview'
 inputs:
+  artifact-name:
+    description: 'The name of the artifact that is uploaded when it is not possible to deploy to surge'
+    required: true
   build-preview-command:
     description: 'The command to build the preview'
     required: true
@@ -26,6 +29,10 @@ runs:
     - name: Build Setup
       uses: ./.github/actions/build-setup
       if: github.event.action != 'closed'
+    - name: Build preview
+      if: github.event.action != 'closed'
+      shell: bash
+      run: ${{ inputs.build-preview-command }}
     - name: Manage surge preview
       if: steps.surge-preview-tools.outputs.can-run-surge-command == 'true'
       uses: afc163/surge-preview@v1
@@ -35,4 +42,11 @@ runs:
         dist: ${{ inputs.build-preview-dist }}
         failOnError: true
         teardown: 'true'
-        build: ${{ inputs.build-preview-command }}
+        build: echo 'already built!'
+    # Fallback when it is not possible to deploy to surge
+    - name: Upload artifact (preview not deployed)
+      if: github.event.action != 'closed' && steps.surge-preview-tools.outputs.can-run-surge-command == 'false'
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ inputs.artifact-name }}-${{github.sha}}
+        path: ${{ inputs.build-preview-dist }}

@@ -41,6 +41,7 @@ jobs:
       - name: surge preview
         uses: ./.github/actions/custom-surge-preview
         with:
+          artifact-name: documentation
           build-preview-command: npm run docs
           build-preview-dist: build/docs
           github-token: ${{ secrets.GITHUB_TOKEN }}
