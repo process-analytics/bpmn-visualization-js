@@ -30,12 +30,12 @@ runs:
       uses: ./.github/actions/build-setup
       if: github.event.action != 'closed'
     - name: Upload artifact
-        # TODO set to false when tests are completed
-        if: github.event.action != 'closed' && steps.surge-preview-tools.outputs.can-run-surge-command == 'true'
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ inputs.artifact-name }}-${{github.sha}}
-          path: ${{ inputs.build-preview-dist }}
+      # TODO set to false when tests are completed
+      if: github.event.action != 'closed' && steps.surge-preview-tools.outputs.can-run-surge-command == 'true'
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ inputs.artifact-name }}-${{github.sha}}
+        path: ${{ inputs.build-preview-dist }}
     - name: Manage surge preview
       if: steps.surge-preview-tools.outputs.can-run-surge-command == 'true'
       uses: afc163/surge-preview@v1
