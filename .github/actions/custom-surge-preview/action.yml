@@ -45,8 +45,7 @@ runs:
         build: echo 'already built!'
     # Fallback when it is not possible to deploy to surge
     - name: Upload artifact (preview not deployed)
-      # TODO set to false when tests are completed
-      if: github.event.action != 'closed' && steps.surge-preview-tools.outputs.can-run-surge-command == 'true'
+      if: github.event.action != 'closed' && steps.surge-preview-tools.outputs.can-run-surge-command == 'false'
       uses: actions/upload-artifact@v3
       with:
         name: ${{ inputs.artifact-name }}-${{github.sha}}
