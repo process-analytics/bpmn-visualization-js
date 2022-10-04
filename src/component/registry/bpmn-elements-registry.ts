@@ -29,7 +29,7 @@ import type { BpmnElementKind } from '../../model/bpmn/internal';
  * @internal
  */
 export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, graph: BpmnGraph): BpmnElementsRegistry {
-  return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(new BpmnQuerySelectors(graph.container?.id)), new CssRegistry(), newGraphCellUpdater(graph));
+  return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(graph.container, new BpmnQuerySelectors()), new CssRegistry(), newGraphCellUpdater(graph));
 }
 
 /**
@@ -266,18 +266,18 @@ export class BpmnElementsRegistry {
 }
 
 class HtmlElementRegistry {
-  constructor(private querySelectors: BpmnQuerySelectors) {}
+  constructor(private container: HTMLElement, private querySelectors: BpmnQuerySelectors) {}
 
   /**
    * Returns `null` if no element is found.
    * @param bpmnElementId the id of the BPMN element represented by the searched Html Element.
    */
   getBpmnHtmlElement(bpmnElementId: string): HTMLElement | null {
-    return document.querySelector<HTMLElement>(this.querySelectors.element(bpmnElementId));
+    return this.container.querySelector<HTMLElement>(this.querySelectors.element(bpmnElementId));
   }
 
   getBpmnHtmlElements(bpmnElementKind: BpmnElementKind): HTMLElement[] {
     const selectors = this.querySelectors.elementsOfKind(computeBpmnBaseClassName(bpmnElementKind));
-    return [...document.querySelectorAll<HTMLElement>(selectors)];
+    return [...this.container.querySelectorAll<HTMLElement>(selectors)];
   }
 }

@@ -32,7 +32,7 @@ class BpmnPage {
   private bpmnQuerySelectors: BpmnQuerySelectorsForTests;
 
   constructor(private bpmnContainerId: string, private page: Page) {
-    this.bpmnQuerySelectors = new BpmnQuerySelectorsForTests(this.bpmnContainerId);
+    this.bpmnQuerySelectors = new BpmnQuerySelectorsForTests();
   }
 
   async expectAvailableBpmnContainer(options?: PageWaitForSelectorOptions): Promise<void> {
@@ -240,7 +240,7 @@ export class BpmnPageSvgTester extends PageTester {
   constructor(targetedPage: TargetedPageConfiguration, page: Page) {
     super(targetedPage, page);
     // TODO duplicated with BpmnPage
-    this.bpmnQuerySelectors = new BpmnQuerySelectorsForTests(this.bpmnContainerId);
+    this.bpmnQuerySelectors = new BpmnQuerySelectorsForTests();
   }
 
   override async gotoPageAndLoadBpmnDiagram(bpmnDiagramName?: string): Promise<void> {

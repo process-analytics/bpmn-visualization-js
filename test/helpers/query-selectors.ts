@@ -20,7 +20,7 @@ export class BpmnQuerySelectorsForTests extends BpmnQuerySelectors {
    * This targets a SVG Group
    */
   existingElement(): string {
-    return `#${this.containerId} > svg > g > g > g[data-bpmn-id]`;
+    return `svg > g > g > g[data-bpmn-id]`;
   }
 
   labelLastDiv(bpmnElementId: string): string {
@@ -28,13 +28,13 @@ export class BpmnQuerySelectorsForTests extends BpmnQuerySelectors {
   }
 
   labelSvgGroup(bpmnElementId: string): string {
-    return `#${this.containerId} > svg > g > g > g[data-bpmn-id="${bpmnElementId}"].bpmn-label`;
+    return `svg > g > g > g[data-bpmn-id="${bpmnElementId}"].bpmn-label`;
   }
 
   /**
    * This targets a SVG Group
    */
   overlays(bpmnElementId: string): string {
-    return `#${this.containerId} > svg > g > g:nth-child(3) > g[data-bpmn-id="${bpmnElementId}"]`;
+    return `svg > g > g:nth-child(3) > g[data-bpmn-id="${bpmnElementId}"]`;
   }
 }
