@@ -15,14 +15,15 @@
  */
 import type { BpmnVisualization } from '../../src/bpmn-visualization';
 import { ShapeBpmnEventDefinitionKind } from '../../src/bpmn-visualization';
-import { initializeBpmnVisualization, initializeBpmnVisualizationWithHtmlElement } from './helpers/bpmn-visualization-initialization';
+import { initializeBpmnVisualization, initializeBpmnVisualizationWithHtmlElement, initializeBpmnVisualizationWithNoContainerId } from './helpers/bpmn-visualization-initialization';
 import { HtmlElementLookup } from './helpers/html-utils';
 import { readFileSync } from '../helpers/file-helper';
 
 describe.each`
-  bpmnVisualization                               | type
-  ${initializeBpmnVisualization()}                | ${'html id'}
-  ${initializeBpmnVisualizationWithHtmlElement()} | ${'html element'}
+  bpmnVisualization                                 | type
+  ${initializeBpmnVisualization()}                  | ${'html id'}
+  ${initializeBpmnVisualizationWithHtmlElement()}   | ${'html element'}
+  ${initializeBpmnVisualizationWithNoContainerId()} | ${'no html id'}
 `('Resulting DOM after diagram load - container set with "$type"', ({ bpmnVisualization }: { bpmnVisualization: BpmnVisualization }) => {
   const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
 

@@ -19,14 +19,17 @@ import { insertBpmnContainer } from './dom-utils';
 
 export type GlobalOptionsWithoutContainer = Omit<GlobalOptions, 'container'>;
 
-export const initializeBpmnVisualization = (containerId?: string, options?: GlobalOptionsWithoutContainer): BpmnVisualization => {
-  const bpmnContainerId = containerId ?? 'bpmn-visualization-container';
+export const initializeBpmnVisualization = (bpmnContainerId = 'bpmn-visualization-container', options?: GlobalOptionsWithoutContainer): BpmnVisualization => {
   insertBpmnContainer(bpmnContainerId);
   return new BpmnVisualization({ container: bpmnContainerId, ...options });
 };
 
-export const initializeBpmnVisualizationWithHtmlElement = (containerId?: string, withNavigation = false): BpmnVisualization => {
-  const bpmnContainerId = containerId ?? 'bpmn-visualization-container-alternative';
+export const initializeBpmnVisualizationWithHtmlElement = (bpmnContainerId = 'bpmn-visualization-container-alternative', withNavigation = false): BpmnVisualization => {
   const options = { container: insertBpmnContainer(bpmnContainerId), navigation: { enabled: withNavigation } };
   return new BpmnVisualization(options);
+};
+
+export const initializeBpmnVisualizationWithNoContainerId = (options?: GlobalOptionsWithoutContainer): BpmnVisualization => {
+  const container = insertBpmnContainer('');
+  return new BpmnVisualization({ container, ...options });
 };
