@@ -15,11 +15,7 @@
  */
 import type { BpmnVisualization } from '../../src/bpmn-visualization';
 import { ShapeBpmnEventDefinitionKind } from '../../src/bpmn-visualization';
-import {
-  initializeBpmnVisualizationWithContainerId,
-  initializeBpmnVisualizationWithHtmlElement,
-  initializeBpmnVisualizationWithNoContainerId,
-} from './helpers/bpmn-visualization-initialization';
+import { initializeBpmnVisualizationWithContainerId, initializeBpmnVisualizationWithHtmlElement, initializeBpmnVisualization } from './helpers/bpmn-visualization-initialization';
 import { HtmlElementLookup } from './helpers/html-utils';
 import { readFileSync } from '../helpers/file-helper';
 
@@ -27,10 +23,10 @@ import { readFileSync } from '../helpers/file-helper';
     div has an id set to an empty string
     div has an id set to null or undefined*/
 describe.each`
-  bpmnVisualization                                 | type
-  ${initializeBpmnVisualizationWithContainerId()}   | ${'html id'}
-  ${initializeBpmnVisualizationWithHtmlElement()}   | ${'html element'}
-  ${initializeBpmnVisualizationWithNoContainerId()} | ${'html element without id'}
+  bpmnVisualization                               | type
+  ${initializeBpmnVisualizationWithContainerId()} | ${'html id'}
+  ${initializeBpmnVisualizationWithHtmlElement()} | ${'html element'}
+  ${initializeBpmnVisualization()}                | ${'html element without id'}
 `('Resulting DOM after diagram load - container set with "$type"', ({ bpmnVisualization }: { bpmnVisualization: BpmnVisualization }) => {
   const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
 
