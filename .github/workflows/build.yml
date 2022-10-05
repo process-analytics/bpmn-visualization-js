@@ -11,11 +11,10 @@ on:
       - 'scripts/**/*'
       - 'src/**/*'
       - 'test/**/*'
+      - '.eslintrc.js'
+      - '.prettierrc.js'
       - 'package.json'
       - 'package-lock.json'
-      - 'postcss.config.js'
-      - 'rollup.config.js'
-      - 'tailwind.config.js'
       - 'tsconfig.json'
   pull_request:
     branches:
@@ -27,11 +26,10 @@ on:
       - 'scripts/**/*'
       - 'src/**/*'
       - 'test/**/*'
+      - '.eslintrc.js'
+      - '.prettierrc.js'
       - 'package.json'
       - 'package-lock.json'
-      - 'postcss.config.js'
-      - 'rollup.config.js'
-      - 'tailwind.config.js'
       - 'tsconfig.json'
 
 jobs:
@@ -94,50 +92,7 @@ jobs:
       # No need to run the analysis from all environments
       - name: SonarCloud Scan
         if: ${{ success() && contains(matrix.os.coverage, 'coverage') && env.SONAR_TOKEN != '' }}
-        uses: SonarSource/sonarcloud-github-action@v1.6
+        uses: SonarSource/sonarcloud-github-action@v1.7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-
-  test_bundles:
-    needs: build
-    runs-on: ${{ matrix.os }}
-    strategy:
-      # don't cancel running jobs even if one fails
-      fail-fast: false
-      matrix:
-        os: [macos-12, ubuntu-20.04, windows-2019]
-        browser: [chromium, firefox, chrome]
-        include:
-          # only test WebKit on macOS
-          - os: macos-12
-            browser: webkit
-          # only test Edge on Windows
-          - os: windows-2019
-            browser: msedge
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Build Setup
-        uses: ./.github/actions/build-setup
-      # Ensure we can build working bundles
-      - name: Build bundles
-        run: npm pack
-      # install OS dependencies required by browsers on the GitHub runner
-      # to be sure that the browser is correctly installed: https://github.com/microsoft/playwright/issues/5801
-      - name: Install ${{matrix.browser}} and its dependencies only
-        run: |
-          npx playwright install ${{matrix.browser}}
-          npx playwright install-deps ${{matrix.browser}}
-      - name: Test bundles
-        id: 'test_bundles'
-        env:
-          BROWSERS: ${{matrix.browser}}
-        run: npm run test:bundles:verbose
-      - name: Upload bundles test results
-        if: ${{ failure() && steps.test_bundles.outcome == 'failure' }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: bundles-${{matrix.browser}}-test-results-${{matrix.os}}-${{github.sha}}
-          path: build/test-report/bundles
