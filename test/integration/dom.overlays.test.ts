@@ -17,11 +17,11 @@
 import type { OverlayEdgePosition, OverlayShapePosition } from '../../src/bpmn-visualization';
 import { readFileSync } from '../helpers/file-helper';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../helpers/overlays';
-import { initializeBpmnVisualization } from './helpers/bpmn-visualization-initialization';
+import { initializeBpmnVisualizationWithContainerId } from './helpers/bpmn-visualization-initialization';
 import { HtmlElementLookup } from './helpers/html-utils';
 
 describe('Bpmn Elements registry - Overlay management', () => {
-  const bpmnVisualization = initializeBpmnVisualization();
+  const bpmnVisualization = initializeBpmnVisualizationWithContainerId();
   const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
 
   describe('BPMN Shape', () => {

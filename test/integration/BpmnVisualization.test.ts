@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-import { initializeBpmnVisualization, initializeBpmnVisualizationWithHtmlElement, type GlobalOptionsWithoutContainer } from './helpers/bpmn-visualization-initialization';
+import {
+  initializeBpmnVisualizationWithContainerId,
+  initializeBpmnVisualizationWithHtmlElement,
+  type GlobalOptionsWithoutContainer,
+} from './helpers/bpmn-visualization-initialization';
 import { readFileSync } from '../helpers/file-helper';
 import { allTestedFitTypes } from './helpers/fit-utils';
 import type { FitType } from '../../src/component/options';
@@ -27,7 +31,7 @@ describe('BpmnVisualization initialization', () => {
     ${'navigation without zoom config'} | ${{ navigation: { enabled: true } }}
     ${'navigation with zoom config'}    | ${{ navigation: { enabled: true, zoom: { throttleDelay: 20 } } }}
   `(`Verify correct initialization with '$configName' configuration`, ({ configName, config }: { configName: string; config: GlobalOptionsWithoutContainer }) => {
-    initializeBpmnVisualization(`bpmn-visualization-init-check-with-config-${configName}`, config);
+    initializeBpmnVisualizationWithContainerId(`bpmn-visualization-init-check-with-config-${configName}`, config);
   });
 });
 

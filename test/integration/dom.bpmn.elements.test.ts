@@ -22,11 +22,11 @@ import {
   expectStartEventBpmnElement,
   expectTaskBpmnElement,
 } from './helpers/semantic-with-svg-utils';
-import { initializeBpmnVisualization } from './helpers/bpmn-visualization-initialization';
+import { initializeBpmnVisualizationWithContainerId } from './helpers/bpmn-visualization-initialization';
 import { readFileSync } from '../helpers/file-helper';
 
 describe('Bpmn Elements registry - retrieve BPMN elements', () => {
-  const bpmnVisualization = initializeBpmnVisualization();
+  const bpmnVisualization = initializeBpmnVisualizationWithContainerId();
 
   describe('Get by ids', () => {
     it('Pass several existing ids', async () => {

@@ -19,7 +19,7 @@ import { insertBpmnContainer } from './dom-utils';
 
 export type GlobalOptionsWithoutContainer = Omit<GlobalOptions, 'container'>;
 
-export const initializeBpmnVisualization = (bpmnContainerId = 'bpmn-visualization-container', options?: GlobalOptionsWithoutContainer): BpmnVisualization => {
+export const initializeBpmnVisualizationWithContainerId = (bpmnContainerId = 'bpmn-visualization-container', options?: GlobalOptionsWithoutContainer): BpmnVisualization => {
   insertBpmnContainer(bpmnContainerId);
   return new BpmnVisualization({ container: bpmnContainerId, ...options });
 };
