@@ -29,7 +29,7 @@ export const initializeBpmnVisualizationWithHtmlElement = (bpmnContainerId = 'bp
   return new BpmnVisualization(options);
 };
 
-export const initializeBpmnVisualizationWithNoContainerId = (options?: GlobalOptionsWithoutContainer): BpmnVisualization => {
-  const container = insertBpmnContainer('');
-  return new BpmnVisualization({ container, ...options });
+export const initializeBpmnVisualizationWithNoContainerId = (globalOptions?: GlobalOptionsWithoutContainer): BpmnVisualization => {
+  const options = { container: insertBpmnContainer(''), ...globalOptions };
+  return new BpmnVisualization(options);
 };
