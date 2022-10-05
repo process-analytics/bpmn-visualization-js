@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 import {
+  addCssClasses,
+  addOverlays,
   documentReady,
   downloadPng,
   downloadSvg,
   FitType,
   getElementsByKinds,
-  addCssClasses,
-  removeCssClasses,
   log,
+  removeAllOverlays,
+  removeCssClasses,
+  ShapeUtil,
   startBpmnVisualization,
   updateLoadOptions,
-  ShapeUtil,
-  addOverlays,
-  removeAllOverlays,
 } from '../../../ts/dev-bundle-index';
 
 let lastIdentifiedBpmnIds = [];
@@ -144,7 +144,8 @@ function configureDownloadButtons() {
 documentReady(() => {
   startBpmnVisualization({
     globalOptions: {
-      container: 'bpmn-container',
+      // Use a DOM element without id to test the fix for https://github.com/process-analytics/bpmn-visualization-js/issues/2270
+      container: document.querySelector('.bpmn-container'),
       navigation: {
         enabled: true,
       },

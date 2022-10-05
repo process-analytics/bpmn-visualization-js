@@ -239,12 +239,10 @@ function configurePoolsFilteringFromParameters(parameters: URLSearchParams): Mod
 
 export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): void {
   const log = logStartup;
-  const container = config.globalOptions.container;
-
-  log(`Initializing BpmnVisualization with container '${container}'...`);
+  log(`Initializing BpmnVisualization with container '${config.globalOptions.container}'...`);
   bpmnVisualization = new ThemedBpmnVisualization(config.globalOptions);
   log('Initialization completed');
-  new DropFileUserInterface(window, 'drop-container', container as string, readAndLoadFile);
+  new DropFileUserInterface(window, 'drop-container', bpmnVisualization.graph.container, readAndLoadFile);
   log('Drag&Drop support initialized');
 
   const parameters = new URLSearchParams(window.location.search);

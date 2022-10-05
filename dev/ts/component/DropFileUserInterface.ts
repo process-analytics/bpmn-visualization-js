@@ -20,7 +20,7 @@ export class DropFileUserInterface {
   private head: Element;
   private body: Element;
 
-  constructor(private window: Window, private outerContainerId: string, private containerToFadeId: string, private dropCallback: (file: File) => void) {
+  constructor(private window: Window, private outerContainerId: string, private containerToFade: HTMLElement, private dropCallback: (file: File) => void) {
     this.document = window.document;
     this.head = document.head;
     this.body = document.body;
@@ -28,8 +28,9 @@ export class DropFileUserInterface {
   }
 
   private initializeDragAndDrop(): void {
-    const containerToBeFaded = document.getElementById(this.containerToFadeId);
-    this.addDomElements(containerToBeFaded);
+    // Add a special CSS class to the container to identify it. It doesn't always have an id, so we cannot use CSS selector involving its id
+    this.containerToFade.classList.add('faded-container');
+    this.addDomElements(this.containerToFade);
     this.addStyle();
 
     const dropContainer = document.getElementById(this.outerContainerId);
@@ -37,8 +38,8 @@ export class DropFileUserInterface {
     this.preventDefaultsOnEvents(['dragover', 'drop'], this.window);
     this.preventDefaultsOnEvents(['dragover', 'dragleave', 'drop'], dropContainer);
 
-    this.addEventsOnDropContainer(dropContainer, containerToBeFaded);
-    this.addEventsOnDocument(this.outerContainerId, containerToBeFaded);
+    this.addEventsOnDropContainer(dropContainer, this.containerToFade);
+    this.addEventsOnDocument(this.outerContainerId, this.containerToFade);
   }
 
   private preventDefaults(e: Event): void {
@@ -65,10 +66,10 @@ export class DropFileUserInterface {
   private addStyle(): void {
     // region CSS
     const css = `
-#${this.containerToFadeId} {
+.faded-container {
     opacity: 1;
 }
-#${this.containerToFadeId}.faded {
+.faded-container.faded {
     opacity: 0.1;
 }
 #${this.outerContainerId} {
