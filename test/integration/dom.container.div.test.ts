@@ -23,7 +23,7 @@ describe.each`
   bpmnVisualization                                 | type
   ${initializeBpmnVisualization()}                  | ${'html id'}
   ${initializeBpmnVisualizationWithHtmlElement()}   | ${'html element'}
-  ${initializeBpmnVisualizationWithNoContainerId()} | ${'no html id'}
+  ${initializeBpmnVisualizationWithNoContainerId()} | ${'html element without id'}
 `('Resulting DOM after diagram load - container set with "$type"', ({ bpmnVisualization }: { bpmnVisualization: BpmnVisualization }) => {
   const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
 
