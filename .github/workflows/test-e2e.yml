@@ -12,9 +12,9 @@ on:
       - 'package.json'
       - 'package-lock.json'
       - 'postcss.config.js'
-      - 'rollup.config.js'
       - 'tailwind.config.js'
       - 'tsconfig.json'
+      - 'vite.config.js'
   pull_request:
     branches:
       - master
@@ -26,9 +26,9 @@ on:
       - 'package.json'
       - 'package-lock.json'
       - 'postcss.config.js'
-      - 'rollup.config.js'
       - 'tailwind.config.js'
       - 'tsconfig.json'
+      - 'vite.config.js'
 
 jobs:
   test_e2e:

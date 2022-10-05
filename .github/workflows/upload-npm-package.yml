@@ -31,6 +31,8 @@ on:
 jobs:
   upload:
     runs-on: ubuntu-20.04
+    env:
+      test-bundles-browser: chromium
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -43,6 +45,24 @@ jobs:
         with:
           name: bpmn-visualization-npm-package-${{github.sha}}
           path: bpmn-visualization-*.tgz
+      # install OS dependencies required by browsers on the GitHub runner
+      # to be sure that the browser is correctly installed: https://github.com/microsoft/playwright/issues/5801
+      - name: Install ${{env.test-bundles-browser}} and its dependencies only
+        run: |
+          npx playwright install ${{env.test-bundles-browser}}
+          npx playwright install-deps ${{env.test-bundles-browser}}
+      - name: Test bundles
+        id: 'test_bundles'
+        env:
+          BROWSERS: ${{env.test-bundles-browser}}
+        run: npm run test:bundles:verbose
+      - name: Upload bundles test results
+        if: ${{ failure() && steps.test_bundles.outcome == 'failure' }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: bundles-test-results-${{github.sha}}
+          path: build/test-report/bundles
+      # Check the minimal TS version required to use bpmn-visualization
       - name: Setup typescript-support test
         working-directory: 'test/typescript-support'
         run: npm install --ignore-scripts --prefer-offline --audit false
