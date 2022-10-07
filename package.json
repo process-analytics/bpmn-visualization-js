@@ -52,7 +52,7 @@
     "build": "tsc --noEmit",
     "build-bundles": "rollup -c",
     "generate-types": "run-s generate-types:*",
-    "generate-types:dist": "tsc --project tsconfig.npm-package.json --declaration --emitDeclarationOnly",
+    "generate-types:lib": "tsc --project tsconfig.npm-package.json --declaration --emitDeclarationOnly",
     "generate-types:not-supported-ts-versions": "node scripts/generate-types-for-not-supported-ts-versions.mjs",
     "prepack": "run-s clean generate-types build-bundles",
     "demo": "run-s demo:*",
