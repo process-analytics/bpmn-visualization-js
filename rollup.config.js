@@ -21,6 +21,8 @@ import sizes from 'rollup-plugin-sizes';
 import typescript from 'rollup-plugin-typescript2';
 import commonjs from '@rollup/plugin-commonjs'; // at least, needed to bundle mxGraph which is only available as a CommonJS module
 import resolve from '@rollup/plugin-node-resolve';
+import dts from 'rollup-plugin-dts'; // generate an unique type definitions file
+
 import pkg from './package.json';
 
 const libInput = 'src/bpmn-visualization.ts';
@@ -85,7 +87,13 @@ const configBundles = {
   ],
 };
 
-export default [configIIFE, configIIFEMinified, configBundles, configBundlesMinified];
+const configTypes = {
+  input: './build/types/bpmn-visualization.d.ts',
+  output: [{ file: 'dist/bpmn-visualization.d.ts', format: 'es' }],
+  plugins: [dts()],
+};
+
+export default [configIIFE, configIIFEMinified, configBundles, configBundlesMinified, configTypes];
 
 // =====================================================================================================================
 // helpers
