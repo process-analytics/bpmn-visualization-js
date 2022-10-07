@@ -2,6 +2,7 @@
   "extends": "./tsconfig",
   "compilerOptions": {
     "declarationDir": "build/types",
+    "declarationMap": true,
     "declaration": false,
     "sourceMap": false
   },
