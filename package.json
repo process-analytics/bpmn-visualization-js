@@ -123,7 +123,7 @@
     "cross-env": "~7.0.3",
     "cssnano": "~5.1.13",
     "debug": "~4.3.4",
-    "eslint": "~8.24.0",
+    "eslint": "~8.25.0",
     "eslint-config-prettier": "~8.5.0",
     "eslint-plugin-jest": "~27.1.0",
     "eslint-plugin-notice": "~0.9.10",
