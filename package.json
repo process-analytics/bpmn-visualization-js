@@ -100,7 +100,7 @@
   "dependencies": {
     "@typed-mxgraph/typed-mxgraph": "~1.0.7",
     "entities": "~4.3.1",
-    "fast-xml-parser": "4.0.10",
+    "fast-xml-parser": "4.0.11",
     "lodash.debounce": "~4.0.8",
     "lodash.throttle": "~4.1.1",
     "mxgraph": "4.2.2",
@@ -158,7 +158,7 @@
     "ts-jest": "~27.1.4",
     "typedoc": "~0.23.15",
     "typescript": "~4.8.4",
-    "vite": "~3.1.4"
+    "vite": "~3.1.7"
   },
   "lint-staged": {
     "*.{js,mjs,ts}": [
