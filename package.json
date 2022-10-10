@@ -125,7 +125,7 @@
     "debug": "~4.3.4",
     "eslint": "~8.25.0",
     "eslint-config-prettier": "~8.5.0",
-    "eslint-plugin-jest": "~27.1.0",
+    "eslint-plugin-jest": "~27.1.1",
     "eslint-plugin-notice": "~0.9.10",
     "eslint-plugin-playwright": "~0.11.2",
     "eslint-plugin-prettier": "~4.2.1",
