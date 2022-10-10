@@ -33,7 +33,7 @@ export class HtmlElementLookup {
   private bpmnQuerySelectors: BpmnQuerySelectorsForTests;
 
   constructor(private bpmnVisualization: BpmnVisualization) {
-    this.bpmnQuerySelectors = new BpmnQuerySelectorsForTests(bpmnVisualization.graph.container.id);
+    this.bpmnQuerySelectors = new BpmnQuerySelectorsForTests();
   }
 
   expectNoElement(bpmnId: string): void {

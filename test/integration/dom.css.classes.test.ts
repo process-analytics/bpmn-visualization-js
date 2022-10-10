@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 import { readFileSync } from '../helpers/file-helper';
-import { initializeBpmnVisualization } from './helpers/bpmn-visualization-initialization';
+import { initializeBpmnVisualizationWithContainerId } from './helpers/bpmn-visualization-initialization';
 import { HtmlElementLookup } from './helpers/html-utils';
 import { ShapeBpmnEventDefinitionKind } from '../../src/model/bpmn/internal';
 
 describe('Bpmn Elements registry - CSS class management', () => {
-  const bpmnVisualization = initializeBpmnVisualization();
+  const bpmnVisualization = initializeBpmnVisualizationWithContainerId();
   const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
 
   describe('Add classes', () => {
@@ -59,7 +59,7 @@ describe('Bpmn Elements registry - CSS class management', () => {
     });
 
     it('Css classes are cleaned between 2 diagram loads', () => {
-      const bpmnVisualizationMultipleLoads = initializeBpmnVisualization('bpmn-container-multiple-loads');
+      const bpmnVisualizationMultipleLoads = initializeBpmnVisualizationWithContainerId('bpmn-container-multiple-loads');
       const htmlElementLookup = new HtmlElementLookup(bpmnVisualizationMultipleLoads);
 
       const bpmnDiagramContent = readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn');

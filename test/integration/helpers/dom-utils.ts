@@ -24,3 +24,9 @@ export function insertBpmnContainer(bpmnContainerId: string): HTMLDivElement {
   document.body.insertBefore(divElement, document.body.firstChild);
   return divElement;
 }
+
+export function insertBpmnContainerWithoutId(): HTMLDivElement {
+  const divElement = document.createElement('div');
+  document.body.insertBefore(divElement, document.body.firstChild);
+  return divElement;
+}

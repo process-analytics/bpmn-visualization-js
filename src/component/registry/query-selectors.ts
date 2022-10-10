@@ -55,13 +55,11 @@
  * @internal
  */
 export class BpmnQuerySelectors {
-  constructor(protected containerId: string) {}
-
   element(bpmnElementId: string): string {
-    return `#${this.containerId} > svg > g > g > g[data-bpmn-id="${bpmnElementId}"]`;
+    return `svg > g > g > g[data-bpmn-id="${bpmnElementId}"]`;
   }
 
   elementsOfKind(bpmnKindCssClassname: string): string {
-    return `#${this.containerId} > svg > g > g > g.${bpmnKindCssClassname}:not(.bpmn-label)`;
+    return `svg > g > g > g.${bpmnKindCssClassname}:not(.bpmn-label)`;
   }
 }
