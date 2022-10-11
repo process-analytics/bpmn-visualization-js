@@ -36,7 +36,7 @@
   "module": "dist/bpmn-visualization.esm.js",
   "types": "dist/not-supported-ts-versions.d.ts",
   "typesVersions": {
-    ">=4.5.0": {
+    ">=4.0.0": {
       "*": [
         "dist/bpmn-visualization.d.ts"
       ]
