@@ -34,7 +34,13 @@ const destinationDirectoryPath = getDirectorOfPath(notSupportedTSVersionsFilePat
 if (!fs.existsSync(destinationDirectoryPath)) {
   fs.mkdirSync(destinationDirectoryPath);
 }
-fs.writeFileSync(notSupportedTSVersionsFilePath, `"Package 'bpmn-visualization' support only TS versions that are ${supportedTSVersions[0]}".`);
+fs.writeFileSync(
+  notSupportedTSVersionsFilePath,
+  `// When using an unsupported version of TypeScript, this file is used and it generates a more explicit error message than what TypeScript provides out of the box.
+// error TS1003: Identifier expected.
+// "Package 'bpmn-visualization' supports only TypeScript versions that are >=x.y.z"
+"Package 'bpmn-visualization' supports only TypeScript versions that are ${supportedTSVersions[0]}".`,
+);
 
 function getDirectorOfPath(path) {
   const delimiter = '/';
