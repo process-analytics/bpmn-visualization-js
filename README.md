@@ -129,8 +129,12 @@ You can set the BPMN content using one of the following ways:
 
 #### 📜 TypeScript Support
 
+// TS 4.1? typed-mxgraph has this dependency, but it seems libCheck works with TS 4.0
+
 The `bpmn-visualization` npm package includes type definitions, so the integration works out of the box in TypeScript projects.
-`bpmn-visualization` requires **TypeScript 4.5** or greater.
+`bpmn-visualization` requires **TypeScript 4.0** or greater. Past versions had the following requirements
+  * 0.21.0 to 0.27.0: TypeScript 4.5
+  * 0.17.1 to 0.20.1: TypeScript 4.3
 
 ℹ️ If you are looking for examples of projects integrating `bpmn-visualization` with TypeScript, see the [bpmn-visualization-examples repository](https://github.com/process-analytics/bpmn-visualization-examples/#bpmn-visualization-usage-in-projects).
 
