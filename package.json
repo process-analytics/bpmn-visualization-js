@@ -93,15 +93,15 @@
   "dependencies": {
     "@typed-mxgraph/typed-mxgraph": "~1.0.7",
     "entities": "~4.3.1",
-    "fast-xml-parser": "4.0.10",
+    "fast-xml-parser": "4.0.11",
     "lodash.debounce": "~4.0.8",
     "lodash.throttle": "~4.1.1",
     "mxgraph": "4.2.2",
     "strnum": "1.0.5"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "~22.0.2",
-    "@rollup/plugin-node-resolve": "~14.1.0",
+    "@rollup/plugin-commonjs": "~23.0.0",
+    "@rollup/plugin-node-resolve": "~15.0.0",
     "@types/debug": "~4.1.7",
     "@types/jest": "~27.5.0",
     "@types/jest-image-snapshot": "~5.1.0",
@@ -118,7 +118,7 @@
     "debug": "~4.3.4",
     "eslint": "~8.25.0",
     "eslint-config-prettier": "~8.5.0",
-    "eslint-plugin-jest": "~27.1.0",
+    "eslint-plugin-jest": "~27.1.1",
     "eslint-plugin-notice": "~0.9.10",
     "eslint-plugin-playwright": "~0.11.2",
     "eslint-plugin-prettier": "~4.2.1",
@@ -136,7 +136,7 @@
     "minimist": "~1.2.6",
     "npm-run-all": "~4.1.5",
     "pinst": "~3.0.0",
-    "playwright": "~1.26.1",
+    "playwright": "~1.27.0",
     "postcss": "~8.4.17",
     "postcss-cli": "~10.0.0",
     "prettier": "~2.7.1",
@@ -151,7 +151,7 @@
     "ts-jest": "~27.1.4",
     "typedoc": "~0.23.15",
     "typescript": "~4.8.4",
-    "vite": "~3.1.4"
+    "vite": "~3.1.7"
   },
   "lint-staged": {
     "*.{js,mjs,ts}": [
