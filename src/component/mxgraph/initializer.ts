@@ -15,7 +15,7 @@
  */
 import factory, { type mxGraphExportObject } from 'mxgraph';
 
-/** @internal */
+// TODO this should not be exported in types as we don't currently export it in the ESM bundle
 export const mxgraph = initialize();
 
 /** @internal */
