@@ -28,5 +28,11 @@ const supportedTSVersions = Object.keys(packageJSON.typesVersions);
 assert(supportedTSVersions.length === 1, 'Property "typesVersions" should have exactly one key in the "package.json" file.');
 // TODO revisit 'not supported ts versions' once TS implements https://github.com/microsoft/TypeScript/issues/32166
 const notSupportedTSVersionsFile = packageJSON.types;
-fs.mkdirSync('dist'); // TODO in the final implementation, DO NOT hard code the directory
+
+// TODO in the final implementation, DO NOT hard code the directory
+// TODO find a better implementation to only create the directory if it doesn't exist
+const distPath = 'dist';
+if (!fs.existsSync(distPath)) {
+  fs.mkdirSync(distPath);
+}
 fs.writeFileSync(notSupportedTSVersionsFile, `"Package 'bpmn-visualization' support only TS versions that are ${supportedTSVersions[0]}".`);
