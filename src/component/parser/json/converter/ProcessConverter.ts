@@ -50,6 +50,7 @@ import type { TReceiveTask } from '../../../../model/bpmn/json/baseElement/flowN
 import { ensureIsArray } from '../../../helpers/array-utils';
 import type { ParsingMessageCollector } from '../../parsing-messages';
 import { BoundaryEventNotAttachedToActivityWarning, LaneUnknownFlowNodeRefWarning } from '../warnings';
+import type { TTransaction } from '../../../../model/bpmn/json/baseElement/flowNode/activity/activity';
 
 interface EventDefinition {
   kind: ShapeBpmnEventDefinitionKind;
@@ -225,7 +226,7 @@ export default class ProcessConverter {
     const eventDefinitions = new Map<ShapeBpmnEventDefinitionKind, number>();
 
     eventDefinitionKinds.forEach(eventDefinitionKind => {
-      // sometimes eventDefinition is simple and therefore it is parsed as empty string "", in that case eventDefinition will be converted to an empty object
+      // sometimes eventDefinition is simple, and therefore it is parsed as empty string "", in that case eventDefinition will be converted to an empty object
       const eventDefinition = bpmnElement[eventDefinitionKind + 'EventDefinition'];
       const counter = ensureIsArray(eventDefinition, true).length;
       eventDefinitions.set(eventDefinitionKind, counter);
@@ -242,7 +243,12 @@ export default class ProcessConverter {
   }
 
   private buildShapeBpmnSubProcess(bpmnElement: TSubProcess, parentId: string, markers: ShapeBpmnMarkerKind[]): ShapeBpmnSubProcess {
-    const subProcessKind = !bpmnElement.triggeredByEvent ? ShapeBpmnSubProcessKind.EMBEDDED : ShapeBpmnSubProcessKind.EVENT;
+    const subProcessKind = isTransactionSubprocess(bpmnElement)
+      ? ShapeBpmnSubProcessKind.TRANSACTION
+      : !bpmnElement.triggeredByEvent
+      ? ShapeBpmnSubProcessKind.EMBEDDED
+      : ShapeBpmnSubProcessKind.EVENT;
+
     const convertedSubProcess = new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, subProcessKind, parentId, markers);
     this.buildProcessInnerElements(bpmnElement, bpmnElement.id);
     return convertedSubProcess;
@@ -327,3 +333,8 @@ const buildMarkers = (bpmnElement: TActivity): ShapeBpmnMarkerKind[] => {
   }
   return markers;
 };
+
+function isTransactionSubprocess(object: TSubProcess): object is TTransaction {
+  //   method?: tTransactionMethod; //default="##Compensate"
+  return Object.prototype.hasOwnProperty.call(object, 'method');
+}

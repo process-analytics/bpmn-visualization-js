@@ -42,19 +42,27 @@ function verifyEventShape(shape: Shape, expectedShape: ExpectedShape, expectedEv
 
 describe('parse bpmn as json for sub-process', () => {
   describe.each([
-    ['embedded', false, ShapeBpmnSubProcessKind.EMBEDDED],
-    ['event', true, ShapeBpmnSubProcessKind.EVENT],
+    // ['embedded', false, ShapeBpmnSubProcessKind.EMBEDDED],
+    // ['event', true, ShapeBpmnSubProcessKind.EVENT],
+    ['transaction', false, ShapeBpmnSubProcessKind.TRANSACTION],
   ])('parse bpmn as json for %s sub-process', (bpmnSubProcessKind: string, triggeredByEvent: boolean, expectedShapeBpmnSubProcessKind: ShapeBpmnSubProcessKind) => {
     describe.each([
       ['expanded', true, []],
       ['collapsed', false, [ShapeBpmnMarkerKind.EXPAND]],
     ])(`parse bpmn as json for %s ${bpmnSubProcessKind} sub-process`, (expandedKind: string, isExpanded: boolean, expectedBpmnElementMarkers: ShapeBpmnMarkerKind[]) => {
       const processWithSubProcessAsObject = {} as TProcess;
-      processWithSubProcessAsObject['subProcess'] = {
-        id: `sub-process_id_0`,
-        name: `sub-process name`,
-        triggeredByEvent: triggeredByEvent,
-      };
+      if (bpmnSubProcessKind != 'transaction') {
+        processWithSubProcessAsObject['subProcess'] = {
+          id: `sub-process_id_0`,
+          name: `sub-process name`,
+          triggeredByEvent: triggeredByEvent,
+        };
+      } else {
+        processWithSubProcessAsObject['transaction'] = {
+          id: `sub-process_id_0`,
+          name: `sub-process name`,
+        };
+      }
 
       it.each([
         ['object', processWithSubProcessAsObject],
