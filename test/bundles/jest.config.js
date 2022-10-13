@@ -30,7 +30,7 @@ module.exports = {
       tsconfig: '<rootDir>/tsconfig.test.json',
     },
   },
-  setupFilesAfterEnv: ['expect-playwright', './test/config/jest.retries.ts'],
+  setupFilesAfterEnv: ['jest-extended/all', 'expect-playwright', './test/config/jest.retries.ts'],
   reporters: [
     'default',
     [
