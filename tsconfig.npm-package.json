@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig",
   "compilerOptions": {
+    // TODO define declarationDir in npm script for clarity, this also to remove the tsconfig.typedoc.json file (use this file instead)
     "declarationDir": "build/types",
     "declaration": false,
     "sourceMap": false
