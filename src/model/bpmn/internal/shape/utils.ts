@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { ShapeBpmnSubProcessKind } from './kinds';
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from './kinds';
 import type { FilterParameter } from '../../../../component/helpers/array-utils';
 import { filter } from '../../../../component/helpers/array-utils';
@@ -47,8 +48,14 @@ export class ShapeUtil {
     return ShapeBpmnElementKind.CALL_ACTIVITY === kind;
   }
 
-  static isSubProcess(kind: ShapeBpmnElementKind): boolean {
-    return ShapeBpmnElementKind.SUB_PROCESS === kind;
+  static isSubProcess(kind: ShapeBpmnElementKind | ShapeBpmnSubProcessKind): kind is ShapeBpmnElementKind {
+    return (
+      ShapeBpmnElementKind.SUB_PROCESS === kind ||
+      // TODO duplicated with isKindOf
+      Object.values(ShapeBpmnSubProcessKind)
+        .map(value => value as string)
+        .includes(kind)
+    );
   }
 
   static canHaveNoneEvent(kind: ShapeBpmnElementKind): boolean {

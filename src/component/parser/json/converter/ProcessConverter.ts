@@ -39,7 +39,7 @@ import { eventDefinitionKinds } from '../../../../model/bpmn/internal/shape/util
 import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/flows';
 import type { TProcess } from '../../../../model/bpmn/json/baseElement/rootElement/rootElement';
 import type { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../../../model/bpmn/json/baseElement/flowNode/event';
-import type { TActivity, TCallActivity, TSubProcess } from '../../../../model/bpmn/json/baseElement/flowNode/activity/activity';
+import type { TActivity, TCallActivity, TSubProcess, TTransaction } from '../../../../model/bpmn/json/baseElement/flowNode/activity/activity';
 import type { TLane, TLaneSet } from '../../../../model/bpmn/json/baseElement/baseElement';
 import type { TFlowNode, TSequenceFlow } from '../../../../model/bpmn/json/baseElement/flowElement';
 import type { TAssociation, TGroup, TTextAnnotation } from '../../../../model/bpmn/json/baseElement/artifact';
@@ -50,7 +50,6 @@ import type { TReceiveTask } from '../../../../model/bpmn/json/baseElement/flowN
 import { ensureIsArray } from '../../../helpers/array-utils';
 import type { ParsingMessageCollector } from '../../parsing-messages';
 import { BoundaryEventNotAttachedToActivityWarning, LaneUnknownFlowNodeRefWarning } from '../warnings';
-import type { TTransaction } from '../../../../model/bpmn/json/baseElement/flowNode/activity/activity';
 
 interface EventDefinition {
   kind: ShapeBpmnEventDefinitionKind;
@@ -105,9 +104,22 @@ export default class ProcessConverter {
     this.elementsWithoutParentByProcessId.set(process.id, []);
 
     // flow nodes
-    ShapeUtil.flowNodeKinds()
+    // TODO we have an issue here, in the flowNodeKinds we don't have the 'transaction subprocess' because we currently consider it a kind of subprocess
+    // but it it ref with its own name 'transaction' in the bpmn source.
+    // ShapeUtil.flowNodeKinds()
+    [ShapeBpmnSubProcessKind.TRANSACTION, ...ShapeUtil.flowNodeKinds()]
       .filter(kind => kind != ShapeBpmnElementKind.EVENT_BOUNDARY)
-      .forEach(kind => this.buildFlowNodeBpmnElements(process[kind], kind, parentId, process.id));
+      .forEach(kind => {
+        // if (ShapeUtil.isSubProcess(kind)) {
+        //   // eslint-disable-next-line no-console
+        //   console.info('Detecting a subprocess kind', kind);
+        //   kind = ShapeBpmnElementKind.SUB_PROCESS;
+        // }
+        // here we know we always have a ShapeBpmnElementKind
+        const computedKind = ShapeUtil.isSubProcess(kind) ? ShapeBpmnElementKind.SUB_PROCESS : <ShapeBpmnElementKind>(<unknown>kind);
+
+        this.buildFlowNodeBpmnElements(process[kind], computedKind, parentId, process.id);
+      });
     // process boundary events afterwards as we need its parent activity to be available when building it
     this.buildFlowNodeBpmnElements(process.boundaryEvent, ShapeBpmnElementKind.EVENT_BOUNDARY, parentId, process.id);
 
