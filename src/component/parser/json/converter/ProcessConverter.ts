@@ -107,8 +107,10 @@ export default class ProcessConverter {
     // TODO we have an issue here, in the flowNodeKinds we don't have the 'transaction subprocess' because we currently consider it a kind of subprocess
     // but it it ref with its own name 'transaction' in the bpmn source.
     // ShapeUtil.flowNodeKinds()
+    // TODO store the array in a const
     [ShapeBpmnSubProcessKind.TRANSACTION, ...ShapeUtil.flowNodeKinds()]
       .filter(kind => kind != ShapeBpmnElementKind.EVENT_BOUNDARY)
+      // TODO kind --> parsedKind
       .forEach(kind => {
         // if (ShapeUtil.isSubProcess(kind)) {
         //   // eslint-disable-next-line no-console
