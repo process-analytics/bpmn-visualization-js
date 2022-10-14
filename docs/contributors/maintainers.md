@@ -181,3 +181,15 @@ You can use this template:
 >
 > https://github.com/process-analytics/bpmn-visualization-js/releases/tag/v{version}
 
+### Discord
+
+Channel: [news](https://discord.com/channels/1011911769607913562/1024329159033499780)
+
+You can use this template:
+
+> 📣 bpmn-visualization {version} is out! 🎉
+>
+> ===> some short description here <===
+>
+> https://github.com/process-analytics/bpmn-visualization-js/releases/tag/v{version}
+
