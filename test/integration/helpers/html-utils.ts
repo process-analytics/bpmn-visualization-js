@@ -41,6 +41,11 @@ export class HtmlElementLookup {
     expect(svgGroupElement).toBeUndefined();
   }
 
+  // replicate what we do in HtmlElementRegistry: query selector on the BPMN container element directly
+  private querySelector<E extends Element>(selector: string): E | null {
+    return this.bpmnVisualization.graph.container.querySelector<E>(selector);
+  }
+
   // ===========================================================================
   // EVENTS
   // ===========================================================================
@@ -117,7 +122,7 @@ export class HtmlElementLookup {
     this.expectElement(bpmnId, expectSvgMessageFlow, ['bpmn-type-flow', 'bpmn-message-flow'], checks);
 
     // message flow icon
-    const msgFlowIconSvgGroupElement = document.querySelector<HTMLElement>(this.bpmnQuerySelectors.element(`messageFlowIcon_of_${bpmnId}`));
+    const msgFlowIconSvgGroupElement = this.querySelector<HTMLElement>(this.bpmnQuerySelectors.element(`messageFlowIcon_of_${bpmnId}`));
     if (checks?.hasIcon) {
       expectSvgMessageFlowIcon(msgFlowIconSvgGroupElement);
       expectClassAttribute(
@@ -148,7 +153,7 @@ export class HtmlElementLookup {
   }
 
   private expectSvgOverlay(bpmnId: string, overlayLabel?: string): void {
-    const overlayGroupElement = document.querySelector<SVGGElement>(this.bpmnQuerySelectors.overlays(bpmnId));
+    const overlayGroupElement = this.querySelector<SVGGElement>(this.bpmnQuerySelectors.overlays(bpmnId));
     if (overlayLabel) {
       expect(overlayGroupElement.querySelector('g > text').innerHTML).toEqual(overlayLabel);
       expectClassAttribute(overlayGroupElement, 'overlay-badge');
@@ -161,9 +166,23 @@ export class HtmlElementLookup {
     if (!label) {
       return;
     }
-    const labelLastDivElement = document.querySelector<HTMLElement>(this.bpmnQuerySelectors.labelLastDiv(bpmnId));
+
+    // TODO make the label check pass with jest v28 and the previous implementation of the test
+    const labelSvgGroup = this.querySelector<HTMLElement>(this.bpmnQuerySelectors.labelSvgGroup(bpmnId));
+    const foreignObject = labelSvgGroup.querySelector('g > foreignObject');
+    // also work
+    // svg > g > g > g[data-bpmn-id="serviceTask_1_2"].bpmn-label > g > foreignObject
+    // const foreignObject = this.querySelector(`svg > g > g > g[data-bpmn-id="${bpmnId}"].bpmn-label > g > foreignObject`);
+
+    // svg > g > g > g[data-bpmn-id="serviceTask_1_2"].bpmn-label > g > foreignObject > div > div > div
+    // const labelLastDivElement = foreignObject.firstElementChild.firstElementChild.firstElementChild;
+    const labelLastDivElement = foreignObject.querySelector('div > div > div');
+
+    // Do not work anymore with jest 28 (jsdom bump for 16.6 to 19), this is due to the part of the selector after foreignObject
+    // It works well in BpmnPageSvgTester (check in the browser, not with jsdom)
+    // const labelLastDivElement = this.querySelector<HTMLElement>(this.bpmnQuerySelectors.labelLastDiv(bpmnId));
     expect(labelLastDivElement.innerHTML).toEqual(label);
-    const labelSvgGroup = document.querySelector<HTMLElement>(this.bpmnQuerySelectors.labelSvgGroup(bpmnId));
+    // const labelSvgGroup = this.querySelector<HTMLElement>(this.bpmnQuerySelectors.labelSvgGroup(bpmnId));
     expectClassAttribute(labelSvgGroup, computeClassValue(bpmnClasses, ['bpmn-label', ...(additionalClasses ?? [])]));
   }
 }
