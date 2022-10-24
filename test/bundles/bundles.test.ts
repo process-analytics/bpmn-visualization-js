@@ -26,10 +26,7 @@ describe('bundles', () => {
 
     it.each`
       file                                | bundleType
-      ${'bpmn-visualization.cjs.js'}      | ${'CommonJS'}
-      ${'bpmn-visualization.cjs.min.js'}  | ${'CommonJS minified'}
       ${'bpmn-visualization.esm.js'}      | ${'ESM'}
-      ${'bpmn-visualization.esm.min.js'}  | ${'ESM minified'}
       ${'bpmn-visualization.js'}          | ${'IIFE'}
       ${'bpmn-visualization.min.js'}      | ${'IIFE minified'}
       ${'bpmn-visualization.d.ts'}        | ${'Type definitions'}

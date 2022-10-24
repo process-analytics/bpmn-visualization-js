@@ -32,9 +32,9 @@ const pluginsBundleIIFE = [
   // to have sizes of dependencies listed at the end of build log
   sizes(),
 ];
-const iifeBundleFile = 'dist/bpmn-visualization.min.js';
+const iifeMinifiedBundleFile = 'dist/bpmn-visualization.min.js';
 const outputIIFE = {
-  file: iifeBundleFile.replace('.min.js', '.js'),
+  file: iifeMinifiedBundleFile.replace('.min.js', '.js'),
   name: 'bpmnvisu',
   format: 'iife',
 };
@@ -48,44 +48,24 @@ const configIIFEMinified = {
   input: libInput,
   output: {
     ...outputIIFE,
-    file: iifeBundleFile,
+    file: iifeMinifiedBundleFile,
   },
   plugins: withMinification(pluginsBundleIIFE),
 };
 
-const pluginsBundles = [
-  typescriptPlugin(),
-  // ensure we do not bundle dependencies
-  autoExternal(),
-  // to have sizes of dependencies listed at the end of build log
-  sizes(),
-];
-
-const configBundlesMinified = {
-  input: libInput,
-  output: [
-    {
-      file: pkg.module.replace('.js', '.min.js'),
-      format: 'es',
-    },
-    {
-      file: pkg.main.replace('.js', '.min.js'),
-      format: 'cjs',
-    },
-  ],
-
-  plugins: withMinification(pluginsBundles),
-};
 const configBundles = {
-  ...configBundlesMinified,
-  plugins: pluginsBundles,
-  output: [
-    { file: pkg.module, format: 'es' },
-    { file: pkg.main, format: 'cjs' },
+  input: libInput,
+  plugins: [
+    typescriptPlugin(),
+    // ensure we do not bundle dependencies
+    autoExternal(),
+    // to have sizes of dependencies listed at the end of build log
+    sizes(),
   ],
+  output: [{ file: pkg.module, format: 'es' }],
 };
 
-export default [configIIFE, configIIFEMinified, configBundles, configBundlesMinified];
+export default [configIIFE, configIIFEMinified, configBundles];
 
 // =====================================================================================================================
 // helpers
@@ -102,7 +82,7 @@ function withMinification(plugins) {
   return [
     ...plugins,
     terser({
-      ecma: 6,
+      ecma: 2015,
     }),
   ];
 }
