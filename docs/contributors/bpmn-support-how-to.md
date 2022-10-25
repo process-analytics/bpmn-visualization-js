@@ -167,7 +167,7 @@ The icon and markers of the BPMN elements must be defined in the mxGraph custom 
 `TypeScript` code. The `IconPainter` class manages all icons rendering/painting.  
 
 It is possible to adapt an SVG icon or an `mxGraph` stencil thanks to [mxgraph-svg2shape](https://github.com/process-analytics/mxgraph-svg2shape),
-a Java tool that will let you transform your SVG or `mxGraph` stencil file into a set of `TypeScript` commands.
+a Java tool that will let you to transform this content (in a file) into a set of `TypeScript` commands.
 
 Please be aware that the tool is not able to support all SVG files, and you may need to adapt the SVG definition prior the
 tool can transform it. See [PR #210](https://github.com/process-analytics/bpmn-visualization-js/pull/210) for instance.
