@@ -135,7 +135,7 @@ The final decision must be written in the GitHub number to keep track of the his
 
 We are very happy to include your original work in `bpmn-visualization`. 
 
-##### Reusing an existing icon
+##### Integrating an existing icon
 
 If you integrate an icon that you have not designed by yourself, please don't forget to credit its author and reproduction
 conditions. Please try to use materials covered by a **Free License** to avoid any license compliance issues.
