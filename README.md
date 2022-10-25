@@ -92,7 +92,7 @@ browsers are known working with `bpmn-visualization@0.26.0`:
   - Chromium 104.0.5112.102
   - Opera 90.0.4480.54
 - Support Chromium Edge but not Legacy Edge
-- The library may work with the other browsers. They must at least support ES6.
+- The library may work with the other browsers. They must at least support ES2015.
 
 
 ## ♻️ Usage
@@ -100,8 +100,7 @@ The library is available from [NPM](https://npmjs.org/package/bpmn-visualization
 We support various module formats such as:
 - [IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE): `dist/bpmn-visualization.js`
 - [ESM](https://dev.to/iggredible/what-the-heck-are-cjs-amd-umd-and-esm-ikm): `dist/bpmn-visualization.esm.js`
-- [CommonJS](https://www.typescriptlang.org/docs/handbook/2/modules.html#commonjs): `dist/bpmn-visualization.cjs.js`
-  
+
 
 ### 📌 Project usage
 
