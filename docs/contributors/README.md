@@ -12,7 +12,7 @@ Here are some tips to help during development.
 
 ## Contributing
 - [testing](testing.md)
-- [how to support new BPMN elements](bpmn-support-how-to.md)
+- [how to add support for BPMN elements](bpmn-support-how-to.md)
 - [how to submit your work](pull-request.md)
 - [demo page css](demo-page-css.md)
 - [TypeScript version](supported-typescript-version.md)
