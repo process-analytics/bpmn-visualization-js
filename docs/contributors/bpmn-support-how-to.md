@@ -155,6 +155,7 @@ Here is a list of sites that you can use to choose an existing icon:
 - [iconify](https://iconify.design/)
 - [Noun Project](https://thenounproject.com)
 - [Octicons](https://primer.style/octicons/)
+- [SVG Repo](https://www.svgrepo.com/)
 - ......
 
 [draw.io](https://github.com/jgraph/drawio) provides [BPMN shapes](https://github.com/jgraph/drawio/blob/v20.5.0/src/main/webapp/shapes/bpmn/mxBpmnShape2.js) that can be directly included in `bpmn-visualization` by adapting the JavaScript code into Typescript.
