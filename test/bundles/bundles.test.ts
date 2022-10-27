@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { existsSync } from 'node:fs';
+
 import 'jest-playwright-preset';
 import { resolve } from 'node:path';
 import type { Page } from 'playwright';
@@ -21,21 +21,6 @@ import type { TargetedPageConfiguration } from '../e2e/helpers/visu/bpmn-page-ut
 import { BpmnPageSvgTester } from '../e2e/helpers/visu/bpmn-page-utils';
 
 describe('bundles', () => {
-  describe('All bundles have been generated', () => {
-    const bundlesDirectoryPath = resolve(__dirname, '../../dist');
-
-    it.each`
-      file                                | bundleType
-      ${'bpmn-visualization.esm.js'}      | ${'ESM'}
-      ${'bpmn-visualization.js'}          | ${'IIFE'}
-      ${'bpmn-visualization.min.js'}      | ${'IIFE minified'}
-      ${'bpmn-visualization.d.ts'}        | ${'Type definitions'}
-      ${'not-supported-ts-versions.d.ts'} | ${'Type definitions for TS versions that are not supported'}
-    `('$bundleType', ({ file }: { file: string }) => {
-      expect(existsSync(resolve(bundlesDirectoryPath, file))).toBe(true);
-    });
-  });
-
   it('IIFE bundle - should generate BPMN Diagram SVG', async () => {
     const pageTester = new BpmnStaticPageSvgTester(
       {

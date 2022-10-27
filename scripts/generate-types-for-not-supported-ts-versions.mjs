@@ -27,5 +27,20 @@ import packageJSON from '../package.json' assert { type: 'json' };
 const supportedTSVersions = Object.keys(packageJSON.typesVersions);
 assert(supportedTSVersions.length === 1, 'Property "typesVersions" should have exactly one key in the "package.json" file.');
 // TODO revisit 'not supported ts versions' once TS implements https://github.com/microsoft/TypeScript/issues/32166
-const notSupportedTSVersionsFile = packageJSON.types;
-fs.writeFileSync(notSupportedTSVersionsFile, `"Package 'bpmn-visualization' support only TS versions that are ${supportedTSVersions[0]}".`);
+const notSupportedTSVersionsFilePath = packageJSON.types;
+
+const destinationDirectoryPath = getDirectorOfPath(notSupportedTSVersionsFilePath);
+// we cannot use the 'ensureDirSync' function from 'fs-extra' as this package only provides a CommonJS bundle
+if (!fs.existsSync(destinationDirectoryPath)) {
+  fs.mkdirSync(destinationDirectoryPath);
+}
+fs.writeFileSync(notSupportedTSVersionsFilePath, `"Package 'bpmn-visualization' support only TS versions that are ${supportedTSVersions[0]}".`);
+
+function getDirectorOfPath(path) {
+  const delimiter = '/';
+  const substrings = path.split(delimiter);
+
+  return substrings.length === 1
+    ? value // delimiter is not part of the string
+    : substrings.slice(0, -1).join(delimiter);
+}

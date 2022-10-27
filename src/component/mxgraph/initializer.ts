@@ -17,6 +17,7 @@ import factory, { type mxGraphExportObject } from 'mxgraph';
 
 export const mxgraph = initialize();
 
+/** @internal */
 declare global {
   interface Window {
     mxForceIncludes: boolean;

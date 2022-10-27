@@ -52,7 +52,8 @@
     "build": "tsc --noEmit",
     "build-bundles": "rollup -c",
     "generate-types": "run-s generate-types:*",
-    "generate-types:dist": "tsc --project tsconfig.npm-package.json --declaration --emitDeclarationOnly",
+    "generate-types:lib": "tsc --project tsconfig.npm-package.json --emitDeclarationOnly --declaration --declarationDir build/types",
+    "generate-types:dist": "api-extractor run --local --verbose",
     "generate-types:not-supported-ts-versions": "node scripts/generate-types-for-not-supported-ts-versions.mjs",
     "prepack": "run-s clean generate-types build-bundles",
     "demo": "run-s demo:*",
@@ -99,6 +100,7 @@
     "strnum": "1.0.5"
   },
   "devDependencies": {
+    "@microsoft/api-extractor": "~7.33.5",
     "@rollup/plugin-commonjs": "~23.0.2",
     "@rollup/plugin-node-resolve": "~15.0.1",
     "@types/debug": "~4.1.7",

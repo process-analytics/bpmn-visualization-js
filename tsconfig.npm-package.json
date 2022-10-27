@@ -1,7 +1,6 @@
 {
   "extends": "./tsconfig",
   "compilerOptions": {
-    "declarationDir": "dist",
     "declaration": false,
     "sourceMap": false
   },
