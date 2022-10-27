@@ -27,12 +27,20 @@ import packageJSON from '../package.json' assert { type: 'json' };
 const supportedTSVersions = Object.keys(packageJSON.typesVersions);
 assert(supportedTSVersions.length === 1, 'Property "typesVersions" should have exactly one key in the "package.json" file.');
 // TODO revisit 'not supported ts versions' once TS implements https://github.com/microsoft/TypeScript/issues/32166
-const notSupportedTSVersionsFile = packageJSON.types;
+const notSupportedTSVersionsFilePath = packageJSON.types;
 
-// TODO in the final implementation, DO NOT hard code the directory
-// TODO find a better implementation to only create the directory if it doesn't exist
-const distPath = 'dist';
-if (!fs.existsSync(distPath)) {
-  fs.mkdirSync(distPath);
+const destinationDirectoryPath = getDirectorOfPath(notSupportedTSVersionsFilePath);
+// we cannot use the 'ensureDirSync' function from 'fs-extra' as this package only provides a CommonJS bundle
+if (!fs.existsSync(destinationDirectoryPath)) {
+  fs.mkdirSync(destinationDirectoryPath);
 }
-fs.writeFileSync(notSupportedTSVersionsFile, `"Package 'bpmn-visualization' support only TS versions that are ${supportedTSVersions[0]}".`);
+fs.writeFileSync(notSupportedTSVersionsFilePath, `"Package 'bpmn-visualization' support only TS versions that are ${supportedTSVersions[0]}".`);
+
+function getDirectorOfPath(path) {
+  const delimiter = '/';
+  const substrings = path.split(delimiter);
+
+  return substrings.length === 1
+    ? value // delimiter is not part of the string
+    : substrings.slice(0, -1).join(delimiter);
+}
