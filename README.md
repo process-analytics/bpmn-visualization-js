@@ -1,6 +1,6 @@
 <h1 align="center">BPMN Visualization</h1>
 <div align="center">
-    <p align="center"> <img title="BPMN Visualization" src="https://github.com/process-analytics/bpmn-visualization-examples/raw/cb307a8d38e602b905ecf72b5a197c837e7f3cf4/examples/static/img/preview/demo/hacktoberfest-custom-themes.png" alt="BPMN Visualization example"></p>
+    <p align="center"> <img title="BPMN Visualization" src="docs/users/images/custom-behavior-path-highlighting.gif" alt="BPMN Visualization example"></p>
     <p align="center"> 
         <a href="https://npmjs.org/package/bpmn-visualization">
           <img alt="npm package" src="https://img.shields.io/npm/v/bpmn-visualization.svg?color=orange"> 
