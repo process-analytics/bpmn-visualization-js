@@ -183,7 +183,7 @@ To contribute to `bpmn-visualization`, fork and clone this repository locally an
 Please write tests for your code before opening a pull-request:
 
 ```sh
-npm run test  # run all unit & e2e tests
+npm test  # run all tests
 ```
 
 You can find more detail in our [Contributing guide](CONTRIBUTING.md). Participation in this open source project is subject to a [Code of Conduct](CODE_OF_CONDUCT.md).
