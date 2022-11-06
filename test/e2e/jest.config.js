@@ -15,7 +15,7 @@
  */
 process.env.JEST_PLAYWRIGHT_CONFIG = './test/e2e/jest-playwright.config.js';
 
-/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
+/** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
   preset: 'jest-playwright-preset',
   rootDir: '../..',
@@ -23,12 +23,12 @@ module.exports = {
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
   testTimeout: 200000,
   transform: {
-    '^.+\\.ts?$': 'ts-jest',
-  },
-  globals: {
-    'ts-jest': {
-      tsconfig: '<rootDir>/tsconfig.test.json',
-    },
+    '^.+\\.ts?$': [
+      'ts-jest',
+      {
+        tsconfig: '<rootDir>/tsconfig.test.json',
+      },
+    ],
   },
   collectCoverageFrom: ['src/**/*.{ts,js}'],
   coveragePathIgnorePatterns: ['/src/model'],

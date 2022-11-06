@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
+/** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
   rootDir: '../..',
   roots: ['./test/integration'],
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
   testEnvironment: 'jsdom', // mxgraph initialization needs to access to the window object
   transform: {
-    '^.+\\.ts?$': 'ts-jest',
-  },
-  globals: {
-    'ts-jest': {
-      tsconfig: '<rootDir>/tsconfig.test.json',
-    },
+    '^.+\\.ts?$': [
+      'ts-jest',
+      {
+        tsconfig: '<rootDir>/tsconfig.test.json',
+      },
+    ],
   },
   collectCoverageFrom: ['src/**/*.{ts,js}'],
   coveragePathIgnorePatterns: ['/src/model/'],
