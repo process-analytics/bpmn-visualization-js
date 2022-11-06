@@ -24,7 +24,9 @@ export class BpmnQuerySelectorsForTests extends BpmnQuerySelectors {
   }
 
   labelLastDiv(bpmnElementId: string): string {
-    return `${this.labelSvgGroup(bpmnElementId)} > g > foreignObject > div > div > div`;
+    // * is for 'foreignObject'
+    // Using 'foreignObject' do not work anymore with jest@28 (jsdom bump for 16.6 to 19)
+    return `${this.labelSvgGroup(bpmnElementId)} > g > * > div > div > div`;
   }
 
   labelSvgGroup(bpmnElementId: string): string {
