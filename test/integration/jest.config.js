@@ -17,7 +17,7 @@
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
   rootDir: '../..',
-  roots: ['./test/integration', './src'],
+  roots: ['./test/integration'],
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
   testEnvironment: 'jsdom', // mxgraph initialization needs to access to the window object
   transform: {
