@@ -152,7 +152,7 @@
     "ts-jest": "~27.1.4",
     "typedoc": "~0.23.20",
     "typescript": "~4.8.4",
-    "vite": "~3.2.2"
+    "vite": "~3.2.3"
   },
   "lint-staged": {
     "*.{js,mjs,ts}": [
