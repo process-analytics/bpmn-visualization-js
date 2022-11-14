@@ -20,6 +20,7 @@ on:
       - 'tailwind.config.js'
       - 'tsconfig.json'
       - 'vite.config.js'
+      - '.nvmrc'
 
 jobs:
   demo_preview: # keep unique across jobs using surge preview (preview url and PR comment id)

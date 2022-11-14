@@ -15,6 +15,7 @@ on:
       - 'tailwind.config.js'
       - 'tsconfig.json'
       - 'vite.config.js'
+      - '.nvmrc'
   pull_request:
     branches:
       - master
@@ -29,6 +30,7 @@ on:
       - 'tailwind.config.js'
       - 'tsconfig.json'
       - 'vite.config.js'
+      - '.nvmrc'
 
 jobs:
   test_e2e:
