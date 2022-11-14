@@ -14,13 +14,13 @@ on:
       - 'dev/**/*'
       - 'scripts/prepare-demo-for-publish.mjs'
       - 'src/**/*'
+      - '.nvmrc'
       - 'package.json'
       - 'package-lock.json'
       - 'postcss.config.js'
       - 'tailwind.config.js'
       - 'tsconfig.json'
       - 'vite.config.js'
-      - '.nvmrc'
 
 jobs:
   demo_preview: # keep unique across jobs using surge preview (preview url and PR comment id)

@@ -11,10 +11,10 @@ on:
       - 'docs/users/**'
       - 'scripts/docs.js'
       - 'src/**'
+      - '.nvmrc'
       - 'package.json'
       - 'package-lock.json'
       - 'typedoc.json'
-      - '.nvmrc'
   pull_request:
     # To manage 'surge-preview' action teardown, add default event types + closed event type
     types: [opened, synchronize, reopened, closed]
@@ -27,10 +27,10 @@ on:
       - 'docs/users/**'
       - 'scripts/docs.js'
       - 'src/**'
+      - '.nvmrc'
       - 'package.json'
       - 'package-lock.json'
       - 'typedoc.json'
-      - '.nvmrc'
 
 jobs:
   doc_preview: # keep unique across jobs using surge preview (preview url and PR comment id)

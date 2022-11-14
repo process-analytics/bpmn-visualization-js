@@ -12,11 +12,11 @@ on:
       - 'src/**/*'
       - 'test/**/*'
       - '.eslintrc.js'
+      - '.nvmrc'
       - '.prettierrc.js'
       - 'package.json'
       - 'package-lock.json'
       - 'tsconfig.json'
-      - '.nvmrc'
   pull_request:
     branches:
       - master
@@ -28,11 +28,11 @@ on:
       - 'src/**/*'
       - 'test/**/*'
       - '.eslintrc.js'
+      - '.nvmrc'
       - '.prettierrc.js'
       - 'package.json'
       - 'package-lock.json'
       - 'tsconfig.json'
-      - '.nvmrc'
 
 jobs:
   build:

@@ -10,11 +10,11 @@ on:
       - 'scripts/**/*'
       - 'src/**/*'
       - 'test/typescript-support/**/*'
+      - '.nvmrc'
       - 'package.json'
       - 'package-lock.json'
       - 'rollup.config.js'
       - 'tsconfig.json'
-      - '.nvmrc'
   pull_request:
     branches:
       - master
@@ -24,11 +24,11 @@ on:
       - 'scripts/**/*'
       - 'src/**/*'
       - 'test/typescript-support/**/*'
+      - '.nvmrc'
       - 'package.json'
       - 'package-lock.json'
       - 'rollup.config.js'
       - 'tsconfig.json'
-      - '.nvmrc'
 
 jobs:
   build_and_test_npm_package:

@@ -9,13 +9,13 @@ on:
       - '.github/workflows/test-e2e.yml'
       - 'src/**/*'
       - 'test/**/*'
+      - '.nvmrc'
       - 'package.json'
       - 'package-lock.json'
       - 'postcss.config.js'
       - 'tailwind.config.js'
       - 'tsconfig.json'
       - 'vite.config.js'
-      - '.nvmrc'
   pull_request:
     branches:
       - master
@@ -24,13 +24,13 @@ on:
       - '.github/workflows/test-e2e.yml'
       - 'src/**/*'
       - 'test/**/*'
+      - '.nvmrc'
       - 'package.json'
       - 'package-lock.json'
       - 'postcss.config.js'
       - 'tailwind.config.js'
       - 'tsconfig.json'
       - 'vite.config.js'
-      - '.nvmrc'
 
 jobs:
   test_e2e:
