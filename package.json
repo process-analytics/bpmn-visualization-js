@@ -1,6 +1,6 @@
 {
   "name": "bpmn-visualization",
-  "version": "0.28.0-post",
+  "version": "0.28.1-post",
   "description": "A TypeScript library for visualizing process execution data on BPMN diagrams",
   "keywords": [
     "typescript",
@@ -117,9 +117,9 @@
     "cross-env": "~7.0.3",
     "cssnano": "~5.1.14",
     "debug": "~4.3.4",
-    "eslint": "~8.26.0",
+    "eslint": "~8.27.0",
     "eslint-config-prettier": "~8.5.0",
-    "eslint-plugin-jest": "~27.1.3",
+    "eslint-plugin-jest": "~27.1.4",
     "eslint-plugin-notice": "~0.9.10",
     "eslint-plugin-playwright": "~0.11.2",
     "eslint-plugin-prettier": "~4.2.1",
@@ -131,7 +131,7 @@
     "jest-extended": "~3.1.0",
     "jest-html-reporter": "~3.7.0",
     "jest-html-reporters": "~3.0.11",
-    "jest-image-snapshot": "~5.2.0",
+    "jest-image-snapshot": "~6.0.0",
     "jest-playwright-preset": "~2.0.0",
     "jest-sonar": "~0.2.12",
     "lint-staged": "~13.0.3",
@@ -149,11 +149,11 @@
     "rollup-plugin-sizes": "~1.0.4",
     "rollup-plugin-terser": "~7.0.2",
     "rollup-plugin-typescript2": "~0.34.1",
-    "tailwindcss": "~3.2.1",
+    "tailwindcss": "~3.2.4",
     "ts-jest": "~28.0.8",
     "typedoc": "~0.23.20",
     "typescript": "~4.8.4",
-    "vite": "~3.2.2"
+    "vite": "~3.2.3"
   },
   "lint-staged": {
     "*.{js,mjs,ts}": [
