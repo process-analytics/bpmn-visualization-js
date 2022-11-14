@@ -12,6 +12,7 @@ on:
       - '.github/actions/build-setup/**/*'
       - '.github/workflows/test-performance.yml'
       - 'test/performance/**/*'
+      - '.nvmrc'
 
 jobs:
   test_performance:
