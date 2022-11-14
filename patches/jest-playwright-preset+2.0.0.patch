@@ -1,0 +1,22 @@
+diff --git a/node_modules/jest-playwright-preset/types/global.d.ts b/node_modules/jest-playwright-preset/types/global.d.ts
+index 12f328f..091798f
+--- a/node_modules/jest-playwright-preset/types/global.d.ts
++++ b/node_modules/jest-playwright-preset/types/global.d.ts
+@@ -228,10 +228,13 @@ export interface JestPlaywrightConfig {
+   collectCoverage?: boolean
+ }
+
+-export type JestPlaywrightProjectConfig = (
+-  | Test['context']['config']
+-  | JestConfig
+-) & {
++// fix v2.0.0 types
++// See https://github.com/playwright-community/jest-playwright/issues/808
++// export type JestPlaywrightProjectConfig = (
++//   | Test['context']['config']
++//   | JestConfig
++// ) & {
++export type JestPlaywrightProjectConfig = Test['context']['config'] & {
+   browserName: BrowserType
+   wsEndpoint: WsEndpointType
+   device: DeviceType
