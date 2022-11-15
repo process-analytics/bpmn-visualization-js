@@ -53,11 +53,14 @@ jobs:
         uses: actions/checkout@v3
       - name: Build Setup
         uses: ./.github/actions/build-setup
-      # install OS dependencies required by browsers on the GitHub runner
-      # to be sure that the browser is correctly installed: https://github.com/microsoft/playwright/issues/5801
-      - name: Install ${{matrix.browser}} and its dependencies only
+      - name: Install ${{matrix.browser}}
+        if: matrix.browser != 'chrome' || matrix.browser != 'msedge'
         run: |
           npx playwright install ${{matrix.browser}}
+      # install OS dependencies required by browsers on the GitHub runner
+      # to be sure that the browser is correctly installed: https://github.com/microsoft/playwright/issues/5801
+      - name: Install ${{matrix.browser}} dependencies
+        run: |
           npx playwright install-deps ${{matrix.browser}}
       - name: Test Application End to End
         id: 'test_e2e'
