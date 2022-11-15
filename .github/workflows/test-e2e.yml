@@ -57,7 +57,8 @@ jobs:
         uses: ./.github/actions/build-setup
 # TODO if it works; create an action to avoid duplications in 3 workflows
       - name: Install ${{matrix.browser}}
-        if: matrix.browser != 'chrome' || matrix.browser != 'msedge'
+        # Only installed browsers not available in the GH runner, or that need a special version modified for playwright
+        if: matrix.browser == 'chromium' || matrix.browser == 'firefox' || matrix.browser == 'webkit'
         run: |
           npx playwright install ${{matrix.browser}}
       # install OS dependencies required by browsers on the GitHub runner
