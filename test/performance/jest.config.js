@@ -17,9 +17,9 @@ process.env.JEST_PLAYWRIGHT_CONFIG = './test/performance/jest-playwright.config.
 
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
-  rootDir: '../..',
-  roots: ['./test/performance', './src'],
   preset: 'jest-playwright-preset',
+  rootDir: '../..',
+  roots: ['./test/performance'],
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
   testTimeout: 200000,
   transform: {

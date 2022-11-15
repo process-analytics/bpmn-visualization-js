@@ -17,7 +17,7 @@
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
   rootDir: '../..',
-  roots: ['./test/unit', './src'],
+  roots: ['./test/unit'],
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
   transform: {
     '^.+\\.ts?$': 'ts-jest',
