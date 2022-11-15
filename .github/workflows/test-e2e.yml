@@ -40,11 +40,13 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-12, ubuntu-20.04, windows-2019]
-        browser: [chromium, firefox, chrome]
+#        TODO restore all browsers after tests
+        browser: [chromium, chrome]
+#        browser: [chromium, firefox, chrome]
         include:
           # only test WebKit on macOS
-          - os: macos-12
-            browser: webkit
+#          - os: macos-12
+#            browser: webkit
           # only test Edge on Windows
           - os: windows-2019
             browser: msedge
