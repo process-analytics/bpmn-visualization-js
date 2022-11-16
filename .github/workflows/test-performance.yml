@@ -10,6 +10,7 @@ on:
       - master
     paths:
       - '.github/actions/build-setup/**/*'
+      - '.github/actions/install-playwright-browser/**/*'
       - '.github/workflows/test-performance.yml'
       - 'test/performance/**/*'
       - '.nvmrc'
@@ -35,12 +36,10 @@ jobs:
         uses: actions/checkout@v3
       - name: Build Setup
         uses: ./.github/actions/build-setup
-      # install OS dependencies required by browsers on the GitHub runner
-      # to be sure that the browser is correctly installed: https://github.com/microsoft/playwright/issues/5801
-      - name: Install ${{env.browser}} and its dependencies only
-        run: |
-          npx playwright install ${{env.browser}}
-          npx playwright install-deps ${{env.browser}}
+      - name: Install ${{env.browser}}
+        uses: ./.github/actions/install-playwright-browser
+        with:
+          browser: ${{env.browser}}
       - name: Run performance tests
         id: 'run_perf_tests'
         run: npm run test:perf
