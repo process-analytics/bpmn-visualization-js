@@ -6,6 +6,7 @@ on:
       - master
     paths:
       - '.github/actions/build-setup/**/*'
+      - '.github/actions/install-playwright-browser/**/*'
       - '.github/workflows/test-e2e.yml'
       - 'src/**/*'
       - 'test/**/*'
@@ -21,6 +22,7 @@ on:
       - master
     paths:
       - '.github/actions/build-setup/**/*'
+      - '.github/actions/install-playwright-browser/**/*'
       - '.github/workflows/test-e2e.yml'
       - 'src/**/*'
       - 'test/**/*'
@@ -55,17 +57,10 @@ jobs:
         uses: actions/checkout@v3
       - name: Build Setup
         uses: ./.github/actions/build-setup
-# TODO if it works; create an action to avoid duplications in 3 workflows
       - name: Install ${{matrix.browser}}
-        # Only installed browsers not available in the GH runner, or that need a special version modified for playwright
-        if: matrix.browser == 'chromium' || matrix.browser == 'firefox' || matrix.browser == 'webkit'
-        run: |
-          npx playwright install ${{matrix.browser}}
-      # install OS dependencies required by browsers on the GitHub runner
-      # to be sure that the browser is correctly installed: https://github.com/microsoft/playwright/issues/5801
-      - name: Install ${{matrix.browser}} dependencies
-        run: |
-          npx playwright install-deps ${{matrix.browser}}
+        uses: ./.github/actions/install-playwright-browser
+        with:
+          browser: ${{matrix.browser}}
       - name: Test Application End to End
         id: 'test_e2e'
         env:
