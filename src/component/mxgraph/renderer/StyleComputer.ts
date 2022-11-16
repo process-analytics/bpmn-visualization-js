@@ -138,7 +138,7 @@ export default class StyleComputer {
 
       if (bpmnCell instanceof Shape) {
         // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
-        styleValues.set(mxgraph.mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 120); // TODO TMP introduce label positioning error for testing
+        styleValues.set(mxgraph.mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
         // align settings
         styleValues.set(mxgraph.mxConstants.STYLE_LABEL_POSITION, mxgraph.mxConstants.ALIGN_TOP);
         styleValues.set(mxgraph.mxConstants.STYLE_VERTICAL_LABEL_POSITION, mxgraph.mxConstants.ALIGN_LEFT);
