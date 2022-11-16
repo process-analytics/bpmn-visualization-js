@@ -1,0 +1,19 @@
+name: Install Playwright Browsers
+description: 'Setup node and install dependencies'
+inputs:
+  browser:
+    description: 'The browser to install'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Install ${{inputs.browser}}
+      # Only installed browsers not available in the GH runner, or that need a special version modified for playwright
+      if: inputs.browser == 'chromium' || inputs.browser == 'firefox' || inputs.browser == 'webkit'
+      shell: bash
+      run: npx playwright install ${{inputs.browser}}
+    # install OS dependencies required by browsers on the GitHub runner
+    # to be sure that the browser is correctly installed: https://github.com/microsoft/playwright/issues/5801
+    - name: Install ${{inputs.browser}} dependencies
+      shell: bash
+      run: npx playwright install-deps ${{inputs.browser}}
