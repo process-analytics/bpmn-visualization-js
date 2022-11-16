@@ -128,7 +128,7 @@
     "expect-playwright": "~0.8.0",
     "fs-extra": "~10.1.0",
     "husky": "~8.0.2",
-    "jest": "~29.2.2",
+    "jest": "~29.3.1",
     "jest-environment-jsdom": "~29.3.1",
     "jest-extended": "~3.1.0",
     "jest-html-reporter": "~3.7.0",
