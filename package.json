@@ -95,7 +95,7 @@
   "dependencies": {
     "@typed-mxgraph/typed-mxgraph": "~1.0.7",
     "entities": "~4.3.1",
-    "fast-xml-parser": "4.0.11",
+    "fast-xml-parser": "4.0.12",
     "lodash.debounce": "~4.0.8",
     "lodash.throttle": "~4.1.1",
     "mxgraph": "4.2.2",
@@ -118,7 +118,7 @@
     "cross-env": "~7.0.3",
     "cssnano": "~5.1.14",
     "debug": "~4.3.4",
-    "eslint": "~8.27.0",
+    "eslint": "~8.28.0",
     "eslint-config-prettier": "~8.5.0",
     "eslint-plugin-jest": "~27.1.5",
     "eslint-plugin-notice": "~0.9.10",
@@ -140,7 +140,7 @@
     "npm-run-all": "~4.1.5",
     "patch-package": "~6.5.0",
     "pinst": "~3.0.0",
-    "playwright": "~1.27.1",
+    "playwright": "~1.28.0",
     "postcss": "~8.4.19",
     "postcss-cli": "~10.0.0",
     "prettier": "~2.7.1",
@@ -155,7 +155,7 @@
     "ts-jest": "~29.0.3",
     "typedoc": "~0.23.21",
     "typescript": "~4.9.3",
-    "vite": "~3.2.3"
+    "vite": "~3.2.4"
   },
   "overrides": {
     "@types/node": "^16.18.0"
