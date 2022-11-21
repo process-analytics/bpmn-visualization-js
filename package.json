@@ -157,6 +157,9 @@
     "typescript": "~4.9.3",
     "vite": "~3.2.3"
   },
+  "overrides": {
+    "@types/node": "^16.18.0"
+  },
   "lint-staged": {
     "*.{js,mjs,ts}": [
       "eslint --fix"
