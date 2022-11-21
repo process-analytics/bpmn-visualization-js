@@ -322,7 +322,7 @@ const buildMarkers = (bpmnElement: TActivity): ShapeBpmnMarkerKind[] => {
     markers.push(ShapeBpmnMarkerKind.LOOP);
   } else if (multiInstanceLoopCharacteristics && multiInstanceLoopCharacteristics.isSequential) {
     markers.push(ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL);
-  } else if ((multiInstanceLoopCharacteristics && !multiInstanceLoopCharacteristics.isSequential) || multiInstanceLoopCharacteristics === '') {
+  } else if (multiInstanceLoopCharacteristics && !multiInstanceLoopCharacteristics.isSequential) {
     markers.push(ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL);
   }
   return markers;
