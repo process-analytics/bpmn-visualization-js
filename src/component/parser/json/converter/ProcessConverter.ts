@@ -320,10 +320,8 @@ const buildMarkers = (bpmnElement: TActivity): ShapeBpmnMarkerKind[] => {
   const multiInstanceLoopCharacteristics = ensureIsArray(bpmnElement.multiInstanceLoopCharacteristics, true)[0];
   if (standardLoopCharacteristics || standardLoopCharacteristics === '') {
     markers.push(ShapeBpmnMarkerKind.LOOP);
-  } else if (multiInstanceLoopCharacteristics && multiInstanceLoopCharacteristics.isSequential) {
-    markers.push(ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL);
-  } else if (multiInstanceLoopCharacteristics && !multiInstanceLoopCharacteristics.isSequential) {
-    markers.push(ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL);
+  } else if (multiInstanceLoopCharacteristics) {
+    markers.push(multiInstanceLoopCharacteristics.isSequential ? ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL : ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL);
   }
   return markers;
 };
