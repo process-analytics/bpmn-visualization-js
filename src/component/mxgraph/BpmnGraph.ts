@@ -19,7 +19,6 @@ import { FitType } from '../options';
 import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/validators';
 import debounce from 'lodash.debounce';
 import throttle from 'lodash.throttle';
-import { mxgraph } from './initializer';
 import type { mxCellState, mxGraphView, mxPoint } from 'mxgraph';
 
 const zoomFactorIn = 1.25;

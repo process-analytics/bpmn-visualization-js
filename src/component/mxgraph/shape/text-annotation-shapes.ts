@@ -15,7 +15,6 @@
  */
 
 import { StyleDefault } from '../style';
-import { mxgraph } from '../initializer';
 import type { mxAbstractCanvas2D } from 'mxgraph';
 
 /**

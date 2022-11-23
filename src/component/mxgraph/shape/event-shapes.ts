@@ -20,7 +20,6 @@ import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
 import { StyleDefault, StyleUtils } from '../style';
 import type { mxAbstractCanvas2D } from 'mxgraph';
-import { mxgraph } from '../initializer';
 
 /**
  * @internal

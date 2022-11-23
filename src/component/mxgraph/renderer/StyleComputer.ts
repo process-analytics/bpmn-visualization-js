@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { mxgraph } from '../initializer';
 import Shape from '../../../model/bpmn/internal/shape/Shape';
 import type { Edge } from '../../../model/bpmn/internal/edge/edge';
 import type Bounds from '../../../model/bpmn/internal/Bounds';

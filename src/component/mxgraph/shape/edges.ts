@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { mxgraph } from '../initializer';
 import type { mxAbstractCanvas2D, mxPoint } from 'mxgraph';
 import { BpmnStyleIdentifier } from '../style';
 

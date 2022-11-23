@@ -15,7 +15,6 @@
  */
 import { BpmnVisualization, FlowKind, ShapeBpmnElementKind, ShapeUtil, StyleConfigurator, StyleDefault } from '../../../src/bpmn-visualization';
 import { logStartup } from '../utils/internal-helpers';
-import { mxgraph } from '../../../src/component/mxgraph/initializer';
 
 interface Theme {
   defaultFillColor: string;

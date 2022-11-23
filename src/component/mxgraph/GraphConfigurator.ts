@@ -19,7 +19,6 @@ import ShapeConfigurator from './config/ShapeConfigurator';
 import MarkerConfigurator from './config/MarkerConfigurator';
 import type { GlobalOptions } from '../options';
 import { BpmnGraph } from './BpmnGraph';
-import { mxgraph } from './initializer';
 import type { mxMouseEvent } from 'mxgraph';
 
 /**

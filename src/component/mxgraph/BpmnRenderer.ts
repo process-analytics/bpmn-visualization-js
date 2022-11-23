@@ -25,7 +25,6 @@ import StyleComputer from './renderer/StyleComputer';
 import type { BpmnGraph } from './BpmnGraph';
 import type { FitOptions } from '../options';
 import type { RenderedModel } from '../registry/bpmn-model-registry';
-import { mxgraph } from './initializer';
 import type { mxCell } from 'mxgraph';
 
 /**

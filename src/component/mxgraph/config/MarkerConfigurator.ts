@@ -15,7 +15,6 @@
  */
 
 import { MarkerIdentifier } from '../style';
-import { mxgraph } from '../initializer';
 import type { mxAbstractCanvas2D, mxCell, mxPoint, mxShape } from 'mxgraph';
 
 /**

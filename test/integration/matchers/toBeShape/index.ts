@@ -26,7 +26,6 @@ import type {
 } from '../../helpers/model-expect';
 import { getDefaultParentId } from '../../helpers/model-expect';
 import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/internal';
-import { mxgraph } from '../../../../src/component/mxgraph/initializer';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { mxgraph } from '../initializer';
 import type { mxCellState, mxImageShape, mxShape } from 'mxgraph';
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
 import { EndEventShape, EventShape, IntermediateEventShape, ThrowIntermediateEventShape } from '../shape/event-shapes';

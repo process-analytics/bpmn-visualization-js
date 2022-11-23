@@ -17,7 +17,6 @@ import type { ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement 
 import { bpmnVisualization } from '../helpers/model-expect';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
-import { mxgraph } from '../../../src/component/mxgraph/initializer';
 import type { mxCell, mxGeometry, StyleMap } from 'mxgraph';
 import type { MxGraphCustomOverlay, MxGraphCustomOverlayStyle } from '../../../src/component/mxgraph/overlay/custom-overlay';
 

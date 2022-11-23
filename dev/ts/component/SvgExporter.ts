@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { mxgraph } from '../../../src/component/mxgraph/initializer';
 import type { mxGraph, mxSvgCanvas2D } from 'mxgraph';
 
 interface SvgExportOptions {

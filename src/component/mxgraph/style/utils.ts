@@ -16,7 +16,6 @@
 
 import type { GlobalTaskKind, MessageVisibleKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal';
 import { ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventDefinitionKind } from '../../../model/bpmn/internal';
-import { mxgraph } from '../initializer';
 import { BpmnStyleIdentifier } from './identifiers';
 
 /**

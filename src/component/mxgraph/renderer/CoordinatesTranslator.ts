@@ -15,7 +15,6 @@
  */
 
 import type { BpmnGraph } from '../BpmnGraph';
-import { mxgraph } from '../initializer';
 import type { mxCell, mxPoint } from 'mxgraph';
 
 /**

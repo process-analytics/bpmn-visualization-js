@@ -22,7 +22,6 @@ import { FlowKind, MessageVisibleKind } from '../../../../src/model/bpmn/interna
 import type { ExpectedEdgeModelElement, ExpectedSequenceFlowModelElement } from '../../helpers/model-expect';
 import { getDefaultParentId } from '../../helpers/model-expect';
 import { BpmnStyleIdentifier } from '../../../../src/component/mxgraph/style';
-import { mxgraph } from '../../../../src/component/mxgraph/initializer';
 
 function buildExpectedStateStyle(expectedModel: ExpectedEdgeModelElement): ExpectedStateStyle {
   const expectedStateStyle = buildCommonExpectedStateStyle(expectedModel);

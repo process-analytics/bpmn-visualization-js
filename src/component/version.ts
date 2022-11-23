@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import { mxgraph } from './mxgraph/initializer';
-
 // WARN: this constant is automatically updated at release time by the 'manage-version-in-files.mjs' script.
 // So, if you modify the name of this file or this constant, please update the script accordingly.
 const libVersion = '0.28.1-post';
@@ -24,7 +22,7 @@ const libVersion = '0.28.1-post';
  * @internal
  */
 export const version = (): Version => {
-  return { lib: libVersion, dependencies: new Map([['mxGraph', mxgraph.mxClient.VERSION]]) };
+  return { lib: libVersion, dependencies: new Map([['mxGraph', graph.mxClient.VERSION]]) };
 };
 
 /**
