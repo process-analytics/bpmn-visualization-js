@@ -19,7 +19,7 @@ import ShapeConfigurator from './config/ShapeConfigurator';
 import MarkerConfigurator from './config/MarkerConfigurator';
 import type { GlobalOptions } from '../options';
 import { BpmnGraph } from './BpmnGraph';
-import { InternalMouseEvent } from '@maxgraph/core';
+import { eventUtils, InternalMouseEvent } from '@maxgraph/core';
 
 /**
  * Configure the BpmnMxGraph graph that can be used by the lib
@@ -65,13 +65,13 @@ export default class GraphConfigurator {
     const panningHandler = this.graph.panningHandler;
     if (options?.navigation?.enabled) {
       // Pan configuration
-      panningHandler.addListener(mxgraph.mxEvent.PAN_START, this.getPanningHandler('grab'));
-      panningHandler.addListener(mxgraph.mxEvent.PAN_END, this.getPanningHandler('default'));
+      panningHandler.addListener(eventUtils.PAN_START, this.getPanningHandler('grab'));
+      panningHandler.addListener(eventUtils.PAN_END, this.getPanningHandler('default'));
 
       this.graph.panningHandler.usePopupTrigger = false; // only use the left button to trigger panning
       // Reimplement the function as we also want to trigger 'panning on cells' (ignoreCell to true) and only on left-click
       // The Graph standard implementation doesn't ignore right click in this case, so do it by ourselves
-      panningHandler.isForcePanningEvent = (me: InternalMouseEvent): boolean => mxgraph.mxEvent.isLeftMouseButton(me.getEvent()) || mxgraph.mxEvent.isMultiTouchEvent(me.getEvent());
+      panningHandler.isForcePanningEvent = (me: InternalMouseEvent): boolean => eventUtils.isLeftMouseButton(me.getEvent()) || eventUtils.isMultiTouchEvent(me.getEvent());
       this.graph.setPanning(true);
 
       // Zoom configuration

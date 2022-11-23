@@ -20,6 +20,7 @@ import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/va
 import debounce from 'lodash.debounce';
 import throttle from 'lodash.throttle';
 import type { mxCellState, mxGraphView, mxPoint } from 'mxgraph';
+import { eventUtils } from "@maxgraph/core";
 
 const zoomFactorIn = 1.25;
 const zoomFactorOut = 1 / zoomFactorIn;
@@ -139,8 +140,8 @@ export class BpmnGraph extends mxgraph.mxGraph {
    */
   registerMouseWheelZoomListeners(config: ZoomConfiguration): void {
     config = ensureValidZoomConfiguration(config);
-    mxgraph.mxEvent.addMouseWheelListener(debounce(this.createMouseWheelZoomListener(true), config.debounceDelay), this.container);
-    mxgraph.mxEvent.addMouseWheelListener(throttle(this.createMouseWheelZoomListener(false), config.throttleDelay), this.container);
+    eventUtils.addMouseWheelListener(debounce(this.createMouseWheelZoomListener(true), config.debounceDelay), this.container);
+    eventUtils.addMouseWheelListener(throttle(this.createMouseWheelZoomListener(false), config.throttleDelay), this.container);
   }
 
   // Update the currentZoomLevel when performScaling is false, use the currentZoomLevel to set the scale otherwise
@@ -152,13 +153,13 @@ export class BpmnGraph extends mxgraph.mxGraph {
       const [offsetX, offsetY] = this.getEventRelativeCoordinates(evt);
       const [newScale, dx, dy] = this.getScaleAndTranslationDeltas(offsetX, offsetY);
       this.view.scaleAndTranslate(newScale, this.view.translate.x + dx, this.view.translate.y + dy);
-      mxgraph.mxEvent.consume(evt);
+      eventUtils.consume(evt);
     }
   }
 
   private createMouseWheelZoomListener(performScaling: boolean) {
     return (event: Event, up: boolean) => {
-      if (mxgraph.mxEvent.isConsumed(event)) {
+      if (eventUtils.isConsumed(event)) {
         return;
       }
       const evt = event as MouseEvent;
