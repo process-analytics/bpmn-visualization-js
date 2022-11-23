@@ -20,11 +20,12 @@ import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
 import { StyleDefault, StyleUtils } from '../style';
 import type { AbstractCanvas2D } from '@maxgraph/core';
+import { EllipseShape } from '@maxgraph/core';
 
 /**
  * @internal
  */
-export class EventShape extends mxgraph.mxEllipse {
+export class EventShape extends EllipseShape {
   protected iconPainter = IconPainterProvider.get();
 
   // refactor: when all/more event types will be supported, we could move to a Record/MappedType
