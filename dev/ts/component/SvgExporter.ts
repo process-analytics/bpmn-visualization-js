@@ -16,7 +16,7 @@
 
 import type { mxGraph } from 'mxgraph';
 import type { AlignValue, VAlignValue, OverflowValue, TextDirectionValue } from '@maxgraph/core';
-import { Client, SvgCanvas2D, ImageExport } from '@maxgraph/core';
+import { Client, SvgCanvas2D, ImageExport, utils } from '@maxgraph/core';
 
 interface SvgExportOptions {
   scale: number;
@@ -47,7 +47,7 @@ export class SvgExporter {
 
   private doSvgExport(enableForeignObjectForLabel: boolean): string {
     const svgDocument = this.computeSvg({ scale: 1, border: 25, enableForeignObjectForLabel: enableForeignObjectForLabel });
-    const svgAsString = mxgraph.mxUtils.getXml(svgDocument);
+    const svgAsString = utils.getXml(svgDocument);
     return `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 ${svgAsString}
@@ -64,7 +64,7 @@ ${svgAsString}
     const viewScale = this.graph.view.scale;
 
     // Prepares SVG document that holds the output
-    const svgDoc = mxgraph.mxUtils.createXmlDocument();
+    const svgDoc = utils.createXmlDocument();
     const root = svgDoc.createElementNS(mxgraph.mxConstants.NS_SVG, 'svg');
 
     const s = scale / viewScale;
@@ -168,7 +168,7 @@ class CanvasForExport extends SvgCanvas2D {
 
     try {
       this.htmlConverter.innerHTML = str;
-      str = mxgraph.mxUtils.extractTextWithWhitespace(this.htmlConverter.childNodes);
+      str = utils.extractTextWithWhitespace(this.htmlConverter.childNodes);
 
       // Workaround for substring breaking double byte UTF
       const exp = Math.ceil((2 * w) / this.state.fontSize);
@@ -193,7 +193,7 @@ class CanvasForExport extends SvgCanvas2D {
 
       // Uses result and adds ellipsis if more than 1 char remains
       if (result.length < str.length && str.length - result.length > 1) {
-        str = mxgraph.mxUtils.trim(result.join('')) + '...';
+        str = utils.trim(result.join('')) + '...';
       }
     } catch (e) {
       console.warn('Error while computing txt label', e);

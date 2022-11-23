@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { utils } from '@maxgraph/core';
+
 import type { GlobalTaskKind, MessageVisibleKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal';
 import { ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventDefinitionKind } from '../../../model/bpmn/internal';
 import { BpmnStyleIdentifier } from './identifiers';
@@ -73,51 +75,51 @@ export enum StyleDefault {
  */
 export class StyleUtils {
   static getFillColor(style: any): string {
-    return mxgraph.mxUtils.getValue(style, mxgraph.mxConstants.STYLE_FILLCOLOR, StyleDefault.DEFAULT_FILL_COLOR);
+    return utils.getValue(style, mxgraph.mxConstants.STYLE_FILLCOLOR, StyleDefault.DEFAULT_FILL_COLOR);
   }
 
   static getStrokeColor(style: any): string {
-    return mxgraph.mxUtils.getValue(style, mxgraph.mxConstants.STYLE_STROKECOLOR, StyleDefault.DEFAULT_STROKE_COLOR);
+    return utils.getValue(style, mxgraph.mxConstants.STYLE_STROKECOLOR, StyleDefault.DEFAULT_STROKE_COLOR);
   }
 
   static getStrokeWidth(style: any): number {
-    return mxgraph.mxUtils.getValue(style, mxgraph.mxConstants.STYLE_STROKEWIDTH, StyleDefault.STROKE_WIDTH_THIN);
+    return utils.getValue(style, mxgraph.mxConstants.STYLE_STROKEWIDTH, StyleDefault.STROKE_WIDTH_THIN);
   }
 
   static getMargin(style: any): number {
-    return mxgraph.mxUtils.getValue(style, mxgraph.mxConstants.STYLE_MARGIN, StyleDefault.DEFAULT_MARGIN);
+    return utils.getValue(style, mxgraph.mxConstants.STYLE_MARGIN, StyleDefault.DEFAULT_MARGIN);
   }
 
   static getBpmnEventDefinitionKind(style: any): ShapeBpmnEventDefinitionKind {
-    return mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.EVENT_DEFINITION_KIND, ShapeBpmnEventDefinitionKind.NONE);
+    return utils.getValue(style, BpmnStyleIdentifier.EVENT_DEFINITION_KIND, ShapeBpmnEventDefinitionKind.NONE);
   }
 
   static getBpmnSubProcessKind(style: any): ShapeBpmnSubProcessKind {
-    return mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.SUB_PROCESS_KIND, undefined);
+    return utils.getValue(style, BpmnStyleIdentifier.SUB_PROCESS_KIND, undefined);
   }
 
   static getBpmnIsInterrupting(style: any): string {
-    return mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.IS_INTERRUPTING, undefined);
+    return utils.getValue(style, BpmnStyleIdentifier.IS_INTERRUPTING, undefined);
   }
 
   static getBpmnMarkers(style: any): string {
-    return mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.MARKERS, undefined);
+    return utils.getValue(style, BpmnStyleIdentifier.MARKERS, undefined);
   }
 
   static getBpmnIsInstantiating(style: any): boolean {
-    return JSON.parse(mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.IS_INSTANTIATING, false));
+    return JSON.parse(utils.getValue(style, BpmnStyleIdentifier.IS_INSTANTIATING, false));
   }
 
   static getBpmnIsInitiating(style: any): MessageVisibleKind {
-    return mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.IS_INITIATING, undefined);
+    return utils.getValue(style, BpmnStyleIdentifier.IS_INITIATING, undefined);
   }
 
   static getBpmnIsParallelEventBasedGateway(style: any): boolean {
-    return mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND, ShapeBpmnEventBasedGatewayKind.Exclusive) == ShapeBpmnEventBasedGatewayKind.Parallel;
+    return utils.getValue(style, BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND, ShapeBpmnEventBasedGatewayKind.Exclusive) == ShapeBpmnEventBasedGatewayKind.Parallel;
   }
 
   static getBpmnGlobalTaskKind(style: any): GlobalTaskKind {
-    return mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.GLOBAL_TASK_KIND, undefined);
+    return utils.getValue(style, BpmnStyleIdentifier.GLOBAL_TASK_KIND, undefined);
   }
 }
 /* eslint-enable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */
