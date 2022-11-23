@@ -15,10 +15,10 @@
  */
 
 import type { Point, AbstractCanvas2D } from "@maxgraph/core";
-import { SvgCanvas2D } from '@maxgraph/core';
+import { SvgCanvas2D, ConnectorShape } from '@maxgraph/core';
 import { BpmnStyleIdentifier } from '../style';
 
-export class BpmnConnector extends mxgraph.mxConnector {
+export class BpmnConnector extends ConnectorShape {
   constructor(points: Point[], stroke: string, strokewidth?: number) {
     super(points, stroke, strokewidth);
   }
