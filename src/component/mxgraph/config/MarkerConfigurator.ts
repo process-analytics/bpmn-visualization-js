@@ -15,8 +15,8 @@
  */
 
 import { MarkerIdentifier } from '../style';
-import type { mxAbstractCanvas2D, mxShape } from 'mxgraph';
-import type { Cell, Point } from '@maxgraph/core';
+import type { mxAbstractCanvas2D } from 'mxgraph';
+import type { Cell, Point, Shape } from '@maxgraph/core';
 
 /**
  * @internal
@@ -33,7 +33,7 @@ export default class MarkerConfigurator {
     // prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
     const createMarker = (
       c: mxAbstractCanvas2D,
-      _shape: mxShape,
+      _shape: Shape,
       _type: string,
       pe: Point,
       unitX: number,

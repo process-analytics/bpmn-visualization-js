@@ -17,7 +17,8 @@
 import { BpmnCanvas } from './BpmnCanvas';
 import { StyleUtils } from '../../style';
 import type { IconStyleConfiguration, ShapeConfiguration, Size } from './render-types';
-import type { mxAbstractCanvas2D, mxShape } from 'mxgraph';
+import type { mxAbstractCanvas2D } from 'mxgraph';
+import type { Shape } from '@maxgraph/core';
 
 /**
  * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
@@ -52,12 +53,12 @@ export function buildPaintParameter({
   y: number;
   width: number;
   height: number;
-  shape: mxShape;
+  shape: Shape;
   ratioFromParent?: number;
   isFilled?: boolean;
   iconStrokeWidth?: number;
 }): PaintParameter {
-  const shapeStrokeWidth = shape.strokewidth || StyleUtils.getStrokeWidth(shape.style);
+  const shapeStrokeWidth = shape.strokeWidth || StyleUtils.getStrokeWidth(shape.style);
   const fillColor = shape.fill || StyleUtils.getFillColor(shape.style);
   const strokeColor = shape.stroke || StyleUtils.getStrokeColor(shape.style);
   const margin = StyleUtils.getMargin(shape.style);

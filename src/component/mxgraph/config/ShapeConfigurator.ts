@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import type { mxImageShape, mxShape } from 'mxgraph';
+import type { mxImageShape } from 'mxgraph';
 import type { CellState } from '@maxgraph/core';
-import { CellRenderer } from '@maxgraph/core';
+import { CellRenderer, Shape } from '@maxgraph/core';
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
 import { EndEventShape, EventShape, IntermediateEventShape, ThrowIntermediateEventShape } from '../shape/event-shapes';
 import { ComplexGatewayShape, EventBasedGatewayShape, ExclusiveGatewayShape, InclusiveGatewayShape, ParallelGatewayShape } from '../shape/gateway-shapes';
@@ -131,9 +131,9 @@ export default class ShapeConfigurator {
   }
 
   private initMxShapePrototype(): void {
-    // The following is copied from the mxgraph mxShape implementation then converted to TypeScript and enriched for bpmn-visualization
+    // The following is copied from the mxgraph Shape implementation then converted to TypeScript and enriched for bpmn-visualization
     // It is needed for adding the custom attributes that permits identification of the BPMN elements in the DOM
-    mxgraph.mxShape.prototype.createSvgCanvas = function () {
+    Shape.prototype.createSvgCanvas = function () {
       const canvas = new mxgraph.mxSvgCanvas2D(this.node, false);
       canvas.strokeTolerance = this.pointerEvents ? this.svgStrokeTolerance : 0;
       canvas.pointerEventsValue = this.svgPointerEvents;
@@ -182,7 +182,7 @@ export default class ShapeConfigurator {
       let dict = null;
 
       if (overlays != null) {
-        dict = new mxgraph.mxDictionary<mxShape>();
+        dict = new mxgraph.mxDictionary<Shape>();
 
         for (const currentOverlay of overlays) {
           const shape = state.overlays != null ? state.overlays.remove(currentOverlay) : null;
@@ -191,7 +191,7 @@ export default class ShapeConfigurator {
             continue;
           }
 
-          let overlayShape: mxShape;
+          let overlayShape: Shape;
 
           // START bpmn-visualization CUSTOMIZATION
           if (currentOverlay instanceof MxGraphCustomOverlay) {
@@ -227,7 +227,7 @@ export default class ShapeConfigurator {
       // Removes unused
       if (state.overlays != null) {
         // prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
-        state.overlays.visit(function (_id: string, shape: mxShape) {
+        state.overlays.visit(function (_id: string, shape: Shape) {
           shape.destroy();
         });
       }
