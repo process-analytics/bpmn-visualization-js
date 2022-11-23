@@ -15,6 +15,7 @@
  */
 
 import type { mxGraph, mxSvgCanvas2D } from 'mxgraph';
+import { Client } from '@maxgraph/core';
 
 interface SvgExportOptions {
   scale: number;
@@ -39,7 +40,7 @@ export class SvgExporter {
     // chrome and webkit: tainted canvas when svg contains foreignObject
     // also on brave --> probably fail on chromium based browsers
     // so disable foreign objects for such browsers
-    const isFirefox = mxgraph.mxClient.IS_FF;
+    const isFirefox = Client.IS_FF;
     return this.doSvgExport(isFirefox);
   }
 
