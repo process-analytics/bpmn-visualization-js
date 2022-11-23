@@ -16,7 +16,7 @@
 
 import type { mxGraph } from 'mxgraph';
 import type { AlignValue, VAlignValue, OverflowValue, TextDirectionValue } from '@maxgraph/core';
-import { Client, SvgCanvas2D } from '@maxgraph/core';
+import { Client, SvgCanvas2D, ImageExport } from '@maxgraph/core';
 
 interface SvgExportOptions {
   scale: number;
@@ -92,7 +92,7 @@ ${svgAsString}
 
     svgCanvas.scale(s);
 
-    const imgExport = new mxgraph.mxImageExport();
+    const imgExport = new ImageExport();
     // FIXME only the first overlay is placed at the right position
     // overlays put on element of subprocess/call-activity are not placed correctly in svg export
     imgExport.includeOverlays = true;
