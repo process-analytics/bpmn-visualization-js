@@ -19,7 +19,7 @@ import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 import type { ExpectedCellWithGeometry } from '../../helpers/model-expect';
 import { getDefaultParentId } from '../../helpers/model-expect';
-import type { mxCell } from 'mxgraph';
+import type { Cell } from '@maxgraph/core';
 
 export function toBeCell(this: MatcherContext, received: string): CustomMatcherResult {
   const pass = getCell(received) ? true : false;
@@ -29,7 +29,7 @@ export function toBeCell(this: MatcherContext, received: string): CustomMatcherR
   };
 }
 
-function buildReceivedCell(cell: mxCell): ExpectedCell {
+function buildReceivedCell(cell: Cell): ExpectedCell {
   return {
     id: cell.id,
     parent: { id: cell.parent.id },

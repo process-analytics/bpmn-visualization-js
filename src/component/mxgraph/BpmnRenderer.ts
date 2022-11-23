@@ -25,7 +25,7 @@ import StyleComputer from './renderer/StyleComputer';
 import type { BpmnGraph } from './BpmnGraph';
 import type { FitOptions } from '../options';
 import type { RenderedModel } from '../registry/bpmn-model-registry';
-import type { mxCell } from 'mxgraph';
+import type { Cell } from '@maxgraph/core';
 
 /**
  * @internal
@@ -60,7 +60,7 @@ export class BpmnRenderer {
     shapes.forEach(shape => this.insertShape(shape));
   }
 
-  private getParent(bpmnElement: ShapeBpmnElement): mxCell {
+  private getParent(bpmnElement: ShapeBpmnElement): Cell {
     const bpmnElementParent = this.getCell(bpmnElement.parentId);
     return bpmnElementParent ?? this.graph.getDefaultParent();
   }
@@ -107,7 +107,7 @@ export class BpmnRenderer {
     });
   }
 
-  private insertMessageFlowIconIfNeeded(edge: Edge, mxEdge: mxCell): void {
+  private insertMessageFlowIconIfNeeded(edge: Edge, mxEdge: Cell): void {
     if (edge.bpmnElement instanceof MessageFlow && edge.messageVisibleKind !== MessageVisibleKind.NONE) {
       const cell = this.graph.insertVertex(mxEdge, messageFowIconId(mxEdge.id), undefined, 0, 0, 20, 14, this.styleComputer.computeMessageFlowIconStyle(edge));
       cell.geometry.relative = true;
@@ -115,17 +115,17 @@ export class BpmnRenderer {
     }
   }
 
-  private insertWaypoints(waypoints: Waypoint[], mxEdge: mxCell): void {
+  private insertWaypoints(waypoints: Waypoint[], mxEdge: Cell): void {
     if (waypoints) {
       mxEdge.geometry.points = waypoints.map(waypoint => this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new mxgraph.mxPoint(waypoint.x, waypoint.y)));
     }
   }
 
-  private getCell(id: string): mxCell {
+  private getCell(id: string): Cell {
     return this.graph.getModel().getCell(id);
   }
 
-  private insertVertex(parent: mxCell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: string): mxCell {
+  private insertVertex(parent: Cell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: string): Cell {
     const vertexCoordinates = this.coordinatesTranslator.computeRelativeCoordinates(parent, new mxgraph.mxPoint(bounds.x, bounds.y));
     const cell = this.graph.insertVertex(parent, id, value, vertexCoordinates.x, vertexCoordinates.y, bounds.width, bounds.height, style);
 

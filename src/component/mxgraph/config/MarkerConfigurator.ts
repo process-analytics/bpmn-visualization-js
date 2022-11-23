@@ -15,7 +15,8 @@
  */
 
 import { MarkerIdentifier } from '../style';
-import type { mxAbstractCanvas2D, mxCell, mxPoint, mxShape } from 'mxgraph';
+import type { mxAbstractCanvas2D, mxPoint, mxShape } from 'mxgraph';
+import type { Cell } from '@maxgraph/core';
 
 /**
  * @internal
@@ -38,7 +39,7 @@ export default class MarkerConfigurator {
       unitX: number,
       unitY: number,
       size: number,
-      _source: mxCell,
+      _source: Cell,
       strokewidth: number,
     ): (() => void) => {
       const nx = unitX * (size + strokewidth + 4);

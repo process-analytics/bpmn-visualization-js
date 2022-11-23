@@ -34,7 +34,7 @@ layer is required. See `BpmnRenderer` for more details.
 
 ## BPMN Elements rendering and style
 
-Each BPMN Element is transformed into a `mxGraph` [mxCell](https://jgraph.github.io/mxgraph/docs/manual.html#3.1.3.4) and then inserted into the `mxGraph` model:
+Each BPMN Element is transformed into a `mxGraph` [Cell](https://jgraph.github.io/mxgraph/docs/manual.html#3.1.3.4) and then inserted into the `mxGraph` model:
 - `vertex` for BPMN Shapes
 - `edge` for BPMN Edges
 
@@ -103,7 +103,7 @@ the time.
 ### Shape
 
 The `mxGraph` integration uses the following to set the label bounds
-- the `vertex mxCell` geometry offset, see 
+- the `vertex Cell` geometry offset, see 
 for more details
   - x and y position relative to the shape `vertex` itself
   - as for the  shape `vertex` position, a coordinate transformation layer is required.
@@ -113,7 +113,7 @@ for more details
 
 #### Overview
 
-The mxGraph integration uses the `edge mxCell` geometry to set the label bounds
+The mxGraph integration uses the `edge Cell` geometry to set the label bounds
 - absolute geometry
 - offset x and y: position related to the center of the edge and as for the Shape Position, a coordinate transformation layer is required.
   - the center depends on the 2 terminal waypoints
@@ -139,11 +139,11 @@ to see various positioning methods in action.
 
 ## Overlays
 
-We are hacking mxCellOverlays which originally only supports image shape. This lets us use custom shapes.
+We are hacking CellOverlays which originally only supports image shape. This lets us use custom shapes.
 
 Customization main points
-- `MxGraphCustomOverlay`: add extra configuration and behavior to mxCellOverlay
-- customized `mxCellRenderer`: change the overlays rendering code to transform `MxGraphCustomOverlay` into specific shapes 
+- `MxGraphCustomOverlay`: add extra configuration and behavior to CellOverlay
+- customized `CellRenderer`: change the overlays rendering code to transform `MxGraphCustomOverlay` into specific shapes 
 according to its configuration.
 
 More details are available in [#955](https://github.com/process-analytics/bpmn-visualization-js/issues/955).

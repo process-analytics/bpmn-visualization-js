@@ -15,7 +15,8 @@
  */
 
 import type { BpmnGraph } from '../BpmnGraph';
-import type { mxCell, mxPoint } from 'mxgraph';
+import type { mxPoint } from 'mxgraph';
+import type { Cell } from '@maxgraph/core';
 
 /**
  * @internal
@@ -28,7 +29,7 @@ export default class CoordinatesTranslator {
    * @param parent the cell to use for the new coordinate referential
    * @param absoluteCoordinate
    */
-  computeRelativeCoordinates(parent: mxCell, absoluteCoordinate: mxPoint): mxPoint {
+  computeRelativeCoordinates(parent: Cell, absoluteCoordinate: mxPoint): mxPoint {
     const translateForRoot = this.getTranslateForRoot(parent);
     const relativeX = absoluteCoordinate.x + translateForRoot.x;
     const relativeY = absoluteCoordinate.y + translateForRoot.y;
@@ -41,7 +42,7 @@ export default class CoordinatesTranslator {
   //
   // This implementation is taken from the example described in the documentation of mxgraph#getTranslateForRoot (4.1.1)
   // The translation is generally negative
-  private getTranslateForRoot(cell: mxCell): mxPoint {
+  private getTranslateForRoot(cell: Cell): mxPoint {
     const model = this.graph.getModel();
     const offset = new mxgraph.mxPoint(0, 0);
 
@@ -58,12 +59,12 @@ export default class CoordinatesTranslator {
   }
 
   /**
-   * Compute the center of the provided `mxCell` for absolute geometry: this is the center point of a segment whose edges
-   * are the terminal points of the mxCell geometry points. Returns `undefined` if the 2 terminal points are not available.
+   * Compute the center of the provided `Cell` for absolute geometry: this is the center point of a segment whose edges
+   * are the terminal points of the Cell geometry points. Returns `undefined` if the 2 terminal points are not available.
    *
-   * The center coordinates are given in the same referential as the `mxCell`, so relative to its parent.
+   * The center coordinates are given in the same referential as the `Cell`, so relative to its parent.
    */
-  computeEdgeCenter(mxEdge: mxCell): mxPoint {
+  computeEdgeCenter(mxEdge: Cell): mxPoint {
     const points: mxPoint[] = mxEdge.geometry.points;
 
     const p0 = points[0];

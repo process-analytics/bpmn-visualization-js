@@ -17,7 +17,8 @@ import type { ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement 
 import { bpmnVisualization } from '../helpers/model-expect';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
-import type { mxCell, mxGeometry, StyleMap } from 'mxgraph';
+import type { mxGeometry, StyleMap } from 'mxgraph';
+import type { Cell } from '@maxgraph/core';
 import type { MxGraphCustomOverlay, MxGraphCustomOverlayStyle } from '../../../src/component/mxgraph/overlay/custom-overlay';
 
 export interface ExpectedStateStyle extends StyleMap {
@@ -69,7 +70,7 @@ export function buildCellMatcher<R>(
   expected: R,
   cellKind: string,
   buildExpectedCell: (received: string, expected: R) => ExpectedCell,
-  buildReceivedCell: (cell: mxCell) => ExpectedCell,
+  buildReceivedCell: (cell: Cell) => ExpectedCell,
 ): CustomMatcherResult {
   const options = {
     isNot: matcherContext.isNot,
@@ -135,7 +136,7 @@ export function buildCommonExpectedStateStyle(expectedModel: ExpectedEdgeModelEl
   };
 }
 
-function buildReceivedStateStyle(cell: mxCell): ExpectedStateStyle {
+function buildReceivedStateStyle(cell: Cell): ExpectedStateStyle {
   const stateStyle = bpmnVisualization.graph.getCellStyle(cell);
   const expectedStateStyle: ExpectedStateStyle = {
     verticalAlign: stateStyle.verticalAlign,
@@ -160,7 +161,7 @@ function buildReceivedStateStyle(cell: mxCell): ExpectedStateStyle {
   return expectedStateStyle;
 }
 
-export function buildReceivedCellWithCommonAttributes(cell: mxCell): ExpectedCell {
+export function buildReceivedCellWithCommonAttributes(cell: Cell): ExpectedCell {
   const receivedCell: ExpectedCell = {
     value: cell.value,
     style: cell.style,
@@ -186,7 +187,7 @@ export function buildReceivedCellWithCommonAttributes(cell: mxCell): ExpectedCel
   if (cell.edge) {
     const children = cell.children;
     if (children && children[0]) {
-      receivedCell.children = children.map((child: mxCell) => ({
+      receivedCell.children = children.map((child: Cell) => ({
         value: child.value,
         style: child.style,
         id: child.id,
@@ -198,6 +199,6 @@ export function buildReceivedCellWithCommonAttributes(cell: mxCell): ExpectedCel
   return receivedCell;
 }
 
-export function getCell(received: string): mxCell {
+export function getCell(received: string): Cell {
   return bpmnVisualization.graph.model.getCell(received);
 }

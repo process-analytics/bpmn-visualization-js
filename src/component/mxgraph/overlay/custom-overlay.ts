@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import type { mxCellState, mxPoint, mxRectangle } from 'mxgraph';
+import type { mxPoint, mxRectangle } from 'mxgraph';
+import type { CellState } from '@maxgraph/core';
+import { CellOverlay } from '@maxgraph/core';
 import type { OverlayStyle } from '../../registry';
 
 export type VerticalAlignType = 'bottom' | 'middle' | 'top';
@@ -31,7 +33,7 @@ export interface MxGraphCustomOverlayPosition {
 
 export type MxGraphCustomOverlayStyle = Required<OverlayStyle>;
 
-export class MxGraphCustomOverlay extends mxgraph.mxCellOverlay {
+export class MxGraphCustomOverlay extends CellOverlay {
   readonly style: MxGraphCustomOverlayStyle;
 
   constructor(public label: string, options: MxGraphCustomOverlayOptions) {
@@ -39,8 +41,8 @@ export class MxGraphCustomOverlay extends mxgraph.mxCellOverlay {
     this.style = options.style;
   }
 
-  // Based on original method from mxCellOverlay (mxCellOverlay.prototype.getBounds)
-  override getBounds(state: mxCellState): mxRectangle {
+  // Based on original method from CellOverlay (CellOverlay.prototype.getBounds)
+  override getBounds(state: CellState): mxRectangle {
     const isEdge = state.view.graph.getModel().isEdge(state.cell);
     const s = state.view.scale;
     let pt;
@@ -81,7 +83,7 @@ export class MxGraphCustomOverlay extends mxgraph.mxCellOverlay {
     );
   }
 
-  private computeEdgeBounds(state: mxCellState): mxPoint {
+  private computeEdgeBounds(state: CellState): mxPoint {
     const pts = state.absolutePoints;
     // 1st point for start position
     if (this.align == mxgraph.mxConstants.ALIGN_LEFT) {
