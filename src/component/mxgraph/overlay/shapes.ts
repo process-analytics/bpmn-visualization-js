@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 import type { Rectangle } from '@maxgraph/core';
+import { TextShape } from '@maxgraph/core';
 import type { MxGraphCustomOverlayStyle } from './custom-overlay';
 
-export class OverlayBadgeShape extends mxgraph.mxText {
+export class OverlayBadgeShape extends TextShape {
   constructor(value: string, bounds: Rectangle, style: MxGraphCustomOverlayStyle) {
     super(
       value,
@@ -37,6 +38,6 @@ export class OverlayBadgeShape extends mxgraph.mxText {
       style.stroke.color,
     );
     this.fillOpacity = style.fill.opacity;
-    this.strokewidth = style.stroke.width;
+    this.strokeWidth = style.stroke.width;
   }
 }
