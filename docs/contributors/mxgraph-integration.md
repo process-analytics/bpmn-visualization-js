@@ -40,7 +40,7 @@ Each BPMN Element is transformed into a `mxGraph` [Cell](https://jgraph.github.i
 
 At insertion, a style is passed to configure how the BPMN Element is rendered.
 
-The [style](https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxStylesheet-js.html) (see also the [mxGraph manual](https://jgraph.github.io/mxgraph/docs/manual.html#3.1.3.1))
+The [style](https://jgraph.github.io/mxgraph/docs/js-api/files/view/Stylesheet-js.html) (see also the [mxGraph manual](https://jgraph.github.io/mxgraph/docs/manual.html#3.1.3.1))
 is defined and registered in `StyleConfigurator`. In particular, it refers to the name of a [Shape](https://jgraph.github.io/mxgraph/docs/js-api/files/shape/Shape-js.html)
 used for the rendering.
 

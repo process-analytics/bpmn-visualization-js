@@ -17,7 +17,8 @@
 import { AssociationDirectionKind, FlowKind, SequenceFlowKind, ShapeBpmnElementKind, ShapeUtil } from '../../../model/bpmn/internal';
 import { BpmnStyleIdentifier, MarkerIdentifier, StyleDefault } from '../style';
 import type { BpmnGraph } from '../BpmnGraph';
-import type { mxStylesheet, StyleMap } from 'mxgraph';
+import type { StyleMap } from 'mxgraph';
+import type { Stylesheet } from '@maxgraph/core';
 
 /**
  * Configure the styles used for BPMN rendering.
@@ -119,7 +120,7 @@ export class StyleConfigurator {
     this.configureFlowStyles();
   }
 
-  private getStylesheet(): mxStylesheet {
+  private getStylesheet(): Stylesheet {
     return this.graph.getStylesheet();
   }
 
