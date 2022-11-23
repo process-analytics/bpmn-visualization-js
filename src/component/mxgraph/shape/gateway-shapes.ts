@@ -19,8 +19,9 @@ import type { PaintParameter } from './render';
 import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
 import type { AbstractCanvas2D } from '@maxgraph/core';
+import { RhombusShape } from '@maxgraph/core';
 
-abstract class GatewayShape extends mxgraph.mxRhombus {
+abstract class GatewayShape extends RhombusShape {
   protected iconPainter = IconPainterProvider.get();
 
   protected abstract paintInnerShape(paintParameter: PaintParameter): void;
