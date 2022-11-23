@@ -20,7 +20,7 @@ import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/va
 import debounce from 'lodash.debounce';
 import throttle from 'lodash.throttle';
 import type { CellState, Point } from '@maxgraph/core';
-import { eventUtils, GraphView, Graph } from "@maxgraph/core";
+import {eventUtils, GraphView, Graph, InternalEvent} from "@maxgraph/core";
 
 const zoomFactorIn = 1.25;
 const zoomFactorOut = 1 / zoomFactorIn;
@@ -140,8 +140,8 @@ export class BpmnGraph extends Graph {
    */
   registerMouseWheelZoomListeners(config: ZoomConfiguration): void {
     config = ensureValidZoomConfiguration(config);
-    eventUtils.addMouseWheelListener(debounce(this.createMouseWheelZoomListener(true), config.debounceDelay), this.container);
-    eventUtils.addMouseWheelListener(throttle(this.createMouseWheelZoomListener(false), config.throttleDelay), this.container);
+    InternalEvent.addMouseWheelListener(debounce(this.createMouseWheelZoomListener(true), config.debounceDelay), this.container);
+    InternalEvent.addMouseWheelListener(throttle(this.createMouseWheelZoomListener(false), config.throttleDelay), this.container);
   }
 
   // Update the currentZoomLevel when performScaling is false, use the currentZoomLevel to set the scale otherwise
