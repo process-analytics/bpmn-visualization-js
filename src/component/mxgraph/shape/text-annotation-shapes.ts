@@ -16,11 +16,12 @@
 
 import { StyleDefault } from '../style';
 import type { AbstractCanvas2D } from '@maxgraph/core';
+import { RectangleShape } from '@maxgraph/core';
 
 /**
  * @internal
  */
-export class TextAnnotationShape extends mxgraph.mxRectangleShape {
+export class TextAnnotationShape extends RectangleShape {
   override paintForeground(c: AbstractCanvas2D, x: number, y: number, _w: number, h: number): void {
     // paint sort of left square bracket shape - for text annotation
     c.begin();

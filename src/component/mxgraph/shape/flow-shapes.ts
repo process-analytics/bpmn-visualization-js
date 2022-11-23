@@ -20,11 +20,12 @@ import { StyleUtils } from '../style';
 import { MessageVisibleKind } from '../../../model/bpmn/internal/edge/kinds';
 import type { mxRectangle } from 'mxgraph';
 import type { AbstractCanvas2D } from '@maxgraph/core';
+import { RectangleShape } from '@maxgraph/core';
 
 /**
  * @internal
  */
-export class MessageFlowIconShape extends mxgraph.mxRectangleShape {
+export class MessageFlowIconShape extends RectangleShape {
   protected iconPainter = IconPainterProvider.get();
 
   constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {

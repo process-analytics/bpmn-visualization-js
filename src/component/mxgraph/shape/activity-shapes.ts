@@ -21,6 +21,7 @@ import { buildPaintParameter } from './render/icon-painter';
 import { ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal';
 import { orderActivityMarkers } from './render/utils';
 import type { AbstractCanvas2D } from '@maxgraph/core';
+import { RectangleShape } from '@maxgraph/core';
 
 function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): void {
   IconPainterProvider.get().paintEnvelopeIcon({
@@ -34,7 +35,7 @@ function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): v
 /**
  * @internal
  */
-export abstract class BaseActivityShape extends mxgraph.mxRectangleShape {
+export abstract class BaseActivityShape extends RectangleShape {
   protected iconPainter = IconPainterProvider.get();
 
   constructor() {
