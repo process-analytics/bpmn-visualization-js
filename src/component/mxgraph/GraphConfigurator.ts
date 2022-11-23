@@ -19,7 +19,7 @@ import ShapeConfigurator from './config/ShapeConfigurator';
 import MarkerConfigurator from './config/MarkerConfigurator';
 import type { GlobalOptions } from '../options';
 import { BpmnGraph } from './BpmnGraph';
-import type { mxMouseEvent } from 'mxgraph';
+import { InternalMouseEvent } from '@maxgraph/core';
 
 /**
  * Configure the BpmnMxGraph graph that can be used by the lib
@@ -70,8 +70,8 @@ export default class GraphConfigurator {
 
       this.graph.panningHandler.usePopupTrigger = false; // only use the left button to trigger panning
       // Reimplement the function as we also want to trigger 'panning on cells' (ignoreCell to true) and only on left-click
-      // The mxGraph standard implementation doesn't ignore right click in this case, so do it by ourselves
-      panningHandler.isForcePanningEvent = (me): boolean => mxgraph.mxEvent.isLeftMouseButton(me.getEvent()) || mxgraph.mxEvent.isMultiTouchEvent(me.getEvent());
+      // The Graph standard implementation doesn't ignore right click in this case, so do it by ourselves
+      panningHandler.isForcePanningEvent = (me: InternalMouseEvent): boolean => mxgraph.mxEvent.isLeftMouseButton(me.getEvent()) || mxgraph.mxEvent.isMultiTouchEvent(me.getEvent());
       this.graph.setPanning(true);
 
       // Zoom configuration
@@ -82,7 +82,7 @@ export default class GraphConfigurator {
       panningHandler.setPinchEnabled(false);
       // Disable panning on touch device
       // eslint-disable-next-line @typescript-eslint/no-unused-vars -- prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
-      panningHandler.isForcePanningEvent = (_me: mxMouseEvent): boolean => false;
+      panningHandler.isForcePanningEvent = (_me: InternalMouseEvent): boolean => false;
     }
   }
 
