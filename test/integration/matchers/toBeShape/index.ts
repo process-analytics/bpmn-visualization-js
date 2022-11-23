@@ -71,7 +71,7 @@ function buildExpectedStateStyle(expectedModel: ExpectedShapeModelElement): Expe
     : expectedStateStyle.fillColor;
 
   if ('isHorizontal' in expectedModel) {
-    expectedStateStyle.horizontal = expectedModel.isHorizontal ? 0 : 1;
+    expectedStateStyle.horizontal = expectedModel.isHorizontal;
   }
 
   return expectedStateStyle;

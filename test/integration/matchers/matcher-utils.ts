@@ -18,7 +18,7 @@ import { bpmnVisualization } from '../helpers/model-expect';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 import type { mxGeometry, StyleMap } from 'mxgraph';
-import type { Cell } from '@maxgraph/core';
+import type { Cell, CellStyle } from '@maxgraph/core';
 import type { MaxGraphCustomOverlay, MaxGraphCustomOverlayStyle } from '../../../src/component/mxgraph/overlay/custom-overlay';
 
 export interface ExpectedStateStyle extends StyleMap {
@@ -35,13 +35,13 @@ export interface ExpectedStateStyle extends StyleMap {
   endArrow?: string;
   endSize?: number;
   shape?: string;
-  horizontal?: number;
+  horizontal?: boolean;
 }
 
 export interface ExpectedCell {
   value?: string;
   geometry?: mxGeometry;
-  style?: string;
+  style?: CellStyle;
   id?: string;
   edge?: boolean;
   vertex?: boolean;
