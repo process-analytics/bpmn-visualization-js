@@ -18,14 +18,14 @@ import { StyleDefault, StyleUtils } from '../style';
 import type { PaintParameter } from './render';
 import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
-import type { mxAbstractCanvas2D } from 'mxgraph';
+import type { AbstractCanvas2D } from '@maxgraph/core';
 
 abstract class GatewayShape extends mxgraph.mxRhombus {
   protected iconPainter = IconPainterProvider.get();
 
   protected abstract paintInnerShape(paintParameter: PaintParameter): void;
 
-  override paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+  override paintVertexShape(c: AbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this });
     this.paintOuterShape(paintParameter);
     this.paintInnerShape(paintParameter);

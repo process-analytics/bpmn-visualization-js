@@ -18,7 +18,8 @@ import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
 import { StyleUtils } from '../style';
 import { MessageVisibleKind } from '../../../model/bpmn/internal/edge/kinds';
-import type { mxAbstractCanvas2D, mxRectangle } from 'mxgraph';
+import type { mxRectangle } from 'mxgraph';
+import type { AbstractCanvas2D } from '@maxgraph/core';
 
 /**
  * @internal
@@ -30,7 +31,7 @@ export class MessageFlowIconShape extends mxgraph.mxRectangleShape {
     super(bounds, fill, stroke, strokewidth);
   }
 
-  override paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+  override paintVertexShape(c: AbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const withFilledIcon = StyleUtils.getBpmnIsInitiating(this.style) === MessageVisibleKind.NON_INITIATING;
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, ratioFromParent: 1, isFilled: withFilledIcon });
 

@@ -20,7 +20,7 @@ import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
 import { ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal';
 import { orderActivityMarkers } from './render/utils';
-import type { mxAbstractCanvas2D } from 'mxgraph';
+import type { AbstractCanvas2D } from '@maxgraph/core';
 
 function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): void {
   IconPainterProvider.get().paintEnvelopeIcon({
@@ -43,7 +43,7 @@ export abstract class BaseActivityShape extends mxgraph.mxRectangleShape {
     this.isRounded = true;
   }
 
-  override paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+  override paintForeground(c: AbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     super.paintForeground(c, x, y, w, h);
     // 0 is used for ratioParent as if we pass undefined to builder function the default 0.25 value will be used instead
     this.paintMarkerIcons(buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, ratioFromParent: 0, iconStrokeWidth: 1.5 }));
@@ -97,7 +97,7 @@ export abstract class BaseActivityShape extends mxgraph.mxRectangleShape {
 }
 
 abstract class BaseTaskShape extends BaseActivityShape {
-  override paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+  override paintForeground(c: AbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     super.paintForeground(c, x, y, w, h);
     this.paintTaskIcon(buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this }));
   }
@@ -206,7 +206,7 @@ export class ScriptTaskShape extends BaseTaskShape {
  * @internal
  */
 export class CallActivityShape extends BaseActivityShape {
-  override paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+  override paintForeground(c: AbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     super.paintForeground(c, x, y, w, h);
 
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this });
@@ -250,7 +250,7 @@ export class CallActivityShape extends BaseActivityShape {
  * @internal
  */
 export class SubProcessShape extends BaseActivityShape {
-  override paintBackground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+  override paintBackground(c: AbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const subProcessKind = StyleUtils.getBpmnSubProcessKind(this.style);
     c.save(); // ensure we can later restore the configuration
     if (subProcessKind === ShapeBpmnSubProcessKind.EVENT) {

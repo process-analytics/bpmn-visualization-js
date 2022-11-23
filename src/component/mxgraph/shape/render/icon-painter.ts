@@ -17,8 +17,7 @@
 import { BpmnCanvas } from './BpmnCanvas';
 import { StyleUtils } from '../../style';
 import type { IconStyleConfiguration, ShapeConfiguration, Size } from './render-types';
-import type { mxAbstractCanvas2D } from 'mxgraph';
-import type { Shape } from '@maxgraph/core';
+import type { Shape, AbstractCanvas2D } from '@maxgraph/core';
 
 /**
  * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
@@ -27,7 +26,7 @@ import type { Shape } from '@maxgraph/core';
  * @experimental
  */
 export interface PaintParameter {
-  canvas: mxAbstractCanvas2D;
+  canvas: AbstractCanvas2D;
   shapeConfig: ShapeConfiguration;
   iconStyleConfig: IconStyleConfiguration;
   ratioFromParent?: number;
@@ -48,7 +47,7 @@ export function buildPaintParameter({
   isFilled,
   iconStrokeWidth,
 }: {
-  canvas: mxAbstractCanvas2D;
+  canvas: AbstractCanvas2D;
   x: number;
   y: number;
   width: number;
@@ -91,7 +90,7 @@ export class IconPainter {
   /**
    * Utility paint icon methods to easily instantiate a {@link BpmnCanvas} from a {@link PaintParameter}.
    *
-   * @param canvas                  mxgraph `mxAbstractCanvas2D` in charge of performing the paint operations.
+   * @param canvas                  mxgraph `AbstractCanvas2D` in charge of performing the paint operations.
    * @param ratioFromParent         the actual size of the icon will be computed from the shape dimensions using this ratio.
    * @param setIconOriginFunct      called function to set the origin of the icon. Generally, it calls a method of {@link BpmnCanvas}.
    * @param shapeConfig             dimension and style of the shape where the icon is painted.

@@ -16,7 +16,7 @@
 
 import { StyleDefault } from '../../style';
 import type { IconConfiguration, IconStyleConfiguration, ShapeConfiguration, Size } from './render-types';
-import type { mxAbstractCanvas2D } from 'mxgraph';
+import type { AbstractCanvas2D } from '@maxgraph/core';
 
 /**
  * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
@@ -25,7 +25,7 @@ import type { mxAbstractCanvas2D } from 'mxgraph';
  * @experimental
  */
 export interface BpmnCanvasConfiguration {
-  canvas: mxAbstractCanvas2D;
+  canvas: AbstractCanvas2D;
   shapeConfig: ShapeConfiguration;
   iconConfig: IconConfiguration;
 }
@@ -52,9 +52,9 @@ export function computeScaledIconSize(initialIconSize: Size, iconStyleConfigurat
 }
 
 /**
- * Wrapper of `mxAbstractCanvas2D` to simplify method calls when painting icons/markers of BPMN shapes.
+ * Wrapper of `AbstractCanvas2D` to simplify method calls when painting icons/markers of BPMN shapes.
  *
- * It can scale dimensions passed to the method of the original `mxAbstractCanvas2D`.
+ * It can scale dimensions passed to the method of the original `AbstractCanvas2D`.
  *
  * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
  *
@@ -79,7 +79,7 @@ export function computeScaledIconSize(initialIconSize: Size, iconStyleConfigurat
  * @experimental
  */
 export class BpmnCanvas {
-  private canvas: mxAbstractCanvas2D;
+  private canvas: AbstractCanvas2D;
 
   private readonly iconOriginalSize: Size;
   private readonly scaleX: number;
@@ -192,7 +192,7 @@ export class BpmnCanvas {
     this.canvas.setStrokeWidth(strokeWidth);
   }
 
-  arcTo(rx: number, ry: number, angle: number, largeArcFlag: number, sweepFlag: number, x: number, y: number): void {
+  arcTo(rx: number, ry: number, angle: number, largeArcFlag: boolean, sweepFlag: boolean, x: number, y: number): void {
     this.canvas.arcTo(rx * this.scaleX, ry * this.scaleY, angle, largeArcFlag, sweepFlag, this.computeScaleFromOriginX(x), this.computeScaleFromOriginY(y));
   }
 
