@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-import type { mxImageShape } from 'mxgraph';
 import type { CellState } from '@maxgraph/core';
-import { CellRenderer, Shape, Rectangle } from '@maxgraph/core';
+import { CellRenderer, Shape, Rectangle, ImageShape } from '@maxgraph/core';
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
 import { EndEventShape, EventShape, IntermediateEventShape, ThrowIntermediateEventShape } from '../shape/event-shapes';
 import { ComplexGatewayShape, EventBasedGatewayShape, ExclusiveGatewayShape, InclusiveGatewayShape, ParallelGatewayShape } from '../shape/gateway-shapes';
@@ -197,8 +196,8 @@ export default class ShapeConfigurator {
           if (currentOverlay instanceof MxGraphCustomOverlay) {
             overlayShape = new OverlayBadgeShape(currentOverlay.label, new Rectangle(0, 0, 0, 0), currentOverlay.style);
           } else {
-            overlayShape = new mxgraph.mxImageShape(new Rectangle(0, 0, 0, 0), currentOverlay.image.src);
-            (<mxImageShape>overlayShape).preserveImageAspect = false;
+            overlayShape = new ImageShape(new Rectangle(0, 0, 0, 0), currentOverlay.image.src);
+            (<ImageShape>overlayShape).preserveImageAspect = false;
           }
           // END bpmn-visualization CUSTOMIZATION
 
@@ -206,7 +205,7 @@ export default class ShapeConfigurator {
           overlayShape.overlay = currentOverlay;
 
           // The 'initializeOverlay' signature forces us to hardly cast the overlayShape
-          this.initializeOverlay(state, <mxImageShape>overlayShape);
+          this.initializeOverlay(state, <ImageShape>overlayShape);
           this.installCellOverlayListeners(state, currentOverlay, overlayShape);
 
           if (currentOverlay.cursor != null) {
