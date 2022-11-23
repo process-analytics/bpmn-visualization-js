@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-// Use mxgraph types
-/// <reference types="@typed-mxgraph/typed-mxgraph" />
-
 // export types first, otherwise typedoc doesn't generate the subsequent doc correctly (no category and uses the file header instead of the actual TSDoc)
 export * from './component/options';
 export { BpmnVisualization } from './component/BpmnVisualization';
