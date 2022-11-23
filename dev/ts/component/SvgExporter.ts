@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-import type { mxGraph } from 'mxgraph';
-import type { AlignValue, VAlignValue, OverflowValue, TextDirectionValue } from '@maxgraph/core';
+import type { Graph, AlignValue, VAlignValue, OverflowValue, TextDirectionValue } from '@maxgraph/core';
 import { Client, SvgCanvas2D, ImageExport, utils } from '@maxgraph/core';
 
 interface SvgExportOptions {
@@ -31,7 +30,7 @@ interface SvgExportOptions {
 // https://github.com/jgraph/drawio/blob/v14.7.7/src/main/webapp/js/diagramly/Editor.js#L5932
 // https://github.com/jgraph/drawio/blob/v14.8.0/src/main/webapp/js/grapheditor/Graph.js#L9007
 export class SvgExporter {
-  constructor(private graph: mxGraph) {}
+  constructor(private graph: Graph) {}
 
   exportSvg(): string {
     return this.doSvgExport(true);

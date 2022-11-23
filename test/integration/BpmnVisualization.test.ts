@@ -66,8 +66,8 @@ describe('BpmnVisualization API', () => {
     it('lib version', () => {
       expect(bpmnVisualization.getVersion().lib).toBe(getLibVersionFromPackageJson());
     });
-    it('mxGraph version', () => {
-      expect(bpmnVisualization.getVersion().dependencies.get('mxGraph')).toBeDefined();
+    it('maxGraph version', () => {
+      expect(bpmnVisualization.getVersion().dependencies.get('maxGraph')).toBeDefined();
     });
     it('not modifiable version', () => {
       const initialVersion = bpmnVisualization.getVersion();

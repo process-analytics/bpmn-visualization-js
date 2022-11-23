@@ -20,12 +20,12 @@ import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/va
 import debounce from 'lodash.debounce';
 import throttle from 'lodash.throttle';
 import type { CellState, Point } from '@maxgraph/core';
-import { eventUtils, GraphView } from "@maxgraph/core";
+import { eventUtils, GraphView, Graph } from "@maxgraph/core";
 
 const zoomFactorIn = 1.25;
 const zoomFactorOut = 1 / zoomFactorIn;
 
-export class BpmnGraph extends mxgraph.mxGraph {
+export class BpmnGraph extends Graph {
   private currentZoomLevel = 1;
 
   /**
