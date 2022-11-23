@@ -17,7 +17,7 @@
 import type { BpmnGraph } from './BpmnGraph';
 import { BpmnStyleIdentifier } from './style';
 import type { Overlay } from '../registry';
-import { MxGraphCustomOverlay } from './overlay/custom-overlay';
+import { MaxGraphCustomOverlay } from './overlay/custom-overlay';
 import { ensureIsArray } from '../helpers/array-utils';
 import { OverlayConverter } from './overlay/OverlayConverter';
 import { messageFowIconId } from './BpmnRenderer';
@@ -60,7 +60,7 @@ export default class GraphCellUpdater {
       return;
     }
     ensureIsArray(overlays).forEach(overlay => {
-      const bpmnOverlay = new MxGraphCustomOverlay(overlay.label, this.overlayConverter.convert(overlay));
+      const bpmnOverlay = new MaxGraphCustomOverlay(overlay.label, this.overlayConverter.convert(overlay));
       this.graph.addCellOverlay(cell, bpmnOverlay);
     });
   }

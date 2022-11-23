@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 import { OverlayConverter } from '../../../../../src/component/mxgraph/overlay/OverlayConverter';
-import type { MxGraphCustomOverlayPosition } from '../../../../../src/component/mxgraph/overlay/custom-overlay';
+import type { MaxGraphCustomOverlayPosition } from '../../../../../src/component/mxgraph/overlay/custom-overlay';
 import type { Overlay, OverlayPosition } from '../../../../../src/bpmn-visualization';
 import { StyleDefault } from '../../../../../src/bpmn-visualization';
 
@@ -39,9 +39,9 @@ describe('overlay converter', () => {
     [undefined, undefined],
     [null, undefined],
   ];
-  it.each(positionParameters as [[OverlayPosition, MxGraphCustomOverlayPosition]])(
+  it.each(positionParameters as [[OverlayPosition, MaxGraphCustomOverlayPosition]])(
     'convert API overlay position %s to mxGraph overlay position %s',
-    (apiPosition: OverlayPosition, mxGraphPosition: MxGraphCustomOverlayPosition) => {
+    (apiPosition: OverlayPosition, mxGraphPosition: MaxGraphCustomOverlayPosition) => {
       const overlay: Overlay = { position: apiPosition };
 
       const result = overlayConverter.convert(overlay);

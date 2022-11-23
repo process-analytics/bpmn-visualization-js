@@ -19,7 +19,7 @@ import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 import type { mxGeometry, StyleMap } from 'mxgraph';
 import type { Cell } from '@maxgraph/core';
-import type { MxGraphCustomOverlay, MxGraphCustomOverlayStyle } from '../../../src/component/mxgraph/overlay/custom-overlay';
+import type { MaxGraphCustomOverlay, MaxGraphCustomOverlayStyle } from '../../../src/component/mxgraph/overlay/custom-overlay';
 
 export interface ExpectedStateStyle extends StyleMap {
   verticalAlign?: string;
@@ -57,7 +57,7 @@ export interface ExpectedOverlay {
   label?: string;
   horizontalAlign?: string;
   verticalAlign?: string;
-  style?: MxGraphCustomOverlayStyle;
+  style?: MaxGraphCustomOverlayStyle;
 }
 
 export const EXPECTED_LABEL = 'Expected in the mxGraph model';
@@ -172,7 +172,7 @@ export function buildReceivedCellWithCommonAttributes(cell: Cell): ExpectedCell 
     state: { style: buildReceivedStateStyle(cell) },
   };
 
-  const cellOverlays = bpmnVisualization.graph.getCellOverlays(cell) as MxGraphCustomOverlay[];
+  const cellOverlays = bpmnVisualization.graph.getCellOverlays(cell) as MaxGraphCustomOverlay[];
   if (cellOverlays) {
     receivedCell.overlays = cellOverlays.map(cellOverlay => ({
       label: cellOverlay.label,

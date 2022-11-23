@@ -15,10 +15,10 @@
  */
 import type { Overlay, OverlayFont, OverlayPosition, OverlayFill, OverlayStroke } from '../../registry';
 import { StyleDefault } from '../style';
-import type { MxGraphCustomOverlayOptions, MxGraphCustomOverlayPosition, MxGraphCustomOverlayStyle } from './custom-overlay';
+import type { MaxGraphCustomOverlayOptions, MaxGraphCustomOverlayPosition, MaxGraphCustomOverlayStyle } from './custom-overlay';
 
 export class OverlayConverter {
-  private overlayPositions: Map<OverlayPosition, MxGraphCustomOverlayPosition> = new Map([
+  private overlayPositions: Map<OverlayPosition, MaxGraphCustomOverlayPosition> = new Map([
     // Edge
     ['start', { horizontalAlign: 'left', verticalAlign: 'top' }],
     ['middle', { horizontalAlign: 'center', verticalAlign: 'top' }],
@@ -34,17 +34,17 @@ export class OverlayConverter {
     ['middle-right', { horizontalAlign: 'right', verticalAlign: 'middle' }],
   ]);
 
-  convert(overlay: Overlay): MxGraphCustomOverlayOptions {
+  convert(overlay: Overlay): MaxGraphCustomOverlayOptions {
     const position = this.convertPosition(overlay);
     const style = OverlayConverter.convertStyle(overlay);
     return { position, style };
   }
 
-  private convertPosition(overlay: Overlay): MxGraphCustomOverlayPosition {
+  private convertPosition(overlay: Overlay): MaxGraphCustomOverlayPosition {
     return this.overlayPositions.get(overlay.position);
   }
 
-  private static convertStyle(overlay: Overlay): MxGraphCustomOverlayStyle {
+  private static convertStyle(overlay: Overlay): MaxGraphCustomOverlayStyle {
     // recompute the style at each call to ensure we consider default changes that could occur after lib initialization
     const defaultStyle = {
       fill: { color: StyleDefault.DEFAULT_OVERLAY_FILL_COLOR.valueOf(), opacity: StyleDefault.DEFAULT_OVERLAY_FILL_OPACITY.valueOf() },
@@ -53,7 +53,7 @@ export class OverlayConverter {
     };
 
     const style = overlay.style;
-    const convertedStyle = <MxGraphCustomOverlayStyle>{ ...defaultStyle };
+    const convertedStyle = <MaxGraphCustomOverlayStyle>{ ...defaultStyle };
     if (!style) {
       return convertedStyle;
     }
@@ -65,21 +65,21 @@ export class OverlayConverter {
     return convertedStyle;
   }
 
-  private static convertFill(convertedStyle: MxGraphCustomOverlayStyle, apiFill: OverlayFill): void {
+  private static convertFill(convertedStyle: MaxGraphCustomOverlayStyle, apiFill: OverlayFill): void {
     if (apiFill) {
       convertedStyle.fill.color = apiFill.color ?? convertedStyle.fill.color;
       convertedStyle.fill.opacity = apiFill.opacity ?? convertedStyle.fill.opacity;
     }
   }
 
-  private static convertStroke(convertedStyle: MxGraphCustomOverlayStyle, apiStroke: OverlayStroke): void {
+  private static convertStroke(convertedStyle: MaxGraphCustomOverlayStyle, apiStroke: OverlayStroke): void {
     if (apiStroke) {
       convertedStyle.stroke.color = apiStroke.color ?? convertedStyle.stroke.color;
       convertedStyle.stroke.width = apiStroke.width ?? convertedStyle.stroke.width;
     }
   }
 
-  private static convertFont(convertedStyle: MxGraphCustomOverlayStyle, apiFont: OverlayFont): void {
+  private static convertFont(convertedStyle: MaxGraphCustomOverlayStyle, apiFont: OverlayFont): void {
     if (apiFont) {
       convertedStyle.font.color = apiFont.color ?? convertedStyle.font.color;
       convertedStyle.font.size = apiFont.size ?? convertedStyle.font.size;

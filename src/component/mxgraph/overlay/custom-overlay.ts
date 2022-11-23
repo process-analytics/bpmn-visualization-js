@@ -20,22 +20,22 @@ import type { OverlayStyle } from '../../registry';
 export type VerticalAlignType = 'bottom' | 'middle' | 'top';
 export type HorizontalAlignType = 'left' | 'center' | 'right';
 
-export interface MxGraphCustomOverlayOptions {
-  position: MxGraphCustomOverlayPosition;
-  style: MxGraphCustomOverlayStyle;
+export interface MaxGraphCustomOverlayOptions {
+  position: MaxGraphCustomOverlayPosition;
+  style: MaxGraphCustomOverlayStyle;
 }
 
-export interface MxGraphCustomOverlayPosition {
+export interface MaxGraphCustomOverlayPosition {
   horizontalAlign?: HorizontalAlignType;
   verticalAlign?: VerticalAlignType;
 }
 
-export type MxGraphCustomOverlayStyle = Required<OverlayStyle>;
+export type MaxGraphCustomOverlayStyle = Required<OverlayStyle>;
 
-export class MxGraphCustomOverlay extends CellOverlay {
-  readonly style: MxGraphCustomOverlayStyle;
+export class MaxGraphCustomOverlay extends CellOverlay {
+  readonly style: MaxGraphCustomOverlayStyle;
 
-  constructor(public label: string, options: MxGraphCustomOverlayOptions) {
+  constructor(public label: string, options: MaxGraphCustomOverlayOptions) {
     super(null, '', options.position.horizontalAlign, options.position.verticalAlign, null, 'default');
     this.style = options.style;
   }
