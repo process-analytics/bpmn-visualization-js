@@ -153,7 +153,7 @@ export class BpmnGraph extends Graph {
       const [offsetX, offsetY] = this.getEventRelativeCoordinates(evt);
       const [newScale, dx, dy] = this.getScaleAndTranslationDeltas(offsetX, offsetY);
       this.view.scaleAndTranslate(newScale, this.view.translate.x + dx, this.view.translate.y + dy);
-      eventUtils.consume(evt);
+      InternalEvent.consume(evt);
     }
   }
 
