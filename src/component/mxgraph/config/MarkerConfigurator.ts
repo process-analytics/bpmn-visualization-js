@@ -16,6 +16,7 @@
 
 import { MarkerIdentifier } from '../style';
 import type { Cell, Point, Shape, AbstractCanvas2D } from '@maxgraph/core';
+import { MarkerShape } from '@maxgraph/core';
 
 /**
  * @internal
@@ -51,6 +52,6 @@ export default class MarkerConfigurator {
         c.stroke();
       };
     };
-    mxgraph.mxMarker.addMarker(MarkerIdentifier.ARROW_DASH, createMarker);
+    MarkerShape.addMarker(MarkerIdentifier.ARROW_DASH, createMarker);
   }
 }
