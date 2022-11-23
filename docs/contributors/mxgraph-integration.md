@@ -129,7 +129,7 @@ for more details. The definition of 'center' differs whether the `mxGeometry` is
 - if relative, it is the center along the line
 - if absolute, it is derived from the terminal points
 
-This is explained in [mxGraphView.updateEdgeLabelOffset](https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/mxGraphView.js#L2187)
+This is explained in [GraphView.updateEdgeLabelOffset](https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/GraphView.js#L2187)
 - center between the two endpoints if the geometry is absolute
 - the relative distance between the center along the line, and the absolute orthogonal distance if the geometry is relative.
 

@@ -19,9 +19,8 @@ import { FitType } from '../options';
 import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/validators';
 import debounce from 'lodash.debounce';
 import throttle from 'lodash.throttle';
-import type { mxGraphView } from 'mxgraph';
 import type { CellState, Point } from '@maxgraph/core';
-import { eventUtils } from "@maxgraph/core";
+import { eventUtils, GraphView } from "@maxgraph/core";
 
 const zoomFactorIn = 1.25;
 const zoomFactorOut = 1 / zoomFactorIn;
@@ -44,7 +43,7 @@ export class BpmnGraph extends mxgraph.mxGraph {
   /**
    * @internal
    */
-  override createGraphView(): mxGraphView {
+  override createGraphView(): GraphView {
     return new BpmnGraphView(this);
   }
 
@@ -207,7 +206,7 @@ export class BpmnGraph extends mxgraph.mxGraph {
   }
 }
 
-class BpmnGraphView extends mxgraph.mxGraphView {
+class BpmnGraphView extends GraphView {
   override getFloatingTerminalPoint(edge: CellState, start: CellState, end: CellState, source: boolean): Point {
     // some values may be null: the first and the last values are null prior computing floating terminal points
     const edgePoints = edge.absolutePoints.filter(Boolean);

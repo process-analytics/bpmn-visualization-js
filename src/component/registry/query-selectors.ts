@@ -28,7 +28,7 @@
  *   </svg>
  * </div>
  * ```
- * maxgraph generates the following SVG groups (see https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/mxGraphView.js#L2862)
+ * maxgraph generates the following SVG groups (see https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/GraphView.js#L2862)
  *   - 1st: for background image
  *   - 2nd: elements of the graph (shapes and edges)
  *   - 3rd: overlays
