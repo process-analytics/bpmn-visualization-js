@@ -15,7 +15,7 @@
  */
 
 /**
- * Once mxGraph is initialized at BpmnVisualization construction, prior loading a BPMN diagram, the DOM looks like:
+ * Once maxgraph is initialized at BpmnVisualization construction, prior loading a BPMN diagram, the DOM looks like:
  * ```html
  * <div id="bpmn-container" style="touch-action: none;">
  *   <svg style="left: 0px; top: 0px; width: 100%; height: 100%; display: block; min-width: 1px; min-height: 1px;">
@@ -28,7 +28,7 @@
  *   </svg>
  * </div>
  * ```
- * mxGraph generates the following SVG groups (see https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/mxGraphView.js#L2862)
+ * maxgraph generates the following SVG groups (see https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/mxGraphView.js#L2862)
  *   - 1st: for background image
  *   - 2nd: elements of the graph (shapes and edges)
  *   - 3rd: overlays

@@ -15,7 +15,7 @@
  */
 
 /**
- * Define BPMN specific keys used in mxGraph styles. Use constants defined in this class instead of hard coded string values.
+ * Define BPMN specific keys used in maxgraph styles. Use constants defined in this class instead of hard coded string values.
  *
  * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
  *
