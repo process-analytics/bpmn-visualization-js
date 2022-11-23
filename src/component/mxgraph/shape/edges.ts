@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-import type { mxAbstractCanvas2D, mxPoint } from 'mxgraph';
+import type { mxAbstractCanvas2D } from 'mxgraph';
+import type { Point } from "@maxgraph/core";
 import { BpmnStyleIdentifier } from '../style';
 
 export class BpmnConnector extends mxgraph.mxConnector {
-  constructor(points: mxPoint[], stroke: string, strokewidth?: number) {
+  constructor(points: Point[], stroke: string, strokewidth?: number) {
     super(points, stroke, strokewidth);
   }
 
-  override paintEdgeShape(c: mxAbstractCanvas2D, pts: mxPoint[]): void {
+  override paintEdgeShape(c: mxAbstractCanvas2D, pts: Point[]): void {
     // The indirection via functions for markers is needed in
     // order to apply the offsets before painting the line and
     // paint the markers after painting the line.
@@ -48,7 +49,7 @@ export class BpmnConnector extends mxgraph.mxConnector {
 
   // taken from mxPolyline, required as we cannot call mxPolyline method here (parent of the parent)
   // we only support non STYLE_CURVED here (is possible with parent class)
-  private paintEdgeLine(c: mxAbstractCanvas2D, pts: mxPoint[]): void {
+  private paintEdgeLine(c: mxAbstractCanvas2D, pts: Point[]): void {
     const prev = getPointerEventsValue(c);
     setPointerEventsValue(c, 'stroke');
     this.paintLine(c, pts, this.isRounded);

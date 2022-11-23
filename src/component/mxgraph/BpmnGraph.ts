@@ -19,8 +19,8 @@ import { FitType } from '../options';
 import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/validators';
 import debounce from 'lodash.debounce';
 import throttle from 'lodash.throttle';
-import type { mxGraphView, mxPoint } from 'mxgraph';
-import type { CellState } from '@maxgraph/core';
+import type { mxGraphView } from 'mxgraph';
+import type { CellState, Point } from '@maxgraph/core';
 import { eventUtils } from "@maxgraph/core";
 
 const zoomFactorIn = 1.25;
@@ -208,7 +208,7 @@ export class BpmnGraph extends mxgraph.mxGraph {
 }
 
 class BpmnGraphView extends mxgraph.mxGraphView {
-  override getFloatingTerminalPoint(edge: CellState, start: CellState, end: CellState, source: boolean): mxPoint {
+  override getFloatingTerminalPoint(edge: CellState, start: CellState, end: CellState, source: boolean): Point {
     // some values may be null: the first and the last values are null prior computing floating terminal points
     const edgePoints = edge.absolutePoints.filter(Boolean);
     // when there is no BPMN waypoint, all values are null

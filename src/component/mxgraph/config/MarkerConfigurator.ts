@@ -15,8 +15,8 @@
  */
 
 import { MarkerIdentifier } from '../style';
-import type { mxAbstractCanvas2D, mxPoint, mxShape } from 'mxgraph';
-import type { Cell } from '@maxgraph/core';
+import type { mxAbstractCanvas2D, mxShape } from 'mxgraph';
+import type { Cell, Point } from '@maxgraph/core';
 
 /**
  * @internal
@@ -35,7 +35,7 @@ export default class MarkerConfigurator {
       c: mxAbstractCanvas2D,
       _shape: mxShape,
       _type: string,
-      pe: mxPoint,
+      pe: Point,
       unitX: number,
       unitY: number,
       size: number,

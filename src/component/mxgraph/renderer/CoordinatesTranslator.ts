@@ -15,8 +15,8 @@
  */
 
 import type { BpmnGraph } from '../BpmnGraph';
-import type { mxPoint } from 'mxgraph';
 import type { Cell } from '@maxgraph/core';
+import { Point } from '@maxgraph/core';
 
 /**
  * @internal
@@ -29,11 +29,11 @@ export default class CoordinatesTranslator {
    * @param parent the cell to use for the new coordinate referential
    * @param absoluteCoordinate
    */
-  computeRelativeCoordinates(parent: Cell, absoluteCoordinate: mxPoint): mxPoint {
+  computeRelativeCoordinates(parent: Cell, absoluteCoordinate: Point): Point {
     const translateForRoot = this.getTranslateForRoot(parent);
     const relativeX = absoluteCoordinate.x + translateForRoot.x;
     const relativeY = absoluteCoordinate.y + translateForRoot.y;
-    return new mxgraph.mxPoint(relativeX, relativeY);
+    return new Point(relativeX, relativeY);
   }
 
   // Returns the translation to be applied to a cell whose mxGeometry x and y values are expressed with absolute coordinates
@@ -42,9 +42,9 @@ export default class CoordinatesTranslator {
   //
   // This implementation is taken from the example described in the documentation of mxgraph#getTranslateForRoot (4.1.1)
   // The translation is generally negative
-  private getTranslateForRoot(cell: Cell): mxPoint {
+  private getTranslateForRoot(cell: Cell): Point {
     const model = this.graph.getModel();
-    const offset = new mxgraph.mxPoint(0, 0);
+    const offset = new Point(0, 0);
 
     while (cell != null) {
       const geo = model.getGeometry(cell);
@@ -64,8 +64,8 @@ export default class CoordinatesTranslator {
    *
    * The center coordinates are given in the same referential as the `Cell`, so relative to its parent.
    */
-  computeEdgeCenter(mxEdge: Cell): mxPoint {
-    const points: mxPoint[] = mxEdge.geometry.points;
+  computeEdgeCenter(mxEdge: Cell): Point {
+    const points: Point[] = mxEdge.geometry.points;
 
     const p0 = points[0];
     const pe = points[points.length - 1];
@@ -73,7 +73,7 @@ export default class CoordinatesTranslator {
     if (p0 != null && pe != null) {
       const dx = pe.x - p0.x;
       const dy = pe.y - p0.y;
-      return new mxgraph.mxPoint(p0.x + dx / 2, p0.y + dy / 2);
+      return new Point(p0.x + dx / 2, p0.y + dy / 2);
     }
 
     return undefined;

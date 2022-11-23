@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import type { mxPoint, mxRectangle } from 'mxgraph';
+import type { mxRectangle } from 'mxgraph';
 import type { CellState } from '@maxgraph/core';
-import { CellOverlay } from '@maxgraph/core';
+import { CellOverlay, Point } from '@maxgraph/core';
 import type { OverlayStyle } from '../../registry';
 
 export type VerticalAlignType = 'bottom' | 'middle' | 'top';
@@ -56,7 +56,7 @@ export class MxGraphCustomOverlay extends CellOverlay {
     if (isEdge) {
       pt = this.computeEdgeBounds(state);
     } else {
-      pt = new mxgraph.mxPoint();
+      pt = new Point();
 
       if (this.align == mxgraph.mxConstants.ALIGN_LEFT) {
         pt.x = state.x;
@@ -83,7 +83,7 @@ export class MxGraphCustomOverlay extends CellOverlay {
     );
   }
 
-  private computeEdgeBounds(state: CellState): mxPoint {
+  private computeEdgeBounds(state: CellState): Point {
     const pts = state.absolutePoints;
     // 1st point for start position
     if (this.align == mxgraph.mxConstants.ALIGN_LEFT) {
@@ -97,7 +97,7 @@ export class MxGraphCustomOverlay extends CellOverlay {
         const idx = pts.length / 2;
         const p0 = pts[idx - 1];
         const p1 = pts[idx];
-        return new mxgraph.mxPoint(p0.x + (p1.x - p0.x) / 2, p0.y + (p1.y - p0.y) / 2);
+        return new Point(p0.x + (p1.x - p0.x) / 2, p0.y + (p1.y - p0.y) / 2);
       }
     }
     // last point for end position
