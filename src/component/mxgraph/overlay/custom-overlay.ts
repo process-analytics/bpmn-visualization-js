@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import type { mxRectangle } from 'mxgraph';
 import type { CellState } from '@maxgraph/core';
-import { CellOverlay, Point } from '@maxgraph/core';
+import { CellOverlay, Point, Rectangle } from '@maxgraph/core';
 import type { OverlayStyle } from '../../registry';
 
 export type VerticalAlignType = 'bottom' | 'middle' | 'top';
@@ -42,7 +41,7 @@ export class MxGraphCustomOverlay extends CellOverlay {
   }
 
   // Based on original method from CellOverlay (CellOverlay.prototype.getBounds)
-  override getBounds(state: CellState): mxRectangle {
+  override getBounds(state: CellState): Rectangle {
     const isEdge = state.view.graph.getModel().isEdge(state.cell);
     const s = state.view.scale;
     let pt;
@@ -75,7 +74,7 @@ export class MxGraphCustomOverlay extends CellOverlay {
       }
     }
 
-    return new mxgraph.mxRectangle(
+    return new Rectangle(
       Math.round(pt.x - (w * this.defaultOverlap - this.offset.x) * s),
       Math.round(pt.y - (h * this.defaultOverlap - this.offset.y) * s),
       w * s,

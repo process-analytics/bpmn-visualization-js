@@ -18,8 +18,7 @@ import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
 import { StyleUtils } from '../style';
 import { MessageVisibleKind } from '../../../model/bpmn/internal/edge/kinds';
-import type { mxRectangle } from 'mxgraph';
-import type { AbstractCanvas2D } from '@maxgraph/core';
+import type { AbstractCanvas2D, Rectangle } from '@maxgraph/core';
 import { RectangleShape } from '@maxgraph/core';
 
 /**
@@ -28,7 +27,7 @@ import { RectangleShape } from '@maxgraph/core';
 export class MessageFlowIconShape extends RectangleShape {
   protected iconPainter = IconPainterProvider.get();
 
-  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
+  constructor(bounds: Rectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
   }
 

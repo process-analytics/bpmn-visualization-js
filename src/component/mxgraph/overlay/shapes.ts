@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import type { mxRectangle } from 'mxgraph';
+import type { Rectangle } from '@maxgraph/core';
 import type { MxGraphCustomOverlayStyle } from './custom-overlay';
 
 export class OverlayBadgeShape extends mxgraph.mxText {
-  constructor(value: string, bounds: mxRectangle, style: MxGraphCustomOverlayStyle) {
+  constructor(value: string, bounds: Rectangle, style: MxGraphCustomOverlayStyle) {
     super(
       value,
       bounds,
