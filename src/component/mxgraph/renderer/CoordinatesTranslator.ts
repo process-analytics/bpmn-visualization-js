@@ -47,7 +47,7 @@ export default class CoordinatesTranslator {
     const offset = new Point(0, 0);
 
     while (cell != null) {
-      const geo = model.getGeometry(cell);
+      const geo = cell.getGeometry();
       if (geo != null) {
         offset.x -= geo.x;
         offset.y -= geo.y;
