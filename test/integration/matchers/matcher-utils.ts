@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import type { CellStateStyle } from 'mxgraph';
-import type { Cell, CellStyle, Geometry } from '@maxgraph/core';
-import { constants } from '@maxgraph/core';
+import type { Cell, CellStyle, Geometry, AlignValue, VAlignValue, ArrowType, ShapeValue } from '@maxgraph/core';
+import { constants, CellStateStyle } from '@maxgraph/core';
 
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
@@ -25,8 +24,8 @@ import { bpmnVisualization } from '../helpers/model-expect';
 import type { MaxGraphCustomOverlay, MaxGraphCustomOverlayStyle } from '../../../src/component/mxgraph/overlay/custom-overlay';
 
 export interface ExpectedStateStyle extends CellStateStyle {
-  verticalAlign?: string;
-  align?: string;
+  verticalAlign?: VAlignValue;
+  align?: AlignValue;
   strokeWidth?: number;
   strokeColor: string;
   fillColor: string;
@@ -34,10 +33,10 @@ export interface ExpectedStateStyle extends CellStateStyle {
   fontFamily: string;
   fontSize: number;
   fontStyle: number;
-  startArrow?: string;
-  endArrow?: string;
+  startArrow?: ArrowType;
+  endArrow?: ArrowType;
   endSize?: number;
-  shape?: string;
+  shape?: ShapeValue;
   horizontal?: boolean;
 }
 
@@ -111,16 +110,16 @@ export function getFontStyleValue(expectedFont: ExpectedFont): number {
   let value = 0;
   if (expectedFont) {
     if (expectedFont.isBold) {
-      value += constants.FONT_BOLD;
+      value += constants.FONT.BOLD;
     }
     if (expectedFont.isItalic) {
-      value += constants.FONT_ITALIC;
+      value += constants.FONT.ITALIC;
     }
     if (expectedFont.isStrikeThrough) {
-      value += constants.FONT_STRIKETHROUGH;
+      value += constants.FONT.STRIKETHROUGH;
     }
     if (expectedFont.isUnderline) {
-      value += constants.FONT_UNDERLINE;
+      value += constants.FONT.UNDERLINE;
     }
   }
   return value ? value : undefined;

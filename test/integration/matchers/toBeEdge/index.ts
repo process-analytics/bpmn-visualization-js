@@ -27,8 +27,8 @@ import { BpmnStyleIdentifier } from '../../../../src/component/mxgraph/style';
 
 function buildExpectedStateStyle(expectedModel: ExpectedEdgeModelElement): ExpectedStateStyle {
   const expectedStateStyle = buildCommonExpectedStateStyle(expectedModel);
-  expectedStateStyle.verticalAlign = expectedModel.verticalAlign ? expectedModel.verticalAlign : 'top';
-  expectedStateStyle.align = 'center';
+  expectedStateStyle.verticalAlign = expectedModel.verticalAlign ? expectedModel.verticalAlign : constants.ALIGN.TOP;
+  expectedStateStyle.align = constants.ALIGN.CENTER;
   expectedStateStyle.strokeWidth = 1.5;
   expectedStateStyle.startArrow = expectedModel.startArrow;
   expectedStateStyle.endArrow = expectedModel.endArrow;
@@ -65,7 +65,10 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement |
     expectedCell.children = [
       {
         value: undefined,
-        style: `shape=${BpmnStyleIdentifier.MESSAGE_FLOW_ICON};${BpmnStyleIdentifier.IS_INITIATING}=${expectedModel.messageVisibleKind}`,
+        style: {
+          shape: BpmnStyleIdentifier.MESSAGE_FLOW_ICON,
+          bpmn: {isInitiating: expectedModel.messageVisibleKind,},
+        },
         id: `messageFlowIcon_of_${id}`,
         vertex: true,
       },
@@ -84,7 +87,7 @@ export function toBeSequenceFlow(this: MatcherContext, received: string, expecte
 }
 
 export function toBeMessageFlow(this: MatcherContext, received: string, expected: ExpectedEdgeModelElement): CustomMatcherResult {
-  return buildEdgeMatcher('toBeMessageFlow', this, received, { ...expected, kind: FlowKind.MESSAGE_FLOW, startArrow: constants.ARROW_OVAL, endArrow: 'blockThin' });
+  return buildEdgeMatcher('toBeMessageFlow', this, received, { ...expected, kind: FlowKind.MESSAGE_FLOW, startArrow: constants.ARROW.OVAL, endArrow: 'blockThin' });
 }
 
 export function toBeAssociationFlow(this: MatcherContext, received: string, expected: ExpectedEdgeModelElement): CustomMatcherResult {

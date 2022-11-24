@@ -108,18 +108,18 @@ export default class ShapeConfigurator {
         // END OF Fix for issue #920
         '; ';
 
-      if ((s.fontStyle & constants.FONT_BOLD) == constants.FONT_BOLD) {
+      if ((s.fontStyle & constants.FONT.BOLD) == constants.FONT.BOLD) {
         css += 'font-weight: bold; ';
       }
-      if ((s.fontStyle & constants.FONT_ITALIC) == constants.FONT_ITALIC) {
+      if ((s.fontStyle & constants.FONT.ITALIC) == constants.FONT.ITALIC) {
         css += 'font-style: italic; ';
       }
 
       const deco = [];
-      if ((s.fontStyle & constants.FONT_UNDERLINE) == constants.FONT_UNDERLINE) {
+      if ((s.fontStyle & constants.FONT.UNDERLINE) == constants.FONT.UNDERLINE) {
         deco.push('underline');
       }
-      if ((s.fontStyle & constants.FONT_STRIKETHROUGH) == constants.FONT_STRIKETHROUGH) {
+      if ((s.fontStyle & constants.FONT.STRIKETHROUGH) == constants.FONT.STRIKETHROUGH) {
         deco.push('line-through');
       }
       if (deco.length > 0) {
@@ -152,8 +152,8 @@ export default class ShapeConfigurator {
         // 'this.state.cell.style' = the style applied to the cell: 1st element: style name = bpmn shape name
         const cell = this.state.cell;
         // dialect = strictHtml is set means that current node holds an html label
-        let allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === constants.DIALECT_STRICTHTML);
-        const extraCssClasses = this.state.style[BpmnStyleIdentifier.EXTRA_CSS_CLASSES];
+        let allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === constants.DIALECT.STRICTHTML);
+        const extraCssClasses = this.state.style.bpmn.extra.css.classes;
         if (extraCssClasses) {
           allBpmnClassNames = allBpmnClassNames.concat(extraCssClasses);
         }

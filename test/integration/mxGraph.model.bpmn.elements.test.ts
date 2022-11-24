@@ -1258,7 +1258,7 @@ describe('mxGraph model - BPMN elements', () => {
         });
         expect('conditional_sequence_flow_from_activity_id').toBeSequenceFlow({
           sequenceFlowKind: SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY,
-          startArrow: constants.ARROW_DIAMOND_THIN,
+          startArrow: constants.ARROW.DIAMOND_THIN,
           parentId: 'participant_1_id',
           verticalAlign: 'bottom',
         });

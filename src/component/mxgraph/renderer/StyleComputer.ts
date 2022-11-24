@@ -165,16 +165,16 @@ export default class StyleComputer {
   private static getFontStyleValue(font: Font): number {
     let value = 0;
     if (font.isBold) {
-      value += constants.FONT_BOLD;
+      value += constants.FONT.BOLD;
     }
     if (font.isItalic) {
-      value += constants.FONT_ITALIC;
+      value += constants.FONT.ITALIC;
     }
     if (font.isStrikeThrough) {
-      value += constants.FONT_STRIKETHROUGH;
+      value += constants.FONT.STRIKETHROUGH;
     }
     if (font.isUnderline) {
-      value += constants.FONT_UNDERLINE;
+      value += constants.FONT.UNDERLINE;
     }
     return value;
   }

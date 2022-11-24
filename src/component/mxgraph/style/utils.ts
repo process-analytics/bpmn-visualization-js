@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-import { utils, constants } from '@maxgraph/core';
+import type { CellStateStyle } from '@maxgraph/core';
 
 import type { GlobalTaskKind, MessageVisibleKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal';
 import { ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventDefinitionKind } from '../../../model/bpmn/internal';
-import { BpmnStyleIdentifier } from './identifiers';
 
 /**
  * Store all rendering defaults used by `bpmn-visualization`.
@@ -66,7 +65,6 @@ export enum StyleDefault {
   MESSAGE_FLOW_MARKER_END_FILL_COLOR = 'White',
 }
 
-/* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */
 /**
  * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
  *
@@ -74,52 +72,51 @@ export enum StyleDefault {
  * @experimental
  */
 export class StyleUtils {
-  static getFillColor(style: any): string {
-    return utils.getValue(style, constants.STYLE_FILLCOLOR, StyleDefault.DEFAULT_FILL_COLOR);
+  static getFillColor(style: CellStateStyle): string {
+    return style.fillColor ?? StyleDefault.DEFAULT_FILL_COLOR;
   }
 
-  static getStrokeColor(style: any): string {
-    return utils.getValue(style, constants.STYLE_STROKECOLOR, StyleDefault.DEFAULT_STROKE_COLOR);
+  static getStrokeColor(style: CellStateStyle): string {
+    return  style.strokeColor ?? StyleDefault.DEFAULT_STROKE_COLOR;
   }
 
-  static getStrokeWidth(style: any): number {
-    return utils.getValue(style, constants.STYLE_STROKEWIDTH, StyleDefault.STROKE_WIDTH_THIN);
+  static getStrokeWidth(style: CellStateStyle): number {
+    return style.strokeWidth ?? StyleDefault.STROKE_WIDTH_THIN;
   }
 
-  static getMargin(style: any): number {
-    return utils.getValue(style, constants.STYLE_MARGIN, StyleDefault.DEFAULT_MARGIN);
+  static getMargin(style: CellStateStyle): number {
+    return style.margin ?? StyleDefault.DEFAULT_MARGIN;
   }
 
-  static getBpmnEventDefinitionKind(style: any): ShapeBpmnEventDefinitionKind {
-    return utils.getValue(style, BpmnStyleIdentifier.EVENT_DEFINITION_KIND, ShapeBpmnEventDefinitionKind.NONE);
+  static getBpmnEventDefinitionKind(style: CellStateStyle): ShapeBpmnEventDefinitionKind {
+    return style.bpmn.eventDefinitionKind ?? ShapeBpmnEventDefinitionKind.NONE;
   }
 
-  static getBpmnSubProcessKind(style: any): ShapeBpmnSubProcessKind {
-    return utils.getValue(style, BpmnStyleIdentifier.SUB_PROCESS_KIND, undefined);
+  static getBpmnSubProcessKind(style: CellStateStyle): ShapeBpmnSubProcessKind {
+    return style.bpmn.subProcessKind;
   }
 
-  static getBpmnIsInterrupting(style: any): string {
-    return utils.getValue(style, BpmnStyleIdentifier.IS_INTERRUPTING, undefined);
+  static getBpmnIsInterrupting(style: CellStateStyle): string {
+    return style.bpmn.isInterrupting;
   }
 
-  static getBpmnMarkers(style: any): string {
-    return utils.getValue(style, BpmnStyleIdentifier.MARKERS, undefined);
+  static getBpmnMarkers(style: CellStateStyle): string {
+    return style.bpmn.markers;
   }
 
-  static getBpmnIsInstantiating(style: any): boolean {
-    return JSON.parse(utils.getValue(style, BpmnStyleIdentifier.IS_INSTANTIATING, false));
+  static getBpmnIsInstantiating(style: CellStateStyle): boolean {
+    return style.bpmn.isInstantiating ?? false;
   }
 
-  static getBpmnIsInitiating(style: any): MessageVisibleKind {
-    return utils.getValue(style, BpmnStyleIdentifier.IS_INITIATING, undefined);
+  static getBpmnIsInitiating(style: CellStateStyle): MessageVisibleKind {
+    return style.bpmn.isInitiating;
   }
 
-  static getBpmnIsParallelEventBasedGateway(style: any): boolean {
-    return utils.getValue(style, BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND, ShapeBpmnEventBasedGatewayKind.Exclusive) == ShapeBpmnEventBasedGatewayKind.Parallel;
+  static getBpmnIsParallelEventBasedGateway(style: CellStateStyle): boolean {
+    return (style.bpmn.gatewayKind ?? ShapeBpmnEventBasedGatewayKind.Exclusive) == ShapeBpmnEventBasedGatewayKind.Parallel
   }
 
-  static getBpmnGlobalTaskKind(style: any): GlobalTaskKind {
-    return utils.getValue(style, BpmnStyleIdentifier.GLOBAL_TASK_KIND, undefined);
+  static getBpmnGlobalTaskKind(style: CellStateStyle): GlobalTaskKind {
+    return style.bpmn.globalTaskKind;
   }
 }
-/* eslint-enable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */

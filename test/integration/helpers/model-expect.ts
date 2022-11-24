@@ -50,7 +50,7 @@ import {
   toBeTask,
   toBeUserTask,
 } from '../matchers';
-import type { Cell, FilterFunction } from '@maxgraph/core';
+import type {ArrowType, Cell, FilterFunction, VAlignValue} from '@maxgraph/core';
 import { Geometry } from '@maxgraph/core';
 import type { ExpectedOverlay } from '../matchers/matcher-utils';
 import { getCell } from '../matchers/matcher-utils';
@@ -160,9 +160,9 @@ export interface ExpectedEdgeModelElement {
   kind?: FlowKind;
   parentId?: string;
   font?: ExpectedFont;
-  startArrow?: string;
-  endArrow?: string;
-  verticalAlign?: string;
+  startArrow?: ArrowType;
+  endArrow?: ArrowType;
+  verticalAlign?: VAlignValue;
   messageVisibleKind?: MessageVisibleKind;
   overlays?: ExpectedOverlay[];
 }
@@ -194,9 +194,7 @@ const expectElementsInModel = (parentId: string, elementsNumber: number, filter:
 };
 
 export const expectPoolsInModel = (pools: number): void => {
-  expectElementsInModel(undefined, pools, (cell: Cell): boolean => {
-    return cell.style?.startsWith(ShapeBpmnElementKind.POOL);
-  });
+  expectElementsInModel(undefined, pools, (cell: Cell): boolean => !!cell.style[ShapeBpmnElementKind.POOL]);
 };
 
 export const expectShapesInModel = (parentId: string, shapesNumber: number): void => {

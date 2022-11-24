@@ -62,8 +62,8 @@ function expectedStrokeWidth(kind: ShapeBpmnElementKind): number {
 function buildExpectedStateStyle(expectedModel: ExpectedShapeModelElement): ExpectedStateStyle {
   const expectedStateStyle = buildCommonExpectedStateStyle(expectedModel);
   expectedStateStyle.shape = !expectedModel.styleShape ? expectedModel.kind : expectedModel.styleShape;
-  expectedStateStyle.verticalAlign = expectedModel.verticalAlign ? expectedModel.verticalAlign : 'middle';
-  expectedStateStyle.align = expectedModel.align ? expectedModel.align : 'center';
+  expectedStateStyle.verticalAlign = expectedModel.verticalAlign ? expectedModel.verticalAlign : constants.ALIGN.MIDDLE;
+  expectedStateStyle.align = expectedModel.align ? expectedModel.align : constants.ALIGN.CENTER;
   expectedStateStyle.strokeWidth = expectedStrokeWidth(expectedModel.kind);
 
   expectedStateStyle.fillColor = [ShapeBpmnElementKind.LANE, ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.TEXT_ANNOTATION, ShapeBpmnElementKind.GROUP].includes(
@@ -142,12 +142,12 @@ export function toBeShape(this: MatcherContext, received: string, expected: Expe
 
 export function toBePool(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
   const isHorizontal = 'isHorizontal' in expected ? expected.isHorizontal : true;
-  return buildShapeMatcher('toBePool', this, received, { ...expected, kind: ShapeBpmnElementKind.POOL, styleShape: constants.SHAPE_SWIMLANE, isHorizontal });
+  return buildShapeMatcher('toBePool', this, received, { ...expected, kind: ShapeBpmnElementKind.POOL, styleShape: constants.SHAPE.SWIMLANE, isHorizontal });
 }
 
 export function toBeLane(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
   const isHorizontal = 'isHorizontal' in expected ? expected.isHorizontal : true;
-  return buildShapeMatcher('toBeLane', this, received, { ...expected, kind: ShapeBpmnElementKind.LANE, styleShape: constants.SHAPE_SWIMLANE, isHorizontal });
+  return buildShapeMatcher('toBeLane', this, received, { ...expected, kind: ShapeBpmnElementKind.LANE, styleShape: constants.SHAPE.SWIMLANE, isHorizontal });
 }
 
 export function toBeCallActivity(this: MatcherContext, received: string, expected: ExpectedCallActivityModelElement): CustomMatcherResult {
