@@ -52,7 +52,7 @@ export default class CoordinatesTranslator {
         offset.x -= geo.x;
         offset.y -= geo.y;
       }
-      cell = model.getParent(cell);
+      cell = cell.getParent();
     }
 
     return offset;
