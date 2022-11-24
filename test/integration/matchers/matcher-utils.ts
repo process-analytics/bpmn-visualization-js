@@ -17,8 +17,8 @@ import type { ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement 
 import { bpmnVisualization } from '../helpers/model-expect';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
-import type { mxGeometry, StyleMap } from 'mxgraph';
-import type { Cell, CellStyle } from '@maxgraph/core';
+import type { StyleMap } from 'mxgraph';
+import type { Cell, CellStyle, Geometry } from '@maxgraph/core';
 import type { MaxGraphCustomOverlay, MaxGraphCustomOverlayStyle } from '../../../src/component/mxgraph/overlay/custom-overlay';
 
 export interface ExpectedStateStyle extends StyleMap {
@@ -40,7 +40,7 @@ export interface ExpectedStateStyle extends StyleMap {
 
 export interface ExpectedCell {
   value?: string;
-  geometry?: mxGeometry;
+  geometry?: Geometry;
   style?: CellStyle;
   id?: string;
   edge?: boolean;

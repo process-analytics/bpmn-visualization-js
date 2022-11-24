@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Point } from '@maxgraph/core';
+import { Point, Geometry } from '@maxgraph/core';
 import {
   MarkerIdentifier,
   MessageVisibleKind,
@@ -1334,12 +1334,12 @@ describe('mxGraph model - BPMN elements', () => {
 
     expect('Participant_1').toBeCellWithParentAndGeometry({
       // unchanged as this is a pool, coordinates are the ones from the bpmn source
-      geometry: new mxgraph.mxGeometry(160, 80, 900, 180),
+      geometry: new Geometry(160, 80, 900, 180),
     });
 
     expect('StartEvent_1').toBeCellWithParentAndGeometry({
       parentId: 'Participant_1',
-      geometry: new mxgraph.mxGeometry(
+      geometry: new Geometry(
         150, // absolute coordinates: parent 160, cell 310
         80, // absolute coordinates: parent 80, cell 160
         40, // unchanged as no transformation on size
@@ -1347,7 +1347,7 @@ describe('mxGraph model - BPMN elements', () => {
       ),
     });
 
-    const sequenceFlowMxGeometry = new mxgraph.mxGeometry(0, 0, 0, 0);
+    const sequenceFlowMxGeometry = new Geometry(0, 0, 0, 0);
     sequenceFlowMxGeometry.points = [
       new Point(190, 100), // absolute coordinates: parent x="160" y="80", cell x="350" y="180"
       new Point(350, 100), // absolute coordinates: parent x="160" y="80", cell x="510" y="180"
@@ -1357,7 +1357,7 @@ describe('mxGraph model - BPMN elements', () => {
       geometry: sequenceFlowMxGeometry,
     });
 
-    const messageFlowMxGeometry = new mxgraph.mxGeometry(0, 0, 0, 0);
+    const messageFlowMxGeometry = new Geometry(0, 0, 0, 0);
     messageFlowMxGeometry.points = [
       new Point(334, 260), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="260"
       new Point(334, 342), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="342"
@@ -1372,12 +1372,12 @@ describe('mxGraph model - BPMN elements', () => {
 
     expect('Participant_1').toBeCellWithParentAndGeometry({
       // unchanged as this is a pool, coordinates are the ones from the bpmn source
-      geometry: new mxgraph.mxGeometry(160, 80, 900, 400),
+      geometry: new Geometry(160, 80, 900, 400),
     });
 
     expect('Lane_1_1').toBeCellWithParentAndGeometry({
       parentId: 'Participant_1',
-      geometry: new mxgraph.mxGeometry(
+      geometry: new Geometry(
         30, // absolute coordinates: parent 160, cell 190
         0, // absolute coordinates: parent 80, cell 80
         870, // unchanged as no transformation on size
@@ -1387,7 +1387,7 @@ describe('mxGraph model - BPMN elements', () => {
 
     expect('StartEvent_1').toBeCellWithParentAndGeometry({
       parentId: 'Lane_1_1',
-      geometry: new mxgraph.mxGeometry(
+      geometry: new Geometry(
         120, // absolute coordinates: parent 190, cell 310
         80, // absolute coordinates: parent 80, cell 160
         40, // unchanged as no transformation on size
@@ -1397,7 +1397,7 @@ describe('mxGraph model - BPMN elements', () => {
 
     expect('Lane_1_847987').not.toBeCellWithParentAndGeometry({
       parentId: 'Participant_1',
-      geometry: new mxgraph.mxGeometry(
+      geometry: new Geometry(
         30, // absolute coordinates: parent 160, cell 190
         200, // absolute coordinates: parent 80, cell 280
         870, // unchanged as no transformation on size
@@ -1405,7 +1405,7 @@ describe('mxGraph model - BPMN elements', () => {
       ),
     });
 
-    const sequenceFlowMxGeometry = new mxgraph.mxGeometry(0, 0, 0, 0);
+    const sequenceFlowMxGeometry = new Geometry(0, 0, 0, 0);
     sequenceFlowMxGeometry.points = [
       new Point(160, 100), // absolute coordinates: parent x="190" y="80", cell x="350" y="180"
       new Point(320, 100), // absolute coordinates: parent x="190" y="80", cell x="510" y="180"
@@ -1415,7 +1415,7 @@ describe('mxGraph model - BPMN elements', () => {
       geometry: sequenceFlowMxGeometry,
     });
 
-    const messageFlowMxGeometry = new mxgraph.mxGeometry(0, 0, 0, 0);
+    const messageFlowMxGeometry = new Geometry(0, 0, 0, 0);
     messageFlowMxGeometry.points = [
       new Point(334, 480), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="480"
       new Point(334, 632), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="632"
@@ -1449,7 +1449,7 @@ describe('mxGraph model - BPMN elements', () => {
 
       expect('StartEvent_1').toBeCellWithParentAndGeometry({
         parentId: defaultParentId,
-        geometry: new mxgraph.mxGeometry(
+        geometry: new Geometry(
           156.10001,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -1461,14 +1461,14 @@ describe('mxGraph model - BPMN elements', () => {
 
       expect('Activity_1').toBeCellWithParentAndGeometry({
         parentId: defaultParentId,
-        geometry: new mxgraph.mxGeometry(250, 59, 100, 80),
+        geometry: new Geometry(250, 59, 100, 80),
       });
 
-      const mxGeometry = new mxgraph.mxGeometry(412, 81, 36, 36);
-      mxGeometry.offset = new Point(4.16e25, 1.24000000003e29);
+      const geometry = new Geometry(412, 81, 36, 36);
+      geometry.offset = new Point(4.16e25, 1.24000000003e29);
       expect('EndEvent_1').toBeCellWithParentAndGeometry({
         parentId: defaultParentId,
-        geometry: mxGeometry,
+        geometry: geometry,
       });
     });
 
@@ -1477,7 +1477,7 @@ describe('mxGraph model - BPMN elements', () => {
 
       expect('Activity_1').toBeCellWithParentAndGeometry({
         parentId: defaultParentId,
-        geometry: new mxgraph.mxGeometry(
+        geometry: new Geometry(
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore malformed source, conversion result
           'not_a_number0', // from 'not_a_number'

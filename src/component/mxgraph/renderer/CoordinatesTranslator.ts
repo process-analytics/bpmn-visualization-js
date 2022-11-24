@@ -36,7 +36,7 @@ export default class CoordinatesTranslator {
     return new Point(relativeX, relativeY);
   }
 
-  // Returns the translation to be applied to a cell whose mxGeometry x and y values are expressed with absolute coordinates
+  // Returns the translation to be applied to a cell whose Geometry x and y values are expressed with absolute coordinates
   // (i.e related to the graph default parent) you want to assign as parent to the cell passed as argument of this function.
   // That way, you will be able to express the cell coordinates as relative to its parent cell.
   //

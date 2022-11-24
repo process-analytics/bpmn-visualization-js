@@ -120,12 +120,12 @@ The mxGraph integration uses the `edge Cell` geometry to set the label bounds
   - if the waypoints are not available, no position is set and the label is placed on the edge center
 - width and height: for word wrapping.
 
-see [mxGeometry](https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/model/mxGeometry.js#L60)
+see [Geometry](https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/model/Geometry.js#L60)
 
 #### mxGraph Details
 
-The label position is related to the 'center' of the edge, see [mxGeometry](https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/model/mxGeometry.js#L35)
-for more details. The definition of 'center' differs whether the `mxGeometry` is `relative` or not:
+The label position is related to the 'center' of the edge, see [Geometry](https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/model/Geometry.js#L35)
+for more details. The definition of 'center' differs whether the `Geometry` is `relative` or not:
 - if relative, it is the center along the line
 - if absolute, it is derived from the terminal points
 

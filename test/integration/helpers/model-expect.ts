@@ -50,8 +50,8 @@ import {
   toBeTask,
   toBeUserTask,
 } from '../matchers';
-import type { mxGeometry } from 'mxgraph';
 import type { Cell, FilterFunction } from '@maxgraph/core';
+import { Geometry } from '@maxgraph/core';
 import type { ExpectedOverlay } from '../matchers/matcher-utils';
 import { getCell } from '../matchers/matcher-utils';
 
@@ -116,7 +116,7 @@ expect.extend({
 
 export interface ExpectedCellWithGeometry {
   parentId?: string;
-  geometry: mxGeometry;
+  geometry: Geometry;
 }
 
 export interface ExpectedFont {
