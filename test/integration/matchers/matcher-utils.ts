@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import type { StyleMap } from 'mxgraph';
+import type { CellStateStyle } from 'mxgraph';
 import type { Cell, CellStyle, Geometry } from '@maxgraph/core';
 import { constants } from '@maxgraph/core';
 
@@ -24,7 +24,7 @@ import type { ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement 
 import { bpmnVisualization } from '../helpers/model-expect';
 import type { MaxGraphCustomOverlay, MaxGraphCustomOverlayStyle } from '../../../src/component/mxgraph/overlay/custom-overlay';
 
-export interface ExpectedStateStyle extends StyleMap {
+export interface ExpectedStateStyle extends CellStateStyle {
   verticalAlign?: string;
   align?: string;
   strokeWidth?: number;
