@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import type { CellState } from '@maxgraph/core';
-import { CellRenderer, Shape, Rectangle, ImageShape } from '@maxgraph/core';
+import type { CellState, CellOverlay } from '@maxgraph/core';
+import { CellRenderer, Shape, Rectangle, ImageShape, Dictionary } from '@maxgraph/core';
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
 import { EndEventShape, EventShape, IntermediateEventShape, ThrowIntermediateEventShape } from '../shape/event-shapes';
 import { ComplexGatewayShape, EventBasedGatewayShape, ExclusiveGatewayShape, InclusiveGatewayShape, ParallelGatewayShape } from '../shape/gateway-shapes';
@@ -181,7 +181,7 @@ export default class ShapeConfigurator {
       let dict = null;
 
       if (overlays != null) {
-        dict = new mxgraph.mxDictionary<Shape>();
+        dict = new Dictionary<CellOverlay, Shape>();
 
         for (const currentOverlay of overlays) {
           const shape = state.overlays != null ? state.overlays.remove(currentOverlay) : null;
