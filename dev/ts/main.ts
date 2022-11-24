@@ -117,7 +117,7 @@ function collapseBpmnElement(bpmnElementId: string): void {
     return;
   }
   log('Updating model, bpmnElement to collapse:', bpmnElementId);
-  const model = bpmnVisualization.graph.getModel();
+  const model = bpmnVisualization.graph.model;
   const cell = model.getCell(bpmnElementId);
   if (!cell) {
     log('Element not found in the model, do nothing');

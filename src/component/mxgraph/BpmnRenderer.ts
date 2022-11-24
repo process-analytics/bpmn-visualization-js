@@ -40,7 +40,7 @@ export class BpmnRenderer {
   }
 
   private insertShapesAndEdges({ pools, lanes, subprocesses, otherFlowNodes, boundaryEvents, edges }: RenderedModel): void {
-    const model = this.graph.getModel();
+    const model = this.graph.model;
     model.clear(); // ensure to remove manual changes or already loaded graphs
     model.beginUpdate();
     try {
@@ -123,7 +123,7 @@ export class BpmnRenderer {
   }
 
   private getCell(id: string): Cell {
-    return this.graph.getModel().getCell(id);
+    return this.graph.model.getCell(id);
   }
 
   private insertVertex(parent: Cell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: string): Cell {

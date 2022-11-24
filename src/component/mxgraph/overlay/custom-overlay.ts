@@ -42,7 +42,7 @@ export class MaxGraphCustomOverlay extends CellOverlay {
 
   // Based on original method from CellOverlay (CellOverlay.prototype.getBounds)
   override getBounds(state: CellState): Rectangle {
-    const isEdge = state.view.graph.getModel().isEdge(state.cell);
+    const isEdge = state.view.graph.model.isEdge(state.cell);
     const s = state.view.scale;
     let pt;
 

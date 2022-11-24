@@ -42,7 +42,7 @@ export default class GraphCellUpdater {
   }
 
   private updateAndRefreshCssClassesOfElement(elementId: string, cssClasses: string[]): void {
-    const cell = this.graph.getModel().getCell(elementId);
+    const cell = this.graph.model.getCell(elementId);
     if (!cell) {
       return;
     }
@@ -55,7 +55,7 @@ export default class GraphCellUpdater {
   }
 
   addOverlays(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
-    const cell = this.graph.getModel().getCell(bpmnElementId);
+    const cell = this.graph.model.getCell(bpmnElementId);
     if (!cell) {
       return;
     }
@@ -66,7 +66,7 @@ export default class GraphCellUpdater {
   }
 
   removeAllOverlays(bpmnElementId: string): void {
-    const cell = this.graph.getModel().getCell(bpmnElementId);
+    const cell = this.graph.model.getCell(bpmnElementId);
     if (!cell) {
       return;
     }
