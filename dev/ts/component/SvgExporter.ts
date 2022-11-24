@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import type { mxGraph, mxSvgCanvas2D } from 'mxgraph';
-import { Client } from '@maxgraph/core';
+import type { mxGraph } from 'mxgraph';
+import type { AlignValue, VAlignValue, OverflowValue, TextDirectionValue } from '@maxgraph/core';
+import { Client, SvgCanvas2D } from '@maxgraph/core';
 
 interface SvgExportOptions {
   scale: number;
@@ -100,7 +101,7 @@ ${svgAsString}
     return svgDoc;
   }
 
-  createSvgCanvas(node: Element): mxSvgCanvas2D {
+  createSvgCanvas(node: Element): SvgCanvas2D {
     const canvas = new CanvasForExport(node);
     // from the draw.io code, may not be needed here
     canvas.pointerEvents = true;
@@ -108,7 +109,7 @@ ${svgAsString}
   }
 }
 
-class CanvasForExport extends mxgraph.mxSvgCanvas2D {
+class CanvasForExport extends SvgCanvas2D {
   // Convert HTML entities
   private htmlConverter = document.createElement('div');
 
@@ -147,13 +148,13 @@ class CanvasForExport extends mxgraph.mxSvgCanvas2D {
     w: number,
     h: number,
     str: string,
-    align: string,
-    valign: string,
-    wrap: string,
-    overflow: string,
-    clip: string,
+    align: AlignValue,
+    valign: VAlignValue,
+    wrap: boolean,
+    overflow: OverflowValue,
+    clip: boolean,
     rotation: number,
-    dir: string,
+    dir: TextDirectionValue,
   ): void {
     str = this.computeTruncatedText(str, w);
     super.plainText(x, y, w, h, str, align, valign, wrap, overflow, clip, rotation, dir);

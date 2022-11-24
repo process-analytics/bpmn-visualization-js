@@ -15,7 +15,7 @@
  */
 
 import type { CellState, CellOverlay } from '@maxgraph/core';
-import { CellRenderer, Shape, Rectangle, ImageShape, Dictionary } from '@maxgraph/core';
+import { CellRenderer, Shape, Rectangle, ImageShape, Dictionary, SvgCanvas2D } from '@maxgraph/core';
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
 import { EndEventShape, EventShape, IntermediateEventShape, ThrowIntermediateEventShape } from '../shape/event-shapes';
 import { ComplexGatewayShape, EventBasedGatewayShape, ExclusiveGatewayShape, InclusiveGatewayShape, ParallelGatewayShape } from '../shape/gateway-shapes';
@@ -86,7 +86,7 @@ export default class ShapeConfigurator {
   private initMxSvgCanvasPrototype(): void {
     // getTextCss is only used when creating foreignObject for label, so there is no impact on svg text that we use for Overlays.
     // Analysis done for mxgraph@4.1.1, still apply to mxgraph@4.2.2
-    mxgraph.mxSvgCanvas2D.prototype.getTextCss = function () {
+    SvgCanvas2D.prototype.getTextCss = function () {
       const s = this.state;
       const lh = mxgraph.mxConstants.ABSOLUTE_LINE_HEIGHT ? s.fontSize * mxgraph.mxConstants.LINE_HEIGHT + 'px' : mxgraph.mxConstants.LINE_HEIGHT * this.lineHeightCorrection;
       let css =
@@ -133,7 +133,7 @@ export default class ShapeConfigurator {
     // The following is copied from the mxgraph Shape implementation then converted to TypeScript and enriched for bpmn-visualization
     // It is needed for adding the custom attributes that permits identification of the BPMN elements in the DOM
     Shape.prototype.createSvgCanvas = function () {
-      const canvas = new mxgraph.mxSvgCanvas2D(this.node, false);
+      const canvas = new SvgCanvas2D(this.node, false);
       canvas.strokeTolerance = this.pointerEvents ? this.svgStrokeTolerance : 0;
       canvas.pointerEventsValue = this.svgPointerEvents;
       const off = this.getSvgScreenOffset();
@@ -165,8 +165,8 @@ export default class ShapeConfigurator {
 
       if (!this.antiAlias) {
         // Rounds all numbers in the SVG output to integers
-        canvas.format = function (value: string) {
-          return Math.round(parseFloat(value));
+        canvas.format = (value: number): number => {
+          return Math.round(value);
         };
       }
 

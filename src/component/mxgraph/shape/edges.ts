@@ -15,6 +15,7 @@
  */
 
 import type { Point, AbstractCanvas2D } from "@maxgraph/core";
+import { SvgCanvas2D } from '@maxgraph/core';
 import { BpmnStyleIdentifier } from '../style';
 
 export class BpmnConnector extends mxgraph.mxConnector {
@@ -57,11 +58,11 @@ export class BpmnConnector extends mxgraph.mxConnector {
 }
 
 function getPointerEventsValue(c: AbstractCanvas2D): string {
-  return c instanceof mxgraph.mxSvgCanvas2D ? c.pointerEventsValue : null;
+  return c instanceof SvgCanvas2D ? c.pointerEventsValue : null;
 }
 
 function setPointerEventsValue(c: AbstractCanvas2D, value: string): void {
-  if (c instanceof mxgraph.mxSvgCanvas2D) {
+  if (c instanceof SvgCanvas2D) {
     c.pointerEventsValue = value;
   }
 }
