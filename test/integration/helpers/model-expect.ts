@@ -51,7 +51,7 @@ import {
   toBeUserTask,
 } from '../matchers';
 import type { mxGeometry } from 'mxgraph';
-import type { Cell } from '@maxgraph/core';
+import type { Cell, FilterFunction } from '@maxgraph/core';
 import type { ExpectedOverlay } from '../matchers/matcher-utils';
 import { getCell } from '../matchers/matcher-utils';
 
@@ -187,9 +187,9 @@ const defaultParent = bpmnVisualization.graph.getDefaultParent();
 
 export const getDefaultParentId = (): string => defaultParent.id;
 
-const expectElementsInModel = (parentId: string, elementsNumber: number, filter: (cell: Cell) => boolean): void => {
+const expectElementsInModel = (parentId: string, elementsNumber: number, filter: FilterFunction): void => {
   const model = bpmnVisualization.graph.model;
-  const descendants = model.filterDescendants(filter, getCell(parentId));
+  const descendants = model.filterCells([getCell(parentId)], filter);
   expect(descendants).toHaveLength(elementsNumber);
 };
 
