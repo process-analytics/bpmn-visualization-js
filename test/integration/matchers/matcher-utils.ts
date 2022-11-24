@@ -13,12 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import type { ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement } from '../helpers/model-expect';
-import { bpmnVisualization } from '../helpers/model-expect';
-import MatcherContext = jest.MatcherContext;
-import CustomMatcherResult = jest.CustomMatcherResult;
 import type { StyleMap } from 'mxgraph';
 import type { Cell, CellStyle, Geometry } from '@maxgraph/core';
+import { constants } from '@maxgraph/core';
+
+import MatcherContext = jest.MatcherContext;
+import CustomMatcherResult = jest.CustomMatcherResult;
+
+import type { ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement } from '../helpers/model-expect';
+import { bpmnVisualization } from '../helpers/model-expect';
 import type { MaxGraphCustomOverlay, MaxGraphCustomOverlayStyle } from '../../../src/component/mxgraph/overlay/custom-overlay';
 
 export interface ExpectedStateStyle extends StyleMap {
@@ -108,16 +111,16 @@ export function getFontStyleValue(expectedFont: ExpectedFont): number {
   let value = 0;
   if (expectedFont) {
     if (expectedFont.isBold) {
-      value += mxgraph.mxConstants.FONT_BOLD;
+      value += constants.FONT_BOLD;
     }
     if (expectedFont.isItalic) {
-      value += mxgraph.mxConstants.FONT_ITALIC;
+      value += constants.FONT_ITALIC;
     }
     if (expectedFont.isStrikeThrough) {
-      value += mxgraph.mxConstants.FONT_STRIKETHROUGH;
+      value += constants.FONT_STRIKETHROUGH;
     }
     if (expectedFont.isUnderline) {
-      value += mxgraph.mxConstants.FONT_UNDERLINE;
+      value += constants.FONT_UNDERLINE;
     }
   }
   return value ? value : undefined;

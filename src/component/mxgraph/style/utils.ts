@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { utils } from '@maxgraph/core';
+import { utils, constants } from '@maxgraph/core';
 
 import type { GlobalTaskKind, MessageVisibleKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal';
 import { ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventDefinitionKind } from '../../../model/bpmn/internal';
@@ -75,19 +75,19 @@ export enum StyleDefault {
  */
 export class StyleUtils {
   static getFillColor(style: any): string {
-    return utils.getValue(style, mxgraph.mxConstants.STYLE_FILLCOLOR, StyleDefault.DEFAULT_FILL_COLOR);
+    return utils.getValue(style, constants.STYLE_FILLCOLOR, StyleDefault.DEFAULT_FILL_COLOR);
   }
 
   static getStrokeColor(style: any): string {
-    return utils.getValue(style, mxgraph.mxConstants.STYLE_STROKECOLOR, StyleDefault.DEFAULT_STROKE_COLOR);
+    return utils.getValue(style, constants.STYLE_STROKECOLOR, StyleDefault.DEFAULT_STROKE_COLOR);
   }
 
   static getStrokeWidth(style: any): number {
-    return utils.getValue(style, mxgraph.mxConstants.STYLE_STROKEWIDTH, StyleDefault.STROKE_WIDTH_THIN);
+    return utils.getValue(style, constants.STYLE_STROKEWIDTH, StyleDefault.STROKE_WIDTH_THIN);
   }
 
   static getMargin(style: any): number {
-    return utils.getValue(style, mxgraph.mxConstants.STYLE_MARGIN, StyleDefault.DEFAULT_MARGIN);
+    return utils.getValue(style, constants.STYLE_MARGIN, StyleDefault.DEFAULT_MARGIN);
   }
 
   static getBpmnEventDefinitionKind(style: any): ShapeBpmnEventDefinitionKind {

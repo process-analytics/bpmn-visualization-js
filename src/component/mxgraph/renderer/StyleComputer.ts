@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { constants } from '@maxgraph/core';
+
 import Shape from '../../../model/bpmn/internal/shape/Shape';
 import type { Edge } from '../../../model/bpmn/internal/edge/edge';
 import type Bounds from '../../../model/bpmn/internal/Bounds';
@@ -64,9 +66,9 @@ export default class StyleComputer {
     } else if (bpmnElement instanceof ShapeBpmnActivity) {
       this.computeActivityShapeStyle(bpmnElement, styleValues);
     } else if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
-      // mxgraph.mxConstants.STYLE_HORIZONTAL is for the label
+      // constants.STYLE_HORIZONTAL is for the label
       // In BPMN, isHorizontal is for the Shape
-      styleValues.set(mxgraph.mxConstants.STYLE_HORIZONTAL, shape.isHorizontal ? '0' : '1');
+      styleValues.set(constants.STYLE_HORIZONTAL, shape.isHorizontal ? '0' : '1');
     } else if (bpmnElement instanceof ShapeBpmnEventBasedGateway) {
       styleValues.set(BpmnStyleIdentifier.IS_INSTANTIATING, String(bpmnElement.instantiate));
       styleValues.set(BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND, String(bpmnElement.gatewayKind));
@@ -117,9 +119,9 @@ export default class StyleComputer {
 
     const font = bpmnCell.label?.font;
     if (font) {
-      styleValues.set(mxgraph.mxConstants.STYLE_FONTFAMILY, font.name);
-      styleValues.set(mxgraph.mxConstants.STYLE_FONTSIZE, font.size);
-      styleValues.set(mxgraph.mxConstants.STYLE_FONTSTYLE, StyleComputer.getFontStyleValue(font));
+      styleValues.set(constants.STYLE_FONTFAMILY, font.name);
+      styleValues.set(constants.STYLE_FONTSIZE, font.size);
+      styleValues.set(constants.STYLE_FONTSTYLE, StyleComputer.getFontStyleValue(font));
     }
 
     return styleValues;
@@ -130,17 +132,17 @@ export default class StyleComputer {
 
     const bpmnElement = bpmnCell.bpmnElement;
     if (labelBounds) {
-      styleValues.set(mxgraph.mxConstants.STYLE_VERTICAL_ALIGN, mxgraph.mxConstants.ALIGN_TOP);
+      styleValues.set(constants.STYLE_VERTICAL_ALIGN, constants.ALIGN_TOP);
       if (bpmnCell.bpmnElement.kind != ShapeBpmnElementKind.TEXT_ANNOTATION) {
-        styleValues.set(mxgraph.mxConstants.STYLE_ALIGN, mxgraph.mxConstants.ALIGN_CENTER);
+        styleValues.set(constants.STYLE_ALIGN, constants.ALIGN_CENTER);
       }
 
       if (bpmnCell instanceof Shape) {
         // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
-        styleValues.set(mxgraph.mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
+        styleValues.set(constants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
         // align settings
-        styleValues.set(mxgraph.mxConstants.STYLE_LABEL_POSITION, mxgraph.mxConstants.ALIGN_TOP);
-        styleValues.set(mxgraph.mxConstants.STYLE_VERTICAL_LABEL_POSITION, mxgraph.mxConstants.ALIGN_LEFT);
+        styleValues.set(constants.STYLE_LABEL_POSITION, constants.ALIGN_TOP);
+        styleValues.set(constants.STYLE_VERTICAL_LABEL_POSITION, constants.ALIGN_LEFT);
       }
     }
     // when no label bounds, adjust the default style dynamically
@@ -150,7 +152,7 @@ export default class StyleComputer {
         (bpmnElement instanceof ShapeBpmnCallActivity && bpmnElement.callActivityKind === ShapeBpmnCallActivityKind.CALLING_PROCESS)) &&
       !bpmnElement.markers.includes(ShapeBpmnMarkerKind.EXPAND)
     ) {
-      styleValues.set(mxgraph.mxConstants.STYLE_VERTICAL_ALIGN, mxgraph.mxConstants.ALIGN_TOP);
+      styleValues.set(constants.STYLE_VERTICAL_ALIGN, constants.ALIGN_TOP);
     }
 
     return styleValues;
@@ -163,16 +165,16 @@ export default class StyleComputer {
   private static getFontStyleValue(font: Font): number {
     let value = 0;
     if (font.isBold) {
-      value += mxgraph.mxConstants.FONT_BOLD;
+      value += constants.FONT_BOLD;
     }
     if (font.isItalic) {
-      value += mxgraph.mxConstants.FONT_ITALIC;
+      value += constants.FONT_ITALIC;
     }
     if (font.isStrikeThrough) {
-      value += mxgraph.mxConstants.FONT_STRIKETHROUGH;
+      value += constants.FONT_STRIKETHROUGH;
     }
     if (font.isUnderline) {
-      value += mxgraph.mxConstants.FONT_UNDERLINE;
+      value += constants.FONT_UNDERLINE;
     }
     return value;
   }

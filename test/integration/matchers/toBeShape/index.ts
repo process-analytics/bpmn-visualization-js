@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { constants } from '@maxgraph/core';
+
 import type { ExpectedCell, ExpectedStateStyle } from '../matcher-utils';
 import { buildCellMatcher, buildCommonExpectedStateStyle, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
 import type {
@@ -140,12 +142,12 @@ export function toBeShape(this: MatcherContext, received: string, expected: Expe
 
 export function toBePool(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
   const isHorizontal = 'isHorizontal' in expected ? expected.isHorizontal : true;
-  return buildShapeMatcher('toBePool', this, received, { ...expected, kind: ShapeBpmnElementKind.POOL, styleShape: mxgraph.mxConstants.SHAPE_SWIMLANE, isHorizontal });
+  return buildShapeMatcher('toBePool', this, received, { ...expected, kind: ShapeBpmnElementKind.POOL, styleShape: constants.SHAPE_SWIMLANE, isHorizontal });
 }
 
 export function toBeLane(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
   const isHorizontal = 'isHorizontal' in expected ? expected.isHorizontal : true;
-  return buildShapeMatcher('toBeLane', this, received, { ...expected, kind: ShapeBpmnElementKind.LANE, styleShape: mxgraph.mxConstants.SHAPE_SWIMLANE, isHorizontal });
+  return buildShapeMatcher('toBeLane', this, received, { ...expected, kind: ShapeBpmnElementKind.LANE, styleShape: constants.SHAPE_SWIMLANE, isHorizontal });
 }
 
 export function toBeCallActivity(this: MatcherContext, received: string, expected: ExpectedCallActivityModelElement): CustomMatcherResult {

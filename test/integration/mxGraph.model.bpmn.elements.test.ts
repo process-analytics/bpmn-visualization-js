@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { Point, Geometry } from '@maxgraph/core';
+import { Point, Geometry, constants } from '@maxgraph/core';
+
 import {
   MarkerIdentifier,
   MessageVisibleKind,
@@ -1257,7 +1258,7 @@ describe('mxGraph model - BPMN elements', () => {
         });
         expect('conditional_sequence_flow_from_activity_id').toBeSequenceFlow({
           sequenceFlowKind: SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY,
-          startArrow: mxgraph.mxConstants.ARROW_DIAMOND_THIN,
+          startArrow: constants.ARROW_DIAMOND_THIN,
           parentId: 'participant_1_id',
           verticalAlign: 'bottom',
         });

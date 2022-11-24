@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 import type { CellState } from '@maxgraph/core';
-import { CellOverlay, Point, Rectangle } from '@maxgraph/core';
+import { CellOverlay, Point, Rectangle, constants } from '@maxgraph/core';
+
 import type { OverlayStyle } from '../../registry';
 
 export type VerticalAlignType = 'bottom' | 'middle' | 'top';
@@ -57,17 +58,17 @@ export class MaxGraphCustomOverlay extends CellOverlay {
     } else {
       pt = new Point();
 
-      if (this.align == mxgraph.mxConstants.ALIGN_LEFT) {
+      if (this.align == constants.ALIGN_LEFT) {
         pt.x = state.x;
-      } else if (this.align == mxgraph.mxConstants.ALIGN_CENTER) {
+      } else if (this.align == constants.ALIGN_CENTER) {
         pt.x = state.x + state.width / 2;
       } else {
         pt.x = state.x + state.width;
       }
 
-      if (this.verticalAlign == mxgraph.mxConstants.ALIGN_TOP) {
+      if (this.verticalAlign == constants.ALIGN_TOP) {
         pt.y = state.y;
-      } else if (this.verticalAlign == mxgraph.mxConstants.ALIGN_MIDDLE) {
+      } else if (this.verticalAlign == constants.ALIGN_MIDDLE) {
         pt.y = state.y + state.height / 2;
       } else {
         pt.y = state.y + state.height;
@@ -85,11 +86,11 @@ export class MaxGraphCustomOverlay extends CellOverlay {
   private computeEdgeBounds(state: CellState): Point {
     const pts = state.absolutePoints;
     // 1st point for start position
-    if (this.align == mxgraph.mxConstants.ALIGN_LEFT) {
+    if (this.align == constants.ALIGN_LEFT) {
       return pts[0];
     }
     // middle point for middle position
-    else if (this.align == mxgraph.mxConstants.ALIGN_CENTER) {
+    else if (this.align == constants.ALIGN_CENTER) {
       if (pts.length % 2 == 1) {
         return pts[Math.floor(pts.length / 2)];
       } else {

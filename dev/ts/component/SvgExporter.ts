@@ -15,7 +15,7 @@
  */
 
 import type { Graph, AlignValue, VAlignValue, OverflowValue, TextDirectionValue } from '@maxgraph/core';
-import { Client, SvgCanvas2D, ImageExport, utils } from '@maxgraph/core';
+import { Client, SvgCanvas2D, ImageExport, utils, constants } from '@maxgraph/core';
 
 interface SvgExportOptions {
   scale: number;
@@ -64,7 +64,7 @@ ${svgAsString}
 
     // Prepares SVG document that holds the output
     const svgDoc = utils.createXmlDocument();
-    const root = svgDoc.createElementNS(mxgraph.mxConstants.NS_SVG, 'svg');
+    const root = svgDoc.createElementNS(constants.NS_SVG, 'svg');
 
     const s = scale / viewScale;
     const w = Math.max(1, Math.ceil(bounds.width * s) + 2 * border);
@@ -76,7 +76,7 @@ ${svgAsString}
     root.setAttribute('viewBox', (crisp ? '-0.5 -0.5' : '0 0') + ' ' + w + ' ' + h);
     svgDoc.appendChild(root);
 
-    const group = svgDoc.createElementNS(mxgraph.mxConstants.NS_SVG, 'g');
+    const group = svgDoc.createElementNS(constants.NS_SVG, 'g');
     root.appendChild(group);
 
     const svgCanvas = this.createSvgCanvas(group);

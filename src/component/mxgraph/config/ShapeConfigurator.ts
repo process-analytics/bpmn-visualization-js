@@ -15,7 +15,8 @@
  */
 
 import type { CellState, CellOverlay } from '@maxgraph/core';
-import { CellRenderer, Shape, Rectangle, ImageShape, Dictionary, SvgCanvas2D } from '@maxgraph/core';
+import { CellRenderer, Shape, Rectangle, ImageShape, Dictionary, SvgCanvas2D, constants } from '@maxgraph/core';
+
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
 import { EndEventShape, EventShape, IntermediateEventShape, ThrowIntermediateEventShape } from '../shape/event-shapes';
 import { ComplexGatewayShape, EventBasedGatewayShape, ExclusiveGatewayShape, InclusiveGatewayShape, ParallelGatewayShape } from '../shape/gateway-shapes';
@@ -88,7 +89,7 @@ export default class ShapeConfigurator {
     // Analysis done for mxgraph@4.1.1, still apply to mxgraph@4.2.2
     SvgCanvas2D.prototype.getTextCss = function () {
       const s = this.state;
-      const lh = mxgraph.mxConstants.ABSOLUTE_LINE_HEIGHT ? s.fontSize * mxgraph.mxConstants.LINE_HEIGHT + 'px' : mxgraph.mxConstants.LINE_HEIGHT * this.lineHeightCorrection;
+      const lh = constants.ABSOLUTE_LINE_HEIGHT ? s.fontSize * constants.LINE_HEIGHT + 'px' : constants.LINE_HEIGHT * this.lineHeightCorrection;
       let css =
         'display: inline-block; font-size: ' +
         s.fontSize +
@@ -107,18 +108,18 @@ export default class ShapeConfigurator {
         // END OF Fix for issue #920
         '; ';
 
-      if ((s.fontStyle & mxgraph.mxConstants.FONT_BOLD) == mxgraph.mxConstants.FONT_BOLD) {
+      if ((s.fontStyle & constants.FONT_BOLD) == constants.FONT_BOLD) {
         css += 'font-weight: bold; ';
       }
-      if ((s.fontStyle & mxgraph.mxConstants.FONT_ITALIC) == mxgraph.mxConstants.FONT_ITALIC) {
+      if ((s.fontStyle & constants.FONT_ITALIC) == constants.FONT_ITALIC) {
         css += 'font-style: italic; ';
       }
 
       const deco = [];
-      if ((s.fontStyle & mxgraph.mxConstants.FONT_UNDERLINE) == mxgraph.mxConstants.FONT_UNDERLINE) {
+      if ((s.fontStyle & constants.FONT_UNDERLINE) == constants.FONT_UNDERLINE) {
         deco.push('underline');
       }
-      if ((s.fontStyle & mxgraph.mxConstants.FONT_STRIKETHROUGH) == mxgraph.mxConstants.FONT_STRIKETHROUGH) {
+      if ((s.fontStyle & constants.FONT_STRIKETHROUGH) == constants.FONT_STRIKETHROUGH) {
         deco.push('line-through');
       }
       if (deco.length > 0) {
@@ -151,7 +152,7 @@ export default class ShapeConfigurator {
         // 'this.state.cell.style' = the style applied to the cell: 1st element: style name = bpmn shape name
         const cell = this.state.cell;
         // dialect = strictHtml is set means that current node holds an html label
-        let allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === mxgraph.mxConstants.DIALECT_STRICTHTML);
+        let allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === constants.DIALECT_STRICTHTML);
         const extraCssClasses = this.state.style[BpmnStyleIdentifier.EXTRA_CSS_CLASSES];
         if (extraCssClasses) {
           allBpmnClassNames = allBpmnClassNames.concat(extraCssClasses);

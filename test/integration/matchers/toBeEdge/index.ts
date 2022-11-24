@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { constants } from '@maxgraph/core';
+
 import type { ExpectedStateStyle, ExpectedCell } from '../matcher-utils';
 import { buildCommonExpectedStateStyle, buildCellMatcher, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
 import MatcherContext = jest.MatcherContext;
@@ -82,7 +84,7 @@ export function toBeSequenceFlow(this: MatcherContext, received: string, expecte
 }
 
 export function toBeMessageFlow(this: MatcherContext, received: string, expected: ExpectedEdgeModelElement): CustomMatcherResult {
-  return buildEdgeMatcher('toBeMessageFlow', this, received, { ...expected, kind: FlowKind.MESSAGE_FLOW, startArrow: mxgraph.mxConstants.ARROW_OVAL, endArrow: 'blockThin' });
+  return buildEdgeMatcher('toBeMessageFlow', this, received, { ...expected, kind: FlowKind.MESSAGE_FLOW, startArrow: constants.ARROW_OVAL, endArrow: 'blockThin' });
 }
 
 export function toBeAssociationFlow(this: MatcherContext, received: string, expected: ExpectedEdgeModelElement): CustomMatcherResult {
