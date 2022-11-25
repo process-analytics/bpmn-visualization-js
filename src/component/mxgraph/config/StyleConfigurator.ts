@@ -15,7 +15,7 @@
  */
 
 import type { Stylesheet } from '@maxgraph/core';
-import { constants } from '@maxgraph/core';
+import { constants, Perimeter } from '@maxgraph/core';
 
 import { AssociationDirectionKind, FlowKind, SequenceFlowKind, ShapeBpmnElementKind, ShapeUtil } from '../../../model/bpmn/internal';
 import { BpmnShapeIdentifier, MarkerIdentifier, StyleDefault } from '../style';
@@ -165,7 +165,7 @@ export class StyleConfigurator {
     ShapeUtil.eventKinds().forEach(kind => {
       const style: BPMNCellStyle = {
         shape: kind,
-        perimeter: mxgraph.mxPerimeter.EllipsePerimeter,
+        perimeter: Perimeter.EllipsePerimeter,
         strokeWidth: kind == ShapeBpmnElementKind.EVENT_END ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN,
         verticalLabelPosition: constants.ALIGN.BOTTOM,
       };
@@ -222,7 +222,7 @@ export class StyleConfigurator {
     ShapeUtil.gatewayKinds().forEach(kind => {
       const style: BPMNCellStyle = {
         shape: kind,
-        perimeter: mxgraph.mxPerimeter.RhombusPerimeter,
+        perimeter: Perimeter.RhombusPerimeter,
         verticalAlign: constants.ALIGN.TOP,
         strokeWidth: StyleDefault.STROKE_WIDTH_THIN,
 
