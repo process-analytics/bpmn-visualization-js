@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import type { AbstractCanvas2D } from '@maxgraph/core';
+import { RhombusShape } from '@maxgraph/core';
 
-import { StyleDefault, StyleUtils } from '../style';
+import {ShapeBpmnEventBasedGatewayKind} from "../../../model/bpmn/internal";
+import { StyleDefault } from '../style';
 import type { PaintParameter } from './render';
 import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
-import type { AbstractCanvas2D } from '@maxgraph/core';
-import { RhombusShape } from '@maxgraph/core';
+import type { BPMNCellStyle } from "../renderer/StyleComputer";
 
 abstract class GatewayShape extends RhombusShape {
   protected iconPainter = IconPainterProvider.get();
@@ -98,7 +100,7 @@ export class EventBasedGatewayShape extends GatewayShape {
       ...paintParameter,
       ratioFromParent: 0.55,
     });
-    if (!StyleUtils.getBpmnIsInstantiating(this.style)) {
+    if (!(this.style as BPMNCellStyle).bpmn.isInstantiating) {
       this.iconPainter.paintCircleIcon({
         ...paintParameter,
         ratioFromParent: 0.45,
@@ -110,7 +112,7 @@ export class EventBasedGatewayShape extends GatewayShape {
       ...paintParameter,
       ratioFromParent: 0.3,
     };
-    if (StyleUtils.getBpmnIsParallelEventBasedGateway(this.style)) {
+    if ((this.style as BPMNCellStyle).bpmn.gatewayKind == ShapeBpmnEventBasedGatewayKind.Parallel) {
       this.iconPainter.paintPlusCrossIcon(innerIconPaintParameter);
     } else {
       this.iconPainter.paintPentagon(innerIconPaintParameter);

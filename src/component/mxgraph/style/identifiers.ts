@@ -22,26 +22,11 @@
  * @category BPMN Theme
  * @experimental
  */
-export class BpmnStyleIdentifier {
+export class BpmnShapeIdentifier {
   // edge
   static readonly EDGE = 'bpmn.edge';
-  static readonly EDGE_START_FILL_COLOR = 'bpmn.edge.startFillColor';
-  static readonly EDGE_END_FILL_COLOR = 'bpmn.edge.endFillColor';
-
-  // kind
-  static readonly EVENT_BASED_GATEWAY_KIND = 'bpmn.gatewayKind';
-  static readonly EVENT_DEFINITION_KIND = 'bpmn.eventDefinitionKind';
-  static readonly GLOBAL_TASK_KIND = 'bpmn.globalTaskKind';
-  static readonly SUB_PROCESS_KIND = 'bpmn.subProcessKind';
-
-  // state
-  static readonly IS_INITIATING = 'bpmn.isInitiating';
-  static readonly IS_INSTANTIATING = 'bpmn.isInstantiating';
-  static readonly IS_INTERRUPTING = 'bpmn.isInterrupting';
 
   // other identifiers
-  static readonly EXTRA_CSS_CLASSES = 'bpmn.extra.css.classes';
-  static readonly MARKERS = 'bpmn.markers';
   static readonly MESSAGE_FLOW_ICON = 'bpmn.messageFlowIcon';
 }
 

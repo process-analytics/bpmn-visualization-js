@@ -15,6 +15,7 @@
  */
 
 import { constants } from '@maxgraph/core';
+import type { CellStyle, ShapeValue } from "@maxgraph/core";
 
 import Shape from '../../../model/bpmn/internal/shape/Shape';
 import type { Edge } from '../../../model/bpmn/internal/edge/edge';
@@ -28,121 +29,135 @@ import {
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../model/bpmn/internal/shape/ShapeBpmnElement';
-import { BpmnStyleIdentifier } from '../style';
-import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeUtil } from '../../../model/bpmn/internal';
+import { BpmnShapeIdentifier } from '../style';
+import type { FlowKind, ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventDefinitionKind, ShapeBpmnSubProcessKind, GlobalTaskKind, SequenceFlowKind, AssociationDirectionKind } from '../../../model/bpmn/internal';
+import {MessageVisibleKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeUtil} from '../../../model/bpmn/internal';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/flows';
 import type { Font } from '../../../model/bpmn/internal/Label';
+
+export interface BPMNCellStyle extends Omit<CellStyle, 'shape'> {
+  shape?: ShapeValue | string;
+  bpmn: {
+    kind?: ShapeBpmnElementKind | FlowKind;
+    isInstantiating?: boolean;
+    gatewayKind?: ShapeBpmnEventBasedGatewayKind;
+    eventDefinitionKind?: ShapeBpmnEventDefinitionKind;
+    isInterrupting?: boolean;
+    subProcessKind?: ShapeBpmnSubProcessKind;
+    globalTaskKind?: GlobalTaskKind;
+    markers?: ShapeBpmnMarkerKind[];
+    sequenceFlowKind?: SequenceFlowKind;
+    associationDirectionKind?: AssociationDirectionKind;
+    isNonInitiating?: boolean;
+    extra?: {
+      css: {
+        classes: string[];
+      }
+    };
+    edge?: {
+      endFillColor?: string;
+      startFillColor?: string;
+    };
+  }
+}
 
 /**
  * @internal
  */
 export default class StyleComputer {
-  computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): string {
-    const styles: string[] = [bpmnCell.bpmnElement.kind as string];
-
-    let shapeStyleValues;
-    if (bpmnCell instanceof Shape) {
-      shapeStyleValues = StyleComputer.computeShapeStyle(bpmnCell);
-    } else {
-      styles.push(...StyleComputer.computeEdgeStyle(bpmnCell));
-      shapeStyleValues = new Map<string, string | number>();
-    }
+  computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): BPMNCellStyle {
+    let style: BPMNCellStyle = {
+      bpmn: { kind: bpmnCell.bpmnElement.kind },
+      ...(bpmnCell instanceof Shape ? StyleComputer.computeShapeStyle(bpmnCell) : StyleComputer.computeEdgeStyle(bpmnCell))
+    };
 
     const fontStyleValues = StyleComputer.computeFontStyleValues(bpmnCell);
     const labelStyleValues = StyleComputer.computeLabelStyleValues(bpmnCell, labelBounds);
 
-    return [] //
-      .concat([...styles])
-      .concat([...shapeStyleValues, ...fontStyleValues, ...labelStyleValues].filter(([, v]) => v && v != 'undefined').map(([key, value]) => key + '=' + value))
-      .join(';');
+    return {...style, ...fontStyleValues, ...labelStyleValues};
   }
 
-  private static computeShapeStyle(shape: Shape): Map<string, string | number> {
-    const styleValues = new Map<string, string | number>();
+  private static computeShapeStyle(shape: Shape): BPMNCellStyle {
+    const style: BPMNCellStyle = { bpmn:{} };
     const bpmnElement = shape.bpmnElement;
 
     if (bpmnElement instanceof ShapeBpmnEvent) {
-      this.computeEventShapeStyle(bpmnElement, styleValues);
+      this.computeEventShapeStyle(bpmnElement, style);
     } else if (bpmnElement instanceof ShapeBpmnActivity) {
-      this.computeActivityShapeStyle(bpmnElement, styleValues);
+      this.computeActivityShapeStyle(bpmnElement, style);
     } else if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
-      // constants.STYLE_HORIZONTAL is for the label
       // In BPMN, isHorizontal is for the Shape
-      styleValues.set(constants.STYLE_HORIZONTAL, shape.isHorizontal ? '0' : '1');
+      style.horizontal = shape.isHorizontal;
     } else if (bpmnElement instanceof ShapeBpmnEventBasedGateway) {
-      styleValues.set(BpmnStyleIdentifier.IS_INSTANTIATING, String(bpmnElement.instantiate));
-      styleValues.set(BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND, String(bpmnElement.gatewayKind));
+      style.bpmn.isInstantiating = bpmnElement.instantiate;
+      style.bpmn.gatewayKind = bpmnElement.gatewayKind;
     }
 
-    return styleValues;
+    return style;
   }
 
-  private static computeEventShapeStyle(bpmnElement: ShapeBpmnEvent, styleValues: Map<string, string | number>): void {
-    styleValues.set(BpmnStyleIdentifier.EVENT_DEFINITION_KIND, bpmnElement.eventDefinitionKind);
+  private static computeEventShapeStyle(bpmnElement: ShapeBpmnEvent, style: BPMNCellStyle): void {
+    style.bpmn.eventDefinitionKind = bpmnElement.eventDefinitionKind;
 
     if (bpmnElement instanceof ShapeBpmnBoundaryEvent || (bpmnElement instanceof ShapeBpmnStartEvent && bpmnElement.isInterrupting !== undefined)) {
-      styleValues.set(BpmnStyleIdentifier.IS_INTERRUPTING, String(bpmnElement.isInterrupting));
+      style.bpmn.isInterrupting = bpmnElement.isInterrupting;
     }
   }
 
-  private static computeActivityShapeStyle(bpmnElement: ShapeBpmnActivity, styleValues: Map<string, string | number>): void {
+  private static computeActivityShapeStyle(bpmnElement: ShapeBpmnActivity, style: BPMNCellStyle): void {
     if (bpmnElement instanceof ShapeBpmnSubProcess) {
-      styleValues.set(BpmnStyleIdentifier.SUB_PROCESS_KIND, bpmnElement.subProcessKind);
+      style.bpmn.subProcessKind = bpmnElement.subProcessKind;
     } else if (bpmnElement.kind === ShapeBpmnElementKind.TASK_RECEIVE) {
-      styleValues.set(BpmnStyleIdentifier.IS_INSTANTIATING, String(bpmnElement.instantiate));
+      style.bpmn.isInstantiating = bpmnElement.instantiate;
     } else if (bpmnElement instanceof ShapeBpmnCallActivity) {
-      styleValues.set(BpmnStyleIdentifier.GLOBAL_TASK_KIND, bpmnElement.globalTaskKind);
+      style.bpmn.globalTaskKind = bpmnElement.globalTaskKind;
     }
 
-    const markers: ShapeBpmnMarkerKind[] = bpmnElement.markers;
-    if (markers.length > 0) {
-      styleValues.set(BpmnStyleIdentifier.MARKERS, markers.join(','));
-    }
+    style.bpmn.markers = bpmnElement.markers;
   }
 
-  private static computeEdgeStyle(edge: Edge): string[] {
-    const styles: string[] = [];
+  private static computeEdgeStyle(edge: Edge): BPMNCellStyle {
+    const style: BPMNCellStyle = { bpmn:{} };
 
     const bpmnElement = edge.bpmnElement;
     if (bpmnElement instanceof SequenceFlow) {
-      styles.push(bpmnElement.sequenceFlowKind);
-    }
-    if (bpmnElement instanceof AssociationFlow) {
-      styles.push(bpmnElement.associationDirectionKind);
+      style.bpmn.sequenceFlowKind = bpmnElement.sequenceFlowKind;
+    } else if (bpmnElement instanceof AssociationFlow) {
+      style.bpmn.associationDirectionKind = bpmnElement.associationDirectionKind;
     }
 
-    return styles;
+    return style;
   }
 
-  private static computeFontStyleValues(bpmnCell: Shape | Edge): Map<string, string | number> {
-    const styleValues = new Map<string, string | number>();
+  private static computeFontStyleValues(bpmnCell: Shape | Edge): BPMNCellStyle {
+    const style: BPMNCellStyle = { bpmn:{} };
 
     const font = bpmnCell.label?.font;
     if (font) {
-      styleValues.set(constants.STYLE_FONTFAMILY, font.name);
-      styleValues.set(constants.STYLE_FONTSIZE, font.size);
-      styleValues.set(constants.STYLE_FONTSTYLE, StyleComputer.getFontStyleValue(font));
+      style.fontFamily = font.name;
+      style.fontSize = font.size;
+      style.fontStyle = StyleComputer.getFontStyleValue(font);
     }
 
-    return styleValues;
+    return style;
   }
 
-  private static computeLabelStyleValues(bpmnCell: Shape | Edge, labelBounds: Bounds): Map<string, string | number> {
-    const styleValues = new Map<string, string | number>();
+  private static computeLabelStyleValues(bpmnCell: Shape | Edge, labelBounds: Bounds): BPMNCellStyle {
+    const style: BPMNCellStyle = { bpmn:{} };
 
     const bpmnElement = bpmnCell.bpmnElement;
     if (labelBounds) {
-      styleValues.set(constants.STYLE_VERTICAL_ALIGN, constants.ALIGN_TOP);
+      style.verticalAlign = constants.ALIGN.TOP;
       if (bpmnCell.bpmnElement.kind != ShapeBpmnElementKind.TEXT_ANNOTATION) {
-        styleValues.set(constants.STYLE_ALIGN, constants.ALIGN_CENTER);
+        style.align = constants.ALIGN.CENTER;
       }
 
       if (bpmnCell instanceof Shape) {
         // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
-        styleValues.set(constants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
+        style.labelWidth = labelBounds.width + 1;
         // align settings
-        styleValues.set(constants.STYLE_LABEL_POSITION, constants.ALIGN_TOP);
-        styleValues.set(constants.STYLE_VERTICAL_LABEL_POSITION, constants.ALIGN_LEFT);
+        style.labelPosition = constants.ALIGN.LEFT;
+        style.verticalLabelPosition = constants.ALIGN.TOP;
       }
     }
     // when no label bounds, adjust the default style dynamically
@@ -152,14 +167,17 @@ export default class StyleComputer {
         (bpmnElement instanceof ShapeBpmnCallActivity && bpmnElement.callActivityKind === ShapeBpmnCallActivityKind.CALLING_PROCESS)) &&
       !bpmnElement.markers.includes(ShapeBpmnMarkerKind.EXPAND)
     ) {
-      styleValues.set(constants.STYLE_VERTICAL_ALIGN, constants.ALIGN_TOP);
+      style.verticalAlign = constants.ALIGN.TOP;
     }
 
-    return styleValues;
+    return style;
   }
 
-  computeMessageFlowIconStyle(edge: Edge): string {
-    return `shape=${BpmnStyleIdentifier.MESSAGE_FLOW_ICON};${BpmnStyleIdentifier.IS_INITIATING}=${edge.messageVisibleKind}`;
+  computeMessageFlowIconStyle(edge: Edge): BPMNCellStyle {
+    return {
+      shape: BpmnShapeIdentifier.MESSAGE_FLOW_ICON,
+      bpmn: { isNonInitiating: edge.messageVisibleKind === MessageVisibleKind.NON_INITIATING }
+    };
   }
 
   private static getFontStyleValue(font: Font): number {

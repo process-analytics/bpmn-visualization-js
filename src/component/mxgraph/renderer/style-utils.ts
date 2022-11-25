@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import type { Cell, CellStyle } from '@maxgraph/core';
+import type { Cell } from '@maxgraph/core';
+
 import { FlowKind, ShapeUtil } from '../../../model/bpmn/internal';
-import { MessageVisibleKind } from '../../../model/bpmn/internal/edge/kinds';
-import { BpmnStyleIdentifier } from '../style/identifiers';
+import type { BPMNCellStyle } from './StyleComputer';
 
 /**
  * Compute the all class names associated to a cell in a hyphen case form.
@@ -27,7 +27,7 @@ import { BpmnStyleIdentifier } from '../style/identifiers';
  * @internal
  */
 export function computeAllBpmnClassNamesOfCell(cell: Cell, isLabel: boolean): string[] {
-  return computeAllBpmnClassNames(cell.style, isLabel);
+  return computeAllBpmnClassNames(cell.style as BPMNCellStyle, isLabel);
 }
 
 /**
@@ -37,13 +37,11 @@ export function computeAllBpmnClassNamesOfCell(cell: Cell, isLabel: boolean): st
  * @param isLabel the boolean that indicates if class must be computed for label.
  * @internal exported for testing purpose
  */
-export function computeAllBpmnClassNames(style: CellStyle, isLabel: boolean): string[] {
+export function computeAllBpmnClassNames(style: BPMNCellStyle, isLabel: boolean): string[] {
   const classes: string[] = [];
 
-  const styleElements = style.split(';');
-  const pseudoBpmnElementKind = styleElements[0];
   // shape=bpmn.message-flow-icon --> message-flow-icon
-  const bpmnElementKind = pseudoBpmnElementKind.replace(/shape=bpmn./g, '');
+  const bpmnElementKind = style.bpmn.kind;
 
   const typeClasses = new Map<string, boolean>();
   typeClasses.set('bpmn-type-activity', ShapeUtil.isActivity(bpmnElementKind));
@@ -56,31 +54,21 @@ export function computeAllBpmnClassNames(style: CellStyle, isLabel: boolean): st
 
   classes.push(computeBpmnBaseClassName(bpmnElementKind));
 
-  styleElements
-    .map(entry => {
-      const elements = entry.split('=');
-      return [elements[0], elements[1]];
-    })
-    .forEach(([key, value]) => {
-      switch (key) {
-        case BpmnStyleIdentifier.EVENT_DEFINITION_KIND:
-          classes.push(`bpmn-event-def-${value}`);
-          break;
-        case BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND:
-          classes.push(`bpmn-gateway-kind-${value.toLowerCase()}`);
-          break;
-        case BpmnStyleIdentifier.IS_INITIATING: // message flow icon
-          classes.push(value == MessageVisibleKind.NON_INITIATING ? 'bpmn-icon-non-initiating' : 'bpmn-icon-initiating');
-          break;
-        case BpmnStyleIdentifier.SUB_PROCESS_KIND:
-          classes.push(`bpmn-sub-process-${value.toLowerCase()}`);
-          break;
-        case BpmnStyleIdentifier.GLOBAL_TASK_KIND:
-          classes.push(computeBpmnBaseClassName(value));
-          break;
-      }
-    });
-
+  if(style.bpmn.eventDefinitionKind) {
+    classes.push(`bpmn-event-def-${style.bpmn.eventDefinitionKind}`);
+  }
+  if(style.bpmn.gatewayKind) {
+    classes.push(`bpmn-gateway-kind-${style.bpmn.gatewayKind.toLowerCase()}`);
+  }
+  if(style.bpmn.isNonInitiating !== undefined) { // message flow icon
+    classes.push(style.bpmn.isNonInitiating ? 'bpmn-icon-non-initiating' : 'bpmn-icon-initiating');
+  }
+  if(style.bpmn.subProcessKind) {
+    classes.push(`bpmn-sub-process-${style.bpmn.gatewayKind.toLowerCase()}`);
+  }
+  if(style.bpmn.globalTaskKind) {
+    classes.push(computeBpmnBaseClassName(style.bpmn.globalTaskKind));
+  }
   if (isLabel) {
     classes.push('bpmn-label');
   }

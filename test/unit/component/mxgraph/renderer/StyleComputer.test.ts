@@ -17,6 +17,7 @@
  * limitations under the License.
  */
 
+import type { BPMNCellStyle } from '../../../../../src/component/mxgraph/renderer/StyleComputer';
 import StyleComputer from '../../../../../src/component/mxgraph/renderer/StyleComputer';
 import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 import ShapeBpmnElement, {
@@ -121,7 +122,7 @@ describe('Style Computer', () => {
   const styleComputer = new StyleComputer();
 
   // shortcut as the current computeStyle implementation requires to pass the BPMN label bounds as extra argument
-  function computeStyle(bpmnCell: Shape | Edge): string {
+  function computeStyle(bpmnCell: Shape | Edge): BPMNCellStyle {
     return styleComputer.computeStyle(bpmnCell, bpmnCell.label?.bounds);
   }
 

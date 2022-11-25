@@ -54,6 +54,7 @@ import type {ArrowType, Cell, FilterFunction, VAlignValue} from '@maxgraph/core'
 import { Geometry } from '@maxgraph/core';
 import type { ExpectedOverlay } from '../matchers/matcher-utils';
 import { getCell } from '../matchers/matcher-utils';
+import type { BPMNCellStyle } from '../../../src/component/mxgraph/renderer/StyleComputer';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -194,7 +195,7 @@ const expectElementsInModel = (parentId: string, elementsNumber: number, filter:
 };
 
 export const expectPoolsInModel = (pools: number): void => {
-  expectElementsInModel(undefined, pools, (cell: Cell): boolean => !!cell.style[ShapeBpmnElementKind.POOL]);
+  expectElementsInModel(undefined, pools, (cell: Cell): boolean => (cell.style as BPMNCellStyle).bpmn.kind == ShapeBpmnElementKind.POOL);
 };
 
 export const expectShapesInModel = (parentId: string, shapesNumber: number): void => {

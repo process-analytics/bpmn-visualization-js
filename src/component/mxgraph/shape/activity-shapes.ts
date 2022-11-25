@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-import { StyleDefault, StyleUtils } from '../style';
+import type { AbstractCanvas2D } from '@maxgraph/core';
+import { RectangleShape } from '@maxgraph/core';
+
+import { StyleDefault } from '../style';
 import type { BpmnCanvas, PaintParameter, ShapeConfiguration } from './render';
 import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
 import { ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal';
 import { orderActivityMarkers } from './render/utils';
-import type { AbstractCanvas2D } from '@maxgraph/core';
-import { RectangleShape } from '@maxgraph/core';
+import type { BPMNCellStyle } from '../renderer/StyleComputer';
 
 function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): void {
   IconPainterProvider.get().paintEnvelopeIcon({
@@ -51,9 +53,9 @@ export abstract class BaseActivityShape extends RectangleShape {
   }
 
   protected paintMarkerIcons(paintParameter: PaintParameter): void {
-    const markers = StyleUtils.getBpmnMarkers(this.style);
+    const markers = (this.style as BPMNCellStyle).bpmn.markers;
     if (markers) {
-      orderActivityMarkers(markers.split(',')).forEach((marker, idx, allMarkers) => {
+      orderActivityMarkers(markers).forEach((marker, idx, allMarkers) => {
         paintParameter = {
           ...paintParameter,
           setIconOriginFunct: this.getMarkerIconOriginFunction(allMarkers.length, idx + 1),
@@ -140,7 +142,7 @@ export class UserTaskShape extends BaseTaskShape {
  */
 export class ReceiveTaskShape extends BaseTaskShape {
   protected paintTaskIcon(paintParameter: PaintParameter): void {
-    if (!StyleUtils.getBpmnIsInstantiating(this.style)) {
+    if (!(this.style as BPMNCellStyle).bpmn.isInstantiating) {
       paintEnvelopeIcon(paintParameter, false);
       return;
     }
@@ -212,7 +214,7 @@ export class CallActivityShape extends BaseActivityShape {
 
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this });
 
-    switch (StyleUtils.getBpmnGlobalTaskKind(this.style)) {
+    switch ((this.style as BPMNCellStyle).bpmn.globalTaskKind) {
       case ShapeBpmnElementKind.GLOBAL_TASK_MANUAL:
         this.iconPainter.paintHandIcon({
           ...paintParameter,
@@ -252,7 +254,7 @@ export class CallActivityShape extends BaseActivityShape {
  */
 export class SubProcessShape extends BaseActivityShape {
   override paintBackground(c: AbstractCanvas2D, x: number, y: number, w: number, h: number): void {
-    const subProcessKind = StyleUtils.getBpmnSubProcessKind(this.style);
+    const subProcessKind = (this.style as BPMNCellStyle).bpmn.subProcessKind;
     c.save(); // ensure we can later restore the configuration
     if (subProcessKind === ShapeBpmnSubProcessKind.EVENT) {
       c.setDashed(true, false);

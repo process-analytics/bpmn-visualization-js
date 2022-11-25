@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
+import type { AbstractCanvas2D } from '@maxgraph/core';
+import { EllipseShape } from '@maxgraph/core';
+
 import { ShapeBpmnEventDefinitionKind } from '../../../model/bpmn/internal';
 import type { BpmnCanvas, PaintParameter } from './render';
 import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
-import { StyleDefault, StyleUtils } from '../style';
-import type { AbstractCanvas2D } from '@maxgraph/core';
-import { EllipseShape } from '@maxgraph/core';
+import { StyleDefault } from '../style';
+import type { BPMNCellStyle } from '../renderer/StyleComputer';
 
 /**
  * @internal
@@ -88,7 +90,7 @@ export class EventShape extends EllipseShape {
   override paintVertexShape(c: AbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, isFilled: this.withFilledIcon });
 
-    EventShape.setDashedOuterShapePattern(paintParameter, StyleUtils.getBpmnIsInterrupting(this.style));
+    EventShape.setDashedOuterShapePattern(paintParameter, (this.style as BPMNCellStyle).bpmn.isInterrupting);
     this.paintOuterShape(paintParameter);
     EventShape.restoreOriginalOuterShapePattern(paintParameter);
 
@@ -100,13 +102,13 @@ export class EventShape extends EllipseShape {
   }
 
   private paintInnerShape(paintParameter: PaintParameter): void {
-    const paintIcon = this.iconPainters.get(StyleUtils.getBpmnEventDefinitionKind(this.style)) || (() => this.iconPainter.paintEmptyIcon());
+    const paintIcon = this.iconPainters.get((this.style as BPMNCellStyle).bpmn.eventDefinitionKind) || (() => this.iconPainter.paintEmptyIcon());
     paintIcon(paintParameter);
   }
 
-  private static setDashedOuterShapePattern(paintParameter: PaintParameter, isInterrupting: string): void {
+  private static setDashedOuterShapePattern(paintParameter: PaintParameter, isInterrupting: boolean): void {
     paintParameter.canvas.save(); // ensure we can later restore the configuration
-    if (isInterrupting === 'false') {
+    if (!isInterrupting ) {
       paintParameter.canvas.setDashed(true, false);
       paintParameter.canvas.setDashPattern('3 2');
     }

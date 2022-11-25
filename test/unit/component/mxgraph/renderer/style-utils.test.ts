@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {CellStyle} from "@maxgraph/core";
+import type { BPMNCellStyle } from "../../../../../src/component/mxgraph/renderer/StyleComputer";
 import { FlowKind, ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal';
 import { computeBpmnBaseClassName, computeAllBpmnClassNames } from '../../../../../src/component/mxgraph/renderer/style-utils';
 
@@ -68,7 +68,7 @@ describe('compute all css class names based on style input', () => {
     ${'shape=bpmn.message-flow-icon'}                                                    | ${false} | ${['bpmn-message-flow-icon']}
     ${'shape=bpmn.message-flow-icon;bpmn.isInitiating=non_initiating'}                   | ${false} | ${['bpmn-message-flow-icon', 'bpmn-icon-non-initiating']}
     ${'shape=bpmn.message-flow-icon;bpmn.isInitiating=initiating'}                       | ${true}  | ${['bpmn-message-flow-icon', 'bpmn-icon-initiating', 'bpmn-label']}
-  `('style="$style" / isLabel=$isLabel', ({ style, isLabel, expectedClassNames }: { style: CellStyle; isLabel: boolean; expectedClassNames: string[] }) => {
+  `('style="$style" / isLabel=$isLabel', ({ style, isLabel, expectedClassNames }: { style: BPMNCellStyle; isLabel: boolean; expectedClassNames: string[] }) => {
     expect(computeAllBpmnClassNames(style, isLabel)).toEqual(expectedClassNames);
   });
 });

@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import type { Cell, CellStyle, Geometry, AlignValue, VAlignValue, ArrowType, ShapeValue } from '@maxgraph/core';
-import { constants, CellStateStyle } from '@maxgraph/core';
+import type { Cell, Geometry, AlignValue, VAlignValue, ArrowType, ShapeValue } from '@maxgraph/core';
+import { constants } from '@maxgraph/core';
 
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
@@ -22,8 +22,9 @@ import CustomMatcherResult = jest.CustomMatcherResult;
 import type { ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement } from '../helpers/model-expect';
 import { bpmnVisualization } from '../helpers/model-expect';
 import type { MaxGraphCustomOverlay, MaxGraphCustomOverlayStyle } from '../../../src/component/mxgraph/overlay/custom-overlay';
+import { BPMNCellStyle } from '../../../src/component/mxgraph/renderer/StyleComputer';
 
-export interface ExpectedStateStyle extends CellStateStyle {
+export interface ExpectedStateStyle extends BPMNCellStyle {
   verticalAlign?: VAlignValue;
   align?: AlignValue;
   strokeWidth?: number;
@@ -43,7 +44,7 @@ export interface ExpectedStateStyle extends CellStateStyle {
 export interface ExpectedCell {
   value?: string;
   geometry?: Geometry;
-  style?: CellStyle;
+  style?: BPMNCellStyle;
   id?: string;
   edge?: boolean;
   vertex?: boolean;
@@ -135,6 +136,7 @@ export function buildCommonExpectedStateStyle(expectedModel: ExpectedEdgeModelEl
     fontSize: font?.size ? font.size : 11,
     fontColor: 'Black',
     fontStyle: getFontStyleValue(font),
+    bpmn: undefined
   };
 }
 
@@ -150,6 +152,7 @@ function buildReceivedStateStyle(cell: Cell): ExpectedStateStyle {
     fontSize: stateStyle.fontSize,
     fontColor: stateStyle.fontColor,
     fontStyle: stateStyle.fontStyle,
+    bpmn: undefined,
   };
 
   if (cell.edge) {
@@ -166,7 +169,7 @@ function buildReceivedStateStyle(cell: Cell): ExpectedStateStyle {
 export function buildReceivedCellWithCommonAttributes(cell: Cell): ExpectedCell {
   const receivedCell: ExpectedCell = {
     value: cell.value,
-    style: cell.style,
+    style: cell.style as BPMNCellStyle,
     id: cell.id,
     edge: cell.edge,
     vertex: cell.vertex,
@@ -191,7 +194,7 @@ export function buildReceivedCellWithCommonAttributes(cell: Cell): ExpectedCell 
     if (children && children[0]) {
       receivedCell.children = children.map((child: Cell) => ({
         value: child.value,
-        style: child.style,
+        style: child.style as BPMNCellStyle,
         id: child.id,
         vertex: child.vertex,
       }));

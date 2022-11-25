@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import type { Cell } from '@maxgraph/core';
+import { Point } from '@maxgraph/core';
 
 import type { Edge, Waypoint } from '../../model/bpmn/internal/edge/edge';
 import { MessageFlow } from '../../model/bpmn/internal/edge/flows';
@@ -21,12 +23,11 @@ import type ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElem
 import type Bounds from '../../model/bpmn/internal/Bounds';
 import { MessageVisibleKind, ShapeUtil } from '../../model/bpmn/internal';
 import CoordinatesTranslator from './renderer/CoordinatesTranslator';
+import type { BPMNCellStyle } from './renderer/StyleComputer';
 import StyleComputer from './renderer/StyleComputer';
 import type { BpmnGraph } from './BpmnGraph';
 import type { FitOptions } from '../options';
 import type { RenderedModel } from '../registry/bpmn-model-registry';
-import type { Cell } from '@maxgraph/core';
-import { Point } from '@maxgraph/core';
 
 /**
  * @internal
@@ -126,7 +127,7 @@ export class BpmnRenderer {
     return this.graph.model.getCell(id);
   }
 
-  private insertVertex(parent: Cell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: string): Cell {
+  private insertVertex(parent: Cell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: BPMNCellStyle): Cell {
     const vertexCoordinates = this.coordinatesTranslator.computeRelativeCoordinates(parent, new Point(bounds.x, bounds.y));
     const cell = this.graph.insertVertex(parent, id, value, vertexCoordinates.x, vertexCoordinates.y, bounds.width, bounds.height, style);
 

@@ -14,10 +14,7 @@
  * limitations under the License.
  */
 
-import type { CellStateStyle } from '@maxgraph/core';
-
-import type { GlobalTaskKind, MessageVisibleKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal';
-import { ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventDefinitionKind } from '../../../model/bpmn/internal';
+import type { BPMNCellStyle } from '../renderer/StyleComputer';
 
 /**
  * Store all rendering defaults used by `bpmn-visualization`.
@@ -72,51 +69,19 @@ export enum StyleDefault {
  * @experimental
  */
 export class StyleUtils {
-  static getFillColor(style: CellStateStyle): string {
+  static getFillColor(style: BPMNCellStyle): string {
     return style.fillColor ?? StyleDefault.DEFAULT_FILL_COLOR;
   }
 
-  static getStrokeColor(style: CellStateStyle): string {
+  static getStrokeColor(style: BPMNCellStyle): string {
     return  style.strokeColor ?? StyleDefault.DEFAULT_STROKE_COLOR;
   }
 
-  static getStrokeWidth(style: CellStateStyle): number {
+  static getStrokeWidth(style: BPMNCellStyle): number {
     return style.strokeWidth ?? StyleDefault.STROKE_WIDTH_THIN;
   }
 
-  static getMargin(style: CellStateStyle): number {
+  static getMargin(style: BPMNCellStyle): number {
     return style.margin ?? StyleDefault.DEFAULT_MARGIN;
-  }
-
-  static getBpmnEventDefinitionKind(style: CellStateStyle): ShapeBpmnEventDefinitionKind {
-    return style.bpmn.eventDefinitionKind ?? ShapeBpmnEventDefinitionKind.NONE;
-  }
-
-  static getBpmnSubProcessKind(style: CellStateStyle): ShapeBpmnSubProcessKind {
-    return style.bpmn.subProcessKind;
-  }
-
-  static getBpmnIsInterrupting(style: CellStateStyle): string {
-    return style.bpmn.isInterrupting;
-  }
-
-  static getBpmnMarkers(style: CellStateStyle): string {
-    return style.bpmn.markers;
-  }
-
-  static getBpmnIsInstantiating(style: CellStateStyle): boolean {
-    return style.bpmn.isInstantiating ?? false;
-  }
-
-  static getBpmnIsInitiating(style: CellStateStyle): MessageVisibleKind {
-    return style.bpmn.isInitiating;
-  }
-
-  static getBpmnIsParallelEventBasedGateway(style: CellStateStyle): boolean {
-    return (style.bpmn.gatewayKind ?? ShapeBpmnEventBasedGatewayKind.Exclusive) == ShapeBpmnEventBasedGatewayKind.Parallel
-  }
-
-  static getBpmnGlobalTaskKind(style: CellStateStyle): GlobalTaskKind {
-    return style.bpmn.globalTaskKind;
   }
 }

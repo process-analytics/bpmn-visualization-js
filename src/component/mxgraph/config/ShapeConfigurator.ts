@@ -34,11 +34,12 @@ import {
 } from '../shape/activity-shapes';
 import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
-import { BpmnStyleIdentifier } from '../style';
+import { BpmnShapeIdentifier } from '../style';
 import { computeAllBpmnClassNamesOfCell } from '../renderer/style-utils';
 import { MaxGraphCustomOverlay } from '../overlay/custom-overlay';
 import { OverlayBadgeShape } from '../overlay/shapes';
 import { BpmnConnector } from '../shape/edges';
+import { BPMNCellStyle } from '../renderer/StyleComputer';
 
 /**
  * @internal
@@ -80,8 +81,8 @@ export default class ShapeConfigurator {
     CellRenderer.registerShape(ShapeBpmnElementKind.TEXT_ANNOTATION, TextAnnotationShape);
 
     // shapes for flows
-    CellRenderer.registerShape(BpmnStyleIdentifier.EDGE, BpmnConnector);
-    CellRenderer.registerShape(BpmnStyleIdentifier.MESSAGE_FLOW_ICON, MessageFlowIconShape);
+    CellRenderer.registerShape(BpmnShapeIdentifier.EDGE, BpmnConnector);
+    CellRenderer.registerShape(BpmnShapeIdentifier.MESSAGE_FLOW_ICON, MessageFlowIconShape);
   }
 
   private initMxSvgCanvasPrototype(): void {
@@ -153,7 +154,7 @@ export default class ShapeConfigurator {
         const cell = this.state.cell;
         // dialect = strictHtml is set means that current node holds an html label
         let allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === constants.DIALECT.STRICTHTML);
-        const extraCssClasses = this.state.style.bpmn.extra.css.classes;
+        const extraCssClasses = (this.state.style as BPMNCellStyle).bpmn.extra.css.classes;
         if (extraCssClasses) {
           allBpmnClassNames = allBpmnClassNames.concat(extraCssClasses);
         }

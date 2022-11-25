@@ -187,7 +187,7 @@ export class ThemedBpmnVisualization extends BpmnVisualization {
 
     const stylesheet = this.graph.getStylesheet();
 
-    // directly access the 'styles' map to update values. Using stylesheet.getCellStyle returns a copy of the style
+    // directly access the 'styles' map to update values. Using stylesheet.getBPMNCellStyle returns a copy of the style
     const seqFlowStyle = stylesheet.styles.get(FlowKind.SEQUENCE_FLOW);
     seqFlowStyle.strokeColor = color;
     seqFlowStyle.fillColor = color;

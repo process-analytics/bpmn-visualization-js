@@ -16,7 +16,9 @@
 
 import type { Point, AbstractCanvas2D } from "@maxgraph/core";
 import { SvgCanvas2D, ConnectorShape, utils } from '@maxgraph/core';
-import { BpmnStyleIdentifier } from '../style';
+
+import type { BPMNCellStyle } from "../renderer/StyleComputer";
+import { BpmnShapeIdentifier } from '../style';
 
 export class BpmnConnector extends ConnectorShape {
   constructor(points: Point[], stroke: string, strokewidth?: number) {
@@ -37,12 +39,12 @@ export class BpmnConnector extends ConnectorShape {
     c.setDashed(false, false);
 
     if (sourceMarker != null) {
-      c.setFillColor(utils.getValue(this.style, BpmnStyleIdentifier.EDGE_START_FILL_COLOR, this.stroke));
+      c.setFillColor((this.style as BPMNCellStyle).bpmn.edge.startFillColor ??  this.stroke);
       sourceMarker();
     }
 
     if (targetMarker != null) {
-      c.setFillColor(utils.getValue(this.style, BpmnStyleIdentifier.EDGE_END_FILL_COLOR, this.stroke));
+      c.setFillColor((this.style as BPMNCellStyle).bpmn.edge.endFillColor ??  this.stroke);
       targetMarker();
     }
   }

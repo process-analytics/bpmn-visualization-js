@@ -15,12 +15,12 @@
  */
 
 import type { BpmnGraph } from './BpmnGraph';
-import { BpmnStyleIdentifier } from './style';
 import type { Overlay } from '../registry';
 import { MaxGraphCustomOverlay } from './overlay/custom-overlay';
 import { ensureIsArray } from '../helpers/array-utils';
 import { OverlayConverter } from './overlay/OverlayConverter';
 import { messageFowIconId } from './BpmnRenderer';
+import type { BPMNCellStyle } from './renderer/StyleComputer';
 
 /**
  * @internal
@@ -48,7 +48,7 @@ export default class GraphCellUpdater {
     }
     const view = this.graph.getView();
     const state = view.getState(cell);
-    state.style[BpmnStyleIdentifier.EXTRA_CSS_CLASSES] = cssClasses;
+    (state.style as BPMNCellStyle).bpmn.extra.css.classes = cssClasses;
     state.shape.redraw();
     // Ensure that label classes are also updated. When there is no label, state.text is null
     state.text?.redraw();
