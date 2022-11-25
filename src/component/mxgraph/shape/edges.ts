@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import type { Point, AbstractCanvas2D } from "@maxgraph/core";
+import type { Point, AbstractCanvas2D } from '@maxgraph/core';
 import { SvgCanvas2D, ConnectorShape, utils } from '@maxgraph/core';
 
-import type { BPMNCellStyle } from "../renderer/StyleComputer";
+import type { BPMNCellStyle } from '../renderer/StyleComputer';
 import { BpmnShapeIdentifier } from '../style';
 
 export class BpmnConnector extends ConnectorShape {
@@ -39,12 +39,12 @@ export class BpmnConnector extends ConnectorShape {
     c.setDashed(false, false);
 
     if (sourceMarker != null) {
-      c.setFillColor((this.style as BPMNCellStyle).bpmn.edge.startFillColor ??  this.stroke);
+      c.setFillColor((this.style as BPMNCellStyle).bpmn.edge.startFillColor ?? this.stroke);
       sourceMarker();
     }
 
     if (targetMarker != null) {
-      c.setFillColor((this.style as BPMNCellStyle).bpmn.edge.endFillColor ??  this.stroke);
+      c.setFillColor((this.style as BPMNCellStyle).bpmn.edge.endFillColor ?? this.stroke);
       targetMarker();
     }
   }

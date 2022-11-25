@@ -91,7 +91,7 @@ export class StyleConfigurator {
     [
       AssociationDirectionKind.ONE,
       (style: BPMNCellStyle) => {
-    style.startArrow = undefined;
+        style.startArrow = undefined;
       },
     ],
     [
@@ -138,7 +138,7 @@ export class StyleConfigurator {
     const style: BPMNCellStyle = {
       shape: constants.SHAPE.SWIMLANE,
       // label style
-      verticalAlign : constants.ALIGN.MIDDLE,
+      verticalAlign: constants.ALIGN.MIDDLE,
       align: constants.ALIGN.CENTER,
       startSize: StyleDefault.POOL_LABEL_SIZE,
       fillColor: StyleDefault.POOL_LABEL_FILL_COLOR,
@@ -151,7 +151,7 @@ export class StyleConfigurator {
     const style: BPMNCellStyle = {
       shape: constants.SHAPE.SWIMLANE,
       // label style
-      verticalAlign : constants.ALIGN.MIDDLE,
+      verticalAlign: constants.ALIGN.MIDDLE,
       align: constants.ALIGN.CENTER,
       swimlaneLine: false, // hide the line between the title region and the content area
       startSize: StyleDefault.LANE_LABEL_SIZE,
@@ -177,7 +177,7 @@ export class StyleConfigurator {
     const style: BPMNCellStyle = {
       shape: ShapeBpmnElementKind.TEXT_ANNOTATION,
       // label style
-      verticalAlign : constants.ALIGN.MIDDLE,
+      verticalAlign: constants.ALIGN.MIDDLE,
       align: constants.ALIGN.LEFT,
       spacingLeft: 5,
       fillColor: StyleDefault.TEXT_ANNOTATION_FILL_COLOR,
@@ -188,7 +188,7 @@ export class StyleConfigurator {
 
   private configureGroupStyle(): void {
     const style: BPMNCellStyle = {
-      rounded:true,
+      rounded: true,
       absoluteArcSize: 1,
       arcSize: StyleDefault.SHAPE_ARC_SIZE,
       dashed: true,
@@ -261,7 +261,7 @@ export class StyleConfigurator {
 
   private configureEdgeStyles<T>(styleKinds: T[], specificStyles: Map<T, (style: BPMNCellStyle) => void>): void {
     styleKinds.forEach(kind => {
-      const style: BPMNCellStyle = { bpmn:{} };
+      const style: BPMNCellStyle = { bpmn: {} };
       specificStyles.get(kind)(style);
       this.graph.getStylesheet().putCellStyle(kind.toString(), style);
     });

@@ -15,7 +15,7 @@
  */
 
 import { constants } from '@maxgraph/core';
-import type { CellStyle, ShapeValue } from "@maxgraph/core";
+import type { CellStyle, ShapeValue } from '@maxgraph/core';
 
 import Shape from '../../../model/bpmn/internal/shape/Shape';
 import type { Edge } from '../../../model/bpmn/internal/edge/edge';
@@ -30,8 +30,16 @@ import {
   ShapeBpmnSubProcess,
 } from '../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { BpmnShapeIdentifier } from '../style';
-import type { FlowKind, ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventDefinitionKind, ShapeBpmnSubProcessKind, GlobalTaskKind, SequenceFlowKind, AssociationDirectionKind } from '../../../model/bpmn/internal';
-import {MessageVisibleKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeUtil} from '../../../model/bpmn/internal';
+import type {
+  FlowKind,
+  ShapeBpmnEventBasedGatewayKind,
+  ShapeBpmnEventDefinitionKind,
+  ShapeBpmnSubProcessKind,
+  GlobalTaskKind,
+  SequenceFlowKind,
+  AssociationDirectionKind,
+} from '../../../model/bpmn/internal';
+import { MessageVisibleKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeUtil } from '../../../model/bpmn/internal';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/flows';
 import type { Font } from '../../../model/bpmn/internal/Label';
 
@@ -52,13 +60,13 @@ export interface BPMNCellStyle extends Omit<CellStyle, 'shape'> {
     extra?: {
       css: {
         classes: string[];
-      }
+      };
     };
     edge?: {
       endFillColor?: string;
       startFillColor?: string;
     };
-  }
+  };
 }
 
 /**
@@ -66,19 +74,19 @@ export interface BPMNCellStyle extends Omit<CellStyle, 'shape'> {
  */
 export default class StyleComputer {
   computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): BPMNCellStyle {
-    let style: BPMNCellStyle = {
+    const style: BPMNCellStyle = {
       bpmn: { kind: bpmnCell.bpmnElement.kind },
-      ...(bpmnCell instanceof Shape ? StyleComputer.computeShapeStyle(bpmnCell) : StyleComputer.computeEdgeStyle(bpmnCell))
+      ...(bpmnCell instanceof Shape ? StyleComputer.computeShapeStyle(bpmnCell) : StyleComputer.computeEdgeStyle(bpmnCell)),
     };
 
     const fontStyleValues = StyleComputer.computeFontStyleValues(bpmnCell);
     const labelStyleValues = StyleComputer.computeLabelStyleValues(bpmnCell, labelBounds);
 
-    return {...style, ...fontStyleValues, ...labelStyleValues};
+    return { ...style, ...fontStyleValues, ...labelStyleValues };
   }
 
   private static computeShapeStyle(shape: Shape): BPMNCellStyle {
-    const style: BPMNCellStyle = { bpmn:{} };
+    const style: BPMNCellStyle = { bpmn: {} };
     const bpmnElement = shape.bpmnElement;
 
     if (bpmnElement instanceof ShapeBpmnEvent) {
@@ -117,7 +125,7 @@ export default class StyleComputer {
   }
 
   private static computeEdgeStyle(edge: Edge): BPMNCellStyle {
-    const style: BPMNCellStyle = { bpmn:{} };
+    const style: BPMNCellStyle = { bpmn: {} };
 
     const bpmnElement = edge.bpmnElement;
     if (bpmnElement instanceof SequenceFlow) {
@@ -130,7 +138,7 @@ export default class StyleComputer {
   }
 
   private static computeFontStyleValues(bpmnCell: Shape | Edge): BPMNCellStyle {
-    const style: BPMNCellStyle = { bpmn:{} };
+    const style: BPMNCellStyle = { bpmn: {} };
 
     const font = bpmnCell.label?.font;
     if (font) {
@@ -143,7 +151,7 @@ export default class StyleComputer {
   }
 
   private static computeLabelStyleValues(bpmnCell: Shape | Edge, labelBounds: Bounds): BPMNCellStyle {
-    const style: BPMNCellStyle = { bpmn:{} };
+    const style: BPMNCellStyle = { bpmn: {} };
 
     const bpmnElement = bpmnCell.bpmnElement;
     if (labelBounds) {
@@ -176,7 +184,7 @@ export default class StyleComputer {
   computeMessageFlowIconStyle(edge: Edge): BPMNCellStyle {
     return {
       shape: BpmnShapeIdentifier.MESSAGE_FLOW_ICON,
-      bpmn: { isNonInitiating: edge.messageVisibleKind === MessageVisibleKind.NON_INITIATING }
+      bpmn: { isNonInitiating: edge.messageVisibleKind === MessageVisibleKind.NON_INITIATING },
     };
   }
 

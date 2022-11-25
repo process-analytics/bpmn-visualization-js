@@ -16,12 +16,12 @@
 import type { AbstractCanvas2D } from '@maxgraph/core';
 import { RhombusShape } from '@maxgraph/core';
 
-import {ShapeBpmnEventBasedGatewayKind} from "../../../model/bpmn/internal";
+import { ShapeBpmnEventBasedGatewayKind } from '../../../model/bpmn/internal';
 import { StyleDefault } from '../style';
 import type { PaintParameter } from './render';
 import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
-import type { BPMNCellStyle } from "../renderer/StyleComputer";
+import type { BPMNCellStyle } from '../renderer/StyleComputer';
 
 abstract class GatewayShape extends RhombusShape {
   protected iconPainter = IconPainterProvider.get();

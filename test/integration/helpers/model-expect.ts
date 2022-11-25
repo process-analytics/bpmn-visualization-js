@@ -50,8 +50,8 @@ import {
   toBeTask,
   toBeUserTask,
 } from '../matchers';
-import type {ArrowType, Cell, FilterFunction, VAlignValue} from '@maxgraph/core';
-import { Geometry } from '@maxgraph/core';
+import type { ArrowType, Cell, FilterFunction, VAlignValue } from '@maxgraph/core';
+import type { Geometry } from '@maxgraph/core';
 import type { ExpectedOverlay } from '../matchers/matcher-utils';
 import { getCell } from '../matchers/matcher-utils';
 import type { BPMNCellStyle } from '../../../src/component/mxgraph/renderer/StyleComputer';

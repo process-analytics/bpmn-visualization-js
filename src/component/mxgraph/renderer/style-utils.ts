@@ -54,19 +54,20 @@ export function computeAllBpmnClassNames(style: BPMNCellStyle, isLabel: boolean)
 
   classes.push(computeBpmnBaseClassName(bpmnElementKind));
 
-  if(style.bpmn.eventDefinitionKind) {
+  if (style.bpmn.eventDefinitionKind) {
     classes.push(`bpmn-event-def-${style.bpmn.eventDefinitionKind}`);
   }
-  if(style.bpmn.gatewayKind) {
+  if (style.bpmn.gatewayKind) {
     classes.push(`bpmn-gateway-kind-${style.bpmn.gatewayKind.toLowerCase()}`);
   }
-  if(style.bpmn.isNonInitiating !== undefined) { // message flow icon
+  if (style.bpmn.isNonInitiating !== undefined) {
+    // message flow icon
     classes.push(style.bpmn.isNonInitiating ? 'bpmn-icon-non-initiating' : 'bpmn-icon-initiating');
   }
-  if(style.bpmn.subProcessKind) {
+  if (style.bpmn.subProcessKind) {
     classes.push(`bpmn-sub-process-${style.bpmn.gatewayKind.toLowerCase()}`);
   }
-  if(style.bpmn.globalTaskKind) {
+  if (style.bpmn.globalTaskKind) {
     classes.push(computeBpmnBaseClassName(style.bpmn.globalTaskKind));
   }
   if (isLabel) {

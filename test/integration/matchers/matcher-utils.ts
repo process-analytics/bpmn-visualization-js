@@ -22,7 +22,7 @@ import CustomMatcherResult = jest.CustomMatcherResult;
 import type { ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement } from '../helpers/model-expect';
 import { bpmnVisualization } from '../helpers/model-expect';
 import type { MaxGraphCustomOverlay, MaxGraphCustomOverlayStyle } from '../../../src/component/mxgraph/overlay/custom-overlay';
-import { BPMNCellStyle } from '../../../src/component/mxgraph/renderer/StyleComputer';
+import type { BPMNCellStyle } from '../../../src/component/mxgraph/renderer/StyleComputer';
 
 export interface ExpectedStateStyle extends BPMNCellStyle {
   verticalAlign?: VAlignValue;
@@ -136,7 +136,7 @@ export function buildCommonExpectedStateStyle(expectedModel: ExpectedEdgeModelEl
     fontSize: font?.size ? font.size : 11,
     fontColor: 'Black',
     fontStyle: getFontStyleValue(font),
-    bpmn: undefined
+    bpmn: undefined,
   };
 }
 

@@ -75,12 +75,7 @@ export class MaxGraphCustomOverlay extends CellOverlay {
       }
     }
 
-    return new Rectangle(
-      Math.round(pt.x - (w * this.defaultOverlap - this.offset.x) * s),
-      Math.round(pt.y - (h * this.defaultOverlap - this.offset.y) * s),
-      w * s,
-      h * s,
-    );
+    return new Rectangle(Math.round(pt.x - (w * this.defaultOverlap - this.offset.x) * s), Math.round(pt.y - (h * this.defaultOverlap - this.offset.y) * s), w * s, h * s);
   }
 
   private computeEdgeBounds(state: CellState): Point {

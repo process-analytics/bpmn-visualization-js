@@ -39,7 +39,7 @@ import { computeAllBpmnClassNamesOfCell } from '../renderer/style-utils';
 import { MaxGraphCustomOverlay } from '../overlay/custom-overlay';
 import { OverlayBadgeShape } from '../overlay/shapes';
 import { BpmnConnector } from '../shape/edges';
-import { BPMNCellStyle } from '../renderer/StyleComputer';
+import type { BPMNCellStyle } from '../renderer/StyleComputer';
 
 /**
  * @internal

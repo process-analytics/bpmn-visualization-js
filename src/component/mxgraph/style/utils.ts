@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 /**
  * Store all rendering defaults used by `bpmn-visualization`.
  *
@@ -60,4 +59,3 @@ export enum StyleDefault {
   MESSAGE_FLOW_MARKER_START_FILL_COLOR = 'White',
   MESSAGE_FLOW_MARKER_END_FILL_COLOR = 'White',
 }
-

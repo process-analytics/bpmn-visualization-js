@@ -19,7 +19,8 @@ import ShapeConfigurator from './config/ShapeConfigurator';
 import MarkerConfigurator from './config/MarkerConfigurator';
 import type { GlobalOptions } from '../options';
 import { BpmnGraph } from './BpmnGraph';
-import { eventUtils, InternalMouseEvent } from '@maxgraph/core';
+import type { InternalMouseEvent } from '@maxgraph/core';
+import { eventUtils } from '@maxgraph/core';
 
 /**
  * Configure the BpmnMxGraph graph that can be used by the lib
