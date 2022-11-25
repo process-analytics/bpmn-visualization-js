@@ -15,7 +15,7 @@
  */
 
 import { BpmnCanvas } from './BpmnCanvas';
-import { StyleUtils } from '../../style';
+import {StyleDefault, StyleUtils} from '../../style';
 import type { IconStyleConfiguration, ShapeConfiguration, Size } from './render-types';
 import type { Shape, AbstractCanvas2D } from '@maxgraph/core';
 
@@ -57,10 +57,10 @@ export function buildPaintParameter({
   isFilled?: boolean;
   iconStrokeWidth?: number;
 }): PaintParameter {
-  const shapeStrokeWidth = shape.strokeWidth || StyleUtils.getStrokeWidth(shape.style);
-  const fillColor = shape.fill || StyleUtils.getFillColor(shape.style);
-  const strokeColor = shape.stroke || StyleUtils.getStrokeColor(shape.style);
-  const margin = StyleUtils.getMargin(shape.style);
+  const shapeStrokeWidth = shape.strokeWidth || shape.style.strokeWidth || StyleDefault.STROKE_WIDTH_THIN;
+  const fillColor = shape.fill || shape.style.fillColor || StyleDefault.DEFAULT_FILL_COLOR;
+  const strokeColor = shape.stroke || shape.style.strokeColor || StyleDefault.DEFAULT_STROKE_COLOR;
+  const margin = shape.style.margin ?? StyleDefault.DEFAULT_MARGIN;
   ratioFromParent ??= 0.25;
   isFilled ??= false;
   iconStrokeWidth ??= 0;

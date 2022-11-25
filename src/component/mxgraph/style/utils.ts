@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import type { BPMNCellStyle } from '../renderer/StyleComputer';
 
 /**
  * Store all rendering defaults used by `bpmn-visualization`.
@@ -62,26 +61,3 @@ export enum StyleDefault {
   MESSAGE_FLOW_MARKER_END_FILL_COLOR = 'White',
 }
 
-/**
- * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
- *
- * @category BPMN Theme
- * @experimental
- */
-export class StyleUtils {
-  static getFillColor(style: BPMNCellStyle): string {
-    return style.fillColor ?? StyleDefault.DEFAULT_FILL_COLOR;
-  }
-
-  static getStrokeColor(style: BPMNCellStyle): string {
-    return  style.strokeColor ?? StyleDefault.DEFAULT_STROKE_COLOR;
-  }
-
-  static getStrokeWidth(style: BPMNCellStyle): number {
-    return style.strokeWidth ?? StyleDefault.STROKE_WIDTH_THIN;
-  }
-
-  static getMargin(style: BPMNCellStyle): number {
-    return style.margin ?? StyleDefault.DEFAULT_MARGIN;
-  }
-}
