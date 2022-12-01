@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { Stylesheet } from '@maxgraph/core';
+import type { ArrowType, ShapeValue, Stylesheet } from '@maxgraph/core';
 import { constants, Perimeter } from '@maxgraph/core';
 
 import { AssociationDirectionKind, FlowKind, SequenceFlowKind, ShapeBpmnElementKind, ShapeUtil } from '../../../model/bpmn/internal';
@@ -67,7 +67,8 @@ export class StyleConfigurator {
     [
       SequenceFlowKind.DEFAULT,
       (style: BPMNCellStyle) => {
-        style.startArrow = MarkerIdentifier.ARROW_DASH;
+        // TODO remove forcing type when maxGraph fixes its types
+        style.startArrow = <ArrowType>MarkerIdentifier.ARROW_DASH;
       },
     ],
     [
@@ -140,8 +141,10 @@ export class StyleConfigurator {
       // label style
       verticalAlign: constants.ALIGN.MIDDLE,
       align: constants.ALIGN.CENTER,
-      startSize: StyleDefault.POOL_LABEL_SIZE,
-      fillColor: StyleDefault.POOL_LABEL_FILL_COLOR,
+      // TODO find a way to not force cast
+      startSize: <number>StyleDefault.POOL_LABEL_SIZE,
+      // TODO find a way to not force cast
+      fillColor: <string>StyleDefault.POOL_LABEL_FILL_COLOR,
     };
 
     this.graph.getStylesheet().putCellStyle(ShapeBpmnElementKind.POOL, style);
@@ -154,8 +157,10 @@ export class StyleConfigurator {
       verticalAlign: constants.ALIGN.MIDDLE,
       align: constants.ALIGN.CENTER,
       swimlaneLine: false, // hide the line between the title region and the content area
-      startSize: StyleDefault.LANE_LABEL_SIZE,
-      fillColor: StyleDefault.LANE_LABEL_FILL_COLOR,
+      // TODO find a way to not force cast
+      startSize: <number>StyleDefault.LANE_LABEL_SIZE,
+      // TODO find a way to not force cast
+      fillColor: <string>StyleDefault.LANE_LABEL_FILL_COLOR,
     };
 
     this.graph.getStylesheet().putCellStyle(ShapeBpmnElementKind.LANE, style);
@@ -164,9 +169,11 @@ export class StyleConfigurator {
   private configureEventStyles(): void {
     ShapeUtil.eventKinds().forEach(kind => {
       const style: BPMNCellStyle = {
-        shape: kind,
+        // TODO remove forcing type when maxGraph fixes its types
+        shape: <ShapeValue>(<unknown>kind),
         perimeter: Perimeter.EllipsePerimeter,
-        strokeWidth: kind == ShapeBpmnElementKind.EVENT_END ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN,
+        // TODO find a way to not force cast
+        strokeWidth: <number>(kind == ShapeBpmnElementKind.EVENT_END ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN),
         verticalLabelPosition: constants.ALIGN.BOTTOM,
       };
       this.putCellStyle(kind, style);
@@ -175,13 +182,16 @@ export class StyleConfigurator {
 
   private configureTextAnnotationStyle(): void {
     const style: BPMNCellStyle = {
-      shape: ShapeBpmnElementKind.TEXT_ANNOTATION,
+      // TODO remove forcing type when maxGraph fixes its types
+      shape: <ShapeValue>(<unknown>ShapeBpmnElementKind.TEXT_ANNOTATION),
       // label style
       verticalAlign: constants.ALIGN.MIDDLE,
       align: constants.ALIGN.LEFT,
       spacingLeft: 5,
-      fillColor: StyleDefault.TEXT_ANNOTATION_FILL_COLOR,
-      strokeWidth: StyleDefault.STROKE_WIDTH_THIN,
+      // TODO find a way to not force cast
+      fillColor: <string>StyleDefault.TEXT_ANNOTATION_FILL_COLOR,
+      // TODO find a way to not force cast
+      strokeWidth: <number>StyleDefault.STROKE_WIDTH_THIN,
     };
     this.putCellStyle(ShapeBpmnElementKind.TEXT_ANNOTATION, style);
   }
@@ -190,11 +200,14 @@ export class StyleConfigurator {
     const style: BPMNCellStyle = {
       rounded: true,
       absoluteArcSize: 1,
-      arcSize: StyleDefault.SHAPE_ARC_SIZE,
+      // TODO find a way to not force cast
+      arcSize: <number>StyleDefault.SHAPE_ARC_SIZE,
       dashed: true,
       dashPattern: '7 4 1 4',
-      strokeWidth: StyleDefault.STROKE_WIDTH_THIN,
-      fillColor: StyleDefault.GROUP_FILL_COLOR,
+      // TODO find a way to not force cast
+      strokeWidth: <number>StyleDefault.STROKE_WIDTH_THIN,
+      // TODO find a way to not force cast
+      fillColor: <string>StyleDefault.GROUP_FILL_COLOR,
 
       // Default label positioning
       align: constants.ALIGN.CENTER,
@@ -206,13 +219,16 @@ export class StyleConfigurator {
   private configureActivityStyles(): void {
     ShapeUtil.activityKinds().forEach(kind => {
       const style: BPMNCellStyle = {
-        shape: kind,
+        // TODO remove forcing type when maxGraph fixes its types
+        shape: <ShapeValue>(<unknown>kind),
         absoluteArcSize: 1,
-        arcSize: StyleDefault.SHAPE_ARC_SIZE,
+        // TODO find a way to not force cast
+        arcSize: <number>StyleDefault.SHAPE_ARC_SIZE,
 
         // label style
         verticalAlign: constants.ALIGN.MIDDLE,
-        strokeWidth: kind == ShapeBpmnElementKind.CALL_ACTIVITY ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN,
+        // TODO find a way to not force cast
+        strokeWidth: <number>(kind == ShapeBpmnElementKind.CALL_ACTIVITY ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN),
       };
       this.putCellStyle(kind, style);
     });
@@ -221,10 +237,12 @@ export class StyleConfigurator {
   private configureGatewayStyles(): void {
     ShapeUtil.gatewayKinds().forEach(kind => {
       const style: BPMNCellStyle = {
-        shape: kind,
+        // TODO remove forcing type when maxGraph fixes its types
+        shape: <ShapeValue>(<unknown>kind),
         perimeter: Perimeter.RhombusPerimeter,
         verticalAlign: constants.ALIGN.TOP,
-        strokeWidth: StyleDefault.STROKE_WIDTH_THIN,
+        // TODO find a way to not force cast
+        strokeWidth: <number>StyleDefault.STROKE_WIDTH_THIN,
 
         // Default label positioning
         labelPosition: constants.ALIGN.LEFT,
@@ -236,7 +254,8 @@ export class StyleConfigurator {
 
   private configureDefaultEdgeStyle(): void {
     const style = this.getStylesheet().getDefaultEdgeStyle() as BPMNCellStyle;
-    style.shape = BpmnShapeIdentifier.EDGE;
+    // TODO remove forcing type when maxGraph fixes its types
+    style.shape = <ShapeValue>BpmnShapeIdentifier.EDGE;
     style.endSize = 12;
     style.strokeWidth = 1.5;
     style.rounded = true;

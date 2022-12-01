@@ -43,9 +43,11 @@ import { MessageVisibleKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, Sh
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/flows';
 import type { Font } from '../../../model/bpmn/internal/Label';
 
-export interface BPMNCellStyle extends Omit<CellStyle, 'shape'> {
-  shape?: ShapeValue | string;
-  bpmn: {
+export interface BPMNCellStyle extends CellStyle {
+  // TODO the maxGraph@0.1.0 shape property is defined as 'ShapeValue'. It should be 'ShapeValue | string'
+  // Omit<CellStyle, 'shape'> {
+  // shape?: ShapeValue | string;
+  bpmn?: {
     kind?: ShapeBpmnElementKind | FlowKind;
     isInstantiating?: boolean;
     gatewayKind?: ShapeBpmnEventBasedGatewayKind;
@@ -183,7 +185,8 @@ export default class StyleComputer {
 
   computeMessageFlowIconStyle(edge: Edge): BPMNCellStyle {
     return {
-      shape: BpmnShapeIdentifier.MESSAGE_FLOW_ICON,
+      // TODO remove forcing type when maxGraph fixes its types
+      shape: <ShapeValue>BpmnShapeIdentifier.MESSAGE_FLOW_ICON,
       bpmn: { isNonInitiating: edge.messageVisibleKind === MessageVisibleKind.NON_INITIATING },
     };
   }
