@@ -65,28 +65,28 @@ export class BpmnGraph extends Graph {
    * Overridden to manage `currentZoomLevel`
    * @internal
    */
-  override zoomActual(): void {
+  override zoomActual = (): void => {
     super.zoomActual();
     this.setCurrentZoomLevel();
-  }
+  };
 
   /**
    * Overridden to manage `currentZoomLevel`
    * @internal
    */
-  override zoomIn(): void {
+  override zoomIn = (): void => {
     super.zoomIn();
     this.setCurrentZoomLevel();
-  }
+  };
 
   /**
    * Overridden to manage `currentZoomLevel`
    * @internal
    */
-  override zoomOut(): void {
+  override zoomOut = (): void => {
     super.zoomOut();
     this.setCurrentZoomLevel();
-  }
+  };
 
   /**
    * @internal
