@@ -99,6 +99,9 @@ export default class ShapeConfigurator {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO fix CellRenderer.registerShape call
     // @ts-ignore
     CellRenderer.registerShape(BpmnShapeIdentifier.MESSAGE_FLOW_ICON, MessageFlowIconShape);
+
+    // eslint-disable-next-line no-console
+    console.info('ShapeConfigurator.registerShapes: CellRenderer.defaultShapes', CellRenderer.defaultShapes);
   }
 
   private initMxSvgCanvasPrototype(): void {
