@@ -60,7 +60,7 @@ export class MaxGraphCustomOverlay extends CellOverlay {
 
       if (this.align == constants.ALIGN.LEFT) {
         pt.x = state.x;
-      } else if (this.align == constants.ALIGN.CENTER) {
+      } else if (this.align == 'center') {
         pt.x = state.x + state.width / 2;
       } else {
         pt.x = state.x + state.width;
@@ -68,7 +68,7 @@ export class MaxGraphCustomOverlay extends CellOverlay {
 
       if (this.verticalAlign == constants.ALIGN.TOP) {
         pt.y = state.y;
-      } else if (this.verticalAlign == constants.ALIGN.MIDDLE) {
+      } else if (this.verticalAlign == 'middle') {
         pt.y = state.y + state.height / 2;
       } else {
         pt.y = state.y + state.height;
@@ -85,7 +85,7 @@ export class MaxGraphCustomOverlay extends CellOverlay {
       return pts[0];
     }
     // middle point for middle position
-    else if (this.align == constants.ALIGN.CENTER) {
+    else if (this.align == 'center') {
       if (pts.length % 2 == 1) {
         return pts[Math.floor(pts.length / 2)];
       } else {

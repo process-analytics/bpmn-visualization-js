@@ -35,7 +35,7 @@ export class StyleConfigurator {
     [
       FlowKind.SEQUENCE_FLOW,
       (style: BPMNCellStyle) => {
-        style.endArrow = constants.ARROW.BLOCK_THIN;
+        style.endArrow = 'blockThin';
       },
     ],
     [
@@ -43,11 +43,11 @@ export class StyleConfigurator {
       (style: BPMNCellStyle) => {
         style.dashed = true;
         style.dashPattern = '8 5';
-        style.startArrow = constants.ARROW.OVAL;
+        style.startArrow = 'oval';
         style.startSize = 8;
         style.startFill = true;
         style.bpmn.edge.startFillColor = StyleDefault.MESSAGE_FLOW_MARKER_START_FILL_COLOR;
-        style.endArrow = constants.ARROW.BLOCK_THIN;
+        style.endArrow = 'blockThin';
         style.endFill = true;
         style.bpmn.edge.endFillColor = StyleDefault.MESSAGE_FLOW_MARKER_END_FILL_COLOR;
       },
@@ -57,8 +57,8 @@ export class StyleConfigurator {
       (style: BPMNCellStyle) => {
         style.dashed = true;
         style.dashPattern = '1 2';
-        style.endArrow = constants.ARROW.OPEN_THIN;
-        style.startArrow = constants.ARROW.OPEN_THIN;
+        style.endArrow = 'openThin';
+        style.startArrow = 'openThin';
         style.startSize = 12;
       },
     ],
@@ -139,8 +139,8 @@ export class StyleConfigurator {
     const style: BPMNCellStyle = {
       shape: constants.SHAPE.SWIMLANE,
       // label style
-      verticalAlign: constants.ALIGN.MIDDLE,
-      align: constants.ALIGN.CENTER,
+      verticalAlign: 'middle',
+      align: 'center',
       // TODO find a way to not force cast
       startSize: <number>StyleDefault.POOL_LABEL_SIZE,
       // TODO find a way to not force cast
@@ -154,8 +154,8 @@ export class StyleConfigurator {
     const style: BPMNCellStyle = {
       shape: constants.SHAPE.SWIMLANE,
       // label style
-      verticalAlign: constants.ALIGN.MIDDLE,
-      align: constants.ALIGN.CENTER,
+      verticalAlign: 'middle',
+      align: 'center',
       swimlaneLine: false, // hide the line between the title region and the content area
       // TODO find a way to not force cast
       startSize: <number>StyleDefault.LANE_LABEL_SIZE,
@@ -185,7 +185,7 @@ export class StyleConfigurator {
       // TODO remove forcing type when maxGraph fixes its types
       shape: <ShapeValue>(<unknown>ShapeBpmnElementKind.TEXT_ANNOTATION),
       // label style
-      verticalAlign: constants.ALIGN.MIDDLE,
+      verticalAlign: 'middle',
       align: constants.ALIGN.LEFT,
       spacingLeft: 5,
       // TODO find a way to not force cast
@@ -210,7 +210,7 @@ export class StyleConfigurator {
       fillColor: <string>StyleDefault.GROUP_FILL_COLOR,
 
       // Default label positioning
-      align: constants.ALIGN.CENTER,
+      align: 'center',
       verticalAlign: constants.ALIGN.TOP,
     };
     this.putCellStyle(ShapeBpmnElementKind.GROUP, style);
@@ -226,7 +226,7 @@ export class StyleConfigurator {
         arcSize: <number>StyleDefault.SHAPE_ARC_SIZE,
 
         // label style
-        verticalAlign: constants.ALIGN.MIDDLE,
+        verticalAlign: 'middle',
         // TODO find a way to not force cast
         strokeWidth: <number>(kind == ShapeBpmnElementKind.CALL_ACTIVITY ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN),
       };

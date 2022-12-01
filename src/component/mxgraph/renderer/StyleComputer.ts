@@ -159,7 +159,7 @@ export default class StyleComputer {
     if (labelBounds) {
       style.verticalAlign = constants.ALIGN.TOP;
       if (bpmnCell.bpmnElement.kind != ShapeBpmnElementKind.TEXT_ANNOTATION) {
-        style.align = constants.ALIGN.CENTER;
+        style.align = 'center';
       }
 
       if (bpmnCell instanceof Shape) {
