@@ -15,7 +15,7 @@
  */
 
 import { BpmnCanvas } from './BpmnCanvas';
-import { StyleDefault, StyleUtils } from '../../style';
+import { StyleDefault } from '../../style';
 import type { IconStyleConfiguration, ShapeConfiguration, Size } from './render-types';
 import type { Shape, AbstractCanvas2D } from '@maxgraph/core';
 
