@@ -59,3 +59,12 @@ export enum StyleDefault {
   MESSAGE_FLOW_MARKER_START_FILL_COLOR = 'White',
   MESSAGE_FLOW_MARKER_END_FILL_COLOR = 'White',
 }
+
+// TODO maxGraph "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided." constants.FONT
+// TODO remove duplicated from maxGraph
+export enum FONT {
+  BOLD = 1,
+  ITALIC = 2,
+  UNDERLINE = 4,
+  STRIKETHROUGH = 8,
+}

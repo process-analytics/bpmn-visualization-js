@@ -74,7 +74,7 @@ export class StyleConfigurator {
     [
       SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY,
       (style: BPMNCellStyle) => {
-        style.startArrow = constants.ARROW.DIAMOND_THIN;
+        style.startArrow = 'diamondThin';
         style.startSize = 18;
         style.startFill = true;
         style.bpmn.edge.startFillColor = StyleDefault.SEQUENCE_FLOW_CONDITIONAL_FROM_ACTIVITY_MARKER_FILL_COLOR;
@@ -137,7 +137,8 @@ export class StyleConfigurator {
 
   private configurePoolStyle(): void {
     const style: BPMNCellStyle = {
-      shape: constants.SHAPE.SWIMLANE,
+      // TODO maxgraph "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided." constants.SHAPE.SWIMLANE
+      shape: 'swimlane',
       // label style
       verticalAlign: 'middle',
       align: 'center',
@@ -152,7 +153,8 @@ export class StyleConfigurator {
 
   private configureLaneStyle(): void {
     const style: BPMNCellStyle = {
-      shape: constants.SHAPE.SWIMLANE,
+      // TODO maxgraph "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided." constants.SHAPE.SWIMLANE
+      shape: 'swimlane',
       // label style
       verticalAlign: 'middle',
       align: 'center',
@@ -174,7 +176,7 @@ export class StyleConfigurator {
         perimeter: Perimeter.EllipsePerimeter,
         // TODO find a way to not force cast
         strokeWidth: <number>(kind == ShapeBpmnElementKind.EVENT_END ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN),
-        verticalLabelPosition: constants.ALIGN.BOTTOM,
+        verticalLabelPosition: 'bottom',
       };
       this.putCellStyle(kind, style);
     });
@@ -186,7 +188,7 @@ export class StyleConfigurator {
       shape: <ShapeValue>(<unknown>ShapeBpmnElementKind.TEXT_ANNOTATION),
       // label style
       verticalAlign: 'middle',
-      align: constants.ALIGN.LEFT,
+      align: 'left',
       spacingLeft: 5,
       // TODO find a way to not force cast
       fillColor: <string>StyleDefault.TEXT_ANNOTATION_FILL_COLOR,
@@ -211,7 +213,7 @@ export class StyleConfigurator {
 
       // Default label positioning
       align: 'center',
-      verticalAlign: constants.ALIGN.TOP,
+      verticalAlign: 'top',
     };
     this.putCellStyle(ShapeBpmnElementKind.GROUP, style);
   }
@@ -240,13 +242,13 @@ export class StyleConfigurator {
         // TODO remove forcing type when maxGraph fixes its types
         shape: <ShapeValue>(<unknown>kind),
         perimeter: Perimeter.RhombusPerimeter,
-        verticalAlign: constants.ALIGN.TOP,
+        verticalAlign: 'top',
         // TODO find a way to not force cast
         strokeWidth: <number>StyleDefault.STROKE_WIDTH_THIN,
 
         // Default label positioning
-        labelPosition: constants.ALIGN.LEFT,
-        verticalLabelPosition: constants.ALIGN.TOP,
+        labelPosition: 'left',
+        verticalLabelPosition: 'top',
       };
       this.putCellStyle(kind, style);
     });
@@ -260,7 +262,7 @@ export class StyleConfigurator {
     style.strokeWidth = 1.5;
     style.rounded = true;
     style.arcSize = 5;
-    style.verticalAlign = constants.ALIGN.BOTTOM;
+    style.verticalAlign = 'bottom';
     style.endArrow = undefined;
 
     StyleConfigurator.configureCommonDefaultStyle(style);

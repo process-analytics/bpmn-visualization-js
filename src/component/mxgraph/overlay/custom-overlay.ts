@@ -58,7 +58,7 @@ export class MaxGraphCustomOverlay extends CellOverlay {
     } else {
       pt = new Point();
 
-      if (this.align == constants.ALIGN.LEFT) {
+      if (this.align == 'left') {
         pt.x = state.x;
       } else if (this.align == 'center') {
         pt.x = state.x + state.width / 2;
@@ -66,7 +66,7 @@ export class MaxGraphCustomOverlay extends CellOverlay {
         pt.x = state.x + state.width;
       }
 
-      if (this.verticalAlign == constants.ALIGN.TOP) {
+      if (this.verticalAlign == 'top') {
         pt.y = state.y;
       } else if (this.verticalAlign == 'middle') {
         pt.y = state.y + state.height / 2;
@@ -81,7 +81,7 @@ export class MaxGraphCustomOverlay extends CellOverlay {
   private computeEdgeBounds(state: CellState): Point {
     const pts = state.absolutePoints;
     // 1st point for start position
-    if (this.align == constants.ALIGN.LEFT) {
+    if (this.align == 'left') {
       return pts[0];
     }
     // middle point for middle position

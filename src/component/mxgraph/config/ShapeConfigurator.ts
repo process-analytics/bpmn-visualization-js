@@ -34,7 +34,7 @@ import {
 } from '../shape/activity-shapes';
 import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
-import { BpmnShapeIdentifier } from '../style';
+import { BpmnShapeIdentifier, FONT } from '../style';
 import { computeAllBpmnClassNamesOfCell } from '../renderer/style-utils';
 import { MaxGraphCustomOverlay } from '../overlay/custom-overlay';
 import { OverlayBadgeShape } from '../overlay/shapes';
@@ -109,18 +109,18 @@ export default class ShapeConfigurator {
         // END OF Fix for issue #920
         '; ';
 
-      if ((s.fontStyle & constants.FONT.BOLD) == constants.FONT.BOLD) {
+      if ((s.fontStyle & FONT.BOLD) == FONT.BOLD) {
         css += 'font-weight: bold; ';
       }
-      if ((s.fontStyle & constants.FONT.ITALIC) == constants.FONT.ITALIC) {
+      if ((s.fontStyle & FONT.ITALIC) == FONT.ITALIC) {
         css += 'font-style: italic; ';
       }
 
       const deco = [];
-      if ((s.fontStyle & constants.FONT.UNDERLINE) == constants.FONT.UNDERLINE) {
+      if ((s.fontStyle & FONT.UNDERLINE) == FONT.UNDERLINE) {
         deco.push('underline');
       }
-      if ((s.fontStyle & constants.FONT.STRIKETHROUGH) == constants.FONT.STRIKETHROUGH) {
+      if ((s.fontStyle & FONT.STRIKETHROUGH) == FONT.STRIKETHROUGH) {
         deco.push('line-through');
       }
       if (deco.length > 0) {
@@ -153,7 +153,8 @@ export default class ShapeConfigurator {
         // 'this.state.cell.style' = the style applied to the cell: 1st element: style name = bpmn shape name
         const cell = this.state.cell;
         // dialect = strictHtml is set means that current node holds an html label
-        let allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === constants.DIALECT.STRICTHTML);
+        // TODO maxGraph "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided."constants.DIALECT.STRICTHTML
+        let allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === 'strictHtml');
         const extraCssClasses = (this.state.style as BPMNCellStyle).bpmn.extra.css.classes;
         if (extraCssClasses) {
           allBpmnClassNames = allBpmnClassNames.concat(extraCssClasses);

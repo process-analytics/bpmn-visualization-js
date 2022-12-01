@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { constants } from '@maxgraph/core';
 import type { CellStyle, ShapeValue } from '@maxgraph/core';
 
 import Shape from '../../../model/bpmn/internal/shape/Shape';
@@ -29,7 +28,7 @@ import {
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../model/bpmn/internal/shape/ShapeBpmnElement';
-import { BpmnShapeIdentifier } from '../style';
+import { BpmnShapeIdentifier, FONT } from '../style';
 import type {
   FlowKind,
   ShapeBpmnEventBasedGatewayKind,
@@ -157,7 +156,7 @@ export default class StyleComputer {
 
     const bpmnElement = bpmnCell.bpmnElement;
     if (labelBounds) {
-      style.verticalAlign = constants.ALIGN.TOP;
+      style.verticalAlign = 'top';
       if (bpmnCell.bpmnElement.kind != ShapeBpmnElementKind.TEXT_ANNOTATION) {
         style.align = 'center';
       }
@@ -166,8 +165,8 @@ export default class StyleComputer {
         // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
         style.labelWidth = labelBounds.width + 1;
         // align settings
-        style.labelPosition = constants.ALIGN.LEFT;
-        style.verticalLabelPosition = constants.ALIGN.TOP;
+        style.labelPosition = 'left';
+        style.verticalLabelPosition = 'top';
       }
     }
     // when no label bounds, adjust the default style dynamically
@@ -177,7 +176,7 @@ export default class StyleComputer {
         (bpmnElement instanceof ShapeBpmnCallActivity && bpmnElement.callActivityKind === ShapeBpmnCallActivityKind.CALLING_PROCESS)) &&
       !bpmnElement.markers.includes(ShapeBpmnMarkerKind.EXPAND)
     ) {
-      style.verticalAlign = constants.ALIGN.TOP;
+      style.verticalAlign = 'top';
     }
 
     return style;
@@ -194,16 +193,16 @@ export default class StyleComputer {
   private static getFontStyleValue(font: Font): number {
     let value = 0;
     if (font.isBold) {
-      value += constants.FONT.BOLD;
+      value += FONT.BOLD;
     }
     if (font.isItalic) {
-      value += constants.FONT.ITALIC;
+      value += FONT.ITALIC;
     }
     if (font.isStrikeThrough) {
-      value += constants.FONT.STRIKETHROUGH;
+      value += FONT.STRIKETHROUGH;
     }
     if (font.isUnderline) {
-      value += constants.FONT.UNDERLINE;
+      value += FONT.UNDERLINE;
     }
     return value;
   }
