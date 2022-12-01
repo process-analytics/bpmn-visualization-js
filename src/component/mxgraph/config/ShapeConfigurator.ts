@@ -171,7 +171,7 @@ export default class ShapeConfigurator {
         // dialect = strictHtml is set means that current node holds an html label
         // TODO maxGraph "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided."constants.DIALECT.STRICTHTML
         let allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === 'strictHtml');
-        const extraCssClasses = (this.state.style as BPMNCellStyle).bpmn.extra.css.classes;
+        const extraCssClasses = (this.state.style as BPMNCellStyle).bpmn?.extra?.css?.classes;
         if (extraCssClasses) {
           allBpmnClassNames = allBpmnClassNames.concat(extraCssClasses);
         }
