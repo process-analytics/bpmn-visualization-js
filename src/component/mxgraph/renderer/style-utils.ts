@@ -40,6 +40,7 @@ export function computeAllBpmnClassNamesOfCell(cell: Cell, isLabel: boolean): st
 export function computeAllBpmnClassNames(style: BPMNCellStyle, isLabel: boolean): string[] {
   const classes: string[] = [];
 
+  // TODO style.bpmn.kind could be omit by considering the first element of style.baseStyleNames (this would restore the previous behavior)
   const bpmnElementKind = style.bpmn.kind;
 
   const typeClasses = new Map<string, boolean>();

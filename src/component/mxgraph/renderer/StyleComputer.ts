@@ -77,15 +77,23 @@ export interface BPMNCellStyle extends CellStyle {
  */
 export default class StyleComputer {
   computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): BPMNCellStyle {
-    const style: BPMNCellStyle = {
+    let style: BPMNCellStyle = {
       bpmn: { kind: bpmnCell.bpmnElement.kind },
-      ...(bpmnCell instanceof Shape ? StyleComputer.computeShapeStyle(bpmnCell) : StyleComputer.computeEdgeStyle(bpmnCell)),
     };
+
+    const baseStyleNames: string[] = [bpmnCell.bpmnElement.kind as string];
+
+    if (bpmnCell instanceof Shape) {
+      // TODO find a better way for the merge
+      style = { ...style, ...StyleComputer.computeShapeStyle(bpmnCell) };
+    } else {
+      baseStyleNames.push(...StyleComputer.computeEdgeBaseStyleNames(bpmnCell));
+    }
 
     const fontStyleValues = StyleComputer.computeFontStyleValues(bpmnCell);
     const labelStyleValues = StyleComputer.computeLabelStyleValues(bpmnCell, labelBounds);
 
-    return { ...style, ...fontStyleValues, ...labelStyleValues };
+    return { baseStyleNames: baseStyleNames, ...style, ...fontStyleValues, ...labelStyleValues };
   }
 
   private static computeShapeStyle(shape: Shape): BPMNCellStyle {
@@ -128,21 +136,24 @@ export default class StyleComputer {
     style.bpmn.markers = bpmnElement.markers;
   }
 
-  private static computeEdgeStyle(edge: Edge): BPMNCellStyle {
-    const style: BPMNCellStyle = { bpmn: {} };
+  // TODO switch from static method to function
+  // This applies to the current implementation and to all static methods of this class
+  private static computeEdgeBaseStyleNames(edge: Edge): string[] {
+    const styles: string[] = [];
 
     const bpmnElement = edge.bpmnElement;
     if (bpmnElement instanceof SequenceFlow) {
-      style.bpmn.sequenceFlowKind = bpmnElement.sequenceFlowKind;
-    } else if (bpmnElement instanceof AssociationFlow) {
-      style.bpmn.associationDirectionKind = bpmnElement.associationDirectionKind;
+      styles.push(bpmnElement.sequenceFlowKind);
+    }
+    if (bpmnElement instanceof AssociationFlow) {
+      styles.push(bpmnElement.associationDirectionKind);
     }
 
-    return style;
+    return styles;
   }
 
-  private static computeFontStyleValues(bpmnCell: Shape | Edge): BPMNCellStyle {
-    const style: BPMNCellStyle = { bpmn: {} };
+  private static computeFontStyleValues(bpmnCell: Shape | Edge): CellStyle {
+    const style: CellStyle = {};
 
     const font = bpmnCell.label?.font;
     if (font) {
@@ -154,8 +165,8 @@ export default class StyleComputer {
     return style;
   }
 
-  private static computeLabelStyleValues(bpmnCell: Shape | Edge, labelBounds: Bounds): BPMNCellStyle {
-    const style: BPMNCellStyle = { bpmn: {} };
+  private static computeLabelStyleValues(bpmnCell: Shape | Edge, labelBounds: Bounds): CellStyle {
+    const style: CellStyle = {};
 
     const bpmnElement = bpmnCell.bpmnElement;
     if (labelBounds) {
