@@ -46,7 +46,9 @@ export interface BPMNCellStyle extends CellStyle {
   // TODO the maxGraph@0.1.0 shape property is defined as 'ShapeValue'. It should be 'ShapeValue | string'
   // Omit<CellStyle, 'shape'> {
   // shape?: ShapeValue | string;
+  // TODO make bpmn mandatory?
   bpmn?: {
+    // TODO make kind mandatory?
     kind?: ShapeBpmnElementKind | FlowKind;
     isInstantiating?: boolean;
     gatewayKind?: ShapeBpmnEventBasedGatewayKind;
@@ -95,6 +97,7 @@ export default class StyleComputer {
     } else if (bpmnElement instanceof ShapeBpmnActivity) {
       this.computeActivityShapeStyle(bpmnElement, style);
     } else if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
+      // style.horizontal is for the label
       // In BPMN, isHorizontal is for the Shape
       style.horizontal = shape.isHorizontal;
     } else if (bpmnElement instanceof ShapeBpmnEventBasedGateway) {

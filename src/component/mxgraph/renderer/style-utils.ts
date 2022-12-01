@@ -40,7 +40,6 @@ export function computeAllBpmnClassNamesOfCell(cell: Cell, isLabel: boolean): st
 export function computeAllBpmnClassNames(style: BPMNCellStyle, isLabel: boolean): string[] {
   const classes: string[] = [];
 
-  // shape=bpmn.message-flow-icon --> message-flow-icon
   const bpmnElementKind = style.bpmn.kind;
 
   const typeClasses = new Map<string, boolean>();
