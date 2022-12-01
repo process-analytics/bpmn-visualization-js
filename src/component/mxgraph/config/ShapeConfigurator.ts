@@ -60,10 +60,20 @@ export default class ShapeConfigurator {
     CellRenderer.registerShape(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, IntermediateEventShape);
     CellRenderer.registerShape(ShapeBpmnElementKind.EVENT_BOUNDARY, IntermediateEventShape);
     // gateways
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO fix CellRenderer.registerShape call
+    // @ts-ignore
     CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_COMPLEX, ComplexGatewayShape);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO fix CellRenderer.registerShape call
+    // @ts-ignore
     CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_EVENT_BASED, EventBasedGatewayShape);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO fix CellRenderer.registerShape call
+    // @ts-ignore
     CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, ExclusiveGatewayShape);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO fix CellRenderer.registerShape call
+    // @ts-ignore
     CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_INCLUSIVE, InclusiveGatewayShape);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO fix CellRenderer.registerShape call
+    // @ts-ignore
     CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_PARALLEL, ParallelGatewayShape);
     // activities
     CellRenderer.registerShape(ShapeBpmnElementKind.SUB_PROCESS, SubProcessShape);
@@ -78,10 +88,16 @@ export default class ShapeConfigurator {
     CellRenderer.registerShape(ShapeBpmnElementKind.TASK_SCRIPT, ScriptTaskShape);
     CellRenderer.registerShape(ShapeBpmnElementKind.TASK_BUSINESS_RULE, BusinessRuleTaskShape);
     // artifacts
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO fix CellRenderer.registerShape call
+    // @ts-ignore
     CellRenderer.registerShape(ShapeBpmnElementKind.TEXT_ANNOTATION, TextAnnotationShape);
 
     // shapes for flows
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO fix CellRenderer.registerShape call
+    // @ts-ignore
     CellRenderer.registerShape(BpmnShapeIdentifier.EDGE, BpmnConnector);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO fix CellRenderer.registerShape call
+    // @ts-ignore
     CellRenderer.registerShape(BpmnShapeIdentifier.MESSAGE_FLOW_ICON, MessageFlowIconShape);
   }
 
