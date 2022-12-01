@@ -42,6 +42,10 @@ export function computeAllBpmnClassNames(style: BPMNCellStyle, isLabel: boolean)
 
   // TODO style.bpmn.kind could be omit by considering the first element of style.baseStyleNames (this would restore the previous behavior)
   const bpmnElementKind = style.bpmn.kind;
+  // eslint-disable-next-line no-console
+  console.info('computeAllBpmnClassNames - style', style);
+  // eslint-disable-next-line no-console
+  console.info('computeAllBpmnClassNames - bpmnElementKind', bpmnElementKind);
 
   const typeClasses = new Map<string, boolean>();
   typeClasses.set('bpmn-type-activity', ShapeUtil.isActivity(bpmnElementKind));
@@ -73,6 +77,8 @@ export function computeAllBpmnClassNames(style: BPMNCellStyle, isLabel: boolean)
   if (isLabel) {
     classes.push('bpmn-label');
   }
+  // eslint-disable-next-line no-console
+  console.info('computeAllBpmnClassNames - return', classes);
   return classes;
 }
 

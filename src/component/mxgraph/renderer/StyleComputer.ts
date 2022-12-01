@@ -77,7 +77,9 @@ export interface BPMNCellStyle extends CellStyle {
  */
 export default class StyleComputer {
   computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): BPMNCellStyle {
-    let style: BPMNCellStyle = {
+    // eslint-disable-next-line no-console
+    console.info('computeStyle - bpmnCell', bpmnCell);
+    const style: BPMNCellStyle = {
       bpmn: { kind: bpmnCell.bpmnElement.kind },
     };
 
@@ -85,7 +87,8 @@ export default class StyleComputer {
 
     if (bpmnCell instanceof Shape) {
       // TODO find a better way for the merge
-      style = { ...style, ...StyleComputer.computeShapeStyle(bpmnCell) };
+      StyleComputer.enrichStyleWithShapeInfo(style, bpmnCell);
+      // style = { ...style, ...StyleComputer.computeShapeStyle(bpmnCell) };
     } else {
       baseStyleNames.push(...StyleComputer.computeEdgeBaseStyleNames(bpmnCell));
     }
@@ -93,11 +96,15 @@ export default class StyleComputer {
     const fontStyleValues = StyleComputer.computeFontStyleValues(bpmnCell);
     const labelStyleValues = StyleComputer.computeLabelStyleValues(bpmnCell, labelBounds);
 
-    return { baseStyleNames: baseStyleNames, ...style, ...fontStyleValues, ...labelStyleValues };
+    const returnedStyle = { baseStyleNames: baseStyleNames, ...style, ...fontStyleValues, ...labelStyleValues };
+    // eslint-disable-next-line no-console
+    console.info('computeStyle - return', returnedStyle);
+    return returnedStyle;
   }
 
-  private static computeShapeStyle(shape: Shape): BPMNCellStyle {
-    const style: BPMNCellStyle = { bpmn: {} };
+  private static enrichStyleWithShapeInfo(style: BPMNCellStyle, shape: Shape): void {
+    // private static computeShapeStyle(shape: Shape): BPMNCellStyle {
+    //   const style: BPMNCellStyle = { bpmn: {} };
     const bpmnElement = shape.bpmnElement;
 
     if (bpmnElement instanceof ShapeBpmnEvent) {
@@ -113,7 +120,7 @@ export default class StyleComputer {
       style.bpmn.gatewayKind = bpmnElement.gatewayKind;
     }
 
-    return style;
+    // return style;
   }
 
   private static computeEventShapeStyle(bpmnElement: ShapeBpmnEvent, style: BPMNCellStyle): void {
