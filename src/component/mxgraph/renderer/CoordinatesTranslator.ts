@@ -43,7 +43,6 @@ export default class CoordinatesTranslator {
   // This implementation is taken from the example described in the documentation of mxgraph#getTranslateForRoot (4.1.1)
   // The translation is generally negative
   private getTranslateForRoot(cell: Cell): Point {
-    const model = this.graph.model;
     const offset = new Point(0, 0);
 
     while (cell != null) {
