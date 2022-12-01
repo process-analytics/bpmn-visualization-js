@@ -42,6 +42,7 @@ import { MessageVisibleKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, Sh
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/flows';
 import type { Font } from '../../../model/bpmn/internal/Label';
 
+// TODO this type should probably be part of the API
 export interface BPMNCellStyle extends CellStyle {
   // TODO the maxGraph@0.1.0 shape property is defined as 'ShapeValue'. It should be 'ShapeValue | string'
   // Omit<CellStyle, 'shape'> {
