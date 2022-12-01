@@ -159,14 +159,14 @@ export class BpmnGraph extends Graph {
 
   private createMouseWheelZoomListener(performScaling: boolean) {
     return (event: Event, up: boolean) => {
-      if (eventUtils.isConsumed(event)) {
+      if (!(event instanceof MouseEvent) || eventUtils.isConsumed(event)) {
         return;
       }
-      const evt = event as MouseEvent;
+
       // only the ctrl key
-      const isZoomWheelEvent = evt.ctrlKey && !evt.altKey && !evt.shiftKey && !evt.metaKey;
+      const isZoomWheelEvent = event.ctrlKey && !event.altKey && !event.shiftKey && !event.metaKey;
       if (isZoomWheelEvent) {
-        this.manageMouseWheelZoomEvent(up, evt, performScaling);
+        this.manageMouseWheelZoomEvent(up, event, performScaling);
       }
     };
   }
