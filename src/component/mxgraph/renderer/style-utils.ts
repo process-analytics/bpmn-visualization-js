@@ -69,7 +69,7 @@ export function computeAllBpmnClassNames(style: BPMNCellStyle, isLabel: boolean)
     classes.push(style.bpmn.isNonInitiating ? 'bpmn-icon-non-initiating' : 'bpmn-icon-initiating');
   }
   if (style.bpmn.subProcessKind) {
-    classes.push(`bpmn-sub-process-${style.bpmn.gatewayKind.toLowerCase()}`);
+    classes.push(`bpmn-sub-process-${style.bpmn.subProcessKind.toLowerCase()}`);
   }
   if (style.bpmn.globalTaskKind) {
     classes.push(computeBpmnBaseClassName(style.bpmn.globalTaskKind));
