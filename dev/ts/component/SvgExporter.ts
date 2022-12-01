@@ -15,7 +15,7 @@
  */
 
 import type { Graph, AlignValue, VAlignValue, OverflowValue, TextDirectionValue } from '@maxgraph/core';
-import { Client, SvgCanvas2D, ImageExport, utils, constants } from '@maxgraph/core';
+import { Client, SvgCanvas2D, ImageExport, constants, xmlUtils, domUtils, stringUtils } from '@maxgraph/core';
 
 interface SvgExportOptions {
   scale: number;
@@ -46,7 +46,10 @@ export class SvgExporter {
 
   private doSvgExport(enableForeignObjectForLabel: boolean): string {
     const svgDocument = this.computeSvg({ scale: 1, border: 25, enableForeignObjectForLabel: enableForeignObjectForLabel });
-    const svgAsString = utils.getXml(svgDocument);
+    // TODO fix type
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const svgAsString = xmlUtils.getXml(svgDocument);
     return `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 ${svgAsString}
@@ -63,7 +66,7 @@ ${svgAsString}
     const viewScale = this.graph.view.scale;
 
     // Prepares SVG document that holds the output
-    const svgDoc = utils.createXmlDocument();
+    const svgDoc = xmlUtils.createXmlDocument();
     const root = svgDoc.createElementNS(constants.NS_SVG, 'svg');
 
     const s = scale / viewScale;
@@ -100,8 +103,8 @@ ${svgAsString}
     return svgDoc;
   }
 
-  createSvgCanvas(node: Element): SvgCanvas2D {
-    const canvas = new CanvasForExport(node);
+  createSvgCanvas(node: SVGElement): SvgCanvas2D {
+    const canvas = new CanvasForExport(node, true);
     // from the draw.io code, may not be needed here
     canvas.pointerEvents = true;
     return canvas;
@@ -112,29 +115,25 @@ class CanvasForExport extends SvgCanvas2D {
   // Convert HTML entities
   private htmlConverter = document.createElement('div');
 
-  constructor(node: Element) {
-    super(node);
-  }
-
   override getAlternateText(
-    fo: Element,
+    fo: SVGForeignObjectElement,
     x: number,
     y: number,
     w: number,
     h: number,
-    str: string,
+    str: Element | string,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    align: string,
+    align: AlignValue,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    valign: string,
+    valign: VAlignValue,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    wrap: string,
+    wrap: boolean,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     format: string,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    overflow: string,
+    overflow: OverflowValue,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    clip: string,
+    clip: boolean,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     rotation: number,
   ): string {
@@ -159,15 +158,22 @@ class CanvasForExport extends SvgCanvas2D {
     super.plainText(x, y, w, h, str, align, valign, wrap, overflow, clip, rotation, dir);
   }
 
-  private computeTruncatedText(str: string, w: number): string {
+  private computeTruncatedText(str: Element | string, w: number): string {
     // Assumes a max character width of 0.5em
     if (str == null || this.state.fontSize <= 0) {
       return '';
     }
+    // TODO manage str when it is an Element (see maxGraph code)
+    if (str instanceof Element) {
+      str = str.innerHTML;
+    }
 
     try {
       this.htmlConverter.innerHTML = str;
-      str = utils.extractTextWithWhitespace(this.htmlConverter.childNodes);
+      // TODO fix types
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      str = domUtils.extractTextWithWhitespace(this.htmlConverter.childNodes);
 
       // Workaround for substring breaking double byte UTF
       const exp = Math.ceil((2 * w) / this.state.fontSize);
@@ -192,7 +198,7 @@ class CanvasForExport extends SvgCanvas2D {
 
       // Uses result and adds ellipsis if more than 1 char remains
       if (result.length < str.length && str.length - result.length > 1) {
-        str = utils.trim(result.join('')) + '...';
+        str = stringUtils.trim(result.join('')) + '...';
       }
     } catch (e) {
       console.warn('Error while computing txt label', e);
