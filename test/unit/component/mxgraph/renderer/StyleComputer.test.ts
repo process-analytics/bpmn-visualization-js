@@ -458,11 +458,18 @@ describe('Style Computer', () => {
 
   describe('compute style - pool references a Process', () => {
     it.each([
-      ['vertical', false, '1'],
-      ['horizontal', true, '0'],
-    ])('%s pool references a Process', (title, isHorizontal: boolean, expected: string) => {
+      ['vertical', false, false],
+      ['horizontal', true, true],
+      ['undefined', undefined, undefined],
+      // TODO undefined
+    ])('%s pool references a Process', (title: string, isHorizontal: boolean, expectedStyleIsHorizontal: boolean) => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.POOL), undefined, isHorizontal);
-      expect(computeStyle(shape)).toBe(`pool;horizontal=${expected}`);
+      // expect(computeStyle(shape)).toBe(`pool;horizontal=${expectedStyleIsHorizontal}`);
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['pool'],
+        horizontal: expectedStyleIsHorizontal,
+        bpmn: { kind: ShapeBpmnElementKind.POOL },
+      });
     });
   });
 

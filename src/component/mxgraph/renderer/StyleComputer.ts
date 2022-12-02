@@ -117,7 +117,9 @@ export default class StyleComputer {
     } else if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
       // style.horizontal is for the label
       // In BPMN, isHorizontal is for the Shape
-      style.horizontal = shape.isHorizontal;
+      // FIXME maxGraph seems inverting horizontal and vertical
+      // so inverting condition for now
+      style.horizontal = shape.isHorizontal == undefined || !shape.isHorizontal;
     } else if (bpmnElement instanceof ShapeBpmnEventBasedGateway) {
       style.bpmn.isInstantiating = bpmnElement.instantiate;
       style.bpmn.gatewayKind = bpmnElement.gatewayKind;
