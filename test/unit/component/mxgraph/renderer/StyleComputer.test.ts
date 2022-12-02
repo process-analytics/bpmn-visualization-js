@@ -219,12 +219,21 @@ describe('Style Computer', () => {
 
     it('compute style of edge with label including strike-through font', () => {
       const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY), undefined, new Label(toFont({ size: 14.2, isStrikeThrough: true }), undefined));
-      expect(computeStyle(edge)).toBe('sequenceFlow;conditional_from_activity;fontSize=14.2;fontStyle=8');
+      expect(computeStyle(edge)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['sequenceFlow', 'conditional_from_activity'],
+        fontSize: 14.2,
+        fontStyle: 8,
+        bpmn: { kind: FlowKind.SEQUENCE_FLOW },
+      });
     });
 
     it('compute style of edge with label including underline font', () => {
       const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.DEFAULT), undefined, new Label(toFont({ isUnderline: true }), undefined));
-      expect(computeStyle(edge)).toBe('sequenceFlow;default;fontStyle=4');
+      expect(computeStyle(edge)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['sequenceFlow', 'default'],
+        fontStyle: 4,
+        bpmn: { kind: FlowKind.SEQUENCE_FLOW },
+      });
     });
 
     it('compute style of edge with label including bold/italic/strike-through/underline font', () => {
@@ -234,12 +243,23 @@ describe('Style Computer', () => {
         undefined,
         new Label(toFont({ isBold: true, isItalic: true, isStrikeThrough: true, isUnderline: true }), undefined),
       );
-      expect(computeStyle(edge)).toBe('sequenceFlow;normal;fontStyle=15');
+      expect(computeStyle(edge)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['sequenceFlow', 'normal'],
+        fontStyle: 15,
+        bpmn: { kind: FlowKind.SEQUENCE_FLOW },
+      });
     });
 
     it('compute style of edge with label bounds', () => {
       const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.NORMAL), undefined, new Label(toFont({ name: 'Helvetica' }), new Bounds(20, 20, 30, 120)));
-      expect(computeStyle(edge)).toBe('sequenceFlow;normal;fontFamily=Helvetica;verticalAlign=top;align=center');
+      expect(computeStyle(edge)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['sequenceFlow', 'normal'],
+        fontFamily: 'Helvetica',
+        align: 'center',
+        verticalAlign: 'top',
+        fontStyle: 0, // TODO decide if we set the fontStyle property to 0 or if we omit it
+        bpmn: { kind: FlowKind.SEQUENCE_FLOW },
+      });
     });
   });
 
