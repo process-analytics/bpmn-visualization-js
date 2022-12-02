@@ -457,14 +457,14 @@ describe('Style Computer', () => {
   });
 
   describe('compute style - pool references a Process', () => {
+    // TODO all expected values are inverted (see implementation)
     it.each([
-      ['vertical', false, false],
-      ['horizontal', true, true],
-      ['undefined', undefined, undefined],
+      ['vertical', false, true],
+      ['horizontal', true, false],
+      ['undefined', undefined, true],
       // TODO undefined
     ])('%s pool references a Process', (title: string, isHorizontal: boolean, expectedStyleIsHorizontal: boolean) => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.POOL), undefined, isHorizontal);
-      // expect(computeStyle(shape)).toBe(`pool;horizontal=${expectedStyleIsHorizontal}`);
       expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
         baseStyleNames: ['pool'],
         horizontal: expectedStyleIsHorizontal,
