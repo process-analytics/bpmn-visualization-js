@@ -32,6 +32,7 @@ import ShapeBpmnElement, {
 import type { BpmnEventKind, GlobalTaskKind } from '../../../../../src/bpmn-visualization';
 import {
   AssociationDirectionKind,
+  FlowKind,
   MessageVisibleKind,
   SequenceFlowKind,
   ShapeBpmnCallActivityKind,
@@ -202,12 +203,18 @@ describe('Style Computer', () => {
   describe('compute style - edge label', () => {
     it('compute style of edge with no label', () => {
       const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.CONDITIONAL_FROM_GATEWAY));
-      expect(computeStyle(edge)).toBe('sequenceFlow;conditional_from_gateway');
+      expect(computeStyle(edge)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['sequenceFlow', 'conditional_from_gateway'],
+        bpmn: { kind: FlowKind.SEQUENCE_FLOW },
+      });
     });
 
     it('compute style of edge with a no font label', () => {
       const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.NORMAL), undefined, new Label(undefined, undefined));
-      expect(computeStyle(edge)).toBe('sequenceFlow;normal');
+      expect(computeStyle(edge)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['sequenceFlow', 'normal'],
+        bpmn: { kind: FlowKind.SEQUENCE_FLOW },
+      });
     });
 
     it('compute style of edge with label including strike-through font', () => {
