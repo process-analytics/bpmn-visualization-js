@@ -42,13 +42,14 @@ export default defineConfig(({ mode }) => {
           entryFileNames: `dev/public/assets/[name].js`,
           chunkFileNames: `dev/public/assets/[name].js`,
           assetFileNames: `dev/public/assets/[name].[ext]`,
+          // TODO test the splitVendorChunkPlugin (see https://vitejs.dev/guide/build.html#chunking-strategy)
           manualChunks: {
-            // put mxgraph code in a dedicated file. As it is eol, it doesn't change from release to release, so it reduces the changes when uploading the demo to the examples repository
-            mxgraph: ['mxgraph'],
+            // put maxGraph code in a dedicated file. As it is eol, it doesn't change from release to release, so it reduces the changes when uploading the demo to the examples repository
+            maxGraph: ['@maxgraph/core'],
           },
         },
       },
-      chunkSizeWarningLimit: 820, // mxgraph
+      chunkSizeWarningLimit: 555, // maxGraph
     },
     preview: {
       port: 10002,
