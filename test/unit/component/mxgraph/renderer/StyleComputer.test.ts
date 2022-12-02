@@ -289,24 +289,39 @@ describe('Style Computer', () => {
   });
 
   it.each([
-    [MessageVisibleKind.NON_INITIATING, 'non_initiating'],
-    [MessageVisibleKind.INITIATING, 'initiating'],
-  ])('compute style - message flow icon: %s', (messageVisibleKind, expected) => {
+    [MessageVisibleKind.NON_INITIATING, true],
+    [MessageVisibleKind.INITIATING, false],
+  ])('compute style - message flow icon: %s', (messageVisibleKind: MessageVisibleKind, expected: boolean) => {
     const edge = new Edge('id', newMessageFlow(), undefined, undefined, messageVisibleKind);
-    expect(styleComputer.computeMessageFlowIconStyle(edge)).toBe(`shape=bpmn.messageFlowIcon;bpmn.isInitiating=${expected}`);
+    // TODO cas to <BPMNCellStyle> (waiting for "maxGraph fixes its types")
+    expect(styleComputer.computeMessageFlowIconStyle(edge)).toStrictEqual({
+      shape: 'bpmn.messageFlowIcon',
+      bpmn: { isNonInitiating: expected },
+    });
   });
 
   describe('compute style - events kind', () => {
     it('intermediate catch conditional', () => {
       const shape = newShape(newShapeBpmnEvent(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, ShapeBpmnEventDefinitionKind.CONDITIONAL), newLabel({ name: 'Ubuntu' }));
-      expect(computeStyle(shape)).toBe('intermediateCatchEvent;bpmn.eventDefinitionKind=conditional;fontFamily=Ubuntu');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['intermediateCatchEvent'],
+        fontFamily: 'Ubuntu',
+        fontStyle: 0, // TODO decide if we set the fontStyle property to 0 or if we omit it
+        bpmn: { kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, eventDefinitionKind: ShapeBpmnEventDefinitionKind.CONDITIONAL },
+      });
     });
 
     it('start signal', () => {
       const shape = newShape(newShapeBpmnEvent(ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventDefinitionKind.SIGNAL), newLabel({ isBold: true }));
-      expect(computeStyle(shape)).toBe('startEvent;bpmn.eventDefinitionKind=signal;fontStyle=1');
+      // expect(computeStyle(shape)).toBe('startEvent;bpmn.eventDefinitionKind=signal;fontStyle=1');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['startEvent'],
+        fontStyle: 1,
+        bpmn: { kind: ShapeBpmnElementKind.EVENT_START, eventDefinitionKind: ShapeBpmnEventDefinitionKind.SIGNAL },
+      });
     });
   });
+
   describe('compute style - boundary events', () => {
     it('interrupting message', () => {
       const shape = newShape(newShapeBpmnBoundaryEvent(ShapeBpmnEventDefinitionKind.MESSAGE, true), newLabel({ name: 'Arial' }));
