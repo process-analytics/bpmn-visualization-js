@@ -268,18 +268,24 @@ describe('Style Computer', () => {
     [SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY, 'conditional_from_activity'],
     [SequenceFlowKind.DEFAULT, 'default'],
     [SequenceFlowKind.NORMAL, 'normal'],
-  ])('compute style - sequence flows: %s', (kind, expected) => {
+  ])('compute style - sequence flows: %s', (kind: SequenceFlowKind, expected: string) => {
     const edge = new Edge('id', newSequenceFlow(kind));
-    expect(computeStyle(edge)).toBe(`sequenceFlow;${expected}`);
+    expect(computeStyle(edge)).toStrictEqual(<BPMNCellStyle>{
+      baseStyleNames: ['sequenceFlow', expected],
+      bpmn: { kind: FlowKind.SEQUENCE_FLOW },
+    });
   });
 
   it.each([
     [AssociationDirectionKind.NONE, 'None'],
     [AssociationDirectionKind.ONE, 'One'],
     [AssociationDirectionKind.BOTH, 'Both'],
-  ])('compute style - association flows: %s', (kind, expected) => {
+  ])('compute style - association flows: %s', (kind: AssociationDirectionKind, expected: string) => {
     const edge = new Edge('id', newAssociationFlow(kind));
-    expect(computeStyle(edge)).toBe(`association;${expected}`);
+    expect(computeStyle(edge)).toStrictEqual(<BPMNCellStyle>{
+      baseStyleNames: ['association', expected],
+      bpmn: { kind: FlowKind.ASSOCIATION_FLOW },
+    });
   });
 
   it.each([
