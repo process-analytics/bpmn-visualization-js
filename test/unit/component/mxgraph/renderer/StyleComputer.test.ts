@@ -189,7 +189,7 @@ describe('Style Computer', () => {
         align: 'center',
         verticalAlign: 'top',
         labelWidth: 81,
-        // FIXME this is a breaking change comparing to mxGraph, the position are inverted
+        // FIXME values were inverted in the mxGraph implementation, this was probably wrong as they were set like this in StyleConfigurator
         // expect(computeStyle(shape)).toBe('callActivity;verticalAlign=top;align=center;labelWidth=81;labelPosition=top;verticalLabelPosition=left');
         labelPosition: 'left',
         verticalLabelPosition: 'top',

@@ -188,7 +188,7 @@ export default class StyleComputer {
         // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
         style.labelWidth = labelBounds.width + 1;
         // align settings
-        // FIXME this is a breaking change comparing to mxGraph, the position are inverted
+        // FIXME values were inverted in the mxGraph implementation, this was probably wrong as they were set like this in StyleConfigurator
         style.labelPosition = 'left';
         style.verticalLabelPosition = 'top';
         // end of fixme
