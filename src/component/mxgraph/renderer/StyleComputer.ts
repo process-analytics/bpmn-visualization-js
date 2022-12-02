@@ -61,7 +61,7 @@ export interface BPMNCellStyle extends CellStyle {
     markers?: ShapeBpmnMarkerKind[];
     sequenceFlowKind?: SequenceFlowKind;
     associationDirectionKind?: AssociationDirectionKind;
-    isNonInitiating?: boolean;
+    isNonInitiating?: boolean; // TODO why not isInitiating
     extra?: {
       css: {
         classes: string[];
@@ -189,6 +189,8 @@ export default class StyleComputer {
         style.labelWidth = labelBounds.width + 1;
         // align settings
         // FIXME values were inverted in the mxGraph implementation, this was probably wrong as they were set like this in StyleConfigurator
+        // styleValues.set(mxgraph.mxConstants.STYLE_LABEL_POSITION, mxgraph.mxConstants.ALIGN_TOP);
+        // styleValues.set(mxgraph.mxConstants.STYLE_VERTICAL_LABEL_POSITION, mxgraph.mxConstants.ALIGN_LEFT);
         style.labelPosition = 'left';
         style.verticalLabelPosition = 'top';
         // end of fixme
