@@ -50,6 +50,7 @@ export interface BPMNCellStyle extends CellStyle {
   // shape?: ShapeValue | string;
   // TODO make bpmn mandatory?
   bpmn?: {
+    // TODO sort properties in alphabetical order for clarity (and as done in maxGraph CellStyle) and provide documentation about each property
     // TODO make kind mandatory?
     kind?: ShapeBpmnElementKind | FlowKind;
     isInstantiating?: boolean;
@@ -61,7 +62,7 @@ export interface BPMNCellStyle extends CellStyle {
     markers?: ShapeBpmnMarkerKind[];
     sequenceFlowKind?: SequenceFlowKind;
     associationDirectionKind?: AssociationDirectionKind;
-    isNonInitiating?: boolean; // TODO why not isInitiating
+    isNonInitiating?: boolean; // TODO why not 'isInitiating' for consistency with other boolean value? Negate doesn't make things easier to understand
     extra?: {
       css: {
         classes: string[];
