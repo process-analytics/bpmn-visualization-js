@@ -129,13 +129,14 @@ describe('Style Computer', () => {
   describe('compute style - shape label', () => {
     it('compute style of shape with no label', () => {
       const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.TASK_USER));
-      expect(computeStyle(shape)).toBe('userTask');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{ baseStyleNames: ['userTask'], bpmn: { kind: ShapeBpmnElementKind.TASK_USER } });
     });
 
     it('compute style of shape with a no font label', () => {
       const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_END), undefined, new Label(undefined, undefined));
-      expect(computeStyle(shape)).toBe('endEvent');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{ baseStyleNames: ['endEvent'], bpmn: { kind: ShapeBpmnElementKind.EVENT_END } });
     });
+
     it('compute style of shape with label including bold font', () => {
       const shape = new Shape(
         'id',
@@ -143,7 +144,13 @@ describe('Style Computer', () => {
         undefined,
         new Label(toFont({ name: 'Courier', size: 9, isBold: true }), undefined),
       );
-      expect(computeStyle(shape)).toBe('exclusiveGateway;fontFamily=Courier;fontSize=9;fontStyle=1');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['exclusiveGateway'],
+        fontFamily: 'Courier',
+        fontSize: 9,
+        fontStyle: 1,
+        bpmn: { kind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE },
+      });
     });
 
     it('compute style of shape with label including italic font', () => {
