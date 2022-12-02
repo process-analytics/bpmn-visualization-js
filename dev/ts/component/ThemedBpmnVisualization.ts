@@ -140,7 +140,7 @@ export class ThemedBpmnVisualization extends BpmnVisualization {
       }
       const style = styleSheet.styles.get(kind);
       style.fillColor = fillColor;
-      style['strokeColor'] = strokeColor;
+      style.strokeColor = strokeColor;
     });
 
     // TASK
@@ -168,14 +168,14 @@ export class ThemedBpmnVisualization extends BpmnVisualization {
 
     // DEFAULTS
     const defaultVertexStyle = styleSheet.getDefaultVertexStyle();
-    defaultVertexStyle['fontColor'] = theme.defaultFontColor;
+    defaultVertexStyle.fontColor = theme.defaultFontColor;
     defaultVertexStyle.fillColor = theme.defaultFillColor;
-    defaultVertexStyle['strokeColor'] = theme.defaultStrokeColor;
+    defaultVertexStyle.strokeColor = theme.defaultStrokeColor;
 
     const defaultEdgeStyle = styleSheet.getDefaultEdgeStyle();
-    defaultEdgeStyle['fontColor'] = theme.defaultFontColor;
+    defaultEdgeStyle.fontColor = theme.defaultFontColor;
     defaultEdgeStyle.fillColor = theme.defaultFillColor;
-    defaultEdgeStyle['strokeColor'] = theme.flowColor ?? theme.defaultStrokeColor;
+    defaultEdgeStyle.strokeColor = theme.flowColor ?? theme.defaultStrokeColor;
 
     // theme configuration completed
     return true;
