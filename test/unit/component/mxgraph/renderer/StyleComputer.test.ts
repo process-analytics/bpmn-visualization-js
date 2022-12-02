@@ -155,17 +155,47 @@ describe('Style Computer', () => {
 
     it('compute style of shape with label including italic font', () => {
       const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH), undefined, new Label(toFont({ name: 'Arial', isItalic: true }), undefined));
-      expect(computeStyle(shape)).toBe('intermediateCatchEvent;fontFamily=Arial;fontStyle=2');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['intermediateCatchEvent'],
+        fontFamily: 'Arial',
+        fontStyle: 2,
+        bpmn: { kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH },
+      });
     });
 
     it('compute style of shape with label including bold/italic font', () => {
       const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW), undefined, new Label(toFont({ isBold: true, isItalic: true }), undefined));
-      expect(computeStyle(shape)).toBe('intermediateThrowEvent;fontStyle=3');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['intermediateThrowEvent'],
+        fontStyle: 3,
+        bpmn: { kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW },
+      });
+    });
+
+    it('compute style of shape with label including font family only', () => {
+      const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.TASK_SCRIPT), undefined, new Label(toFont({ name: 'Roboto' }), undefined));
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['scriptTask'],
+        fontFamily: 'Roboto',
+        fontStyle: 0, // TODO decide if we set the fontStyle property to 0 or if we omit it
+        bpmn: { kind: ShapeBpmnElementKind.TASK_SCRIPT },
+      });
     });
 
     it('compute style of shape with label bounds', () => {
       const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.CALL_ACTIVITY), undefined, new Label(undefined, new Bounds(40, 200, 80, 140)));
-      expect(computeStyle(shape)).toBe('callActivity;verticalAlign=top;align=center;labelWidth=81;labelPosition=top;verticalLabelPosition=left');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['callActivity'],
+        align: 'center',
+        verticalAlign: 'top',
+        labelWidth: 81,
+        // FIXME this is a breaking change comparing to mxGraph, the position are inverted
+        // expect(computeStyle(shape)).toBe('callActivity;verticalAlign=top;align=center;labelWidth=81;labelPosition=top;verticalLabelPosition=left');
+        labelPosition: 'left',
+        verticalLabelPosition: 'top',
+        // end of fixme
+        bpmn: { kind: ShapeBpmnElementKind.CALL_ACTIVITY },
+      });
     });
   });
 

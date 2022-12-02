@@ -42,7 +42,8 @@ import { MessageVisibleKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, Sh
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/flows';
 import type { Font } from '../../../model/bpmn/internal/Label';
 
-// TODO this type should probably be part of the API
+// TODO this type should probably be part of the API (so it should be exported)
+// TODO decide where th
 export interface BPMNCellStyle extends CellStyle {
   // TODO the maxGraph@0.1.0 shape property is defined as 'ShapeValue'. It should be 'ShapeValue | string'
   // Omit<CellStyle, 'shape'> {
@@ -165,8 +166,8 @@ export default class StyleComputer {
 
     const font = bpmnCell.label?.font;
     if (font) {
-      style.fontFamily = font.name;
-      style.fontSize = font.size;
+      font.name && (style.fontFamily = font.name);
+      font.size && (style.fontSize = font.size);
       style.fontStyle = StyleComputer.getFontStyleValue(font);
     }
 
@@ -187,8 +188,10 @@ export default class StyleComputer {
         // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
         style.labelWidth = labelBounds.width + 1;
         // align settings
+        // FIXME this is a breaking change comparing to mxGraph, the position are inverted
         style.labelPosition = 'left';
         style.verticalLabelPosition = 'top';
+        // end of fixme
       }
     }
     // when no label bounds, adjust the default style dynamically
