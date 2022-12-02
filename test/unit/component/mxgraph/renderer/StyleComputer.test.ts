@@ -313,7 +313,6 @@ describe('Style Computer', () => {
 
     it('start signal', () => {
       const shape = newShape(newShapeBpmnEvent(ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventDefinitionKind.SIGNAL), newLabel({ isBold: true }));
-      // expect(computeStyle(shape)).toBe('startEvent;bpmn.eventDefinitionKind=signal;fontStyle=1');
       expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
         baseStyleNames: ['startEvent'],
         fontStyle: 1,
@@ -325,17 +324,30 @@ describe('Style Computer', () => {
   describe('compute style - boundary events', () => {
     it('interrupting message', () => {
       const shape = newShape(newShapeBpmnBoundaryEvent(ShapeBpmnEventDefinitionKind.MESSAGE, true), newLabel({ name: 'Arial' }));
-      expect(computeStyle(shape)).toBe('boundaryEvent;bpmn.eventDefinitionKind=message;bpmn.isInterrupting=true;fontFamily=Arial');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['boundaryEvent'],
+        fontFamily: 'Arial',
+        fontStyle: 0, // TODO decide if we set the fontStyle property to 0 or if we omit it
+        bpmn: { kind: ShapeBpmnElementKind.EVENT_BOUNDARY, eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE, isInterrupting: true },
+      });
     });
 
     it('non interrupting timer', () => {
       const shape = newShape(newShapeBpmnBoundaryEvent(ShapeBpmnEventDefinitionKind.TIMER, false), newLabel({ isItalic: true }));
-      expect(computeStyle(shape)).toBe('boundaryEvent;bpmn.eventDefinitionKind=timer;bpmn.isInterrupting=false;fontStyle=2');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['boundaryEvent'],
+        fontStyle: 2,
+        bpmn: { kind: ShapeBpmnElementKind.EVENT_BOUNDARY, eventDefinitionKind: ShapeBpmnEventDefinitionKind.TIMER, isInterrupting: false },
+      });
     });
 
     it('cancel with undefined interrupting value', () => {
       const shape = newShape(newShapeBpmnBoundaryEvent(ShapeBpmnEventDefinitionKind.CANCEL, undefined), newLabel({ isStrikeThrough: true }));
-      expect(computeStyle(shape)).toBe('boundaryEvent;bpmn.eventDefinitionKind=cancel;bpmn.isInterrupting=true;fontStyle=8');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['boundaryEvent'],
+        fontStyle: 8,
+        bpmn: { kind: ShapeBpmnElementKind.EVENT_BOUNDARY, eventDefinitionKind: ShapeBpmnEventDefinitionKind.CANCEL, isInterrupting: true },
+      });
     });
   });
 
@@ -383,7 +395,7 @@ describe('Style Computer', () => {
       describe.each([
         ['expanded', []],
         ['collapsed', [ShapeBpmnMarkerKind.EXPAND]],
-      ])(`compute style - %s call activities`, (expandKind, markers: ShapeBpmnMarkerKind[]) => {
+      ])(`compute style - %s call activities`, (expandKind: string, markers: ShapeBpmnMarkerKind[]) => {
         it(`${expandKind} call activity without label bounds`, () => {
           const shape = newShape(newShapeBpmnCallActivityCallingProcess(markers), newLabel({ name: 'Arial' }));
           const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
