@@ -474,12 +474,18 @@ describe('Style Computer', () => {
   });
 
   describe('compute style - lane', () => {
+    // TODO all expected values are inverted (see implementation)
     it.each([
-      ['vertical', false, '1'],
-      ['horizontal', true, '0'],
-    ])('%s lane', (title, isHorizontal: boolean, expected: string) => {
+      ['vertical', false, true],
+      ['horizontal', true, false],
+      ['undefined', undefined, true],
+    ])('%s lane', (title: string, isHorizontal: boolean, expectedStyleIsHorizontal: boolean) => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.LANE), undefined, isHorizontal);
-      expect(computeStyle(shape)).toBe(`lane;horizontal=${expected}`);
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['lane'],
+        horizontal: expectedStyleIsHorizontal,
+        bpmn: { kind: ShapeBpmnElementKind.LANE },
+      });
     });
   });
 
