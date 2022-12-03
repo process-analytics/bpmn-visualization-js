@@ -37,7 +37,7 @@ export class MaxGraphCustomOverlay extends CellOverlay {
   readonly style: MaxGraphCustomOverlayStyle;
 
   constructor(public label: string, options: MaxGraphCustomOverlayOptions) {
-    super(null, '', options.position.horizontalAlign, options.position.verticalAlign, null, 'default');
+    super(null, '', options.position.horizontalAlign, options.position.verticalAlign, new Point(), 'default');
     this.style = options.style;
   }
 
