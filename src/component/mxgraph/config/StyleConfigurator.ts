@@ -142,7 +142,7 @@ export class StyleConfigurator {
 
   private configurePoolStyle(): void {
     const style: BPMNCellStyle = {
-      // TODO maxgraph "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided." constants.SHAPE.SWIMLANE
+      // TODO maxGraph "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided." constants.SHAPE.SWIMLANE
       shape: 'swimlane',
       // label style
       verticalAlign: 'middle',
@@ -158,7 +158,7 @@ export class StyleConfigurator {
 
   private configureLaneStyle(): void {
     const style: BPMNCellStyle = {
-      // TODO maxgraph "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided." constants.SHAPE.SWIMLANE
+      // TODO maxGraph "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided." constants.SHAPE.SWIMLANE
       shape: 'swimlane',
       // label style
       verticalAlign: 'middle',
