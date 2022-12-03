@@ -66,8 +66,8 @@ describe('compute all css class names based on style input', () => {
     ${{ bpmn: { kind: FlowKind.MESSAGE_FLOW } }}                                                                                                          | ${false} | ${['bpmn-type-flow', 'bpmn-message-flow']}
     ${{ bpmn: { kind: FlowKind.SEQUENCE_FLOW } }}                                                                                                         | ${false} | ${['bpmn-type-flow', 'bpmn-sequence-flow']}
     ${{ shape: 'bpmn.message-flow-icon' }}                                                                                                                | ${false} | ${['bpmn-message-flow-icon']}
-    ${'shape=bpmn.message-flow-icon;bpmn.isInitiating=non_initiating'}                                                                                    | ${false} | ${['bpmn-message-flow-icon', 'bpmn-icon-non-initiating']}
-    ${'shape=bpmn.message-flow-icon;bpmn.isInitiating=initiating'}                                                                                        | ${true}  | ${['bpmn-message-flow-icon', 'bpmn-icon-initiating', 'bpmn-label']}
+    ${{ bpmn: { isNonInitiating: true }, shape: 'bpmn.message-flow-icon' }}                                                                               | ${false} | ${['bpmn-message-flow-icon', 'bpmn-icon-non-initiating']}
+    ${{ bpmn: { isNonInitiating: false }, shape: 'bpmn.message-flow-icon' }}                                                                              | ${true}  | ${['bpmn-message-flow-icon', 'bpmn-icon-initiating', 'bpmn-label']}
   `(
     // TODO find a way to correctly display the style object
     'style="$style" / isLabel=$isLabel',
