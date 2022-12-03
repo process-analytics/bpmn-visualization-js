@@ -48,7 +48,10 @@ export default class GraphCellUpdater {
     }
     const view = this.graph.getView();
     const state = view.getState(cell);
-    (state.style as BPMNCellStyle).bpmn.extra.css.classes = cssClasses;
+    // TODO improve logic
+    const style = state.style as BPMNCellStyle;
+    !style.bpmn.extra && (style.bpmn.extra = { css: { classes: undefined } });
+    style.bpmn.extra.css.classes = cssClasses;
     state.shape.redraw();
     // Ensure that label classes are also updated. When there is no label, state.text is null
     state.text?.redraw();
