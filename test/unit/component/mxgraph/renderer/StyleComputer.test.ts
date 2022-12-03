@@ -295,7 +295,7 @@ describe('Style Computer', () => {
     [MessageVisibleKind.INITIATING, false],
   ])('compute style - message flow icon: %s', (messageVisibleKind: MessageVisibleKind, expected: boolean) => {
     const edge = new Edge('id', newMessageFlow(), undefined, undefined, messageVisibleKind);
-    // TODO cas to <BPMNCellStyle> (waiting for "maxGraph fixes its types")
+    // TODO cast to <BPMNCellStyle> (waiting for "maxGraph fixes its types")
     expect(styleComputer.computeMessageFlowIconStyle(edge)).toStrictEqual({
       shape: 'bpmn.messageFlowIcon',
       bpmn: { isNonInitiating: expected },
@@ -387,7 +387,7 @@ describe('Style Computer', () => {
     describe.each([
       ['expanded', []],
       ['collapsed', [ShapeBpmnMarkerKind.EXPAND]],
-    ])(`compute style - %s sub-processes`, (expandKind, markers: ShapeBpmnMarkerKind[]) => {
+    ])(`compute style - %s sub-processes`, (expandKind: string, markers: ShapeBpmnMarkerKind[]) => {
       it(`${expandKind} embedded sub-process without label bounds`, () => {
         const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, markers), newLabel({ name: 'Arial' }));
         const expectedStyle = <BPMNCellStyle>{
@@ -592,10 +592,13 @@ describe('Style Computer', () => {
       ${true}      | ${undefined}
       ${true}      | ${'Exclusive'}
       ${true}      | ${'Parallel'}
-    `('event-based gateway when instantiate: $instantiate for gatewayKind: $gatewayKind', ({ instantiate, gatewayKind }) => {
-      const shape = newShape(newShapeBpmnEventBasedGateway(instantiate, gatewayKind), newLabel({ name: 'Arial' }));
-      gatewayKind ??= ShapeBpmnEventBasedGatewayKind.None;
-      expect(computeStyle(shape)).toBe(`eventBasedGateway;bpmn.isInstantiating=${!!instantiate};bpmn.gatewayKind=${gatewayKind};fontFamily=Arial`);
-    });
+    `(
+      'event-based gateway when instantiate: $instantiate for gatewayKind: $gatewayKind',
+      ({ instantiate, gatewayKind }: { instantiate: boolean; gatewayKind: ShapeBpmnEventBasedGatewayKind }) => {
+        const shape = newShape(newShapeBpmnEventBasedGateway(instantiate, gatewayKind), newLabel({ name: 'Arial' }));
+        gatewayKind ??= ShapeBpmnEventBasedGatewayKind.None;
+        expect(computeStyle(shape)).toBe(`eventBasedGateway;bpmn.isInstantiating=${!!instantiate};bpmn.gatewayKind=${gatewayKind};fontFamily=Arial`);
+      },
+    );
   });
 });
