@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import type { ShapeValue } from '@maxgraph/core';
 import { constants } from '@maxgraph/core';
 
 import type { ExpectedCell, ExpectedStateStyle } from '../matcher-utils';
@@ -61,7 +62,8 @@ function expectedStrokeWidth(kind: ShapeBpmnElementKind): number {
 
 function buildExpectedStateStyle(expectedModel: ExpectedShapeModelElement): ExpectedStateStyle {
   const expectedStateStyle = buildCommonExpectedStateStyle(expectedModel);
-  expectedStateStyle.shape = !expectedModel.styleShape ? expectedModel.kind : expectedModel.styleShape;
+  // TODO remove forcing type when maxGraph fixes its types
+  expectedStateStyle.shape = <ShapeValue>(<unknown>(!expectedModel.styleShape ? expectedModel.kind : expectedModel.styleShape));
   expectedStateStyle.verticalAlign = expectedModel.verticalAlign ? expectedModel.verticalAlign : 'middle';
   expectedStateStyle.align = expectedModel.align ? expectedModel.align : 'center';
   expectedStateStyle.strokeWidth = expectedStrokeWidth(expectedModel.kind);

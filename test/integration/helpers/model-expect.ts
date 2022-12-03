@@ -50,7 +50,7 @@ import {
   toBeTask,
   toBeUserTask,
 } from '../matchers';
-import type { ArrowType, Cell, FilterFunction, VAlignValue } from '@maxgraph/core';
+import type { AlignValue, ArrowType, Cell, FilterFunction, VAlignValue } from '@maxgraph/core';
 import type { Geometry } from '@maxgraph/core';
 import type { ExpectedOverlay } from '../matchers/matcher-utils';
 import { getCell } from '../matchers/matcher-utils';
@@ -136,8 +136,8 @@ export interface ExpectedShapeModelElement {
   parentId?: string;
   /** Only needed when the BPMN shape doesn't exist yet (use an arbitrary shape until the final render is implemented) */
   styleShape?: string;
-  verticalAlign?: string;
-  align?: string;
+  verticalAlign?: VAlignValue;
+  align?: AlignValue;
   markers?: ShapeBpmnMarkerKind[];
   isInstantiating?: boolean;
   isHorizontal?: boolean;

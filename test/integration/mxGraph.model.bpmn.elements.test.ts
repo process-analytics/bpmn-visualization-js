@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import type { ArrowType } from '@maxgraph/core';
 import { Point, Geometry, constants } from '@maxgraph/core';
 
 import {
@@ -1247,7 +1248,8 @@ describe('mxGraph model - BPMN elements', () => {
       it('sequence flows', async () => {
         expect('default_sequence_flow_id').toBeSequenceFlow({
           sequenceFlowKind: SequenceFlowKind.DEFAULT,
-          startArrow: MarkerIdentifier.ARROW_DASH,
+          // TODO remove forcing type when maxGraph fixes its types
+          startArrow: <ArrowType>(<unknown>MarkerIdentifier.ARROW_DASH),
           parentId: 'participant_1_id',
           font: expectedBoldFont,
         });
@@ -1258,7 +1260,7 @@ describe('mxGraph model - BPMN elements', () => {
         });
         expect('conditional_sequence_flow_from_activity_id').toBeSequenceFlow({
           sequenceFlowKind: SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY,
-          startArrow: constants.ARROW.DIAMOND_THIN,
+          startArrow: 'diamondThin',
           parentId: 'participant_1_id',
           verticalAlign: 'bottom',
         });
