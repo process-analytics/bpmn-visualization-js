@@ -630,10 +630,13 @@ describe('Style Computer', () => {
         if (bpmnKind == ShapeBpmnElementKind.CALL_ACTIVITY) {
           it(`${bpmnKind} calling process with ${markerKind} & Expand (collapsed) markers`, () => {
             const shape = newShape(newShapeBpmnCallActivityCallingProcess([markerKind, ShapeBpmnMarkerKind.EXPAND]));
-            expect(computeStyle(shape)).toBe(`callActivity;bpmn.markers=${markerKind},expand`);
             expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
               baseStyleNames: ['callActivity'],
-              bpmn: { kind: ShapeBpmnElementKind.CALL_ACTIVITY, markers: [markerKind, ShapeBpmnMarkerKind.EXPAND] },
+              bpmn: {
+                kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+                globalTaskKind: undefined, // TODO decide if we omit the globalTaskKind property when not set
+                markers: [markerKind, ShapeBpmnMarkerKind.EXPAND],
+              },
             });
           });
 
@@ -645,7 +648,14 @@ describe('Style Computer', () => {
             [ShapeBpmnElementKind.GLOBAL_TASK_BUSINESS_RULE as GlobalTaskKind],
           ])(`${bpmnKind} calling global task with ${markerKind} marker`, (globalTaskKind: GlobalTaskKind) => {
             const shape = newShape(newShapeBpmnCallActivityCallingGlobalTask(globalTaskKind, [markerKind]));
-            expect(computeStyle(shape)).toBe(`callActivity;bpmn.globalTaskKind=${globalTaskKind};bpmn.markers=${markerKind}`);
+            expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+              baseStyleNames: ['callActivity'],
+              bpmn: {
+                kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+                globalTaskKind,
+                markers: [markerKind],
+              },
+            });
           });
         }
       },
