@@ -119,6 +119,8 @@ function newAssociationFlow(kind: AssociationDirectionKind): AssociationFlow {
   return new AssociationFlow('id', 'name', undefined, undefined, kind);
 }
 
+// TODO order properties alphabetically in expected style
+
 describe('Style Computer', () => {
   const styleComputer = new StyleComputer();
 
@@ -388,17 +390,33 @@ describe('Style Computer', () => {
     ])(`compute style - %s sub-processes`, (expandKind, markers: ShapeBpmnMarkerKind[]) => {
       it(`${expandKind} embedded sub-process without label bounds`, () => {
         const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, markers), newLabel({ name: 'Arial' }));
-        const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
-        const additionalTerminalStyle = !markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';verticalAlign=top' : '';
-        expect(computeStyle(shape)).toBe(`subProcess;bpmn.subProcessKind=embedded${additionalMarkerStyle};fontFamily=Arial${additionalTerminalStyle}`);
+        const expectedStyle = <BPMNCellStyle>{
+          baseStyleNames: ['subProcess'],
+          bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED, markers },
+          fontFamily: 'Arial',
+          fontStyle: 0, // TODO decide if we set the fontStyle property to 0 or if we omit it
+        };
+        !markers.includes(ShapeBpmnMarkerKind.EXPAND) && (expectedStyle.verticalAlign = 'top');
+        expect(computeStyle(shape)).toStrictEqual(expectedStyle);
       });
 
       it(`${expandKind} embedded sub-process with label bounds`, () => {
         const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, markers), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
-        const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
-        expect(computeStyle(shape)).toBe(
-          `subProcess;bpmn.subProcessKind=embedded${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=top;verticalLabelPosition=left`,
-        );
+        const expectedStyle = <BPMNCellStyle>{
+          align: 'center',
+          baseStyleNames: ['subProcess'],
+          bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED, markers },
+          fontFamily: 'sans-serif',
+          fontStyle: 0, // TODO decide if we set the fontStyle property to 0 or if we omit it
+          labelWidth: 301,
+          verticalAlign: 'top',
+          // FIXME values were inverted in the mxGraph implementation, this was probably wrong as they were set like this in StyleConfigurator
+          //  `subProcess;bpmn.subProcessKind=embedded${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=top;verticalLabelPosition=left`,
+          labelPosition: 'left',
+          verticalLabelPosition: 'top',
+          // end of fixme
+        };
+        expect(computeStyle(shape)).toStrictEqual(expectedStyle);
       });
     });
   });
