@@ -620,7 +620,10 @@ describe('Style Computer', () => {
         if (bpmnKind == ShapeBpmnElementKind.SUB_PROCESS) {
           it(`${bpmnKind} with Loop & Expand (collapsed) markers`, () => {
             const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, [markerKind, ShapeBpmnMarkerKind.EXPAND]));
-            expect(computeStyle(shape)).toBe(`subProcess;bpmn.subProcessKind=embedded;bpmn.markers=${markerKind},expand`);
+            expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+              baseStyleNames: ['subProcess'],
+              bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, markers: [markerKind, ShapeBpmnMarkerKind.EXPAND], subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED },
+            });
           });
         }
 
@@ -628,6 +631,10 @@ describe('Style Computer', () => {
           it(`${bpmnKind} calling process with ${markerKind} & Expand (collapsed) markers`, () => {
             const shape = newShape(newShapeBpmnCallActivityCallingProcess([markerKind, ShapeBpmnMarkerKind.EXPAND]));
             expect(computeStyle(shape)).toBe(`callActivity;bpmn.markers=${markerKind},expand`);
+            expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+              baseStyleNames: ['callActivity'],
+              bpmn: { kind: ShapeBpmnElementKind.CALL_ACTIVITY, markers: [markerKind, ShapeBpmnMarkerKind.EXPAND] },
+            });
           });
 
           it.each([
