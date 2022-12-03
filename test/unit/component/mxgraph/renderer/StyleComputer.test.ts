@@ -429,17 +429,41 @@ describe('Style Computer', () => {
       ])(`compute style - %s call activities`, (expandKind: string, markers: ShapeBpmnMarkerKind[]) => {
         it(`${expandKind} call activity without label bounds`, () => {
           const shape = newShape(newShapeBpmnCallActivityCallingProcess(markers), newLabel({ name: 'Arial' }));
-          const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
-          const additionalTerminalStyle = !markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';verticalAlign=top' : '';
-          expect(computeStyle(shape)).toBe(`callActivity${additionalMarkerStyle};fontFamily=Arial${additionalTerminalStyle}`);
+          const expectedStyle = <BPMNCellStyle>{
+            baseStyleNames: ['callActivity'],
+            bpmn: {
+              kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+              globalTaskKind: undefined, // TODO decide if we set globalTaskKind to undefined or if we omit the property
+              markers,
+            },
+            fontFamily: 'Arial',
+            fontStyle: 0, // TODO decide if we set the fontStyle property to 0 or if we omit it
+          };
+          !markers.includes(ShapeBpmnMarkerKind.EXPAND) && (expectedStyle.verticalAlign = 'top');
+          expect(computeStyle(shape)).toStrictEqual(expectedStyle);
         });
 
         it(`${expandKind} call activity with label bounds`, () => {
           const shape = newShape(newShapeBpmnCallActivityCallingProcess(markers), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
-          const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
-          expect(computeStyle(shape)).toBe(
-            `callActivity${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=top;verticalLabelPosition=left`,
-          );
+          const expectedStyle = <BPMNCellStyle>{
+            align: 'center',
+            baseStyleNames: ['callActivity'],
+            bpmn: {
+              kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+              globalTaskKind: undefined, // TODO decide if we set globalTaskKind to undefined or if we omit the property
+              markers,
+            },
+            fontFamily: 'sans-serif',
+            fontStyle: 0, // TODO decide if we set the fontStyle property to 0 or if we omit it
+            labelWidth: 301,
+            verticalAlign: 'top',
+            // FIXME values were inverted in the mxGraph implementation, this was probably wrong as they were set like this in StyleConfigurator
+            // `callActivity${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=top;verticalLabelPosition=left`,
+            labelPosition: 'left',
+            verticalLabelPosition: 'top',
+            // end of fixme
+          };
+          expect(computeStyle(shape)).toStrictEqual(expectedStyle);
         });
       });
     });
