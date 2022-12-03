@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 import type { Cell, Geometry, AlignValue, VAlignValue, ArrowType, ShapeValue } from '@maxgraph/core';
-import { constants } from '@maxgraph/core';
 
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 
 import type { ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement } from '../helpers/model-expect';
 import { bpmnVisualization } from '../helpers/model-expect';
+import { FONT } from '../../../src/bpmn-visualization';
 import type { MaxGraphCustomOverlay, MaxGraphCustomOverlayStyle } from '../../../src/component/mxgraph/overlay/custom-overlay';
 import type { BPMNCellStyle } from '../../../src/component/mxgraph/renderer/StyleComputer';
 
@@ -111,16 +111,16 @@ export function getFontStyleValue(expectedFont: ExpectedFont): number {
   let value = 0;
   if (expectedFont) {
     if (expectedFont.isBold) {
-      value += constants.FONT.BOLD;
+      value += FONT.BOLD;
     }
     if (expectedFont.isItalic) {
-      value += constants.FONT.ITALIC;
+      value += FONT.ITALIC;
     }
     if (expectedFont.isStrikeThrough) {
-      value += constants.FONT.STRIKETHROUGH;
+      value += FONT.STRIKETHROUGH;
     }
     if (expectedFont.isUnderline) {
-      value += constants.FONT.UNDERLINE;
+      value += FONT.UNDERLINE;
     }
   }
   return value ? value : undefined;
