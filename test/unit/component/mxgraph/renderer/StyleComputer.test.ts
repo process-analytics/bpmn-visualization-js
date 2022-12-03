@@ -517,7 +517,12 @@ describe('Style Computer', () => {
       ['instantiating', true],
     ])('%s receive task', (instantiatingKind: string, instantiate: boolean) => {
       const shape = newShape(newShapeBpmnActivity(ShapeBpmnElementKind.TASK_RECEIVE, undefined, instantiate), newLabel({ name: 'Arial' }));
-      expect(computeStyle(shape)).toBe(`receiveTask;bpmn.isInstantiating=${instantiate};fontFamily=Arial`);
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['receiveTask'],
+        bpmn: { kind: ShapeBpmnElementKind.TASK_RECEIVE, isInstantiating: instantiate, markers: [] },
+        fontFamily: 'Arial',
+        fontStyle: 0, // TODO decide if we set the fontStyle property to 0 or if we omit it
+      });
     });
   });
 
