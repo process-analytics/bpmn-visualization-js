@@ -536,7 +536,21 @@ describe('Style Computer', () => {
     });
     it('with label bounds', () => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.TEXT_ANNOTATION), newLabel({ name: 'Segoe UI' }, new Bounds(50, 50, 100, 100)));
-      expect(computeStyle(shape)).toBe('textAnnotation;fontFamily=Segoe UI;verticalAlign=top;labelWidth=101;labelPosition=top;verticalLabelPosition=left');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['textAnnotation'],
+        bpmn: {
+          kind: ShapeBpmnElementKind.TEXT_ANNOTATION,
+        },
+        fontFamily: 'Segoe UI',
+        fontStyle: 0, // TODO decide if we set the fontStyle property to 0 or if we omit it
+        labelWidth: 101,
+        verticalAlign: 'top',
+        // FIXME values were inverted in the mxGraph implementation, this was probably wrong as they were set like this in StyleConfigurator
+        // 'textAnnotation;fontFamily=Segoe UI;verticalAlign=top;labelWidth=101;labelPosition=top;verticalLabelPosition=left'
+        labelPosition: 'left',
+        verticalLabelPosition: 'top',
+        // end of fixme
+      });
     });
   });
 
@@ -550,7 +564,22 @@ describe('Style Computer', () => {
     });
     it('with label bounds', () => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.GROUP), newLabel({ name: 'Roboto' }, new Bounds(50, 50, 100, 100)));
-      expect(computeStyle(shape)).toBe('group;fontFamily=Roboto;verticalAlign=top;align=center;labelWidth=101;labelPosition=top;verticalLabelPosition=left');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        align: 'center',
+        baseStyleNames: ['group'],
+        bpmn: {
+          kind: ShapeBpmnElementKind.GROUP,
+        },
+        fontFamily: 'Roboto',
+        fontStyle: 0, // TODO decide if we set the fontStyle property to 0 or if we omit it
+        labelWidth: 101,
+        verticalAlign: 'top',
+        // FIXME values were inverted in the mxGraph implementation, this was probably wrong as they were set like this in StyleConfigurator
+        // 'group;fontFamily=Roboto;verticalAlign=top;align=center;labelWidth=101;labelPosition=top;verticalLabelPosition=left'
+        labelPosition: 'left',
+        verticalLabelPosition: 'top',
+        // end of fixme
+      });
     });
   });
 
