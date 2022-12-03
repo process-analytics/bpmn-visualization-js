@@ -529,7 +529,10 @@ describe('Style Computer', () => {
   describe('compute style - text annotation', () => {
     it('without label', () => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.TEXT_ANNOTATION));
-      expect(computeStyle(shape)).toBe('textAnnotation');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['textAnnotation'],
+        bpmn: { kind: ShapeBpmnElementKind.TEXT_ANNOTATION },
+      });
     });
     it('with label bounds', () => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.TEXT_ANNOTATION), newLabel({ name: 'Segoe UI' }, new Bounds(50, 50, 100, 100)));
@@ -540,7 +543,10 @@ describe('Style Computer', () => {
   describe('compute style - group', () => {
     it('without label', () => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.GROUP));
-      expect(computeStyle(shape)).toBe('group');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['group'],
+        bpmn: { kind: ShapeBpmnElementKind.GROUP },
+      });
     });
     it('with label bounds', () => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.GROUP), newLabel({ name: 'Roboto' }, new Bounds(50, 50, 100, 100)));
@@ -601,8 +607,14 @@ describe('Style Computer', () => {
       (markerKind: ShapeBpmnMarkerKind) => {
         it(`${bpmnKind} with ${markerKind} marker`, () => {
           const shape = newShape(newShapeBpmnActivity(bpmnKind, [markerKind]), newLabel({ name: 'Arial' }));
-          const additionalReceiveTaskStyle = bpmnKind === ShapeBpmnElementKind.TASK_RECEIVE ? ';bpmn.isInstantiating=false' : '';
-          expect(computeStyle(shape)).toBe(`${bpmnKind}${additionalReceiveTaskStyle};bpmn.markers=${markerKind};fontFamily=Arial`);
+          const expectedStyle = <BPMNCellStyle>{
+            baseStyleNames: [bpmnKind],
+            bpmn: { kind: bpmnKind, markers: [markerKind] },
+            fontFamily: 'Arial',
+            fontStyle: 0, // TODO decide if we set the fontStyle property to 0 or if we omit it
+          };
+          bpmnKind === ShapeBpmnElementKind.TASK_RECEIVE && (expectedStyle.bpmn.isInstantiating = false);
+          expect(computeStyle(shape)).toStrictEqual(expectedStyle);
         });
 
         if (bpmnKind == ShapeBpmnElementKind.SUB_PROCESS) {
@@ -646,7 +658,12 @@ describe('Style Computer', () => {
       ({ instantiate, gatewayKind }: { instantiate: boolean; gatewayKind: ShapeBpmnEventBasedGatewayKind }) => {
         const shape = newShape(newShapeBpmnEventBasedGateway(instantiate, gatewayKind), newLabel({ name: 'Arial' }));
         gatewayKind ??= ShapeBpmnEventBasedGatewayKind.None;
-        expect(computeStyle(shape)).toBe(`eventBasedGateway;bpmn.isInstantiating=${!!instantiate};bpmn.gatewayKind=${gatewayKind};fontFamily=Arial`);
+        expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+          baseStyleNames: ['eventBasedGateway'],
+          bpmn: { kind: ShapeBpmnElementKind.GATEWAY_EVENT_BASED, gatewayKind, isInstantiating: !!instantiate },
+          fontFamily: 'Arial',
+          fontStyle: 0, // TODO decide if we set the fontStyle property to 0 or if we omit it
+        });
       },
     );
   });
