@@ -402,7 +402,7 @@ describe('Style Computer', () => {
 
       it(`${expandKind} embedded sub-process with label bounds`, () => {
         const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, markers), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
-        const expectedStyle = <BPMNCellStyle>{
+        expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
           align: 'center',
           baseStyleNames: ['subProcess'],
           bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED, markers },
@@ -415,8 +415,7 @@ describe('Style Computer', () => {
           labelPosition: 'left',
           verticalLabelPosition: 'top',
           // end of fixme
-        };
-        expect(computeStyle(shape)).toStrictEqual(expectedStyle);
+        });
       });
     });
   });
@@ -445,7 +444,7 @@ describe('Style Computer', () => {
 
         it(`${expandKind} call activity with label bounds`, () => {
           const shape = newShape(newShapeBpmnCallActivityCallingProcess(markers), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
-          const expectedStyle = <BPMNCellStyle>{
+          expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
             align: 'center',
             baseStyleNames: ['callActivity'],
             bpmn: {
@@ -462,8 +461,7 @@ describe('Style Computer', () => {
             labelPosition: 'left',
             verticalLabelPosition: 'top',
             // end of fixme
-          };
-          expect(computeStyle(shape)).toStrictEqual(expectedStyle);
+          });
         });
       });
     });
@@ -478,14 +476,36 @@ describe('Style Computer', () => {
       ])(`compute style - call activities calling %s`, (globalTaskKind: GlobalTaskKind) => {
         it(`call activity calling ${globalTaskKind} without label bounds`, () => {
           const shape = newShape(newShapeBpmnCallActivityCallingGlobalTask(globalTaskKind), newLabel({ name: 'Arial' }));
-          expect(computeStyle(shape)).toBe(`callActivity;bpmn.globalTaskKind=${globalTaskKind};fontFamily=Arial`);
+          // expect(computeStyle(shape)).toBe(`callActivity;bpmn.globalTaskKind=${globalTaskKind};fontFamily=Arial`);
+          const expectedStyle = <BPMNCellStyle>{
+            baseStyleNames: ['callActivity'],
+            bpmn: { kind: ShapeBpmnElementKind.CALL_ACTIVITY, globalTaskKind: globalTaskKind, markers: [] },
+            fontFamily: 'Arial',
+            fontStyle: 0, // TODO decide if we set the fontStyle property to 0 or if we omit it
+          };
+          expect(computeStyle(shape)).toStrictEqual(expectedStyle);
         });
 
         it(`call activity calling ${globalTaskKind} with label bounds`, () => {
           const shape = newShape(newShapeBpmnCallActivityCallingGlobalTask(globalTaskKind), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
-          expect(computeStyle(shape)).toBe(
-            `callActivity;bpmn.globalTaskKind=${globalTaskKind};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=top;verticalLabelPosition=left`,
-          );
+          expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+            align: 'center',
+            baseStyleNames: ['callActivity'],
+            bpmn: {
+              globalTaskKind: globalTaskKind,
+              kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+              markers: [],
+            },
+            fontFamily: 'sans-serif',
+            fontStyle: 0, // TODO decide if we set the fontStyle property to 0 or if we omit it
+            labelWidth: 301,
+            verticalAlign: 'top',
+            // FIXME values were inverted in the mxGraph implementation, this was probably wrong as they were set like this in StyleConfigurator
+            // `callActivity;bpmn.globalTaskKind=${globalTaskKind};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=top;verticalLabelPosition=left`,
+            labelPosition: 'left',
+            verticalLabelPosition: 'top',
+            // end of fixme
+          });
         });
       });
     });
