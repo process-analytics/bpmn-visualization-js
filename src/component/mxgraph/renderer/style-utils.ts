@@ -41,7 +41,8 @@ export function computeAllBpmnClassNames(style: BPMNCellStyle, isLabel: boolean)
   const classes: string[] = [];
 
   // TODO style.bpmn.kind could be omit by considering the first element of style.baseStyleNames (this would restore the previous behavior)
-  const bpmnElementKind = style.bpmn.kind;
+  // if kind is not set, check shape: bpmn.message-flow-icon --> message-flow-icon
+  const bpmnElementKind = style.bpmn?.kind ?? style.shape?.replace(/bpmn./g, '');
   // eslint-disable-next-line no-console
   console.info('computeAllBpmnClassNames - style', style);
   // eslint-disable-next-line no-console
@@ -58,20 +59,20 @@ export function computeAllBpmnClassNames(style: BPMNCellStyle, isLabel: boolean)
 
   classes.push(computeBpmnBaseClassName(bpmnElementKind));
 
-  if (style.bpmn.eventDefinitionKind) {
+  if (style.bpmn?.eventDefinitionKind) {
     classes.push(`bpmn-event-def-${style.bpmn.eventDefinitionKind}`);
   }
-  if (style.bpmn.gatewayKind) {
+  if (style.bpmn?.gatewayKind) {
     classes.push(`bpmn-gateway-kind-${style.bpmn.gatewayKind.toLowerCase()}`);
   }
-  if (style.bpmn.isNonInitiating !== undefined) {
+  if (style.bpmn?.isNonInitiating !== undefined) {
     // message flow icon
     classes.push(style.bpmn.isNonInitiating ? 'bpmn-icon-non-initiating' : 'bpmn-icon-initiating');
   }
-  if (style.bpmn.subProcessKind) {
+  if (style.bpmn?.subProcessKind) {
     classes.push(`bpmn-sub-process-${style.bpmn.subProcessKind.toLowerCase()}`);
   }
-  if (style.bpmn.globalTaskKind) {
+  if (style.bpmn?.globalTaskKind) {
     classes.push(computeBpmnBaseClassName(style.bpmn.globalTaskKind));
   }
   if (isLabel) {
