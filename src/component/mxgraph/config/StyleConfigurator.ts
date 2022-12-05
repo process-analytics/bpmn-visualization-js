@@ -135,9 +135,6 @@ export class StyleConfigurator {
 
   private configureDefaultVertexStyle(): void {
     StyleConfigurator.configureCommonDefaultStyle(this.getStylesheet().getDefaultVertexStyle() as BPMNCellStyle);
-
-    // eslint-disable-next-line no-console
-    console.info('StyleConfigurator: configureDefaultVertexStyle', this.getStylesheet().getDefaultVertexStyle());
   }
 
   private configurePoolStyle(): void {
@@ -271,8 +268,6 @@ export class StyleConfigurator {
     style.endArrow = undefined;
 
     StyleConfigurator.configureCommonDefaultStyle(style);
-    // eslint-disable-next-line no-console
-    console.info('StyleConfigurator: configureDefaultEdgeStyle', style);
   }
 
   private static configureCommonDefaultStyle(style: BPMNCellStyle): void {

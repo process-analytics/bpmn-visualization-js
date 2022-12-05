@@ -30,13 +30,13 @@ import {
 } from '../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { BpmnShapeIdentifier, FONT } from '../style';
 import type {
+  AssociationDirectionKind,
   FlowKind,
+  GlobalTaskKind,
+  SequenceFlowKind,
   ShapeBpmnEventBasedGatewayKind,
   ShapeBpmnEventDefinitionKind,
   ShapeBpmnSubProcessKind,
-  GlobalTaskKind,
-  SequenceFlowKind,
-  AssociationDirectionKind,
 } from '../../../model/bpmn/internal';
 import { MessageVisibleKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeUtil } from '../../../model/bpmn/internal';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/flows';
@@ -80,8 +80,6 @@ export interface BPMNCellStyle extends CellStyle {
  */
 export default class StyleComputer {
   computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): BPMNCellStyle {
-    // eslint-disable-next-line no-console
-    console.info('computeStyle - bpmnCell', bpmnCell);
     const style: BPMNCellStyle = {
       bpmn: { kind: bpmnCell.bpmnElement.kind },
     };
@@ -99,10 +97,7 @@ export default class StyleComputer {
     const fontStyleValues = StyleComputer.computeFontStyleValues(bpmnCell);
     const labelStyleValues = StyleComputer.computeLabelStyleValues(bpmnCell, labelBounds);
 
-    const returnedStyle = { baseStyleNames: baseStyleNames, ...style, ...fontStyleValues, ...labelStyleValues };
-    // eslint-disable-next-line no-console
-    console.info('computeStyle - return', returnedStyle);
-    return returnedStyle;
+    return { baseStyleNames: baseStyleNames, ...style, ...fontStyleValues, ...labelStyleValues };
   }
 
   private static enrichStyleWithShapeInfo(style: BPMNCellStyle, shape: Shape): void {
