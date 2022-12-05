@@ -80,9 +80,12 @@ export class InclusiveGatewayShape extends GatewayShape {
  * @internal
  */
 export class ComplexGatewayShape extends GatewayShape {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected paintInnerShape(paintParameter: PaintParameter): void {
-    this.fill = 'red';
+    this.iconPainter.paintAsteriskIcon({
+      ...paintParameter,
+      iconStyleConfig: { ...paintParameter.iconStyleConfig, isFilled: true },
+      ratioFromParent: 0.5,
+    });
   }
 }
 
