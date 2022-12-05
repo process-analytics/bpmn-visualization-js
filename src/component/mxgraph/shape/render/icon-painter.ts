@@ -355,6 +355,23 @@ export class IconPainter {
   }
 
   /**
+   * Code for creating an asterisk icon used by `complex gateway`.
+   */
+  private createCanvas(paintParameter: PaintParameter): BpmnCanvas {
+    const canvas = this.newBpmnCanvas(paintParameter, { height: 1, width: 1 });
+    return canvas;
+  }
+
+  private drawVerticalIconOnCanvas(paintParameter: PaintParameter, canvas: BpmnCanvas): void {
+    canvas.begin();
+    canvas.moveTo(0.38, 0);
+    canvas.lineTo(0.62, 0);
+    canvas.lineTo(0.62, 1);
+    canvas.lineTo(0.38, 1);
+    canvas.close();
+  }
+
+  /**
    * This icon is used by `conditional event`.
    */
   paintListIcon(paintParameter: PaintParameter): void {
@@ -396,6 +413,20 @@ export class IconPainter {
    */
   paintPlusCrossIcon(paintParameter: PaintParameter): void {
     this.drawCrossIcon(paintParameter).fillAndStroke();
+  }
+  /**
+   * This icon is used by `complex gateway`.
+   */
+  paintAsteriskIcon(paintParameter: PaintParameter): void {
+    const canvas = this.createCanvas(paintParameter);
+    this.drawVerticalIconOnCanvas(paintParameter, canvas);
+    canvas.fillAndStroke();
+    this.drawVerticalIconOnCanvas(paintParameter, canvas);
+    canvas.rotateOnIconCenter(60);
+    canvas.fillAndStroke();
+    this.drawVerticalIconOnCanvas(paintParameter, canvas);
+    canvas.rotateOnIconCenter(240);
+    canvas.fillAndStroke();
   }
 
   /**
