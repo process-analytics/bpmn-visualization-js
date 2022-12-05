@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import type { ShapeValue } from '@maxgraph/core';
-import { constants } from '@maxgraph/core';
 
 import type { ExpectedCell, ExpectedStateStyle } from '../matcher-utils';
 import { buildCellMatcher, buildCommonExpectedStateStyle, buildReceivedCellWithCommonAttributes } from '../matcher-utils';

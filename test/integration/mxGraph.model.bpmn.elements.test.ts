@@ -15,7 +15,7 @@
  */
 
 import type { ArrowType } from '@maxgraph/core';
-import { Point, Geometry, constants } from '@maxgraph/core';
+import { Point, Geometry } from '@maxgraph/core';
 
 import {
   MarkerIdentifier,
