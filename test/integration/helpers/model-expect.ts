@@ -140,6 +140,10 @@ export interface ExpectedShapeModelElement {
   align?: AlignValue;
   markers?: ShapeBpmnMarkerKind[];
   isInstantiating?: boolean;
+  /** This is the value in the maxGraph model, not what is from the BPMN Shape. This applies to the maxGraph labels so the value is inverted comparing to the BPMN model.
+   * - Horizontal pool/lane --> false (the label is vertical)
+   * - Vertical pool/lane --> true (the label is horizontal)
+   * */
   isHorizontal?: boolean;
   overlays?: ExpectedOverlay[];
 }
