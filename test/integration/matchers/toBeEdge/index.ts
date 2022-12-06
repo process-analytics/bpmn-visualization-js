@@ -16,14 +16,15 @@
 
 import type { ShapeValue } from '@maxgraph/core';
 
-import type { ExpectedStateStyle, ExpectedCell } from '../matcher-utils';
-import { buildCommonExpectedStateStyle, buildCellMatcher, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
-import MatcherContext = jest.MatcherContext;
-import CustomMatcherResult = jest.CustomMatcherResult;
-import { FlowKind, MessageVisibleKind } from '../../../../src/model/bpmn/internal';
-import type { ExpectedEdgeModelElement, ExpectedSequenceFlowModelElement } from '../../helpers/model-expect';
+import type { ExpectedCell, ExpectedStateStyle } from '../matcher-utils';
+import { buildCellMatcher, buildCommonExpectedStateStyle, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
+import { AssociationDirectionKind, FlowKind, MessageVisibleKind, SequenceFlowKind } from '../../../../src/model/bpmn/internal';
+import type { ExpectedAssociationFlowModelElement, ExpectedEdgeModelElement, ExpectedSequenceFlowModelElement } from '../../helpers/model-expect';
 import { getDefaultParentId } from '../../helpers/model-expect';
 import { BpmnShapeIdentifier } from '../../../../src/component/mxgraph/style';
+import type { BPMNCellStyle } from '../../../../src/component/mxgraph/renderer/StyleComputer';
+import MatcherContext = jest.MatcherContext;
+import CustomMatcherResult = jest.CustomMatcherResult;
 
 function buildExpectedStateStyle(expectedModel: ExpectedEdgeModelElement): ExpectedStateStyle {
   const expectedStateStyle = buildCommonExpectedStateStyle(expectedModel);
@@ -37,24 +38,36 @@ function buildExpectedStateStyle(expectedModel: ExpectedEdgeModelElement): Expec
   return expectedStateStyle;
 }
 
-function buildExpectedStyle(expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement): string {
-  let expectedStyle: string = expectedModel.kind;
+function buildExpectedStyle(expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement | ExpectedAssociationFlowModelElement): BPMNCellStyle {
+  const style: BPMNCellStyle = { bpmn: {} };
+  // TODO share with edge
+  // let expectedStyle: string = expectedModel.kind;
+  style.baseStyleNames = [expectedModel.kind];
+  style.bpmn.kind = expectedModel.kind;
+
+  // let expectedStyle: string = expectedModel.kind;
   if ('sequenceFlowKind' in expectedModel) {
-    expectedStyle = expectedStyle + `;${(expectedModel as ExpectedSequenceFlowModelElement).sequenceFlowKind}`;
+    // expectedStyle = expectedStyle + `;${(expectedModel as ExpectedSequenceFlowModelElement).sequenceFlowKind}`;
+    style.baseStyleNames.push((expectedModel as ExpectedSequenceFlowModelElement).sequenceFlowKind);
   }
-  return expectedStyle + '.*';
+  if ('associationDirectionKind' in expectedModel) {
+    style.baseStyleNames.push((expectedModel as ExpectedAssociationFlowModelElement).associationDirectionKind);
+  }
+
+  // return expectedStyle + '.*';
+  return style;
 }
 
 function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement): ExpectedCell {
+  // TODO refactor, duplication with buildExpectedCell in shape matchers
   const parentId = expectedModel.parentId;
-  const styleRegexp = buildExpectedStyle(expectedModel);
   const expectedCell: ExpectedCell = {
     id,
-    value: expectedModel.label,
-    style: expect.stringMatching(styleRegexp),
+    value: expectedModel.label ?? null, // maxGraph now set to 'null', mxGraph set to 'undefined'
+    style: expect.objectContaining(buildExpectedStyle(expectedModel)),
     edge: true,
     vertex: false,
-    parent: { id: parentId ? parentId : getDefaultParentId() },
+    parent: { id: parentId ? parentId : getDefaultParentId() }, // TODO use ?? instead (in master branch)
     state: {
       style: buildExpectedStateStyle(expectedModel),
     },
@@ -64,10 +77,11 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement |
   if (expectedModel.messageVisibleKind && expectedModel.messageVisibleKind !== MessageVisibleKind.NONE) {
     expectedCell.children = [
       {
-        value: undefined,
+        value: null, // maxGraph now set to 'null', mxGraph set to 'undefined'
         style: {
           // TODO remove forcing type when maxGraph fixes its types
           shape: <ShapeValue>BpmnShapeIdentifier.MESSAGE_FLOW_ICON,
+          // TODO duplicated logic to compute the 'isNonInitiating' property. Update the expectedModel to store a boolean instead of a string
           bpmn: { isNonInitiating: expectedModel.messageVisibleKind === MessageVisibleKind.NON_INITIATING },
         },
         id: `messageFlowIcon_of_${id}`,
@@ -84,6 +98,7 @@ function buildEdgeMatcher(matcherName: string, matcherContext: MatcherContext, r
 }
 
 export function toBeSequenceFlow(this: MatcherContext, received: string, expected: ExpectedSequenceFlowModelElement): CustomMatcherResult {
+  expected.sequenceFlowKind ??= SequenceFlowKind.NORMAL;
   return buildEdgeMatcher('toBeSequenceFlow', this, received, { ...expected, kind: FlowKind.SEQUENCE_FLOW, endArrow: 'blockThin' });
 }
 
@@ -91,6 +106,7 @@ export function toBeMessageFlow(this: MatcherContext, received: string, expected
   return buildEdgeMatcher('toBeMessageFlow', this, received, { ...expected, kind: FlowKind.MESSAGE_FLOW, startArrow: 'oval', endArrow: 'blockThin' });
 }
 
-export function toBeAssociationFlow(this: MatcherContext, received: string, expected: ExpectedEdgeModelElement): CustomMatcherResult {
+export function toBeAssociationFlow(this: MatcherContext, received: string, expected: ExpectedAssociationFlowModelElement): CustomMatcherResult {
+  expected.associationDirectionKind ??= AssociationDirectionKind.NONE;
   return buildEdgeMatcher('toBeAssociationFlow', this, received, { ...expected, kind: FlowKind.ASSOCIATION_FLOW });
 }

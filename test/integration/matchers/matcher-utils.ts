@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import type { Cell, Geometry, AlignValue, VAlignValue, ArrowType, ShapeValue } from '@maxgraph/core';
+import type { Cell, Geometry } from '@maxgraph/core';
 
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
@@ -24,22 +24,8 @@ import { FONT } from '../../../src/bpmn-visualization';
 import type { MaxGraphCustomOverlay, MaxGraphCustomOverlayStyle } from '../../../src/component/mxgraph/overlay/custom-overlay';
 import type { BPMNCellStyle } from '../../../src/component/mxgraph/renderer/StyleComputer';
 
-export interface ExpectedStateStyle extends BPMNCellStyle {
-  verticalAlign?: VAlignValue;
-  align?: AlignValue;
-  strokeWidth?: number;
-  strokeColor: string;
-  fillColor: string;
-  fontColor: string;
-  fontFamily: string;
-  fontSize: number;
-  fontStyle: number;
-  startArrow?: ArrowType;
-  endArrow?: ArrowType;
-  endSize?: number;
-  shape?: ShapeValue;
-  horizontal?: boolean;
-}
+// TODO remove this type
+export type ExpectedStateStyle = BPMNCellStyle;
 
 export interface ExpectedCell {
   value?: string;
@@ -129,6 +115,7 @@ export function getFontStyleValue(expectedFont: ExpectedFont): number {
 export function buildCommonExpectedStateStyle(expectedModel: ExpectedEdgeModelElement | ExpectedShapeModelElement): ExpectedStateStyle {
   const font = expectedModel.font;
 
+  // Here are the default values as defined in StyleDefault
   return {
     strokeColor: 'Black',
     fillColor: 'White',
@@ -136,12 +123,15 @@ export function buildCommonExpectedStateStyle(expectedModel: ExpectedEdgeModelEl
     fontSize: font?.size ? font.size : 11,
     fontColor: 'Black',
     fontStyle: getFontStyleValue(font),
-    bpmn: undefined,
+    // TODO set basic information when removing the custom processing in buildReceivedStateStyle
+    // bpmn: { xxxx },
   };
 }
 
 function buildReceivedStateStyle(cell: Cell): ExpectedStateStyle {
   const stateStyle = bpmnVisualization.graph.getCellStyle(cell);
+  // TODO why building ExpectedStateStyle now maxGraph manage style in object. We should use 'stateStyle' directly (and remove this function)
+  // TODO rename into 'receivedStateStyle' (in master branch)
   const expectedStateStyle: ExpectedStateStyle = {
     verticalAlign: stateStyle.verticalAlign,
     align: stateStyle.align,
@@ -152,7 +142,6 @@ function buildReceivedStateStyle(cell: Cell): ExpectedStateStyle {
     fontSize: stateStyle.fontSize,
     fontColor: stateStyle.fontColor,
     fontStyle: stateStyle.fontStyle,
-    bpmn: undefined,
   };
 
   if (cell.edge) {
@@ -161,7 +150,7 @@ function buildReceivedStateStyle(cell: Cell): ExpectedStateStyle {
     expectedStateStyle.endSize = stateStyle.endSize;
   } else {
     expectedStateStyle.shape = stateStyle.shape;
-    expectedStateStyle.horizontal = stateStyle.horizontal;
+    stateStyle.horizontal && (expectedStateStyle.horizontal = stateStyle.horizontal);
   }
   return expectedStateStyle;
 }
@@ -177,8 +166,9 @@ export function buildReceivedCellWithCommonAttributes(cell: Cell): ExpectedCell 
     state: { style: buildReceivedStateStyle(cell) },
   };
 
+  // the maxGraph API returns an empty array when there is no overlays
   const cellOverlays = bpmnVisualization.graph.getCellOverlays(cell) as MaxGraphCustomOverlay[];
-  if (cellOverlays) {
+  if (cellOverlays.length > 0) {
     receivedCell.overlays = cellOverlays.map(cellOverlay => ({
       label: cellOverlay.label,
       horizontalAlign: cellOverlay.align,

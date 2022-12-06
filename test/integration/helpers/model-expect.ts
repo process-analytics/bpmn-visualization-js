@@ -15,6 +15,7 @@
  */
 
 import type {
+  AssociationDirectionKind,
   FlowKind,
   MessageVisibleKind,
   SequenceFlowKind,
@@ -22,6 +23,7 @@ import type {
   ShapeBpmnEventDefinitionKind,
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
+  GlobalTaskKind,
 } from '../../../src/bpmn-visualization';
 import { BpmnVisualization, ShapeBpmnElementKind } from '../../../src/bpmn-visualization';
 import {
@@ -50,7 +52,7 @@ import {
   toBeTask,
   toBeUserTask,
 } from '../matchers';
-import type { AlignValue, ArrowType, Cell, FilterFunction, VAlignValue } from '@maxgraph/core';
+import type { AlignValue, ArrowType, Cell, FilterFunction, ShapeValue, VAlignValue } from '@maxgraph/core';
 import type { Geometry } from '@maxgraph/core';
 import type { ExpectedOverlay } from '../matchers/matcher-utils';
 import { getCell } from '../matchers/matcher-utils';
@@ -135,7 +137,7 @@ export interface ExpectedShapeModelElement {
   font?: ExpectedFont;
   parentId?: string;
   /** Only needed when the BPMN shape doesn't exist yet (use an arbitrary shape until the final render is implemented) */
-  styleShape?: string;
+  styleShape?: ShapeValue | string;
   verticalAlign?: VAlignValue;
   align?: AlignValue;
   markers?: ShapeBpmnMarkerKind[];
@@ -157,7 +159,8 @@ export interface ExpectedSubProcessModelElement extends ExpectedShapeModelElemen
 }
 
 export interface ExpectedCallActivityModelElement extends ExpectedShapeModelElement {
-  globalTaskKind?: ShapeBpmnElementKind;
+  // TODO wrong type in the master branch. ShapeBpmnElementKind --> GlobalTaskKind
+  globalTaskKind?: GlobalTaskKind;
 }
 
 export interface ExpectedEdgeModelElement {
@@ -174,6 +177,10 @@ export interface ExpectedEdgeModelElement {
 
 export interface ExpectedSequenceFlowModelElement extends ExpectedEdgeModelElement {
   sequenceFlowKind?: SequenceFlowKind;
+}
+
+export interface ExpectedAssociationFlowModelElement extends ExpectedEdgeModelElement {
+  associationDirectionKind?: AssociationDirectionKind;
 }
 
 export interface ExpectedBoundaryEventModelElement extends ExpectedEventModelElement {
