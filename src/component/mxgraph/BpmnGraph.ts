@@ -19,8 +19,8 @@ import { FitType } from '../options';
 import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/validators';
 import debounce from 'lodash.debounce';
 import throttle from 'lodash.throttle';
-import type { CellState, Point } from '@maxgraph/core';
-import { eventUtils, Graph, GraphView, InternalEvent } from '@maxgraph/core';
+import type { CellState, CellStateStyle, CellStyle, Point } from '@maxgraph/core';
+import { eventUtils, Graph, GraphView, InternalEvent, Stylesheet } from '@maxgraph/core';
 
 const zoomFactorIn = 1.25;
 const zoomFactorOut = 1 / zoomFactorIn;
@@ -211,6 +211,11 @@ export class BpmnGraph extends Graph {
     const factor = scale / this.view.scale;
     return [factor, scale];
   }
+
+  // TODO temp to fix maxGraph style merge issue (should be fixed in maxGraph@0.2.0)
+  override createStylesheet(): Stylesheet {
+    return new BpmnStylesheet();
+  }
 }
 
 class BpmnGraphView extends GraphView {
@@ -224,5 +229,41 @@ class BpmnGraphView extends GraphView {
     }
     const pts = edge.absolutePoints;
     return source ? pts[1] : pts[pts.length - 2];
+  }
+}
+
+// TODO temp to fix maxGraph style merge issue (should be fixed in maxGraph@0.2.0)
+class BpmnStylesheet extends Stylesheet {
+  override getCellStyle(cellStyle: CellStyle, defaultStyle: CellStateStyle): CellStateStyle {
+    let style: CellStateStyle;
+
+    if (cellStyle.baseStyleNames && cellStyle.baseStyleNames.length > 0) {
+      // creates style with the given baseStyleNames. (merges from left to right)
+      style = cellStyle.baseStyleNames.reduce(
+        (acc, styleName) => {
+          return (acc = {
+            ...acc,
+            ...this.styles.get(styleName),
+          });
+        },
+        // here is the change
+        // {},
+        { ...defaultStyle },
+        // END of here is the change
+      );
+    } else if (cellStyle.baseStyleNames && cellStyle.baseStyleNames.length === 0) {
+      // baseStyleNames is explicitly an empty array, so don't use any default styles.
+      style = {};
+    } else {
+      style = { ...defaultStyle };
+    }
+
+    // Merges cellStyle into style
+    style = {
+      ...style,
+      ...cellStyle,
+    };
+
+    return style;
   }
 }
