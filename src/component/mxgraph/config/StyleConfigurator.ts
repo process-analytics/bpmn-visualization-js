@@ -284,6 +284,7 @@ export class StyleConfigurator {
 
   private configureEdgeStyles<T>(styleKinds: T[], specificStyles: Map<T, (style: BPMNCellStyle) => void>): void {
     styleKinds.forEach(kind => {
+      // TODO review if we need to set bpmn.edge (this is not enough for edge.ts)
       const style: BPMNCellStyle = { bpmn: { edge: {} } };
       specificStyles.get(kind)(style);
       this.graph.getStylesheet().putCellStyle(kind.toString(), style);

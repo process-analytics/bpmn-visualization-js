@@ -38,12 +38,12 @@ export class BpmnConnector extends ConnectorShape {
     c.setDashed(false, false);
 
     if (sourceMarker != null) {
-      c.setFillColor((this.style as BPMNCellStyle).bpmn.edge.startFillColor ?? this.stroke);
+      c.setFillColor((this.style as BPMNCellStyle).bpmn?.edge?.startFillColor ?? this.stroke);
       sourceMarker();
     }
 
     if (targetMarker != null) {
-      c.setFillColor((this.style as BPMNCellStyle).bpmn.edge.endFillColor ?? this.stroke);
+      c.setFillColor((this.style as BPMNCellStyle).bpmn?.edge?.endFillColor ?? this.stroke);
       targetMarker();
     }
   }
