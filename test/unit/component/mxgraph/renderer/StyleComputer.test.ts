@@ -584,12 +584,10 @@ describe('Style Computer', () => {
   });
 
   describe('compute style - pool references a Process', () => {
-    // TODO all expected values are inverted (see implementation)
     it.each([
       ['vertical', false, true],
       ['horizontal', true, false],
-      ['undefined', undefined, true],
-      // TODO undefined
+      ['undefined', undefined, false],
     ])('%s pool references a Process', (title: string, isHorizontal: boolean, expectedStyleIsHorizontal: boolean) => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.POOL), undefined, isHorizontal);
       expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
@@ -601,11 +599,10 @@ describe('Style Computer', () => {
   });
 
   describe('compute style - lane', () => {
-    // TODO all expected values are inverted (see implementation)
     it.each([
       ['vertical', false, true],
       ['horizontal', true, false],
-      ['undefined', undefined, true],
+      ['undefined', undefined, false],
     ])('%s lane', (title: string, isHorizontal: boolean, expectedStyleIsHorizontal: boolean) => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.LANE), undefined, isHorizontal);
       expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
