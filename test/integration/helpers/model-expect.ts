@@ -17,13 +17,13 @@
 import type {
   AssociationDirectionKind,
   FlowKind,
+  GlobalTaskKind,
   MessageVisibleKind,
   SequenceFlowKind,
   ShapeBpmnEventBasedGatewayKind,
   ShapeBpmnEventDefinitionKind,
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
-  GlobalTaskKind,
 } from '../../../src/bpmn-visualization';
 import { BpmnVisualization, ShapeBpmnElementKind } from '../../../src/bpmn-visualization';
 import {
@@ -52,8 +52,7 @@ import {
   toBeTask,
   toBeUserTask,
 } from '../matchers';
-import type { AlignValue, ArrowType, Cell, FilterFunction, ShapeValue, VAlignValue } from '@maxgraph/core';
-import type { Geometry } from '@maxgraph/core';
+import type { AlignValue, ArrowType, Cell, FilterFunction, Geometry, ShapeValue, VAlignValue } from '@maxgraph/core';
 import type { ExpectedOverlay } from '../matchers/matcher-utils';
 import { getCell } from '../matchers/matcher-utils';
 import type { BPMNCellStyle } from '../../../src/component/mxgraph/renderer/StyleComputer';
@@ -200,13 +199,19 @@ const defaultParent = bpmnVisualization.graph.getDefaultParent();
 export const getDefaultParentId = (): string => defaultParent.id;
 
 const expectElementsInModel = (parentId: string, elementsNumber: number, filter: FilterFunction): void => {
-  const model = bpmnVisualization.graph.model;
-  const descendants = model.filterCells([getCell(parentId)], filter);
+  // TODO see if we can move the logic to getCell
+  const parentCell = parentId ? getCell(parentId) : defaultParent;
+  const descendants = parentCell.filterDescendants(filter);
   expect(descendants).toHaveLength(elementsNumber);
 };
 
 export const expectPoolsInModel = (pools: number): void => {
-  expectElementsInModel(undefined, pools, (cell: Cell): boolean => (cell.style as BPMNCellStyle).bpmn.kind == ShapeBpmnElementKind.POOL);
+  expectElementsInModel(undefined, pools, (cell: Cell): boolean => {
+    // console.info('@@cell', cell);
+    return cell != defaultParent && (cell.style as BPMNCellStyle).bpmn.kind == ShapeBpmnElementKind.POOL;
+  });
+  // TODO maxGraph why cell can be undefined here?
+  // expectElementsInModel(undefined, pools, (cell: Cell): boolean => (cell?.style as BPMNCellStyle)?.bpmn?.kind == ShapeBpmnElementKind.POOL);
 };
 
 export const expectShapesInModel = (parentId: string, shapesNumber: number): void => {
