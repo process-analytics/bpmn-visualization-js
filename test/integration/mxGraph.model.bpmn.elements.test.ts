@@ -29,7 +29,15 @@ import {
 } from '../../src/bpmn-visualization';
 import { readFileSync } from '../helpers/file-helper';
 import type { ExpectedShapeModelElement } from './helpers/model-expect';
-import { bpmnVisualization, expectEdgesInModel, expectPoolsInModel, expectTotalEdgesInModel, expectShapesInModel, expectTotalShapesInModel } from './helpers/model-expect';
+import {
+  bpmnVisualization,
+  expectEdgesInModel,
+  expectPoolsInModel,
+  expectTotalEdgesInModel,
+  expectShapesInModel,
+  expectTotalShapesInModel,
+  getDefaultParentId,
+} from './helpers/model-expect';
 
 describe('mxGraph model - BPMN elements', () => {
   describe('BPMN elements should be available in the mxGraph model', () => {
@@ -48,7 +56,9 @@ describe('mxGraph model - BPMN elements', () => {
 
       describe('BPMN containers', () => {
         // TODO change isHorizontal value for maxGraph, but the logic is probably wrong in 'master' (convert integer into boolean)
-        const minimalPoolModelElement: ExpectedShapeModelElement = {};
+        const minimalPoolModelElement: ExpectedShapeModelElement = {
+          parentId: getDefaultParentId(),
+        };
         it('pool', async () => {
           expect('participant_1_id').toBePool({ ...minimalPoolModelElement, label: 'Pool 1' });
           expect('participant_2_id').toBePool(minimalPoolModelElement);
@@ -1434,7 +1444,7 @@ describe('mxGraph model - BPMN elements', () => {
 
     // pool
     // TODO change isHorizontal value for maxGraph, but the logic is probably wrong in 'master' (convert integer into boolean)
-    const minimalPoolModelElement: ExpectedShapeModelElement = { isHorizontal: true };
+    const minimalPoolModelElement: ExpectedShapeModelElement = { isHorizontal: true, parentId: getDefaultParentId() };
     expect('Participant_Vertical_With_Lanes').toBePool({ ...minimalPoolModelElement, label: 'Vertical Pool With Lanes' });
 
     // lane
