@@ -62,6 +62,7 @@ export interface BPMNCellStyle extends CellStyle {
     markers?: ShapeBpmnMarkerKind[];
     sequenceFlowKind?: SequenceFlowKind;
     associationDirectionKind?: AssociationDirectionKind;
+    // TODO isNonInitiating: previously we add a string, this introduces extra changes. If we want to keep this, do it in the master branch
     isNonInitiating?: boolean; // TODO why not 'isInitiating' for consistency with other boolean value? Negate doesn't make things easier to understand
     extra?: {
       css: {
