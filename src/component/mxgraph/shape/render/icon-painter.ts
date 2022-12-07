@@ -414,6 +414,7 @@ export class IconPainter {
   paintPlusCrossIcon(paintParameter: PaintParameter): void {
     this.drawCrossIcon(paintParameter).fillAndStroke();
   }
+
   /**
    * This icon is used by `complex gateway`.
    */
