@@ -142,7 +142,7 @@
     "pinst": "~3.0.0",
     "playwright": "~1.28.1",
     "postcss": "~8.4.19",
-    "postcss-cli": "~10.0.0",
+    "postcss-cli": "~10.1.0",
     "prettier": "~2.7.1",
     "rimraf": "~3.0.2",
     "rollup": "~3.6.0",
