@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+import assert from 'node:assert';
+// generate warning when running with Node 16
+// (node:75278) ExperimentalWarning: Importing JSON modules is an experimental feature. This feature could change at any time
+import pkg from './package.json' assert { type: 'json' };
+
 import autoExternal from 'rollup-plugin-auto-external';
 import { terser } from 'rollup-plugin-terser';
 import sizes from 'rollup-plugin-sizes';
@@ -21,7 +26,6 @@ import sizes from 'rollup-plugin-sizes';
 import typescript from 'rollup-plugin-typescript2';
 import commonjs from '@rollup/plugin-commonjs'; // at least, needed to bundle mxGraph which is only available as a CommonJS module
 import resolve from '@rollup/plugin-node-resolve';
-import pkg from './package.json';
 
 const libInput = 'src/bpmn-visualization.ts';
 const pluginsBundleIIFE = [
@@ -73,7 +77,6 @@ export default [configIIFE, configIIFEMinified, configBundles];
 
 function typescriptPlugin() {
   return typescript({
-    typescript: require('typescript'),
     tsconfig: './tsconfig.npm-package.json',
   });
 }
