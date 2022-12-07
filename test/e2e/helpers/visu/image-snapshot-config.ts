@@ -25,7 +25,7 @@ export interface ImageSnapshotThresholdConfig {
 }
 
 const defaultImageSnapshotConfig: MatchImageSnapshotOptions = {
-  diffDirection: 'vertical',
+  onlyDiff: true,
   // locally and on CI, see diff images folder directly
   dumpDiffToConsole: false,
   // use SSIM to limit false positive
