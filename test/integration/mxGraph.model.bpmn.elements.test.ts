@@ -1315,13 +1315,15 @@ describe('mxGraph model - BPMN elements', () => {
         verticalAlign: 'middle',
       });
       expect('task_1').toBeTask({ parentId: '1' });
-      expectShapesInModel('participant_1', 3);
+      // TODO change in maxGraph, no more ref to not existing element in the model which references elements with object, no more by id
+      // expectShapesInModel('participant_1', 3);
       // the children of the pool
       expectTotalShapesInModel(3);
 
       // only check one sequence flow in details
       expect('sequence_flow_1').toBeSequenceFlow({ parentId: '1', verticalAlign: 'bottom' });
-      expectEdgesInModel('participant_1', 2);
+      // TODO change in maxGraph, no more ref to not existing element in the model which references elements with object, no more by id
+      // expectEdgesInModel('participant_1', 2);
       expectTotalEdgesInModel(2);
     });
   });
@@ -1569,13 +1571,15 @@ describe('mxGraph model - BPMN elements', () => {
         verticalAlign: 'middle',
       });
       expect('task_1').toBeTask({ parentId: '1' });
-      expectShapesInModel('participant_1', 3);
+      // TODO change in maxGraph, no more ref to not existing element in the model which references elements with object, no more by id
+      // expectShapesInModel('participant_1', 3);
       // the children of the pool
       expectTotalShapesInModel(3);
 
       // only check one sequence flow in details
       expect('sequence_flow_1').toBeSequenceFlow({ parentId: '1', verticalAlign: 'bottom' });
-      expectEdgesInModel('participant_1', 2);
+      // TODO change in maxGraph, no more ref to not existing element in the model which references elements with object, no more by id
+      // expectEdgesInModel('participant_1', 2);
       expectTotalEdgesInModel(2);
     });
   });

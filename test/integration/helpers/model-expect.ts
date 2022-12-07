@@ -194,24 +194,20 @@ export interface ExpectedEventBasedGatewayModelElement extends ExpectedShapeMode
 }
 
 export const bpmnVisualization = new BpmnVisualization(null);
-const defaultParent = bpmnVisualization.graph.getDefaultParent();
+const getDefaultParent = (): Cell => bpmnVisualization.graph.getDefaultParent();
 
-export const getDefaultParentId = (): string => defaultParent.id;
+export const getDefaultParentId = (): string => getDefaultParent().id;
 
 const expectElementsInModel = (parentId: string, elementsNumber: number, filter: FilterFunction): void => {
-  // TODO see if we can move the logic to getCell
-  const parentCell = parentId ? getCell(parentId) : defaultParent;
+  const parentCell = parentId ? getCell(parentId) : getDefaultParent();
   const descendants = parentCell.filterDescendants(filter);
   expect(descendants).toHaveLength(elementsNumber);
 };
 
 export const expectPoolsInModel = (pools: number): void => {
   expectElementsInModel(undefined, pools, (cell: Cell): boolean => {
-    // console.info('@@cell', cell);
-    return cell != defaultParent && (cell.style as BPMNCellStyle).bpmn.kind == ShapeBpmnElementKind.POOL;
+    return cell != getDefaultParent() && (cell.style as BPMNCellStyle).bpmn.kind == ShapeBpmnElementKind.POOL;
   });
-  // TODO maxGraph why cell can be undefined here?
-  // expectElementsInModel(undefined, pools, (cell: Cell): boolean => (cell?.style as BPMNCellStyle)?.bpmn?.kind == ShapeBpmnElementKind.POOL);
 };
 
 export const expectShapesInModel = (parentId: string, shapesNumber: number): void => {
