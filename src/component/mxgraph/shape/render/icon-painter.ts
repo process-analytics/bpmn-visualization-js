@@ -354,14 +354,6 @@ export class IconPainter {
     return canvas;
   }
 
-  /**
-   * Code for creating an asterisk icon used by `complex gateway`.
-   */
-  private createCanvas(paintParameter: PaintParameter): BpmnCanvas {
-    const canvas = this.newBpmnCanvas(paintParameter, { height: 1, width: 1 });
-    return canvas;
-  }
-
   private drawVerticalIconOnCanvas(paintParameter: PaintParameter, canvas: BpmnCanvas): void {
     canvas.begin();
     canvas.moveTo(0.38, 0);
