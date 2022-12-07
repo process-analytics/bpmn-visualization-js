@@ -106,7 +106,7 @@
     "@rollup/plugin-commonjs": "~23.0.3",
     "@rollup/plugin-node-resolve": "~15.0.1",
     "@types/debug": "~4.1.7",
-    "@types/jest-image-snapshot": "~5.1.0",
+    "@types/jest-image-snapshot": "~6.1.0",
     "@types/lodash.debounce": "~4.0.7",
     "@types/lodash.throttle": "~4.1.7",
     "@types/minimist": "~1.2.2",
