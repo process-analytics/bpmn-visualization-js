@@ -14,7 +14,7 @@ on:
       - '.nvmrc'
       - 'package.json'
       - 'package-lock.json'
-      - 'rollup.config.js'
+      - 'rollup.config.mjs'
       - 'tsconfig.json'
   pull_request:
     branches:
@@ -29,7 +29,7 @@ on:
       - '.nvmrc'
       - 'package.json'
       - 'package-lock.json'
-      - 'rollup.config.js'
+      - 'rollup.config.mjs'
       - 'tsconfig.json'
 
 jobs:
