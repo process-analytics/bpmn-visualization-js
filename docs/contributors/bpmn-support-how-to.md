@@ -119,7 +119,7 @@ So before committing the modification, verify that some elements/configuration a
 Overview of tasks to be achieved:
 - Choose the [icon for the BPMN Element](#choose-bpmn-icon)
 - Add/Update visual tests
-- Update the BPMN support documentation: add the element with an [early access icon](../users/bpmn-support.adoc) and include a snapshot of the icon in the documentation
+- Update the BPMN support documentation: add the element with an [early access icon](../users/bpmn-support.adoc) and include a [snapshot of the icon in the documentation](#icon-in-documentation)
 
 Refer to existing Pull Requests to have a better view about the work to do, for instance:
 - [Error Event Rendering Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/505/files)
@@ -168,7 +168,7 @@ The icon and markers of the BPMN elements must be defined in the mxGraph custom 
 `TypeScript` code. The `IconPainter` class manages all icons rendering/painting.  
 
 It is possible to adapt an SVG icon or an `mxGraph` stencil thanks to [mxgraph-svg2shape](https://github.com/process-analytics/mxgraph-svg2shape),
-a Java tool that will let you to transform this content (in a file) into a set of `TypeScript` commands.
+a Java tool that will let you transform this content (in a file) into a set of `TypeScript` commands.
 
 Please be aware that the tool is not able to support all SVG files, and you may need to adapt the SVG definition prior the
 tool can transform it. See [PR #210](https://github.com/process-analytics/bpmn-visualization-js/pull/210) for instance.
@@ -218,3 +218,19 @@ All tests should have been introduced during the detection phase. Please review 
 
 Visual tests introduced when adding the detection support should fail for the BPMN Element after the rendering has changed. \
 Please update the reference snapshot image accordingly.
+
+
+### <a name="icon-in-documentation"></a> Integrate the BPMN element icon in the documentation
+
+Here are some tips to generate the SVG to be included in the documentation.
+
+- Take the BPMN diagram used to test the related BPMN element in visual tests
+- Load the diagram in a test page.
+- With your browser DevTools, inspect the element and retrieve the related SVG group
+- ....To continue
+- Edit the file in a SVG Editor (Inkscape for instance)
+- Adjust the dimension of the SVG:
+  - remove blank
+  - dimension: 96x96
+- save
+- eventually clean the SVG with tools like SVGGO: https://jakearchibald.github.io/svgomg/
