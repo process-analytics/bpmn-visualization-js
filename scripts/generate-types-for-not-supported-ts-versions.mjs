@@ -30,7 +30,8 @@ assert(supportedTSVersions.length === 1, 'Property "typesVersions" should have e
 const notSupportedTSVersionsFilePath = packageJSON.types;
 
 const destinationDirectoryPath = getDirectorOfPath(notSupportedTSVersionsFilePath);
-// we cannot use the 'ensureDirSync' function from 'fs-extra' as this package only provides a CommonJS bundle
+// TODO give a try to the 'ensureDirSync' function from 'fs-extra'
+// fs-extra provides ESM exports as of v11.0.0 (see https://github.com/jprichardson/node-fs-extra/blob/master/CHANGELOG.md#1100--2022-11-28)
 if (!fs.existsSync(destinationDirectoryPath)) {
   fs.mkdirSync(destinationDirectoryPath);
 }
