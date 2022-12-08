@@ -575,9 +575,9 @@ The event definition can be defined on the event or on the definitions.
 .^|Support the `event gateway type` (Exclusive and Parallel) and the `instantiate` status
 
 .^|Complex
-^.^|icon:flask[]
-^.^|
-.^|
+^.^|icon:check-circle-o[]
+^.^|image:images/icons/gateway_complex.svg[Complex icon,30]
+.^|Icon may be subject to change +
 |===
 
 
