@@ -227,10 +227,21 @@ Here are some tips to generate the SVG to be included in the documentation.
 - Take the BPMN diagram used to test the related BPMN element in visual tests
 - Load the diagram in a test page.
 - With your browser DevTools, inspect the element and retrieve the related SVG group
-- ....To continue
-- Edit the file in a SVG Editor (Inkscape for instance)
-- Adjust the dimension of the SVG:
-  - remove blank
-  - dimension: 96x96
-- save
-- eventually clean the SVG with tools like SVGGO: https://jakearchibald.github.io/svgomg/
+- Copy the retrieved SVG code in a file and wrap it in a SVG element as shown below:
+
+```SVG
+  <svg viewBox="0 0 158.485 158.485" width="96" height="96" xmlns="http://www.w3.org/2000/svg">
+      <!-- the retreieved SVG code -->
+  </svg>
+```
+- Open the file in a SVG Editor (Inkscape for instance). 
+- You may need to resize the screen if the SVG icon is placed outside the viowBox as shown below:
+
+![SVG icon placed outside the viewBox in inkscape](images/inkscape-result1.png)
+
+- Re-position and adjust the dimension of the SVG, so that it fits the viewBox as shown below:
+
+![SVG icon fits the viewBox](images/inkscape-result2.png)
+
+- Save
+- Eventually clean the SVG with tools like SVGGO: https://jakearchibald.github.io/svgomg/
