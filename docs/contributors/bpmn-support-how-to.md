@@ -225,7 +225,7 @@ Please update the reference snapshot image accordingly.
 Here are some tips to generate the SVG to be included in the documentation.
 
 - Take the BPMN diagram used to test the related BPMN element in visual tests
-- Load the diagram in a test page.
+- Load the diagram in a test page
 - With your browser DevTools, inspect the element and retrieve the related SVG group
 - Copy the retrieved SVG code in a file and wrap it in a SVG element as shown below:
 
