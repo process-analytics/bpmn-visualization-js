@@ -399,6 +399,21 @@ export class IconPainter {
   }
 
   /**
+   * This icon is used by `complex gateway`.
+   */
+  paintAsteriskIcon(paintParameter: PaintParameter): void {
+    const canvas = this.newBpmnCanvas(paintParameter, { height: 1, width: 1 });
+    drawVerticalLine(paintParameter, canvas);
+    canvas.fillAndStroke();
+    drawVerticalLine(paintParameter, canvas);
+    canvas.rotateOnIconCenter(60);
+    canvas.fillAndStroke();
+    drawVerticalLine(paintParameter, canvas);
+    canvas.rotateOnIconCenter(240);
+    canvas.fillAndStroke();
+  }
+
+  /**
    * This icon is used by `user task`.
    */
   paintPersonIcon(paintParameter: PaintParameter): void {
@@ -908,6 +923,15 @@ export class IconPainter {
     canvas.lineTo(8, 0); // extra line to ensure the path is fully closed (otherwise, there is a glitch on the latest corner)
     canvas.stroke();
   }
+}
+
+function drawVerticalLine(paintParameter: PaintParameter, canvas: BpmnCanvas): void {
+  canvas.begin();
+  canvas.moveTo(0.38, 0);
+  canvas.lineTo(0.62, 0);
+  canvas.lineTo(0.62, 1);
+  canvas.lineTo(0.38, 1);
+  canvas.close();
 }
 
 /**
