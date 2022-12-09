@@ -626,7 +626,6 @@ describe('mxGraph model - BPMN elements', () => {
             eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
             label: 'End Event In Sub-Process',
             parentId: 'expanded_embedded_sub_process_id',
-            verticalAlign: 'bottom',
           });
           expect('sequence_flow_in_sub_process_1_id').toBeSequenceFlow({
             parentId: 'expanded_embedded_sub_process_id',
