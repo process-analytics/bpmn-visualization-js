@@ -141,7 +141,7 @@
     "patch-package": "~6.5.0",
     "pinst": "~3.0.0",
     "playwright": "~1.28.1",
-    "postcss": "~8.4.19",
+    "postcss": "~8.4.20",
     "postcss-cli": "~10.1.0",
     "prettier": "~2.8.0",
     "rimraf": "~3.0.2",
