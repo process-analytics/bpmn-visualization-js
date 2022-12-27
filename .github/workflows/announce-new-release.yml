@@ -1,0 +1,46 @@
+name: Send a message on Twitter & Discord
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'The version to announce'
+        type: string
+        required: true
+      description:
+        description: 'A short description of the version to announce'
+        type: string
+        required: true
+
+jobs:
+  tweet:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Tweet
+        uses: snow-actions/tweet@v1.4.0
+        with:
+          status: |
+            📣 bpmn-visualization ${{ github.event.inputs.version }} is out! 🎉
+
+            ${{ github.event.inputs.description }}
+
+            #bpmnvisualization #bpmn #visualization #typescript #opensource
+            ${{ github.server_url }}/${{ github.repository }}/releases/tag/v${{ github.event.inputs.version }}
+        env:
+          CONSUMER_API_KEY: ${{ secrets.TWITTER_CONSUMER_API_KEY }}
+          CONSUMER_API_SECRET_KEY: ${{ secrets.TWITTER_CONSUMER_API_SECRET_KEY }}
+          ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
+          ACCESS_TOKEN_SECRET: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
+
+  send-message-on-discord:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Send a message on Discord
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          nodetail: true
+          notimestamp: true
+          title: 📣 `bpmn-visualization` ${{ github.event.inputs.version }} is out! 🎉
+          url: ${{ github.server_url }}/${{ github.repository }}/releases/tag/v${{ github.event.inputs.version }}
+          description: ${{ github.event.inputs.description }}
+          color: 0xDBEFFF
