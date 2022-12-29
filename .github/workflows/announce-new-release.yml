@@ -15,7 +15,7 @@ jobs:
   publish_tweet:
     runs-on: ubuntu-22.04
     steps:
-      - name: Tweet
+      - name: Publish a tweet
         uses: snow-actions/tweet@v1.4.0
         with:
           status: |
