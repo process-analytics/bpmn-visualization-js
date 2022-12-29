@@ -1,4 +1,4 @@
-name: Send a message on Twitter & Discord
+name: Publish release news
 on:
   workflow_dispatch:
     inputs:
