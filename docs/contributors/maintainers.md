@@ -7,7 +7,7 @@ of these conditions are met:
 - All Checks are green.
 - It has been approved by at least two maintainers. If it was a maintainer who opened the PR, only one approval is needed.
 - It has no requested changes.
-- It is up to date with the `master` branch.
+- It is up-to-date with the `master` branch.
 
 ## Release process
 
@@ -25,7 +25,7 @@ are automated once the release is triggered but manual actions are required for:
 
 #### Prepare the GitHub Release
 
-- Open [github releases](https://github.com/process-analytics/bpmn-visualization-js/releases)
+- Open [GitHub releases](https://github.com/process-analytics/bpmn-visualization-js/releases)
 - A draft release for the version to be released should already exist:
   - [release-drafter](https://github.com/release-drafter/release-drafter) creates or updates draft release for the
   next version each time a pull request is merged to the `master` branch.
@@ -41,7 +41,7 @@ are automated once the release is triggered but manual actions are required for:
 
 **Note:** This step triggers the release automation process.
 
-- Open [github actions](https://github.com/process-analytics/bpmn-visualization-js/actions/workflows/release.yml)
+- Open [GitHub actions](https://github.com/process-analytics/bpmn-visualization-js/actions/workflows/release.yml)
 - Click on the 'Run workflow' dropdown located on the right side of the page
 - Provide parameter value for New version type (default is patch, but you can choose one of the [new-version | major | minor | patch])
 - Click on the button 'Run workflow'
@@ -77,7 +77,7 @@ ___
 
 ### Continue filling the GitHub Release
 
-- Open [github releases](https://github.com/process-analytics/bpmn-visualization-js/releases)
+- Open [GitHub releases](https://github.com/process-analytics/bpmn-visualization-js/releases)
 - Rename the existing `In Progress` draft release (updated before starting the release) to match the version that has just been tagged
 - Ensure that `This is a pre-release` is unchecked (except if we are releasing alpha, beta, rc, ...)
 - In the release description (check previous releases as a source of inspiration)
@@ -125,7 +125,7 @@ Make the new version available for demo.
 
 - Make the examples use the latest version of the lib. A bash script is available to help you for this task in the `scripts` folder.
 - Tests that the examples work with the new lib version.
-- If temporary version of the lib has been commited (generally in the demo folder) to make examples use it prior availability on npmjs, delete the corresponding file and update the examples.
+- If temporary version of the lib has been committed (generally in the demo folder) to make examples use it prior availability on npmjs, delete the corresponding file and update the examples.
 
 ⚠️⚠️⚠️ _**End of the manual steps**_ ⚠️⚠️⚠️
 ___
@@ -135,7 +135,7 @@ ___
 
 In case of important fixes or features in the new release, you can update the examples running on CodeSandbox and CodePen.
 
-For the detailled list of available examples, please check the [examples home page](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html#miscellaneous).
+For the detailed list of available examples, please check the [examples home page](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html#miscellaneous).
 
 
 #### Mark `bpmn-visualization-examples` as released
