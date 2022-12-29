@@ -12,7 +12,7 @@ on:
         required: true
 
 jobs:
-  tweet:
+  publish_tweet:
     runs-on: ubuntu-22.04
     steps:
       - name: Tweet
@@ -31,10 +31,10 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
           ACCESS_TOKEN_SECRET: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
 
-  send-message-on-discord:
+  publish_discord_post:
     runs-on: ubuntu-22.04
     steps:
-      - name: Send a message on Discord
+      - name: Publish a message on Discord
         uses: sarisia/actions-status-discord@v1
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
