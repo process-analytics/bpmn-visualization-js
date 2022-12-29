@@ -125,7 +125,7 @@ Make the new version available for demo.
 
 - Make the examples use the latest version of the lib. A bash script is available to help you for this task in the `scripts` folder.
 - Tests that the examples work with the new lib version.
-- If temporary version of the lib has been committed (generally in the demo folder) to make examples use it prior availability on npmjs, delete the corresponding file and update the examples.
+- If a temporary version of the lib has been committed (generally in the demo folder) to make examples use it prior availability on npmjs, delete the corresponding file and update the examples.
 
 ⚠️⚠️⚠️ _**End of the manual steps**_ ⚠️⚠️⚠️
 ___
