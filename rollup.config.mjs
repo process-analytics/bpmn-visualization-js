@@ -19,8 +19,8 @@ import assert from 'node:assert';
 // (node:75278) ExperimentalWarning: Importing JSON modules is an experimental feature. This feature could change at any time
 import pkg from './package.json' assert { type: 'json' };
 
+import terser from '@rollup/plugin-terser';
 import autoExternal from 'rollup-plugin-auto-external';
-import { terser } from 'rollup-plugin-terser';
 import sizes from 'rollup-plugin-sizes';
 
 import typescript from 'rollup-plugin-typescript2';
