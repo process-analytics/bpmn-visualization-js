@@ -133,7 +133,7 @@ The `bpmn-visualization` npm package includes type definitions, so the integrati
   * 0.21.0 to 0.27.1: TypeScript 4.5
   * 0.17.1 to 0.20.1: TypeScript 4.3
 
-ℹ️ If you are looking for examples of projects integrating `bpmn-visualization` with TypeScript, see the [bpmn-visualization-examples repository](https://github.com/process-analytics/bpmn-visualization-examples/#bpmn-visualization-usage-in-projects).
+ℹ️ If you are looking for examples of projects integrating `bpmn-visualization` with TypeScript, see the `bpmn-visualization-examples` [repository](https://github.com/process-analytics/bpmn-visualization-examples/#bpmn-visualization-usage-in-projects).
 
 ---
 **NOTE**
@@ -173,8 +173,7 @@ The User documentation (with the feature list & the public API) is available in 
 💡 Want to know more about `bpmn-visualization` usage and extensibility? Have a look at the
 [__⏩ live examples site__](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html).
 
-For more technical details and how-to, go to the [bpmn-visualization-examples](https://github.com/process-analytics/bpmn-visualization-examples/)
-repository.
+For more technical details and how-to, go to the `bpmn-visualization-examples` [repository](https://github.com/process-analytics/bpmn-visualization-examples/).
 
 
 ## 🔧 Contributing

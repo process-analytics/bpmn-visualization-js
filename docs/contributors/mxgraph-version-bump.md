@@ -12,13 +12,13 @@
 
 ### Manual tests
 
-In addition to e2e tests, it is safer to perform manual testing using BPMN diagrams from `bpmn-visualization-examples` or `miwg-test-suite`.
+In addition to e2e tests, it is safer to perform manual testing using BPMN diagrams from the `bpmn-visualization-examples` repository or `miwg-test-suite`.
 
-`bpmn-visualization-examples` provides usage examples that can be used for such tests
+The `bpmn-visualization-examples` repository provides usage examples that can be used for such tests:
   - diagram load and navigation
   - custom behavior and css styling
 
-In the `bpmn-visualization` repository, test pages are also available (some are not used by e2e tests).
+In the repository of `bpmn-visualization`, test pages are also available (some are not used by e2e tests).
 
 
 ## Resources
