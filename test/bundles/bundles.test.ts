@@ -26,7 +26,7 @@ describe('bundles', () => {
       {
         targetedPage: {
           pageFileName: 'lib-integration-iife',
-          expectedPageTitle: 'BPMN Visualization IIFE bundle',
+          expectedPageTitle: 'bpmn-visualization IIFE bundle',
         },
         bpmnContainerId: 'bpmn-container-for-iife-bundle',
       },

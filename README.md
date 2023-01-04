@@ -1,6 +1,6 @@
-<h1 align="center">BPMN Visualization</h1>
+<h1 align="center">bpmn-visualization TypeScript library</h1>
 <div align="center">
-    <p align="center"> <img title="BPMN Visualization" src="docs/users/images/custom-behavior-path-highlighting.gif" alt="BPMN Visualization example"></p>
+    <p align="center"><img title="bpmn-visualization" src="docs/users/images/custom-behavior-path-highlighting.gif" alt="Examples of the bpmn-visualization TypeScript library"></p>
     <p align="center"> 
         <a href="https://npmjs.org/package/bpmn-visualization">
           <img alt="npm package" src="https://img.shields.io/npm/v/bpmn-visualization.svg?color=orange"> 
