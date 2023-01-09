@@ -57,27 +57,27 @@ class BpmnPage {
 export class AvailableTestPages {
   static readonly BPMN_RENDERING: AvailableTestPage = {
     pageFileName: 'bpmn-rendering',
-    expectedPageTitle: 'BPMN Visualization - BPMN rendering',
+    expectedPageTitle: 'bpmn-visualization - BPMN rendering',
   };
 
   static readonly DIAGRAM_NAVIGATION: AvailableTestPage = {
     pageFileName: 'diagram-navigation',
-    expectedPageTitle: 'BPMN Visualization - Diagram Navigation',
+    expectedPageTitle: 'bpmn-visualization - Diagram Navigation',
   };
 
   static readonly INDEX: AvailableTestPage = {
     pageFileName: 'index',
-    expectedPageTitle: 'BPMN Visualization Demo',
+    expectedPageTitle: 'bpmn-visualization - Demo',
   };
 
   static readonly LIB_INTEGRATION: AvailableTestPage = {
     pageFileName: 'lib-integration',
-    expectedPageTitle: 'BPMN Visualization Lib Integration',
+    expectedPageTitle: 'bpmn-visualization - Library Integration',
   };
 
   static readonly OVERLAYS: AvailableTestPage = {
     pageFileName: 'overlays',
-    expectedPageTitle: 'BPMN Visualization - Overlays',
+    expectedPageTitle: 'bpmn-visualization - Overlays',
   };
 }
 

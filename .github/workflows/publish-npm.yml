@@ -27,7 +27,7 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": ":mega: BPMN Visualization Release ${{github.ref_name}}",
+                    "text": ":mega: bpmn-visualization Release ${{github.ref_name}}",
                     "emoji": true
                   }
                 },
@@ -55,7 +55,7 @@ jobs:
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-      - name: Notify bpmn-visualization-R repository of new BPMN visualization version
+      - name: Notify bpmn-visualization-R repository of new bpmn-visualization version
         uses: ./.github/actions/notify-PA-repo-of-new-version
         with:
           PA_REPOSITORY: 'bpmn-visualization-R'

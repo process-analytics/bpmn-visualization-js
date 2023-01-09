@@ -92,16 +92,16 @@ the release notes.
 
 ### bpmn-visualization-examples repository update
 
-A Pull Request is created automatically (at git tag creation in the `bpmn-visualization` repository) with the following changes:
+A Pull Request is created automatically (at git tag creation in the repository of `bpmn-visualization`) with the following changes:
 - The old demo is replaced by the new.
-- The BPMN Visualization version, in the examples, is replaced by the new version of the library.
+- The `bpmn-visualization` version, in the examples, is replaced by the new version of the library.
 
 See the [Release Overview](#overview) for the big picture.
 
 If, for some reasons, the Pull Request is not created, 
-- first check that the [Update BPMN Visualization version](https://github.com/process-analytics/bpmn-visualization-examples/actions/workflows/update_bpmn_visualization_version.yml) action
-has run, and if it failed, re-run the jobs
-- otherwise, you can execute manually the [Update BPMN Visualization version](https://github.com/process-analytics/bpmn-visualization-examples/actions/workflows/update_bpmn_visualization_version.yml) job.
+- first check that the [Update `bpmn-visualization` version](https://github.com/process-analytics/bpmn-visualization-examples/actions/workflows/update_bpmn_visualization_version.yml) action
+has run, and if it failed, re-run the jobs,
+- otherwise, you can execute manually the [Update `bpmn-visualization` version](https://github.com/process-analytics/bpmn-visualization-examples/actions/workflows/update_bpmn_visualization_version.yml) job.
 
 If it is still not created, you can follow the manual procedure described below.
 
@@ -138,7 +138,7 @@ In case of important fixes or features in the new release, you can update the ex
 For the detailed list of available examples, please check the [examples home page](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html#miscellaneous).
 
 
-#### Mark `bpmn-visualization-examples` as released
+#### Mark the `bpmn-visualization-examples` repository as released
 When all updates have been completed, merge the Pull Request created above.
 
 Create a new GitHub release by following the [GitHub help](https://help.github.com/en/github/administering-a-repository/managing-releases-in-a-repository#creating-a-release)
@@ -160,9 +160,9 @@ You should have something like in release [v0.21.2](https://github.com/process-a
 ___
 ⚠️⚠️⚠️ _**Only if the [notification](https://github.com/process-analytics/bpmn-visualization-js/actions/runs/2191000065) does NOT work!**_  ⚠️⚠️⚠️
 
-##### Notify [BPMN Visualization - R package](https://github.com/process-analytics/bpmn-visualization-R) repository of the new release
+##### Notify [`bpmnVisualizationR` package](https://github.com/process-analytics/bpmn-visualization-R) repository of the new release
 
-Follow the documentation of the [BPMN Visualization - R package](https://github.com/process-analytics/bpmn-visualization-R/blob/main/CONTRIBUTING.md#bpmn-visualization-js-update) to update the BPMN Visualization dependency with the new release.
+Follow the documentation of the [`bpmnVisualizationR` package](https://github.com/process-analytics/bpmn-visualization-R/blob/main/CONTRIBUTING.md#bpmn-visualization-js-update) to update the `bpmn-visualization` dependency with the new release.
 
 ⚠️⚠️⚠️ _**End of the manual steps**_ ⚠️⚠️⚠️
 ___
