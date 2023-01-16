@@ -143,7 +143,7 @@
     "postcss": "~8.4.21",
     "postcss-cli": "~10.1.0",
     "prettier": "~2.8.2",
-    "rimraf": "~3.0.2",
+    "rimraf": "~4.0.7",
     "rollup": "~3.9.1",
     "rollup-plugin-auto-external": "~2.0.0",
     "rollup-plugin-node-externals": "~5.1.0",
