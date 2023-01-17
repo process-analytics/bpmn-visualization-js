@@ -20,6 +20,8 @@ import type { BpmnGraph } from '../BpmnGraph';
 import { mxgraph } from '../initializer';
 import type { mxStylesheet, StyleMap } from 'mxgraph';
 
+const arrowDefaultSize = 12;
+
 /**
  * Configure the styles used for BPMN rendering.
  *
@@ -55,9 +57,8 @@ export class StyleConfigurator {
       (style: StyleMap) => {
         style[mxgraph.mxConstants.STYLE_DASHED] = true;
         style[mxgraph.mxConstants.STYLE_DASH_PATTERN] = '1 2';
-        style[mxgraph.mxConstants.STYLE_ENDARROW] = mxgraph.mxConstants.ARROW_OPEN_THIN;
-        style[mxgraph.mxConstants.STYLE_STARTARROW] = mxgraph.mxConstants.ARROW_OPEN_THIN;
-        style[mxgraph.mxConstants.STYLE_STARTSIZE] = 12;
+        // STYLE_ENDARROW and STYLE_STARTARROW are defined in specific AssociationDirectionKind styles when needed
+        style[mxgraph.mxConstants.STYLE_STARTSIZE] = arrowDefaultSize;
       },
     ],
   ]);
@@ -81,22 +82,22 @@ export class StyleConfigurator {
   private specificAssociationFlowStyles = new MapWithDefault<AssociationDirectionKind>([
     [
       AssociationDirectionKind.NONE,
-      (style: StyleMap) => {
-        style[mxgraph.mxConstants.STYLE_STARTARROW] = undefined;
-        style[mxgraph.mxConstants.STYLE_ENDARROW] = undefined;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars -- prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
+      (_style: StyleMap) => {
+        // the style is fully managed by the FlowKind.ASSOCIATION_FLOW style
       },
     ],
     [
       AssociationDirectionKind.ONE,
       (style: StyleMap) => {
-        style[mxgraph.mxConstants.STYLE_STARTARROW] = undefined;
+        style[mxgraph.mxConstants.STYLE_ENDARROW] = mxgraph.mxConstants.ARROW_OPEN_THIN;
       },
     ],
     [
       AssociationDirectionKind.BOTH,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars -- prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
-      (_style: StyleMap) => {
-        // the style is fully managed by the FlowKind.ASSOCIATION_FLOW style
+      (style: StyleMap) => {
+        style[mxgraph.mxConstants.STYLE_STARTARROW] = mxgraph.mxConstants.ARROW_OPEN_THIN;
+        style[mxgraph.mxConstants.STYLE_ENDARROW] = mxgraph.mxConstants.ARROW_OPEN_THIN;
       },
     ],
   ]);
@@ -228,12 +229,13 @@ export class StyleConfigurator {
   private configureDefaultEdgeStyle(): void {
     const style = this.getStylesheet().getDefaultEdgeStyle();
     style[mxgraph.mxConstants.STYLE_SHAPE] = BpmnStyleIdentifier.EDGE;
-    style[mxgraph.mxConstants.STYLE_ENDSIZE] = 12;
+    style[mxgraph.mxConstants.STYLE_ENDSIZE] = arrowDefaultSize;
     style[mxgraph.mxConstants.STYLE_STROKEWIDTH] = 1.5;
     style[mxgraph.mxConstants.STYLE_ROUNDED] = 1;
     style[mxgraph.mxConstants.STYLE_ARCSIZE] = 5;
     style[mxgraph.mxConstants.STYLE_VERTICAL_ALIGN] = mxgraph.mxConstants.ALIGN_BOTTOM;
 
+    // The end arrow must be redefined in specific style
     delete style[mxgraph.mxConstants.STYLE_ENDARROW];
 
     StyleConfigurator.configureCommonDefaultStyle(style);
