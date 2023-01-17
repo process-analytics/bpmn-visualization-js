@@ -129,7 +129,11 @@ export class StyleConfigurator {
   }
 
   private configureDefaultVertexStyle(): void {
-    StyleConfigurator.configureCommonDefaultStyle(this.getStylesheet().getDefaultVertexStyle());
+    const style = this.getStylesheet().getDefaultVertexStyle();
+    configureCommonDefaultStyle(style);
+
+    style[mxgraph.mxConstants.STYLE_ABSOLUTE_ARCSIZE] = true;
+    style[mxgraph.mxConstants.STYLE_ARCSIZE] = StyleDefault.SHAPE_ARC_SIZE;
   }
 
   private configurePoolStyle(): void {
@@ -184,8 +188,6 @@ export class StyleConfigurator {
   private configureGroupStyle(): void {
     const style: StyleMap = {};
     style[mxgraph.mxConstants.STYLE_ROUNDED] = true;
-    style[mxgraph.mxConstants.STYLE_ABSOLUTE_ARCSIZE] = true;
-    style[mxgraph.mxConstants.STYLE_ARCSIZE] = StyleDefault.SHAPE_ARC_SIZE;
     style[mxgraph.mxConstants.STYLE_DASHED] = true;
     style[mxgraph.mxConstants.STYLE_DASH_PATTERN] = '7 4 1 4';
     style[mxgraph.mxConstants.STYLE_STROKEWIDTH] = StyleDefault.STROKE_WIDTH_THIN;
@@ -202,8 +204,6 @@ export class StyleConfigurator {
       const style: StyleMap = {};
       style[mxgraph.mxConstants.STYLE_SHAPE] = kind;
       style[mxgraph.mxConstants.STYLE_VERTICAL_ALIGN] = mxgraph.mxConstants.ALIGN_MIDDLE;
-      style[mxgraph.mxConstants.STYLE_ABSOLUTE_ARCSIZE] = true;
-      style[mxgraph.mxConstants.STYLE_ARCSIZE] = StyleDefault.SHAPE_ARC_SIZE;
       style[mxgraph.mxConstants.STYLE_STROKEWIDTH] = kind == ShapeBpmnElementKind.CALL_ACTIVITY ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN;
       this.putCellStyle(kind, style);
     });
@@ -227,28 +227,16 @@ export class StyleConfigurator {
 
   private configureDefaultEdgeStyle(): void {
     const style = this.getStylesheet().getDefaultEdgeStyle();
+    configureCommonDefaultStyle(style);
+
     style[mxgraph.mxConstants.STYLE_SHAPE] = BpmnStyleIdentifier.EDGE;
     style[mxgraph.mxConstants.STYLE_ENDSIZE] = 12;
     style[mxgraph.mxConstants.STYLE_STROKEWIDTH] = 1.5;
-    style[mxgraph.mxConstants.STYLE_ROUNDED] = 1;
+    style[mxgraph.mxConstants.STYLE_ROUNDED] = true;
     style[mxgraph.mxConstants.STYLE_ARCSIZE] = 5;
     style[mxgraph.mxConstants.STYLE_VERTICAL_ALIGN] = mxgraph.mxConstants.ALIGN_BOTTOM;
 
     delete style[mxgraph.mxConstants.STYLE_ENDARROW];
-
-    StyleConfigurator.configureCommonDefaultStyle(style);
-  }
-
-  private static configureCommonDefaultStyle(style: StyleMap): void {
-    style[mxgraph.mxConstants.STYLE_FONTFAMILY] = StyleDefault.DEFAULT_FONT_FAMILY;
-    style[mxgraph.mxConstants.STYLE_FONTSIZE] = StyleDefault.DEFAULT_FONT_SIZE;
-    style[mxgraph.mxConstants.STYLE_FONTCOLOR] = StyleDefault.DEFAULT_FONT_COLOR;
-    style[mxgraph.mxConstants.STYLE_FILLCOLOR] = StyleDefault.DEFAULT_FILL_COLOR;
-    style[mxgraph.mxConstants.STYLE_STROKECOLOR] = StyleDefault.DEFAULT_STROKE_COLOR;
-    style[mxgraph.mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = mxgraph.mxConstants.NONE;
-
-    // only works with html labels (enabled by GraphConfigurator)
-    style[mxgraph.mxConstants.STYLE_WHITE_SPACE] = 'wrap';
   }
 
   private configureEdgeStyles<T>(styleKinds: T[], specificStyles: Map<T, (style: StyleMap) => void>): void {
@@ -264,6 +252,18 @@ export class StyleConfigurator {
     this.configureEdgeStyles<SequenceFlowKind>(Object.values(SequenceFlowKind), this.specificSequenceFlowStyles);
     this.configureEdgeStyles<AssociationDirectionKind>(Object.values(AssociationDirectionKind), this.specificAssociationFlowStyles);
   }
+}
+
+function configureCommonDefaultStyle(style: StyleMap): void {
+  style[mxgraph.mxConstants.STYLE_FONTFAMILY] = StyleDefault.DEFAULT_FONT_FAMILY;
+  style[mxgraph.mxConstants.STYLE_FONTSIZE] = StyleDefault.DEFAULT_FONT_SIZE;
+  style[mxgraph.mxConstants.STYLE_FONTCOLOR] = StyleDefault.DEFAULT_FONT_COLOR;
+  style[mxgraph.mxConstants.STYLE_FILLCOLOR] = StyleDefault.DEFAULT_FILL_COLOR;
+  style[mxgraph.mxConstants.STYLE_STROKECOLOR] = StyleDefault.DEFAULT_STROKE_COLOR;
+  style[mxgraph.mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = mxgraph.mxConstants.NONE;
+
+  // only works with html labels (enabled by GraphConfigurator)
+  style[mxgraph.mxConstants.STYLE_WHITE_SPACE] = 'wrap';
 }
 
 class MapWithDefault<T> extends Map<T, (style: StyleMap) => void> {
