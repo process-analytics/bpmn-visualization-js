@@ -34,6 +34,9 @@ on:
       - 'tsconfig.json'
       - 'vite.config.js'
 
+env:
+  OS: [${{ vars.RUNNER_MACOS }}, ${{ vars.RUNNER_UBUNTU }}, ${{ vars.RUNNER_WINDOWS }}]
+
 jobs:
   test_e2e:
     runs-on: ${{ matrix.os }}
@@ -41,7 +44,7 @@ jobs:
       # we want to run the full build on all os: don't cancel running jobs even if one fails
       fail-fast: false
       matrix:
-        os: ${{ fromJson([${{ vars.RUNNER_MACOS }}, ${{ vars.RUNNER_UBUNTU }}, ${{ vars.RUNNER_WINDOWS }}]) }}
+        os: $OS
         browser: [chromium, firefox, chrome]
         include:
           # only test WebKit on macOS
