@@ -22,7 +22,7 @@ jobs:
       # we want to run the full build on all os: don't cancel running jobs even if one fails
       fail-fast: false
       matrix:
-        # disable windows-2019 in a first implementation as it always fails. Require more investigations.
+        # disable ${{ vars.RUNNER_WINDOWS }} in a first implementation as it always fails. Require more investigations.
         # node:internal/process/promises:279
         #            triggerUncaughtException(err, true /* fromPromise */);
         #            ^

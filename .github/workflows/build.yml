@@ -45,7 +45,7 @@ jobs:
         os:
           - { name: ${{ vars.RUNNER_UBUNTU }}, coverage: '-- --coverage' }
           - { name: macos-12 }
-          - { name: windows-2019 }
+          - { name: ${{ vars.RUNNER_WINDOWS }} }
     permissions:
       # SonarCloud: checks and pull-requests
       checks: write
