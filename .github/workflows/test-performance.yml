@@ -27,7 +27,7 @@ jobs:
         #            triggerUncaughtException(err, true /* fromPromise */);
         #            ^
         # cdpSession.detach: Browser closed.
-        os: [macos-12, ${{ vars.RUNNER_UBUNTU }}]
+        os: [${{ vars.RUNNER_MACOS }}, ${{ vars.RUNNER_UBUNTU }}]
     env:
       # Performance tests rely on chromium API
       browser: chromium

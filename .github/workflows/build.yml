@@ -44,7 +44,7 @@ jobs:
         # syntax inspired from https://github.community/t5/GitHub-Actions/Using-a-matrix-defined-input-for-a-custom-action/m-p/32032/highlight/true#M988
         os:
           - { name: ${{ vars.RUNNER_UBUNTU }}, coverage: '-- --coverage' }
-          - { name: macos-12 }
+          - { name: ${{ vars.RUNNER_MACOS }} }
           - { name: ${{ vars.RUNNER_WINDOWS }} }
     permissions:
       # SonarCloud: checks and pull-requests
