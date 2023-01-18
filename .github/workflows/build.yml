@@ -44,7 +44,7 @@ jobs:
         # syntax inspired from https://github.community/t5/GitHub-Actions/Using-a-matrix-defined-input-for-a-custom-action/m-p/32032/highlight/true#M988
         os:
           # - { name: ${{ fromJSON(format('{0}', vars.RUNNER_UBUNTU)) }}, coverage: '-- --coverage' }
-          - { name: ${{ fromJSON('{ "plop": "macos-12" }').plop }} }
+          - { name: ${{ toJSON('{ "plop": "macos-12" }') }}.plop }
           # - { name: ${{ fromJSON(format('{0}', vars.RUNNER_MACOS)) }} }
           # - { name: ${{ fromJSON(format('{0}', vars.RUNNER_WINDOWS)) }} }
     permissions:
