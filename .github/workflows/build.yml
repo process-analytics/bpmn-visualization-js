@@ -43,7 +43,7 @@ jobs:
       matrix:
         # syntax inspired from https://github.community/t5/GitHub-Actions/Using-a-matrix-defined-input-for-a-custom-action/m-p/32032/highlight/true#M988
         # os: ${{ fromJSON('[{"name":"ubuntu-22.04", "coverage":"-- --coverage"}, {"name":"macos-12"}, {"name":"windows-2019"}]') }}
-        os: ${{ fromJSON(format('[{"name":"{0}", "coverage":"-- --coverage"}, {"name":"{1}"}, {"name":"{2}"}]', vars.RUNNER_UBUNTU, vars.RUNNER_MACOS, vars.RUNNER_WINDOWS)) }}
+        os: ${{ fromJSON(format('[{{"name":"{0}", "coverage":"-- --coverage"}}, {{"name":"{1}"}}, {{"name":"{2}"}}]', vars.RUNNER_UBUNTU, vars.RUNNER_MACOS, vars.RUNNER_WINDOWS)) }}
     permissions:
       # SonarCloud: checks and pull-requests
       checks: write
