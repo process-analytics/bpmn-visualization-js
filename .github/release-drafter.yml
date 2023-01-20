@@ -50,7 +50,7 @@ exclude-labels:
 exclude-contributors:
   - 'dependabot'
   - 'dependabot[bot]'
-  - ${{ vars.PA_BOT_EMAIL }}
+  - 'process-analytics-bot'
 template: |
   **TODO: add a short description about the release content - important for url preview**
   This new release focuses on .... **or something similar**
