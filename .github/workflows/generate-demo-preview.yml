@@ -24,7 +24,7 @@ on:
 
 jobs:
   demo_preview: # keep unique across jobs using surge preview (preview url and PR comment id)
-    runs-on: ${{ vars.RUNNER_UBUNTU }}
+    runs-on: ubuntu-20.04
     permissions:
       pull-requests: write # surge-preview: PR comments
     steps:

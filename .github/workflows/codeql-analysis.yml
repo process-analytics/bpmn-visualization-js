@@ -26,7 +26,7 @@ on:
 jobs:
   analyze:
     name: Analyze
-    runs-on: ${{ vars.RUNNER_UBUNTU }}
+    runs-on: ubuntu-20.04
     permissions:
       # required for all workflows by github/codeql-action
       security-events: write

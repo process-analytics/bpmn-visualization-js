@@ -41,15 +41,14 @@ jobs:
       # we want to run the full build on all os: don't cancel running jobs even if one fails
       fail-fast: false
       matrix:
-        # os: ${{ fromJSON('["macos-12", "ubuntu-22.04", "windows-2019"]') }}
-        os: ${{ fromJSON(format('["{0}", "{1}", "{2}"]', vars.RUNNER_MACOS, vars.RUNNER_UBUNTU, vars.RUNNER_WINDOWS)) }}
+        os: [macos-12, ubuntu-20.04, windows-2019]
         browser: [chromium, firefox, chrome]
         include:
           # only test WebKit on macOS
-          - os: ${{ vars.RUNNER_MACOS }}
+          - os: macos-12
             browser: webkit
           # only test Edge on Windows
-          - os: ${{ vars.RUNNER_WINDOWS }}
+          - os: windows-2019
             browser: msedge
     steps:
       - name: Checkout

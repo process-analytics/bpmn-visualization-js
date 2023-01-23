@@ -34,7 +34,7 @@ on:
 
 jobs:
   build_and_test_npm_package:
-    runs-on: ${{ vars.RUNNER_UBUNTU }}
+    runs-on: ubuntu-20.04
     env:
       test-bundles-browser: chromium
     steps:
