@@ -32,8 +32,8 @@ jobs:
           install-dependencies: false
       - name: Config git
         run: |
-          git config --local user.email "62586190+process-analytics-bot@users.noreply.github.com"
-          git config --local user.name "process-analytics-bot"
+          git config --local user.email "${{ vars.PA_BOT_EMAIL }}"
+          git config --local user.name "${{ vars.PA_BOT_NAME }}"
           git config pull.rebase true
       - name: Checkout master
         run: git checkout master && git pull --tags
