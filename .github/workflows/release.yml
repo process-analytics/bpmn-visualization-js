@@ -9,7 +9,7 @@ on:
         default: 'patch'
 jobs:
   bumpVersion:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - run: |
           echo "New version type: ${{ github.event.inputs.type }}"

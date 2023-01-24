@@ -35,7 +35,7 @@ on:
 jobs:
   doc_preview: # keep unique across jobs using surge preview (preview url and PR comment id)
     if: github.event_name == 'pull_request'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     permissions:
       pull-requests: write # surge-preview: PR comments
     steps:
@@ -51,7 +51,7 @@ jobs:
 
   generate_doc:
     if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&  github.event.ref == 'refs/heads/master'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
       - name: Build Setup
@@ -66,7 +66,7 @@ jobs:
 
   push_to_gh_pages:
     if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&  github.event.ref == 'refs/heads/master'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: generate_doc
     permissions:
       contents: write # Push to gh-pages
