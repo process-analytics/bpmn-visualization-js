@@ -1,4 +1,4 @@
-name: Upload npm package
+name: Test npm package
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     paths:
       - '.github/actions/build-setup/**/*'
       - '.github/actions/install-playwright-browser/**/*'
-      - '.github/workflows/upload-npm-package.yml'
+      - '.github/workflows/test-npm-package.yml'
       - 'scripts/**/*'
       - 'src/**/*'
       - 'test/typescript-support/**/*'
@@ -22,7 +22,7 @@ on:
     paths:
       - '.github/actions/build-setup/**/*'
       - '.github/actions/install-playwright-browser/**/*'
-      - '.github/workflows/upload-npm-package.yml'
+      - '.github/workflows/test-npm-package.yml'
       - 'scripts/**/*'
       - 'src/**/*'
       - 'test/typescript-support/**/*'
