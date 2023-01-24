@@ -8,7 +8,7 @@ on:
 
 jobs:
   update_release_draft:
-    runs-on: ${{ vars.RUNNER_UBUNTU }}
+    runs-on: ubuntu-20.04
     permissions:
       # To create or update releases
       contents: write
