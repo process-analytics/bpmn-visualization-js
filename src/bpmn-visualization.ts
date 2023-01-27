@@ -17,7 +17,7 @@
 // Use mxgraph types
 /// <reference types="@typed-mxgraph/typed-mxgraph" />
 
-// export types first, otherwise typedoc doesn't generate the subsequent doc correctly (no category and uses the file header instead of the actual TSDoc)
+// Public API
 export * from './component/options';
 export { BpmnVisualization } from './component/BpmnVisualization';
 export * from './component/registry';
@@ -30,3 +30,6 @@ export { IconPainter } from './component/mxgraph/shape/render/icon-painter';
 export { StyleConfigurator } from './component/mxgraph/config/StyleConfigurator';
 export * from './component/mxgraph/style';
 export * from './component/mxgraph/shape/render';
+
+// the mxGraph context
+export { mxgraph } from './component/mxgraph/initializer';

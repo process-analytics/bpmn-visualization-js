@@ -15,6 +15,21 @@
  */
 import factory, { type mxGraphExportObject } from 'mxgraph';
 
+/**
+ * The `mxgraph` context that allows access to the mxGraph objects.
+ *
+ * **WARNING**: this is for advanced users.
+ *
+ * Here are some examples where calling the mxGraph API directly can be useful:
+ * ```javascript
+ * // Get the mxGraph version
+ * const mxGraphVersion = mxgraph.mxClient.VERSION;
+ * // Call mxUtils in custom BPMN Shapes
+ * c.setFillColor(mxgraph.mxUtils.getValue(this.style, BpmnStyleIdentifier.EDGE_START_FILL_COLOR, this.stroke));
+ * ```
+ *
+ * @since 0.30.0
+ */
 export const mxgraph = initialize();
 
 /** @internal */
