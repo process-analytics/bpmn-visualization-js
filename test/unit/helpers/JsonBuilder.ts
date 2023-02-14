@@ -45,7 +45,7 @@ export enum EventDefinitionOn {
  * If the id field is set, the default id is override.
  * Otherwise, the id has the format: `event_id_${processIndex}_${index}`
  */
-interface BuildEventParameter extends TFlowElement {
+interface BuildEventParameter extends TFlowNode {
   eventDefinitionParameter: BuildEventDefinitionParameter;
 }
 
@@ -91,7 +91,7 @@ export interface BuildTaskParameter extends TFlowElement {
  * If the id field is set, the default id is override.
  * Otherwise, the id has the format: `callActivity_id_${processIndex}_${index}`
  */
-export interface BuildCallActivityParameter extends TFlowElement {
+export interface BuildCallActivityParameter extends TFlowNode {
   calledElement: string;
 
   /** @default false */
@@ -472,6 +472,8 @@ function buildEvent({
   processIndex,
   isInterrupting,
   attachedToRef,
+  incoming,
+  outgoing,
 }: {
   id: string;
   name: string;
@@ -479,10 +481,14 @@ function buildEvent({
   processIndex: number;
   isInterrupting?: boolean;
   attachedToRef?: string;
+  incoming?: string | string[];
+  outgoing?: string | string[];
 }): BPMNTEvent {
   const event: BPMNTEvent = {
     id: id ? id : `event_id_${processIndex}_${index}`,
     name: name,
+    incoming,
+    outgoing,
   };
 
   if (isInterrupting !== undefined) {

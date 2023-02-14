@@ -34,6 +34,8 @@ describe('parse bpmn as json for callActivity', () => {
         name: `call activity name`,
         calledElement: 'process_1',
         isExpanded: isExpanded,
+        incoming: 'flow_in',
+        outgoing: ['flow_out_1', 'flow_out_2'],
       };
       it.each([
         ['object', callActivityJson],
@@ -61,6 +63,8 @@ describe('parse bpmn as json for callActivity', () => {
             bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
             bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
             bpmnElementMarkers: expectedBpmnElementMarkers,
+            bpmnElementIncomingIds: ['flow_in'],
+            bpmnElementOutgoingIds: ['flow_out_1', 'flow_out_2'],
             bounds: { x: 346, y: 856, width: 45, height: 56 },
           });
         },
@@ -488,6 +492,8 @@ describe('parse bpmn as json for callActivity', () => {
                 id: `call_activity_id_0`,
                 name: `call activity name`,
                 calledElement: 'task_id',
+                incoming: 'flow_in',
+                outgoing: 'flow_out',
               },
             },
             BPMNDiagram: {
@@ -516,6 +522,8 @@ describe('parse bpmn as json for callActivity', () => {
           bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
           bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK,
           bpmnElementGlobalTaskKind: globalTaskKind as GlobalTaskKind,
+          bpmnElementIncomingIds: ['flow_in'],
+          bpmnElementOutgoingIds: ['flow_out'],
           bounds: {
             x: 362,
             y: 232,

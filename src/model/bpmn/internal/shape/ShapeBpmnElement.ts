@@ -21,6 +21,9 @@ import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind } from './kinds';
  * @internal
  */
 export default class ShapeBpmnElement {
+  incomingIds?: string[] = [];
+  outgoingIds?: string[] = [];
+
   constructor(readonly id: string, readonly name: string, readonly kind: ShapeBpmnElementKind, public parentId?: string, readonly instantiate: boolean = false) {}
 }
 

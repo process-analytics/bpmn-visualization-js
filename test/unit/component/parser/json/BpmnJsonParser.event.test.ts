@@ -196,11 +196,15 @@ describe('parse bpmn as json for all events', () => {
                 {
                   bpmnKind: expectedShapeBpmnElementKind as OtherBuildEventKind | 'startEvent',
                   eventDefinitionParameter: { eventDefinitionKind, eventDefinitionOn, eventDefinition },
+                  incoming: 'flow_in',
+                  outgoing: 'flow_out',
                 },
                 {
                   parentId: undefined,
                   bpmnElementKind: expectedShapeBpmnElementKind,
                   bpmnElementName: undefined,
+                  bpmnElementIncomingIds: ['flow_in'],
+                  bpmnElementOutgoingIds: ['flow_out'],
                   eventDefinitionKind: expectedEventDefinitionKind,
                 },
               );
@@ -330,6 +334,9 @@ describe('parse bpmn as json for all events', () => {
               eventDefinitionParameter: { eventDefinitionKind, eventDefinitionOn },
               isInterrupting,
               attachedToRef: 'task_id_0_0',
+              // in practice, the BPMN semantic only defines incoming or outgoing. Tests both at the same time to simplify the tests
+              incoming: ['flow_in'],
+              outgoing: ['flow_out'],
             },
             {
               parentId: 'task_id_0_0',
@@ -337,6 +344,8 @@ describe('parse bpmn as json for all events', () => {
               bpmnElementName: undefined,
               eventDefinitionKind: expectedEventDefinitionKind,
               isInterrupting,
+              bpmnElementIncomingIds: ['flow_in'],
+              bpmnElementOutgoingIds: ['flow_out'],
             },
             `, 'boundaryEvent' is ${isInterruptingTitle} & attached to an 'activity', (${titleForEventDefinitionIsAttributeOf})`,
           );
