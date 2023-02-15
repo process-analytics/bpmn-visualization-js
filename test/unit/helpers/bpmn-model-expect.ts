@@ -26,6 +26,8 @@ export interface ExpectedShape {
   bpmnElementId: string;
   bpmnElementName: string;
   bpmnElementKind: ShapeBpmnElementKind;
+  bpmnElementIncomingIds?: string[];
+  bpmnElementOutgoingIds?: string[];
   parentId?: string;
   bounds?: ExpectedBounds;
   isHorizontal?: boolean;
@@ -90,6 +92,8 @@ export const verifyShape = (
   expect(bpmnElement.name).toEqual(expectedShape.bpmnElementName);
   expect(bpmnElement.kind).toEqual(expectedShape.bpmnElementKind);
   expect(bpmnElement.parentId).toEqual(expectedShape.parentId);
+  expect(bpmnElement.incomingIds).toEqual(expectedShape.bpmnElementIncomingIds ?? []);
+  expect(bpmnElement.outgoingIds).toEqual(expectedShape.bpmnElementOutgoingIds ?? []);
 
   if ('bpmnElementMarkers' in expectedShape) {
     expect(bpmnElement instanceof ShapeBpmnActivity).toBeTruthy();
