@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
+import type { EdgeBpmnSemantic } from '../../../../src/component/registry';
 import { BpmnModelRegistry } from '../../../../src/component/registry/bpmn-model-registry';
-import { expectLane, expectPool, expectSequenceFlow, expectStartEvent } from '../../helpers/bpmn-semantic-utils';
-import { laneInModel, poolInModel, sequenceFlowInModel, startEventInModel } from '../../helpers/bpmn-model-utils';
+import { expectAssociationFlow, expectLane, expectMessageFlow, expectPool, expectSequenceFlow, expectStartEvent } from '../../helpers/bpmn-semantic-utils';
+import { associationFlowInModel, laneInModel, messageFlowInModel, poolInModel, sequenceFlowInModel, startEventInModel } from '../../helpers/bpmn-model-utils';
 
 const bpmnModelRegistry = new BpmnModelRegistry();
 
@@ -29,13 +30,23 @@ describe('Bpmn Model registry', () => {
     expect(callback).toHaveBeenCalledTimes(1);
   });
 
-  it('search edge', () => {
-    bpmnModelRegistry.load(sequenceFlowInModel('seq flow id', 'seq flow name'));
-    const bpmnSemantic = bpmnModelRegistry.getBpmnSemantic('seq flow id');
-    expectSequenceFlow(bpmnSemantic, { id: 'seq flow id', name: 'seq flow name' });
+  it('search sequence flow', () => {
+    bpmnModelRegistry.load(sequenceFlowInModel('seq_flow_id', 'seq flow name', 'sourceRefId', 'targetRefId'));
+    const bpmnSemantic = <EdgeBpmnSemantic>bpmnModelRegistry.getBpmnSemantic('seq_flow_id');
+    expectSequenceFlow(bpmnSemantic, { id: 'seq_flow_id', name: 'seq flow name', source: 'sourceRefId', target: 'targetRefId' });
+  });
+  it('search message flow', () => {
+    bpmnModelRegistry.load(messageFlowInModel('msg_flow_id', 'msg flow name', 'sourceRefId', 'targetRefId'));
+    const bpmnSemantic = <EdgeBpmnSemantic>bpmnModelRegistry.getBpmnSemantic('msg_flow_id');
+    expectMessageFlow(bpmnSemantic, { id: 'msg_flow_id', name: 'msg flow name', source: 'sourceRefId', target: 'targetRefId' });
+  });
+  it('search association flow', () => {
+    bpmnModelRegistry.load(associationFlowInModel('association_flow_id', 'association flow name', 'sourceRefId', 'targetRefId'));
+    const bpmnSemantic = <EdgeBpmnSemantic>bpmnModelRegistry.getBpmnSemantic('association_flow_id');
+    expectAssociationFlow(bpmnSemantic, { id: 'association_flow_id', name: 'association flow name', source: 'sourceRefId', target: 'targetRefId' });
   });
 
-  it('search flownode', () => {
+  it('search flowNode', () => {
     bpmnModelRegistry.load(startEventInModel('start event id', 'start event name'));
     const bpmnSemantic = bpmnModelRegistry.getBpmnSemantic('start event id');
     expectStartEvent(bpmnSemantic, { id: 'start event id', name: 'start event name' });

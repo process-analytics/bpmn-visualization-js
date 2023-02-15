@@ -28,6 +28,14 @@ export interface BpmnSemantic {
 }
 
 /**
+ * Extended properties available when {@link BpmnSemantic.isShape} is `false`.
+ */
+export interface EdgeBpmnSemantic extends BpmnSemantic {
+  sourceRefId: string;
+  targetRefId: string;
+}
+
+/**
  * @category Custom Behavior
  */
 export interface BpmnElement {
