@@ -49,7 +49,7 @@ describe('Bpmn Elements registry - retrieve BPMN elements', () => {
         expect(bpmnElements).toHaveLength(2);
 
         expectStartEventBpmnElement(bpmnElements[0], { id: 'StartEvent_1', name: 'Start Event 1' });
-        expectSequenceFlowBpmnElement(bpmnElements[1], { id: 'Flow_2' });
+        expectSequenceFlowBpmnElement(bpmnElements[1], { id: 'Flow_2', source: 'Activity_1', target: 'EndEvent_1' });
       });
 
       it('Pass a single non existing id', async () => {
@@ -79,8 +79,8 @@ describe('Bpmn Elements registry - retrieve BPMN elements', () => {
         const bpmnElements = bpmnVisualization.bpmnElementsRegistry.getElementsByKinds(FlowKind.SEQUENCE_FLOW);
         expect(bpmnElements).toHaveLength(2);
 
-        expectSequenceFlowBpmnElement(bpmnElements[0], { id: 'Flow_1', name: 'Sequence Flow 1' });
-        expectSequenceFlowBpmnElement(bpmnElements[1], { id: 'Flow_2' });
+        expectSequenceFlowBpmnElement(bpmnElements[0], { id: 'Flow_1', name: 'Sequence Flow 1', source: 'StartEvent_1', target: 'Activity_1' });
+        expectSequenceFlowBpmnElement(bpmnElements[1], { id: 'Flow_2', source: 'Activity_1', target: 'EndEvent_1' });
       });
 
       it('No elements for this kind', async () => {

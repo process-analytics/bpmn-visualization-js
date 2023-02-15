@@ -16,7 +16,7 @@
 
 import type BpmnModel from '../../../src/model/bpmn/internal/BpmnModel';
 import { Edge } from '../../../src/model/bpmn/internal/edge/edge';
-import { MessageFlow, SequenceFlow } from '../../../src/model/bpmn/internal/edge/flows';
+import { AssociationFlow, MessageFlow, SequenceFlow } from '../../../src/model/bpmn/internal/edge/flows';
 import Shape from '../../../src/model/bpmn/internal/shape/Shape';
 import ShapeBpmnElement, {
   ShapeBpmnActivity,
@@ -44,12 +44,26 @@ export const buildEdgeId = (bpmnElementId: string): string => {
 
 const newSequenceFlow = (id: string, name: string, source: string, target: string): Edge => new Edge(buildEdgeId(id), new SequenceFlow(id, name, source, target));
 
+const flowInModel = (factoryFunction: (id: string, name: string, source: string, target: string) => Edge, id: string, name: string, source: string, target: string): BpmnModel => {
+  const bpmnModel = newBpmnModel();
+  bpmnModel.edges.push(factoryFunction(id, name, source, target));
+  return bpmnModel;
+};
+
+export const sequenceFlowInModel = (id: string, name: string, source: string, target: string): BpmnModel => {
+  return flowInModel(newSequenceFlow, id, name, source, target);
+};
+
 const newMessageFlow = (id: string, name: string, source: string, target: string): Edge => new Edge(buildEdgeId(id), new MessageFlow(id, name, source, target));
 
-export const sequenceFlowInModel = (id: string, name: string): BpmnModel => {
-  const bpmnModel = newBpmnModel();
-  bpmnModel.edges.push(newSequenceFlow(id, name, undefined, undefined));
-  return bpmnModel;
+export const messageFlowInModel = (id: string, name: string, source: string, target: string): BpmnModel => {
+  return flowInModel(newMessageFlow, id, name, source, target);
+};
+
+const newAssociationFlow = (id: string, name: string, source: string, target: string): Edge => new Edge(buildEdgeId(id), new AssociationFlow(id, name, source, target));
+
+export const associationFlowInModel = (id: string, name: string, source: string, target: string): BpmnModel => {
+  return flowInModel(newAssociationFlow, id, name, source, target);
 };
 
 export const startEventInModel = (id: string, name: string): BpmnModel => {

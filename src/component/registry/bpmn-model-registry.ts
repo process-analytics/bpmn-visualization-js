@@ -17,7 +17,8 @@
 import type BpmnModel from '../../model/bpmn/internal/BpmnModel';
 import type Shape from '../../model/bpmn/internal/shape/Shape';
 import type { Edge } from '../../model/bpmn/internal/edge/edge';
-import type { BpmnSemantic } from './types';
+import { Flow } from '../../model/bpmn/internal/edge/flows';
+import type { BpmnSemantic, EdgeBpmnSemantic } from './types';
 import { ShapeBpmnMarkerKind, ShapeUtil } from '../../model/bpmn/internal';
 import type { ShapeBpmnSubProcess } from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 import ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
@@ -43,14 +44,19 @@ export class BpmnModelRegistry {
     this.onLoadCallback = callback;
   }
 
-  getBpmnSemantic(bpmnElementId: string): BpmnSemantic | undefined {
+  getBpmnSemantic(bpmnElementId: string): BpmnSemantic | EdgeBpmnSemantic | undefined {
     const element = this.searchableModel.elementById(bpmnElementId);
     if (!element) {
       return undefined;
     }
     const bpmnElement = element.bpmnElement;
     const isShape = bpmnElement instanceof ShapeBpmnElement;
-    return { id: bpmnElementId, name: bpmnElement.name, isShape: isShape, kind: bpmnElement.kind };
+    const semantic: BpmnSemantic = { id: bpmnElementId, name: bpmnElement.name, isShape: isShape, kind: bpmnElement.kind };
+    if (bpmnElement instanceof Flow) {
+      (<EdgeBpmnSemantic>semantic).sourceRefId = bpmnElement.sourceRefId;
+      (<EdgeBpmnSemantic>semantic).targetRefId = bpmnElement.targetRefId;
+    }
+    return semantic;
   }
 }
 
