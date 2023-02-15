@@ -19,7 +19,7 @@ import type { BpmnElementKind } from '../../model/bpmn/internal';
 /**
  * @category Custom Behavior
  */
-export interface BpmnSemantic {
+export interface BaseBpmnSemantic {
   id: string;
   name: string;
   /** `true` when relates to a BPMN Shape, `false` when relates to a BPMN Edge. */
@@ -28,12 +28,27 @@ export interface BpmnSemantic {
 }
 
 /**
- * Extended properties available when {@link BpmnSemantic.isShape} is `false`.
+ * Extended properties available when {@link BaseBpmnSemantic.isShape} is `false`.
+ * @category Custom Behavior
  */
-export interface EdgeBpmnSemantic extends BpmnSemantic {
+export interface EdgeBpmnSemantic extends BaseBpmnSemantic {
   sourceRefId: string;
   targetRefId: string;
 }
+
+/**
+ * Extended properties available when {@link BaseBpmnSemantic.isShape} is `true`.
+ * @category Custom Behavior
+ */
+export interface ShapeBpmnSemantic extends BaseBpmnSemantic {
+  incomingIds: string[];
+  outgoingIds: string[];
+}
+
+/**
+ * @category Custom Behavior
+ */
+export type BpmnSemantic = EdgeBpmnSemantic | ShapeBpmnSemantic;
 
 /**
  * @category Custom Behavior

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { BpmnSemantic, EdgeBpmnSemantic } from '../../../src/component/registry';
+import type { BpmnSemantic, EdgeBpmnSemantic, ShapeBpmnSemantic } from '../../../src/component/registry';
 import { FlowKind, ShapeBpmnElementKind } from '../../../src/model/bpmn/internal';
 
 export interface ExpectedBaseBpmnElement {
@@ -25,6 +25,11 @@ export interface ExpectedBaseBpmnElement {
 export interface ExpectedFlowElement extends ExpectedBaseBpmnElement {
   source: string;
   target: string;
+}
+
+export interface ExpectedFlowNodeElement extends ExpectedBaseBpmnElement {
+  incoming?: string[];
+  outgoing?: string[];
 }
 
 const expectFlow = (bpmnSemantic: EdgeBpmnSemantic, expected: ExpectedFlowElement): void => {
@@ -56,9 +61,15 @@ function expectShape(bpmnSemantic: BpmnSemantic, expected: ExpectedBaseBpmnEleme
   expect(bpmnSemantic.isShape).toBeTruthy();
 }
 
-export function expectStartEvent(bpmnSemantic: BpmnSemantic, expected: ExpectedBaseBpmnElement): void {
+function expectedFlowNode(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedFlowNodeElement): void {
   expectShape(bpmnSemantic, expected);
+  expect(bpmnSemantic.incomingIds).toEqual(expected.incoming ?? []);
+  expect(bpmnSemantic.outgoingIds).toEqual(expected.outgoing ?? []);
+}
+
+export function expectStartEvent(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedFlowNodeElement): void {
   expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.EVENT_START);
+  expectedFlowNode(bpmnSemantic, expected);
 }
 
 export function expectEndEvent(bpmnSemantic: BpmnSemantic, expected: ExpectedBaseBpmnElement): void {
@@ -76,9 +87,9 @@ export function expectPool(bpmnSemantic: BpmnSemantic, expected: ExpectedBaseBpm
   expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.POOL);
 }
 
-export function expectTask(bpmnSemantic: BpmnSemantic, expected: ExpectedBaseBpmnElement): void {
-  expectShape(bpmnSemantic, expected);
+export function expectTask(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedFlowNodeElement): void {
   expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.TASK);
+  expectedFlowNode(bpmnSemantic, expected);
 }
 
 export function expectServiceTask(bpmnSemantic: BpmnSemantic, expected: ExpectedBaseBpmnElement): void {
