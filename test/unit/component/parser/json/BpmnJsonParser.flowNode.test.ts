@@ -382,4 +382,52 @@ describe.each([
       expect(currentEventBasedGateway.gatewayKind).toEqual(ShapeBpmnEventBasedGatewayKind.Parallel);
     });
   }
+
+  describe('incoming/outgoing management', () => {
+    type Input = {
+      incoming: string | string[];
+      outgoing: string | string[];
+    };
+    type Expected = {
+      incoming: string[];
+      outgoing: string[];
+    };
+
+    it.each`
+      title       | input                                                                                             | expected
+      ${'string'} | ${{ incoming: 'incoming_id_1', outgoing: 'outgoing_id_1' }}                                       | ${{ incoming: ['incoming_id_1'], outgoing: ['outgoing_id_1'] }}
+      ${'array'}  | ${{ incoming: ['incoming_id_1', 'incoming_id_2'], outgoing: ['outgoing_id_1', 'outgoing_id_2'] }} | ${{ incoming: ['incoming_id_1', 'incoming_id_2'], outgoing: ['outgoing_id_1', 'outgoing_id_2'] }}
+    `('should convert incoming and outgoing when defined as $title', ({ input, expected }: { input: Input; expected: Expected }) => {
+      const processJson = { ...processWithFlowNodeAsObject };
+      processJson[`${bpmnKind}`].incoming = input.incoming;
+      processJson[`${bpmnKind}`].outgoing = input.outgoing;
+      const json = {
+        definitions: {
+          targetNamespace: '',
+          process: processJson,
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: {
+                id: `shape_${bpmnKind}_id_0`,
+                bpmnElement: `${bpmnKind}_id_0`,
+                Bounds: { x: 10, y: 12, width: 40, height: 45 },
+              },
+            },
+          },
+        },
+      };
+      const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+
+      verifyShape(model.flowNodes[0], {
+        shapeId: `shape_${bpmnKind}_id_0`,
+        bpmnElementId: `${bpmnKind}_id_0`,
+        bpmnElementName: `${bpmnKind} name`,
+        bpmnElementKind: expectedShapeBpmnElementKind,
+        bpmnElementIncomingIds: expected.incoming,
+        bpmnElementOutgoingIds: expected.outgoing,
+        bounds: { x: 10, y: 12, width: 40, height: 45 },
+      });
+    });
+  });
 });

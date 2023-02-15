@@ -54,6 +54,8 @@ describe('parse bpmn as json for sub-process', () => {
         id: `sub-process_id_0`,
         name: `sub-process name`,
         triggeredByEvent: triggeredByEvent,
+        incoming: ['flow_in_1', 'flow_in_2'],
+        outgoing: 'flow_out_1',
       };
 
       it.each([
@@ -88,6 +90,8 @@ describe('parse bpmn as json for sub-process', () => {
             bpmnElementName: 'sub-process name',
             bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
             bpmnElementMarkers: expectedBpmnElementMarkers,
+            bpmnElementIncomingIds: ['flow_in_1', 'flow_in_2'],
+            bpmnElementOutgoingIds: ['flow_out_1'],
             bounds: {
               x: 362,
               y: 232,

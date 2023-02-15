@@ -157,6 +157,10 @@ export default class ProcessConverter {
         if (!parentId) {
           this.elementsWithoutParentByProcessId.get(processId).push(shapeBpmnElement);
         }
+        // @ts-ignore the incoming property doesn't exist in TTextAnnotation, in that case, set the array to empty
+        shapeBpmnElement.incomingIds = ensureIsArray<string>(bpmnElement.incoming);
+        // @ts-ignore the outgoing property doesn't exist in TTextAnnotation, in that case, set the array to empty
+        shapeBpmnElement.outgoingIds = ensureIsArray<string>(bpmnElement.outgoing);
       }
     });
   }
@@ -185,7 +189,7 @@ export default class ProcessConverter {
     return new ShapeBpmnCallActivity(bpmnElement.id, bpmnElement.name, ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK, parentId, markers, globalTaskKind);
   }
 
-  private buildShapeBpmnEvent(bpmnElement: TCatchEvent | TThrowEvent, elementKind: BpmnEventKind, parentId: string): ShapeBpmnEvent {
+  private buildShapeBpmnEvent(bpmnElement: TCatchEvent | TThrowEvent, elementKind: BpmnEventKind, parentId: string): ShapeBpmnEvent | undefined {
     const eventDefinitions = this.getEventDefinitions(bpmnElement);
     const numberOfEventDefinitions = eventDefinitions.map(eventDefinition => eventDefinition.counter).reduce((counter, it) => counter + it, 0);
 
