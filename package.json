@@ -55,6 +55,7 @@
     "generate-types:lib": "tsc --project tsconfig.npm-package.json --emitDeclarationOnly --declaration --declarationDir build/types",
     "generate-types:dist": "api-extractor run --local --verbose",
     "generate-types:not-supported-ts-versions": "node scripts/generate-types-for-not-supported-ts-versions.mjs",
+    "generate-types:add-license-header": "node scripts/add-license-header.mjs",
     "prepack": "run-s clean generate-types build-bundles",
     "demo": "run-s demo:*",
     "demo:build": "tsc --noEmit && vite build",
