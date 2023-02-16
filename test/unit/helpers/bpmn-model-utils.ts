@@ -66,9 +66,9 @@ export const associationFlowInModel = (id: string, name: string, source: string,
   return flowInModel(newAssociationFlow, id, name, source, target);
 };
 
-export const startEventInModel = (id: string, name: string): BpmnModel => {
+export const startEventInModel = (id: string, name: string, extras?: ShapeBpmnElementExtraProperties): BpmnModel => {
   const bpmnModel = newBpmnModel();
-  bpmnModel.flowNodes.push(newStartEvent('parentId', id, name));
+  bpmnModel.flowNodes.push(newStartEvent('parentId', id, name, extras));
   return bpmnModel;
 };
 
@@ -84,8 +84,20 @@ export const poolInModel = (id: string, name: string): BpmnModel => {
   return bpmnModel;
 };
 
-const newStartEvent = (parent: string, id: string, name: string): Shape =>
-  new Shape(buildShapeId(id), new ShapeBpmnStartEvent(id, name, ShapeBpmnEventDefinitionKind.TIMER, parent));
+const withExtras = (bpmnElement: ShapeBpmnElement, extras?: ShapeBpmnElementExtraProperties): ShapeBpmnElement => {
+  bpmnElement.incomingIds = extras?.incomingIds ?? [];
+  bpmnElement.outgoingIds = extras?.outgoingIds ?? [];
+  return bpmnElement;
+};
+
+export type ShapeBpmnElementExtraProperties = {
+  incomingIds?: string[];
+  outgoingIds?: string[];
+};
+
+const newStartEvent = (parent: string, id: string, name: string, extras?: ShapeBpmnElementExtraProperties): Shape => {
+  return new Shape(buildShapeId(id), withExtras(new ShapeBpmnStartEvent(id, name, ShapeBpmnEventDefinitionKind.TIMER, parent), extras));
+};
 const newBoundaryEvent = (parent: string, id: string, name: string): Shape =>
   new Shape(buildShapeId(id), new ShapeBpmnBoundaryEvent(id, name, ShapeBpmnEventDefinitionKind.CANCEL, parent));
 

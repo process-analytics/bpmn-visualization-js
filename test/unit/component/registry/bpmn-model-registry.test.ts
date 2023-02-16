@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { EdgeBpmnSemantic } from '../../../../src/component/registry';
+import type { EdgeBpmnSemantic, ShapeBpmnSemantic } from '../../../../src/component/registry';
 import { BpmnModelRegistry } from '../../../../src/component/registry/bpmn-model-registry';
 import { expectAssociationFlow, expectLane, expectMessageFlow, expectPool, expectSequenceFlow, expectStartEvent } from '../../helpers/bpmn-semantic-utils';
 import { associationFlowInModel, laneInModel, messageFlowInModel, poolInModel, sequenceFlowInModel, startEventInModel } from '../../helpers/bpmn-model-utils';
@@ -47,9 +47,9 @@ describe('Bpmn Model registry', () => {
   });
 
   it('search flowNode', () => {
-    bpmnModelRegistry.load(startEventInModel('start event id', 'start event name'));
-    const bpmnSemantic = bpmnModelRegistry.getBpmnSemantic('start event id');
-    expectStartEvent(bpmnSemantic, { id: 'start event id', name: 'start event name' });
+    bpmnModelRegistry.load(startEventInModel('start event id', 'start event name', { incomingIds: ['incoming_1'], outgoingIds: ['outgoing_1', 'outgoing_2'] }));
+    const bpmnSemantic = <ShapeBpmnSemantic>bpmnModelRegistry.getBpmnSemantic('start event id');
+    expectStartEvent(bpmnSemantic, { id: 'start event id', name: 'start event name', incoming: ['incoming_1'], outgoing: ['outgoing_1', 'outgoing_2'] });
   });
 
   it('search lane', () => {

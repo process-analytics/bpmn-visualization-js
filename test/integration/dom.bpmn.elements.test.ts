@@ -48,7 +48,7 @@ describe('Bpmn Elements registry - retrieve BPMN elements', () => {
         const bpmnElements = bpmnVisualization.bpmnElementsRegistry.getElementsByIds(['StartEvent_1', 'Flow_2']);
         expect(bpmnElements).toHaveLength(2);
 
-        expectStartEventBpmnElement(bpmnElements[0], { id: 'StartEvent_1', name: 'Start Event 1' });
+        expectStartEventBpmnElement(bpmnElements[0], { id: 'StartEvent_1', name: 'Start Event 1', outgoing: ['Flow_1'] });
         expectSequenceFlowBpmnElement(bpmnElements[1], { id: 'Flow_2', source: 'Activity_1', target: 'EndEvent_1' });
       });
 
@@ -71,7 +71,7 @@ describe('Bpmn Elements registry - retrieve BPMN elements', () => {
         const bpmnElements = bpmnVisualization.bpmnElementsRegistry.getElementsByKinds(ShapeBpmnElementKind.TASK);
         expect(bpmnElements).toHaveLength(1);
 
-        expectTaskBpmnElement(bpmnElements[0], { id: 'Activity_1', name: 'Task 1' });
+        expectTaskBpmnElement(bpmnElements[0], { id: 'Activity_1', name: 'Task 1', incoming: ['Flow_1'], outgoing: ['Flow_2'] });
       });
 
       it('Pass a single kind related to several existing elements', async () => {
