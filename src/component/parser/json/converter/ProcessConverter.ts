@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 /**
  * Copyright 2020 Bonitasoft S.A.
  *
@@ -140,13 +139,16 @@ export default class ProcessConverter {
       } else if (kind == ShapeBpmnElementKind.GROUP) {
         shapeBpmnElement = buildShapeBpmnGroup(this.convertedElements, this.parsingMessageCollector, bpmnElement as TGroup, parentId);
       } else {
-        // @ts-ignore We know that the 'text' & 'name' fields are not on all types, but it's already tested
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- We know that the 'text' & 'name' fields are not on all types, but it's already tested
+        // @ts-ignore
         const name = kind === ShapeBpmnElementKind.TEXT_ANNOTATION ? bpmnElement.text : bpmnElement.name;
-        // @ts-ignore We know that the 'instantiate' field is not on all types, but it's already tested
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- We know that the 'instantiate' field is not on all types, but it's already tested
+        // @ts-ignore
         shapeBpmnElement = new ShapeBpmnElement(bpmnElement.id, name, kind, parentId, bpmnElement.instantiate);
       }
 
-      // @ts-ignore We know that the 'default' field is not on all types, but it's already tested
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- We know that the 'default' field is not on all types, but it's already tested
+      // @ts-ignore
       const defaultFlow = bpmnElement.default;
       if (ShapeUtil.isWithDefaultSequenceFlow(kind) && defaultFlow) {
         this.defaultSequenceFlowIds.push(defaultFlow);
@@ -157,9 +159,11 @@ export default class ProcessConverter {
         if (!parentId) {
           this.elementsWithoutParentByProcessId.get(processId).push(shapeBpmnElement);
         }
-        // @ts-ignore the incoming property doesn't exist in TTextAnnotation, in that case, set the array to empty
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- the incoming property doesn't exist in TTextAnnotation, in that case, set the array to empty
+        // @ts-ignore
         shapeBpmnElement.incomingIds = ensureIsArray<string>(bpmnElement.incoming);
-        // @ts-ignore the outgoing property doesn't exist in TTextAnnotation, in that case, set the array to empty
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- the outgoing property doesn't exist in TTextAnnotation, in that case, set the array to empty
+        // @ts-ignore
         shapeBpmnElement.outgoingIds = ensureIsArray<string>(bpmnElement.outgoing);
       }
     });
@@ -173,6 +177,7 @@ export default class ProcessConverter {
     }
 
     if (!ShapeUtil.isCallActivity(kind)) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- the 'instantiate' property doesn't always exist, in that case, it will be undefined
       // @ts-ignore
       return new ShapeBpmnActivity(bpmnElement.id, bpmnElement.name, kind, parentId, bpmnElement.instantiate, markers);
     }
@@ -318,9 +323,11 @@ export default class ProcessConverter {
 
 const buildMarkers = (bpmnElement: TActivity): ShapeBpmnMarkerKind[] => {
   const markers: ShapeBpmnMarkerKind[] = [];
-  // @ts-ignore We know that the standardLoopCharacteristics field is not on all types, but it's already tested
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- We know that the standardLoopCharacteristics field is not on all types, but it's already tested
+  // @ts-ignore
   const standardLoopCharacteristics = bpmnElement.standardLoopCharacteristics;
-  // @ts-ignore We know that the multiInstanceLoopCharacteristics field is not on all types, but it's already tested
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- We know that the multiInstanceLoopCharacteristics field is not on all types, but it's already tested
+  // @ts-ignore
   const multiInstanceLoopCharacteristics = ensureIsArray(bpmnElement.multiInstanceLoopCharacteristics, true)[0];
   if (standardLoopCharacteristics || standardLoopCharacteristics === '') {
     markers.push(ShapeBpmnMarkerKind.LOOP);
