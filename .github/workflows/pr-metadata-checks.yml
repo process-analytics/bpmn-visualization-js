@@ -1,0 +1,14 @@
+name: Check Pull Request Metadata
+on:
+  pull_request_target:
+    # trigger when the PR title changes
+    types: [opened, edited, reopened]
+
+jobs:
+  pr-title:
+    runs-on: ubuntu-22.04
+    permissions:
+      pull-requests: write # post comments when the PR title doesn't match the "Conventional Commits" rules
+    steps:
+      - name: Check Pull Request title
+        uses: bonitasoft/actions/packages/pr-title-conventional-commits@v2
