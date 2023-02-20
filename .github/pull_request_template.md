@@ -4,15 +4,19 @@ Failure to do so may result in the rejection of the Pull Request.
 
 **Title**
 
-Put the title like `[KIND OF CHANGE] SHORT DESCRIPTION`
+Please follow ["Conventional Commits"](https://www.conventionalcommits.org/en/v1.0.0/) when creating the title.
 
-*KIND OF CHANGE* can be (see existing Pull Request for more elements):
-- DOC
-- FEAT
-- FIX
-- INFRA
-- REFACTOR
-...
+It must look like `<type>[optional scope]: <lower case description>`
+
+*type* can be (see existing Pull Request for more elements):
+- chore
+- docs
+- feat
+- fix
+- refactor
+  ...
+
+If defined, the _optional scope_ must be put in parentheses.
 
 _Note_: The title is used as proposal for the maintainer merging the Pull Request.
 
@@ -21,6 +25,8 @@ _Note_: The title is used as proposal for the maintainer merging the Pull Reques
 Explain the **details** for making this change: What existing problem does the Pull Request solve? Why is this feature beneficial?
 
 If your contribution has changed the BPMN rendering, add a screenshot.
+
+If the Pull Request includes breaking changes, it must explicitly follow the syntax proposed by [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#specification).
 
 **On automatic closing of ISSUES**
 
