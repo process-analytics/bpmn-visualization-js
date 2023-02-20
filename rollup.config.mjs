@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import assert from 'node:assert';
-// generate warning when running with Node 16
+import { computeBanner } from './scripts/shared/banner.mjs';
+// generate warning when running with Node 18
 // (node:75278) ExperimentalWarning: Importing JSON modules is an experimental feature. This feature could change at any time
 import pkg from './package.json' assert { type: 'json' };
 
@@ -37,27 +37,40 @@ const pluginsBundleIIFE = [
   sizes(),
 ];
 const iifeMinifiedBundleFile = 'dist/bpmn-visualization.min.js';
+/**
+ * @type {import('rollup').OutputOptions}
+ */
 const outputIIFE = {
   file: iifeMinifiedBundleFile.replace('.min.js', '.js'),
   name: 'bpmnvisu',
   format: 'iife',
+  banner: computeBanner(),
 };
 
+/**
+ * @type {import('rollup').RollupOptions}
+ */
 const configIIFE = {
   input: libInput,
   output: outputIIFE,
   plugins: pluginsBundleIIFE,
 };
+/**
+ * @type {import('rollup').RollupOptions}
+ */
 const configIIFEMinified = {
   input: libInput,
   output: {
     ...outputIIFE,
     file: iifeMinifiedBundleFile,
   },
-  plugins: withMinification(pluginsBundleIIFE),
+  plugins: withMinification(pluginsBundleIIFE, `/* bpmn-visualization v${pkg.version} | Copyright (c) 2020-${new Date().getFullYear()}, Bonitasoft SA | Apache 2.0 license */`),
 };
 
-const configBundles = {
+/**
+ * @type {import('rollup').RollupOptions}
+ */
+const configESM = {
   input: libInput,
   plugins: [
     typescriptPlugin(),
@@ -66,10 +79,14 @@ const configBundles = {
     // to have sizes of dependencies listed at the end of build log
     sizes(),
   ],
-  output: [{ file: pkg.module, format: 'es' }],
+  output: {
+    file: pkg.module,
+    format: 'es',
+    banner: computeBanner(),
+  },
 };
 
-export default [configIIFE, configIIFEMinified, configBundles];
+export default [configIIFE, configIIFEMinified, configESM];
 
 // =====================================================================================================================
 // helpers
@@ -81,11 +98,14 @@ function typescriptPlugin() {
   });
 }
 
-function withMinification(plugins) {
+function withMinification(plugins, banner) {
   return [
     ...plugins,
     terser({
       ecma: 2015,
+      format: {
+        preamble: banner,
+      },
     }),
   ];
 }
