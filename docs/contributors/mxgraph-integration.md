@@ -103,7 +103,7 @@ the time.
 ### Shape
 
 The `mxGraph` integration uses the following to set the label bounds
-- the `vertex mxCell` geometry offset, see 
+- the `vertex mxCell` geometry offset, see [mxGeometry](https://github.com/jgraph/mxgraph2/blob/mxgraph-4_1_1/javascript/src/js/model/mxGeometry.js#L60)
 for more details
   - x and y position relative to the shape `vertex` itself
   - as for the  shape `vertex` position, a coordinate transformation layer is required.
