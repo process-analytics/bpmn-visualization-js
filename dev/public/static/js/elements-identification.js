@@ -25,14 +25,121 @@ import {
   log,
   removeAllOverlays,
   removeCssClasses,
+  resetStyle,
   ShapeUtil,
   startBpmnVisualization,
   updateLoadOptions,
+  updateStyle,
 } from '../../../ts/dev-bundle-index';
 
 let lastIdentifiedBpmnIds = [];
-const cssClassName = 'detection';
 let isOverlaysDisplayed = true;
+
+function buildStyle(bpmnKind) {
+  const style = { label: {}, hover: {}, arrow: {} };
+  switch (bpmnKind) {
+    case 'task':
+      style.label.color = 'red !important';
+      style.fill = 'aquamarine';
+      style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
+      break;
+    case 'userTask':
+      style.label.color = 'red !important';
+      style.fill = 'aquamarine';
+      style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
+      break;
+    case 'scriptTask':
+      style.label.color = 'red !important';
+      style.fill = 'aquamarine';
+      style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
+      break;
+    case 'serviceTask':
+      style.label.color = 'red !important';
+      style.fill = 'aquamarine';
+      style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
+      break;
+    case 'startEvent':
+      style.label.color = 'red !important';
+      style.stroke = 'red';
+      style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
+      break;
+    case 'endEvent':
+      style.label.color = 'red !important';
+      style.stroke = 'red';
+      style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
+      break;
+    case 'intermediateCatchEvent':
+      style.label.color = 'red !important';
+      style.stroke = 'red';
+      style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
+      break;
+    case 'intermediateThrowEvent':
+      style.label.color = 'red !important';
+      style.stroke = 'red';
+      style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
+      break;
+    case 'exclusiveGateway':
+      style.label.color = 'red !important';
+      style.stroke = 'chartreuse';
+      style.strokeWidth = 4;
+      style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
+      break;
+    case 'inclusiveGateway':
+      style.label.color = 'red !important';
+      style.stroke = 'chartreuse';
+      style.strokeWidth = 4;
+      style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
+      break;
+    case 'parallelGateway':
+      style.label.color = 'red !important';
+      style.stroke = 'chartreuse';
+      style.strokeWidth = 4;
+      style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
+      break;
+    case 'lane':
+      style.label.color = 'white !important';
+      style.label.fill = 'palevioletred';
+      style.fill = 'palevioletred';
+      style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
+      break;
+    case 'pool':
+      style.label.color = 'white !important';
+      style.label.fill = 'palevioletred';
+      style.fill = 'palevioletred';
+      style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
+      break;
+    case 'messageFlow':
+      style.label.color = 'dodgerblue !important';
+      style.arrow.fill = 'dodgerblue';
+      style.line = {
+        stroke: 'dodgerblue',
+        strokeWidth: '4px',
+      };
+      // Initiating
+      style.icon = {
+        stroke: 'orange',
+        strokeWidth: '3px',
+      };
+      // Non-initiating
+      style.icon = {
+        fill: 'orange',
+        stroke: 'white',
+        strokeWidth: '3px',
+      };
+      style.hover.strokeWidth = '6px !important';
+      break;
+    case 'sequenceFlow':
+      style.label.color = 'dodgerblue !important';
+      style.arrow.fill = 'dodgerblue';
+      style.line = {
+        stroke: 'dodgerblue',
+        strokeWidth: '4px',
+      };
+      style.hover.strokeWidth = '6px !important';
+      break;
+  }
+  return style;
+}
 
 function updateSelectedBPMNElements(textArea, bpmnKind) {
   log(`Searching for Bpmn elements of '${bpmnKind}' kind`);
@@ -49,9 +156,11 @@ function updateSelectedBPMNElements(textArea, bpmnKind) {
   // newly identified elements and values
   const newlyIdentifiedBpmnIds = elementsByKinds.map(elt => elt.bpmnSemantic.id);
 
-  // CSS classes update
-  removeCssClasses(lastIdentifiedBpmnIds, cssClassName);
-  addCssClasses(newlyIdentifiedBpmnIds, cssClassName);
+  // Update styles
+  resetStyle(lastIdentifiedBpmnIds);
+  const style = buildStyle(bpmnKind);
+  log(`New value of style %O`, style);
+  updateStyle(newlyIdentifiedBpmnIds, style);
 
   // Overlays update
   lastIdentifiedBpmnIds.forEach(id => removeAllOverlays(id));
@@ -74,7 +183,7 @@ function configureControls() {
 
   document.getElementById('clear-btn').onclick = function () {
     textArea.value = '';
-    removeCssClasses(lastIdentifiedBpmnIds, cssClassName);
+    resetStyle(lastIdentifiedBpmnIds);
     lastIdentifiedBpmnIds.forEach(id => removeAllOverlays(id));
 
     // reset identified elements and values

@@ -26,6 +26,8 @@ import type {
   PoolFilter,
   Version,
   ZoomType,
+  EdgeStyleUpdate,
+  ShapeStyleUpdate,
 } from '../../src/bpmn-visualization';
 import { fetchBpmnContent, logDownload, logErrorAndOpenAlert, logStartup, stringify } from './utils/internal-helpers';
 import { log } from './utils/shared-helpers';
@@ -92,6 +94,14 @@ export function getElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[
 
 export function getElementsByIds(bpmnId: string | string[]): BpmnElement[] {
   return bpmnVisualization.bpmnElementsRegistry.getElementsByIds(bpmnId);
+}
+
+export function updateStyle(bpmnElementIds: string | string[], style: ShapeStyleUpdate | EdgeStyleUpdate): void {
+  return bpmnVisualization.updateStyle(bpmnElementIds, style);
+}
+
+export function resetStyle(bpmnElementIds: string | string[]): void {
+  return bpmnVisualization.resetStyle(bpmnElementIds);
 }
 
 export function addCssClasses(bpmnElementId: string | string[], classNames: string | string[]): void {

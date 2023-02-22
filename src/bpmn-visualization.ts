@@ -19,7 +19,7 @@ limitations under the License.
 
 // Public API
 export * from './component/options';
-export { BpmnVisualization } from './component/BpmnVisualization';
+export { BpmnVisualization, type EdgeStyleUpdate, type ShapeStyleUpdate } from './component/BpmnVisualization';
 export * from './component/registry';
 export type { Version } from './component/version';
 export type { Navigation } from './component/navigation';
