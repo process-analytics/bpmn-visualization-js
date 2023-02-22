@@ -15,8 +15,8 @@ limitations under the License.
 */
 
 import type { mxCell } from 'mxgraph';
+import { mxgraph } from '../initializer';
 import { FlowKind, ShapeUtil } from '../../../model/bpmn/internal';
-import { MessageVisibleKind } from '../../../model/bpmn/internal/edge/kinds';
 import { BpmnStyleIdentifier } from '../style/identifiers';
 
 /**
@@ -70,7 +70,7 @@ export function computeAllBpmnClassNames(style: string, isLabel: boolean): strin
           classes.push(`bpmn-gateway-kind-${value.toLowerCase()}`);
           break;
         case BpmnStyleIdentifier.IS_INITIATING: // message flow icon
-          classes.push(value == MessageVisibleKind.NON_INITIATING ? 'bpmn-icon-non-initiating' : 'bpmn-icon-initiating');
+          classes.push(value == 'true' ? 'bpmn-icon-initiating' : 'bpmn-icon-non-initiating');
           break;
         case BpmnStyleIdentifier.SUB_PROCESS_KIND:
           classes.push(`bpmn-sub-process-${value.toLowerCase()}`);
@@ -102,4 +102,14 @@ function isFlowKind(kind: string): boolean {
  */
 export function computeBpmnBaseClassName(bpmnElementKind: string): string {
   return !bpmnElementKind ? '' : 'bpmn-' + bpmnElementKind.replace(/([A-Z])/g, g => '-' + g[0].toLowerCase());
+}
+
+/**
+ * Get the BPMN 'instantiate' information from the style.
+ * @param style the mxGraph style
+ * @internal
+ * @private
+ */
+export function getBpmnIsInstantiating(style: { [p: string]: unknown }): boolean {
+  return mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.IS_INSTANTIATING, 'false') == 'true';
 }

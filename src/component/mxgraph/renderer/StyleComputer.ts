@@ -28,7 +28,7 @@ import {
   ShapeBpmnSubProcess,
 } from '../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { BpmnStyleIdentifier } from '../style';
-import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeUtil } from '../../../model/bpmn/internal';
+import { MessageVisibleKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeUtil } from '../../../model/bpmn/internal';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/flows';
 import type { Font } from '../../../model/bpmn/internal/Label';
 
@@ -158,7 +158,7 @@ export default class StyleComputer {
   }
 
   computeMessageFlowIconStyle(edge: Edge): string {
-    return `shape=${BpmnStyleIdentifier.MESSAGE_FLOW_ICON};${BpmnStyleIdentifier.IS_INITIATING}=${edge.messageVisibleKind}`;
+    return `shape=${BpmnStyleIdentifier.MESSAGE_FLOW_ICON};${BpmnStyleIdentifier.IS_INITIATING}=${edge.messageVisibleKind === MessageVisibleKind.INITIATING}`;
   }
 
   private static getFontStyleValue(font: Font): number {
