@@ -67,6 +67,7 @@ export default class StyleComputer {
     } else if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
       // mxgraph.mxConstants.STYLE_HORIZONTAL is for the label
       // In BPMN, isHorizontal is for the Shape
+      // So we invert the value when we switch from the BPMN value to the mxGraph value.
       styleValues.set(mxgraph.mxConstants.STYLE_HORIZONTAL, shape.isHorizontal ? '0' : '1');
     } else if (bpmnElement instanceof ShapeBpmnEventBasedGateway) {
       styleValues.set(BpmnStyleIdentifier.IS_INSTANTIATING, String(bpmnElement.instantiate));
@@ -140,8 +141,11 @@ export default class StyleComputer {
         // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
         styleValues.set(mxgraph.mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
         // align settings
-        styleValues.set(mxgraph.mxConstants.STYLE_LABEL_POSITION, mxgraph.mxConstants.ALIGN_TOP);
-        styleValues.set(mxgraph.mxConstants.STYLE_VERTICAL_LABEL_POSITION, mxgraph.mxConstants.ALIGN_LEFT);
+        // According to the documentation, "label position" can only take values in left, center, right with default=center
+        // However, there is undocumented behavior when the value is not one of these and this behavior is exactly what we want.
+        // See https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/mxGraphView.js#L1183-L1252
+        styleValues.set(mxgraph.mxConstants.STYLE_LABEL_POSITION, 'ignore');
+        styleValues.set(mxgraph.mxConstants.STYLE_VERTICAL_LABEL_POSITION, mxgraph.mxConstants.ALIGN_MIDDLE);
       }
     }
     // when no label bounds, adjust the default style dynamically
