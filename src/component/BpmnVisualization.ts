@@ -14,6 +14,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { mxStyleChange } from 'mxgraph';
+import type {
+  mxEventObject,
+  mxUndoableEdit,
+  mxGeometryChange,
+  mxChildChange,
+  mxCollapseChange,
+  mxValueChange,
+  mxCurrentRootChange,
+  mxTerminalChange,
+  mxVisibleChange,
+} from 'mxgraph';
+import { UndoManager } from './undoManager';
 import GraphConfigurator from './mxgraph/GraphConfigurator';
 import { newBpmnRenderer } from './mxgraph/BpmnRenderer';
 import { newBpmnParser } from './parser/BpmnParser';
@@ -99,6 +112,8 @@ export class BpmnVisualization {
 
   private readonly bpmnModelRegistry: BpmnModelRegistry;
 
+  private readonly undoManager: UndoManager;
+
   constructor(options: GlobalOptions) {
     // mxgraph configuration
     const configurator = new GraphConfigurator(htmlElement(options?.container));
@@ -107,6 +122,9 @@ export class BpmnVisualization {
     this.navigation = new Navigation(this.graph);
     this.bpmnModelRegistry = new BpmnModelRegistry();
     this.bpmnElementsRegistry = newBpmnElementsRegistry(this.bpmnModelRegistry, this.graph);
+
+    this.undoManager = new UndoManager();
+    this.installUndoHandler();
   }
 
   /**
@@ -125,29 +143,56 @@ export class BpmnVisualization {
     return version();
   }
 
+  private installUndoHandler(): void {
+    const listener = mxgraph.mxUtils.bind(this, (sender: any, evt: mxEventObject) => {
+      const edit: mxUndoableEdit = evt.getProperty('edit');
+      const array: Array<mxGeometryChange | mxChildChange | mxStyleChange | mxVisibleChange | mxCollapseChange | mxValueChange | mxTerminalChange | mxCurrentRootChange> =
+        edit.changes;
+      console.log(array);
+      const filter: mxStyleChange[] = array.filter(change => typeof change === 'object' && change instanceof mxgraph.mxStyleChange);
+      // mxCurrentRootChange
+      if (filter.length > 1) {
+        // See https://github.com/jgraph/mxgraph/blob/ff141aab158417bd866e2dfebd06c61d40773cd2/javascript/src/js/view/mxGraph.js#L2114
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        this.undoManager.undoableEditHappened(filter[0].cell, edit);
+      }
+    });
+
+    this.graph.getModel().addListener(mxgraph.mxEvent.UNDO, listener);
+    this.graph.getView().addListener(mxgraph.mxEvent.UNDO, listener);
+  }
+
   // updateStyle(bpmnElementIds: string | string[], style: ShapeStyleUpdate | EdgeStyleUpdate): void {
   updateStyle(bpmnElementIds: string | string[], style: ShapeStyleUpdate): void {
-    ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => {
-      const cell = this.graph.getModel().getCell(bpmnElementId);
-      let cellStyle = cell.getStyle();
+    this.graph.getModel().beginUpdate();
+    try {
+      ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => {
+        const cell = this.graph.getModel().getCell(bpmnElementId);
+        let cellStyle = cell.getStyle();
 
-      /*      label?: {  fill?: string // Zone for lane & pool };
+        /*      label?: {  fill?: string // Zone for lane & pool };
 
       hover?: {
         filter?: string;
       };*/
 
-      cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTCOLOR, style.label?.color);
-      cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILLCOLOR, style.fill);
-      cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKECOLOR, style.stroke);
-      cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKEWIDTH, style.strokeWidth);
-      cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_OPACITY, style.opacity);
+        cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTCOLOR, style.label?.color);
+        cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILLCOLOR, style.fill);
+        cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKECOLOR, style.stroke);
+        cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKEWIDTH, style.strokeWidth);
+        cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_OPACITY, style.opacity);
 
-      //this.graph.styleForCellChanged update & return the previous style.
+        //this.graph.styleForCellChanged update & return the previous style.
 
-      this.graph.setCellStyle(cellStyle, [cell]);
+        this.graph.model.setStyle(cell, cellStyle);
+      });
+
+      // Allow to save the style in a new state
       this.graph.refresh();
-    });
+    } finally {
+      this.graph.getModel().endUpdate();
+    }
   }
 
   /*  function updateStyle(state, hover)
@@ -246,28 +291,43 @@ dragLeave: function(evt, state)
 });*/
 
   resetStyle(bpmnElementIds: string | string[]): void {
-    ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => {
-      /*      const cell = this.graph.getModel().getCell(bpmnElementId);
+    this.graph.getModel().beginUpdate();
+    try {
+      ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => {
+        /*      const cell = this.graph.getModel().getCell(bpmnElementId);
       const shape = cell.getShape();
       const defaultStyle = mxgraph.mxStyleRegistry.getValue(shape.style.shape);
       const newStyle = mxgraph.mxUtils.clone(defaultStyle);
       cell.setStyle(newStyle);
       cell.refresh();*/
 
-      const cell = this.graph.getModel().getCell(bpmnElementId);
+        /*        const cell = this.graph.getModel().getCell(bpmnElementId);
 
-      // Get the default style for the cell
-      const defaultStyle = this.graph.getCellStyle(cell);
+        // Get the default style for the cell
+        // const defaultStyle = this.graph.getCellStyle(cell);
 
-      // mxgraph.mxUtils.getStyleString(defaultStyle.getStyle());
+        // Get the current state of the cell
+        const view = this.graph.getView();
+        const state = view.getState(cell);
 
-      // Reset the cell's style
-      const style = mxgraph.mxUtils.toString(defaultStyle);
-      console.log(style);
-      this.graph.setCellStyle(style, [cell]);
+        // Get the default style for the cell
+        const defaultStyle = state.style;
 
+        // mxgraph.mxUtils.getStyleString(defaultStyle.getStyle());
+
+        // Reset the cell's style
+        this.graph.setCellStyle(defaultStyle, [cell]);
+
+
+        console.log(defaultStyle);
+        this.graph.model.setStyle(cell, defaultStyle);*/
+
+        this.undoManager.undo(this.graph.getModel().getCell(bpmnElementId));
+      });
       // Redraw the graph with the updated style
       this.graph.refresh();
-    });
+    } finally {
+      this.graph.getModel().endUpdate();
+    }
   }
 }

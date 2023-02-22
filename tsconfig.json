@@ -20,9 +20,10 @@
     // Vitejs requirements https://vitejs.dev/guide/features.html#typescript-compiler-options
     "isolatedModules": true, // https://esbuild.github.io/content-types/#isolated-modules
     "useDefineForClassFields": true,
+    "typeRoots": ["src/type/*"]
   },
   "include": [
     "src/**/*",
     "dev/ts/**/*"
-  ]
+  ],
 }

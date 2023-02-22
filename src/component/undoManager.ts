@@ -17,7 +17,7 @@ limitations under the License.
 import type { mxCell, mxUndoableEdit } from 'mxgraph';
 import { mxgraph } from './mxgraph/initializer';
 
-export class mxUndoManager extends mxgraph.mxEventSource {
+export class UndoManager extends mxgraph.mxEventSource {
   /**
    * Variable: history
    *
