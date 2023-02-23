@@ -110,11 +110,9 @@ function buildStyle(bpmnKind) {
       break;
     case 'messageFlow':
       style.label.color = 'dodgerblue !important';
-      style.arrow.fill = 'dodgerblue';
-      style.line = {
-        stroke: 'dodgerblue',
-        strokeWidth: '4px',
-      };
+      style.stroke = 'dodgerblue';
+      style.strokeWidth = '4';
+
       // Initiating
       style.icon = {
         stroke: 'orange',
@@ -130,11 +128,8 @@ function buildStyle(bpmnKind) {
       break;
     case 'sequenceFlow':
       style.label.color = 'dodgerblue !important';
-      style.arrow.fill = 'dodgerblue';
-      style.line = {
-        stroke: 'dodgerblue',
-        strokeWidth: '4px',
-      };
+      style.stroke = 'dodgerblue';
+      style.strokeWidth = '4';
       style.hover.strokeWidth = '6px !important';
       break;
   }

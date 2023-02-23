@@ -56,17 +56,9 @@ export type ShapeStyleUpdate = {
 };
 export type EdgeStyleUpdate = {
   label?: { color?: string };
-  arrow?: { fill?: string };
   opacity?: number;
-  line?: {
-    stroke?: string;
-    strokeWidth?: number;
-  };
-  icon?: {
-    fill?: string;
-    stroke?: string;
-    strokeWidth?: number;
-  };
+  stroke?: string;
+  strokeWidth?: number;
 
   hover?: {
     strokeWidth?: string;
@@ -185,19 +177,32 @@ export class BpmnVisualization {
         const cell = this.graph.getModel().getCell(bpmnElementId);
         let cellStyle = cell.getStyle();
 
-        /*      label?: {  fill?: string // Zone for lane & pool };
-
-      hover?: {
-        filter?: string;
-      };*/
-
         cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTCOLOR, style.label?.color);
         cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_OPACITY, style.opacity);
+        cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKECOLOR, style.stroke);
+        cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKEWIDTH, style.strokeWidth);
 
         if (this.isShapeStyleUpdate(style)) {
           cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILLCOLOR, style.fill);
-          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKECOLOR, style.stroke);
-          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKEWIDTH, style.strokeWidth);
+
+          /*
+            label?: {  fill?: string // Zone for lane & pool };
+            hover?: {
+              filter?: string;
+            };
+          */
+        } else {
+          /*
+            icon?: {
+              fill?: string;
+              stroke?: string;
+              strokeWidth?: number;
+            };
+
+            hover?: {
+              strokeWidth?: string;
+            };
+          */
         }
 
         this.graph.model.setStyle(cell, cellStyle);
