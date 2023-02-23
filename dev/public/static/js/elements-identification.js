@@ -36,84 +36,69 @@ let lastIdentifiedBpmnIds = [];
 let isOverlaysDisplayed = true;
 
 function buildStyle(bpmnKind) {
-  const style = { label: {}, hover: {}, arrow: {} };
+  const style = { font: {}, hover: {} };
   switch (bpmnKind) {
     case 'task':
-      style.label.color = 'red !important';
-      style.fill = 'aquamarine';
-      style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
-      break;
     case 'userTask':
-      style.label.color = 'red !important';
-      style.fill = 'aquamarine';
-      style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
-      break;
     case 'scriptTask':
-      style.label.color = 'red !important';
-      style.fill = 'aquamarine';
-      style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
-      break;
     case 'serviceTask':
-      style.label.color = 'red !important';
+    case 'receiveTask':
+    case 'sendTask':
+    case 'manualTask':
+    case 'businessRuleTask':
+      style.font.color = 'red !important';
       style.fill = 'aquamarine';
       style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
       break;
     case 'startEvent':
-      style.label.color = 'red !important';
-      style.stroke = 'red';
-      style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
-      break;
     case 'endEvent':
-      style.label.color = 'red !important';
-      style.stroke = 'red';
-      style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
-      break;
     case 'intermediateCatchEvent':
-      style.label.color = 'red !important';
-      style.stroke = 'red';
-      style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
-      break;
     case 'intermediateThrowEvent':
-      style.label.color = 'red !important';
+    case 'boundaryEvent':
+      style.font.color = 'red !important';
       style.stroke = 'red';
       style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
       break;
     case 'exclusiveGateway':
-      style.label.color = 'red !important';
-      style.stroke = 'chartreuse';
-      style.strokeWidth = 4;
-      style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
-      break;
     case 'inclusiveGateway':
-      style.label.color = 'red !important';
-      style.stroke = 'chartreuse';
-      style.strokeWidth = 4;
-      style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
-      break;
     case 'parallelGateway':
-      style.label.color = 'red !important';
+    case 'eventBasedGateway':
+    case 'complexGateway':
+      style.font.color = 'red !important';
       style.stroke = 'chartreuse';
       style.strokeWidth = 4;
       style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
       break;
     case 'lane':
-      style.label.color = 'white !important';
-      style.label.fill = 'palevioletred';
+    case 'pool':
+      style.font.color = 'white !important';
       style.fill = 'palevioletred';
       style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
       break;
-    case 'pool':
-      style.label.color = 'white !important';
-      style.label.fill = 'palevioletred';
-      style.fill = 'palevioletred';
-      style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
+    case 'callActivity':
+    case 'subProcess':
+      style.font.color = 'white';
+      style.font.size = 14;
+      style.font.family = 'Dialog';
+      style.font.isBold = true;
+      style.font.isItalic = true;
+      style.font.isUnderline = true;
+      style.font.isStrikeThrough = true;
+
+      style.fill = 'MediumVioletRed';
+      break;
+    case 'group':
+    case 'textAnnotation':
+      style.font.color = 'MidnightBlue';
+      style.font.size = 18;
+      style.font.family = 'Verdana';
+      style.font.isBold = true;
+      style.font.isUnderline = true;
+
+      style.stroke = 'Chartreuse';
       break;
     case 'messageFlow':
-      style.label.color = 'dodgerblue !important';
-      style.stroke = 'dodgerblue';
-      style.strokeWidth = 4;
-
-      /*      // Initiating
+    /*      // Initiating
       style.icon = {
         stroke: 'orange',
         strokeWidth: '3px',
@@ -124,10 +109,9 @@ function buildStyle(bpmnKind) {
         stroke: 'white',
         strokeWidth: '3px',
       };*/
-      style.hover.strokeWidth = '6px !important';
-      break;
     case 'sequenceFlow':
-      style.label.color = 'dodgerblue !important';
+    case 'association':
+      style.font.color = 'dodgerblue !important';
       style.stroke = 'dodgerblue';
       style.strokeWidth = 4;
       style.hover.strokeWidth = '6px !important';
