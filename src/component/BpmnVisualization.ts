@@ -186,7 +186,7 @@ export class BpmnVisualization {
         if (this.isShapeStyleUpdate(style)) {
           cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILLCOLOR, style.fill);
 
-          if (cellStyle.includes(ShapeBpmnElementKind.POOL)) {
+          if (cellStyle.includes(ShapeBpmnElementKind.POOL) || cellStyle.includes(ShapeBpmnElementKind.LANE)) {
             cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_SWIMLANE_FILLCOLOR, style.fill);
           }
 
