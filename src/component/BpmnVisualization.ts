@@ -42,6 +42,7 @@ import { Navigation } from './navigation';
 import { version, type Version } from './version';
 import { ensureIsArray } from './helpers/array-utils';
 import { mxgraph } from './mxgraph/initializer';
+import { ShapeBpmnElementKind } from '../model/bpmn/internal';
 
 export type ShapeStyleUpdate = {
   label?: { color?: string; fill?: string };
@@ -184,6 +185,10 @@ export class BpmnVisualization {
 
         if (this.isShapeStyleUpdate(style)) {
           cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILLCOLOR, style.fill);
+
+          if (cellStyle.includes(ShapeBpmnElementKind.POOL)) {
+            cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_SWIMLANE_FILLCOLOR, style.fill);
+          }
 
           /*
             label?: {  fill?: string // Zone for lane & pool };
