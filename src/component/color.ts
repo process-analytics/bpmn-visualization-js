@@ -32,10 +32,10 @@ limitations under the License.
     Values are in the range 0.0 (fully transparent) to 1.0 (fully opaque).
 */
 
-export type Color<T extends string> = ColorValue<T> | ColorKeyword | 'currentColor' | 'transparent' | 'inherit';
+export type Color<T extends string> = ColorValue<T> | HTMLColor | 'currentColor' | 'transparent' | 'inherit';
 type ColorValue<T extends string> = HexColor<T> | RGB<T> | RGBA<T> | HSL<T> | HSLA<T>;
 
-type ColorKeyword =
+type HTMLColor =
   | 'AliceBlue'
   | 'AntiqueWhite'
   | 'Aqua'
