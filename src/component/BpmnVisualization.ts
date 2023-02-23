@@ -45,8 +45,33 @@ import { ensureIsArray } from './helpers/array-utils';
 import { mxgraph } from './mxgraph/initializer';
 import { ShapeBpmnElementKind } from '../model/bpmn/internal';
 
+type Font<C extends string> = {
+  color?: Color<C>;
+  /**
+   *  The type of the value is int (in px).
+   */
+  size?: number;
+  family?: 'Arial' | 'Dialog' | 'Verdana' | 'Times New Roman';
+  /**
+   *  Default: false
+   */
+  isBold?: boolean;
+  /**
+   *  Default: false
+   */
+  isItalic?: boolean;
+  /**
+   *  Default: false
+   */
+  isUnderline?: boolean;
+  /**
+   *  Default: false
+   */
+  isStrikeThrough?: boolean;
+};
+
 export type ShapeStyleUpdate<C extends string> = {
-  label?: { color?: Color<C>; fill?: Color<C> };
+  font?: Font<C>;
   fill?: Color<C>;
   opacity?: number;
   stroke?: Color<C>;
@@ -61,8 +86,9 @@ export type ShapeStyleUpdate<C extends string> = {
     filter?: string;
   };
 };
+
 export type EdgeStyleUpdate<C extends string> = {
-  label?: { color?: Color<C> };
+  font?: Font<C>;
   opacity?: number;
   stroke?: Color<C>;
   /**
@@ -189,7 +215,18 @@ export class BpmnVisualization {
         const cell = this.graph.getModel().getCell(bpmnElementId);
         let cellStyle = cell.getStyle();
 
-        cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTCOLOR, style.label?.color);
+        console.log('old style = %s', cellStyle);
+        console.log(`---- new style -----`);
+        console.log(style);
+
+        const font = style.font;
+        if (font) {
+          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTCOLOR, font.color);
+          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTSIZE, font.size);
+          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTFAMILY, font.family);
+          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, BpmnVisualization.getFontStyleValue(font));
+        }
+
         cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_OPACITY, style.opacity);
         cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKECOLOR, style.stroke);
         cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKEWIDTH, style.strokeWidth);
@@ -234,6 +271,25 @@ export class BpmnVisualization {
   private isShapeStyleUpdate<C extends string>(style: ShapeStyleUpdate<C> | EdgeStyleUpdate<C>): style is ShapeStyleUpdate<C> {
     return style && typeof style === 'object' && ('fill' in style || 'stroke' in style || 'strokeWidth' in style);
   }
+
+  // ----------- DUPLICATION WITH StyleComputer class -------------
+  private static getFontStyleValue<C extends string>(font: Font<C>): number {
+    let value = 0;
+    if (font.isBold) {
+      value += mxgraph.mxConstants.FONT_BOLD;
+    }
+    if (font.isItalic) {
+      value += mxgraph.mxConstants.FONT_ITALIC;
+    }
+    if (font.isStrikeThrough) {
+      value += mxgraph.mxConstants.FONT_STRIKETHROUGH;
+    }
+    if (font.isUnderline) {
+      value += mxgraph.mxConstants.FONT_UNDERLINE;
+    }
+    return value;
+  }
+  // ----------- END OF DUPLICATION -------------
 
   resetStyle(bpmnElementIds: string | string[]): void {
     this.graph.getModel().beginUpdate();
