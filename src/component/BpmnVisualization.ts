@@ -28,6 +28,7 @@ import type {
   mxTerminalChange,
   mxVisibleChange,
 } from 'mxgraph';
+import type { Color } from './color';
 import { UndoManager } from './undoManager';
 import GraphConfigurator from './mxgraph/GraphConfigurator';
 import { newBpmnRenderer } from './mxgraph/BpmnRenderer';
@@ -44,21 +45,31 @@ import { ensureIsArray } from './helpers/array-utils';
 import { mxgraph } from './mxgraph/initializer';
 import { ShapeBpmnElementKind } from '../model/bpmn/internal';
 
-export type ShapeStyleUpdate = {
-  label?: { color?: string; fill?: string };
-  fill?: string;
+export type ShapeStyleUpdate<C extends string> = {
+  label?: { color?: Color<C>; fill?: Color<C> };
+  fill?: Color<C>;
   opacity?: number;
-  stroke?: string;
+  stroke?: Color<C>;
+  /**
+   The type of the value is numeric and the possible range is any non-negative value larger or equal to 1.
+   The value defines the stroke width in pixels.
+   Note: To hide a stroke use strokeColor none.  Value is “strokeWidth”.
+   */
   strokeWidth?: number;
 
   hover?: {
     filter?: string;
   };
 };
-export type EdgeStyleUpdate = {
-  label?: { color?: string };
+export type EdgeStyleUpdate<C extends string> = {
+  label?: { color?: Color<C> };
   opacity?: number;
-  stroke?: string;
+  stroke?: Color<C>;
+  /**
+  The type of the value is numeric and the possible range is any non-negative value larger or equal to 1.
+  The value defines the stroke width in pixels.
+  Note: To hide a stroke use strokeColor none.  Value is “strokeWidth”.
+  */
   strokeWidth?: number;
 
   hover?: {
@@ -171,7 +182,7 @@ export class BpmnVisualization {
     this.graph.getView().addListener(mxgraph.mxEvent.UNDO, listener);
   }
 
-  updateStyle(bpmnElementIds: string | string[], style: ShapeStyleUpdate | EdgeStyleUpdate): void {
+  updateStyle<C extends string>(bpmnElementIds: string | string[], style: ShapeStyleUpdate<C> | EdgeStyleUpdate<C>): void {
     this.graph.getModel().beginUpdate();
     try {
       ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => {
@@ -220,7 +231,7 @@ export class BpmnVisualization {
     }
   }
 
-  private isShapeStyleUpdate(style: ShapeStyleUpdate | EdgeStyleUpdate): style is ShapeStyleUpdate {
+  private isShapeStyleUpdate<C extends string>(style: ShapeStyleUpdate<C> | EdgeStyleUpdate<C>): style is ShapeStyleUpdate<C> {
     return style && typeof style === 'object' && ('fill' in style || 'stroke' in style || 'strokeWidth' in style);
   }
 

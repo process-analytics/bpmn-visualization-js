@@ -111,9 +111,9 @@ function buildStyle(bpmnKind) {
     case 'messageFlow':
       style.label.color = 'dodgerblue !important';
       style.stroke = 'dodgerblue';
-      style.strokeWidth = '4';
+      style.strokeWidth = 4;
 
-      // Initiating
+      /*      // Initiating
       style.icon = {
         stroke: 'orange',
         strokeWidth: '3px',
@@ -123,13 +123,13 @@ function buildStyle(bpmnKind) {
         fill: 'orange',
         stroke: 'white',
         strokeWidth: '3px',
-      };
+      };*/
       style.hover.strokeWidth = '6px !important';
       break;
     case 'sequenceFlow':
       style.label.color = 'dodgerblue !important';
       style.stroke = 'dodgerblue';
-      style.strokeWidth = '4';
+      style.strokeWidth = 4;
       style.hover.strokeWidth = '6px !important';
       break;
   }

@@ -96,7 +96,7 @@ export function getElementsByIds(bpmnId: string | string[]): BpmnElement[] {
   return bpmnVisualization.bpmnElementsRegistry.getElementsByIds(bpmnId);
 }
 
-export function updateStyle(bpmnElementIds: string | string[], style: ShapeStyleUpdate | EdgeStyleUpdate): void {
+export function updateStyle<C extends string>(bpmnElementIds: string | string[], style: ShapeStyleUpdate<C> | EdgeStyleUpdate<C>): void {
   return bpmnVisualization.updateStyle(bpmnElementIds, style);
 }
 
