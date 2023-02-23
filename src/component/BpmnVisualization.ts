@@ -28,6 +28,7 @@ import type {
   mxTerminalChange,
   mxVisibleChange,
 } from 'mxgraph';
+import type { Opacity } from './opacity';
 import type { Color } from './color';
 import { UndoManager } from './undoManager';
 import GraphConfigurator from './mxgraph/GraphConfigurator';
@@ -47,6 +48,7 @@ import { ShapeBpmnElementKind } from '../model/bpmn/internal';
 
 type Font<C extends string> = {
   color?: Color<C>;
+  opacity?: Opacity;
   /**
    *  The type of the value is int (in px).
    */
@@ -70,17 +72,23 @@ type Font<C extends string> = {
   isStrikeThrough?: boolean;
 };
 
-export type ShapeStyleUpdate<C extends string> = {
-  font?: Font<C>;
-  fill?: Color<C>;
-  opacity?: number;
-  stroke?: Color<C>;
+type Fill<C extends string> = { color: Color<C>; opacity?: Opacity };
+
+type Stroke<C extends string> = {
+  color: Color<C>;
   /**
    The type of the value is numeric and the possible range is any non-negative value larger or equal to 1.
    The value defines the stroke width in pixels.
    Note: To hide a stroke use strokeColor none.  Value is “strokeWidth”.
    */
-  strokeWidth?: number;
+  width?: number;
+  opacity?: Opacity;
+};
+export type ShapeStyleUpdate<C extends string> = {
+  font?: Font<C>;
+  opacity?: Opacity;
+  fill?: Fill<C>;
+  stroke?: Stroke<C>;
 
   hover?: {
     filter?: string;
@@ -89,14 +97,8 @@ export type ShapeStyleUpdate<C extends string> = {
 
 export type EdgeStyleUpdate<C extends string> = {
   font?: Font<C>;
-  opacity?: number;
-  stroke?: Color<C>;
-  /**
-  The type of the value is numeric and the possible range is any non-negative value larger or equal to 1.
-  The value defines the stroke width in pixels.
-  Note: To hide a stroke use strokeColor none.  Value is “strokeWidth”.
-  */
-  strokeWidth?: number;
+  opacity?: Opacity;
+  stroke?: Stroke<C>;
 
   hover?: {
     strokeWidth?: string;
@@ -225,17 +227,20 @@ export class BpmnVisualization {
           cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTSIZE, font.size);
           cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTFAMILY, font.family);
           cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, BpmnVisualization.getFontStyleValue(font));
+          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_TEXT_OPACITY, font.opacity);
         }
 
         cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_OPACITY, style.opacity);
-        cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKECOLOR, style.stroke);
-        cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKEWIDTH, style.strokeWidth);
+        cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKECOLOR, style.stroke.color);
+        cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKEWIDTH, style.stroke.width);
+        cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKE_OPACITY, style.stroke.opacity);
 
         if (this.isShapeStyleUpdate(style)) {
-          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILLCOLOR, style.fill);
+          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILLCOLOR, style.fill.color);
+          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILL_OPACITY, style.fill.opacity);
 
           if (cellStyle.includes(ShapeBpmnElementKind.POOL) || cellStyle.includes(ShapeBpmnElementKind.LANE)) {
-            cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_SWIMLANE_FILLCOLOR, style.fill);
+            cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_SWIMLANE_FILLCOLOR, style.fill.color);
           }
 
           /*

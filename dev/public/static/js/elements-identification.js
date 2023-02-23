@@ -36,7 +36,7 @@ let lastIdentifiedBpmnIds = [];
 let isOverlaysDisplayed = true;
 
 function buildStyle(bpmnKind) {
-  const style = { font: {}, hover: {} };
+  const style = { font: {}, fill: {}, stroke: {}, hover: {} };
   switch (bpmnKind) {
     case 'task':
     case 'userTask':
@@ -47,7 +47,8 @@ function buildStyle(bpmnKind) {
     case 'manualTask':
     case 'businessRuleTask':
       style.font.color = 'red !important';
-      style.fill = 'aquamarine';
+      style.fill.color = 'aquamarine';
+      style.fill.opacity = 40;
       style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
       break;
     case 'startEvent':
@@ -56,7 +57,7 @@ function buildStyle(bpmnKind) {
     case 'intermediateThrowEvent':
     case 'boundaryEvent':
       style.font.color = 'red !important';
-      style.stroke = 'red';
+      style.stroke.color = 'red';
       style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
       break;
     case 'exclusiveGateway':
@@ -65,14 +66,16 @@ function buildStyle(bpmnKind) {
     case 'eventBasedGateway':
     case 'complexGateway':
       style.font.color = 'red !important';
-      style.stroke = 'chartreuse';
-      style.strokeWidth = 4;
+      style.font.opacity = 60;
+      style.stroke.color = 'chartreuse';
+      style.stroke.width = 4;
       style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
       break;
     case 'lane':
     case 'pool':
       style.font.color = 'white !important';
-      style.fill = 'palevioletred';
+      style.fill.color = 'palevioletred';
+      style.stroke.opacity = 30;
       style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
       break;
     case 'callActivity':
@@ -85,7 +88,8 @@ function buildStyle(bpmnKind) {
       style.font.isUnderline = true;
       style.font.isStrikeThrough = true;
 
-      style.fill = 'MediumVioletRed';
+      style.fill.color = 'MediumVioletRed';
+      style.opacity = 60;
       break;
     case 'group':
     case 'textAnnotation':
@@ -95,7 +99,7 @@ function buildStyle(bpmnKind) {
       style.font.isBold = true;
       style.font.isUnderline = true;
 
-      style.stroke = 'Chartreuse';
+      style.stroke.color = 'Chartreuse';
       break;
     case 'messageFlow':
     /*      // Initiating
@@ -112,8 +116,8 @@ function buildStyle(bpmnKind) {
     case 'sequenceFlow':
     case 'association':
       style.font.color = 'dodgerblue !important';
-      style.stroke = 'dodgerblue';
-      style.strokeWidth = 4;
+      style.stroke.color = 'dodgerblue';
+      style.stroke.width = 4;
       style.hover.strokeWidth = '6px !important';
       break;
   }
