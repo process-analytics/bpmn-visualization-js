@@ -14,6 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+/* eslint-disable no-console */
+
 import type { mxCell, mxUndoableEdit } from 'mxgraph';
 import { mxgraph } from './mxgraph/initializer';
 
@@ -64,3 +66,5 @@ export class UndoManager extends mxgraph.mxEventSource {
     console.log('------ END REGISTER UNDOABLE -------');
   }
 }
+
+/* eslint-enable no-console */

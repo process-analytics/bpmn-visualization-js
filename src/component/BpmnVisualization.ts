@@ -14,6 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+/* eslint-disable no-console */
+
 import { mxStyleChange } from 'mxgraph';
 import type {
   mxEventObject,
@@ -158,16 +160,16 @@ export class BpmnVisualization {
   }
 
   private installUndoHandler(): void {
-    const listener = mxgraph.mxUtils.bind(this, (sender: any, evt: mxEventObject) => {
+    const listener = mxgraph.mxUtils.bind(this, (sender: object, evt: mxEventObject) => {
       const edit: mxUndoableEdit = evt.getProperty('edit');
       const array: Array<mxGeometryChange | mxChildChange | mxStyleChange | mxVisibleChange | mxCollapseChange | mxValueChange | mxTerminalChange | mxCurrentRootChange> =
         edit.changes;
-      const filter: mxStyleChange[] = array.filter(change => this.isMxStyleChange(change));
+      const filter = array.filter(change => this.isMxStyleChange(change));
       console.log(filter);
-      // mxCurrentRootChange
+
       if (filter.length >= 1) {
         // See https://github.com/jgraph/mxgraph/blob/ff141aab158417bd866e2dfebd06c61d40773cd2/javascript/src/js/view/mxGraph.js#L2114
-        this.undoManager.registerUndoable(filter[0].cell, edit);
+        this.undoManager.registerUndoable((<mxStyleChange>filter[0]).cell, edit);
       }
     });
 
@@ -225,3 +227,5 @@ export class BpmnVisualization {
     }
   }
 }
+
+/* eslint-enable no-console */
