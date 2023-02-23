@@ -46,6 +46,94 @@ import { ensureIsArray } from './helpers/array-utils';
 import { mxgraph } from './mxgraph/initializer';
 import { ShapeBpmnElementKind } from '../model/bpmn/internal';
 
+/*
+STYLE_IMAGE
+
+STYLE_IMAGE: 'image'
+
+Defines the key for the image style.  Possible values are any image URL, the type of the value is String.  This is the path to the image that is to be displayed within the label of a vertex.  Data URLs should use the following format: data:image/png,xyz where xyz is the base64 encoded data (without the “base64”-prefix).  Note that Data URLs are only supported in modern browsers.  Value is “image”.
+STYLE_IMAGE_WIDTH
+
+STYLE_IMAGE_WIDTH: 'imageWidth'
+
+Defines the key for the imageWidth style.  The type of this value is int, the value is the image width in pixels and must be greater than 0.  Value is “imageWidth”.
+STYLE_IMAGE_HEIGHT
+
+STYLE_IMAGE_HEIGHT: 'imageHeight'
+
+Defines the key for the imageHeight style.  The type of this value is int, the value is the image height in pixels and must be greater than 0.  Value is “imageHeight”.
+STYLE_IMAGE_BACKGROUND
+
+STYLE_IMAGE_BACKGROUND: 'imageBackground'
+
+Defines the key for the image background color.  This style is only used in mxImageShape.  Possible values are all HTML color names or HEX codes.  Value is “imageBackground”.
+STYLE_IMAGE_BORDER
+
+STYLE_IMAGE_BORDER: 'imageBorder'
+
+Defines the key for the image border color.  This style is only used in mxImageShape.  Possible values are all HTML color names or HEX codes.  Value is “imageBorder”.
+
+STYLE_IMAGE_ASPECT
+
+    STYLE_IMAGE_ASPECT: 'imageAspect'
+
+Defines the key for the image aspect style.  Possible values are 0 (do not preserve aspect) or 1 (keep aspect).  This is only used in mxImageShape.  Default is 1.  Value is “imageAspect”.
+STYLE_IMAGE_ALIGN
+
+    STYLE_IMAGE_ALIGN: 'imageAlign'
+
+Defines the key for the align style.  Possible values are ALIGN_LEFT, ALIGN_CENTER and ALIGN_RIGHT.  The value defines how any image in the vertex label is aligned horizontally within the label bounds of a SHAPE_LABEL shape.  Value is “imageAlign”.
+STYLE_IMAGE_VERTICAL_ALIGN
+
+    STYLE_IMAGE_VERTICAL_ALIGN: 'imageVerticalAlign'
+
+Defines the key for the verticalAlign style.  Possible values are ALIGN_TOP, ALIGN_MIDDLE and ALIGN_BOTTOM.  The value defines how any image in the vertex label is aligned vertically within the label bounds of a SHAPE_LABEL shape.  Value is “imageVerticalAlign”.
+*/
+
+/*
+STYLE_LABEL_WIDTH
+
+STYLE_LABEL_WIDTH: 'labelWidth'
+
+Defines the key for the width of the label if the label position is not center.  Value is “labelWidth”.
+STYLE_LABEL_POSITION
+
+STYLE_LABEL_POSITION: 'labelPosition'
+
+Defines the key for the horizontal label position of vertices.  Possible values are ALIGN_LEFT, ALIGN_CENTER and ALIGN_RIGHT.  Default is ALIGN_CENTER.  The label align defines the position of the label relative to the cell.  ALIGN_LEFT means the entire label bounds is placed completely just to the left of the vertex, ALIGN_RIGHT means adjust to the right and ALIGN_CENTER means the label bounds are vertically aligned with the bounds of the vertex.  Note this value doesn’t affect the positioning of label within the label bounds, to move the label horizontally within the label bounds, use STYLE_ALIGN.  Value is “labelPosition”.
+
+STYLE_VERTICAL_LABEL_POSITION
+
+    STYLE_VERTICAL_LABEL_POSITION: 'verticalLabelPosition'
+
+Defines the key for the vertical label position of vertices.  Possible values are ALIGN_TOP, ALIGN_BOTTOM and ALIGN_MIDDLE.  Default is ALIGN_MIDDLE.  The label align defines the position of the label relative to the cell.  ALIGN_TOP means the entire label bounds is placed completely just on the top of the vertex, ALIGN_BOTTOM means adjust on the bottom and ALIGN_MIDDLE means the label bounds are horizontally aligned with the bounds of the vertex.  Note this value doesn’t affect the positioning of label within the label bounds, to move the label vertically within the label bounds, use STYLE_VERTICAL_ALIGN.  Value is “verticalLabelPosition”.
+
+STYLE_LABEL_BACKGROUNDCOLOR
+
+    STYLE_LABEL_BACKGROUNDCOLOR: 'labelBackgroundColor'
+
+Defines the key for the label background color.  Possible values are all HTML color names or HEX codes.  Value is “labelBackgroundColor”.
+STYLE_LABEL_BORDERCOLOR
+
+    STYLE_LABEL_BORDERCOLOR: 'labelBorderColor'
+
+Defines the key for the label border color.  Possible values are all HTML color names or HEX codes.  Value is “labelBorderColor”.
+STYLE_LABEL_PADDING
+
+    STYLE_LABEL_PADDING: 'labelPadding'
+
+Defines the key for the label padding, ie. the space between the label border and the label.  Value is “labelPadding”.
+
+*/
+
+/*
+STYLE_SHADOW
+
+STYLE_SHADOW: 'shadow'
+
+Defines the key for the shadow style.  The type of the value is Boolean.  Value is “shadow”.
+*/
+
 type Font<C extends string> = {
   color?: Color<C>;
   opacity?: Opacity;
@@ -72,23 +160,53 @@ type Font<C extends string> = {
   isStrikeThrough?: boolean;
 };
 
-type Fill<C extends string> = { color: Color<C>; opacity?: Opacity };
+type Fill<C extends string> = {
+  /**
+   *  Possible values are all HTML color names or HEX codes, as well as special keywords such as ‘swimlane‘, ‘inherit’ to use the color code of a related cell.
+   */
+  color: Color<C> | 'swimlane';
+  opacity?: Opacity;
+};
 
 type Stroke<C extends string> = {
-  color: Color<C>;
+  /**
+   *  Possible values are all HTML color names or HEX codes, as well as special keywords such as ‘swimlane‘, ‘inherit’ to use the color code of a related cell or ‘none’ for no color.
+   */
+  color: Color<C> | 'swimlane' | 'none';
   /**
    The type of the value is numeric and the possible range is any non-negative value larger or equal to 1.
    The value defines the stroke width in pixels.
-   Note: To hide a stroke use strokeColor none.  Value is “strokeWidth”.
+   Note: To hide a stroke use strokeColor 'none'.
    */
   width?: number;
   opacity?: Opacity;
 };
+
+type Gradient<C extends string> = {
+  /**
+   *  Possible values are all HTML color names or HEX codes, as well as special keywords such as ‘swimlane‘, ‘inherit’ to use the color code of a related cell.
+   */
+  color: Color<C> | 'swimlane';
+  /**
+   * Generally, and by default in mxGraph, gradient painting is done from the value of STYLE_FILLCOLOR to the value of STYLE_GRADIENTCOLOR.
+   * Taking the example of DIRECTION_NORTH, this means STYLE_FILLCOLOR color at the bottom of paint pattern and STYLE_GRADIENTCOLOR at top, with a gradient in-between.
+   *
+   * @default DIRECTION_SOUTH
+   */
+  direction: mxgraph.mxConstants.DIRECTION_EAST | mxgraph.mxConstants.DIRECTION_WEST | mxgraph.mxConstants.DIRECTION_NORTH | mxgraph.mxConstants.DIRECTION_SOUTH;
+};
+
 export type ShapeStyleUpdate<C extends string> = {
   font?: Font<C>;
   opacity?: Opacity;
   fill?: Fill<C>;
   stroke?: Stroke<C>;
+  gradient?: Gradient<C>;
+
+  /*
+  STYLE_SEPARATORCOLOR: 'separatorColor'
+  Defines the key for the separatorColor style.  Possible values are all HTML color names or HEX codes.  This style is only used for SHAPE_SWIMLANE shapes.  Value is “separatorColor”.
+*/
 
   hover?: {
     filter?: string;
@@ -99,6 +217,14 @@ export type EdgeStyleUpdate<C extends string> = {
   font?: Font<C>;
   opacity?: Opacity;
   stroke?: Stroke<C>;
+  gradient?: Gradient<C>;
+
+  /*
+Pour message flow 
+    STYLE_DASH_PATTERN: 'dashPattern'
+
+Defines the key for the dashed pattern style in SVG and image exports.  The type of this value is a space separated list of numbers that specify a custom-defined dash pattern.  Dash styles are defined in terms of the length of the dash (the drawn part of the stroke) and the length of the space between the dashes.  The lengths are relative to the line width: a length of “1” is equal to the line width.  VML ignores this style and uses dashStyle instead as defined in the VML specification.  This style is only used in the mxConnector shape.  Value is “dashPattern”.
+*/
 
   hover?: {
     strokeWidth?: string;
@@ -221,6 +347,8 @@ export class BpmnVisualization {
         console.log(`---- new style -----`);
         console.log(style);
 
+        cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_OPACITY, style.opacity);
+
         const font = style.font;
         if (font) {
           cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTCOLOR, font.color);
@@ -230,19 +358,30 @@ export class BpmnVisualization {
           cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_TEXT_OPACITY, font.opacity);
         }
 
-        cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_OPACITY, style.opacity);
-        cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKECOLOR, style.stroke.color);
-        cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKEWIDTH, style.stroke.width);
-        cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKE_OPACITY, style.stroke.opacity);
+        const stroke = style.stroke;
+        if (stroke) {
+          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKECOLOR, stroke.color);
+          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKEWIDTH, stroke.width);
+          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKE_OPACITY, stroke.opacity);
+        }
+
+        const gradient = style.gradient;
+        if (gradient) {
+          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_GRADIENTCOLOR, gradient.color);
+          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_GRADIENT_DIRECTION, gradient.direction);
+        }
 
         if (this.isShapeStyleUpdate(style)) {
-          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILLCOLOR, style.fill.color);
-          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILL_OPACITY, style.fill.opacity);
+          const fill = style.fill;
+          if (fill) {
+            cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILLCOLOR, fill.color);
+            cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILL_OPACITY, fill.opacity);
 
-          if (cellStyle.includes(ShapeBpmnElementKind.POOL) || cellStyle.includes(ShapeBpmnElementKind.LANE)) {
-            cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_SWIMLANE_FILLCOLOR, style.fill.color);
+            if (cellStyle.includes(ShapeBpmnElementKind.POOL) || cellStyle.includes(ShapeBpmnElementKind.LANE)) {
+              // Possible values are all HTML color names or HEX codes.
+              cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_SWIMLANE_FILLCOLOR, fill.color);
+            }
           }
-
           /*
             label?: {  fill?: string // Zone for lane & pool };
             hover?: {
