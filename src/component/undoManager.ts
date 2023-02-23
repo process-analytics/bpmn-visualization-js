@@ -37,12 +37,12 @@ export class UndoManager extends mxgraph.mxEventSource {
   undo(cell: mxCell): void {
     console.log('------ UNDO -------');
     if (this.history.get(cell)) {
-      const edit = this.history.get(cell);
-      console.log(edit);
-      edit.undo();
+      const undoableEdit = this.history.get(cell);
+      console.log(undoableEdit);
+      undoableEdit.undo();
 
-      if (edit.isSignificant()) {
-        this.fireEvent(new mxgraph.mxEventObject(mxgraph.mxEvent.UNDO, 'edit', edit), this);
+      if (undoableEdit.isSignificant()) {
+        this.fireEvent(new mxgraph.mxEventObject(mxgraph.mxEvent.UNDO, 'edit', undoableEdit), this);
       }
       this.history.delete(cell);
     }
@@ -57,6 +57,7 @@ export class UndoManager extends mxgraph.mxEventSource {
   registerUndoable(cell: mxCell, undoableEdit: mxUndoableEdit): void {
     console.log('------ REGISTER UNDOABLE -------');
     if (!this.history.get(cell)) {
+      console.log(undoableEdit);
       this.history.set(cell, undoableEdit);
       this.fireEvent(new mxgraph.mxEventObject(mxgraph.mxEvent.ADD, 'edit', undoableEdit), this);
     }

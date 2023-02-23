@@ -14,24 +14,26 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-// eslint-disable-next-line @typescript-eslint/triple-slash-reference
-/// <reference path="../../node_modules/@typed-mxgraph/typed-mxgraph/lib/handler/index.d.ts" />
-// eslint-disable-next-line @typescript-eslint/triple-slash-reference
-/// <reference path="../../node_modules/@typed-mxgraph/typed-mxgraph/lib/io/index.d.ts" />
-// eslint-disable-next-line @typescript-eslint/triple-slash-reference
-/// <reference path="../../node_modules/@typed-mxgraph/typed-mxgraph/lib/layout/index.d.ts" />
-// eslint-disable-next-line @typescript-eslint/triple-slash-reference
-/// <reference path="../../node_modules/@typed-mxgraph/typed-mxgraph/lib/model/index.d.ts" />
-// eslint-disable-next-line @typescript-eslint/triple-slash-reference
-/// <reference path="../../node_modules/@typed-mxgraph/typed-mxgraph/lib/util/index.d.ts" />
-// eslint-disable-next-line @typescript-eslint/triple-slash-reference
-/// <reference path="../../node_modules/@typed-mxgraph/typed-mxgraph/lib/shape/index.d.ts" />
-// eslint-disable-next-line @typescript-eslint/triple-slash-reference
-/// <reference path="../../node_modules/@typed-mxgraph/typed-mxgraph/lib/view/index.d.ts" />
-// eslint-disable-next-line @typescript-eslint/triple-slash-reference
-/// <reference path="../../node_modules/@typed-mxgraph/typed-mxgraph/lib/mxClient.d.ts" />
-
 declare module 'mxgraph' {
+  // Override the declaration of mxStyleChange class
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  class mxStyleChange {
+    cell: mxCell;
+    model: mxGraphModel;
+    previous: string;
+    style?: string;
+
+    constructor(model: mxGraphModel, cell: mxCell, style?: string);
+    /**
+     * Function: execute
+     *
+     * Changes the style of {@link cell}` to {@link previous}` using
+     * <mxGraphModel.styleForCellChanged>.
+     */
+    execute(): void;
+  }
   export interface mxGraphExportObject {
     mxRootChange: typeof mxRootChange;
     mxGeometryChange: typeof mxGeometryChange;

@@ -167,12 +167,11 @@ export class BpmnVisualization {
       // mxCurrentRootChange
       if (filter.length >= 1) {
         // See https://github.com/jgraph/mxgraph/blob/ff141aab158417bd866e2dfebd06c61d40773cd2/javascript/src/js/view/mxGraph.js#L2114
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         this.undoManager.registerUndoable(filter[0].cell, edit);
       }
     });
 
+    // Mandatory
     this.graph.getModel().addListener(mxgraph.mxEvent.UNDO, listener);
     this.graph.getView().addListener(mxgraph.mxEvent.UNDO, listener);
   }
