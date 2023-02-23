@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { mxStyleChange } from 'mxgraph';
+import { mxStyleChange } from 'mxgraph';
 import type {
   mxEventObject,
   mxUndoableEdit,
@@ -143,19 +143,33 @@ export class BpmnVisualization {
     return version();
   }
 
+  private isMxStyleChange(
+    change: mxGeometryChange | mxChildChange | mxStyleChange | mxVisibleChange | mxCollapseChange | mxValueChange | mxTerminalChange | mxCurrentRootChange,
+  ): change is mxStyleChange {
+    console.log(change);
+    console.log(typeof change === 'object'); // true
+    // console.log(change instanceof mxgraph.mxStyleChange); // TypeError: invalid 'instanceof' operand (intermediate value).mxStyleChange
+    // console.log(change instanceof mxStyleChange); // TypeError: invalid 'instanceof' operand mxStyleChange
+    console.log(change.constructor === mxgraph.mxStyleChange); // false
+    console.log(change.constructor === mxStyleChange); // false
+    console.log(change.constructor); // function mxStyleChange(model, cell, style)
+    console.log(change.constructor.name); // mxStyleChange
+    return change && typeof change === 'object' && change.constructor.name === 'mxStyleChange';
+  }
+
   private installUndoHandler(): void {
     const listener = mxgraph.mxUtils.bind(this, (sender: any, evt: mxEventObject) => {
       const edit: mxUndoableEdit = evt.getProperty('edit');
       const array: Array<mxGeometryChange | mxChildChange | mxStyleChange | mxVisibleChange | mxCollapseChange | mxValueChange | mxTerminalChange | mxCurrentRootChange> =
         edit.changes;
-      console.log(array);
-      const filter: mxStyleChange[] = array.filter(change => typeof change === 'object' && change instanceof mxgraph.mxStyleChange);
+      const filter: mxStyleChange[] = array.filter(change => this.isMxStyleChange(change));
+      console.log(filter);
       // mxCurrentRootChange
-      if (filter.length > 1) {
+      if (filter.length >= 1) {
         // See https://github.com/jgraph/mxgraph/blob/ff141aab158417bd866e2dfebd06c61d40773cd2/javascript/src/js/view/mxGraph.js#L2114
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        this.undoManager.undoableEditHappened(filter[0].cell, edit);
+        this.undoManager.registerUndoable(filter[0].cell, edit);
       }
     });
 
@@ -163,8 +177,7 @@ export class BpmnVisualization {
     this.graph.getView().addListener(mxgraph.mxEvent.UNDO, listener);
   }
 
-  // updateStyle(bpmnElementIds: string | string[], style: ShapeStyleUpdate | EdgeStyleUpdate): void {
-  updateStyle(bpmnElementIds: string | string[], style: ShapeStyleUpdate): void {
+  updateStyle(bpmnElementIds: string | string[], style: ShapeStyleUpdate | EdgeStyleUpdate): void {
     this.graph.getModel().beginUpdate();
     try {
       ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => {
@@ -178,12 +191,13 @@ export class BpmnVisualization {
       };*/
 
         cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTCOLOR, style.label?.color);
-        cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILLCOLOR, style.fill);
-        cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKECOLOR, style.stroke);
-        cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKEWIDTH, style.strokeWidth);
         cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_OPACITY, style.opacity);
 
-        //this.graph.styleForCellChanged update & return the previous style.
+        if (this.isShapeStyleUpdate(style)) {
+          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILLCOLOR, style.fill);
+          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKECOLOR, style.stroke);
+          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKEWIDTH, style.strokeWidth);
+        }
 
         this.graph.model.setStyle(cell, cellStyle);
       });
@@ -193,6 +207,10 @@ export class BpmnVisualization {
     } finally {
       this.graph.getModel().endUpdate();
     }
+  }
+
+  private isShapeStyleUpdate(style: ShapeStyleUpdate | EdgeStyleUpdate): style is ShapeStyleUpdate {
+    return style && typeof style === 'object' && ('fill' in style || 'stroke' in style || 'strokeWidth' in style);
   }
 
   /*  function updateStyle(state, hover)

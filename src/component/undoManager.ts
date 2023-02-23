@@ -35,16 +35,18 @@ export class UndoManager extends mxgraph.mxEventSource {
    * Undoes the last change.
    */
   undo(cell: mxCell): void {
-    if (!this.history.get(cell)) {
+    console.log('------ UNDO -------');
+    if (this.history.get(cell)) {
       const edit = this.history.get(cell);
+      console.log(edit);
       edit.undo();
 
       if (edit.isSignificant()) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        this.fireEvent(new mxgraph.mxEventObject(mxEvent.UNDO, 'edit', edit));
+        this.fireEvent(new mxgraph.mxEventObject(mxgraph.mxEvent.UNDO, 'edit', edit), this);
       }
+      this.history.delete(cell);
     }
+    console.log('------ END UNDO -------');
   }
 
   /**
@@ -52,10 +54,12 @@ export class UndoManager extends mxgraph.mxEventSource {
    *
    * Method to be called to add new undoable edits to the <history>.
    */
-  undoableEditHappened(cell: mxCell, undoableEdit: mxUndoableEdit): void {
-    this.history.set(cell, undoableEdit);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    this.fireEvent(new mxgraph.mxEventObject(mxEvent.ADD, 'edit', undoableEdit));
+  registerUndoable(cell: mxCell, undoableEdit: mxUndoableEdit): void {
+    console.log('------ REGISTER UNDOABLE -------');
+    if (!this.history.get(cell)) {
+      this.history.set(cell, undoableEdit);
+      this.fireEvent(new mxgraph.mxEventObject(mxgraph.mxEvent.ADD, 'edit', undoableEdit), this);
+    }
+    console.log('------ END REGISTER UNDOABLE -------');
   }
 }
