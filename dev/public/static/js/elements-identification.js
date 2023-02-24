@@ -36,7 +36,7 @@ let lastIdentifiedBpmnIds = [];
 let isOverlaysDisplayed = true;
 
 function buildStyle(bpmnKind) {
-  const style = { font: {}, fill: {}, stroke: {}, hover: {} };
+  const style = { font: {}, fill: {}, stroke: {}, gradient: {}, hover: {} };
   switch (bpmnKind) {
     case 'task':
     case 'userTask':
@@ -79,6 +79,15 @@ function buildStyle(bpmnKind) {
       style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
       break;
     case 'callActivity':
+      style.font.color = 'white';
+      style.font.family = 'Times New Roman';
+      style.font.isItalic = true;
+      style.font.isStrikeThrough = true;
+
+      style.fill.color = 'LimeGreen';
+      style.gradient.color = 'swimlane';
+      style.gradient.direction = 'north';
+      break;
     case 'subProcess':
       style.font.color = 'white';
       style.font.size = 14;

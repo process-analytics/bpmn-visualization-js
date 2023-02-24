@@ -185,6 +185,7 @@ type Stroke<C extends string> = {
 type Gradient<C extends string> = {
   /**
    *  Possible values are all HTML color names or HEX codes, as well as special keywords such as ‘swimlane‘, ‘inherit’ to use the color code of a related cell.
+   *  This is ignored if no fill color is defined.
    */
   color: Color<C> | 'swimlane';
   /**
@@ -220,7 +221,7 @@ export type EdgeStyleUpdate<C extends string> = {
   gradient?: Gradient<C>;
 
   /*
-Pour message flow 
+Pour message flow
     STYLE_DASH_PATTERN: 'dashPattern'
 
 Defines the key for the dashed pattern style in SVG and image exports.  The type of this value is a space separated list of numbers that specify a custom-defined dash pattern.  Dash styles are defined in terms of the length of the dash (the drawn part of the stroke) and the length of the space between the dashes.  The lengths are relative to the line width: a length of “1” is equal to the line width.  VML ignores this style and uses dashStyle instead as defined in the VML specification.  This style is only used in the mxConnector shape.  Value is “dashPattern”.
