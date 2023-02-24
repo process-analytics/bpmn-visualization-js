@@ -167,6 +167,7 @@ type IsDecNumber<T extends string> = T extends `${infer Integer}.${infer Fractio
     : OnlyDecDigits<Integer> & OnlyDecDigits<Fractional>
   : OnlyDecDigits<T>;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type IntegerPart<T extends string> = T extends `${infer I}.${infer F}` ? I : T;
 
 type IsInteger<T extends string> = 1 extends IsDecNumber<T> ? (T extends IntegerPart<T> ? 1 : never) : never;
