@@ -33,6 +33,32 @@
         position: absolute;
         width: 70%;
       }
+
+      :root {
+        --color-msg-flow-icon: orange;
+      }
+
+      /* message flow icon */
+      .detection.bpmn-message-flow-icon > rect,
+      .detection.bpmn-message-flow-icon > path {
+        stroke: var(--color-msg-flow-icon);
+        stroke-width: 3px;
+      }
+      /* special for msg flow icon non-initiating */
+      .detection.bpmn-message-flow-icon.bpmn-icon-non-initiating > rect {
+        fill: var(--color-msg-flow-icon);
+      }
+      .detection.bpmn-message-flow-icon.bpmn-icon-non-initiating > path {
+        stroke: white;
+      }
+
+      /* apply shadow on hover */
+      .detection:not(.bpmn-type-flow):hover {
+        filter: drop-shadow(0 0 1rem rgba(0, 0, 0));
+      }
+      .detection.bpmn-type-flow:hover > path {
+        stroke-width: 6px !important;
+      }
     </style>
     <script src="./static/js/elements-identification.js" type="module"></script>
 </head>

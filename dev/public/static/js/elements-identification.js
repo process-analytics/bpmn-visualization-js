@@ -33,10 +33,11 @@ import {
 } from '../../../ts/dev-bundle-index';
 
 let lastIdentifiedBpmnIds = [];
+const cssClassName = 'detection';
 let isOverlaysDisplayed = true;
 
 function buildStyle(bpmnKind) {
-  const style = { font: {}, fill: {}, stroke: {}, gradient: {}, hover: {} };
+  const style = { font: {}, fill: {}, stroke: {}, gradient: {} };
   switch (bpmnKind) {
     case 'task':
     case 'userTask':
@@ -49,7 +50,6 @@ function buildStyle(bpmnKind) {
       style.font.color = 'red !important';
       style.fill.color = 'aquamarine';
       style.fill.opacity = 40;
-      style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
       break;
     case 'startEvent':
     case 'endEvent':
@@ -58,7 +58,6 @@ function buildStyle(bpmnKind) {
     case 'boundaryEvent':
       style.font.color = 'red !important';
       style.stroke.color = 'red';
-      style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
       break;
     case 'exclusiveGateway':
     case 'inclusiveGateway':
@@ -69,14 +68,12 @@ function buildStyle(bpmnKind) {
       style.font.opacity = 60;
       style.stroke.color = 'chartreuse';
       style.stroke.width = 4;
-      style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
       break;
     case 'lane':
     case 'pool':
       style.font.color = 'white !important';
       style.fill.color = 'palevioletred';
       style.stroke.opacity = 30;
-      style.hover.filter = 'drop-shadow(0 0 1rem rgba(0, 0, 0))';
       break;
     case 'callActivity':
       style.font.color = 'white';
@@ -111,23 +108,11 @@ function buildStyle(bpmnKind) {
       style.stroke.color = 'Chartreuse';
       break;
     case 'messageFlow':
-    /*      // Initiating
-      style.icon = {
-        stroke: 'orange',
-        strokeWidth: '3px',
-      };
-      // Non-initiating
-      style.icon = {
-        fill: 'orange',
-        stroke: 'white',
-        strokeWidth: '3px',
-      };*/
     case 'sequenceFlow':
     case 'association':
       style.font.color = 'dodgerblue !important';
       style.stroke.color = 'dodgerblue';
       style.stroke.width = 4;
-      style.hover.strokeWidth = '6px !important';
       break;
   }
   return style;
@@ -154,6 +139,10 @@ function updateSelectedBPMNElements(textArea, bpmnKind) {
   log(`New value of style %O`, style);
   updateStyle(newlyIdentifiedBpmnIds, style);
 
+  // CSS classes update
+  removeCssClasses(lastIdentifiedBpmnIds, cssClassName);
+  addCssClasses(newlyIdentifiedBpmnIds, cssClassName);
+
   // Overlays update
   lastIdentifiedBpmnIds.forEach(id => removeAllOverlays(id));
   if (isOverlaysDisplayed) {
@@ -175,6 +164,7 @@ function configureControls() {
 
   document.getElementById('clear-btn').onclick = function () {
     textArea.value = '';
+    removeCssClasses(lastIdentifiedBpmnIds, cssClassName);
     resetStyle(lastIdentifiedBpmnIds);
     lastIdentifiedBpmnIds.forEach(id => removeAllOverlays(id));
 

@@ -208,10 +208,6 @@ export type ShapeStyleUpdate<C extends string> = {
   STYLE_SEPARATORCOLOR: 'separatorColor'
   Defines the key for the separatorColor style.  Possible values are all HTML color names or HEX codes.  This style is only used for SHAPE_SWIMLANE shapes.  Value is “separatorColor”.
 */
-
-  hover?: {
-    filter?: string;
-  };
 };
 
 export type EdgeStyleUpdate<C extends string> = {
@@ -226,10 +222,6 @@ Pour message flow
 
 Defines the key for the dashed pattern style in SVG and image exports.  The type of this value is a space separated list of numbers that specify a custom-defined dash pattern.  Dash styles are defined in terms of the length of the dash (the drawn part of the stroke) and the length of the space between the dashes.  The lengths are relative to the line width: a length of “1” is equal to the line width.  VML ignores this style and uses dashStyle instead as defined in the VML specification.  This style is only used in the mxConnector shape.  Value is “dashPattern”.
 */
-
-  hover?: {
-    strokeWidth?: string;
-  };
 };
 
 /**
