@@ -68,12 +68,14 @@ function buildStyle(bpmnKind) {
       style.font.opacity = 60;
       style.stroke.color = 'chartreuse';
       style.stroke.width = 4;
+      style.stroke.dashPattern = '2 2';
       break;
     case 'lane':
     case 'pool':
       style.font.color = 'white !important';
       style.fill.color = 'palevioletred';
-      style.stroke.opacity = 30;
+      style.stroke.opacity = 80;
+      style.separatorColor = 'HoneyDew';
       break;
     case 'callActivity':
       style.font.color = 'white';
