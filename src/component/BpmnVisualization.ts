@@ -128,45 +128,76 @@ type Arrow = {
 
 // --------------------------  DYNAMIC STYLE --------------------------
 
-/*
-STYLE_LABEL_WIDTH: 'labelWidth'
-Defines the key for the width of the label if the label position is not center.  Value is “labelWidth”.
+type Label<C extends string> = {
+  /**
+   * The width of the label if the label position is not 'center'.
+   */
+  width?: string;
 
-STYLE_LABEL_POSITION: 'labelPosition'
-Defines the key for the horizontal label position of vertices.  Possible values are ALIGN_LEFT, ALIGN_CENTER and ALIGN_RIGHT.  Default is ALIGN_CENTER.  The label align defines the position of the label relative to the cell.  ALIGN_LEFT means the entire label bounds is placed completely just to the left of the vertex, ALIGN_RIGHT means adjust to the right and ALIGN_CENTER means the label bounds are vertically aligned with the bounds of the vertex.  Note this value doesn’t affect the positioning of label within the label bounds, to move the label horizontally within the label bounds, use STYLE_ALIGN.  Value is “labelPosition”.
+  /**
+   * The horizontal label position of vertices.
+   * The label align defines the position of the label relative to the cell.
+   * ALIGN_LEFT means the entire label bounds is placed completely just to the left of the vertex, ALIGN_RIGHT means adjust to the right and ALIGN_CENTER means the label bounds are vertically aligned with the bounds of the vertex.
+   * Note: this value doesn’t affect the positioning of label within the label bounds, to move the label horizontally within the label bounds, use STYLE_ALIGN.
+   *
+   * @default mxgraph.mxConstants.ALIGN_CENTER
+   */
+  horizontalPosition?: mxgraph.mxConstants.ALIGN_LEFT | mxgraph.mxConstants.ALIGN_CENTER | mxgraph.mxConstants.ALIGN_RIGHT;
 
-    STYLE_VERTICAL_LABEL_POSITION: 'verticalLabelPosition'
-Defines the key for the vertical label position of vertices.  Possible values are ALIGN_TOP, ALIGN_BOTTOM and ALIGN_MIDDLE.  Default is ALIGN_MIDDLE.  The label align defines the position of the label relative to the cell.  ALIGN_TOP means the entire label bounds is placed completely just on the top of the vertex, ALIGN_BOTTOM means adjust on the bottom and ALIGN_MIDDLE means the label bounds are horizontally aligned with the bounds of the vertex.  Note this value doesn’t affect the positioning of label within the label bounds, to move the label vertically within the label bounds, use STYLE_VERTICAL_ALIGN.  Value is “verticalLabelPosition”.
+  /**
+   * The vertical label position of vertices.
+   * The label align defines the position of the label relative to the cell.
+   * ALIGN_TOP means the entire label bounds is placed completely just on the top of the vertex, ALIGN_BOTTOM means adjust on the bottom and ALIGN_MIDDLE means the label bounds are horizontally aligned with the bounds of the vertex.
+   * Note: this value doesn’t affect the positioning of label within the label bounds, to move the label vertically within the label bounds, use STYLE_VERTICAL_ALIGN.
+   *
+   * @default mxgraph.mxConstants.ALIGN_MIDDLE
+   */
+  verticalPosition?: mxgraph.mxConstants.ALIGN_TOP | mxgraph.mxConstants.ALIGN_BOTTOM | mxgraph.mxConstants.ALIGN_MIDDLE;
 
-    STYLE_LABEL_BACKGROUNDCOLOR: 'labelBackgroundColor'
-Defines the key for the label background color.  Possible values are all HTML color names or HEX codes.  Value is “labelBackgroundColor”.
+  /**
+   * Possible values are all HTML color names or HEX codes.
+   */
+  backgroundColor?: Color<C>;
 
-    STYLE_LABEL_BORDERCOLOR: 'labelBorderColor'
-Defines the key for the label border color.  Possible values are all HTML color names or HEX codes.  Value is “labelBorderColor”.
+  /**
+   * Possible values are all HTML color names or HEX codes.
+   */
+  borderColor?: Color<C>;
 
-    STYLE_LABEL_PADDING: 'labelPadding'
-Defines the key for the label padding, ie. the space between the label border and the label.  Value is “labelPadding”.
+  /**
+   * The label padding, i.e. the space between the label border and the label.
+   */
+  padding?: string;
+};
 
-
-    STYLE_SPACING: 'spacing'
-Defines the key for the spacing.  The value represents the spacing, in pixels, added to each side of a label in a vertex (style applies to vertices only).  Value is “spacing”.
-
-    STYLE_SPACING_TOP: 'spacingTop'
-Defines the key for the spacingTop style.  The value represents the spacing, in pixels, added to the top side of a label in a vertex (style applies to vertices only).  Value is “spacingTop”.
-
-    STYLE_SPACING_LEFT: 'spacingLeft'
-Defines the key for the spacingLeft style.  The value represents the spacing, in pixels, added to the left side of a label in a vertex (style applies to vertices only).  Value is “spacingLeft”.
-
-    STYLE_SPACING_BOTTOM: 'spacingBottom'
-Defines the key for the spacingBottom style The value represents the spacing, in pixels, added to the bottom side of a label in a vertex (style applies to vertices only).  Value is “spacingBottom”.
-
-    STYLE_SPACING_RIGHT: 'spacingRight'
-Defines the key for the spacingRight style The value represents the spacing, in pixels, added to the right side of a label in a vertex (style applies to vertices only).  Value is “spacingRight”.
-*/
+type Spacing = {
+  /**
+   * The value represents the spacing, in pixels, added to each side of a label in a vertex (style applies to vertices only).
+   */
+  eachSide?: number;
+  /**
+   * The value represents the spacing, in pixels, added to the top side of a label in a vertex (style applies to vertices only).
+   */
+  top?: number;
+  /**
+   * The value represents the spacing, in pixels, added to the left side of a label in a vertex (style applies to vertices only).
+   */
+  left?: number;
+  /**
+   * The value represents the spacing, in pixels, added to the bottom side of a label in a vertex (style applies to vertices only).
+   */
+  bottom?: number;
+  /**
+   * The value represents the spacing, in pixels, added to the right side of a label in a vertex (style applies to vertices only).
+   */
+  right?: number;
+};
 
 type Font<C extends string> = {
   color?: Color<C>;
   opacity?: Opacity;
+  spacing?: Spacing;
+
   /**
    *  The type of the value is int (in px).
    */
@@ -241,6 +272,7 @@ export type ShapeStyleUpdate<C extends string> = {
   fill?: Fill<C>;
   stroke?: Stroke<C>;
   gradient?: Gradient<C>;
+  label?: Label<C>;
 
   /**
    *   Possible values are all HTML color names or HEX codes.
@@ -259,6 +291,7 @@ export type EdgeStyleUpdate<C extends string> = {
   opacity?: Opacity;
   stroke?: Stroke<C>;
   gradient?: Gradient<C>;
+  label?: Label<C>;
   withShadow?: boolean;
 
   // TODO: need to move at the lib config
@@ -394,6 +427,16 @@ export class BpmnVisualization {
           cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_TEXT_OPACITY, font.opacity);
         }
 
+        const label = style.label;
+        if (label) {
+          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_LABEL_WIDTH, label.width);
+          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_LABEL_POSITION, label.horizontalPosition);
+          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_VERTICAL_LABEL_POSITION, label.verticalPosition);
+          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_LABEL_BACKGROUNDCOLOR, label.backgroundColor);
+          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_LABEL_BORDERCOLOR, label.borderColor);
+          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_LABEL_PADDING, label.padding);
+        }
+
         const stroke = style.stroke;
         if (stroke) {
           cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKECOLOR, stroke.color);
@@ -431,7 +474,19 @@ export class BpmnVisualization {
               cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_SWIMLANE_FILLCOLOR, fill.color);
             }
           }
-          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_SEPARATORCOLOR, style.separatorColor);
+
+          if (cellStyle.includes(ShapeBpmnElementKind.POOL) || cellStyle.includes(ShapeBpmnElementKind.LANE)) {
+            cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_SEPARATORCOLOR, style.separatorColor);
+          }
+
+          const spacing = style?.font.spacing;
+          if (spacing) {
+            cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_SPACING, spacing.eachSide);
+            cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_SPACING_TOP, spacing.top);
+            cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_SPACING_LEFT, spacing.left);
+            cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_SPACING_BOTTOM, spacing.bottom);
+            cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_SPACING_RIGHT, spacing.right);
+          }
         } else {
           const arrow = style.arrow;
           if (arrow) {
