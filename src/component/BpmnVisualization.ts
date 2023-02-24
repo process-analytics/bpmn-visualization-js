@@ -46,60 +46,6 @@ import { ensureIsArray } from './helpers/array-utils';
 import { mxgraph } from './mxgraph/initializer';
 import { ShapeBpmnElementKind } from '../model/bpmn/internal';
 
-// -------------------------- STYLE AT LIB CONFIGURATION --------------------------
-type Shadow<C extends string> = {
-  /**
-   * Defines the color to be used to draw shadows in shapes and windows.
-   *
-   * @default 'gray'
-   */
-  color?: Color<C>;
-
-  /**
-   * Specifies the x-offset of the shadow.
-   *
-   * @default 2
-   */
-  offsetX?: number;
-
-  /**
-   * Specifies the y-offset of the shadow.
-   *
-   * @default 3
-   */
-  offsetY?: number;
-
-  /**
-   * Defines the opacity for shadows.
-   *
-   * @default 1
-   */
-  opacity?: Opacity;
-};
-
-type Arrow = {
-  /**
-   * Defines the spacing between the arrow shape and its terminals.
-   *
-   * @default 0
-   */
-  spacing?: number;
-
-  /**
-   * Defines the width of the arrow shape.
-   *
-   * @default 30
-   */
-  width?: number;
-
-  /**
-   * Defines the size of the arrowhead in the arrow shape.
-   *
-   * @default 30
-   */
-  size?: number;
-};
-
 // --------------------------  DYNAMIC STYLE --------------------------
 
 type Label<C extends string> = {
@@ -288,9 +234,6 @@ export type ShapeStyleUpdate<C extends string> = {
   withShadow?: boolean;
 
   image?: Image;
-
-  // TODO: need to move at the lib config
-  shadow?: Shadow<C>;
 };
 
 export type EdgeStyleUpdate<C extends string> = {
@@ -301,10 +244,6 @@ export type EdgeStyleUpdate<C extends string> = {
   label?: Label<C>;
   withShadow?: boolean;
   image?: Image;
-
-  // TODO: need to move at the lib config
-  arrow?: Arrow;
-  shadow?: Shadow<C>;
 };
 
 /**
@@ -316,7 +255,7 @@ export type EdgeStyleUpdate<C extends string> = {
  *
  * @category Initialization & Configuration
  */
-export class BpmnVisualization {
+export class BpmnVisualization<C extends string> {
   /**
    * Direct access to the `mxGraph` instance that powers `bpmn-visualization`.
    * It is for **advanced users**, so please use the lib API first and access to the `mxGraph` instance only when there is no alternative.
@@ -350,7 +289,7 @@ export class BpmnVisualization {
 
   private readonly undoManager: UndoManager;
 
-  constructor(options: GlobalOptions) {
+  constructor(options: GlobalOptions<C>) {
     // mxgraph configuration
     const configurator = new GraphConfigurator(htmlElement(options?.container));
     this.graph = configurator.configure(options);
@@ -463,14 +402,6 @@ export class BpmnVisualization {
           cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_GRADIENT_DIRECTION, gradient.direction);
         }
 
-        const shadow = style.shadow;
-        if (shadow) {
-          mxgraph.mxConstants.SHADOWCOLOR = shadow.color;
-          mxgraph.mxConstants.SHADOW_OFFSET_X = shadow.offsetX;
-          mxgraph.mxConstants.SHADOW_OFFSET_Y = shadow.offsetY;
-          mxgraph.mxConstants.SHADOW_OPACITY = shadow.opacity;
-        }
-
         const image = style.image;
         if (image) {
           cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_IMAGE, image.url);
@@ -503,13 +434,6 @@ export class BpmnVisualization {
             cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_SPACING_LEFT, spacing.left);
             cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_SPACING_BOTTOM, spacing.bottom);
             cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_SPACING_RIGHT, spacing.right);
-          }
-        } else {
-          const arrow = style.arrow;
-          if (arrow) {
-            mxgraph.mxConstants.ARROW_SPACING = arrow.spacing;
-            mxgraph.mxConstants.ARROW_WIDTH = arrow.width;
-            mxgraph.mxConstants.ARROW_SIZE = arrow.size;
           }
         }
 

@@ -14,15 +14,76 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { Color } from './color';
+import type { Opacity } from './opacity';
+
+// -------------------------- STYLE AT LIB CONFIGURATION --------------------------
+export type Shadow<C extends string> = {
+  /**
+   * Defines the color to be used to draw shadows in shapes and windows.
+   *
+   * @default 'gray'
+   */
+  color?: Color<C>;
+
+  /**
+   * Specifies the x-offset of the shadow.
+   *
+   * @default 2
+   */
+  offsetX?: number;
+
+  /**
+   * Specifies the y-offset of the shadow.
+   *
+   * @default 3
+   */
+  offsetY?: number;
+
+  /**
+   * Defines the opacity for shadows.
+   *
+   * @default 1
+   */
+  opacity?: Opacity;
+};
+
+export type Arrow = {
+  /**
+   * Defines the spacing between the arrow shape and its terminals.
+   *
+   * @default 0
+   */
+  spacing?: number;
+
+  /**
+   * Defines the width of the arrow shape.
+   *
+   * @default 30
+   */
+  width?: number;
+
+  /**
+   * Defines the size of the arrowhead in the arrow shape.
+   *
+   * @default 30
+   */
+  size?: number;
+};
+
 /**
  * Options to configure the `bpmn-visualization` initialization.
  * @category Initialization & Configuration
  */
-export interface GlobalOptions {
+export interface GlobalOptions<C extends string> {
   /** The id of a DOM element or an HTML node where the BPMN diagram is rendered. */
   container: string | HTMLElement;
   /** Configure the BPMN diagram navigation (panning and zoom). */
   navigation?: NavigationConfiguration;
+
+  shadow?: Shadow<C>;
+
+  arrow?: Arrow;
 }
 
 /**

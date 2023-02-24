@@ -91,6 +91,7 @@ function buildStyle(bpmnKind) {
     case 'boundaryEvent':
       style.font.color = 'red !important';
       style.stroke.color = 'red';
+      style.withShadow = true;
       break;
     case 'exclusiveGateway':
     case 'inclusiveGateway':
@@ -275,6 +276,17 @@ documentReady(() => {
       container: document.querySelector('.bpmn-container'),
       navigation: {
         enabled: true,
+      },
+      shadow: {
+        color: 'Chocolate',
+        offsetX: 3,
+        offsetY: 4,
+        opacity: 50,
+      },
+      arrow: {
+        spacing: -40,
+        width: 60,
+        size: 70,
       },
     },
   });

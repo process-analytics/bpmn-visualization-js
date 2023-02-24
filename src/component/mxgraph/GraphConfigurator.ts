@@ -30,19 +30,20 @@ import type { mxMouseEvent } from 'mxgraph';
  *     <li>markers
  * @internal
  */
-export default class GraphConfigurator {
+export default class GraphConfigurator<C extends string> {
   private readonly graph: BpmnGraph;
 
   constructor(readonly container: HTMLElement) {
     this.graph = new BpmnGraph(container);
   }
 
-  configure(options: GlobalOptions): BpmnGraph {
+  configure(options: GlobalOptions<C>): BpmnGraph {
     this.configureGraph();
     this.configureNavigationSupport(options);
     new StyleConfigurator(this.graph).configureStyles();
     new ShapeConfigurator().configureShapes();
     new MarkerConfigurator().configureMarkers();
+    this.styleWIP(options);
     return this.graph;
   }
 
@@ -91,5 +92,22 @@ export default class GraphConfigurator {
     return (): void => {
       this.graph.isEnabled() && (this.container.style.cursor = cursor);
     };
+  }
+
+  private styleWIP(options: GlobalOptions<C>): void {
+    const shadow = options.shadow;
+    if (shadow) {
+      mxgraph.mxConstants.SHADOWCOLOR = shadow.color;
+      mxgraph.mxConstants.SHADOW_OFFSET_X = shadow.offsetX;
+      mxgraph.mxConstants.SHADOW_OFFSET_Y = shadow.offsetY;
+      mxgraph.mxConstants.SHADOW_OPACITY = shadow.opacity / 100;
+    }
+
+    const arrow = options.arrow;
+    if (arrow) {
+      mxgraph.mxConstants.ARROW_SPACING = arrow.spacing;
+      mxgraph.mxConstants.ARROW_WIDTH = arrow.width;
+      mxgraph.mxConstants.ARROW_SIZE = arrow.size;
+    }
   }
 }
