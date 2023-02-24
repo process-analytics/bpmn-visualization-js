@@ -196,7 +196,7 @@ function configureControls() {
 function getOverlay(bpmnKind) {
   if (ShapeUtil.isActivity(bpmnKind)) {
     return {
-      position: 'top-left',
+      position: 'bottom-left',
       label: '30',
       style: {
         font: {
@@ -220,7 +220,7 @@ function getOverlay(bpmnKind) {
       },
     };
   } else if (bpmnKind.includes('Event')) {
-    return { position: 'bottom-left', label: '15' };
+    return { position: 'top-left', label: '15' };
   } else if (bpmnKind.includes('lane') || bpmnKind.includes('pool')) {
     return { position: 'bottom-right', label: '100' };
   } else if (bpmnKind.includes('Flow')) {
