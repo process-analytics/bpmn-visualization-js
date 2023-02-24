@@ -39,7 +39,7 @@ const cssClassName = 'detection';
 let isOverlaysDisplayed = true;
 
 function buildStyle(bpmnKind) {
-  const style = { font: {}, fill: {}, stroke: {}, gradient: {} };
+  const style = { font: { spacing: {} }, fill: {}, stroke: {}, gradient: {}, label: {} };
   switch (bpmnKind) {
     case 'task':
       style.image = {
@@ -51,8 +51,31 @@ function buildStyle(bpmnKind) {
       };
       break;
     case 'userTask':
+      style.font.color = 'red !important';
+      style.font.spacing.eachSide = 30;
+      style.fill.color = 'aquamarine';
+      break;
     case 'scriptTask':
+      style.font.color = 'red !important';
+      style.fill.color = 'aquamarine';
+      style.label = {
+        width: 16,
+        horizontalPosition: mxgraph.mxConstants.ALIGN_LEFT,
+        verticalPosition: mxgraph.mxConstants.ALIGN_TOP,
+        backgroundColor: 'Gold',
+        borderColor: 'Orchid',
+      };
+      break;
     case 'serviceTask':
+      style.font.color = 'red !important';
+      style.fill.color = 'aquamarine';
+      style.label = {
+        width: 16,
+        backgroundColor: 'Orchid',
+        borderColor: 'Gold',
+        padding: 35,
+      };
+      break;
     case 'receiveTask':
     case 'sendTask':
     case 'manualTask':
