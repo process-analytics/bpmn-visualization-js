@@ -16,5 +16,5 @@ limitations under the License.
 
 import { BpmnVisualization } from 'bpmn-visualization';
 
-const bpmnVisualization = new BpmnVisualization({ container: 'bpmn-container' });
+const bpmnVisualization = new BpmnVisualization<string>({ container: 'bpmn-container' });
 bpmnVisualization.load(`fake BPMN content`);

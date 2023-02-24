@@ -30,10 +30,10 @@ export interface MessageFlowRequestedChecks extends RequestedChecks {
   readonly isInitiatingIcon?: boolean;
 }
 
-export class HtmlElementLookup {
+export class HtmlElementLookup<C extends string> {
   private bpmnQuerySelectors: BpmnQuerySelectorsForTests;
 
-  constructor(private bpmnVisualization: BpmnVisualization) {
+  constructor(private bpmnVisualization: BpmnVisualization<C>) {
     this.bpmnQuerySelectors = new BpmnQuerySelectorsForTests();
   }
 

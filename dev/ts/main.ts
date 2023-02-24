@@ -36,7 +36,7 @@ import { SvgExporter } from './component/SvgExporter';
 import { downloadAsPng, downloadAsSvg } from './component/download';
 import { ThemedBpmnVisualization } from './component/ThemedBpmnVisualization';
 
-let bpmnVisualization: ThemedBpmnVisualization;
+let bpmnVisualization: ThemedBpmnVisualization<string>;
 let loadOptions: LoadOptions = {};
 let bpmnElementIdToCollapse: string;
 let currentTheme: string;
@@ -181,9 +181,9 @@ function loadBpmnFromUrl(url: string, statusFetchKoNotifier: (errorMsg: string) 
     });
 }
 
-export interface BpmnVisualizationDemoConfiguration {
+export interface BpmnVisualizationDemoConfiguration<C extends string> {
   statusFetchKoNotifier?: (errorMsg: string) => void;
-  globalOptions: GlobalOptions;
+  globalOptions: GlobalOptions<C>;
   loadOptions?: LoadOptions;
 }
 
@@ -191,7 +191,7 @@ function defaultStatusFetchKoNotifier(errorMsg: string): void {
   logErrorAndOpenAlert(errorMsg);
 }
 
-function getFitOptionsFromParameters(config: BpmnVisualizationDemoConfiguration, parameters: URLSearchParams): FitOptions {
+function getFitOptionsFromParameters<C extends string>(config: BpmnVisualizationDemoConfiguration<C>, parameters: URLSearchParams): FitOptions {
   const fitOptions: FitOptions = config.loadOptions?.fit || {};
   const parameterFitType: string = parameters.get('fitTypeOnLoad');
   if (parameterFitType) {
@@ -247,7 +247,7 @@ function configurePoolsFilteringFromParameters(parameters: URLSearchParams): Mod
   return { pools: poolIdsToFilter.map<PoolFilter>(id => ({ id })) };
 }
 
-export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): void {
+export function startBpmnVisualization<C extends string>(config: BpmnVisualizationDemoConfiguration<C>): void {
   const log = logStartup;
   log(`Initializing BpmnVisualization with container '${config.globalOptions.container}'...`);
   bpmnVisualization = new ThemedBpmnVisualization(config.globalOptions);

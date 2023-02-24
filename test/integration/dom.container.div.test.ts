@@ -29,7 +29,7 @@ describe.each`
   ${initializeBpmnVisualizationWithContainerId()} | ${'html id'}
   ${initializeBpmnVisualizationWithHtmlElement()} | ${'html element'}
   ${initializeBpmnVisualizationWithoutId()}       | ${'html element without id'}
-`('Resulting DOM after diagram load - container set with "$type"', ({ bpmnVisualization }: { bpmnVisualization: BpmnVisualization }) => {
+`('Resulting DOM after diagram load - container set with "$type"', ({ bpmnVisualization }: { bpmnVisualization: BpmnVisualization<string> }) => {
   const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
 
   it('DOM should contains BPMN elements when loading simple-start-task-end.bpmn', async () => {

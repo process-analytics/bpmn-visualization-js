@@ -63,7 +63,7 @@ export default class GraphConfigurator<C extends string> {
     this.graph.foldingEnabled = false;
   }
 
-  private configureNavigationSupport(options: GlobalOptions): void {
+  private configureNavigationSupport(options: GlobalOptions<C>): void {
     const panningHandler = this.graph.panningHandler;
     if (options?.navigation?.enabled) {
       // Pan configuration

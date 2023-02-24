@@ -30,7 +30,7 @@ describe('BpmnVisualization initialization', () => {
     ${'navigation disabled'}            | ${{ navigation: { enabled: false } }}
     ${'navigation without zoom config'} | ${{ navigation: { enabled: true } }}
     ${'navigation with zoom config'}    | ${{ navigation: { enabled: true, zoom: { throttleDelay: 20 } } }}
-  `(`Verify correct initialization with '$configName' configuration`, ({ configName, config }: { configName: string; config: GlobalOptionsWithoutContainer }) => {
+  `(`Verify correct initialization with '$configName' configuration`, ({ configName, config }: { configName: string; config: GlobalOptionsWithoutContainer<string> }) => {
     initializeBpmnVisualizationWithContainerId(`bpmn-visualization-init-check-with-config-${configName}`, config);
   });
 });

@@ -100,7 +100,7 @@ const themes = new Map<string, Theme>([
   ],
 ]);
 
-export class ThemedBpmnVisualization extends BpmnVisualization {
+export class ThemedBpmnVisualization<C extends string> extends BpmnVisualization<C> {
   configureTheme(name: string): boolean {
     if (name == 'default') {
       new StyleConfigurator(this.graph).configureStyles();

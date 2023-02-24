@@ -41,7 +41,7 @@ describe('Bpmn Elements registry - retrieve BPMN elements', () => {
     ${initializeBpmnVisualization('')}              | ${'html element with id set to empty string'}
     ${initializeBpmnVisualization(null)}            | ${'html element with id set to null'}
     ${initializeBpmnVisualization(undefined)}       | ${'html element with id set to undefined'}
-  `('container set with "$type"', ({ bpmnVisualization }: { bpmnVisualization: BpmnVisualization }) => {
+  `('container set with "$type"', ({ bpmnVisualization }: { bpmnVisualization: BpmnVisualization<string> }) => {
     describe('Get by ids', () => {
       it('Pass several existing ids', async () => {
         bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));

@@ -17,22 +17,28 @@ limitations under the License.
 import { BpmnVisualization, type GlobalOptions } from '../../../src/bpmn-visualization';
 import { insertBpmnContainer, insertBpmnContainerWithoutId } from './dom-utils';
 
-export type GlobalOptionsWithoutContainer = Omit<GlobalOptions, 'container'>;
+export type GlobalOptionsWithoutContainer<C extends string> = Omit<GlobalOptions<C>, 'container'>;
 
-export const initializeBpmnVisualizationWithContainerId = (bpmnContainerId = 'bpmn-visualization-container', globalOptions?: GlobalOptionsWithoutContainer): BpmnVisualization => {
+export const initializeBpmnVisualizationWithContainerId = <C extends string>(
+  bpmnContainerId = 'bpmn-visualization-container',
+  globalOptions?: GlobalOptionsWithoutContainer<C>,
+): BpmnVisualization<C> => {
   return initializeBpmnVisualization(bpmnContainerId, globalOptions);
 };
 
-export const initializeBpmnVisualizationWithHtmlElement = (bpmnContainerId = 'bpmn-visualization-container-alternative', withNavigation = false): BpmnVisualization => {
+export const initializeBpmnVisualizationWithHtmlElement = <C extends string>(
+  bpmnContainerId = 'bpmn-visualization-container-alternative',
+  withNavigation = false,
+): BpmnVisualization<C> => {
   return initializeBpmnVisualization(bpmnContainerId, { navigation: { enabled: withNavigation } });
 };
 
-export const initializeBpmnVisualization = (bpmnContainerId?: string, globalOptions?: GlobalOptionsWithoutContainer): BpmnVisualization => {
+export const initializeBpmnVisualization = <C extends string>(bpmnContainerId?: string, globalOptions?: GlobalOptionsWithoutContainer<C>): BpmnVisualization<C> => {
   const options = { container: insertBpmnContainer(bpmnContainerId), ...globalOptions };
   return new BpmnVisualization(options);
 };
 
-export const initializeBpmnVisualizationWithoutId = (globalOptions?: GlobalOptionsWithoutContainer): BpmnVisualization => {
+export const initializeBpmnVisualizationWithoutId = <C extends string>(globalOptions?: GlobalOptionsWithoutContainer<C>): BpmnVisualization<C> => {
   const options = { container: insertBpmnContainerWithoutId(), ...globalOptions };
   return new BpmnVisualization(options);
 };
