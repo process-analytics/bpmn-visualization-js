@@ -23,6 +23,7 @@ import {
   FitType,
   getElementsByKinds,
   log,
+  mxgraph,
   removeAllOverlays,
   removeCssClasses,
   resetStyle,
@@ -31,6 +32,7 @@ import {
   updateLoadOptions,
   updateStyle,
 } from '../../../ts/dev-bundle-index';
+import { imageURI } from './image';
 
 let lastIdentifiedBpmnIds = [];
 const cssClassName = 'detection';
@@ -40,6 +42,14 @@ function buildStyle(bpmnKind) {
   const style = { font: {}, fill: {}, stroke: {}, gradient: {} };
   switch (bpmnKind) {
     case 'task':
+      style.image = {
+        url: imageURI,
+        width: 50,
+        height: 50,
+        horizontalAlign: mxgraph.mxConstants.ALIGN_RIGHT,
+        verticalAlign: mxgraph.mxConstants.ALIGN_BOTTOM,
+      };
+      break;
     case 'userTask':
     case 'scriptTask':
     case 'serviceTask':

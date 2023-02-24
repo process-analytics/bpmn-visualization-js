@@ -46,32 +46,6 @@ import { ensureIsArray } from './helpers/array-utils';
 import { mxgraph } from './mxgraph/initializer';
 import { ShapeBpmnElementKind } from '../model/bpmn/internal';
 
-/*
-STYLE_IMAGE: 'image'
-Defines the key for the image style.  Possible values are any image URL, the type of the value is String.  This is the path to the image that is to be displayed within the label of a vertex.  Data URLs should use the following format: data:image/png,xyz where xyz is the base64 encoded data (without the “base64”-prefix).  Note that Data URLs are only supported in modern browsers.  Value is “image”.
-
-STYLE_IMAGE_WIDTH: 'imageWidth'
-Defines the key for the imageWidth style.  The type of this value is int, the value is the image width in pixels and must be greater than 0.  Value is “imageWidth”.
-
-STYLE_IMAGE_HEIGHT: 'imageHeight'
-Defines the key for the imageHeight style.  The type of this value is int, the value is the image height in pixels and must be greater than 0.  Value is “imageHeight”.
-
-STYLE_IMAGE_BACKGROUND: 'imageBackground'
-Defines the key for the image background color.  This style is only used in mxImageShape.  Possible values are all HTML color names or HEX codes.  Value is “imageBackground”.
-
-STYLE_IMAGE_BORDER: 'imageBorder'
-Defines the key for the image border color.  This style is only used in mxImageShape.  Possible values are all HTML color names or HEX codes.  Value is “imageBorder”.
-
-    STYLE_IMAGE_ASPECT: 'imageAspect'
-Defines the key for the image aspect style.  Possible values are 0 (do not preserve aspect) or 1 (keep aspect).  This is only used in mxImageShape.  Default is 1.  Value is “imageAspect”.
-
-    STYLE_IMAGE_ALIGN: 'imageAlign'
-Defines the key for the align style.  Possible values are ALIGN_LEFT, ALIGN_CENTER and ALIGN_RIGHT.  The value defines how any image in the vertex label is aligned horizontally within the label bounds of a SHAPE_LABEL shape.  Value is “imageAlign”.
-
-    STYLE_IMAGE_VERTICAL_ALIGN: 'imageVerticalAlign'
-Defines the key for the verticalAlign style.  Possible values are ALIGN_TOP, ALIGN_MIDDLE and ALIGN_BOTTOM.  The value defines how any image in the vertex label is aligned vertically within the label bounds of a SHAPE_LABEL shape.  Value is “imageVerticalAlign”.
-*/
-
 // -------------------------- STYLE AT LIB CONFIGURATION --------------------------
 type Shadow<C extends string> = {
   /**
@@ -266,6 +240,37 @@ type Gradient<C extends string> = {
   direction: mxgraph.mxConstants.DIRECTION_EAST | mxgraph.mxConstants.DIRECTION_WEST | mxgraph.mxConstants.DIRECTION_NORTH | mxgraph.mxConstants.DIRECTION_SOUTH;
 };
 
+type Image = {
+  /**
+   *  This is the path to the image that is to be displayed within the label of a vertex.
+   *  Data URLs should use the following format: 'data:image/png,xyz' where xyz is the base64 encoded data (without the “base64”-prefix).
+   *  Note: that Data URLs are only supported in modern browsers.
+   */
+  url?: string;
+
+  /**
+   * The type of this value is int.
+   * The value is the image width in pixels and must be greater than 0.
+   */
+  width?: number;
+
+  /**
+   * The type of this value is int.
+   * The value is the image height in pixels and must be greater than 0.
+   */
+  height?: number;
+
+  /**
+   * The value defines how any image in the vertex label is aligned horizontally within the label bounds of a SHAPE_LABEL shape.
+   */
+  horizontalAlign?: mxgraph.mxConstants.ALIGN_LEFT | mxgraph.mxConstants.ALIGN_CENTER | mxgraph.mxConstants.ALIGN_RIGHT;
+
+  /**
+   * The value defines how any image in the vertex label is aligned vertically within the label bounds of a SHAPE_LABEL shape.
+   */
+  verticalAlign?: mxgraph.mxConstants.ALIGN_TOP | mxgraph.mxConstants.ALIGN_BOTTOM | mxgraph.mxConstants.ALIGN_MIDDLE;
+};
+
 export type ShapeStyleUpdate<C extends string> = {
   font?: Font<C>;
   opacity?: Opacity;
@@ -282,6 +287,8 @@ export type ShapeStyleUpdate<C extends string> = {
 
   withShadow?: boolean;
 
+  image?: Image;
+
   // TODO: need to move at the lib config
   shadow?: Shadow<C>;
 };
@@ -293,6 +300,7 @@ export type EdgeStyleUpdate<C extends string> = {
   gradient?: Gradient<C>;
   label?: Label<C>;
   withShadow?: boolean;
+  image?: Image;
 
   // TODO: need to move at the lib config
   arrow?: Arrow;
@@ -461,6 +469,15 @@ export class BpmnVisualization {
           mxgraph.mxConstants.SHADOW_OFFSET_X = shadow.offsetX;
           mxgraph.mxConstants.SHADOW_OFFSET_Y = shadow.offsetY;
           mxgraph.mxConstants.SHADOW_OPACITY = shadow.opacity;
+        }
+
+        const image = style.image;
+        if (image) {
+          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_IMAGE, image.url);
+          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_IMAGE_WIDTH, image.width);
+          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_IMAGE_HEIGHT, image.height);
+          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_IMAGE_ALIGN, image.horizontalAlign);
+          cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_IMAGE_VERTICAL_ALIGN, image.verticalAlign);
         }
 
         if (this.isShapeStyleUpdate(style)) {
