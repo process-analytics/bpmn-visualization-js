@@ -149,6 +149,7 @@ function buildStyle(bpmnKind) {
       style.font.color = 'dodgerblue !important';
       style.stroke.color = 'dodgerblue';
       style.stroke.width = 4;
+      style.withShadow = true;
       break;
   }
   return style;
