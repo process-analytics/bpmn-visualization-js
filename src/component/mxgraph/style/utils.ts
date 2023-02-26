@@ -69,6 +69,4 @@ export enum StyleDefault {
  * @internal
  * @private
  */
-export function getBpmnIsInstantiating(style: { [p: string]: unknown }): boolean {
-  return mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.IS_INSTANTIATING, 'false') == 'true';
-}
+export const getBpmnIsInstantiating = (style: { [p: string]: unknown }): boolean => mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.IS_INSTANTIATING, 'false') == 'true';
