@@ -15,7 +15,6 @@ limitations under the License.
 */
 
 import type { mxCell } from 'mxgraph';
-import { mxgraph } from '../initializer';
 import { FlowKind, ShapeUtil } from '../../../model/bpmn/internal';
 import { BpmnStyleIdentifier } from '../style/identifiers';
 
@@ -102,14 +101,4 @@ function isFlowKind(kind: string): boolean {
  */
 export function computeBpmnBaseClassName(bpmnElementKind: string): string {
   return !bpmnElementKind ? '' : 'bpmn-' + bpmnElementKind.replace(/([A-Z])/g, g => '-' + g[0].toLowerCase());
-}
-
-/**
- * Get the BPMN 'instantiate' information from the style.
- * @param style the mxGraph style
- * @internal
- * @private
- */
-export function getBpmnIsInstantiating(style: { [p: string]: unknown }): boolean {
-  return mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.IS_INSTANTIATING, 'false') == 'true';
 }

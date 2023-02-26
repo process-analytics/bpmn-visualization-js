@@ -14,6 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import { mxgraph } from '../initializer';
+import { BpmnStyleIdentifier } from './identifiers';
+
 /**
  * Store all rendering defaults used by `bpmn-visualization`.
  *
@@ -58,4 +61,14 @@ export enum StyleDefault {
   SEQUENCE_FLOW_CONDITIONAL_FROM_ACTIVITY_MARKER_FILL_COLOR = 'White',
   MESSAGE_FLOW_MARKER_START_FILL_COLOR = 'White',
   MESSAGE_FLOW_MARKER_END_FILL_COLOR = 'White',
+}
+
+/**
+ * Get the BPMN 'instantiate' information from the style.
+ * @param style the mxGraph style
+ * @internal
+ * @private
+ */
+export function getBpmnIsInstantiating(style: { [p: string]: unknown }): boolean {
+  return mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.IS_INSTANTIATING, 'false') == 'true';
 }

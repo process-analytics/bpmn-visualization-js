@@ -16,8 +16,8 @@ limitations under the License.
 
 import type { mxAbstractCanvas2D } from 'mxgraph';
 import { mxgraph } from '../initializer';
-import { getBpmnIsInstantiating } from '../renderer/style-utils';
 import { BpmnStyleIdentifier, StyleDefault } from '../style';
+import { getBpmnIsInstantiating } from '../style/utils';
 import type { BpmnCanvas, PaintParameter, ShapeConfiguration } from './render';
 import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
