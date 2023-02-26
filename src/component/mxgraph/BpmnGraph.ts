@@ -58,7 +58,6 @@ export class BpmnGraph extends mxgraph.mxGraph {
    * @alpha
    */
   batchUpdate(fn: () => void): void {
-    // TODO should be in the model instead
     this.model.beginUpdate();
     try {
       fn();
