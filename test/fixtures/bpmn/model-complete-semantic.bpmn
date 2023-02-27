@@ -15,7 +15,7 @@
                           targetRef="start_event_message_2_1_id" messageRef="message_id" />
     <semantic:messageFlow id="message_flow_non_initiating_message_id" name="Message Flow with non-initiating message" sourceRef="boundary_event_interrupting_message_id"
                           targetRef="start_event_message_2_1_id" messageRef="message_id" />
-    <semantic:messageFlow id="message_flow_no_visible_id" name="Message Flow without message" sourceRef="start_event_message_2_1_id" targetRef="shape_task_with_flows_id" />
+    <semantic:messageFlow id="message_flow_no_visible_id" name="Message Flow without message" sourceRef="task_with_flows_id" targetRef="start_event_message_2_1_id" />
 
     <!-- Groups -->
     <semantic:group id="Group_0_in_collaboration" categoryValueRef="CategoryValue_0" />
@@ -1757,7 +1757,11 @@
           <dc:Bounds x="1515" y="859" width="88" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="edge_message_flow_no_visible_id" bpmnElement="message_flow_no_visible_id" />
+      <bpmndi:BPMNEdge id="edge_message_flow_no_visible_id" bpmnElement="message_flow_no_visible_id">
+        <di:waypoint x="1018" y="1080" />
+        <di:waypoint x="740" y="1080" />
+        <di:waypoint x="740" y="205" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="edge_association_id" bpmnElement="association_id">
         <di:waypoint x="1069" y="1106" />
         <di:waypoint x="1080" y="1210" />
