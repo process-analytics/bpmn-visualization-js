@@ -203,7 +203,7 @@ describe('Style Computer', () => {
     [SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY, 'conditional_from_activity'],
     [SequenceFlowKind.DEFAULT, 'default'],
     [SequenceFlowKind.NORMAL, 'normal'],
-  ])('compute style - sequence flows: %s', (kind, expected) => {
+  ])('compute style - sequence flows: %s', (kind: SequenceFlowKind, expected: string) => {
     const edge = new Edge('id', newSequenceFlow(kind));
     expect(computeStyle(edge)).toBe(`sequenceFlow;${expected}`);
   });
@@ -212,7 +212,7 @@ describe('Style Computer', () => {
     [AssociationDirectionKind.NONE, 'None'],
     [AssociationDirectionKind.ONE, 'One'],
     [AssociationDirectionKind.BOTH, 'Both'],
-  ])('compute style - association flows: %s', (kind, expected) => {
+  ])('compute style - association flows: %s', (kind: AssociationDirectionKind, expected: string) => {
     const edge = new Edge('id', newAssociationFlow(kind));
     expect(computeStyle(edge)).toBe(`association;${expected}`);
   });
@@ -220,7 +220,7 @@ describe('Style Computer', () => {
   it.each([
     [MessageVisibleKind.NON_INITIATING, 'non_initiating'],
     [MessageVisibleKind.INITIATING, 'initiating'],
-  ])('compute style - message flow icon: %s', (messageVisibleKind, expected) => {
+  ])('compute style - message flow icon: %s', (messageVisibleKind: MessageVisibleKind, expected: string) => {
     const edge = new Edge('id', newMessageFlow(), undefined, undefined, messageVisibleKind);
     expect(styleComputer.computeMessageFlowIconStyle(edge)).toBe(`shape=bpmn.messageFlowIcon;bpmn.isInitiating=${expected}`);
   });
@@ -274,7 +274,7 @@ describe('Style Computer', () => {
     describe.each([
       ['expanded', []],
       ['collapsed', [ShapeBpmnMarkerKind.EXPAND]],
-    ])(`compute style - %s sub-processes`, (expandKind, markers: ShapeBpmnMarkerKind[]) => {
+    ])(`compute style - %s sub-processes`, (expandKind: string, markers: ShapeBpmnMarkerKind[]) => {
       it(`${expandKind} embedded sub-process without label bounds`, () => {
         const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, markers), newLabel({ name: 'Arial' }));
         const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
@@ -297,7 +297,7 @@ describe('Style Computer', () => {
       describe.each([
         ['expanded', []],
         ['collapsed', [ShapeBpmnMarkerKind.EXPAND]],
-      ])(`compute style - %s call activities`, (expandKind, markers: ShapeBpmnMarkerKind[]) => {
+      ])(`compute style - %s call activities`, (expandKind: string, markers: ShapeBpmnMarkerKind[]) => {
         it(`${expandKind} call activity without label bounds`, () => {
           const shape = newShape(newShapeBpmnCallActivityCallingProcess(markers), newLabel({ name: 'Arial' }));
           const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
@@ -374,7 +374,7 @@ describe('Style Computer', () => {
     it.each([
       ['vertical', false, '1'],
       ['horizontal', true, '0'],
-    ])('%s pool references a Process', (title, isHorizontal: boolean, expected: string) => {
+    ])('%s pool references a Process', (title: string, isHorizontal: boolean, expected: string) => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.POOL), undefined, isHorizontal);
       expect(computeStyle(shape)).toBe(`pool;horizontal=${expected}`);
     });
@@ -384,7 +384,7 @@ describe('Style Computer', () => {
     it.each([
       ['vertical', false, '1'],
       ['horizontal', true, '0'],
-    ])('%s lane', (title, isHorizontal: boolean, expected: string) => {
+    ])('%s lane', (title: string, isHorizontal: boolean, expected: string) => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.LANE), undefined, isHorizontal);
       expect(computeStyle(shape)).toBe(`lane;horizontal=${expected}`);
     });
@@ -450,10 +450,13 @@ describe('Style Computer', () => {
       ${true}      | ${undefined}
       ${true}      | ${'Exclusive'}
       ${true}      | ${'Parallel'}
-    `('event-based gateway when instantiate: $instantiate for gatewayKind: $gatewayKind', ({ instantiate, gatewayKind }) => {
-      const shape = newShape(newShapeBpmnEventBasedGateway(instantiate, gatewayKind), newLabel({ name: 'Arial' }));
-      gatewayKind ??= ShapeBpmnEventBasedGatewayKind.None;
-      expect(computeStyle(shape)).toBe(`eventBasedGateway;bpmn.isInstantiating=${!!instantiate};bpmn.gatewayKind=${gatewayKind};fontFamily=Arial`);
-    });
+    `(
+      'event-based gateway when instantiate: $instantiate for gatewayKind: $gatewayKind',
+      ({ instantiate, gatewayKind }: { instantiate: boolean; gatewayKind: ShapeBpmnEventBasedGatewayKind }) => {
+        const shape = newShape(newShapeBpmnEventBasedGateway(instantiate, gatewayKind), newLabel({ name: 'Arial' }));
+        gatewayKind ??= ShapeBpmnEventBasedGatewayKind.None;
+        expect(computeStyle(shape)).toBe(`eventBasedGateway;bpmn.isInstantiating=${!!instantiate};bpmn.gatewayKind=${gatewayKind};fontFamily=Arial`);
+      },
+    );
   });
 });

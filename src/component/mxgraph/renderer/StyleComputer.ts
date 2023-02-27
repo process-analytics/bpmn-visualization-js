@@ -120,7 +120,7 @@ export default class StyleComputer {
     if (font) {
       styleValues.set(mxgraph.mxConstants.STYLE_FONTFAMILY, font.name);
       styleValues.set(mxgraph.mxConstants.STYLE_FONTSIZE, font.size);
-      styleValues.set(mxgraph.mxConstants.STYLE_FONTSTYLE, StyleComputer.getFontStyleValue(font));
+      styleValues.set(mxgraph.mxConstants.STYLE_FONTSTYLE, getFontStyleValue(font));
     }
 
     return styleValues;
@@ -160,21 +160,25 @@ export default class StyleComputer {
   computeMessageFlowIconStyle(edge: Edge): string {
     return `shape=${BpmnStyleIdentifier.MESSAGE_FLOW_ICON};${BpmnStyleIdentifier.IS_INITIATING}=${edge.messageVisibleKind}`;
   }
+}
 
-  private static getFontStyleValue(font: Font): number {
-    let value = 0;
-    if (font.isBold) {
-      value += mxgraph.mxConstants.FONT_BOLD;
-    }
-    if (font.isItalic) {
-      value += mxgraph.mxConstants.FONT_ITALIC;
-    }
-    if (font.isStrikeThrough) {
-      value += mxgraph.mxConstants.FONT_STRIKETHROUGH;
-    }
-    if (font.isUnderline) {
-      value += mxgraph.mxConstants.FONT_UNDERLINE;
-    }
-    return value;
+/**
+ * @internal
+ * @private
+ */
+export function getFontStyleValue(font: Font): number {
+  let value = 0;
+  if (font.isBold) {
+    value += mxgraph.mxConstants.FONT_BOLD;
   }
+  if (font.isItalic) {
+    value += mxgraph.mxConstants.FONT_ITALIC;
+  }
+  if (font.isStrikeThrough) {
+    value += mxgraph.mxConstants.FONT_STRIKETHROUGH;
+  }
+  if (font.isUnderline) {
+    value += mxgraph.mxConstants.FONT_UNDERLINE;
+  }
+  return value;
 }
