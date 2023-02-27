@@ -40,10 +40,8 @@ export class BpmnRenderer {
   }
 
   private insertShapesAndEdges({ pools, lanes, subprocesses, otherFlowNodes, boundaryEvents, edges }: RenderedModel): void {
-    const model = this.graph.getModel();
-    model.clear(); // ensure to remove manual changes or already loaded graphs
-    model.beginUpdate();
-    try {
+    this.graph.batchUpdate(() => {
+      this.graph.getModel().clear(); // ensure to remove manual changes or already loaded graphs
       this.insertShapes(pools);
       this.insertShapes(lanes);
       this.insertShapes(subprocesses);
@@ -52,9 +50,7 @@ export class BpmnRenderer {
       this.insertShapes(boundaryEvents);
       // at last as edge source and target must be present in the model prior insertion, otherwise they are not rendered
       this.insertEdges(edges);
-    } finally {
-      model.endUpdate();
-    }
+    });
   }
 
   private insertShapes(shapes: Shape[]): void {

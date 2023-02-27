@@ -37,7 +37,7 @@ describe('compute base css class names of BPMN elements', () => {
     ${ShapeBpmnElementKind.TASK_SERVICE}             | ${'bpmn-service-task'}
     ${ShapeBpmnElementKind.GROUP}                    | ${'bpmn-group'}
     ${ShapeBpmnElementKind.TEXT_ANNOTATION}          | ${'bpmn-text-annotation'}
-  `('$kind Bpmn base classname', ({ kind, expectedClassName }) => {
+  `('$kind Bpmn base classname', ({ kind, expectedClassName }: { kind: string; expectedClassName: string }) => {
     expect(computeBpmnBaseClassName(kind)).toEqual(expectedClassName);
   });
 });

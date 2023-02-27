@@ -69,7 +69,7 @@ export default class GraphConfigurator {
       panningHandler.addListener(mxgraph.mxEvent.PAN_START, this.getPanningHandler('grab'));
       panningHandler.addListener(mxgraph.mxEvent.PAN_END, this.getPanningHandler('default'));
 
-      this.graph.panningHandler.usePopupTrigger = false; // only use the left button to trigger panning
+      panningHandler.usePopupTrigger = false; // only use the left button to trigger panning
       // Reimplement the function as we also want to trigger 'panning on cells' (ignoreCell to true) and only on left-click
       // The mxGraph standard implementation doesn't ignore right click in this case, so do it by ourselves
       panningHandler.isForcePanningEvent = (me): boolean => mxgraph.mxEvent.isLeftMouseButton(me.getEvent()) || mxgraph.mxEvent.isMultiTouchEvent(me.getEvent());
