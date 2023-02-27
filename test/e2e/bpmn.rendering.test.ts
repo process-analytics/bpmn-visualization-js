@@ -54,13 +54,13 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           windows: 0.04 / 100, // 0.03137680045437463%
         },
       ],
-      [
-        'labels.01.general',
-        {
-          macos: 0.6 / 100, // 0.5929886180884969%
-          windows: 0.423 / 100, // 0.41473463002763555%
-        },
-      ],
+      // [
+      //   'labels.01.general',
+      //   {
+      //     macos: 0.6 / 100, // 0.5929886180884969%
+      //     windows: 0.423 / 100, // 0.41473463002763555%
+      //   },
+      // ],
       [
         'labels.02.position.and.line.breaks',
         {
@@ -149,15 +149,15 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           windows: 0.24 / 100, // 0.23009823201961543%
         },
       ],
-      [
-        'labels.01.general',
-        {
-          linux: 0.23 / 100, // 0.22239085167347072%
-          macos: 0.82 / 100, // 0.818150021840347%
-          // very high value due to font rendering discrepancies with chromium rendering
-          windows: 11.55 / 10, // 11.549215850525563%
-        },
-      ],
+      // [
+      //   'labels.01.general',
+      //   {
+      //     linux: 0.23 / 100, // 0.22239085167347072%
+      //     macos: 0.82 / 100, // 0.818150021840347%
+      //     // very high value due to font rendering discrepancies with chromium rendering
+      //     windows: 11.55 / 10, // 11.549215850525563%
+      //   },
+      // ],
       [
         'labels.02.position.and.line.breaks',
         {
@@ -244,13 +244,13 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           macos: 0.41 / 100, // 0.40487233108913445%
         },
       ],
-      [
-        'labels.01.general',
-        {
-          // TODO possible rendering issue so high threshold value
-          macos: 1.25 / 100, // 1.2428419116196077%
-        },
-      ],
+      // [
+      //   'labels.01.general',
+      //   {
+      //     // high value due to font rendering discrepancies with chromium rendering
+      //     macos: 1.25 / 100, // 1.2428419116196077%
+      //   },
+      // ],
       [
         'labels.02.position.and.line.breaks',
         {
