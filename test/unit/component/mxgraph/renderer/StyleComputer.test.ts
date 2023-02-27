@@ -218,8 +218,8 @@ describe('Style Computer', () => {
   });
 
   it.each([
-    [MessageVisibleKind.NON_INITIATING, 'non_initiating'],
-    [MessageVisibleKind.INITIATING, 'initiating'],
+    [MessageVisibleKind.NON_INITIATING, 'false'],
+    [MessageVisibleKind.INITIATING, 'true'],
   ])('compute style - message flow icon: %s', (messageVisibleKind: MessageVisibleKind, expected: string) => {
     const edge = new Edge('id', newMessageFlow(), undefined, undefined, messageVisibleKind);
     expect(styleComputer.computeMessageFlowIconStyle(edge)).toBe(`shape=bpmn.messageFlowIcon;bpmn.isInitiating=${expected}`);

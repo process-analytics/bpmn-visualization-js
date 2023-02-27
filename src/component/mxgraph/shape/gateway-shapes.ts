@@ -14,12 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { StyleDefault, StyleUtils } from '../style';
+import type { mxAbstractCanvas2D } from 'mxgraph';
+import { mxgraph } from '../initializer';
+import { BpmnStyleIdentifier, StyleDefault } from '../style';
+import { getBpmnIsInstantiating } from '../style/utils';
+import { ShapeBpmnEventBasedGatewayKind } from '../../../model/bpmn/internal';
 import type { PaintParameter } from './render';
 import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
-import { mxgraph } from '../initializer';
-import type { mxAbstractCanvas2D } from 'mxgraph';
 
 abstract class GatewayShape extends mxgraph.mxRhombus {
   protected iconPainter = IconPainterProvider.get();
@@ -101,7 +103,7 @@ export class EventBasedGatewayShape extends GatewayShape {
       ...paintParameter,
       ratioFromParent: 0.55,
     });
-    if (!StyleUtils.getBpmnIsInstantiating(this.style)) {
+    if (!getBpmnIsInstantiating(this.style)) {
       this.iconPainter.paintCircleIcon({
         ...paintParameter,
         ratioFromParent: 0.45,
@@ -113,7 +115,7 @@ export class EventBasedGatewayShape extends GatewayShape {
       ...paintParameter,
       ratioFromParent: 0.3,
     };
-    if (StyleUtils.getBpmnIsParallelEventBasedGateway(this.style)) {
+    if (mxgraph.mxUtils.getValue(this.style, BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND, ShapeBpmnEventBasedGatewayKind.Exclusive) == ShapeBpmnEventBasedGatewayKind.Parallel) {
       this.iconPainter.paintPlusCrossIcon(innerIconPaintParameter);
     } else {
       this.iconPainter.paintPentagon(innerIconPaintParameter);

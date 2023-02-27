@@ -14,14 +14,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { StyleDefault, StyleUtils } from '../style';
+import type { mxAbstractCanvas2D } from 'mxgraph';
+import { mxgraph } from '../initializer';
+import { BpmnStyleIdentifier, StyleDefault } from '../style';
+import { getBpmnIsInstantiating } from '../style/utils';
 import type { BpmnCanvas, PaintParameter, ShapeConfiguration } from './render';
 import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
 import { ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal';
 import { orderActivityMarkers } from './render/utils';
-import { mxgraph } from '../initializer';
-import type { mxAbstractCanvas2D } from 'mxgraph';
 
 function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): void {
   IconPainterProvider.get().paintEnvelopeIcon({
@@ -51,7 +52,7 @@ export abstract class BaseActivityShape extends mxgraph.mxRectangleShape {
   }
 
   protected paintMarkerIcons(paintParameter: PaintParameter): void {
-    const markers = StyleUtils.getBpmnMarkers(this.style);
+    const markers = mxgraph.mxUtils.getValue(this.style, BpmnStyleIdentifier.MARKERS, undefined);
     if (markers) {
       orderActivityMarkers(markers.split(',')).forEach((marker, idx, allMarkers) => {
         paintParameter = {
@@ -140,7 +141,7 @@ export class UserTaskShape extends BaseTaskShape {
  */
 export class ReceiveTaskShape extends BaseTaskShape {
   protected paintTaskIcon(paintParameter: PaintParameter): void {
-    if (!StyleUtils.getBpmnIsInstantiating(this.style)) {
+    if (!getBpmnIsInstantiating(this.style)) {
       paintEnvelopeIcon(paintParameter, false);
       return;
     }
@@ -212,7 +213,7 @@ export class CallActivityShape extends BaseActivityShape {
 
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this });
 
-    switch (StyleUtils.getBpmnGlobalTaskKind(this.style)) {
+    switch (mxgraph.mxUtils.getValue(this.style, BpmnStyleIdentifier.GLOBAL_TASK_KIND, undefined)) {
       case ShapeBpmnElementKind.GLOBAL_TASK_MANUAL:
         this.iconPainter.paintHandIcon({
           ...paintParameter,
@@ -252,7 +253,7 @@ export class CallActivityShape extends BaseActivityShape {
  */
 export class SubProcessShape extends BaseActivityShape {
   override paintBackground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
-    const subProcessKind = StyleUtils.getBpmnSubProcessKind(this.style);
+    const subProcessKind = mxgraph.mxUtils.getValue(this.style, BpmnStyleIdentifier.SUB_PROCESS_KIND, undefined);
     c.save(); // ensure we can later restore the configuration
     if (subProcessKind === ShapeBpmnSubProcessKind.EVENT) {
       c.setDashed(true, false);

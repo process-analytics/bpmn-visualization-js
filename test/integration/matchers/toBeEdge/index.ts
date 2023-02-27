@@ -64,7 +64,7 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement |
     expectedCell.children = [
       {
         value: undefined,
-        style: `shape=${BpmnStyleIdentifier.MESSAGE_FLOW_ICON};${BpmnStyleIdentifier.IS_INITIATING}=${expectedModel.messageVisibleKind}`,
+        style: `shape=${BpmnStyleIdentifier.MESSAGE_FLOW_ICON};${BpmnStyleIdentifier.IS_INITIATING}=${expectedModel.messageVisibleKind == MessageVisibleKind.INITIATING}`,
         id: `messageFlowIcon_of_${id}`,
         vertex: true,
       },

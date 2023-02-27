@@ -14,8 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { GlobalTaskKind, MessageVisibleKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal';
-import { ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventDefinitionKind } from '../../../model/bpmn/internal';
 import { mxgraph } from '../initializer';
 import { BpmnStyleIdentifier } from './identifiers';
 
@@ -65,60 +63,10 @@ export enum StyleDefault {
   MESSAGE_FLOW_MARKER_END_FILL_COLOR = 'White',
 }
 
-/* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */
 /**
- * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
- *
- * @category BPMN Theme
- * @experimental
+ * Get the BPMN 'instantiate' information from the style.
+ * @param style the mxGraph style
+ * @internal
+ * @private
  */
-export class StyleUtils {
-  static getFillColor(style: any): string {
-    return mxgraph.mxUtils.getValue(style, mxgraph.mxConstants.STYLE_FILLCOLOR, StyleDefault.DEFAULT_FILL_COLOR);
-  }
-
-  static getStrokeColor(style: any): string {
-    return mxgraph.mxUtils.getValue(style, mxgraph.mxConstants.STYLE_STROKECOLOR, StyleDefault.DEFAULT_STROKE_COLOR);
-  }
-
-  static getStrokeWidth(style: any): number {
-    return mxgraph.mxUtils.getValue(style, mxgraph.mxConstants.STYLE_STROKEWIDTH, StyleDefault.STROKE_WIDTH_THIN);
-  }
-
-  static getMargin(style: any): number {
-    return mxgraph.mxUtils.getValue(style, mxgraph.mxConstants.STYLE_MARGIN, StyleDefault.DEFAULT_MARGIN);
-  }
-
-  static getBpmnEventDefinitionKind(style: any): ShapeBpmnEventDefinitionKind {
-    return mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.EVENT_DEFINITION_KIND, ShapeBpmnEventDefinitionKind.NONE);
-  }
-
-  static getBpmnSubProcessKind(style: any): ShapeBpmnSubProcessKind {
-    return mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.SUB_PROCESS_KIND, undefined);
-  }
-
-  static getBpmnIsInterrupting(style: any): string {
-    return mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.IS_INTERRUPTING, undefined);
-  }
-
-  static getBpmnMarkers(style: any): string {
-    return mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.MARKERS, undefined);
-  }
-
-  static getBpmnIsInstantiating(style: any): boolean {
-    return JSON.parse(mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.IS_INSTANTIATING, false));
-  }
-
-  static getBpmnIsInitiating(style: any): MessageVisibleKind {
-    return mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.IS_INITIATING, undefined);
-  }
-
-  static getBpmnIsParallelEventBasedGateway(style: any): boolean {
-    return mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND, ShapeBpmnEventBasedGatewayKind.Exclusive) == ShapeBpmnEventBasedGatewayKind.Parallel;
-  }
-
-  static getBpmnGlobalTaskKind(style: any): GlobalTaskKind {
-    return mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.GLOBAL_TASK_KIND, undefined);
-  }
-}
-/* eslint-enable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */
+export const getBpmnIsInstantiating = (style: { [p: string]: unknown }): boolean => mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.IS_INSTANTIATING, 'false') == 'true';

@@ -14,10 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { BpmnCanvas } from './BpmnCanvas';
-import { StyleUtils } from '../../style';
-import type { IconStyleConfiguration, ShapeConfiguration, Size } from './render-types';
 import type { mxAbstractCanvas2D, mxShape } from 'mxgraph';
+import { mxgraph } from '../../initializer';
+import { StyleDefault } from '../../style';
+import { BpmnCanvas } from './BpmnCanvas';
+import type { IconStyleConfiguration, ShapeConfiguration, Size } from './render-types';
 
 /**
  * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
@@ -57,10 +58,10 @@ export function buildPaintParameter({
   isFilled?: boolean;
   iconStrokeWidth?: number;
 }): PaintParameter {
-  const shapeStrokeWidth = shape.strokewidth || StyleUtils.getStrokeWidth(shape.style);
-  const fillColor = shape.fill || StyleUtils.getFillColor(shape.style);
-  const strokeColor = shape.stroke || StyleUtils.getStrokeColor(shape.style);
-  const margin = StyleUtils.getMargin(shape.style);
+  const shapeStrokeWidth = shape.strokewidth || mxgraph.mxUtils.getValue(shape.style, mxgraph.mxConstants.STYLE_STROKEWIDTH, StyleDefault.STROKE_WIDTH_THIN);
+  const fillColor = shape.fill || mxgraph.mxUtils.getValue(shape.style, mxgraph.mxConstants.STYLE_FILLCOLOR, StyleDefault.DEFAULT_FILL_COLOR);
+  const strokeColor = shape.stroke || mxgraph.mxUtils.getValue(shape.style, mxgraph.mxConstants.STYLE_STROKECOLOR, StyleDefault.DEFAULT_STROKE_COLOR);
+  const margin = mxgraph.mxUtils.getValue(shape.style, mxgraph.mxConstants.STYLE_MARGIN, StyleDefault.DEFAULT_MARGIN);
   ratioFromParent ??= 0.25;
   isFilled ??= false;
   iconStrokeWidth ??= 0;
