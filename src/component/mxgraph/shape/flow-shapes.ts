@@ -16,8 +16,7 @@ limitations under the License.
 
 import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
-import { StyleUtils } from '../style';
-import { MessageVisibleKind } from '../../../model/bpmn/internal/edge/kinds';
+import { BpmnStyleIdentifier } from '../style';
 import { mxgraph } from '../initializer';
 import type { mxAbstractCanvas2D, mxRectangle } from 'mxgraph';
 
@@ -32,8 +31,16 @@ export class MessageFlowIconShape extends mxgraph.mxRectangleShape {
   }
 
   override paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
-    const withFilledIcon = StyleUtils.getBpmnIsInitiating(this.style) === MessageVisibleKind.NON_INITIATING;
-    const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, ratioFromParent: 1, isFilled: withFilledIcon });
+    const paintParameter = buildPaintParameter({
+      canvas: c,
+      x,
+      y,
+      width: w,
+      height: h,
+      shape: this,
+      ratioFromParent: 1,
+      isFilled: mxgraph.mxUtils.getValue(this.style, BpmnStyleIdentifier.IS_INITIATING, 'true') == 'false',
+    });
 
     this.iconPainter.paintEnvelopeIcon(paintParameter);
   }

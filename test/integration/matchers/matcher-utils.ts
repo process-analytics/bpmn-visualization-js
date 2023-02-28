@@ -16,11 +16,12 @@ limitations under the License.
 
 import type { ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement } from '../helpers/model-expect';
 import { bpmnVisualization } from '../helpers/model-expect';
-import MatcherContext = jest.MatcherContext;
-import CustomMatcherResult = jest.CustomMatcherResult;
-import { mxgraph } from '../../../src/component/mxgraph/initializer';
 import type { mxCell, mxGeometry, StyleMap } from 'mxgraph';
 import type { MxGraphCustomOverlay, MxGraphCustomOverlayStyle } from '../../../src/component/mxgraph/overlay/custom-overlay';
+import { Font } from '../../../src/model/bpmn/internal/Label';
+import { getFontStyleValue as computeFontStyleValue } from '../../../src/component/mxgraph/renderer/StyleComputer';
+import MatcherContext = jest.MatcherContext;
+import CustomMatcherResult = jest.CustomMatcherResult;
 
 export interface ExpectedStateStyle extends StyleMap {
   verticalAlign?: string;
@@ -104,24 +105,12 @@ export function buildCellMatcher<R>(
   return { message: (): string => messagePrefix + messageSuffix, pass };
 }
 
-// TODO test code duplicated from the code under test StyleComputer.getFontStyleValue
 export function getFontStyleValue(expectedFont: ExpectedFont): number {
-  let value = 0;
-  if (expectedFont) {
-    if (expectedFont.isBold) {
-      value += mxgraph.mxConstants.FONT_BOLD;
-    }
-    if (expectedFont.isItalic) {
-      value += mxgraph.mxConstants.FONT_ITALIC;
-    }
-    if (expectedFont.isStrikeThrough) {
-      value += mxgraph.mxConstants.FONT_STRIKETHROUGH;
-    }
-    if (expectedFont.isUnderline) {
-      value += mxgraph.mxConstants.FONT_UNDERLINE;
-    }
-  }
-  return value ? value : undefined;
+  return (
+    (expectedFont
+      ? computeFontStyleValue(new Font(expectedFont.name, expectedFont.size, expectedFont.isBold, expectedFont.isItalic, expectedFont.isUnderline, expectedFont.isStrikeThrough))
+      : 0) || undefined
+  );
 }
 
 export function buildCommonExpectedStateStyle(expectedModel: ExpectedEdgeModelElement | ExpectedShapeModelElement): ExpectedStateStyle {

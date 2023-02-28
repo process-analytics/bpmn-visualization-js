@@ -1273,12 +1273,12 @@ describe('mxGraph model - BPMN elements', () => {
         expect('message_flow_initiating_message_id').toBeMessageFlow({
           label: 'Message Flow with initiating message',
           messageVisibleKind: MessageVisibleKind.INITIATING,
-          verticalAlign: 'bottom',
+          verticalAlign: 'top',
         });
         expect('message_flow_non_initiating_message_id').toBeMessageFlow({
           label: 'Message Flow with non-initiating message',
           messageVisibleKind: MessageVisibleKind.NON_INITIATING,
-          verticalAlign: 'bottom',
+          verticalAlign: 'top',
         });
         expect('message_flow_no_visible_id').toBeMessageFlow({ label: 'Message Flow without message', messageVisibleKind: MessageVisibleKind.NONE, verticalAlign: 'bottom' });
       });
