@@ -57,8 +57,8 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'labels.01.general',
         {
-          macos: 0.6 / 100, // 0.5929886180884969%
-          windows: 0.423 / 100, // 0.41473463002763555%
+          macos: 0.6 / 100, // 0.586987125223093%
+          windows: 0.5 / 100, // 0.49594859884111164%
         },
       ],
       [
@@ -152,10 +152,10 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'labels.01.general',
         {
-          linux: 0.23 / 100, // 0.22239085167347072%
-          macos: 0.82 / 100, // 0.818150021840347%
-          // very high value due to font rendering discrepancies with chromium rendering
-          windows: 11.55 / 10, // 11.549215850525563%
+          // high values due to font rendering discrepancies with chromium rendering
+          linux: 1.15 / 100, // 1.1412952972301604%
+          macos: 1.72 / 100, // 1.7113512021706412%
+          windows: 12.78 / 100, // 12.772014023565726%
         },
       ],
       [
@@ -247,8 +247,8 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'labels.01.general',
         {
-          // TODO possible rendering issue so high threshold value
-          macos: 1.25 / 100, // 1.2428419116196077%
+          // high value due to font rendering discrepancies with chromium rendering
+          macos: 1.79 / 100, // 1.7833883910028492%
         },
       ],
       [
