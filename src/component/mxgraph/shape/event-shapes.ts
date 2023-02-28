@@ -14,13 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { mxAbstractCanvas2D } from 'mxgraph';
+import { mxgraph } from '../initializer';
+import { BpmnStyleIdentifier, StyleDefault } from '../style';
 import { ShapeBpmnEventDefinitionKind } from '../../../model/bpmn/internal';
 import type { BpmnCanvas, PaintParameter } from './render';
 import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
-import { StyleDefault, StyleUtils } from '../style';
-import type { mxAbstractCanvas2D } from 'mxgraph';
-import { mxgraph } from '../initializer';
 
 /**
  * @internal
@@ -88,7 +88,7 @@ export class EventShape extends mxgraph.mxEllipse {
   override paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, isFilled: this.withFilledIcon });
 
-    EventShape.setDashedOuterShapePattern(paintParameter, StyleUtils.getBpmnIsInterrupting(this.style));
+    EventShape.setDashedOuterShapePattern(paintParameter, mxgraph.mxUtils.getValue(this.style, BpmnStyleIdentifier.IS_INTERRUPTING, undefined));
     this.paintOuterShape(paintParameter);
     EventShape.restoreOriginalOuterShapePattern(paintParameter);
 
@@ -100,7 +100,9 @@ export class EventShape extends mxgraph.mxEllipse {
   }
 
   private paintInnerShape(paintParameter: PaintParameter): void {
-    const paintIcon = this.iconPainters.get(StyleUtils.getBpmnEventDefinitionKind(this.style)) || (() => this.iconPainter.paintEmptyIcon());
+    const paintIcon =
+      this.iconPainters.get(mxgraph.mxUtils.getValue(this.style, BpmnStyleIdentifier.EVENT_DEFINITION_KIND, ShapeBpmnEventDefinitionKind.NONE)) ??
+      (() => this.iconPainter.paintEmptyIcon());
     paintIcon(paintParameter);
   }
 

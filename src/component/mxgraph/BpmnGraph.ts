@@ -48,6 +48,25 @@ export class BpmnGraph extends mxgraph.mxGraph {
   }
 
   /**
+   * Shortcut for an update of the model within a transaction.
+   *
+   * This method is inspired from {@link https://github.com/maxGraph/maxGraph/blob/v0.1.0/packages/core/src/view/Graph.ts#L487-L494 maxGraph}.
+   *
+   * @param fn the update to be made in the transaction.
+   *
+   * @experimental subject to change, may move to a subclass of `mxGraphModel`
+   * @alpha
+   */
+  batchUpdate(fn: () => void): void {
+    this.model.beginUpdate();
+    try {
+      fn();
+    } finally {
+      this.model.endUpdate();
+    }
+  }
+
+  /**
    * Overridden to manage `currentZoomLevel`
    * @internal
    */
