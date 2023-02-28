@@ -204,6 +204,7 @@ export class StyleConfigurator {
     ShapeUtil.activityKinds().forEach(kind => {
       const style: StyleMap = {};
       style[mxgraph.mxConstants.STYLE_SHAPE] = kind;
+      style[mxgraph.mxConstants.STYLE_ROUNDED] = true; // required by the BPMN specification
       style[mxgraph.mxConstants.STYLE_VERTICAL_ALIGN] = mxgraph.mxConstants.ALIGN_MIDDLE;
       style[mxgraph.mxConstants.STYLE_STROKEWIDTH] = kind == ShapeBpmnElementKind.CALL_ACTIVITY ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN;
       this.putCellStyle(kind, style);

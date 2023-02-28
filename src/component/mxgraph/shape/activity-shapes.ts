@@ -41,8 +41,6 @@ export abstract class BaseActivityShape extends mxgraph.mxRectangleShape {
 
   constructor() {
     super(undefined, undefined, undefined); // the configuration is passed with the styles at runtime
-    // enforced by BPMN
-    this.isRounded = true;
   }
 
   override paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {

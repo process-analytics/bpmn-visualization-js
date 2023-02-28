@@ -27,6 +27,7 @@ import type {
   Version,
   ZoomType,
 } from '../../src/bpmn-visualization';
+import { FlowKind, ShapeBpmnElementKind } from '../../src/bpmn-visualization';
 import { fetchBpmnContent, logDownload, logErrorAndOpenAlert, logStartup, stringify } from './utils/internal-helpers';
 import { log } from './utils/shared-helpers';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
@@ -38,6 +39,7 @@ let bpmnVisualization: ThemedBpmnVisualization;
 let loadOptions: LoadOptions = {};
 let bpmnElementIdToCollapse: string;
 let currentTheme: string;
+let styleStrokeColor: string;
 
 export function updateLoadOptions(fitOptions: FitOptions): void {
   log('Updating load options', fitOptions);
@@ -164,7 +166,10 @@ function loadBpmnFromUrl(url: string, statusFetchKoNotifier: (errorMsg: string) 
     })
     .then(bpmn => {
       loadBpmn(bpmn);
-      log(`Bpmn loaded from url ${url}`);
+      log(`BPMN content loaded from url ${url}`);
+    })
+    .then(() => {
+      updateStyleOfElementsIfRequested();
     })
     .catch(() => {
       // do nothing here, error is already managed
@@ -221,6 +226,11 @@ function configureStyleFromParameters(parameters: URLSearchParams): void {
   if (useSequenceFlowColorsLight == 'true') {
     bpmnVisualization.configureSequenceFlowColor('#E9E9E9');
   }
+
+  // Collect style properties to update them later with the bpmn-visualization API
+  // The implementation will be generalized when more properties will be supported (in particular, the query parameter name)
+  // For example, we could extract all query params starting with style.api, then rebuild the StyleUpdate from the extracted params
+  styleStrokeColor = parameters.get('style.api.strokeColor');
 }
 
 function configureBpmnElementIdToCollapseFromParameters(parameters: URLSearchParams): void {
@@ -280,4 +290,25 @@ export function getVersion(): Version {
   const version = bpmnVisualization.getVersion();
   log('Version:', version);
   return version;
+}
+
+function updateStyleOfElementsIfRequested(): void {
+  if (styleStrokeColor) {
+    log("Applying stroke color using the style API: '%s'", styleStrokeColor);
+    const bpmnElementIds = retrieveAllBpmnElementIds();
+    log('Number of elements whose style is to be updated', bpmnElementIds.length);
+
+    bpmnVisualization.bpmnElementsRegistry.updateStyle(bpmnElementIds, { stroke: { color: styleStrokeColor } });
+    log('New stroke color applied');
+  }
+}
+
+// May have bad performance for large diagrams as it does CSS selector
+function retrieveAllBpmnElementIds(): string[] {
+  log('Retrieving ids of all BPMN elements');
+  const allKinds = [...Object.values(ShapeBpmnElementKind), ...Object.values(FlowKind)];
+  const elements = bpmnVisualization.bpmnElementsRegistry.getElementsByKinds(allKinds);
+  const bpmnElementsIds = elements.map(elt => elt.bpmnSemantic.id);
+  log('All BPMN elements ids retrieved:', bpmnElementsIds.length);
+  return bpmnElementsIds;
 }

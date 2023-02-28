@@ -22,6 +22,7 @@ import 'expect-playwright';
 import type { PageWaitForSelectorOptions } from 'expect-playwright';
 import type { ElementHandle, Page } from 'playwright';
 import { type LoadOptions, FitType, ZoomType } from '../../../../src/component/options';
+import type { StyleUpdate } from '../../../../src/component/registry';
 import { BpmnQuerySelectorsForTests } from '../../../helpers/query-selectors';
 import { delay } from '../test-utils';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -46,7 +47,7 @@ class BpmnPage {
   }
 
   /**
-   * This checks that at least one BPMN element is available in the DOM as a SVG element. This ensures that the mxGraph rendering has been done.
+   * This checks that at least one BPMN element is available in the DOM as an SVG element. This ensures that the mxGraph rendering has been done.
    */
   async expectExistingBpmnElement(options?: PageWaitForSelectorOptions): Promise<void> {
     // eslint-disable-next-line jest/no-standalone-expect
@@ -92,7 +93,7 @@ export interface TargetedPageConfiguration {
   /** The HTML page used during the tests. */
   targetedPage: AvailableTestPage;
   /**
-   * Id of the container in the page attached to bpmn-visualization
+   * Identifier of the container in the page attached to bpmn-visualization
    * @default bpmn-container
    */
   bpmnContainerId?: string;
@@ -113,6 +114,10 @@ export interface StyleOptions {
   sequenceFlow?: {
     useLightColors?: boolean;
   };
+  /**
+   * Let style BPMN elements using {@link BpmnElementsRegistry.updateStyle}
+   */
+  styleUpdate?: StyleUpdate;
 }
 
 export interface PageOptions {
@@ -188,6 +193,8 @@ export class PageTester {
     styleOptions?.bpmnContainer?.useAlternativeBackgroundColor &&
       (url += `&style.container.alternative.background.color=${styleOptions.bpmnContainer.useAlternativeBackgroundColor}`);
     styleOptions?.theme && (url += `&style.theme=${styleOptions.theme}`);
+    // Manage all styleUpdate properties (the implementation will be generalized when more properties will be supported)
+    styleOptions?.styleUpdate?.stroke?.color && (url += `&style.api.strokeColor=${styleOptions.styleUpdate.stroke.color}`);
 
     // other options
     const bpmnElementIdToCollapse = otherPageOptions?.bpmnElementIdToCollapse;
