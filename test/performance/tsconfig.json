@@ -3,7 +3,4 @@
   "compilerOptions": {
     "diagnostics": true,
   },
-  "include": [
-    "./**/*",
-  ]
 }
