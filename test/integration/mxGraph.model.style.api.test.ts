@@ -210,7 +210,8 @@ describe('mxGraph model - update style', () => {
     const htmlElementLookup = new HtmlElementLookup(bv);
 
     it.each(
-      // FIXME: we have a bug when the CSS classes are applied first, they are dropped after the call of the updateStyle method
+      // We have a bug when the CSS classes are applied first, they are dropped after the call of the updateStyle method
+      // See https://github.com/process-analytics/bpmn-visualization-js/issues/2561
       // When fixed, it.each should use [true, false]
       [true],
     )('Apply style update first %s', (isStyleUpdateAppliedFirst: boolean) => {
