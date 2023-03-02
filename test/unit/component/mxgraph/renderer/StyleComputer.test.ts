@@ -157,7 +157,7 @@ describe('Style Computer', () => {
 
     it('compute style of shape with label bounds', () => {
       const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.CALL_ACTIVITY), undefined, new Label(undefined, new Bounds(40, 200, 80, 140)));
-      expect(computeStyle(shape)).toBe('callActivity;verticalAlign=top;align=center;labelWidth=81;labelPosition=none;verticalLabelPosition=middle');
+      expect(computeStyle(shape)).toBe('callActivity;verticalAlign=top;align=center;labelWidth=81;labelPosition=ignore;verticalLabelPosition=middle');
     });
   });
 
@@ -286,7 +286,7 @@ describe('Style Computer', () => {
         const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, markers), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
         const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
         expect(computeStyle(shape)).toBe(
-          `subProcess;bpmn.subProcessKind=embedded${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=none;verticalLabelPosition=middle`,
+          `subProcess;bpmn.subProcessKind=embedded${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=ignore;verticalLabelPosition=middle`,
         );
       });
     });
@@ -309,7 +309,7 @@ describe('Style Computer', () => {
           const shape = newShape(newShapeBpmnCallActivityCallingProcess(markers), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
           const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
           expect(computeStyle(shape)).toBe(
-            `callActivity${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=none;verticalLabelPosition=middle`,
+            `callActivity${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=ignore;verticalLabelPosition=middle`,
           );
         });
       });
@@ -331,7 +331,7 @@ describe('Style Computer', () => {
         it(`call activity calling ${globalTaskKind} with label bounds`, () => {
           const shape = newShape(newShapeBpmnCallActivityCallingGlobalTask(globalTaskKind), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
           expect(computeStyle(shape)).toBe(
-            `callActivity;bpmn.globalTaskKind=${globalTaskKind};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=none;verticalLabelPosition=middle`,
+            `callActivity;bpmn.globalTaskKind=${globalTaskKind};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=ignore;verticalLabelPosition=middle`,
           );
         });
       });
@@ -355,7 +355,7 @@ describe('Style Computer', () => {
     });
     it('with label bounds', () => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.TEXT_ANNOTATION), newLabel({ name: 'Segoe UI' }, new Bounds(50, 50, 100, 100)));
-      expect(computeStyle(shape)).toBe('textAnnotation;fontFamily=Segoe UI;verticalAlign=top;labelWidth=101;labelPosition=none;verticalLabelPosition=middle');
+      expect(computeStyle(shape)).toBe('textAnnotation;fontFamily=Segoe UI;verticalAlign=top;labelWidth=101;labelPosition=ignore;verticalLabelPosition=middle');
     });
   });
 
@@ -366,7 +366,7 @@ describe('Style Computer', () => {
     });
     it('with label bounds', () => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.GROUP), newLabel({ name: 'Roboto' }, new Bounds(50, 50, 100, 100)));
-      expect(computeStyle(shape)).toBe('group;fontFamily=Roboto;verticalAlign=top;align=center;labelWidth=101;labelPosition=none;verticalLabelPosition=middle');
+      expect(computeStyle(shape)).toBe('group;fontFamily=Roboto;verticalAlign=top;align=center;labelWidth=101;labelPosition=ignore;verticalLabelPosition=middle');
     });
   });
 
