@@ -80,14 +80,15 @@ export default class GraphCellUpdater {
       .map(id => this.graph.getModel().getCell(id))
       .filter(Boolean);
     if (cells.length == 0) {
-      // we don't want to create an empty transaction
+      // We don't want to create an empty transaction
       return;
     }
 
     this.graph.batchUpdate(() => {
       for (const cell of cells) {
         let cellStyle = cell.getStyle();
-        cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKECOLOR, styleUpdate?.stroke?.color);
+        // Only set the style when the key is set. Otherwise, mxGraph removes the related setting from the cellStyle which is equivalent to a reset of the style property
+        styleUpdate?.stroke?.color && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKECOLOR, styleUpdate.stroke.color));
         this.graph.model.setStyle(cell, cellStyle);
       }
     });

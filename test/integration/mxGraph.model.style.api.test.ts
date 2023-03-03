@@ -80,10 +80,25 @@ describe('mxGraph model - update style', () => {
       });
     });
 
-    it('Update the style twice', () => {
+    it('Update the style twice - specify the property both times', () => {
       const strokeColor = 'yellow';
       bpmnVisualization.bpmnElementsRegistry.updateStyle(['endEvent_terminate_1'], { stroke: { color: 'to_override' } });
       bpmnVisualization.bpmnElementsRegistry.updateStyle(['endEvent_terminate_1'], { stroke: { color: strokeColor } });
+
+      expectActualStateStyle('endEvent_terminate_1', { strokeColor });
+      expect('endEvent_terminate_1').toBeEndEvent({
+        stroke: { color: strokeColor },
+        // not under test
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.TERMINATE,
+        parentId: 'Lane_13kpaun',
+        label: 'terminate end 1',
+      });
+    });
+
+    it('Update the style twice - specify the property only the first time', () => {
+      const strokeColor = 'green';
+      bpmnVisualization.bpmnElementsRegistry.updateStyle(['endEvent_terminate_1'], { stroke: { color: strokeColor } });
+      bpmnVisualization.bpmnElementsRegistry.updateStyle(['endEvent_terminate_1'], {});
 
       expectActualStateStyle('endEvent_terminate_1', { strokeColor });
       expect('endEvent_terminate_1').toBeEndEvent({
@@ -134,10 +149,24 @@ describe('mxGraph model - update style', () => {
       });
     });
 
-    it('Update the style twice', () => {
+    it('Update the style twice - specify the property both times', () => {
       const strokeColor = 'gray';
       bpmnVisualization.bpmnElementsRegistry.updateStyle(['sequenceFlow_lane_1_elt_1'], { stroke: { color: 'to_override' } });
       bpmnVisualization.bpmnElementsRegistry.updateStyle(['sequenceFlow_lane_1_elt_1'], { stroke: { color: strokeColor } });
+
+      expectActualStateStyle('sequenceFlow_lane_1_elt_1', { strokeColor });
+      expect('sequenceFlow_lane_1_elt_1').toBeSequenceFlow({
+        stroke: { color: strokeColor },
+        // not under test
+        parentId: 'Lane_13kpaun',
+        verticalAlign: 'bottom',
+      });
+    });
+
+    it('Update the style twice - specify the property only the first time', () => {
+      const strokeColor = 'DarkBlue';
+      bpmnVisualization.bpmnElementsRegistry.updateStyle(['sequenceFlow_lane_1_elt_1'], { stroke: { color: strokeColor } });
+      bpmnVisualization.bpmnElementsRegistry.updateStyle(['sequenceFlow_lane_1_elt_1'], {});
 
       expectActualStateStyle('sequenceFlow_lane_1_elt_1', { strokeColor });
       expect('sequenceFlow_lane_1_elt_1').toBeSequenceFlow({
