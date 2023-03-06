@@ -18,6 +18,7 @@ limitations under the License.
 // see https://github.com/jest-community/jest-extended/issues/367
 /// <reference types="jest-extended" />
 
+import debugLogger from 'debug';
 import 'expect-playwright';
 import type { PageWaitForSelectorOptions } from 'expect-playwright';
 import type { ElementHandle, Page } from 'playwright';
@@ -29,6 +30,8 @@ import { delay } from '../test-utils';
 // @ts-ignore js file with commonjs export
 import envUtils = require('../../../helpers/environment-utils.js');
 
+const pageCheckLog = debugLogger('bv:test:page-check');
+
 class BpmnPage {
   private bpmnQuerySelectors: BpmnQuerySelectorsForTests;
 
@@ -37,21 +40,27 @@ class BpmnPage {
   }
 
   async expectAvailableBpmnContainer(options?: PageWaitForSelectorOptions): Promise<void> {
+    pageCheckLog('Expecting the BPMN container available (confirm bpmn-visualization initialization)');
     // eslint-disable-next-line jest/no-standalone-expect
     await expect(this.page).toMatchAttribute(`#${this.bpmnContainerId}`, 'style', /cursor: default/, options);
+    pageCheckLog('BPMN container available');
   }
 
   async expectPageTitle(title: string): Promise<void> {
+    pageCheckLog('Checking page title');
     // eslint-disable-next-line jest/no-standalone-expect
     await expect(this.page.title()).resolves.toEqual(title);
+    pageCheckLog('Page title OK');
   }
 
   /**
    * This checks that at least one BPMN element is available in the DOM as an SVG element. This ensures that the mxGraph rendering has been done.
    */
   async expectExistingBpmnElement(options?: PageWaitForSelectorOptions): Promise<void> {
+    pageCheckLog('Expecting the BPMN elements present in the page');
     // eslint-disable-next-line jest/no-standalone-expect
     await expect(this.page).toHaveSelector(this.bpmnQuerySelectors.existingElement(), options);
+    pageCheckLog('BPMN elements present in the page');
   }
 }
 
@@ -93,7 +102,7 @@ export interface TargetedPageConfiguration {
   /** The HTML page used during the tests. */
   targetedPage: AvailableTestPage;
   /**
-   * Identifier of the container in the page attached to bpmn-visualization
+   * ID of the container in the page attached to bpmn-visualization
    * @default bpmn-container
    */
   bpmnContainerId?: string;
@@ -160,11 +169,14 @@ export class PageTester {
   }
 
   protected async doGotoPageAndLoadBpmnDiagram(url: string, checkResponseStatus = true): Promise<void> {
+    pageCheckLog('Goto page %s', url);
     const response = await this.page.goto(url);
+    pageCheckLog('On page %s', url);
     if (checkResponseStatus) {
       // the Vite server can return http 304 for optimization
       // eslint-disable-next-line jest/no-standalone-expect
       expect(response.status()).toBeOneOf([200, 304]);
+      pageCheckLog('HTTP response status OK');
     }
 
     await this.bpmnPage.expectPageTitle(this.targetedPageConfiguration.targetedPage.expectedPageTitle);
@@ -172,6 +184,8 @@ export class PageTester {
     const waitForSelectorOptions = { timeout: 5_000 };
     await this.bpmnPage.expectAvailableBpmnContainer(waitForSelectorOptions);
     await this.bpmnPage.expectExistingBpmnElement(waitForSelectorOptions);
+
+    pageCheckLog('Page detected as fully loaded, with BPMN elements');
   }
 
   /**

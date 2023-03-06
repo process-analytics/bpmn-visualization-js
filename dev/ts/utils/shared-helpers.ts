@@ -29,3 +29,5 @@ export function documentReady(callbackFunction: () => void): void {
 export function log(message?: string, ...optionalParams: unknown[]): void {
   _log('[DEMO]', message, ...optionalParams);
 }
+
+export { logError } from './internal-helpers';

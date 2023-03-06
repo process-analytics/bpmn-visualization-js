@@ -14,12 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { documentReady, startBpmnVisualization } from '../../../ts/dev-bundle-index';
+import { documentReady, log, logError, startBpmnVisualization } from '../../../ts/dev-bundle-index';
 
 function statusFetchKO(errorMsg) {
-  const statusElt = document.getElementById('fetch-status');
+  logError(errorMsg);
+  const statusElt = document.getElementById('status-zone');
   statusElt.innerText = errorMsg;
   statusElt.className = 'status-ko';
+  log('Status zone set with error:', errorMsg);
 }
 
-documentReady(() => startBpmnVisualization({ globalOptions: { container: 'bpmn-container' }, statusFetchKoNotifier: statusFetchKO }));
+documentReady(() => startBpmnVisualization({ globalOptions: { container: 'bpmn-container' }, statusKoNotifier: statusFetchKO }));

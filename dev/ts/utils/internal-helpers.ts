@@ -30,8 +30,12 @@ export function logStartup(message?: string, ...optionalParams: unknown[]): void
 }
 
 export function logErrorAndOpenAlert(error: unknown, alertMsg?: string): void {
-  console.error(`[DEMO]`, error);
+  logError(error);
   window.alert(alertMsg ?? error);
+}
+
+export function logError(error: unknown): void {
+  console.error(`[DEMO]`, error);
 }
 
 export function logDownload(message?: unknown, ...optionalParams: unknown[]): void {
@@ -42,7 +46,7 @@ export function fetchBpmnContent(url: string): Promise<string> {
   log(`Fetching BPMN content from url ${url}`);
   return fetch(url).then(response => {
     if (!response.ok) {
-      throw Error(String(response.status));
+      throw Error(`HTTP status ${response.status}`);
     }
     return response.text();
   });
