@@ -27,7 +27,7 @@ import type {
   Version,
   ZoomType,
 } from '../../src/bpmn-visualization';
-import { fetchBpmnContent, logDownload, logErrorAndOpenAlert, logStartup, stringify } from './utils/internal-helpers';
+import { fetchBpmnContent, logDownload, logError, logErrorAndOpenAlert, logStartup, stringify } from './utils/internal-helpers';
 import { log } from './utils/shared-helpers';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 import { SvgExporter } from './component/SvgExporter';
@@ -36,6 +36,7 @@ import { ThemedBpmnVisualization } from './component/ThemedBpmnVisualization';
 
 let bpmnVisualization: ThemedBpmnVisualization;
 let loadOptions: LoadOptions = {};
+let statusKoNotifier: (errorMsg: string) => void;
 let bpmnElementIdToCollapse: string;
 let currentTheme: string;
 
@@ -62,15 +63,19 @@ export function switchTheme(theme: string): void {
   }
 }
 
-function loadBpmn(bpmn: string): void {
+function loadBpmn(bpmn: string, handleError = true): void {
   log('Loading bpmn...');
   try {
     bpmnVisualization.load(bpmn, loadOptions);
     log('BPMN loaded with configuration', stringify(loadOptions));
     collapseBpmnElement(bpmnElementIdToCollapse);
     document.dispatchEvent(new CustomEvent('diagramLoaded'));
-  } catch (e) {
-    logErrorAndOpenAlert(e, `Cannot load the BPMN diagram: ${e.message}`);
+  } catch (error) {
+    if (handleError) {
+      statusKoNotifier(`Cannot load the BPMN diagram: ${error.message}`);
+    } else {
+      throw error;
+    }
   }
 }
 
@@ -151,34 +156,36 @@ export function handleFileSelect(evt: any): void {
   readAndLoadFile(f);
 }
 
-function loadBpmnFromUrl(url: string, statusFetchKoNotifier: (errorMsg: string) => void): void {
+function loadBpmnFromUrl(url: string): void {
   fetchBpmnContent(url)
     .catch(error => {
-      const errorMessage = `Unable to fetch ${url}. ${error}`;
-      statusFetchKoNotifier(errorMessage);
-      throw new Error(errorMessage);
+      throw new Error(`Unable to fetch ${url}. ${error}`);
     })
     .then(responseBody => {
       log('BPMN content fetched');
       return responseBody;
     })
     .then(bpmn => {
-      loadBpmn(bpmn);
+      loadBpmn(bpmn, false);
       log(`Bpmn loaded from url ${url}`);
     })
-    .catch(() => {
-      // do nothing here, error is already managed
+    .catch((error: Error) => {
+      statusKoNotifier(error.message);
     });
 }
 
 export interface BpmnVisualizationDemoConfiguration {
-  statusFetchKoNotifier?: (errorMsg: string) => void;
+  statusKoNotifier?: (errorMsg: string) => void;
   globalOptions: GlobalOptions;
   loadOptions?: LoadOptions;
 }
 
-function defaultStatusFetchKoNotifier(errorMsg: string): void {
+export function windowAlertStatusKoNotifier(errorMsg: string): void {
   logErrorAndOpenAlert(errorMsg);
+}
+
+function logOnlyStatusKoNotifier(errorMsg: string): void {
+  logError(errorMsg);
 }
 
 function getFitOptionsFromParameters(config: BpmnVisualizationDemoConfiguration, parameters: URLSearchParams): FitOptions {
@@ -245,6 +252,8 @@ export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguratio
   new DropFileUserInterface(window, 'drop-container', bpmnVisualization.graph.container, readAndLoadFile);
   log('Drag&Drop support initialized');
 
+  statusKoNotifier = config.statusKoNotifier ?? logOnlyStatusKoNotifier;
+
   const parameters = new URLSearchParams(window.location.search);
 
   log('Configuring Load Options');
@@ -259,8 +268,7 @@ export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguratio
   const urlParameterValue = parameters.get('url');
   if (urlParameterValue) {
     const url = decodeURIComponent(urlParameterValue);
-    const statusFetchKoNotifier = config.statusFetchKoNotifier || defaultStatusFetchKoNotifier;
-    loadBpmnFromUrl(url, statusFetchKoNotifier);
+    loadBpmnFromUrl(url);
     return;
   }
   log("No 'url to fetch BPMN content' provided");
