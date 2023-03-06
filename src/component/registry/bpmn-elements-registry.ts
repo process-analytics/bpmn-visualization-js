@@ -21,7 +21,7 @@ import { CssRegistry } from './css-registry';
 import type GraphCellUpdater from '../mxgraph/GraphCellUpdater';
 import { newGraphCellUpdater } from '../mxgraph/GraphCellUpdater';
 import { BpmnQuerySelectors } from './query-selectors';
-import type { BpmnElement, Overlay } from './types';
+import type { BpmnElement, Overlay, StyleUpdate } from './types';
 import type { BpmnModelRegistry } from './bpmn-model-registry';
 import type { BpmnElementKind } from '../../model/bpmn/internal';
 
@@ -122,6 +122,8 @@ export class BpmnElementsRegistry {
    *
    * Notice that if you pass ids that are not related to existing BPMN elements, their reference will be kept within the registry but nothing happens on the rendering side.
    *
+   * See also the {@link removeCssClasses} or the {@link toggleCssClasses} methods.
+   *
    * @example
    * ```javascript
    * // Add 'success-path' to BPMN elements with id: flow_1 and flow_5
@@ -138,8 +140,9 @@ export class BpmnElementsRegistry {
    * - For instance, a BPMN Service Task is an `Activity` and a `Task`, so it has the `bpmn-type-activity` and the `bpmn-type-task` classes. It shares these classes with all types of `Tasks`.
    * It also has the specific `bpmn-service-task` to differentiate it from a BPMN User Task that has a `bpmn-user-task`.
    * - In addition, labels also have the `bpmn-label` classes.
+   * - It is also possible to directly update the style of BPMN elements, see {@link updateStyle}.
    *
-   * Check the examples for more details.
+   * See the repository providing the [examples of the `bpmn-visualization` TypeScript library](https://github.com/process-analytics/bpmn-visualization-examples/) for more details.
    *
    * @param bpmnElementIds The BPMN id of the element(s) where to add the CSS classes
    * @param classNames The name of the class(es) to add to the BPMN element(s)
@@ -149,7 +152,7 @@ export class BpmnElementsRegistry {
   }
 
   /**
-   * Remove one/several CSS class(es) previously added with the `addCssClasses` or the `toggleCssClasses` methods from one/several BPMN element(s).
+   * Remove one/several CSS class(es) previously added with the {@link addCssClasses} or the {@link toggleCssClasses} methods from one/several BPMN element(s).
    *
    * @example
    * ```javascript
@@ -170,6 +173,8 @@ export class BpmnElementsRegistry {
   /**
    * Toggle one/several CSS class(es) for one/several BPMN element(s).
    * Notice that if you pass ids that are not related to existing BPMN elements, their reference will be kept within the registry but nothing happens on the rendering side.
+   *
+   * See also the {@link addCssClasses} or the {@link removeCssClasses} methods.
    *
    * @example
    * ```javascript
@@ -262,6 +267,35 @@ export class BpmnElementsRegistry {
    */
   removeAllOverlays(bpmnElementId: string): void {
     this.graphCellUpdater.removeAllOverlays(bpmnElementId);
+  }
+
+  /**
+   * Update the style of one or several BPMN element(s).
+   *
+   * @example
+   * ```javascript
+   * bpmnVisualization.bpmnElementsRegistry.updateStyle('activity_1', {
+   *   stroke: {
+   *     color: 'red',
+   *   },
+   * });
+   * ```
+   *
+   * **Notes**:
+   *
+   * - This method is intended to update the style of specific elements, for instance to update their colors. During BPMN diagram rendering, `bpmn-visualization` applies style properties
+   * to all elements regarding their types.
+   * So, if you want to style all elements of a given type, change the default configuration of the styles instead of updating the element afterwards. See the repository providing the
+   * [examples of the `bpmn-visualization` TypeScript library](https://github.com/process-analytics/bpmn-visualization-examples/) for more details.
+   * - It is also possible to update the style of BPMN elements by adding CSS classes, see {@link addCssClasses}.
+   *
+   * @param bpmnElementIds The BPMN id of the element(s) where to remove the CSS classes
+   * @param styleUpdate The style properties to update.
+   *
+   * @since 0.32.0
+   */
+  updateStyle(bpmnElementIds: string | string[], styleUpdate: StyleUpdate): void {
+    this.graphCellUpdater.updateStyle(bpmnElementIds, styleUpdate);
   }
 }
 

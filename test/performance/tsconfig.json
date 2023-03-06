@@ -3,7 +3,7 @@
   "compilerOptions": {
     "diagnostics": true,
   },
-  "include": [
-    "./**/*",
+  "exclude": [
+    "../typescript-support/**/*"
   ]
 }

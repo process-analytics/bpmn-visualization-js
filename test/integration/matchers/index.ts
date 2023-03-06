@@ -32,6 +32,7 @@ export {
   toBeIntermediateCatchEvent,
   toBeBoundaryEvent,
   toBeEventBasedGateway,
+  toBeExclusiveGateway,
   toBeSubProcess,
   toBePool,
   toBeLane,

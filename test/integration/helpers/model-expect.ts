@@ -22,6 +22,7 @@ import type {
   ShapeBpmnEventDefinitionKind,
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
+  Stroke,
 } from '../../../src/bpmn-visualization';
 import { BpmnVisualization, ShapeBpmnElementKind } from '../../../src/bpmn-visualization';
 import {
@@ -33,6 +34,7 @@ import {
   toBeCellWithParentAndGeometry,
   toBeEndEvent,
   toBeEventBasedGateway,
+  toBeExclusiveGateway,
   toBeIntermediateCatchEvent,
   toBeIntermediateThrowEvent,
   toBeLane,
@@ -79,6 +81,7 @@ declare global {
       toBeIntermediateCatchEvent(modelElement: ExpectedEventModelElement): R;
       toBeBoundaryEvent(modelElement: ExpectedBoundaryEventModelElement): R;
       toBeEventBasedGateway(modelElement: ExpectedEventBasedGatewayModelElement): R;
+      toBeExclusiveGateway(modelElement: ExpectedEventBasedGatewayModelElement): R;
       toBeSubProcess(modelElement: ExpectedSubProcessModelElement): R;
       toBePool(modelElement: ExpectedShapeModelElement): R;
       toBeLane(modelElement: ExpectedShapeModelElement): R;
@@ -108,6 +111,7 @@ expect.extend({
   toBeIntermediateCatchEvent,
   toBeBoundaryEvent,
   toBeEventBasedGateway,
+  toBeExclusiveGateway,
   toBeSubProcess,
   toBePool,
   toBeLane,
@@ -127,19 +131,23 @@ export interface ExpectedFont {
   isStrikeThrough?: boolean;
 }
 
-export interface ExpectedShapeModelElement {
-  label?: string;
-  kind?: ShapeBpmnElementKind;
-  font?: ExpectedFont;
-  parentId?: string;
-  /** Only needed when the BPMN shape doesn't exist yet (use an arbitrary shape until the final render is implemented) */
-  styleShape?: string;
-  verticalAlign?: string;
+type ExpectedModelElement = {
   align?: string;
+  font?: ExpectedFont;
+  label?: string;
+  overlays?: ExpectedOverlay[];
+  parentId?: string;
+  stroke?: Stroke;
+  verticalAlign?: string;
+};
+
+export interface ExpectedShapeModelElement extends ExpectedModelElement {
+  kind?: ShapeBpmnElementKind;
+  /** Generally needed when the BPMN shape doesn't exist yet (use an arbitrary shape until the final render is implemented) */
+  styleShape?: string;
   markers?: ShapeBpmnMarkerKind[];
   isInstantiating?: boolean;
   isHorizontal?: boolean;
-  overlays?: ExpectedOverlay[];
 }
 
 export interface ExpectedEventModelElement extends ExpectedShapeModelElement {
@@ -154,16 +162,11 @@ export interface ExpectedCallActivityModelElement extends ExpectedShapeModelElem
   globalTaskKind?: ShapeBpmnElementKind;
 }
 
-export interface ExpectedEdgeModelElement {
-  label?: string;
+export interface ExpectedEdgeModelElement extends ExpectedModelElement {
   kind?: FlowKind;
-  parentId?: string;
-  font?: ExpectedFont;
   startArrow?: string;
   endArrow?: string;
-  verticalAlign?: string;
   messageVisibleKind?: MessageVisibleKind;
-  overlays?: ExpectedOverlay[];
 }
 
 export interface ExpectedSequenceFlowModelElement extends ExpectedEdgeModelElement {
