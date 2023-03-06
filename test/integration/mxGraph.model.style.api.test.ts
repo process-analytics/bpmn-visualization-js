@@ -67,14 +67,14 @@ describe('mxGraph model - update style', () => {
       expect('task_1').toBeTask({
         stroke: { color: strokeColor },
         // not under test
-        parentId: 'Lane_13kpaun',
+        parentId: 'lane_01',
         label: 'Task 1',
       });
       expectActualStateStyle('gateway_01', { strokeColor });
       expect('gateway_01').toBeExclusiveGateway({
         stroke: { color: strokeColor },
         // not under test
-        parentId: 'Lane_13kpaun',
+        parentId: 'lane_01',
         label: 'gateway 1',
         verticalAlign: 'top',
       });
@@ -90,7 +90,7 @@ describe('mxGraph model - update style', () => {
         stroke: { color: strokeColor },
         // not under test
         eventDefinitionKind: ShapeBpmnEventDefinitionKind.TERMINATE,
-        parentId: 'Lane_13kpaun',
+        parentId: 'lane_01',
         label: 'terminate end 1',
       });
     });
@@ -105,7 +105,7 @@ describe('mxGraph model - update style', () => {
         stroke: { color: strokeColor },
         // not under test
         eventDefinitionKind: ShapeBpmnEventDefinitionKind.TERMINATE,
-        parentId: 'Lane_13kpaun',
+        parentId: 'lane_01',
         label: 'terminate end 1',
       });
     });
@@ -124,7 +124,7 @@ describe('mxGraph model - update style', () => {
       expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
         stroke: { color: strokeColor },
         // not under test
-        parentId: 'lane_01',
+        parentId: 'lane_03',
         verticalAlign: 'bottom',
       });
     });
@@ -137,14 +137,14 @@ describe('mxGraph model - update style', () => {
       expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
         stroke: { color: strokeColor },
         // not under test
-        parentId: 'lane_01',
+        parentId: 'lane_03',
         verticalAlign: 'bottom',
       });
       expectActualStateStyle('sequenceFlow_lane_1_elt_1', { strokeColor });
       expect('sequenceFlow_lane_1_elt_1').toBeSequenceFlow({
         stroke: { color: strokeColor },
         // not under test
-        parentId: 'Lane_13kpaun',
+        parentId: 'lane_01',
         verticalAlign: 'bottom',
       });
     });
@@ -158,7 +158,7 @@ describe('mxGraph model - update style', () => {
       expect('sequenceFlow_lane_1_elt_1').toBeSequenceFlow({
         stroke: { color: strokeColor },
         // not under test
-        parentId: 'Lane_13kpaun',
+        parentId: 'lane_01',
         verticalAlign: 'bottom',
       });
     });
@@ -172,7 +172,7 @@ describe('mxGraph model - update style', () => {
       expect('sequenceFlow_lane_1_elt_1').toBeSequenceFlow({
         stroke: { color: strokeColor },
         // not under test
-        parentId: 'Lane_13kpaun',
+        parentId: 'lane_01',
         verticalAlign: 'bottom',
       });
     });
@@ -218,7 +218,7 @@ describe('mxGraph model - update style', () => {
         stroke: { color: strokeColor },
         // not under test
         eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
-        parentId: 'Lane_13kpaun',
+        parentId: 'lane_01',
         label: 'message start 1',
       });
 
@@ -226,7 +226,7 @@ describe('mxGraph model - update style', () => {
       expect('sequenceFlow_lane_1_elt_1').toBeSequenceFlow({
         stroke: { color: strokeColor },
         // not under test
-        parentId: 'Lane_13kpaun',
+        parentId: 'lane_01',
         verticalAlign: 'bottom',
       });
     });
