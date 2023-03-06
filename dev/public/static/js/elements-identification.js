@@ -28,6 +28,7 @@ import {
   ShapeUtil,
   startBpmnVisualization,
   updateLoadOptions,
+  windowAlertStatusKoNotifier,
 } from '../../../ts/dev-bundle-index';
 
 let lastIdentifiedBpmnIds = [];
@@ -151,6 +152,7 @@ documentReady(() => {
         enabled: true,
       },
     },
+    statusKoNotifier: windowAlertStatusKoNotifier,
   });
   updateLoadOptions({ type: FitType.Center, margin: 20 });
   configureControls();

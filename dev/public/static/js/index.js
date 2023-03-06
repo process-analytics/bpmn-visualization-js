@@ -27,6 +27,7 @@ import {
   switchTheme,
   zoom,
   ZoomType,
+  windowAlertStatusKoNotifier,
 } from '../../../ts/dev-bundle-index';
 
 let fitOnLoad = true;
@@ -135,6 +136,7 @@ function startDemo() {
         enabled: true,
       },
     },
+    statusKoNotifier: windowAlertStatusKoNotifier,
   });
 
   // Configure custom html elements
