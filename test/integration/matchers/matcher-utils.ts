@@ -117,7 +117,7 @@ export function buildCommonExpectedStateStyle(expectedModel: ExpectedEdgeModelEl
   const font = expectedModel.font;
 
   return {
-    strokeColor: 'Black',
+    strokeColor: expectedModel.stroke?.color ?? 'Black',
     fillColor: 'White',
     fontFamily: font?.name ? font.name : 'Arial, Helvetica, sans-serif',
     fontSize: font?.size ? font.size : 11,
@@ -126,6 +126,14 @@ export function buildCommonExpectedStateStyle(expectedModel: ExpectedEdgeModelEl
   };
 }
 
+// The name of the function and the name of the returned type are misleading. The state of the cell is the graph view is never accessed here.
+// The function uses 'graph.getCellStyle' which mentions the following note in its documentation:
+// "You should try and get the cell state for the given cell and use the cached style in the state before using this method"
+// It returns the style + properties resolved from the referenced styleNames (generally at the beginning of the cell.style string) as computed by mxStylesheet.prototype.getCellStyle.
+//
+// To clarify, we may rename:
+// the function into buildReceivedResolvedStyle
+// the type into ModelResolvedStyle or ResolvedStyleFromModel or ResolvedStyle
 function buildReceivedStateStyle(cell: mxCell): ExpectedStateStyle {
   const stateStyle = bpmnVisualization.graph.getCellStyle(cell);
   const expectedStateStyle: ExpectedStateStyle = {

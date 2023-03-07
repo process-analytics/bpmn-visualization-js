@@ -15,8 +15,9 @@ limitations under the License.
 */
 
 import type { BpmnGraph } from './BpmnGraph';
+import { mxgraph } from './initializer';
 import { BpmnStyleIdentifier } from './style';
-import type { Overlay } from '../registry';
+import type { Overlay, StyleUpdate } from '../registry';
 import { MxGraphCustomOverlay } from './overlay/custom-overlay';
 import { ensureIsArray } from '../helpers/array-utils';
 import { OverlayConverter } from './overlay/OverlayConverter';
@@ -71,5 +72,25 @@ export default class GraphCellUpdater {
       return;
     }
     this.graph.removeCellOverlays(mxCell);
+  }
+
+  updateStyle(bpmnElementIds: string | string[], styleUpdate: StyleUpdate): void {
+    // In the future, this method can be optimized by not processing if styleUpdate has no relevant properties defined.
+    const cells = ensureIsArray<string>(bpmnElementIds)
+      .map(id => this.graph.getModel().getCell(id))
+      .filter(Boolean);
+    if (cells.length == 0) {
+      // We don't want to create an empty transaction
+      return;
+    }
+
+    this.graph.batchUpdate(() => {
+      for (const cell of cells) {
+        let cellStyle = cell.getStyle();
+        // Only set the style when the key is set. Otherwise, mxGraph removes the related setting from the cellStyle which is equivalent to a reset of the style property
+        styleUpdate?.stroke?.color && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKECOLOR, styleUpdate.stroke.color));
+        this.graph.model.setStyle(cell, cellStyle);
+      }
+    });
   }
 }

@@ -87,10 +87,10 @@ Planned features:
 
 **Notes**:
 - Chromium based browsers should work (automatic tests are run with Chromium canary releases). In particular, the following
-browsers are known working with `bpmn-visualization@0.26.0`:
-  - Brave 1.42.97
-  - Chromium 104.0.5112.102
-  - Opera 90.0.4480.54
+desktop browsers are known working with `bpmn-visualization@0.32.0`:
+  - Brave 1.48.171
+  - Chromium 111.0.5563.19
+  - Opera 96.0.4693.31
 - Support Chromium Edge but not Legacy Edge
 - The library may work with the other browsers. They must at least support ES2015.
 

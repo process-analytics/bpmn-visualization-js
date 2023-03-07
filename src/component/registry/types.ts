@@ -133,3 +133,30 @@ export interface Overlay {
   label?: string;
   style?: OverlayStyle;
 }
+
+/**
+ * @category Element Style
+ */
+export type StyleUpdate = EdgeStyleUpdate | ShapeStyleUpdate;
+
+/**
+ * @category Element Style
+ */
+export type EdgeStyleUpdate = {
+  stroke?: Stroke;
+};
+
+/**
+ * @category Element Style
+ */
+export type ShapeStyleUpdate = EdgeStyleUpdate;
+
+/**
+ * @category Element Style
+ */
+export type Stroke = {
+  /**
+   * Possible values are all HTML color names or HEX codes, as well as special keywords such as `swimlane`, `inherit` to use the color code of a related BPMN element or `none` for no color.
+   */
+  color: 'inherit' | 'none' | 'swimlane' | string;
+};
