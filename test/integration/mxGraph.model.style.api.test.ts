@@ -16,29 +16,13 @@ limitations under the License.
 
 import { initializeBpmnVisualizationWithContainerId } from './helpers/bpmn-visualization-initialization';
 import { HtmlElementLookup } from './helpers/html-utils';
+import type { ExpectedShapeModelElement } from './helpers/model-expect';
 import { bpmnVisualization } from './helpers/model-expect';
+import { buildReceivedViewStateStyle } from './matchers/matcher-utils';
+import { buildExpectedShapeCellStyle } from './matchers/toBeShape';
 import { readFileSync } from '../helpers/file-helper';
-import type { ExpectedStateStyle } from './matchers/matcher-utils';
-import { ShapeBpmnEventDefinitionKind } from '../../src/model/bpmn/internal';
-import { StyleDefault } from '../../src/component/mxgraph/style';
+import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '../../src/model/bpmn/internal';
 import type { StyleUpdate } from '../../src/component/registry';
-
-// This function really gets style from the state of the cell in the graph view.
-// The functions that return ExpectedStateStyle objects are in fact, returning a computed style by using the style properties from the model augmented with the properties resolved
-// from the styles referenced by the cell. The object isn't related to the cached value stored in the style property of the mxCell state stored in the mxGraphView.
-//
-// This function will be later reintegrated in the usual utility code managing model expected when the functions returning ExpectedStateStyle will be renamed for clarity.
-const expectActualStateStyle = (bpmnElementId: string, expectedStateStyle: Partial<ExpectedStateStyle>, bv = bpmnVisualization): void => {
-  const graph = bv.graph;
-  const cell = graph.model.getCell(bpmnElementId);
-  if (!cell) {
-    throw new Error(`Unable to find cell in the model with id ${bpmnElementId}`);
-  }
-  const view = graph.getView();
-  const state = view.getState(cell);
-  const style = state.style;
-  expect(style.strokeColor).toBe(expectedStateStyle.strokeColor ?? StyleDefault.DEFAULT_STROKE_COLOR);
-};
 
 describe('mxGraph model - update style', () => {
   describe('Shapes', () => {
@@ -50,7 +34,6 @@ describe('mxGraph model - update style', () => {
       const strokeColor = 'red';
       bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { stroke: { color: strokeColor } });
 
-      expectActualStateStyle('userTask_2_2', { strokeColor });
       expect('userTask_2_2').toBeUserTask({
         stroke: { color: strokeColor },
         // not under test
@@ -63,14 +46,12 @@ describe('mxGraph model - update style', () => {
       const strokeColor = 'pink';
       bpmnVisualization.bpmnElementsRegistry.updateStyle(['task_1', 'gateway_01'], { stroke: { color: strokeColor } });
 
-      expectActualStateStyle('task_1', { strokeColor });
       expect('task_1').toBeTask({
         stroke: { color: strokeColor },
         // not under test
         parentId: 'lane_01',
         label: 'Task 1',
       });
-      expectActualStateStyle('gateway_01', { strokeColor });
       expect('gateway_01').toBeExclusiveGateway({
         stroke: { color: strokeColor },
         // not under test
@@ -85,7 +66,6 @@ describe('mxGraph model - update style', () => {
       bpmnVisualization.bpmnElementsRegistry.updateStyle(['endEvent_terminate_1'], { stroke: { color: 'to_override' } });
       bpmnVisualization.bpmnElementsRegistry.updateStyle(['endEvent_terminate_1'], { stroke: { color: strokeColor } });
 
-      expectActualStateStyle('endEvent_terminate_1', { strokeColor });
       expect('endEvent_terminate_1').toBeEndEvent({
         stroke: { color: strokeColor },
         // not under test
@@ -100,7 +80,6 @@ describe('mxGraph model - update style', () => {
       bpmnVisualization.bpmnElementsRegistry.updateStyle(['endEvent_terminate_1'], { stroke: { color: strokeColor } });
       bpmnVisualization.bpmnElementsRegistry.updateStyle(['endEvent_terminate_1'], {});
 
-      expectActualStateStyle('endEvent_terminate_1', { strokeColor });
       expect('endEvent_terminate_1').toBeEndEvent({
         stroke: { color: strokeColor },
         // not under test
@@ -120,7 +99,6 @@ describe('mxGraph model - update style', () => {
       const strokeColor = 'pink';
       bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', { stroke: { color: strokeColor } });
 
-      expectActualStateStyle('sequenceFlow_lane_3_elt_3', { strokeColor });
       expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
         stroke: { color: strokeColor },
         // not under test
@@ -133,14 +111,12 @@ describe('mxGraph model - update style', () => {
       const strokeColor = 'pink';
       bpmnVisualization.bpmnElementsRegistry.updateStyle(['sequenceFlow_lane_3_elt_3', 'sequenceFlow_lane_1_elt_1'], { stroke: { color: strokeColor } });
 
-      expectActualStateStyle('sequenceFlow_lane_3_elt_3', { strokeColor });
       expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
         stroke: { color: strokeColor },
         // not under test
         parentId: 'lane_03',
         verticalAlign: 'bottom',
       });
-      expectActualStateStyle('sequenceFlow_lane_1_elt_1', { strokeColor });
       expect('sequenceFlow_lane_1_elt_1').toBeSequenceFlow({
         stroke: { color: strokeColor },
         // not under test
@@ -154,7 +130,6 @@ describe('mxGraph model - update style', () => {
       bpmnVisualization.bpmnElementsRegistry.updateStyle(['sequenceFlow_lane_1_elt_1'], { stroke: { color: 'to_override' } });
       bpmnVisualization.bpmnElementsRegistry.updateStyle(['sequenceFlow_lane_1_elt_1'], { stroke: { color: strokeColor } });
 
-      expectActualStateStyle('sequenceFlow_lane_1_elt_1', { strokeColor });
       expect('sequenceFlow_lane_1_elt_1').toBeSequenceFlow({
         stroke: { color: strokeColor },
         // not under test
@@ -168,7 +143,6 @@ describe('mxGraph model - update style', () => {
       bpmnVisualization.bpmnElementsRegistry.updateStyle(['sequenceFlow_lane_1_elt_1'], { stroke: { color: strokeColor } });
       bpmnVisualization.bpmnElementsRegistry.updateStyle(['sequenceFlow_lane_1_elt_1'], {});
 
-      expectActualStateStyle('sequenceFlow_lane_1_elt_1', { strokeColor });
       expect('sequenceFlow_lane_1_elt_1').toBeSequenceFlow({
         stroke: { color: strokeColor },
         // not under test
@@ -195,7 +169,6 @@ describe('mxGraph model - update style', () => {
       `(`$configName`, ({ styleUpdate }: { styleUpdate: StyleUpdate }) => {
         bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', styleUpdate);
 
-        expectActualStateStyle('userTask_2_2', {});
         expect('userTask_2_2').toBeUserTask({
           // not under test
           parentId: 'lane_02',
@@ -213,7 +186,6 @@ describe('mxGraph model - update style', () => {
       const strokeColor = 'orange';
       bpmnVisualization.bpmnElementsRegistry.updateStyle(['startEvent_lane_1', 'sequenceFlow_lane_1_elt_1'], { stroke: { color: strokeColor } });
 
-      expectActualStateStyle('startEvent_lane_1', { strokeColor });
       expect('startEvent_lane_1').toBeStartEvent({
         stroke: { color: strokeColor },
         // not under test
@@ -222,7 +194,6 @@ describe('mxGraph model - update style', () => {
         label: 'message start 1',
       });
 
-      expectActualStateStyle('sequenceFlow_lane_1_elt_1', { strokeColor });
       expect('sequenceFlow_lane_1_elt_1').toBeSequenceFlow({
         stroke: { color: strokeColor },
         // not under test
@@ -237,6 +208,19 @@ describe('mxGraph model - update style', () => {
     // Create a dedicated instance with a DOM container as it is required by the CSS API.
     const bv = initializeBpmnVisualizationWithContainerId('bpmn-container-style-css-cross-tests');
     const htmlElementLookup = new HtmlElementLookup(bv);
+
+    // we cannot reuse the model expect functions here. They are using the shared bpmnVisualization that we cannot use here.
+    // So use the minimal expect function. We only need to check a part of the data, the rest is already checked in details in other tests.
+    const checkViewStateStyle = (bpmnElementId: string, expectedModel: ExpectedShapeModelElement): void => {
+      const graph = bv.graph;
+      const cell = graph.model.getCell(bpmnElementId);
+      if (!cell) {
+        throw new Error(`Unable to find cell in the model with id ${bpmnElementId}`);
+      }
+
+      const receivedViewStateStyle = buildReceivedViewStateStyle(cell, bv);
+      expect(receivedViewStateStyle).toEqual(buildExpectedShapeCellStyle(expectedModel));
+    };
 
     it.each(
       // We have a bug when the CSS classes are applied first, they are dropped after the call of the updateStyle method
@@ -257,9 +241,11 @@ describe('mxGraph model - update style', () => {
         bv.bpmnElementsRegistry.updateStyle(bpmnElementId, { stroke: { color: strokeColor } });
       }
 
-      // we cannot reuse the model expect functions here. They are using the shared bpmnVisualization that we cannot use here.
-      // So use the minimal expect function. We only need to check a part of the data, the rest is already checked in details in other tests.
-      expectActualStateStyle(bpmnElementId, { strokeColor }, bv);
+      checkViewStateStyle(bpmnElementId, {
+        kind: ShapeBpmnElementKind.EVENT_END,
+        stroke: { color: strokeColor },
+        verticalAlign: 'top', // when events have a label
+      });
       htmlElementLookup.expectEndEvent(bpmnElementId, ShapeBpmnEventDefinitionKind.MESSAGE, { label: 'message end 2', additionalClasses: ['class-1', 'class-2'] });
     });
   });

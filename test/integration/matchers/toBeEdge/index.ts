@@ -14,29 +14,28 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { ExpectedStateStyle, ExpectedCell } from '../matcher-utils';
-import { buildCommonExpectedStateStyle, buildCellMatcher, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
-import MatcherContext = jest.MatcherContext;
-import CustomMatcherResult = jest.CustomMatcherResult;
+import type { BpmnCellStyle, ExpectedCell } from '../matcher-utils';
+import { buildCellMatcher, buildExpectedCellStyleWithCommonAttributes, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
 import { FlowKind, MessageVisibleKind } from '../../../../src/model/bpmn/internal';
 import type { ExpectedEdgeModelElement, ExpectedSequenceFlowModelElement } from '../../helpers/model-expect';
 import { getDefaultParentId } from '../../helpers/model-expect';
 import { BpmnStyleIdentifier } from '../../../../src/component/mxgraph/style';
 import { mxgraph } from '../../../../src/component/mxgraph/initializer';
+import MatcherContext = jest.MatcherContext;
+import CustomMatcherResult = jest.CustomMatcherResult;
 
-function buildExpectedStateStyle(expectedModel: ExpectedEdgeModelElement): ExpectedStateStyle {
-  const expectedStateStyle = buildCommonExpectedStateStyle(expectedModel);
-  expectedStateStyle.verticalAlign = expectedModel.verticalAlign ? expectedModel.verticalAlign : 'top';
-  expectedStateStyle.align = 'center';
-  expectedStateStyle.strokeWidth = 1.5;
-  expectedStateStyle.startArrow = expectedModel.startArrow;
-  expectedStateStyle.endArrow = expectedModel.endArrow;
-  expectedStateStyle.endSize = 12;
-
-  return expectedStateStyle;
+function buildExpectedEdgeCellStyle(expectedModel: ExpectedEdgeModelElement): BpmnCellStyle {
+  const style = buildExpectedCellStyleWithCommonAttributes(expectedModel);
+  style.verticalAlign = expectedModel.verticalAlign ? expectedModel.verticalAlign : 'top';
+  style.align = 'center';
+  style.strokeWidth = 1.5;
+  style.startArrow = expectedModel.startArrow;
+  style.endArrow = expectedModel.endArrow;
+  style.endSize = 12;
+  return style;
 }
 
-function buildExpectedStyle(expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement): string {
+function buildExpectedEdgeStylePropertyRegexp(expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement): string {
   let expectedStyle: string = expectedModel.kind;
   if ('sequenceFlowKind' in expectedModel) {
     expectedStyle = expectedStyle + `;${(expectedModel as ExpectedSequenceFlowModelElement).sequenceFlowKind}`;
@@ -46,25 +45,26 @@ function buildExpectedStyle(expectedModel: ExpectedEdgeModelElement | ExpectedSe
 
 function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement): ExpectedCell {
   const parentId = expectedModel.parentId;
-  const styleRegexp = buildExpectedStyle(expectedModel);
   const expectedCell: ExpectedCell = {
     id,
     value: expectedModel.label,
-    style: expect.stringMatching(styleRegexp),
+    styleRawFromModelOrJestExpect: expect.stringMatching(buildExpectedEdgeStylePropertyRegexp(expectedModel)),
+    styleResolvedFromModel: buildExpectedEdgeCellStyle(expectedModel),
+    styleViewState: buildExpectedEdgeCellStyle(expectedModel),
     edge: true,
     vertex: false,
     parent: { id: parentId ? parentId : getDefaultParentId() },
-    state: {
-      style: buildExpectedStateStyle(expectedModel),
-    },
     overlays: expectedModel.overlays,
   };
 
+  // expect to have a message flow icon
   if (expectedModel.messageVisibleKind && expectedModel.messageVisibleKind !== MessageVisibleKind.NONE) {
     expectedCell.children = [
       {
         value: undefined,
-        style: `shape=${BpmnStyleIdentifier.MESSAGE_FLOW_ICON};${BpmnStyleIdentifier.IS_INITIATING}=${expectedModel.messageVisibleKind == MessageVisibleKind.INITIATING}`,
+        styleRawFromModelOrJestExpect: `shape=${BpmnStyleIdentifier.MESSAGE_FLOW_ICON};${BpmnStyleIdentifier.IS_INITIATING}=${
+          expectedModel.messageVisibleKind == MessageVisibleKind.INITIATING
+        }`,
         id: `messageFlowIcon_of_${id}`,
         vertex: true,
       },
