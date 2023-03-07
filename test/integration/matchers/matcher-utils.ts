@@ -23,7 +23,8 @@ import { getFontStyleValue as computeFontStyleValue } from '../../../src/compone
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 
-export interface ExpectedStateStyle extends StyleMap {
+// Used for received view state, computed resolved style and expected style.
+export interface BpmnCellStyle extends StyleMap {
   verticalAlign?: string;
   align?: string;
   strokeWidth?: number;
@@ -43,15 +44,23 @@ export interface ExpectedStateStyle extends StyleMap {
 export interface ExpectedCell {
   value?: string;
   geometry?: mxGeometry;
-  style?: string;
+  /** the Cell style property or a jest expect using a regexp. */
+  styleRawFromModelOrJestExpect?: string;
+  /**
+   * The style of the Cell in the model where all properties have been resolved by also applying properties coming from the referenced styles.
+   *
+   * It involves the usage of `graph.getCellStyle`.
+   */
+  styleResolvedFromModel?: BpmnCellStyle;
+  /**
+   * Relates to the current style in the state view of the cell which is typically retrieved by calling `view.getState(cell).style` where `view` is `graph.getView()`.
+   */
+  styleViewState?: BpmnCellStyle;
   id?: string;
   edge?: boolean;
   vertex?: boolean;
   parent?: ExpectedCell;
   children?: ExpectedCell | ExpectedCell[];
-  state?: {
-    style: ExpectedStateStyle;
-  };
   overlays?: ExpectedOverlay[];
 }
 
@@ -113,11 +122,11 @@ export function getFontStyleValue(expectedFont: ExpectedFont): number {
   );
 }
 
-export function buildCommonExpectedStateStyle(expectedModel: ExpectedEdgeModelElement | ExpectedShapeModelElement): ExpectedStateStyle {
-  const font = expectedModel.font;
+export function buildExpectedCellStyleWithCommonAttributes(expectedModelElt: ExpectedEdgeModelElement | ExpectedShapeModelElement): BpmnCellStyle {
+  const font = expectedModelElt.font;
 
   return {
-    strokeColor: expectedModel.stroke?.color ?? 'Black',
+    strokeColor: expectedModelElt.stroke?.color ?? 'Black',
     fillColor: 'White',
     fontFamily: font?.name ? font.name : 'Arial, Helvetica, sans-serif',
     fontSize: font?.size ? font.size : 11,
@@ -126,48 +135,65 @@ export function buildCommonExpectedStateStyle(expectedModel: ExpectedEdgeModelEl
   };
 }
 
-// The name of the function and the name of the returned type are misleading. The state of the cell is the graph view is never accessed here.
-// The function uses 'graph.getCellStyle' which mentions the following note in its documentation:
-// "You should try and get the cell state for the given cell and use the cached style in the state before using this method"
-// It returns the style + properties resolved from the referenced styleNames (generally at the beginning of the cell.style string) as computed by mxStylesheet.prototype.getCellStyle.
-//
-// To clarify, we may rename:
-// the function into buildReceivedResolvedStyle
-// the type into ModelResolvedStyle or ResolvedStyleFromModel or ResolvedStyle
-function buildReceivedStateStyle(cell: mxCell): ExpectedStateStyle {
-  const stateStyle = bpmnVisualization.graph.getCellStyle(cell);
-  const expectedStateStyle: ExpectedStateStyle = {
-    verticalAlign: stateStyle.verticalAlign,
-    align: stateStyle.align,
-    strokeWidth: stateStyle.strokeWidth,
-    strokeColor: stateStyle.strokeColor,
-    fillColor: stateStyle.fillColor,
-    fontFamily: stateStyle.fontFamily,
-    fontSize: stateStyle.fontSize,
-    fontColor: stateStyle.fontColor,
-    fontStyle: stateStyle.fontStyle,
+/**
+ * This function really gets style from the state of the cell in the graph view.
+ * The functions that return BpmnCellStyle objects are in fact, returning a computed style by using the style properties from the model augmented with the properties resolved
+ * from the styles referenced by the cell. The object isn't related to the cached value stored in the style property of the mxCell state stored in the mxGraphView.
+ *
+ * @param cell The Cell to consider to get the style in the state view
+ * @param bv The instance of BpmnVisualization under test
+ */
+export function buildReceivedViewStateStyle(cell: mxCell, bv = bpmnVisualization): BpmnCellStyle {
+  return toBpmnStyle(bv.graph.getView().getState(cell).style, cell.edge);
+}
+
+/**
+ * This function uses `graph.getCellStyle` to retrieve the "resolved model style" of the cell.
+ *
+ * This mxGraph function mentions the following note in its documentation:
+ * "You should try and get the cell state for the given cell and use the cached style in the state before using this method"
+ * It returns the style + properties resolved from the referenced styleNames (generally at the beginning of the "cell.style" string) as computed by mxStylesheet.prototype.getCellStyle.
+ *
+ * @param cell The Cell to consider for the computation of the resolved style.
+ */
+function buildReceivedResolvedModelCellStyle(cell: mxCell): BpmnCellStyle {
+  return toBpmnStyle(bpmnVisualization.graph.getCellStyle(cell), cell.edge);
+}
+
+function toBpmnStyle(rawStyle: StyleMap, isEdge: boolean): BpmnCellStyle {
+  const style: BpmnCellStyle = {
+    verticalAlign: rawStyle.verticalAlign,
+    align: rawStyle.align,
+    strokeWidth: rawStyle.strokeWidth,
+    strokeColor: rawStyle.strokeColor,
+    fillColor: rawStyle.fillColor,
+    fontFamily: rawStyle.fontFamily,
+    fontSize: rawStyle.fontSize,
+    fontColor: rawStyle.fontColor,
+    fontStyle: rawStyle.fontStyle,
   };
 
-  if (cell.edge) {
-    expectedStateStyle.startArrow = stateStyle.startArrow;
-    expectedStateStyle.endArrow = stateStyle.endArrow;
-    expectedStateStyle.endSize = stateStyle.endSize;
+  if (isEdge) {
+    style.startArrow = rawStyle.startArrow;
+    style.endArrow = rawStyle.endArrow;
+    style.endSize = rawStyle.endSize;
   } else {
-    expectedStateStyle.shape = stateStyle.shape;
-    expectedStateStyle.horizontal = stateStyle.horizontal;
+    style.shape = rawStyle.shape;
+    style.horizontal = rawStyle.horizontal;
   }
-  return expectedStateStyle;
+  return style;
 }
 
 export function buildReceivedCellWithCommonAttributes(cell: mxCell): ExpectedCell {
   const receivedCell: ExpectedCell = {
     value: cell.value,
-    style: cell.style,
+    styleRawFromModelOrJestExpect: cell.style,
+    styleResolvedFromModel: buildReceivedResolvedModelCellStyle(cell),
+    styleViewState: buildReceivedViewStateStyle(cell),
     id: cell.id,
     edge: cell.edge,
     vertex: cell.vertex,
     parent: { id: cell.parent.id },
-    state: { style: buildReceivedStateStyle(cell) },
   };
 
   const cellOverlays = bpmnVisualization.graph.getCellOverlays(cell) as MxGraphCustomOverlay[];
@@ -184,13 +210,16 @@ export function buildReceivedCellWithCommonAttributes(cell: mxCell): ExpectedCel
 
   if (cell.edge) {
     const children = cell.children;
-    if (children && children[0]) {
-      receivedCell.children = children.map((child: mxCell) => ({
-        value: child.value,
-        style: child.style,
-        id: child.id,
-        vertex: child.vertex,
-      }));
+    if (children?.length > 0) {
+      receivedCell.children = children.map(
+        child =>
+          <ExpectedCell>{
+            value: child.value,
+            styleRawFromModelOrJestExpect: child.style,
+            id: child.id,
+            vertex: child.vertex,
+          },
+      );
     }
   }
 
