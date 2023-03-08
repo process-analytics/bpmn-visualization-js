@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { ExpectedCell, ExpectedStateStyle } from '../matcher-utils';
-import { buildCellMatcher, buildCommonExpectedStateStyle, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
+import type { BpmnCellStyle, ExpectedCell } from '../matcher-utils';
+import { buildCellMatcher, buildExpectedCellStyleWithCommonAttributes, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
 import type {
   ExpectedBoundaryEventModelElement,
   ExpectedCallActivityModelElement,
@@ -59,27 +59,25 @@ function expectedStrokeWidth(kind: ShapeBpmnElementKind): number {
     : undefined;
 }
 
-function buildExpectedStateStyle(expectedModel: ExpectedShapeModelElement): ExpectedStateStyle {
-  const expectedStateStyle = buildCommonExpectedStateStyle(expectedModel);
-  expectedStateStyle.shape = !expectedModel.styleShape ? expectedModel.kind : expectedModel.styleShape;
-  expectedStateStyle.verticalAlign = expectedModel.verticalAlign ? expectedModel.verticalAlign : 'middle';
-  expectedStateStyle.align = expectedModel.align ? expectedModel.align : 'center';
-  expectedStateStyle.strokeWidth = expectedStrokeWidth(expectedModel.kind);
+export function buildExpectedShapeCellStyle(expectedModel: ExpectedShapeModelElement): BpmnCellStyle {
+  const style = buildExpectedCellStyleWithCommonAttributes(expectedModel);
+  style.shape = !expectedModel.styleShape ? expectedModel.kind : expectedModel.styleShape;
+  style.verticalAlign = expectedModel.verticalAlign ? expectedModel.verticalAlign : 'middle';
+  style.align = expectedModel.align ? expectedModel.align : 'center';
+  style.strokeWidth = expectedStrokeWidth(expectedModel.kind);
 
-  expectedStateStyle.fillColor = [ShapeBpmnElementKind.LANE, ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.TEXT_ANNOTATION, ShapeBpmnElementKind.GROUP].includes(
-    expectedModel.kind,
-  )
+  style.fillColor = [ShapeBpmnElementKind.LANE, ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.TEXT_ANNOTATION, ShapeBpmnElementKind.GROUP].includes(expectedModel.kind)
     ? 'none'
-    : expectedStateStyle.fillColor;
+    : style.fillColor;
 
   if ('isHorizontal' in expectedModel) {
-    expectedStateStyle.horizontal = expectedModel.isHorizontal ? 0 : 1;
+    style.horizontal = expectedModel.isHorizontal ? 0 : 1;
   }
 
-  return expectedStateStyle;
+  return style;
 }
 
-function buildExpectedStyle(
+function buildExpectedShapeStylePropertyRegexp(
   expectedModel:
     | ExpectedShapeModelElement
     | ExpectedSubProcessModelElement
@@ -116,18 +114,15 @@ function buildExpectedStyle(
 
 function buildExpectedCell(id: string, expectedModel: ExpectedShapeModelElement): ExpectedCell {
   const parentId = expectedModel.parentId;
-  const styleRegexp = buildExpectedStyle(expectedModel);
-
   return {
     id,
     value: expectedModel.label,
-    style: expect.stringMatching(styleRegexp),
+    styleRawFromModelOrJestExpect: expect.stringMatching(buildExpectedShapeStylePropertyRegexp(expectedModel)),
+    styleResolvedFromModel: buildExpectedShapeCellStyle(expectedModel),
+    styleViewState: buildExpectedShapeCellStyle(expectedModel),
     edge: false,
     vertex: true,
     parent: { id: parentId ? parentId : getDefaultParentId() },
-    state: {
-      style: buildExpectedStateStyle(expectedModel),
-    },
     overlays: expectedModel.overlays,
   };
 }
