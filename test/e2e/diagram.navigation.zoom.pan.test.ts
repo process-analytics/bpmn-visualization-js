@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import debugLogger from 'debug';
 import 'jest-playwright-preset';
 import { join } from 'node:path';
 import type { Page } from 'playwright';
@@ -22,6 +23,8 @@ import { AvailableTestPages, PageTester } from './helpers/visu/bpmn-page-utils';
 import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 import { ZoomType } from '../../src/component/options';
+
+const log = debugLogger('bv:test:e2e:navigation:zp');
 
 class MouseNavigationImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
@@ -62,8 +65,15 @@ describe('diagram navigation - zoom and pan with mouse', () => {
   let containerCenter: Point;
 
   beforeEach(async () => {
+    log('Test path: %s', expect.getState().testPath);
+    log('Start test: %s', expect.getState().currentTestName);
+
     await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName);
     containerCenter = await pageTester.getContainerCenter();
+  });
+  afterEach(() => {
+    log('Test path: %s', expect.getState().testPath);
+    log('End test: %s', expect.getState().currentTestName);
   });
 
   it('mouse panning', async () => {
