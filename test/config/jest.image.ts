@@ -119,8 +119,9 @@ function toMatchImageSnapshotCustom(this: MatcherContext, received: Buffer, opti
   jestLog('Test path: %s', this.testPath);
   jestLog('Test name: %s', this.currentTestName);
   const executionCount = retriesCounter.getExecutionCount(testId);
-  jestLog('Execution count: %s', executionCount);
+  jestLog('Ready to execute toMatchImageSnapshot, execution count: %s', executionCount);
   const result = toMatchImageSnapshotWithRealSignature.call(this, received, options);
+  jestLog('toMatchImageSnapshot executed');
 
   if (!result.pass) {
     jestLog('Result: failure');
