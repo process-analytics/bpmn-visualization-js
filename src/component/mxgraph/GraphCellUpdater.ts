@@ -109,7 +109,7 @@ export default class GraphCellUpdater {
             (cellStyle = mxgraph.mxUtils.setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_STRIKETHROUGH, font.isStrikeThrough));
 
           // TODO To uncomment when we implement the Opacity in global/background/font/stroke
-          // font?.opacity && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_TEXT_OPACITY, font.opacity));
+          // font.opacity && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_TEXT_OPACITY, font.opacity));
         }
 
         this.graph.model.setStyle(cell, cellStyle);
