@@ -117,7 +117,7 @@ export function buildCellMatcher<R>(
 export function getFontStyleValue(expectedFont: ExpectedFont): number {
   return (
     (expectedFont
-      ? computeFontStyleValue(new Font(expectedFont.name, expectedFont.size, expectedFont.isBold, expectedFont.isItalic, expectedFont.isUnderline, expectedFont.isStrikeThrough))
+      ? computeFontStyleValue(new Font(expectedFont.family, expectedFont.size, expectedFont.isBold, expectedFont.isItalic, expectedFont.isUnderline, expectedFont.isStrikeThrough))
       : 0) || undefined
   );
 }
@@ -128,9 +128,9 @@ export function buildExpectedCellStyleWithCommonAttributes(expectedModelElt: Exp
   return {
     strokeColor: expectedModelElt.stroke?.color ?? 'Black',
     fillColor: 'White',
-    fontFamily: font?.name ? font.name : 'Arial, Helvetica, sans-serif',
-    fontSize: font?.size ? font.size : 11,
-    fontColor: 'Black',
+    fontFamily: font?.family ?? 'Arial, Helvetica, sans-serif',
+    fontSize: font?.size ?? 11,
+    fontColor: font?.color ?? 'Black',
     fontStyle: getFontStyleValue(font),
   };
 }

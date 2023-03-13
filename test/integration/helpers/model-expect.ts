@@ -123,7 +123,8 @@ export interface ExpectedCellWithGeometry {
 }
 
 export interface ExpectedFont {
-  name?: string;
+  color?: string;
+  family?: string;
   size?: number;
   isBold?: boolean;
   isItalic?: boolean;
