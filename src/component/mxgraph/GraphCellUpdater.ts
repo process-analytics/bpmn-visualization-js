@@ -22,6 +22,8 @@ import { MxGraphCustomOverlay } from './overlay/custom-overlay';
 import { ensureIsArray } from '../helpers/array-utils';
 import { OverlayConverter } from './overlay/OverlayConverter';
 import { messageFowIconId } from './BpmnRenderer';
+import { getFontStyleValue } from './renderer/StyleComputer';
+import type { Font as InternalFont } from '../../model/bpmn/internal/Label';
 
 /**
  * @internal
@@ -75,6 +77,11 @@ export default class GraphCellUpdater {
   }
 
   updateStyle(bpmnElementIds: string | string[], styleUpdate: StyleUpdate): void {
+    if (!styleUpdate) {
+      // We don't want to create an empty transaction and verify if there are cells with id include in bpmnElementIds
+      return;
+    }
+
     // In the future, this method can be optimized by not processing if styleUpdate has no relevant properties defined.
     const cells = ensureIsArray<string>(bpmnElementIds)
       .map(id => this.graph.getModel().getCell(id))
@@ -88,7 +95,22 @@ export default class GraphCellUpdater {
       for (const cell of cells) {
         let cellStyle = cell.getStyle();
         // Only set the style when the key is set. Otherwise, mxGraph removes the related setting from the cellStyle which is equivalent to a reset of the style property
-        styleUpdate?.stroke?.color && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKECOLOR, styleUpdate.stroke.color));
+        styleUpdate.stroke?.color && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKECOLOR, styleUpdate.stroke.color));
+
+        const font = styleUpdate.font;
+        if (font) {
+          font?.color && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTCOLOR, font.color));
+          font?.size && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTSIZE, font.size));
+          font?.family && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTFAMILY, font.family));
+
+          const fontStyleValue = getFontStyleValue(font as InternalFont);
+          !(font.isBold === undefined && font.isItalic === undefined && font.isUnderline === undefined && font.isStrikeThrough === undefined) &&
+            (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, fontStyleValue));
+
+          // TODO To uncomment when we implement the Opacity in global/background/font/stroke
+          // font?.opacity && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_TEXT_OPACITY, font.opacity));
+        }
+
         this.graph.model.setStyle(cell, cellStyle);
       }
     });

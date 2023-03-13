@@ -144,6 +144,7 @@ export type StyleUpdate = EdgeStyleUpdate | ShapeStyleUpdate;
  */
 export type EdgeStyleUpdate = {
   stroke?: Stroke;
+  font?: Font;
 };
 
 /**
@@ -159,4 +160,41 @@ export type Stroke = {
    * Possible values are all HTML color names or HEX codes, as well as special keywords such as `swimlane`, `inherit` to use the color code of a related BPMN element or `none` for no color.
    */
   color: 'inherit' | 'none' | 'swimlane' | string;
+};
+
+type Font = {
+  /**
+   * Possible values are all HTML color names or HEX codes.
+   */
+  color?: string;
+
+  // TODO To uncomment when we implement the Opacity in global/background/font/stroke
+  //opacity?: Opacity;
+
+  /**
+   *  The type of the value is int (in px).
+   */
+  size?: number;
+
+  family?: string;
+
+  /**
+   *  Default: false
+   */
+  isBold?: boolean;
+
+  /**
+   *  Default: false
+   */
+  isItalic?: boolean;
+
+  /**
+   *  Default: false
+   */
+  isUnderline?: boolean;
+
+  /**
+   *  Default: false
+   */
+  isStrikeThrough?: boolean;
 };
