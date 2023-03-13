@@ -32,10 +32,22 @@ describe('mxGraph model - update style', () => {
 
     it('A single element', () => {
       const strokeColor = 'red';
-      bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { stroke: { color: strokeColor } });
+      const font = {
+        color: 'chartreuse',
+        // TODO To uncomment when we implement the Opacity in global/background/font/stroke
+        // opacity: ,
+        size: 25,
+        family: 'Times New Roman',
+        isBold: true,
+        isItalic: true,
+        isUnderline: true,
+        isStrikeThrough: true,
+      };
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { stroke: { color: strokeColor }, font });
 
       expect('userTask_2_2').toBeUserTask({
         stroke: { color: strokeColor },
+        font,
         // not under test
         parentId: 'lane_02',
         label: 'User Task 2.2',
@@ -97,10 +109,22 @@ describe('mxGraph model - update style', () => {
 
     it('On a single element', () => {
       const strokeColor = 'pink';
-      bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', { stroke: { color: strokeColor } });
+      const font = {
+        color: 'chartreuse',
+        // TODO To uncomment when we implement the Opacity in global/background/font/stroke
+        // opacity: ,
+        size: 25,
+        family: 'Times New Roman',
+        isBold: true,
+        isItalic: true,
+        isUnderline: true,
+        isStrikeThrough: true,
+      };
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', { stroke: { color: strokeColor }, font });
 
       expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
         stroke: { color: strokeColor },
+        font,
         // not under test
         parentId: 'lane_03',
         verticalAlign: 'bottom',
