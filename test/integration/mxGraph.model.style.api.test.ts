@@ -190,6 +190,7 @@ describe('mxGraph model - update style', () => {
         ${'null'}         | ${null}
         ${'empty'}        | ${{}}
         ${'empty stroke'} | ${{ stroke: {} }}
+        ${'empty stroke'} | ${{ font: {} }}
       `(`$configName`, ({ styleUpdate }: { styleUpdate: StyleUpdate }) => {
         bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', styleUpdate);
 
