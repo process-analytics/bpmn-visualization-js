@@ -100,6 +100,48 @@ describe('mxGraph model - update style', () => {
         label: 'terminate end 1',
       });
     });
+
+    it('Font style already set and no font style as api parameter', () => {
+      const font = {
+        isBold: true,
+        isItalic: true,
+        isUnderline: true,
+        isStrikeThrough: true,
+      };
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { font });
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { font: {} });
+
+      expect('userTask_2_2').toBeUserTask({
+        font,
+        // not under test
+        parentId: 'lane_02',
+        label: 'User Task 2.2',
+      });
+    });
+
+    it('Font style already set and update only the specified font styles', () => {
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', {
+        font: {
+          isBold: true,
+          isItalic: true,
+          isUnderline: true,
+          isStrikeThrough: true,
+        },
+      });
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { font: { isItalic: false, isUnderline: false } });
+
+      expect('userTask_2_2').toBeUserTask({
+        font: {
+          isBold: true,
+          isItalic: false,
+          isUnderline: false,
+          isStrikeThrough: true,
+        },
+        // not under test
+        parentId: 'lane_02',
+        label: 'User Task 2.2',
+      });
+    });
   });
 
   describe('Edges', () => {
@@ -171,6 +213,48 @@ describe('mxGraph model - update style', () => {
         stroke: { color: strokeColor },
         // not under test
         parentId: 'lane_01',
+        verticalAlign: 'bottom',
+      });
+    });
+
+    it('Font style already set and no font style as api parameter', () => {
+      const font = {
+        isBold: true,
+        isItalic: true,
+        isUnderline: true,
+        isStrikeThrough: true,
+      };
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', { font });
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', { font: {} });
+
+      expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
+        font,
+        // not under test
+        parentId: 'lane_03',
+        verticalAlign: 'bottom',
+      });
+    });
+
+    it('Font style already set and update only the specified font styles', () => {
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', {
+        font: {
+          isBold: true,
+          isItalic: true,
+          isUnderline: true,
+          isStrikeThrough: true,
+        },
+      });
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', { font: { isItalic: false, isUnderline: false } });
+
+      expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
+        font: {
+          isBold: true,
+          isItalic: false,
+          isUnderline: false,
+          isStrikeThrough: true,
+        },
+        // not under test
+        parentId: 'lane_03',
         verticalAlign: 'bottom',
       });
     });
