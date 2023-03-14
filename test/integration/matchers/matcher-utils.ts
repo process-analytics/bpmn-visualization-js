@@ -127,7 +127,7 @@ export function buildExpectedCellStyleWithCommonAttributes(expectedModelElt: Exp
 
   return {
     strokeColor: expectedModelElt.stroke?.color ?? 'Black',
-    fillColor: 'White',
+    fillColor: (<ExpectedShapeModelElement>expectedModelElt).fill?.color ?? 'White',
     fontFamily: font?.family ?? 'Arial, Helvetica, sans-serif',
     fontSize: font?.size ?? 11,
     fontColor: font?.color ?? 'Black',

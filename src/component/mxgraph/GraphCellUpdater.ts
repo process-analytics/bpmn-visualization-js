@@ -135,5 +135,5 @@ export default class GraphCellUpdater {
 }
 
 const isShapeStyleUpdate = (style: StyleUpdate): style is ShapeStyleUpdate => {
-  return style && typeof style === 'object' && 'background' in style;
+  return style && typeof style === 'object' && 'fill' in style;
 };

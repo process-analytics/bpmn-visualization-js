@@ -23,6 +23,7 @@ import type {
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
   Stroke,
+  Fill,
 } from '../../../src/bpmn-visualization';
 import { BpmnVisualization, ShapeBpmnElementKind } from '../../../src/bpmn-visualization';
 import {
@@ -149,6 +150,7 @@ export interface ExpectedShapeModelElement extends ExpectedModelElement {
   markers?: ShapeBpmnMarkerKind[];
   isInstantiating?: boolean;
   isHorizontal?: boolean;
+  fill?: Fill;
 }
 
 export interface ExpectedEventModelElement extends ExpectedShapeModelElement {
