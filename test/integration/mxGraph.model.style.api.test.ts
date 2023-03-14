@@ -148,6 +148,29 @@ describe('mxGraph model - update style', () => {
         label: 'User Task 2.2',
       });
     });
+
+    it('Update the fill style of a lane', () => {
+      const fill = { color: 'gold' };
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('lane_02', { fill });
+
+      expect('lane_02').toBeLane({
+        fill,
+        // not under test
+        parentId: 'Participant_1',
+        label: 'Lane 2',
+      });
+    });
+
+    it('Update the fill style of a pool', () => {
+      const fill = { color: 'gold' };
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('Participant_1', { fill });
+
+      expect('Participant_1').toBePool({
+        fill,
+        // not under test
+        label: 'Pool 1',
+      });
+    });
   });
 
   describe('Edges', () => {
