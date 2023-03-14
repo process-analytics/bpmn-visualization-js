@@ -37,4 +37,16 @@ describe('Style API', () => {
     const config = imageSnapshotConfigurator.getConfig('strokeColor');
     expect(image).toMatchImageSnapshot(config);
   });
+
+  it(`Update 'fillColor'`, async () => {
+    await pageTester.gotoPageAndLoadBpmnDiagram('01.most.bpmn.types.without.label', {
+      styleOptions: {
+        styleUpdate: { fill: { color: 'chartreuse' } },
+      },
+    });
+
+    const image = await page.screenshot({ fullPage: true });
+    const config = imageSnapshotConfigurator.getConfig('fillColor');
+    expect(image).toMatchImageSnapshot(config);
+  });
 });
