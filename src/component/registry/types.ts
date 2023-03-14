@@ -179,22 +179,22 @@ export type Font = {
   family?: string;
 
   /**
-   *  Default: false
+   *  @default false
    */
   isBold?: boolean;
 
   /**
-   *  Default: false
+   *  @default false
    */
   isItalic?: boolean;
 
   /**
-   *  Default: false
+   *  @default false
    */
   isUnderline?: boolean;
 
   /**
-   *  Default: false
+   *  @default false
    */
   isStrikeThrough?: boolean;
 };

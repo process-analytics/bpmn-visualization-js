@@ -30,6 +30,9 @@ describe('mxGraph model - update style', () => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
     });
 
+    // All properties are tested on a single element.
+    // Tests involving several elements only check one or few properties to ensure all elements are updated, considering that the rest is covered by the
+    // "single element" test.
     it('A single element', () => {
       const strokeColor = 'red';
       const font = {
@@ -109,6 +112,7 @@ describe('mxGraph model - update style', () => {
         isStrikeThrough: true,
       };
       bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { font });
+      // this doesn't change the style as the font property is empty
       bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { font: {} });
 
       expect('userTask_2_2').toBeUserTask({
@@ -149,6 +153,9 @@ describe('mxGraph model - update style', () => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
     });
 
+    // All properties are tested on a single element.
+    // Tests involving several elements only check one or few properties to ensure all elements are updated, considering that the rest is covered by the
+    // "single element" test.
     it('On a single element', () => {
       const strokeColor = 'pink';
       const font = {
@@ -225,6 +232,7 @@ describe('mxGraph model - update style', () => {
         isStrikeThrough: true,
       };
       bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', { font });
+      // this doesn't change the style as the font property is empty
       bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', { font: {} });
 
       expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
