@@ -30,12 +30,27 @@ describe('mxGraph model - update style', () => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
     });
 
+    // All properties are tested on a single element.
+    // Tests involving several elements only check one or few properties to ensure all elements are updated, considering that the rest is covered by the
+    // "single element" test.
     it('A single element', () => {
       const strokeColor = 'red';
-      bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { stroke: { color: strokeColor } });
+      const font = {
+        color: 'chartreuse',
+        // TODO To uncomment when we implement the Opacity in global/background/font/stroke
+        // opacity: ,
+        size: 25,
+        family: 'Times New Roman',
+        isBold: true,
+        isItalic: true,
+        isUnderline: true,
+        isStrikeThrough: true,
+      };
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { stroke: { color: strokeColor }, font });
 
       expect('userTask_2_2').toBeUserTask({
         stroke: { color: strokeColor },
+        font,
         // not under test
         parentId: 'lane_02',
         label: 'User Task 2.2',
@@ -88,6 +103,49 @@ describe('mxGraph model - update style', () => {
         label: 'terminate end 1',
       });
     });
+
+    it('Font style already set and no font style as api parameter', () => {
+      const font = {
+        isBold: true,
+        isItalic: true,
+        isUnderline: true,
+        isStrikeThrough: true,
+      };
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { font });
+      // this doesn't change the style as the font property is empty
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { font: {} });
+
+      expect('userTask_2_2').toBeUserTask({
+        font,
+        // not under test
+        parentId: 'lane_02',
+        label: 'User Task 2.2',
+      });
+    });
+
+    it('Font style already set and update only the specified font styles', () => {
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', {
+        font: {
+          isBold: true,
+          isItalic: true,
+          isUnderline: true,
+          isStrikeThrough: true,
+        },
+      });
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { font: { isItalic: false, isUnderline: false } });
+
+      expect('userTask_2_2').toBeUserTask({
+        font: {
+          isBold: true,
+          isItalic: false,
+          isUnderline: false,
+          isStrikeThrough: true,
+        },
+        // not under test
+        parentId: 'lane_02',
+        label: 'User Task 2.2',
+      });
+    });
   });
 
   describe('Edges', () => {
@@ -95,12 +153,27 @@ describe('mxGraph model - update style', () => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
     });
 
+    // All properties are tested on a single element.
+    // Tests involving several elements only check one or few properties to ensure all elements are updated, considering that the rest is covered by the
+    // "single element" test.
     it('On a single element', () => {
       const strokeColor = 'pink';
-      bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', { stroke: { color: strokeColor } });
+      const font = {
+        color: 'chartreuse',
+        // TODO To uncomment when we implement the Opacity in global/background/font/stroke
+        // opacity: ,
+        size: 25,
+        family: 'Times New Roman',
+        isBold: true,
+        isItalic: true,
+        isUnderline: true,
+        isStrikeThrough: true,
+      };
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', { stroke: { color: strokeColor }, font });
 
       expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
         stroke: { color: strokeColor },
+        font,
         // not under test
         parentId: 'lane_03',
         verticalAlign: 'bottom',
@@ -150,6 +223,49 @@ describe('mxGraph model - update style', () => {
         verticalAlign: 'bottom',
       });
     });
+
+    it('Font style already set and no font style as api parameter', () => {
+      const font = {
+        isBold: true,
+        isItalic: true,
+        isUnderline: true,
+        isStrikeThrough: true,
+      };
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', { font });
+      // this doesn't change the style as the font property is empty
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', { font: {} });
+
+      expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
+        font,
+        // not under test
+        parentId: 'lane_03',
+        verticalAlign: 'bottom',
+      });
+    });
+
+    it('Font style already set and update only the specified font styles', () => {
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', {
+        font: {
+          isBold: true,
+          isItalic: true,
+          isUnderline: true,
+          isStrikeThrough: true,
+        },
+      });
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', { font: { isItalic: false, isUnderline: false } });
+
+      expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
+        font: {
+          isBold: true,
+          isItalic: false,
+          isUnderline: false,
+          isStrikeThrough: true,
+        },
+        // not under test
+        parentId: 'lane_03',
+        verticalAlign: 'bottom',
+      });
+    });
   });
 
   describe('Both Edges and Shapes', () => {
@@ -166,6 +282,7 @@ describe('mxGraph model - update style', () => {
         ${'null'}         | ${null}
         ${'empty'}        | ${{}}
         ${'empty stroke'} | ${{ stroke: {} }}
+        ${'empty stroke'} | ${{ font: {} }}
       `(`$configName`, ({ styleUpdate }: { styleUpdate: StyleUpdate }) => {
         bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', styleUpdate);
 
