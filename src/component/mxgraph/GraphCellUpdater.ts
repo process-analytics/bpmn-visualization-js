@@ -17,11 +17,12 @@ limitations under the License.
 import type { BpmnGraph } from './BpmnGraph';
 import { mxgraph } from './initializer';
 import { BpmnStyleIdentifier } from './style';
-import type { Overlay, StyleUpdate } from '../registry';
+import type { Overlay, ShapeStyleUpdate, StyleUpdate } from '../registry';
 import { MxGraphCustomOverlay } from './overlay/custom-overlay';
 import { ensureIsArray } from '../helpers/array-utils';
 import { OverlayConverter } from './overlay/OverlayConverter';
 import { messageFowIconId } from './BpmnRenderer';
+import { ShapeBpmnElementKind } from '../../model/bpmn/internal';
 
 /**
  * @internal
@@ -108,8 +109,23 @@ export default class GraphCellUpdater {
           font.isStrikeThrough !== undefined &&
             (cellStyle = mxgraph.mxUtils.setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_STRIKETHROUGH, font.isStrikeThrough));
 
-          // TODO To uncomment when we implement the Opacity in global/background/font/stroke
+          // TODO To uncomment when we implement the Opacity in global/fill/font/stroke
           // font.opacity && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_TEXT_OPACITY, font.opacity));
+        }
+
+        if (isShapeStyleUpdate(styleUpdate)) {
+          const fill = styleUpdate.fill;
+          if (fill) {
+            if (fill.color) {
+              cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILLCOLOR, fill.color);
+              if (cellStyle.includes(ShapeBpmnElementKind.POOL) || cellStyle.includes(ShapeBpmnElementKind.LANE)) {
+                cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_SWIMLANE_FILLCOLOR, fill.color);
+              }
+            }
+
+            // TODO To uncomment when we implement the Opacity in global/fill/font/stroke
+            // cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILL_OPACITY, fill.opacity);
+          }
         }
 
         this.graph.model.setStyle(cell, cellStyle);
@@ -117,3 +133,7 @@ export default class GraphCellUpdater {
     });
   }
 }
+
+const isShapeStyleUpdate = (style: StyleUpdate): style is ShapeStyleUpdate => {
+  return style && typeof style === 'object' && 'background' in style;
+};
