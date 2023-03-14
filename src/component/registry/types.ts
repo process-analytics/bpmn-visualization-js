@@ -202,6 +202,9 @@ export type Font = {
   isStrikeThrough?: boolean;
 };
 
+/**
+ * @category Element Style
+ */
 export type Fill = {
   /**
    * Possible values are all HTML color names or HEX codes, as well as special keywords such as ‘swimlane‘,
