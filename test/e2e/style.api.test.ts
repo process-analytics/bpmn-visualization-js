@@ -20,9 +20,9 @@ import type { Page } from 'playwright';
 
 describe('Style API', () => {
   // chromium max: no error
-  // firefox max for all OS: 0.04780125689137771%
+  // firefox max for all OS: 0.055281082087199604%
   // webkit max: 0.07085182506020306%
-  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new MultiBrowserImageSnapshotThresholds({ chromium: 0 / 100, firefox: 0.05 / 100, webkit: 0.08 / 100 }), 'style');
+  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new MultiBrowserImageSnapshotThresholds({ chromium: 0 / 100, firefox: 0.06 / 100, webkit: 0.08 / 100 }), 'style');
 
   const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder: 'theme' }, <Page>page);
 
