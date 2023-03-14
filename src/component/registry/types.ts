@@ -145,6 +145,7 @@ export type StyleUpdate = EdgeStyleUpdate | ShapeStyleUpdate;
 export type EdgeStyleUpdate = {
   stroke?: Stroke;
   font?: Font;
+  opacity?: Opacity;
 };
 
 /**
@@ -160,6 +161,8 @@ export type Stroke = {
    * Possible values are all HTML color names or HEX codes, as well as special keywords such as `swimlane`, `inherit` to use the color code of a related BPMN element or `none` for no color.
    */
   color: 'inherit' | 'none' | 'swimlane' | string;
+
+  opacity?: Opacity;
 };
 
 /**
@@ -171,8 +174,7 @@ export type Font = {
    */
   color?: string;
 
-  // TODO To uncomment when we implement the Opacity in global/fill/font/stroke
-  //opacity?: Opacity;
+  opacity?: Opacity;
 
   /**
    *  The type of the value is int (in px).
@@ -212,8 +214,7 @@ export type Fill = {
    */
   color: string | 'swimlane' | 'inherit';
 
-  // TODO To uncomment when we implement the Opacity in global/fill/font/stroke
-  //opacity?: Opacity;
+  opacity?: Opacity;
 };
 
 type CreateArrayWithLengthX<LENGTH extends number, RESULT extends number[] = []> = RESULT['length'] extends LENGTH ? RESULT : CreateArrayWithLengthX<LENGTH, [...RESULT, 1]>;
