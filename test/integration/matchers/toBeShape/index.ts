@@ -73,6 +73,8 @@ export function buildExpectedShapeCellStyle(expectedModel: ExpectedShapeModelEle
       : style.fillColor);
   style.swimlaneFillColor = [ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.LANE].includes(expectedModel.kind) && style.fillColor !== 'none' ? style.fillColor : undefined;
 
+  style.fillOpacity = expectedModel.fill?.opacity;
+
   if ('isHorizontal' in expectedModel) {
     style.horizontal = expectedModel.isHorizontal ? 0 : 1;
   }

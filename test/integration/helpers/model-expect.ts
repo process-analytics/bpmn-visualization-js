@@ -24,6 +24,7 @@ import type {
   ShapeBpmnSubProcessKind,
   Stroke,
   Fill,
+  Opacity,
 } from '../../../src/bpmn-visualization';
 import { BpmnVisualization, ShapeBpmnElementKind } from '../../../src/bpmn-visualization';
 import {
@@ -131,6 +132,7 @@ export interface ExpectedFont {
   isItalic?: boolean;
   isUnderline?: boolean;
   isStrikeThrough?: boolean;
+  opacity?: Opacity;
 }
 
 type ExpectedModelElement = {
@@ -141,6 +143,7 @@ type ExpectedModelElement = {
   parentId?: string;
   stroke?: Stroke;
   verticalAlign?: string;
+  opacity?: Opacity;
 };
 
 export interface ExpectedShapeModelElement extends ExpectedModelElement {

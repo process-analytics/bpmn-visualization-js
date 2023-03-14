@@ -22,7 +22,7 @@ import { buildReceivedViewStateStyle } from './matchers/matcher-utils';
 import { buildExpectedShapeCellStyle } from './matchers/toBeShape';
 import { readFileSync } from '../helpers/file-helper';
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '../../src/model/bpmn/internal';
-import type { StyleUpdate } from '../../src/component/registry';
+import type { Fill, Font, Opacity, Stroke, StyleUpdate } from '../../src/component/registry';
 
 describe('mxGraph model - update style', () => {
   describe('Shapes', () => {
@@ -34,11 +34,10 @@ describe('mxGraph model - update style', () => {
     // Tests involving several elements only check one or few properties to ensure all elements are updated, considering that the rest is covered by the
     // "single element" test.
     it('A single element', () => {
-      const strokeColor = 'red';
-      const font = {
+      const stroke: Stroke = { color: 'red', opacity: 72 };
+      const font: Font = {
         color: 'chartreuse',
-        // TODO To uncomment when we implement the Opacity in global/fill/font/stroke
-        // opacity: ,
+        opacity: 40,
         size: 25,
         family: 'Times New Roman',
         isBold: true,
@@ -46,12 +45,14 @@ describe('mxGraph model - update style', () => {
         isUnderline: true,
         isStrikeThrough: true,
       };
-      const fill = { color: 'gold' };
-      bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { stroke: { color: strokeColor }, font, fill });
+      const opacity: Opacity = 84;
+      const fill: Fill = { color: 'gold', opacity: 55 };
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { stroke, font, opacity, fill });
 
       expect('userTask_2_2').toBeUserTask({
-        stroke: { color: strokeColor },
+        stroke,
         font,
+        opacity,
         fill,
         // not under test
         parentId: 'lane_02',
@@ -182,11 +183,10 @@ describe('mxGraph model - update style', () => {
     // Tests involving several elements only check one or few properties to ensure all elements are updated, considering that the rest is covered by the
     // "single element" test.
     it('On a single element', () => {
-      const strokeColor = 'pink';
-      const font = {
+      const stroke: Stroke = { color: 'pink', opacity: 72 };
+      const font: Font = {
         color: 'chartreuse',
-        // TODO To uncomment when we implement the Opacity in global/fill/font/stroke
-        // opacity: ,
+        opacity: 40,
         size: 25,
         family: 'Times New Roman',
         isBold: true,
@@ -194,11 +194,13 @@ describe('mxGraph model - update style', () => {
         isUnderline: true,
         isStrikeThrough: true,
       };
-      bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', { stroke: { color: strokeColor }, font });
+      const opacity: Opacity = 84;
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', { stroke, font, opacity });
 
       expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
-        stroke: { color: strokeColor },
+        stroke,
         font,
+        opacity,
         // not under test
         parentId: 'lane_03',
         verticalAlign: 'bottom',
