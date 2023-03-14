@@ -162,6 +162,9 @@ export type Stroke = {
   color: 'inherit' | 'none' | 'swimlane' | string;
 };
 
+/**
+ * @category Element Style
+ */
 export type Font = {
   /**
    * Possible values are all HTML color names or HEX codes.
