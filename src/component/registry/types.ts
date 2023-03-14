@@ -215,3 +215,13 @@ export type Fill = {
   // TODO To uncomment when we implement the Opacity in global/fill/font/stroke
   //opacity?: Opacity;
 };
+
+type CreateArrayWithLengthX<LENGTH extends number, RESULT extends number[] = []> = RESULT['length'] extends LENGTH ? RESULT : CreateArrayWithLengthX<LENGTH, [...RESULT, 1]>;
+type Range<MIN extends number, MAX extends number, RESULT extends number[] = CreateArrayWithLengthX<MIN>> = RESULT['length'] extends MAX
+  ? MIN | MAX
+  : Range<MIN | RESULT['length'], MAX, [...RESULT, 1]>;
+
+/**
+ * @category Element Style
+ */
+export type Opacity = Range<0, 100>;
