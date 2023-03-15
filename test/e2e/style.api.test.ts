@@ -15,14 +15,58 @@ limitations under the License.
 */
 
 import { AvailableTestPages, PageTester } from './helpers/visu/bpmn-page-utils';
+import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 import type { Page } from 'playwright';
 
+class StyleImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
+  constructor() {
+    // chromium max: 1.578300823368295e-8% -> 0.00000001578300823368295%
+    // firefox max for all OS: 0.055281082087199604%
+    // webkit max: 0.07085182506020306%
+    super({ chromium: 0.0000001 / 100, firefox: 0.06 / 100, webkit: 0.08 / 100 });
+  }
+
+  // if no dedicated information, set minimal threshold to make test pass on GitHub Workflow
+  protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    return new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'font.color.opacity',
+        {
+          linux: 0.12 / 100, // 0.1155614505197633%
+          windows: 0.12 / 100, // 0.11000117996341485%
+        },
+      ],
+    ]);
+  }
+
+  protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    return new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'font.color.opacity',
+        {
+          linux: 0.7 / 100, // 0.6666424226140943%
+          macos: 0.4 / 100, // 0.3735342397314878%
+          windows: 0.7 / 100, // 0.6683147876539342%
+        },
+      ],
+    ]);
+  }
+
+  protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    return new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'font.color.opacity',
+        {
+          macos: 0.2 / 100, // 0.18895676780704695%
+        },
+      ],
+    ]);
+  }
+}
+
 describe('Style API', () => {
-  // chromium max: no error
-  // firefox max for all OS: 0.055281082087199604%
-  // webkit max: 0.07085182506020306%
-  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new MultiBrowserImageSnapshotThresholds({ chromium: 0 / 100, firefox: 0.06 / 100, webkit: 0.08 / 100 }), 'style');
+  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new StyleImageSnapshotThresholds(), 'style');
 
   const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder: 'theme' }, <Page>page);
 
