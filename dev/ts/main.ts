@@ -27,6 +27,7 @@ import type {
   StyleUpdate,
   Version,
   ZoomType,
+  Opacity,
 } from '../../src/bpmn-visualization';
 import { FlowKind, ShapeBpmnElementKind } from '../../src/bpmn-visualization';
 import { fetchBpmnContent, logDownload, logError, logErrorAndOpenAlert, logStartup, stringify } from './utils/internal-helpers';
@@ -238,10 +239,21 @@ function configureStyleFromParameters(parameters: URLSearchParams): void {
   // Collect style properties to update them later with the bpmn-visualization API
   // The implementation will be generalized when more properties will be supported (in particular, the query parameter name)
   // For example, we could extract all query params starting with style.api, then rebuild the StyleUpdate from the extracted params
-  style = {
-    stroke: { color: parameters.get('style.api.stroke.color') },
-    fill: { color: parameters.get('style.api.fill.color') },
-  };
+  style = { stroke: {}, font: {}, fill: {} };
+
+  parameters.get('style.api.opacity') && (style.opacity = Number(parameters.get('style.api.opacity')) as Opacity);
+  parameters.get('style.api.stroke.color') && (style.stroke.color = parameters.get('style.api.stroke.color'));
+  parameters.get('style.api.stroke.opacity') && (style.stroke.opacity = Number(parameters.get('style.api.stroke.opacity')) as Opacity);
+  parameters.get('style.api.font.color') && (style.font.color = parameters.get('style.api.font.color'));
+  parameters.get('style.api.font.opacity') && (style.font.opacity = Number(parameters.get('style.api.font.opacity')) as Opacity);
+  parameters.get('style.api.font.size') && (style.font.size = Number(parameters.get('style.api.size')));
+  parameters.get('style.api.font.family') && (style.font.family = parameters.get('style.api.family'));
+  parameters.get('style.api.font.isBold') && (style.font.isBold = Boolean(parameters.get('style.api.font.isBold')));
+  parameters.get('style.api.font.isItalic') && (style.font.isItalic = Boolean(parameters.get('style.api.font.isItalic')));
+  parameters.get('style.api.font.isUnderline') && (style.font.isUnderline = Boolean(parameters.get('style.api.font.isUnderline')));
+  parameters.get('style.api.font.isStrikeThrough') && (style.font.isStrikeThrough = Boolean(parameters.get('style.api.font.isStrikeThrough')));
+  parameters.get('style.api.fill.color') && (style.fill.color = parameters.get('style.api.fill.color'));
+  parameters.get('style.api.fill.opacity') && (style.fill.opacity = Number(parameters.get('style.api.fill.opacity')) as Opacity);
 }
 
 function configureBpmnElementIdToCollapseFromParameters(parameters: URLSearchParams): void {
