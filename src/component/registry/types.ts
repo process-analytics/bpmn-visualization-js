@@ -160,7 +160,7 @@ export type Stroke = {
   /**
    * Possible values are all HTML color names or HEX codes, as well as special keywords such as `swimlane`, `inherit` to use the color code of a related BPMN element or `none` for no color.
    */
-  color: 'inherit' | 'none' | 'swimlane' | string;
+  color?: 'inherit' | 'none' | 'swimlane' | string;
 
   opacity?: Opacity;
 };
@@ -212,7 +212,7 @@ export type Fill = {
    * Possible values are all HTML color names or HEX codes, as well as special keywords such as ‘swimlane‘,
    * ‘inherit’ to use the color code of a related cell.
    */
-  color: string | 'swimlane' | 'inherit';
+  color?: string | 'swimlane' | 'inherit';
 
   opacity?: Opacity;
 };
