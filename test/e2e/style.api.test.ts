@@ -50,15 +50,16 @@ describe('Style API', () => {
     expect(image).toMatchImageSnapshot(config);
   });
 
-  it(`Update 'fill.opacity'`, async () => {
-    await pageTester.gotoPageAndLoadBpmnDiagram('01.most.bpmn.types.without.label', {
+  it(`Update 'color' and 'opacity' of 'fill' for task`, async () => {
+    const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder: 'bpmn-rendering' }, <Page>page);
+    await pageTester.gotoPageAndLoadBpmnDiagram('tasks', {
       styleOptions: {
-        styleUpdate: { fill: { opacity: 55 } },
+        styleUpdate: { fill: { color: 'chartreuse', opacity: 15 } },
       },
     });
 
     const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig('fill.opacity');
+    const config = imageSnapshotConfigurator.getConfig('tasks.fill.color.opacity');
     expect(image).toMatchImageSnapshot(config);
   });
 
@@ -67,7 +68,7 @@ describe('Style API', () => {
     await pageTester.gotoPageAndLoadBpmnDiagram('labels.04.fonts', {
       styleOptions: {
         styleUpdate: {
-          font: { color: 'chartreuse', opacity: 70 },
+          font: { color: 'chartreuse', opacity: 40 },
         },
       },
     });
