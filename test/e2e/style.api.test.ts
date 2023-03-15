@@ -49,4 +49,19 @@ describe('Style API', () => {
     const config = imageSnapshotConfigurator.getConfig('fill.color');
     expect(image).toMatchImageSnapshot(config);
   });
+
+  it(`Update 'color' and 'opacity' of 'font'`, async () => {
+    const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder: 'bpmn-rendering' }, <Page>page);
+    await pageTester.gotoPageAndLoadBpmnDiagram('labels.04.fonts', {
+      styleOptions: {
+        styleUpdate: {
+          font: { color: 'chartreuse', opacity: 70 },
+        },
+      },
+    });
+
+    const image = await page.screenshot({ fullPage: true });
+    const config = imageSnapshotConfigurator.getConfig('font.color.opacity');
+    expect(image).toMatchImageSnapshot(config);
+  });
 });
