@@ -121,4 +121,18 @@ describe('Style API', () => {
     const config = imageSnapshotConfigurator.getConfig('font.color.opacity');
     expect(image).toMatchImageSnapshot(config);
   });
+
+  it(`Update 'color' and 'opacity' of 'fill'`, async () => {
+    await pageTester.gotoPageAndLoadBpmnDiagram('01.most.bpmn.types.without.label', {
+      styleOptions: {
+        styleUpdate: {
+          fill: { color: 'chartreuse', opacity: 15 },
+        },
+      },
+    });
+
+    const image = await page.screenshot({ fullPage: true });
+    const config = imageSnapshotConfigurator.getConfig('fill.color.opacity');
+    expect(image).toMatchImageSnapshot(config);
+  });
 });
