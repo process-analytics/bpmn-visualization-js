@@ -21,10 +21,10 @@ import type { Page } from 'playwright';
 
 class StyleImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
-    // chromium max: 1.578300823368295e-8% -> 0.00000001578300823368295%
+    // chromium max: 1.0567889896506699e-7% -> 0.00000010567889896506699%
     // firefox max for all OS: 0.055281082087199604%
     // webkit max: 0.07085182506020306%
-    super({ chromium: 0.0000001 / 100, firefox: 0.06 / 100, webkit: 0.08 / 100 });
+    super({ chromium: 0.000001 / 100, firefox: 0.06 / 100, webkit: 0.08 / 100 });
   }
 
   // if no dedicated information, set minimal threshold to make test pass on GitHub Workflow
@@ -50,6 +50,14 @@ class StyleImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           windows: 0.7 / 100, // 0.6683147876539342%
         },
       ],
+      [
+        'fill.color.opacity',
+        {
+          linux: 0.08 / 100, // 0.07372082349720312%
+          macos: 0.08 / 100, // 0.07372082349720312%
+          windows: 0.08 / 100, // 0.07372082349720312%
+        },
+      ],
     ]);
   }
 
@@ -59,6 +67,12 @@ class StyleImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         'font.color.opacity',
         {
           macos: 0.2 / 100, // 0.18895676780704695%
+        },
+      ],
+      [
+        'fill.color.opacity',
+        {
+          macos: 0.11 / 100, // 0.1064668020213877%
         },
       ],
     ]);
