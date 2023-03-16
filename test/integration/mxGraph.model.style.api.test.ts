@@ -34,7 +34,7 @@ describe('mxGraph model - update style', () => {
     // Tests involving several elements only check one or few properties to ensure all elements are updated, considering that the rest is covered by the
     // "single element" test.
     it('A single element', () => {
-      const stroke: Stroke = { color: 'red', opacity: 72 };
+      const stroke: Stroke = { color: 'red', opacity: 72, width: 7 };
       const font: Font = {
         color: 'chartreuse',
         opacity: 40,
@@ -202,7 +202,7 @@ describe('mxGraph model - update style', () => {
     // Tests involving several elements only check one or few properties to ensure all elements are updated, considering that the rest is covered by the
     // "single element" test.
     it('On a single element', () => {
-      const stroke: Stroke = { color: 'pink', opacity: 72 };
+      const stroke: Stroke = { color: 'pink', opacity: 72, width: 7 };
       const font: Font = {
         color: 'chartreuse',
         opacity: 40,

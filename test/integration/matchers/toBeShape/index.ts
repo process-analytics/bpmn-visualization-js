@@ -61,10 +61,10 @@ function expectedStrokeWidth(kind: ShapeBpmnElementKind): number {
 
 export function buildExpectedShapeCellStyle(expectedModel: ExpectedShapeModelElement): BpmnCellStyle {
   const style = buildExpectedCellStyleWithCommonAttributes(expectedModel);
-  style.shape = !expectedModel.styleShape ? expectedModel.kind : expectedModel.styleShape;
-  style.verticalAlign = expectedModel.verticalAlign ? expectedModel.verticalAlign : 'middle';
-  style.align = expectedModel.align ? expectedModel.align : 'center';
-  style.strokeWidth = expectedStrokeWidth(expectedModel.kind);
+  style.shape = expectedModel.styleShape ?? expectedModel.kind;
+  style.verticalAlign = expectedModel.verticalAlign ?? 'middle';
+  style.align = expectedModel.align ?? 'center';
+  style.strokeWidth = style.strokeWidth ?? expectedStrokeWidth(expectedModel.kind);
 
   style.fillColor =
     expectedModel.fill?.color ??
@@ -74,10 +74,7 @@ export function buildExpectedShapeCellStyle(expectedModel: ExpectedShapeModelEle
   style.swimlaneFillColor = [ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.LANE].includes(expectedModel.kind) && style.fillColor !== 'none' ? style.fillColor : undefined;
 
   style.fillOpacity = expectedModel.fill?.opacity;
-
-  if ('isHorizontal' in expectedModel) {
-    style.horizontal = expectedModel.isHorizontal ? 0 : 1;
-  }
+  'isHorizontal' in expectedModel && (style.horizontal = Number(!expectedModel.isHorizontal));
 
   return style;
 }
