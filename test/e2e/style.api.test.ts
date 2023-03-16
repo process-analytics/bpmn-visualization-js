@@ -51,7 +51,7 @@ class StyleImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         },
       ],
       [
-        'fill.color.opacity',
+        'fill.color.opacity.group',
         {
           linux: 0.08 / 100, // 0.07372082349720312%
           macos: 0.08 / 100, // 0.07372082349720312%
@@ -70,7 +70,7 @@ class StyleImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         },
       ],
       [
-        'fill.color.opacity',
+        'fill.color.opacity.group',
         {
           macos: 0.11 / 100, // 0.1064668020213877%
         },
@@ -108,6 +108,20 @@ describe('Style API', () => {
     expect(image).toMatchImageSnapshot(config);
   });
 
+  it(`Update 'color' and 'opacity' of 'fill for group'`, async () => {
+    await pageTester.gotoPageAndLoadBpmnDiagram('01.most.bpmn.types.without.label', {
+      styleOptions: {
+        styleUpdate: {
+          fill: { color: 'chartreuse', opacity: 15 },
+        },
+      },
+    });
+
+    const image = await page.screenshot({ fullPage: true });
+    const config = imageSnapshotConfigurator.getConfig('fill.color.opacity.group');
+    expect(image).toMatchImageSnapshot(config);
+  });
+
   it(`Update 'color' and 'opacity' of 'fill' for task`, async () => {
     const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder: 'bpmn-rendering' }, <Page>page);
     await pageTester.gotoPageAndLoadBpmnDiagram('tasks', {
@@ -117,7 +131,7 @@ describe('Style API', () => {
     });
 
     const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig('tasks.fill.color.opacity');
+    const config = imageSnapshotConfigurator.getConfig('fill.color.opacity.tasks');
     expect(image).toMatchImageSnapshot(config);
   });
 
@@ -133,20 +147,6 @@ describe('Style API', () => {
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig('font.color.opacity');
-    expect(image).toMatchImageSnapshot(config);
-  });
-
-  it(`Update 'color' and 'opacity' of 'fill'`, async () => {
-    await pageTester.gotoPageAndLoadBpmnDiagram('01.most.bpmn.types.without.label', {
-      styleOptions: {
-        styleUpdate: {
-          fill: { color: 'chartreuse', opacity: 15 },
-        },
-      },
-    });
-
-    const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig('fill.color.opacity');
     expect(image).toMatchImageSnapshot(config);
   });
 });
