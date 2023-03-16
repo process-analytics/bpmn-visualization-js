@@ -95,49 +95,49 @@ export default class GraphCellUpdater {
         let cellStyle = cell.getStyle();
         // Only set the style when the key is set. Otherwise, mxGraph removes the related setting from the cellStyle which is equivalent to a reset of the style property
         styleUpdate.stroke?.color && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKECOLOR, styleUpdate.stroke.color));
-        styleUpdate.font && (cellStyle = this.updateFont(styleUpdate.font, cellStyle));
+        styleUpdate.font && (cellStyle = updateFont(cellStyle, styleUpdate.font));
 
         if (isShapeStyleUpdate(styleUpdate)) {
-          styleUpdate.fill && (cellStyle = this.updateFill(styleUpdate.fill, cellStyle));
+          styleUpdate.fill && (cellStyle = updateFill(cellStyle, styleUpdate.fill));
         }
 
         this.graph.model.setStyle(cell, cellStyle);
       }
     });
   }
-
-  private updateFont(font: Font, cellStyle: string): string {
-    font.color && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTCOLOR, font.color));
-    font.size && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTSIZE, font.size));
-    font.family && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTFAMILY, font.family));
-
-    font.isBold !== undefined && (cellStyle = mxgraph.mxUtils.setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_BOLD, font.isBold));
-    font.isItalic !== undefined && (cellStyle = mxgraph.mxUtils.setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_ITALIC, font.isItalic));
-    font.isUnderline !== undefined &&
-      (cellStyle = mxgraph.mxUtils.setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_UNDERLINE, font.isUnderline));
-    font.isStrikeThrough !== undefined &&
-      (cellStyle = mxgraph.mxUtils.setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_STRIKETHROUGH, font.isStrikeThrough));
-
-    // TODO To uncomment when we implement the Opacity in global/fill/font/stroke
-    // font.opacity && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_TEXT_OPACITY, font.opacity));
-
-    return cellStyle;
-  }
-
-  private updateFill(fill: Fill, cellStyle: string): string {
-    if (fill.color) {
-      cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILLCOLOR, fill.color);
-      if (cellStyle.includes(ShapeBpmnElementKind.POOL) || cellStyle.includes(ShapeBpmnElementKind.LANE)) {
-        cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_SWIMLANE_FILLCOLOR, fill.color);
-      }
-    }
-
-    // TODO To uncomment when we implement the Opacity in global/fill/font/stroke
-    // cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILL_OPACITY, fill.opacity);
-
-    return cellStyle;
-  }
 }
+
+const updateFont = (cellStyle: string, font: Font): string => {
+  font.color && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTCOLOR, font.color));
+  font.size && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTSIZE, font.size));
+  font.family && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTFAMILY, font.family));
+
+  font.isBold !== undefined && (cellStyle = mxgraph.mxUtils.setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_BOLD, font.isBold));
+  font.isItalic !== undefined && (cellStyle = mxgraph.mxUtils.setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_ITALIC, font.isItalic));
+  font.isUnderline !== undefined &&
+    (cellStyle = mxgraph.mxUtils.setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_UNDERLINE, font.isUnderline));
+  font.isStrikeThrough !== undefined &&
+    (cellStyle = mxgraph.mxUtils.setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_STRIKETHROUGH, font.isStrikeThrough));
+
+  // TODO To uncomment when we implement the Opacity in global/fill/font/stroke
+  // font.opacity && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_TEXT_OPACITY, font.opacity));
+
+  return cellStyle;
+};
+
+const updateFill = (cellStyle: string, fill: Fill): string => {
+  if (fill.color) {
+    cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILLCOLOR, fill.color);
+    if (cellStyle.includes(ShapeBpmnElementKind.POOL) || cellStyle.includes(ShapeBpmnElementKind.LANE)) {
+      cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_SWIMLANE_FILLCOLOR, fill.color);
+    }
+  }
+
+  // TODO To uncomment when we implement the Opacity in global/fill/font/stroke
+  // cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILL_OPACITY, fill.opacity);
+
+  return cellStyle;
+};
 
 const isShapeStyleUpdate = (style: StyleUpdate): style is ShapeStyleUpdate => {
   return style && typeof style === 'object' && 'fill' in style;
