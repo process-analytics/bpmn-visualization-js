@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { ensureInRange, ensureOpacityValue, ensurePositiveValue, ensureValidZoomConfiguration } from '../../../../src/component/helpers/validators';
+import { ensureInRange, ensureOpacityValue, ensurePositiveValue, ensureStrokeWidthValue, ensureValidZoomConfiguration } from '../../../../src/component/helpers/validators';
 
 describe('helper functions', () => {
   it.each`
@@ -61,5 +61,17 @@ describe('validate opacity', () => {
     ${-50}       | ${0}
   `('opacity: $input', ({ input, expected }) => {
     expect(ensureOpacityValue(input)).toEqual(expected);
+  });
+});
+
+describe('validate stroke width', () => {
+  it.each`
+    input                      | expected
+    ${undefined}               | ${1}
+    ${12}                      | ${12}
+    ${-50}                     | ${1}
+    ${Number.MAX_SAFE_INTEGER} | ${Number.MAX_SAFE_INTEGER}
+  `('opacity: $input', ({ input, expected }) => {
+    expect(ensureStrokeWidthValue(input)).toEqual(expected);
   });
 });
