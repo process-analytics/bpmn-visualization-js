@@ -154,12 +154,24 @@ export type ShapeStyleUpdate = EdgeStyleUpdate & { fill?: Fill };
 
 /**
  * @category Element Style
+ *
+ * @warning Changing the stroke width of Activities may be misleading as the default stroke widths have a meaning according to the BPMN Specification.
+ *
+ * For example, updating the stroke width of a task using the same value as the default stroke width of a Call Activity can be confusing. In this case, you should also change another property such as the stroke color to allow the user to differentiate between them.
  */
 export type Stroke = StyleWithOpacity & {
   /**
    * Possible values are all HTML color names or HEX codes, as well as special keywords such as `swimlane`, `inherit` to use the color code of a related BPMN element or `none` for no color.
    */
   color?: 'inherit' | 'none' | 'swimlane' | string;
+
+  /**
+   * This defines the stroke width in pixels.
+   * The possible range is any non-negative value larger or equal to 1.
+   *
+   * To hide a stroke use strokeColor 'none'.
+   */
+  width?: number;
 };
 
 /**
