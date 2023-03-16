@@ -26,7 +26,7 @@ describe('Style API', () => {
 
   const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder: 'theme' }, <Page>page);
 
-  it(`Update 'strokeColor'`, async () => {
+  it(`Update 'stroke.color'`, async () => {
     await pageTester.gotoPageAndLoadBpmnDiagram('01.most.bpmn.types.without.label', {
       styleOptions: {
         styleUpdate: { stroke: { color: 'chartreuse' } },
@@ -34,11 +34,11 @@ describe('Style API', () => {
     });
 
     const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig('strokeColor');
+    const config = imageSnapshotConfigurator.getConfig('stroke.color');
     expect(image).toMatchImageSnapshot(config);
   });
 
-  it(`Update 'fillColor'`, async () => {
+  it(`Update 'fill.color'`, async () => {
     await pageTester.gotoPageAndLoadBpmnDiagram('01.most.bpmn.types.without.label', {
       styleOptions: {
         styleUpdate: { fill: { color: 'chartreuse' } },
@@ -46,7 +46,7 @@ describe('Style API', () => {
     });
 
     const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig('fillColor');
+    const config = imageSnapshotConfigurator.getConfig('fill.color');
     expect(image).toMatchImageSnapshot(config);
   });
 });
