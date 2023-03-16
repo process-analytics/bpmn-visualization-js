@@ -150,7 +150,7 @@ export type EdgeStyleUpdate = {
 /**
  * @category Element Style
  */
-export type ShapeStyleUpdate = EdgeStyleUpdate;
+export type ShapeStyleUpdate = EdgeStyleUpdate & { fill?: Fill };
 
 /**
  * @category Element Style
@@ -171,7 +171,7 @@ export type Font = {
    */
   color?: string;
 
-  // TODO To uncomment when we implement the Opacity in global/background/font/stroke
+  // TODO To uncomment when we implement the Opacity in global/fill/font/stroke
   //opacity?: Opacity;
 
   /**
@@ -200,4 +200,18 @@ export type Font = {
    *  @default false
    */
   isStrikeThrough?: boolean;
+};
+
+/**
+ * @category Element Style
+ */
+export type Fill = {
+  /**
+   * Possible values are all HTML color names or HEX codes, as well as special keywords such as ‘swimlane‘,
+   * ‘inherit’ to use the color code of a related cell.
+   */
+  color: string | 'swimlane' | 'inherit';
+
+  // TODO To uncomment when we implement the Opacity in global/fill/font/stroke
+  //opacity?: Opacity;
 };

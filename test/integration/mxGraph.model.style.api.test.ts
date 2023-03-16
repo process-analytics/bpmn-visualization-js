@@ -37,7 +37,7 @@ describe('mxGraph model - update style', () => {
       const strokeColor = 'red';
       const font = {
         color: 'chartreuse',
-        // TODO To uncomment when we implement the Opacity in global/background/font/stroke
+        // TODO To uncomment when we implement the Opacity in global/fill/font/stroke
         // opacity: ,
         size: 25,
         family: 'Times New Roman',
@@ -46,11 +46,13 @@ describe('mxGraph model - update style', () => {
         isUnderline: true,
         isStrikeThrough: true,
       };
-      bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { stroke: { color: strokeColor }, font });
+      const fill = { color: 'gold' };
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { stroke: { color: strokeColor }, font, fill });
 
       expect('userTask_2_2').toBeUserTask({
         stroke: { color: strokeColor },
         font,
+        fill,
         // not under test
         parentId: 'lane_02',
         label: 'User Task 2.2',
@@ -146,6 +148,29 @@ describe('mxGraph model - update style', () => {
         label: 'User Task 2.2',
       });
     });
+
+    it('Update the fill style of a lane', () => {
+      const fill = { color: 'gold' };
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('lane_02', { fill });
+
+      expect('lane_02').toBeLane({
+        fill,
+        // not under test
+        parentId: 'Participant_1',
+        label: 'Lane 2',
+      });
+    });
+
+    it('Update the fill style of a pool', () => {
+      const fill = { color: 'gold' };
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('Participant_1', { fill });
+
+      expect('Participant_1').toBePool({
+        fill,
+        // not under test
+        label: 'Pool 1',
+      });
+    });
   });
 
   describe('Edges', () => {
@@ -160,7 +185,7 @@ describe('mxGraph model - update style', () => {
       const strokeColor = 'pink';
       const font = {
         color: 'chartreuse',
-        // TODO To uncomment when we implement the Opacity in global/background/font/stroke
+        // TODO To uncomment when we implement the Opacity in global/fill/font/stroke
         // opacity: ,
         size: 25,
         family: 'Times New Roman',

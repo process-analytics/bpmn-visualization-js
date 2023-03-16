@@ -30,6 +30,7 @@ export interface BpmnCellStyle extends StyleMap {
   strokeWidth?: number;
   strokeColor: string;
   fillColor: string;
+  swimlaneFillColor?: string;
   fontColor: string;
   fontFamily: string;
   fontSize: number;
@@ -180,6 +181,7 @@ function toBpmnStyle(rawStyle: StyleMap, isEdge: boolean): BpmnCellStyle {
   } else {
     style.shape = rawStyle.shape;
     style.horizontal = rawStyle.horizontal;
+    style.swimlaneFillColor = rawStyle.swimlaneFillColor;
   }
   return style;
 }

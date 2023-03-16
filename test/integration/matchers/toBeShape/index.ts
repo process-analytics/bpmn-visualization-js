@@ -66,9 +66,12 @@ export function buildExpectedShapeCellStyle(expectedModel: ExpectedShapeModelEle
   style.align = expectedModel.align ? expectedModel.align : 'center';
   style.strokeWidth = expectedStrokeWidth(expectedModel.kind);
 
-  style.fillColor = [ShapeBpmnElementKind.LANE, ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.TEXT_ANNOTATION, ShapeBpmnElementKind.GROUP].includes(expectedModel.kind)
-    ? 'none'
-    : style.fillColor;
+  style.fillColor =
+    expectedModel.fill?.color ??
+    ([ShapeBpmnElementKind.LANE, ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.TEXT_ANNOTATION, ShapeBpmnElementKind.GROUP].includes(expectedModel.kind)
+      ? 'none'
+      : style.fillColor);
+  style.swimlaneFillColor = [ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.LANE].includes(expectedModel.kind) && style.fillColor !== 'none' ? style.fillColor : undefined;
 
   if ('isHorizontal' in expectedModel) {
     style.horizontal = expectedModel.isHorizontal ? 0 : 1;
