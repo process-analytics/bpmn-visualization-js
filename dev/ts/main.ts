@@ -240,17 +240,9 @@ function configureStyleFromParameters(parameters: URLSearchParams): void {
   // For example, we could extract all query params starting with style.api, then rebuild the StyleUpdate from the extracted params
   style = { stroke: {}, font: {}, fill: {} };
 
-  parameters.get('style.api.opacity') && (style.opacity = Number(parameters.get('style.api.opacity')));
   parameters.get('style.api.stroke.color') && (style.stroke.color = parameters.get('style.api.stroke.color'));
-  parameters.get('style.api.stroke.opacity') && (style.stroke.opacity = Number(parameters.get('style.api.stroke.opacity')));
   parameters.get('style.api.font.color') && (style.font.color = parameters.get('style.api.font.color'));
   parameters.get('style.api.font.opacity') && (style.font.opacity = Number(parameters.get('style.api.font.opacity')));
-  parameters.get('style.api.font.size') && (style.font.size = Number(parameters.get('style.api.size')));
-  parameters.get('style.api.font.family') && (style.font.family = parameters.get('style.api.family'));
-  parameters.get('style.api.font.isBold') && (style.font.isBold = Boolean(parameters.get('style.api.font.isBold')));
-  parameters.get('style.api.font.isItalic') && (style.font.isItalic = Boolean(parameters.get('style.api.font.isItalic')));
-  parameters.get('style.api.font.isUnderline') && (style.font.isUnderline = Boolean(parameters.get('style.api.font.isUnderline')));
-  parameters.get('style.api.font.isStrikeThrough') && (style.font.isStrikeThrough = Boolean(parameters.get('style.api.font.isStrikeThrough')));
   parameters.get('style.api.fill.color') && (style.fill.color = parameters.get('style.api.fill.color'));
   parameters.get('style.api.fill.opacity') && (style.fill.opacity = Number(parameters.get('style.api.fill.opacity')));
 }

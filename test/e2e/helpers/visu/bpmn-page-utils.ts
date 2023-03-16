@@ -212,24 +212,15 @@ export class PageTester {
     // Manage all styleUpdate properties (the implementation will be generalized when more properties will be supported)
     const styleUpdate = styleOptions?.styleUpdate;
     if (styleUpdate) {
-      styleUpdate.opacity && (url += `&style.api.opacity=${styleUpdate.opacity}`);
-
       const stroke = styleUpdate.stroke;
       if (stroke) {
         stroke.color && (url += `&style.api.stroke.color=${stroke.color}`);
-        stroke.opacity && (url += `&style.api.stroke.opacity=${stroke.opacity}`);
       }
 
       const font = styleUpdate.font;
       if (font) {
         font.color && (url += `&style.api.font.color=${font.color}`);
         font.opacity && (url += `&style.api.font.opacity=${font.opacity}`);
-        font.size && (url += `&style.api.font.size=${font.size}`);
-        font.family && (url += `&style.api.font.family=${font.family}`);
-        font.isBold && (url += `&style.api.font.isBold=${font.isBold}`);
-        font.isItalic && (url += `&style.api.font.isItalic=${font.isItalic}`);
-        font.isUnderline && (url += `&style.api.font.isUnderline=${font.isUnderline}`);
-        font.isStrikeThrough && (url += `&style.api.font.isStrikeThrough=${font.isStrikeThrough}`);
       }
 
       if ('fill' in styleUpdate) {
