@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { ensureInRange, ensurePositiveValue, ensureValidZoomConfiguration } from '../../../../src/component/helpers/validators';
+import { ensureInRange, ensureOpacityValue, ensurePositiveValue, ensureValidZoomConfiguration } from '../../../../src/component/helpers/validators';
 
 describe('helper functions', () => {
   it.each`
@@ -49,5 +49,17 @@ describe('validate configuration', () => {
     ${{ debounceDelay: 172, throttleDelay: -50 }} | ${{ debounceDelay: 100, throttleDelay: 0 }}
   `('zoom configuration: input ($input)', ({ input, expected }) => {
     expect(ensureValidZoomConfiguration(input)).toEqual(expected);
+  });
+});
+
+describe('validate opacity', () => {
+  it.each`
+    input        | expected
+    ${undefined} | ${100}
+    ${12}        | ${12}
+    ${172}       | ${100}
+    ${-50}       | ${0}
+  `('opacity: $input', ({ input, expected }) => {
+    expect(ensureOpacityValue(input)).toEqual(expected);
   });
 });

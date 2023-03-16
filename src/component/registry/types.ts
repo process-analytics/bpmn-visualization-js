@@ -142,10 +142,9 @@ export type StyleUpdate = EdgeStyleUpdate | ShapeStyleUpdate;
 /**
  * @category Element Style
  */
-export type EdgeStyleUpdate = {
+export type EdgeStyleUpdate = StyleWithOpacity & {
   stroke?: Stroke;
   font?: Font;
-  opacity?: Opacity;
 };
 
 /**
@@ -156,25 +155,21 @@ export type ShapeStyleUpdate = EdgeStyleUpdate & { fill?: Fill };
 /**
  * @category Element Style
  */
-export type Stroke = {
+export type Stroke = StyleWithOpacity & {
   /**
    * Possible values are all HTML color names or HEX codes, as well as special keywords such as `swimlane`, `inherit` to use the color code of a related BPMN element or `none` for no color.
    */
   color?: 'inherit' | 'none' | 'swimlane' | string;
-
-  opacity?: Opacity;
 };
 
 /**
  * @category Element Style
  */
-export type Font = {
+export type Font = StyleWithOpacity & {
   /**
    * Possible values are all HTML color names or HEX codes.
    */
   color?: string;
-
-  opacity?: Opacity;
 
   /**
    *  The type of the value is int (in px).
@@ -207,22 +202,20 @@ export type Font = {
 /**
  * @category Element Style
  */
-export type Fill = {
+export type Fill = StyleWithOpacity & {
   /**
    * Possible values are all HTML color names or HEX codes, as well as special keywords such as ‘swimlane‘,
    * ‘inherit’ to use the color code of a related cell.
    */
   color?: string | 'swimlane' | 'inherit';
-
-  opacity?: Opacity;
 };
 
-type CreateArrayWithLengthX<LENGTH extends number, RESULT extends number[] = []> = RESULT['length'] extends LENGTH ? RESULT : CreateArrayWithLengthX<LENGTH, [...RESULT, 1]>;
-type Range<MIN extends number, MAX extends number, RESULT extends number[] = CreateArrayWithLengthX<MIN>> = RESULT['length'] extends MAX
-  ? MIN | MAX
-  : Range<MIN | RESULT['length'], MAX, [...RESULT, 1]>;
-
-/**
- * @category Element Style
- */
-export type Opacity = Range<0, 100>;
+type StyleWithOpacity = {
+  /**
+   * The value must be between 0 and 100.
+   *
+   * If the set value is less than 0, the used value is 0.
+   * If the set value is greater than 100, the used value is 100.
+   */
+  opacity?: number;
+};

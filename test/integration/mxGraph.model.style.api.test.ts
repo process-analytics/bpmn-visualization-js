@@ -22,7 +22,7 @@ import { buildReceivedViewStateStyle } from './matchers/matcher-utils';
 import { buildExpectedShapeCellStyle } from './matchers/toBeShape';
 import { readFileSync } from '../helpers/file-helper';
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '../../src/model/bpmn/internal';
-import type { Fill, Font, Opacity, Stroke, StyleUpdate } from '../../src/component/registry';
+import type { Fill, Font, Stroke, StyleUpdate } from '../../src/component/registry';
 
 describe('mxGraph model - update style', () => {
   describe('Shapes', () => {
@@ -45,7 +45,7 @@ describe('mxGraph model - update style', () => {
         isUnderline: true,
         isStrikeThrough: true,
       };
-      const opacity: Opacity = 84;
+      const opacity = 84;
       const fill: Fill = { color: 'gold', opacity: 55 };
       bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { stroke, font, opacity, fill });
 
@@ -172,6 +172,25 @@ describe('mxGraph model - update style', () => {
         label: 'Pool 1',
       });
     });
+
+    it('Update all opacity properties with wrong value', () => {
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', {
+        stroke: { opacity: -72 },
+        font: { opacity: 140 },
+        opacity: -84,
+        fill: { opacity: 255 },
+      });
+
+      expect('userTask_2_2').toBeUserTask({
+        stroke: { opacity: 0 },
+        font: { opacity: 100 },
+        opacity: 0,
+        fill: { opacity: 100 },
+        // not under test
+        parentId: 'lane_02',
+        label: 'User Task 2.2',
+      });
+    });
   });
 
   describe('Edges', () => {
@@ -194,7 +213,7 @@ describe('mxGraph model - update style', () => {
         isUnderline: true,
         isStrikeThrough: true,
       };
-      const opacity: Opacity = 84;
+      const opacity = 84;
       bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', { stroke, font, opacity });
 
       expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
@@ -288,6 +307,23 @@ describe('mxGraph model - update style', () => {
           isUnderline: false,
           isStrikeThrough: true,
         },
+        // not under test
+        parentId: 'lane_03',
+        verticalAlign: 'bottom',
+      });
+    });
+
+    it('Update all opacity properties with wrong value', () => {
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', {
+        stroke: { opacity: -72 },
+        font: { opacity: 140 },
+        opacity: -84,
+      });
+
+      expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
+        stroke: { opacity: 0 },
+        font: { opacity: 100 },
+        opacity: 0,
         // not under test
         parentId: 'lane_03',
         verticalAlign: 'bottom',

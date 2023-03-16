@@ -23,6 +23,7 @@ import { ensureIsArray } from '../helpers/array-utils';
 import { OverlayConverter } from './overlay/OverlayConverter';
 import { messageFowIconId } from './BpmnRenderer';
 import { ShapeBpmnElementKind } from '../../model/bpmn/internal';
+import { ensureOpacityValue } from '../helpers/validators';
 
 /**
  * @internal
@@ -94,7 +95,7 @@ export default class GraphCellUpdater {
       for (const cell of cells) {
         let cellStyle = cell.getStyle();
         // Only set the style when the key is set. Otherwise, mxGraph removes the related setting from the cellStyle which is equivalent to a reset of the style property
-        styleUpdate.opacity && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_OPACITY, styleUpdate.opacity));
+        styleUpdate.opacity && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_OPACITY, ensureOpacityValue(styleUpdate.opacity)));
         styleUpdate.stroke && (cellStyle = updateStroke(cellStyle, styleUpdate.stroke));
         styleUpdate.font && (cellStyle = updateFont(cellStyle, styleUpdate.font));
 
@@ -110,7 +111,7 @@ export default class GraphCellUpdater {
 
 const updateStroke = (cellStyle: string, stroke: Stroke): string => {
   stroke.color && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKECOLOR, stroke.color));
-  stroke.opacity && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKE_OPACITY, stroke.opacity));
+  stroke.opacity && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKE_OPACITY, ensureOpacityValue(stroke.opacity)));
 
   return cellStyle;
 };
@@ -127,7 +128,7 @@ const updateFont = (cellStyle: string, font: Font): string => {
   font.isStrikeThrough !== undefined &&
     (cellStyle = mxgraph.mxUtils.setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_STRIKETHROUGH, font.isStrikeThrough));
 
-  font.opacity && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_TEXT_OPACITY, font.opacity));
+  font.opacity && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_TEXT_OPACITY, ensureOpacityValue(font.opacity)));
 
   return cellStyle;
 };
@@ -140,7 +141,7 @@ const updateFill = (cellStyle: string, fill: Fill): string => {
     }
   }
 
-  fill.opacity && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILL_OPACITY, fill.opacity));
+  fill.opacity && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILL_OPACITY, ensureOpacityValue(fill.opacity)));
 
   return cellStyle;
 };
