@@ -25,16 +25,20 @@ import CustomMatcherResult = jest.CustomMatcherResult;
 
 // Used for received view state, computed resolved style and expected style.
 export interface BpmnCellStyle extends StyleMap {
+  opacity: number;
   verticalAlign?: string;
   align?: string;
   strokeWidth?: number;
   strokeColor: string;
+  strokeOpacity: number;
   fillColor: string;
+  fillOpacity?: number;
   swimlaneFillColor?: string;
   fontColor: string;
   fontFamily: string;
   fontSize: number;
   fontStyle: number;
+  fontOpacity: number;
   startArrow?: string;
   endArrow?: string;
   endSize?: number;
@@ -127,12 +131,15 @@ export function buildExpectedCellStyleWithCommonAttributes(expectedModelElt: Exp
   const font = expectedModelElt.font;
 
   return {
+    opacity: expectedModelElt.opacity,
     strokeColor: expectedModelElt.stroke?.color ?? 'Black',
+    strokeOpacity: expectedModelElt.stroke?.opacity,
     fillColor: 'White',
     fontFamily: font?.family ?? 'Arial, Helvetica, sans-serif',
     fontSize: font?.size ?? 11,
     fontColor: font?.color ?? 'Black',
     fontStyle: getFontStyleValue(font),
+    fontOpacity: expectedModelElt.font?.opacity,
   };
 }
 
@@ -163,15 +170,18 @@ function buildReceivedResolvedModelCellStyle(cell: mxCell): BpmnCellStyle {
 
 function toBpmnStyle(rawStyle: StyleMap, isEdge: boolean): BpmnCellStyle {
   const style: BpmnCellStyle = {
+    opacity: rawStyle.opacity,
     verticalAlign: rawStyle.verticalAlign,
     align: rawStyle.align,
     strokeWidth: rawStyle.strokeWidth,
     strokeColor: rawStyle.strokeColor,
+    strokeOpacity: rawStyle.strokeOpacity,
     fillColor: rawStyle.fillColor,
     fontFamily: rawStyle.fontFamily,
     fontSize: rawStyle.fontSize,
     fontColor: rawStyle.fontColor,
     fontStyle: rawStyle.fontStyle,
+    fontOpacity: rawStyle.textOpacity,
   };
 
   if (isEdge) {
@@ -182,6 +192,7 @@ function toBpmnStyle(rawStyle: StyleMap, isEdge: boolean): BpmnCellStyle {
     style.shape = rawStyle.shape;
     style.horizontal = rawStyle.horizontal;
     style.swimlaneFillColor = rawStyle.swimlaneFillColor;
+    style.fillOpacity = rawStyle.fillOpacity;
   }
   return style;
 }

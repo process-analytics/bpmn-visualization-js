@@ -238,10 +238,13 @@ function configureStyleFromParameters(parameters: URLSearchParams): void {
   // Collect style properties to update them later with the bpmn-visualization API
   // The implementation will be generalized when more properties will be supported (in particular, the query parameter name)
   // For example, we could extract all query params starting with style.api, then rebuild the StyleUpdate from the extracted params
-  style = {
-    stroke: { color: parameters.get('style.api.stroke.color') },
-    fill: { color: parameters.get('style.api.fill.color') },
-  };
+  style = { stroke: {}, font: {}, fill: {} };
+
+  parameters.get('style.api.stroke.color') && (style.stroke.color = parameters.get('style.api.stroke.color'));
+  parameters.get('style.api.font.color') && (style.font.color = parameters.get('style.api.font.color'));
+  parameters.get('style.api.font.opacity') && (style.font.opacity = Number(parameters.get('style.api.font.opacity')));
+  parameters.get('style.api.fill.color') && (style.fill.color = parameters.get('style.api.fill.color'));
+  parameters.get('style.api.fill.opacity') && (style.fill.opacity = Number(parameters.get('style.api.fill.opacity')));
 }
 
 function configureBpmnElementIdToCollapseFromParameters(parameters: URLSearchParams): void {

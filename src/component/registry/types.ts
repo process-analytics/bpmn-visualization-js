@@ -142,7 +142,7 @@ export type StyleUpdate = EdgeStyleUpdate | ShapeStyleUpdate;
 /**
  * @category Element Style
  */
-export type EdgeStyleUpdate = {
+export type EdgeStyleUpdate = StyleWithOpacity & {
   stroke?: Stroke;
   font?: Font;
 };
@@ -155,24 +155,21 @@ export type ShapeStyleUpdate = EdgeStyleUpdate & { fill?: Fill };
 /**
  * @category Element Style
  */
-export type Stroke = {
+export type Stroke = StyleWithOpacity & {
   /**
    * Possible values are all HTML color names or HEX codes, as well as special keywords such as `swimlane`, `inherit` to use the color code of a related BPMN element or `none` for no color.
    */
-  color: 'inherit' | 'none' | 'swimlane' | string;
+  color?: 'inherit' | 'none' | 'swimlane' | string;
 };
 
 /**
  * @category Element Style
  */
-export type Font = {
+export type Font = StyleWithOpacity & {
   /**
    * Possible values are all HTML color names or HEX codes.
    */
   color?: string;
-
-  // TODO To uncomment when we implement the Opacity in global/fill/font/stroke
-  //opacity?: Opacity;
 
   /**
    *  The type of the value is int (in px).
@@ -205,13 +202,20 @@ export type Font = {
 /**
  * @category Element Style
  */
-export type Fill = {
+export type Fill = StyleWithOpacity & {
   /**
    * Possible values are all HTML color names or HEX codes, as well as special keywords such as ‘swimlane‘,
    * ‘inherit’ to use the color code of a related cell.
    */
-  color: string | 'swimlane' | 'inherit';
+  color?: string | 'swimlane' | 'inherit';
+};
 
-  // TODO To uncomment when we implement the Opacity in global/fill/font/stroke
-  //opacity?: Opacity;
+type StyleWithOpacity = {
+  /**
+   * The value must be between 0 and 100.
+   *
+   * If the set value is less than 0, the used value is 0.
+   * If the set value is greater than 100, the used value is 100.
+   */
+  opacity?: number;
 };

@@ -131,6 +131,7 @@ export interface ExpectedFont {
   isItalic?: boolean;
   isUnderline?: boolean;
   isStrikeThrough?: boolean;
+  opacity?: number;
 }
 
 type ExpectedModelElement = {
@@ -141,6 +142,7 @@ type ExpectedModelElement = {
   parentId?: string;
   stroke?: Stroke;
   verticalAlign?: string;
+  opacity?: number;
 };
 
 export interface ExpectedShapeModelElement extends ExpectedModelElement {

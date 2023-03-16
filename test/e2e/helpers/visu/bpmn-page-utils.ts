@@ -208,11 +208,26 @@ export class PageTester {
     styleOptions?.bpmnContainer?.useAlternativeBackgroundColor &&
       (url += `&style.container.alternative.background.color=${styleOptions.bpmnContainer.useAlternativeBackgroundColor}`);
     styleOptions?.theme && (url += `&style.theme=${styleOptions.theme}`);
+
     // Manage all styleUpdate properties (the implementation will be generalized when more properties will be supported)
     const styleUpdate = styleOptions?.styleUpdate;
     if (styleUpdate) {
-      styleUpdate.stroke?.color && (url += `&style.api.stroke.color=${styleUpdate.stroke.color}`);
-      'fill' in styleUpdate && (<ShapeStyleUpdate>styleUpdate).fill?.color && (url += `&style.api.fill.color=${(<ShapeStyleUpdate>styleUpdate).fill.color}`);
+      const stroke = styleUpdate.stroke;
+      if (stroke) {
+        stroke.color && (url += `&style.api.stroke.color=${stroke.color}`);
+      }
+
+      const font = styleUpdate.font;
+      if (font) {
+        font.color && (url += `&style.api.font.color=${font.color}`);
+        font.opacity && (url += `&style.api.font.opacity=${font.opacity}`);
+      }
+
+      if ('fill' in styleUpdate) {
+        const fill = (<ShapeStyleUpdate>styleUpdate).fill;
+        fill.color && (url += `&style.api.fill.color=${fill.color}`);
+        fill.opacity && (url += `&style.api.fill.opacity=${fill.opacity}`);
+      }
     }
 
     // other options

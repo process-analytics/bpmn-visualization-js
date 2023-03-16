@@ -43,3 +43,13 @@ export function ensureValidZoomConfiguration(config: ZoomConfiguration): ZoomCon
   validatedConfig.throttleDelay = ensureInRange(validatedConfig.throttleDelay, 0, 100, 50);
   return validatedConfig;
 }
+
+/**
+ * Make sure the opacity parameter is in range
+ *
+ * @param opacity the property of {@link StyleWithOpacity} to make valid
+ * @internal
+ */
+export function ensureOpacityValue(opacity: number): number {
+  return ensureInRange(opacity, 0, 100, 100);
+}
