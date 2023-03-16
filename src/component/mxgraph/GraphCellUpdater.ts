@@ -23,7 +23,7 @@ import { ensureIsArray } from '../helpers/array-utils';
 import { OverlayConverter } from './overlay/OverlayConverter';
 import { messageFowIconId } from './BpmnRenderer';
 import { ShapeBpmnElementKind } from '../../model/bpmn/internal';
-import { ensureOpacityValue } from '../helpers/validators';
+import { ensureOpacityValue, ensureStrokeWidthValue } from '../helpers/validators';
 
 /**
  * @internal
@@ -112,6 +112,7 @@ export default class GraphCellUpdater {
 const updateStroke = (cellStyle: string, stroke: Stroke): string => {
   stroke.color && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKECOLOR, stroke.color));
   stroke.opacity && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKE_OPACITY, ensureOpacityValue(stroke.opacity)));
+  stroke.width && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKEWIDTH, ensureStrokeWidthValue(stroke.width)));
 
   return cellStyle;
 };
