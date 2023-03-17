@@ -118,6 +118,10 @@ const updateStroke = (cellStyle: string, stroke: Stroke): string => {
   return cellStyle;
 };
 
+const setStyle = (cellStyle: string, key: string, value: string | undefined): string => {
+  return value == undefined ? cellStyle : mxgraph.mxUtils.setStyle(cellStyle, key, value);
+};
+
 const setStyleFlag = (cellStyle: string, key: string, flag: number, value: boolean | undefined): string => {
   return value == undefined ? cellStyle : mxgraph.mxUtils.setStyleFlag(cellStyle, key, flag, value);
 };
@@ -125,7 +129,7 @@ const setStyleFlag = (cellStyle: string, key: string, flag: number, value: boole
 const updateFont = (cellStyle: string, font: Font): string => {
   font.color && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTCOLOR, convertDefaultValue(font.color)));
   font.size && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTSIZE, font.size));
-  font.family && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTFAMILY, font.family));
+  cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTFAMILY, font.family);
 
   cellStyle = setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_BOLD, font.isBold);
   cellStyle = setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_ITALIC, font.isItalic);
