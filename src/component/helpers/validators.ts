@@ -50,8 +50,8 @@ export function ensureValidZoomConfiguration(config: ZoomConfiguration): ZoomCon
  * @param opacity the property of {@link StyleWithOpacity} to make valid
  * @internal
  */
-export function ensureOpacityValue(opacity: number): number {
-  return ensureInRange(opacity, 0, 100, 100);
+export function ensureOpacityValue(opacity: number | 'default'): number | undefined {
+  return opacity == 'default' ? undefined : ensureInRange(opacity, 0, 100, 100);
 }
 
 /**
@@ -62,6 +62,6 @@ export function ensureOpacityValue(opacity: number): number {
  *
  * @internal
  */
-export function ensureStrokeWidthValue(strokeWidth: number): number {
-  return ensureInRange(strokeWidth, 1, 50, 1);
+export function ensureStrokeWidthValue(strokeWidth: number | 'default'): number | undefined {
+  return strokeWidth == 'default' ? undefined : ensureInRange(strokeWidth, 1, 50, 1);
 }

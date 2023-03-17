@@ -94,7 +94,6 @@ export default class GraphCellUpdater {
     this.graph.batchUpdate(() => {
       for (const cell of cells) {
         let cellStyle = cell.getStyle();
-        // Only set the style when the key is set. Otherwise, mxGraph removes the related setting from the cellStyle which is equivalent to a reset of the style property
         styleUpdate.opacity && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_OPACITY, ensureOpacityValue(styleUpdate.opacity)));
         styleUpdate.stroke && (cellStyle = updateStroke(cellStyle, styleUpdate.stroke));
         styleUpdate.font && (cellStyle = updateFont(cellStyle, styleUpdate.font));
@@ -109,8 +108,10 @@ export default class GraphCellUpdater {
   }
 }
 
+const convertDefaultValue = (value: string): string | undefined => (value == 'default' ? undefined : value);
+
 const updateStroke = (cellStyle: string, stroke: Stroke): string => {
-  stroke.color && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKECOLOR, stroke.color));
+  stroke.color && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKECOLOR, convertDefaultValue(stroke.color)));
   stroke.opacity && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKE_OPACITY, ensureOpacityValue(stroke.opacity)));
   stroke.width && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKEWIDTH, ensureStrokeWidthValue(stroke.width)));
 
@@ -118,7 +119,7 @@ const updateStroke = (cellStyle: string, stroke: Stroke): string => {
 };
 
 const updateFont = (cellStyle: string, font: Font): string => {
-  font.color && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTCOLOR, font.color));
+  font.color && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTCOLOR, convertDefaultValue(font.color)));
   font.size && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTSIZE, font.size));
   font.family && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTFAMILY, font.family));
 
@@ -136,9 +137,9 @@ const updateFont = (cellStyle: string, font: Font): string => {
 
 const updateFill = (cellStyle: string, fill: Fill): string => {
   if (fill.color) {
-    cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILLCOLOR, fill.color);
+    cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILLCOLOR, convertDefaultValue(fill.color));
     if (cellStyle.includes(ShapeBpmnElementKind.POOL) || cellStyle.includes(ShapeBpmnElementKind.LANE)) {
-      cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_SWIMLANE_FILLCOLOR, fill.color);
+      cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_SWIMLANE_FILLCOLOR, convertDefaultValue(fill.color));
     }
   }
 

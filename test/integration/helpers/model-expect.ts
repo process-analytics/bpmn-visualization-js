@@ -15,15 +15,16 @@ limitations under the License.
 */
 
 import type {
+  Fill,
   FlowKind,
   MessageVisibleKind,
+  Opacity,
   SequenceFlowKind,
   ShapeBpmnEventBasedGatewayKind,
   ShapeBpmnEventDefinitionKind,
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
   Stroke,
-  Fill,
 } from '../../../src/bpmn-visualization';
 import { BpmnVisualization, ShapeBpmnElementKind } from '../../../src/bpmn-visualization';
 import {
@@ -131,7 +132,7 @@ export interface ExpectedFont {
   isItalic?: boolean;
   isUnderline?: boolean;
   isStrikeThrough?: boolean;
-  opacity?: number;
+  opacity?: Opacity;
 }
 
 type ExpectedModelElement = {

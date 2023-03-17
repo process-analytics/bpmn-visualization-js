@@ -292,7 +292,7 @@ export class BpmnElementsRegistry {
    * @param bpmnElementIds The BPMN id of the element(s) where to remove the CSS classes
    * @param styleUpdate The style properties to update.
    *
-   * @since 0.32.0
+   * @since 0.33.0
    */
   updateStyle(bpmnElementIds: string | string[], styleUpdate: StyleUpdate): void {
     this.graphCellUpdater.updateStyle(bpmnElementIds, styleUpdate);
