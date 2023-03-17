@@ -62,6 +62,6 @@ export function ensureOpacityValue(opacity: number | 'default'): number | undefi
  *
  * @internal
  */
-export function ensureStrokeWidthValue(strokeWidth: number): number {
-  return ensureInRange(strokeWidth, 1, 50, 1);
+export function ensureStrokeWidthValue(strokeWidth: number | 'default'): number | undefined {
+  return strokeWidth == 'default' ? undefined : ensureInRange(strokeWidth, 1, 50, 1);
 }

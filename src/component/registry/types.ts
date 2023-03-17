@@ -177,7 +177,7 @@ export type Stroke = StyleWithOpacity & {
    *
    * To hide the stroke, set the `color` property to `'none'`.
    */
-  width?: number;
+  width?: 'default' | number;
 };
 
 /**

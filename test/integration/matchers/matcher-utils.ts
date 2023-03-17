@@ -29,7 +29,7 @@ export interface BpmnCellStyle extends StyleMap {
   opacity: Opacity;
   verticalAlign?: string;
   align?: string;
-  strokeWidth?: number;
+  strokeWidth?: 'default' | number;
   strokeColor: string;
   strokeOpacity: Opacity;
   fillColor: string;

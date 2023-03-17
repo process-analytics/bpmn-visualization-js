@@ -72,6 +72,7 @@ describe('validate stroke width', () => {
     ${12}        | ${12}
     ${-50}       | ${1}
     ${67}        | ${50}
+    ${'default'} | ${undefined}
   `('opacity: $input', ({ input, expected }) => {
     expect(ensureStrokeWidthValue(input)).toEqual(expected);
   });

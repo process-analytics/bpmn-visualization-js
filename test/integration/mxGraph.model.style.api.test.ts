@@ -215,8 +215,7 @@ describe('mxGraph model - update style', () => {
         const stroke: Stroke = {
           color: 'red',
           opacity: 55,
-          // TODO width
-          // width: 4
+          width: 4,
         };
         bpmnVisualization.bpmnElementsRegistry.updateStyle('serviceTask_1_2', {
           fill,
@@ -250,6 +249,7 @@ describe('mxGraph model - update style', () => {
           stroke: {
             color: 'default',
             opacity: 'default',
+            width: 'default',
           },
         });
 
@@ -481,8 +481,7 @@ describe('mxGraph model - update style', () => {
       const stroke: Stroke = {
         color: 'brown',
         opacity: 95,
-        // TODO width
-        // width: 6
+        width: 6,
       };
       bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', {
         font,
@@ -510,6 +509,7 @@ describe('mxGraph model - update style', () => {
         stroke: {
           color: 'default',
           opacity: 'default',
+          width: 'default',
         },
       });
 
