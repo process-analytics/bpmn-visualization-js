@@ -66,11 +66,11 @@ describe('validate opacity', () => {
 
 describe('validate stroke width', () => {
   it.each`
-    input                      | expected
-    ${undefined}               | ${1}
-    ${12}                      | ${12}
-    ${-50}                     | ${1}
-    ${Number.MAX_SAFE_INTEGER} | ${Number.MAX_SAFE_INTEGER}
+    input        | expected
+    ${undefined} | ${1}
+    ${12}        | ${12}
+    ${-50}       | ${1}
+    ${67}        | ${50}
   `('opacity: $input', ({ input, expected }) => {
     expect(ensureStrokeWidthValue(input)).toEqual(expected);
   });

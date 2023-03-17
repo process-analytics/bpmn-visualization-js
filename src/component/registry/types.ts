@@ -166,10 +166,14 @@ export type Stroke = StyleWithOpacity & {
   color?: 'inherit' | 'none' | 'swimlane' | string;
 
   /**
-   * This defines the stroke width in pixels.
-   * The possible range is any non-negative value larger or equal to 1.
+   * Defines the stroke width in pixels.
    *
-   * To hide a stroke use strokeColor 'none'.
+   * The value must be between 1 and 50.
+   *
+   * If the set value is less than 1, the used value is 1.
+   * If the set value is greater than 50, the used value is 50.
+   *
+   * To hide the stroke, set the `color` property to `'none'`.
    */
   width?: number;
 };

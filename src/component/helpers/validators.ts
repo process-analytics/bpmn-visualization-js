@@ -55,7 +55,7 @@ export function ensureOpacityValue(opacity: number): number {
 }
 
 /**
- * Validates the provided stroke width value to ensure it is any non-negative value larger or equal to 1, and returns the default value (1) if the value is not provided.
+ * Validates the provided stroke width value to ensure it is between 1 and 50, and returns the default value (1) if the value is not provided.
  *
  * @param strokeWidth - The stroke width value to validate.
  * @returns The validated stroke width value.
@@ -63,5 +63,5 @@ export function ensureOpacityValue(opacity: number): number {
  * @internal
  */
 export function ensureStrokeWidthValue(strokeWidth: number): number {
-  return ensureInRange(strokeWidth, 1, Number.MAX_SAFE_INTEGER, 1);
+  return ensureInRange(strokeWidth, 1, 50, 1);
 }
