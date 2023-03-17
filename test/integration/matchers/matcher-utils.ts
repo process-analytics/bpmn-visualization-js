@@ -17,28 +17,29 @@ limitations under the License.
 import type { ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement } from '../helpers/model-expect';
 import { bpmnVisualization } from '../helpers/model-expect';
 import type { mxCell, mxGeometry, StyleMap } from 'mxgraph';
+import type { Opacity } from '../../../src/component/registry';
 import type { MxGraphCustomOverlay, MxGraphCustomOverlayStyle } from '../../../src/component/mxgraph/overlay/custom-overlay';
-import { Font } from '../../../src/model/bpmn/internal/Label';
 import { getFontStyleValue as computeFontStyleValue } from '../../../src/component/mxgraph/renderer/StyleComputer';
+import { Font } from '../../../src/model/bpmn/internal/Label';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 
 // Used for received view state, computed resolved style and expected style.
 export interface BpmnCellStyle extends StyleMap {
-  opacity: number;
+  opacity: Opacity;
   verticalAlign?: string;
   align?: string;
   strokeWidth?: number;
   strokeColor: string;
-  strokeOpacity: number;
+  strokeOpacity: Opacity;
   fillColor: string;
-  fillOpacity?: number;
+  fillOpacity?: Opacity;
   swimlaneFillColor?: string;
   fontColor: string;
   fontFamily: string;
   fontSize: number;
   fontStyle: number;
-  fontOpacity: number;
+  fontOpacity: Opacity;
   startArrow?: string;
   endArrow?: string;
   endSize?: number;

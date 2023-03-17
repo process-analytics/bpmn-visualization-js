@@ -161,9 +161,11 @@ export type ShapeStyleUpdate = EdgeStyleUpdate & { fill?: Fill };
  */
 export type Stroke = StyleWithOpacity & {
   /**
-   * Possible values are all HTML color names or HEX codes, as well as special keywords such as `swimlane`, `inherit` to use the color code of a related BPMN element or `none` for no color.
+   * Possible values are all HTML color names or HEX codes, as well as special keywords such as:
+   * - `default` to use the color defined in the BPMN element default style
+   * - `none` for no color
    */
-  color?: 'inherit' | 'none' | 'swimlane' | string;
+  color?: 'default' | 'none' | string;
 
   /**
    * Defines the stroke width in pixels.
@@ -179,13 +181,19 @@ export type Stroke = StyleWithOpacity & {
 };
 
 /**
+ * Note about properties that can be reset to default values.
+ *
+ * Except for color, all style properties can be set in the BPMN diagram via LabelStyle and can then override the default values. Currently, there is no way to know if
+ * they are overridden. So it is not possible to reset each property with the "Update Style" API.
+ *
  * @category Element Style
  */
 export type Font = StyleWithOpacity & {
   /**
-   * Possible values are all HTML color names or HEX codes.
+   * Possible values are all HTML color names or HEX codes, as well as special keywords such as:
+   * - `default` to use the color defined in the BPMN element default style
    */
-  color?: string;
+  color?: 'default' | string;
 
   /**
    *  The type of the value is int (in px).
@@ -220,18 +228,25 @@ export type Font = StyleWithOpacity & {
  */
 export type Fill = StyleWithOpacity & {
   /**
-   * Possible values are all HTML color names or HEX codes, as well as special keywords such as ‘swimlane‘,
-   * ‘inherit’ to use the color code of a related cell.
+   * Possible values are all HTML color names or HEX codes, as well as special keywords such as:
+   * - `default` to use the color defined in the BPMN element default style
+   * - `none` for no color
    */
-  color?: string | 'swimlane' | 'inherit';
+  color?: 'default' | 'none' | string;
 };
 
 type StyleWithOpacity = {
   /**
-   * The value must be between 0 and 100.
+   * The value must be between 0 and 100:
+   * - If the set value is less than 0, the used value is 0.
+   * - If the set value is greater than 100, the used value is 100.
    *
-   * If the set value is less than 0, the used value is 0.
-   * If the set value is greater than 100, the used value is 100.
+   * The special `default` value is to use the color defined in the BPMN element default style
    */
-  opacity?: number;
+  opacity?: Opacity;
 };
+
+/**
+ *  @category Element Style
+ */
+export type Opacity = 'default' | number;

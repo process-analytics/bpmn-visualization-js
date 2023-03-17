@@ -59,6 +59,7 @@ describe('validate opacity', () => {
     ${12}        | ${12}
     ${172}       | ${100}
     ${-50}       | ${0}
+    ${'default'} | ${undefined}
   `('opacity: $input', ({ input, expected }) => {
     expect(ensureOpacityValue(input)).toEqual(expected);
   });

@@ -23,6 +23,7 @@ import { buildExpectedShapeCellStyle } from './matchers/toBeShape';
 import { readFileSync } from '../helpers/file-helper';
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '../../src/model/bpmn/internal';
 import type { Fill, Font, Stroke, StyleUpdate } from '../../src/component/registry';
+import type { EdgeStyleUpdate } from '../../build/types/component/registry';
 
 describe('mxGraph model - update style', () => {
   describe('Shapes', () => {
@@ -191,6 +192,140 @@ describe('mxGraph model - update style', () => {
         label: 'User Task 2.2',
       });
     });
+
+    describe('Update the properties of a single element to restore its default values', () => {
+      // not lane or pool
+      it('Common shape', () => {
+        // Check that the element uses default values
+        expect('serviceTask_1_2').toBeServiceTask({
+          // not under test
+          parentId: 'lane_01',
+          label: 'Service Task 1.2',
+        });
+
+        const font: Font = {
+          // Other font properties may be set in BPMN diagram LabelStyle, so only some properties can be reset to default
+          color: 'pink',
+          opacity: 40,
+        };
+        const fill: Fill = {
+          color: 'yellow',
+          opacity: 48,
+        };
+        const opacity = 90;
+        const stroke: Stroke = {
+          color: 'red',
+          opacity: 55,
+          // TODO width
+          // width: 4
+        };
+        bpmnVisualization.bpmnElementsRegistry.updateStyle('serviceTask_1_2', {
+          fill,
+          font,
+          opacity,
+          stroke,
+        });
+
+        // Check that the style has been updated
+        expect('serviceTask_1_2').toBeServiceTask({
+          fill,
+          font,
+          opacity,
+          stroke,
+          // not under test
+          parentId: 'lane_01',
+          label: 'Service Task 1.2',
+        });
+
+        // Reset the style by passing special values
+        bpmnVisualization.bpmnElementsRegistry.updateStyle('serviceTask_1_2', {
+          fill: {
+            color: 'default',
+            opacity: 'default',
+          },
+          font: {
+            color: 'default',
+            opacity: 'default',
+          },
+          opacity: 'default',
+          stroke: {
+            color: 'default',
+            opacity: 'default',
+          },
+        });
+
+        // The properties should have been reset to use the default values
+        expect('serviceTask_1_2').toBeServiceTask({
+          // not under test
+          parentId: 'lane_01',
+          label: 'Service Task 1.2',
+        });
+      });
+
+      // For container (lane or pool), mainly check the fill property as there is a special setting in such elements
+      it('Lane', () => {
+        // Check that the element uses default values
+        expect('lane_03').toBeLane({
+          // not under test
+          parentId: 'Participant_1',
+          label: 'Lane 3',
+        });
+
+        const fill: Fill = { color: 'blue', opacity: 66 };
+        bpmnVisualization.bpmnElementsRegistry.updateStyle('lane_03', { fill });
+        // Check that the style has been updated
+        expect('lane_03').toBeLane({
+          fill,
+          // not under test
+          parentId: 'Participant_1',
+          label: 'Lane 3',
+        });
+
+        // Reset the style by passing special values
+        bpmnVisualization.bpmnElementsRegistry.updateStyle('lane_03', {
+          fill: {
+            color: 'default',
+            opacity: 'default',
+          },
+        });
+        // The properties should have been reset to use the default values
+        expect('lane_03').toBeLane({
+          // not under test
+          parentId: 'Participant_1',
+          label: 'Lane 3',
+        });
+      });
+
+      it('Pool', () => {
+        // Check that the element uses default values
+        expect('Participant_1').toBePool({
+          // not under test
+          label: 'Pool 1',
+        });
+
+        const fill: Fill = { color: 'orange', opacity: 90 };
+        bpmnVisualization.bpmnElementsRegistry.updateStyle('Participant_1', { fill });
+        // Check that the style has been updated
+        expect('Participant_1').toBePool({
+          fill,
+          // not under test
+          label: 'Pool 1',
+        });
+
+        // Reset the style by passing special values
+        bpmnVisualization.bpmnElementsRegistry.updateStyle('Participant_1', {
+          fill: {
+            color: 'default',
+            opacity: 'default',
+          },
+        });
+        // The properties should have been reset to use the default values
+        expect('Participant_1').toBePool({
+          // not under test
+          label: 'Pool 1',
+        });
+      });
+    });
   });
 
   describe('Edges', () => {
@@ -324,6 +459,63 @@ describe('mxGraph model - update style', () => {
         stroke: { opacity: 0 },
         font: { opacity: 100 },
         opacity: 0,
+        // not under test
+        parentId: 'lane_03',
+        verticalAlign: 'bottom',
+      });
+    });
+
+    it('Update the properties of a single edge to restore its default values', () => {
+      // Check that the element uses default values
+      expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
+        // not under test
+        parentId: 'lane_03',
+        verticalAlign: 'bottom',
+      });
+
+      // Other font properties may be set in BPMN diagram LabelStyle, so only some properties can be reset to default
+      const font: Font = {
+        color: 'darkBlue',
+        opacity: 60,
+      };
+      const opacity = 80;
+      const stroke: Stroke = {
+        color: 'brown',
+        opacity: 95,
+        // TODO width
+        // width: 6
+      };
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', {
+        font,
+        opacity,
+        stroke,
+      });
+
+      // Check that the style has been updated
+      expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
+        stroke,
+        font,
+        opacity,
+        // not under test
+        parentId: 'lane_03',
+        verticalAlign: 'bottom',
+      });
+
+      // Reset the style by passing special values
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', <EdgeStyleUpdate>{
+        font: {
+          color: 'default',
+          opacity: 'default',
+        },
+        opacity: 'default',
+        stroke: {
+          color: 'default',
+          opacity: 'default',
+        },
+      });
+
+      // The properties should have been reset to use the default values
+      expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
         // not under test
         parentId: 'lane_03',
         verticalAlign: 'bottom',
