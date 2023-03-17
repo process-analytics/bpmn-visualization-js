@@ -53,3 +53,15 @@ export function ensureValidZoomConfiguration(config: ZoomConfiguration): ZoomCon
 export function ensureOpacityValue(opacity: number): number {
   return ensureInRange(opacity, 0, 100, 100);
 }
+
+/**
+ * Validates the provided stroke width value to ensure it is between 1 and 50, and returns the default value (1) if the value is not provided.
+ *
+ * @param strokeWidth - The stroke width value to validate.
+ * @returns The validated stroke width value.
+ *
+ * @internal
+ */
+export function ensureStrokeWidthValue(strokeWidth: number): number {
+  return ensureInRange(strokeWidth, 1, 50, 1);
+}

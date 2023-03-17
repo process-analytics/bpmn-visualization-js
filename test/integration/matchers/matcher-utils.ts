@@ -134,6 +134,7 @@ export function buildExpectedCellStyleWithCommonAttributes(expectedModelElt: Exp
     opacity: expectedModelElt.opacity,
     strokeColor: expectedModelElt.stroke?.color ?? 'Black',
     strokeOpacity: expectedModelElt.stroke?.opacity,
+    strokeWidth: expectedModelElt.stroke?.width,
     fillColor: 'White',
     fontFamily: font?.family ?? 'Arial, Helvetica, sans-serif',
     fontSize: font?.size ?? 11,
