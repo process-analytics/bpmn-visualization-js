@@ -22,8 +22,7 @@ import { buildReceivedViewStateStyle } from './matchers/matcher-utils';
 import { buildExpectedShapeCellStyle } from './matchers/toBeShape';
 import { readFileSync } from '../helpers/file-helper';
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '../../src/model/bpmn/internal';
-import type { Fill, Font, Stroke, StyleUpdate } from '../../src/component/registry';
-import type { EdgeStyleUpdate } from '../../build/types/component/registry';
+import type { EdgeStyleUpdate, Fill, Font, Stroke, StyleUpdate } from '../../src/component/registry';
 
 describe('mxGraph model - update style', () => {
   describe('Shapes', () => {
