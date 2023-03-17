@@ -118,17 +118,19 @@ const updateStroke = (cellStyle: string, stroke: Stroke): string => {
   return cellStyle;
 };
 
+const setStyleFlag = (cellStyle: string, key: string, flag: number, value: boolean | undefined): string => {
+  return value == undefined ? cellStyle : mxgraph.mxUtils.setStyleFlag(cellStyle, key, flag, value);
+};
+
 const updateFont = (cellStyle: string, font: Font): string => {
   font.color && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTCOLOR, convertDefaultValue(font.color)));
   font.size && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTSIZE, font.size));
   font.family && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTFAMILY, font.family));
 
-  font.isBold !== undefined && (cellStyle = mxgraph.mxUtils.setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_BOLD, font.isBold));
-  font.isItalic !== undefined && (cellStyle = mxgraph.mxUtils.setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_ITALIC, font.isItalic));
-  font.isUnderline !== undefined &&
-    (cellStyle = mxgraph.mxUtils.setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_UNDERLINE, font.isUnderline));
-  font.isStrikeThrough !== undefined &&
-    (cellStyle = mxgraph.mxUtils.setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_STRIKETHROUGH, font.isStrikeThrough));
+  cellStyle = setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_BOLD, font.isBold);
+  cellStyle = setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_ITALIC, font.isItalic);
+  cellStyle = setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_UNDERLINE, font.isUnderline);
+  cellStyle = setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_STRIKETHROUGH, font.isStrikeThrough);
 
   font.opacity && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_TEXT_OPACITY, ensureOpacityValue(font.opacity)));
 
