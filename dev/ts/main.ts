@@ -59,10 +59,13 @@ export function getCurrentTheme(): string | undefined {
 
 export function switchTheme(theme: string): void {
   log('Switching theme from %s to %s', currentTheme, theme);
-  const knownTheme = bpmnVisualization.configureTheme(theme);
-  if (knownTheme) {
+  const isKnownTheme = bpmnVisualization.configureTheme(theme);
+  if (isKnownTheme) {
     bpmnVisualization.graph.refresh();
     log('Theme switch done');
+    currentTheme = theme;
+  } else {
+    log('Unknown theme, do nothing');
   }
 }
 
