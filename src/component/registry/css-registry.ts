@@ -20,14 +20,14 @@ import { ensureIsArray } from '../helpers/array-utils';
  * @internal
  */
 export class CssRegistry {
-  private classNamesByBPMNId = new Map<string, Set<string>>();
+  private classNamesByBpmnId = new Map<string, Set<string>>();
 
   /**
    * Clear all classes that were registered.
    */
-  clear(): void {
-    this.classNamesByBPMNId.clear();
-  }
+  clear = (): void => {
+    this.classNamesByBpmnId.clear();
+  };
 
   /**
    * Get the CSS class names for a specific HTML element
@@ -36,7 +36,7 @@ export class CssRegistry {
    * @return the registered CSS class names
    */
   getClassNames(bpmnElementId: string): string[] {
-    return Array.from(this.classNamesByBPMNId.get(bpmnElementId) ?? []);
+    return Array.from(this.classNamesByBpmnId.get(bpmnElementId) ?? []);
   }
 
   /**
@@ -71,10 +71,10 @@ export class CssRegistry {
   }
 
   private getOrInitializeClassNames(bpmnElementId: string): Set<string> {
-    let classNames = this.classNamesByBPMNId.get(bpmnElementId);
+    let classNames = this.classNamesByBpmnId.get(bpmnElementId);
     if (classNames == null) {
       classNames = new Set();
-      this.classNamesByBPMNId.set(bpmnElementId, classNames);
+      this.classNamesByBpmnId.set(bpmnElementId, classNames);
     }
     return classNames;
   }

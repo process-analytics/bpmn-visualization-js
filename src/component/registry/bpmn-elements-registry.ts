@@ -61,7 +61,7 @@ export class BpmnElementsRegistry {
     private cssRegistry: CssRegistry,
     private graphCellUpdater: GraphCellUpdater,
   ) {
-    this.bpmnModelRegistry.registerOnLoadCallback(this.cssRegistry.clear.bind(this.cssRegistry));
+    this.bpmnModelRegistry.registerOnLoadCallback(this.cssRegistry.clear);
   }
 
   /**
