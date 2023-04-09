@@ -17,10 +17,13 @@ limitations under the License.
 import type ShapeBpmnElement from './ShapeBpmnElement';
 import type Bounds from '../Bounds';
 import type Label from '../Label';
+import type { ShapeExtensions } from '../types';
 
 /**
  * @internal
  */
 export default class Shape {
+  readonly extensions: ShapeExtensions = {};
+
   constructor(readonly id: string, readonly bpmnElement: ShapeBpmnElement, readonly bounds?: Bounds, readonly label?: Label, readonly isHorizontal?: boolean) {}
 }

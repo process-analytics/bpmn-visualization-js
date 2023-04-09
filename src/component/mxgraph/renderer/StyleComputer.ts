@@ -39,12 +39,12 @@ export default class StyleComputer {
   computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): string {
     const styles: string[] = [bpmnCell.bpmnElement.kind as string];
 
-    let shapeStyleValues;
+    let mainStyleValues;
     if (bpmnCell instanceof Shape) {
-      shapeStyleValues = StyleComputer.computeShapeStyle(bpmnCell);
+      mainStyleValues = StyleComputer.computeShapeStyleValues(bpmnCell);
     } else {
-      styles.push(...StyleComputer.computeEdgeStyle(bpmnCell));
-      shapeStyleValues = new Map<string, string | number>();
+      styles.push(...StyleComputer.computeEdgeBaseStyles(bpmnCell));
+      mainStyleValues = StyleComputer.computeEdgeStyleValues(bpmnCell);
     }
 
     const fontStyleValues = StyleComputer.computeFontStyleValues(bpmnCell);
@@ -52,11 +52,11 @@ export default class StyleComputer {
 
     return [] //
       .concat([...styles])
-      .concat([...shapeStyleValues, ...fontStyleValues, ...labelStyleValues].filter(([, v]) => v && v != 'undefined').map(([key, value]) => key + '=' + value))
+      .concat(toArrayOfMxGraphStyleEntries([...mainStyleValues, ...fontStyleValues, ...labelStyleValues]))
       .join(';');
   }
 
-  private static computeShapeStyle(shape: Shape): Map<string, string | number> {
+  private static computeShapeStyleValues(shape: Shape): Map<string, string | number> {
     const styleValues = new Map<string, string | number>();
     const bpmnElement = shape.bpmnElement;
 
@@ -73,6 +73,16 @@ export default class StyleComputer {
       styleValues.set(BpmnStyleIdentifier.IS_INSTANTIATING, String(bpmnElement.instantiate));
       styleValues.set(BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND, String(bpmnElement.gatewayKind));
     }
+
+    const extensions = shape.extensions;
+    const fillColor = extensions['bv:color:fill'];
+    if (fillColor) {
+      styleValues.set(mxgraph.mxConstants.STYLE_FILLCOLOR, fillColor);
+      if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
+        styleValues.set(mxgraph.mxConstants.STYLE_SWIMLANE_FILLCOLOR, fillColor);
+      }
+    }
+    extensions['bv:color:stroke'] && styleValues.set(mxgraph.mxConstants.STYLE_STROKECOLOR, extensions['bv:color:stroke']);
 
     return styleValues;
   }
@@ -100,7 +110,7 @@ export default class StyleComputer {
     }
   }
 
-  private static computeEdgeStyle(edge: Edge): string[] {
+  private static computeEdgeBaseStyles(edge: Edge): string[] {
     const styles: string[] = [];
 
     const bpmnElement = edge.bpmnElement;
@@ -114,6 +124,15 @@ export default class StyleComputer {
     return styles;
   }
 
+  private static computeEdgeStyleValues(edge: Edge): Map<string, string | number> {
+    const styleValues = new Map<string, string | number>();
+
+    const extensions = edge.extensions;
+    extensions['bv:color:stroke'] && styleValues.set(mxgraph.mxConstants.STYLE_STROKECOLOR, extensions['bv:color:stroke']);
+
+    return styleValues;
+  }
+
   private static computeFontStyleValues(bpmnCell: Shape | Edge): Map<string, string | number> {
     const styleValues = new Map<string, string | number>();
 
@@ -123,6 +142,9 @@ export default class StyleComputer {
       styleValues.set(mxgraph.mxConstants.STYLE_FONTSIZE, font.size);
       styleValues.set(mxgraph.mxConstants.STYLE_FONTSTYLE, getFontStyleValue(font));
     }
+
+    const extensions = bpmnCell.label?.extensions;
+    extensions?.['bv:color'] && styleValues.set(mxgraph.mxConstants.STYLE_FONTCOLOR, extensions['bv:color']);
 
     return styleValues;
   }
@@ -162,7 +184,12 @@ export default class StyleComputer {
   }
 
   computeMessageFlowIconStyle(edge: Edge): string {
-    return `shape=${BpmnStyleIdentifier.MESSAGE_FLOW_ICON};${BpmnStyleIdentifier.IS_INITIATING}=${edge.messageVisibleKind === MessageVisibleKind.INITIATING}`;
+    const styleValues: Array<[string, string]> = [];
+    styleValues.push(['shape', BpmnStyleIdentifier.MESSAGE_FLOW_ICON]);
+    styleValues.push([BpmnStyleIdentifier.IS_INITIATING, String(edge.messageVisibleKind === MessageVisibleKind.INITIATING)]);
+    edge.extensions['bv:color:stroke'] && styleValues.push([mxgraph.mxConstants.STYLE_STROKECOLOR, edge.extensions['bv:color:stroke']]);
+
+    return toArrayOfMxGraphStyleEntries([...styleValues]).join(';');
   }
 }
 
@@ -185,4 +212,8 @@ export function getFontStyleValue(font: Font): number {
     value += mxgraph.mxConstants.FONT_UNDERLINE;
   }
   return value;
+}
+
+function toArrayOfMxGraphStyleEntries(styleValues: Array<[string, string | number]>): string[] {
+  return styleValues.filter(([, v]) => v && v != 'undefined').map(([key, value]) => `${key}=${value}`);
 }

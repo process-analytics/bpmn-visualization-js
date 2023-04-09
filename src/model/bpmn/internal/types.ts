@@ -1,5 +1,5 @@
 /*
-Copyright 2020 Bonitasoft S.A.
+Copyright 2023 Bonitasoft S.A.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,29 +14,38 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type Label from '../Label';
-import type { Flow } from './flows';
-import { MessageVisibleKind } from './kinds';
-import type { EdgeExtensions } from '../types';
+/**
+ * @internal
+ */
+export type ShapeColorExtensions = 'bv:color:fill' | EdgeColorExtensions;
 
 /**
  * @internal
  */
-export class Edge {
-  readonly extensions: EdgeExtensions = {};
-
-  constructor(
-    readonly id: string,
-    readonly bpmnElement: Flow,
-    readonly waypoints?: Waypoint[],
-    readonly label?: Label,
-    readonly messageVisibleKind: MessageVisibleKind = MessageVisibleKind.NONE,
-  ) {}
-}
+export type ShapeExtensions = {
+  [key in ShapeColorExtensions | string]: string;
+};
 
 /**
  * @internal
  */
-export class Waypoint {
-  constructor(readonly x: number, readonly y: number) {}
-}
+export type EdgeColorExtensions = 'bv:color:stroke';
+
+/**
+ * @internal
+ */
+export type EdgeExtensions = {
+  [key in EdgeColorExtensions | string]: string;
+};
+
+/**
+ * @internal
+ */
+export type LabelColorExtensions = 'bv:color';
+
+/**
+ * @internal
+ */
+export type LabelExtensions = {
+  [key in LabelColorExtensions | string]: string;
+};
