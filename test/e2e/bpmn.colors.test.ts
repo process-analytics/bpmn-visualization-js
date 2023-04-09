@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { StyleOptions } from './helpers/visu/bpmn-page-utils';
 import { AvailableTestPages, PageTester } from './helpers/visu/bpmn-page-utils';
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 import type { Page } from 'playwright';
