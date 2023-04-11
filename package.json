@@ -105,7 +105,7 @@
     "@microsoft/api-extractor": "~7.34.4",
     "@rollup/plugin-commonjs": "~24.0.1",
     "@rollup/plugin-node-resolve": "~15.0.2",
-    "@rollup/plugin-terser": "~0.4.0",
+    "@rollup/plugin-terser": "~0.4.1",
     "@types/debug": "~4.1.7",
     "@types/jest-image-snapshot": "~6.1.0",
     "@types/lodash.debounce": "~4.0.7",
