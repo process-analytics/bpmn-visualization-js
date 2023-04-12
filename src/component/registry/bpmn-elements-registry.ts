@@ -61,7 +61,7 @@ export class BpmnElementsRegistry {
     private cssRegistry: CssRegistry,
     private graphCellUpdater: GraphCellUpdater,
   ) {
-    this.bpmnModelRegistry.registerOnLoadCallback(this.cssRegistry.clear.bind(this.cssRegistry));
+    this.bpmnModelRegistry.registerOnLoadCallback(this.cssRegistry.clear);
   }
 
   /**
@@ -141,6 +141,7 @@ export class BpmnElementsRegistry {
    * It also has the specific `bpmn-service-task` to differentiate it from a BPMN User Task that has a `bpmn-user-task`.
    * - In addition, labels also have the `bpmn-label` classes.
    * - It is also possible to directly update the style of BPMN elements, see {@link updateStyle}.
+   * - Notice that if you pass ids that are not related to existing BPMN elements, their reference will be kept within the registry but nothing happens on the rendering side.
    *
    * See the repository providing the [examples of the `bpmn-visualization` TypeScript library](https://github.com/process-analytics/bpmn-visualization-examples/) for more details.
    *
@@ -153,6 +154,8 @@ export class BpmnElementsRegistry {
 
   /**
    * Remove one/several CSS class(es) previously added with the {@link addCssClasses} or the {@link toggleCssClasses} methods from one/several BPMN element(s).
+   *
+   * **Note**: if you pass an id that is not related to an existing BPMN element, nothing happens on the rendering side.
    *
    * @example
    * ```javascript
@@ -255,6 +258,8 @@ export class BpmnElementsRegistry {
   /**
    * Remove all overlays of a BPMN element.
    *
+   * Notice that if you pass an id that is not related to an existing BPMN element, nothing happens on the rendering side.
+   *
    * <b>WARNING</b>: could be renamed when adding support for removal of one or several specific overlays.
    *
    * @example
@@ -285,9 +290,10 @@ export class BpmnElementsRegistry {
    *
    * - This method is intended to update the style of specific elements, for instance to update their colors. During BPMN diagram rendering, `bpmn-visualization` applies style properties
    * to all elements regarding their types.
-   * So, if you want to style all elements of a given type, change the default configuration of the styles instead of updating the element afterwards. See the repository providing the
+   * So, if you want to style all elements of a given type, change the default configuration of the styles instead of updating the element afterward. See the repository providing the
    * [examples of the `bpmn-visualization` TypeScript library](https://github.com/process-analytics/bpmn-visualization-examples/) for more details.
    * - It is also possible to update the style of BPMN elements by adding CSS classes, see {@link addCssClasses}.
+   * - If you pass ids that are not related to existing BPMN elements, they are ignored and nothing happens on the rendering side.
    *
    * @param bpmnElementIds The BPMN id of the element(s) where to remove the CSS classes
    * @param styleUpdate The style properties to update.
