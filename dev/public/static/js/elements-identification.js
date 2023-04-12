@@ -34,6 +34,7 @@ import {
 let lastIdentifiedBpmnIds = [];
 const cssClassName = 'detection';
 let isOverlaysDisplayed = true;
+let useCSS = true;
 
 function updateSelectedBPMNElements(textArea, bpmnKind) {
   log(`Searching for Bpmn elements of '${bpmnKind}' kind`);
@@ -82,15 +83,24 @@ function configureControls() {
     lastIdentifiedBpmnIds = [];
   };
 
-  // display options
+  // display overlay option
   const checkboxDisplayOverlaysElt = document.getElementById('checkbox-display-overlays');
   checkboxDisplayOverlaysElt.addEventListener('change', function () {
     isOverlaysDisplayed = this.checked;
     log('Request overlays display:', isOverlaysDisplayed);
     updateSelectedBPMNElements(textArea, selectedKindElt.value);
   });
+  checkboxDisplayOverlaysElt.checked = isOverlaysDisplayed;
 
-  checkboxDisplayOverlaysElt.checked = true;
+  // use CSS or API to style the BPMN elements
+  const checkboxUseCSSElt = document.getElementById('checkbox-css-style');
+  checkboxUseCSSElt.addEventListener('change', function () {
+    useCSS = this.checked;
+    log('Request CSS style feature:', useCSS);
+    // TODO to change
+    updateSelectedBPMNElements(textArea, selectedKindElt.value);
+  });
+  checkboxUseCSSElt.checked = useCSS;
 }
 
 function getOverlay(bpmnKind) {
