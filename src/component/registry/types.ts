@@ -142,21 +142,111 @@ export type StyleUpdate = EdgeStyleUpdate | ShapeStyleUpdate;
 /**
  * @category Element Style
  */
-export type EdgeStyleUpdate = {
+export type EdgeStyleUpdate = StyleWithOpacity & {
   stroke?: Stroke;
+  font?: Font;
 };
 
 /**
  * @category Element Style
  */
-export type ShapeStyleUpdate = EdgeStyleUpdate;
+export type ShapeStyleUpdate = EdgeStyleUpdate & { fill?: Fill };
 
 /**
  * @category Element Style
+ *
+ * @warning Changing the stroke width of Activities may be misleading as the default stroke widths have a meaning according to the BPMN Specification.
+ *
+ * For example, updating the stroke width of a task using the same value as the default stroke width of a Call Activity can be confusing. In this case, you should also change another property such as the stroke color to allow the user to differentiate between them.
  */
-export type Stroke = {
+export type Stroke = StyleWithOpacity & {
   /**
-   * Possible values are all HTML color names or HEX codes, as well as special keywords such as `swimlane`, `inherit` to use the color code of a related BPMN element or `none` for no color.
+   * Possible values are all HTML color names or HEX codes, as well as special keywords such as:
+   * - `default` to use the color defined in the BPMN element default style
+   * - `none` for no color
    */
-  color: 'inherit' | 'none' | 'swimlane' | string;
+  color?: 'default' | 'none' | string;
+
+  /**
+   * Defines the stroke width in pixels.
+   *
+   * The value must be between 1 and 50.
+   *
+   * If the set value is less than 1, the used value is 1.
+   * If the set value is greater than 50, the used value is 50.
+   *
+   * To hide the stroke, set the `color` property to `'none'`.
+   */
+  width?: 'default' | number;
 };
+
+/**
+ * Note about properties that can be reset to default values.
+ *
+ * Except for color, all style properties can be set in the BPMN diagram via LabelStyle and can then override the default values. Currently, there is no way to know if
+ * they are overridden. So it is not possible to reset each property with the "Update Style" API.
+ *
+ * @category Element Style
+ */
+export type Font = StyleWithOpacity & {
+  /**
+   * Possible values are all HTML color names or HEX codes, as well as special keywords such as:
+   * - `default` to use the color defined in the BPMN element default style
+   */
+  color?: 'default' | string;
+
+  /**
+   *  The type of the value is int (in px).
+   */
+  size?: number;
+
+  family?: string;
+
+  /**
+   *  @default false
+   */
+  isBold?: boolean;
+
+  /**
+   *  @default false
+   */
+  isItalic?: boolean;
+
+  /**
+   *  @default false
+   */
+  isUnderline?: boolean;
+
+  /**
+   *  @default false
+   */
+  isStrikeThrough?: boolean;
+};
+
+/**
+ * @category Element Style
+ */
+export type Fill = StyleWithOpacity & {
+  /**
+   * Possible values are all HTML color names or HEX codes, as well as special keywords such as:
+   * - `default` to use the color defined in the BPMN element default style
+   * - `none` for no color
+   */
+  color?: 'default' | 'none' | string;
+};
+
+type StyleWithOpacity = {
+  /**
+   * The value must be between 0 and 100:
+   * - If the set value is less than 0, the used value is 0.
+   * - If the set value is greater than 100, the used value is 100.
+   *
+   * The special `default` value is to use the color defined in the BPMN element default style
+   */
+  opacity?: Opacity;
+};
+
+/**
+ *  @category Element Style
+ */
+export type Opacity = 'default' | number;

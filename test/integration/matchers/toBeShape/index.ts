@@ -61,18 +61,20 @@ function expectedStrokeWidth(kind: ShapeBpmnElementKind): number {
 
 export function buildExpectedShapeCellStyle(expectedModel: ExpectedShapeModelElement): BpmnCellStyle {
   const style = buildExpectedCellStyleWithCommonAttributes(expectedModel);
-  style.shape = !expectedModel.styleShape ? expectedModel.kind : expectedModel.styleShape;
-  style.verticalAlign = expectedModel.verticalAlign ? expectedModel.verticalAlign : 'middle';
-  style.align = expectedModel.align ? expectedModel.align : 'center';
-  style.strokeWidth = expectedStrokeWidth(expectedModel.kind);
+  style.shape = expectedModel.styleShape ?? expectedModel.kind;
+  style.verticalAlign = expectedModel.verticalAlign ?? 'middle';
+  style.align = expectedModel.align ?? 'center';
+  style.strokeWidth = style.strokeWidth ?? expectedStrokeWidth(expectedModel.kind);
 
-  style.fillColor = [ShapeBpmnElementKind.LANE, ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.TEXT_ANNOTATION, ShapeBpmnElementKind.GROUP].includes(expectedModel.kind)
-    ? 'none'
-    : style.fillColor;
+  style.fillColor =
+    expectedModel.fill?.color ??
+    ([ShapeBpmnElementKind.LANE, ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.TEXT_ANNOTATION, ShapeBpmnElementKind.GROUP].includes(expectedModel.kind)
+      ? 'none'
+      : style.fillColor);
+  style.swimlaneFillColor = [ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.LANE].includes(expectedModel.kind) && style.fillColor !== 'none' ? style.fillColor : undefined;
 
-  if ('isHorizontal' in expectedModel) {
-    style.horizontal = expectedModel.isHorizontal ? 0 : 1;
-  }
+  style.fillOpacity = expectedModel.fill?.opacity;
+  'isHorizontal' in expectedModel && (style.horizontal = Number(!expectedModel.isHorizontal));
 
   return style;
 }

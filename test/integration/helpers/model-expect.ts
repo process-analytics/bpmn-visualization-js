@@ -15,8 +15,10 @@ limitations under the License.
 */
 
 import type {
+  Fill,
   FlowKind,
   MessageVisibleKind,
+  Opacity,
   SequenceFlowKind,
   ShapeBpmnEventBasedGatewayKind,
   ShapeBpmnEventDefinitionKind,
@@ -123,12 +125,14 @@ export interface ExpectedCellWithGeometry {
 }
 
 export interface ExpectedFont {
-  name?: string;
+  color?: string;
+  family?: string;
   size?: number;
   isBold?: boolean;
   isItalic?: boolean;
   isUnderline?: boolean;
   isStrikeThrough?: boolean;
+  opacity?: Opacity;
 }
 
 type ExpectedModelElement = {
@@ -139,6 +143,7 @@ type ExpectedModelElement = {
   parentId?: string;
   stroke?: Stroke;
   verticalAlign?: string;
+  opacity?: number;
 };
 
 export interface ExpectedShapeModelElement extends ExpectedModelElement {
@@ -148,6 +153,7 @@ export interface ExpectedShapeModelElement extends ExpectedModelElement {
   markers?: ShapeBpmnMarkerKind[];
   isInstantiating?: boolean;
   isHorizontal?: boolean;
+  fill?: Fill;
 }
 
 export interface ExpectedEventModelElement extends ExpectedShapeModelElement {

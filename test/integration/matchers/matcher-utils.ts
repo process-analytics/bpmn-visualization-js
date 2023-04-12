@@ -17,23 +17,29 @@ limitations under the License.
 import type { ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement } from '../helpers/model-expect';
 import { bpmnVisualization } from '../helpers/model-expect';
 import type { mxCell, mxGeometry, StyleMap } from 'mxgraph';
+import type { Opacity } from '../../../src/component/registry';
 import type { MxGraphCustomOverlay, MxGraphCustomOverlayStyle } from '../../../src/component/mxgraph/overlay/custom-overlay';
-import { Font } from '../../../src/model/bpmn/internal/Label';
 import { getFontStyleValue as computeFontStyleValue } from '../../../src/component/mxgraph/renderer/StyleComputer';
+import { Font } from '../../../src/model/bpmn/internal/Label';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 
 // Used for received view state, computed resolved style and expected style.
 export interface BpmnCellStyle extends StyleMap {
+  opacity: Opacity;
   verticalAlign?: string;
   align?: string;
-  strokeWidth?: number;
+  strokeWidth?: 'default' | number;
   strokeColor: string;
+  strokeOpacity: Opacity;
   fillColor: string;
+  fillOpacity?: Opacity;
+  swimlaneFillColor?: string;
   fontColor: string;
   fontFamily: string;
   fontSize: number;
   fontStyle: number;
+  fontOpacity: Opacity;
   startArrow?: string;
   endArrow?: string;
   endSize?: number;
@@ -117,7 +123,7 @@ export function buildCellMatcher<R>(
 export function getFontStyleValue(expectedFont: ExpectedFont): number {
   return (
     (expectedFont
-      ? computeFontStyleValue(new Font(expectedFont.name, expectedFont.size, expectedFont.isBold, expectedFont.isItalic, expectedFont.isUnderline, expectedFont.isStrikeThrough))
+      ? computeFontStyleValue(new Font(expectedFont.family, expectedFont.size, expectedFont.isBold, expectedFont.isItalic, expectedFont.isUnderline, expectedFont.isStrikeThrough))
       : 0) || undefined
   );
 }
@@ -126,12 +132,16 @@ export function buildExpectedCellStyleWithCommonAttributes(expectedModelElt: Exp
   const font = expectedModelElt.font;
 
   return {
+    opacity: expectedModelElt.opacity,
     strokeColor: expectedModelElt.stroke?.color ?? 'Black',
+    strokeOpacity: expectedModelElt.stroke?.opacity,
+    strokeWidth: expectedModelElt.stroke?.width,
     fillColor: 'White',
-    fontFamily: font?.name ? font.name : 'Arial, Helvetica, sans-serif',
-    fontSize: font?.size ? font.size : 11,
-    fontColor: 'Black',
+    fontFamily: font?.family ?? 'Arial, Helvetica, sans-serif',
+    fontSize: font?.size ?? 11,
+    fontColor: font?.color ?? 'Black',
     fontStyle: getFontStyleValue(font),
+    fontOpacity: expectedModelElt.font?.opacity,
   };
 }
 
@@ -162,15 +172,18 @@ function buildReceivedResolvedModelCellStyle(cell: mxCell): BpmnCellStyle {
 
 function toBpmnStyle(rawStyle: StyleMap, isEdge: boolean): BpmnCellStyle {
   const style: BpmnCellStyle = {
+    opacity: rawStyle.opacity,
     verticalAlign: rawStyle.verticalAlign,
     align: rawStyle.align,
     strokeWidth: rawStyle.strokeWidth,
     strokeColor: rawStyle.strokeColor,
+    strokeOpacity: rawStyle.strokeOpacity,
     fillColor: rawStyle.fillColor,
     fontFamily: rawStyle.fontFamily,
     fontSize: rawStyle.fontSize,
     fontColor: rawStyle.fontColor,
     fontStyle: rawStyle.fontStyle,
+    fontOpacity: rawStyle.textOpacity,
   };
 
   if (isEdge) {
@@ -180,6 +193,8 @@ function toBpmnStyle(rawStyle: StyleMap, isEdge: boolean): BpmnCellStyle {
   } else {
     style.shape = rawStyle.shape;
     style.horizontal = rawStyle.horizontal;
+    style.swimlaneFillColor = rawStyle.swimlaneFillColor;
+    style.fillOpacity = rawStyle.fillOpacity;
   }
   return style;
 }

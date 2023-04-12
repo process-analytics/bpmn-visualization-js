@@ -45,7 +45,7 @@ export class BpmnModelRegistry {
   }
 
   getBpmnSemantic(bpmnElementId: string): BpmnSemantic | undefined {
-    const element = this.searchableModel.elementById(bpmnElementId);
+    const element = this.searchableModel?.elementById(bpmnElementId);
     if (!element) {
       return undefined;
     }

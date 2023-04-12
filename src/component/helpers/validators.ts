@@ -43,3 +43,25 @@ export function ensureValidZoomConfiguration(config: ZoomConfiguration): ZoomCon
   validatedConfig.throttleDelay = ensureInRange(validatedConfig.throttleDelay, 0, 100, 50);
   return validatedConfig;
 }
+
+/**
+ * Make sure the opacity parameter is in range
+ *
+ * @param opacity the property of {@link StyleWithOpacity} to make valid
+ * @internal
+ */
+export function ensureOpacityValue(opacity: number | 'default'): number | undefined {
+  return opacity == 'default' ? undefined : ensureInRange(opacity, 0, 100, 100);
+}
+
+/**
+ * Validates the provided stroke width value to ensure it is between 1 and 50, and returns the default value (1) if the value is not provided.
+ *
+ * @param strokeWidth - The stroke width value to validate.
+ * @returns The validated stroke width value.
+ *
+ * @internal
+ */
+export function ensureStrokeWidthValue(strokeWidth: number | 'default'): number | undefined {
+  return strokeWidth == 'default' ? undefined : ensureInRange(strokeWidth, 1, 50, 1);
+}

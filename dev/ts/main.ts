@@ -24,6 +24,7 @@ import type {
   ModelFilter,
   Overlay,
   PoolFilter,
+  StyleUpdate,
   Version,
   ZoomType,
 } from '../../src/bpmn-visualization';
@@ -40,7 +41,7 @@ let loadOptions: LoadOptions = {};
 let statusKoNotifier: (errorMsg: string) => void;
 let bpmnElementIdToCollapse: string;
 let currentTheme: string;
-let styleStrokeColor: string;
+let style: StyleUpdate;
 
 export function updateLoadOptions(fitOptions: FitOptions): void {
   log('Updating load options', fitOptions);
@@ -58,10 +59,13 @@ export function getCurrentTheme(): string | undefined {
 
 export function switchTheme(theme: string): void {
   log('Switching theme from %s to %s', currentTheme, theme);
-  const knownTheme = bpmnVisualization.configureTheme(theme);
-  if (knownTheme) {
+  const isKnownTheme = bpmnVisualization.configureTheme(theme);
+  if (isKnownTheme) {
     bpmnVisualization.graph.refresh();
     log('Theme switch done');
+    currentTheme = theme;
+  } else {
+    log('Unknown theme, do nothing');
   }
 }
 
@@ -237,7 +241,13 @@ function configureStyleFromParameters(parameters: URLSearchParams): void {
   // Collect style properties to update them later with the bpmn-visualization API
   // The implementation will be generalized when more properties will be supported (in particular, the query parameter name)
   // For example, we could extract all query params starting with style.api, then rebuild the StyleUpdate from the extracted params
-  styleStrokeColor = parameters.get('style.api.strokeColor');
+  style = { stroke: {}, font: {}, fill: {} };
+
+  parameters.get('style.api.stroke.color') && (style.stroke.color = parameters.get('style.api.stroke.color'));
+  parameters.get('style.api.font.color') && (style.font.color = parameters.get('style.api.font.color'));
+  parameters.get('style.api.font.opacity') && (style.font.opacity = Number(parameters.get('style.api.font.opacity')));
+  parameters.get('style.api.fill.color') && (style.fill.color = parameters.get('style.api.fill.color'));
+  parameters.get('style.api.fill.opacity') && (style.fill.opacity = Number(parameters.get('style.api.fill.opacity')));
 }
 
 function configureBpmnElementIdToCollapseFromParameters(parameters: URLSearchParams): void {
@@ -301,13 +311,13 @@ export function getVersion(): Version {
 }
 
 function updateStyleOfElementsIfRequested(): void {
-  if (styleStrokeColor) {
-    log("Applying stroke color using the style API: '%s'", styleStrokeColor);
+  if (style) {
+    log("Applying style using the style API: '%s'", style);
     const bpmnElementIds = retrieveAllBpmnElementIds();
     log('Number of elements whose style is to be updated', bpmnElementIds.length);
 
-    bpmnVisualization.bpmnElementsRegistry.updateStyle(bpmnElementIds, { stroke: { color: styleStrokeColor } });
-    log('New stroke color applied');
+    bpmnVisualization.bpmnElementsRegistry.updateStyle(bpmnElementIds, style);
+    log('New style applied');
   }
 }
 

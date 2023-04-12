@@ -26,9 +26,9 @@ import CustomMatcherResult = jest.CustomMatcherResult;
 
 function buildExpectedEdgeCellStyle(expectedModel: ExpectedEdgeModelElement): BpmnCellStyle {
   const style = buildExpectedCellStyleWithCommonAttributes(expectedModel);
-  style.verticalAlign = expectedModel.verticalAlign ? expectedModel.verticalAlign : 'top';
+  style.verticalAlign = expectedModel.verticalAlign ?? 'top';
   style.align = 'center';
-  style.strokeWidth = 1.5;
+  style.strokeWidth = style.strokeWidth ?? 1.5;
   style.startArrow = expectedModel.startArrow;
   style.endArrow = expectedModel.endArrow;
   style.endSize = 12;
