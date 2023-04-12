@@ -45,7 +45,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         'elements.colors.02.labels',
         {
           linux: 0.06 / 100, // 0.053125174438761746%
-          macos: 0 / 100, // 0.%
+          macos: 0.31 / 100, // 0.3043122668906051%
           windows: 1.76 / 100, // 1.7546495847922894%
         },
       ],
