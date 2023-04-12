@@ -126,7 +126,7 @@ function getOverlay(bpmnKind) {
   } else if (bpmnKind.includes('Flow')) {
     return {
       position: 'middle',
-      label: '999999',
+      label: '999',
       style: {
         fill: {
           color: 'PaleTurquoise',
