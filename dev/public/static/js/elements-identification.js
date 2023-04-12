@@ -96,12 +96,12 @@ function configureControls() {
 function getOverlay(bpmnKind) {
   if (ShapeUtil.isActivity(bpmnKind)) {
     return {
-      position: 'top-left',
+      position: 'top-right',
       label: '30',
       style: {
         font: {
           color: 'Chartreuse',
-          size: 30,
+          size: 20,
         },
         fill: {
           color: 'DimGray',
@@ -110,7 +110,7 @@ function getOverlay(bpmnKind) {
     };
   } else if (bpmnKind.includes('Gateway')) {
     return {
-      position: 'top-right',
+      position: 'top-left',
       label: '3',
       style: {
         stroke: {
@@ -126,7 +126,7 @@ function getOverlay(bpmnKind) {
   } else if (bpmnKind.includes('Flow')) {
     return {
       position: 'middle',
-      label: '999999',
+      label: '999',
       style: {
         fill: {
           color: 'PaleTurquoise',
