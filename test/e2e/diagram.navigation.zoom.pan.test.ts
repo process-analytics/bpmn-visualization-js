@@ -77,14 +77,19 @@ describe('diagram navigation - zoom and pan with mouse', () => {
   });
 
   it('mouse panning', async () => {
+    log('Starting mouse panning checks');
+    log('Doing mouse panning');
     await pageTester.mousePanning({ originPoint: containerCenter, destinationPoint: { x: containerCenter.x + 150, y: containerCenter.y + 40 } });
+    log('Mouse panning done');
 
+    log('Checking image match');
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image).toMatchImageSnapshot({
       ...config,
       customSnapshotIdentifier: 'mouse.panning',
     });
+    log('Image match done');
   });
 
   describe.each([ZoomType.In, ZoomType.Out])(`ctrl + mouse: zoom %s`, (zoomType: ZoomType) => {
