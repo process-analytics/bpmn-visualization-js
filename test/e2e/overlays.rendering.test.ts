@@ -327,6 +327,7 @@ describe('Overlay navigation', () => {
     await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName);
     containerCenter = await pageTester.getContainerCenter();
 
+    log('Adding overlays');
     await pageTester.addOverlays('StartEvent_1', 'bottom-center');
     await pageTester.addOverlays('Activity_1', 'middle-right');
     await pageTester.addOverlays('Gateway_1', 'top-right');
