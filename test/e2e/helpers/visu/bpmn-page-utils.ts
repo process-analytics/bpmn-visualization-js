@@ -252,10 +252,12 @@ export class PageTester {
   }
 
   async mousePanning({ originPoint, destinationPoint }: PanningOptions): Promise<void> {
+    pageCheckLog('Start mouse panning. Origin: %o / Destination: %o', originPoint, destinationPoint);
     await this.page.mouse.move(originPoint.x, originPoint.y);
     await this.page.mouse.down();
     await this.page.mouse.move(destinationPoint.x, destinationPoint.y);
     await this.page.mouse.up();
+    pageCheckLog('Mouse panning done');
   }
 
   async mouseZoomNoDelay(point: Point, zoomType: ZoomType): Promise<void> {
