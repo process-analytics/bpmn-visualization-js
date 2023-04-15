@@ -116,8 +116,7 @@ function saveAndRegisterImages(matcherContext: MatcherContext, received: Buffer,
 function toMatchImageSnapshotCustom(this: MatcherContext, received: Buffer, options: MatchImageSnapshotOptions): CustomMatcherResult {
   const testId = this.currentTestName;
   retriesCounter.incrementExecutionCount(testId);
-  jestLog('Test path: %s', this.testPath);
-  jestLog('Test name: %s', this.currentTestName);
+  jestLog("Test: '%s' (test file path: '%s')", this.currentTestName, this.testPath);
   const executionCount = retriesCounter.getExecutionCount(testId);
   jestLog('Ready to execute toMatchImageSnapshot, execution count: %s', executionCount);
   const result = toMatchImageSnapshotWithRealSignature.call(this, received, options);
