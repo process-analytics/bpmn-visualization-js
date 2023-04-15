@@ -91,7 +91,7 @@ describe('diagram navigation - zoom and pan with mouse', () => {
   });
 
   describe.each([ZoomType.In, ZoomType.Out])(`ctrl + mouse: zoom %s`, (zoomType: ZoomType) => {
-    it.each([1, 3])('zoom %s times', async (xTimes: number) => {
+    it.each([1, 3])('zoom [%s times]', async (xTimes: number) => {
       await pageTester.mouseZoom({ x: containerCenter.x + 200, y: containerCenter.y }, zoomType, xTimes);
 
       const image = await page.screenshot({ fullPage: true });
