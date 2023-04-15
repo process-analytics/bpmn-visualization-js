@@ -239,8 +239,7 @@ function configureStyleFromParameters(parameters: URLSearchParams): void {
   }
 
   // Collect style properties to update them later with the bpmn-visualization API
-  // The implementation will be generalized when more properties will be supported (in particular, the query parameter name)
-  // For example, we could extract all query params starting with style.api, then rebuild the StyleUpdate from the extracted params
+  // TODO only create the object if parameters is set
   style = { stroke: {}, font: {}, fill: {} };
 
   parameters.get('style.api.stroke.color') && (style.stroke.color = parameters.get('style.api.stroke.color'));
