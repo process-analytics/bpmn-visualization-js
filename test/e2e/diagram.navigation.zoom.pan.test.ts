@@ -65,15 +65,13 @@ describe('diagram navigation - zoom and pan with mouse', () => {
   let containerCenter: Point;
 
   beforeEach(async () => {
-    log('Test path: %s', expect.getState().testPath);
-    log('Start test: %s', expect.getState().currentTestName);
+    log("Start test: '%s' (test file path: '%s')", expect.getState().currentTestName, expect.getState().testPath);
 
     await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName);
     containerCenter = await pageTester.getContainerCenter();
   });
   afterEach(() => {
-    log('Test path: %s', expect.getState().testPath);
-    log('End test: %s', expect.getState().currentTestName);
+    log("End test: '%s' (test file path: '%s')", expect.getState().currentTestName, expect.getState().testPath);
   });
 
   it('mouse panning', async () => {
