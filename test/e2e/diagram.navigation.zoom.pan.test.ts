@@ -24,7 +24,7 @@ import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 import { ZoomType } from '@lib/component/options';
 
-const log = debugLogger('bv:test:e2e:navigation:zp');
+const log = debugLogger('bv:test:e2e:navigation:zoom-pan');
 
 class MouseNavigationImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
