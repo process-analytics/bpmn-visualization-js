@@ -90,7 +90,14 @@ describe('diagram navigation - zoom and pan with mouse', () => {
     log('Image match OK');
   });
 
-  describe.each([ZoomType.In, ZoomType.Out])(`ctrl + mouse: zoom %s`, (zoomType: ZoomType) => {
+  describe.each([ZoomType.In, ZoomType.Out])(`ctrl + mouse: zoom [%s]`, (zoomType: ZoomType) => {
+    beforeEach(() => {
+      log("Start test: '%s' (test file path: '%s')", expect.getState().currentTestName, expect.getState().testPath);
+    });
+    afterEach(() => {
+      log("End test: '%s' (test file path: '%s')", expect.getState().currentTestName, expect.getState().testPath);
+    });
+
     it.each([1, 3])('zoom [%s times]', async (xTimes: number) => {
       await pageTester.mouseZoom({ x: containerCenter.x + 200, y: containerCenter.y }, zoomType, xTimes);
 
