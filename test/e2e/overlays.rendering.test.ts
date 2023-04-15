@@ -25,6 +25,9 @@ import type { Point } from './helpers/visu/bpmn-page-utils';
 import { AvailableTestPages, PageTester } from './helpers/visu/bpmn-page-utils';
 import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
+import debugLogger from 'debug';
+
+const log = debugLogger('bv:test:e2e:overlays');
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
@@ -320,6 +323,7 @@ describe('Overlay navigation', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new OverlayNavigationImageSnapshotThresholds(), 'overlays');
 
   beforeEach(async () => {
+    log("Start test: '%s' (test file path: '%s')", expect.getState().currentTestName, expect.getState().testPath);
     await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName);
     containerCenter = await pageTester.getContainerCenter();
 
@@ -327,17 +331,26 @@ describe('Overlay navigation', () => {
     await pageTester.addOverlays('Activity_1', 'middle-right');
     await pageTester.addOverlays('Gateway_1', 'top-right');
     await pageTester.addOverlays('Flow_1', 'start');
+    log('Overlays added');
+  });
+  afterEach(() => {
+    log("End test: '%s' (test file path: '%s')", expect.getState().currentTestName, expect.getState().testPath);
   });
 
   it('panning', async () => {
+    log('Starting mouse panning checks');
+    log('Doing mouse panning');
     await pageTester.mousePanning({ originPoint: containerCenter, destinationPoint: { x: containerCenter.x + 150, y: containerCenter.y + 40 } });
+    log('Mouse panning done');
 
+    log('Checking image match');
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image).toMatchImageSnapshot({
       ...config,
       customSnapshotIdentifier: 'panning',
     });
+    log('Image match OK');
   });
 
   it(`zoom out`, async () => {
