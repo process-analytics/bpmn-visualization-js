@@ -87,7 +87,7 @@ describe('diagram navigation - zoom and pan with mouse', () => {
       ...config,
       customSnapshotIdentifier: 'mouse.panning',
     });
-    log('Image match done');
+    log('Image match OK');
   });
 
   describe.each([ZoomType.In, ZoomType.Out])(`ctrl + mouse: zoom %s`, (zoomType: ZoomType) => {
