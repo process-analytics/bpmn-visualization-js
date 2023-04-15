@@ -312,7 +312,7 @@ export function getVersion(): Version {
 
 function updateStyleOfElementsIfRequested(): void {
   if (style) {
-    log("Applying style using the style API: '%s'", style);
+    log('Applying style using the style API', stringify(style));
     const bpmnElementIds = retrieveAllBpmnElementIds();
     log('Number of elements whose style is to be updated', bpmnElementIds.length);
 
