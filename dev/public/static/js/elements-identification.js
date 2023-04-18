@@ -41,47 +41,34 @@ function updateStyleByAPI(bpmnIds, bpmnKind) {
   const style = { font: { spacing: {} }, fill: {}, stroke: {}, gradient: {}, label: {} };
   switch (bpmnKind) {
     case 'task':
-      style.font.color = 'red !important';
-      style.fill.color = 'aquamarine';
-      break;
     case 'userTask':
-      style.font.color = 'red !important';
-      style.fill.color = 'aquamarine';
-      break;
     case 'scriptTask':
-      style.font.color = 'red !important';
-      style.font.size = 16;
-      style.fill.color = 'aquamarine';
-      break;
     case 'serviceTask':
-      style.font.color = 'red !important';
-      style.font.size = 16;
-      style.fill.color = 'aquamarine';
-      break;
     case 'receiveTask':
     case 'sendTask':
     case 'manualTask':
     case 'businessRuleTask':
-      style.font.color = 'red !important';
-      style.fill.color = 'aquamarine';
-      style.fill.opacity = 40;
+      style.font.color = 'Indigo';
+      style.fill.color = 'gold';
+      style.font.size = 14;
+      style.fill.opacity = 20;
       break;
     case 'startEvent':
     case 'endEvent':
     case 'intermediateCatchEvent':
     case 'intermediateThrowEvent':
     case 'boundaryEvent':
-      style.font.color = 'red !important';
-      style.stroke.color = 'red';
+      style.font.color = 'MediumTurquoise';
+      style.stroke.color = 'MediumTurquoise';
       break;
     case 'exclusiveGateway':
     case 'inclusiveGateway':
     case 'parallelGateway':
     case 'eventBasedGateway':
     case 'complexGateway':
-      style.font.color = 'red !important';
-      style.font.opacity = 60;
-      style.stroke.color = 'chartreuse';
+      style.font.color = 'CadetBlue';
+      style.font.opacity = 85;
+      style.stroke.color = 'OrangeRed';
       style.stroke.width = 4;
       break;
     case 'lane':
@@ -107,24 +94,25 @@ function updateStyleByAPI(bpmnIds, bpmnKind) {
       style.font.isUnderline = true;
       style.font.isStrikeThrough = true;
 
-      style.fill.color = 'MediumVioletRed';
+      style.fill.color = 'MidnightBlue';
       style.opacity = 60;
       break;
     case 'group':
     case 'textAnnotation':
-      style.font.color = 'MidnightBlue';
+      style.font.color = 'Crimson';
       style.font.size = 18;
       style.font.family = 'Verdana';
       style.font.isBold = true;
       style.font.isUnderline = true;
 
       style.stroke.color = 'Chartreuse';
+      style.stroke.width = 6;
       break;
     case 'messageFlow':
     case 'sequenceFlow':
     case 'association':
-      style.font.color = 'dodgerblue !important';
-      style.stroke.color = 'dodgerblue';
+      style.font.color = 'Chocolate';
+      style.stroke.color = 'Chocolate';
       style.stroke.width = 4;
       break;
   }
