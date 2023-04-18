@@ -235,7 +235,10 @@ export type Fill = StyleWithOpacity & {
   color?: 'default' | 'none' | string;
 };
 
-type StyleWithOpacity = {
+/**
+ * @category Element Style
+ */
+export type StyleWithOpacity = {
   /**
    * The value must be between 0 and 100:
    * - If the set value is less than 0, the used value is 0.
