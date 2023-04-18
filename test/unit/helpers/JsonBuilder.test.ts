@@ -2886,10 +2886,10 @@ describe('build json', () => {
   });
 
   describe('build json with subProcess', () => {
-    it('build json of definitions containing one process with subProcess (with id & name)', () => {
+    it('build json of definitions containing one process with subProcess (with id, name, triggeredByEvent, incoming & outgoing)', () => {
       const json = buildDefinitions({
         process: {
-          subProcess: { id: '0', name: 'subProcess name' },
+          subProcess: { id: '0', name: 'subProcess name', triggeredByEvent: true, incoming: 'flow_in', outgoing: ['flow_out_1', 'flow_out_2'] },
         },
       });
 
@@ -2899,7 +2899,7 @@ describe('build json', () => {
           collaboration: { id: 'collaboration_id_0' },
           process: {
             id: '0',
-            subProcess: { id: '0', name: 'subProcess name' },
+            subProcess: { id: '0', name: 'subProcess name', triggeredByEvent: true, incoming: 'flow_in', outgoing: ['flow_out_1', 'flow_out_2'] },
           },
           BPMNDiagram: {
             name: 'process 0',
@@ -2915,7 +2915,7 @@ describe('build json', () => {
       });
     });
 
-    it('build json of definitions containing one process with subProcess (without id & name)', () => {
+    it('build json of definitions containing one process with subProcess (without id, name, triggeredByEvent, incoming & outgoing)', () => {
       const json = buildDefinitions({
         process: {
           subProcess: {},

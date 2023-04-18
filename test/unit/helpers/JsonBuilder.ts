@@ -82,7 +82,7 @@ export type BuildTaskKind = 'task' | 'businessRuleTask' | 'manualTask' | 'receiv
  * If the id field is set, the default id is override.
  * Otherwise, the id has the format: `task_id_${processIndex}_${index}`
  */
-export interface BuildTaskParameter extends TFlowElement {
+export interface BuildTaskParameter extends TFlowNode {
   /** @default 'task' */
   bpmnKind?: BuildTaskKind;
 }
@@ -102,14 +102,14 @@ export interface BuildCallActivityParameter extends TFlowNode {
  * If the id field is set, the default id is override.
  * Otherwise, the id has the format: `subProcess_id_${processIndex}_${index}`
  */
-export type BuildSubProcessParameter = TFlowElement;
+export type BuildSubProcessParameter = TFlowNode & { triggeredByEvent?: boolean };
 
 export type BuildGatewayKind = 'complexGateway' | 'eventBasedGateway' | 'exclusiveGateway' | 'inclusiveGateway' | 'parallelGateway';
 /**
  * If the id field is set, the default id is override.
  * Otherwise, the id has the format: `exclusiveGateway_id_${processIndex}_${index}`
  */
-export interface BuildGatewayParameter extends TFlowElement {
+export interface BuildGatewayParameter extends TFlowNode {
   bpmnKind: BuildGatewayKind;
 }
 
