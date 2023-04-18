@@ -28,6 +28,7 @@ import {
   ShapeUtil,
   startBpmnVisualization,
   updateLoadOptions,
+  updateStyle,
   windowAlertStatusKoNotifier,
 } from '../../../ts/dev-bundle-index';
 
@@ -35,6 +36,127 @@ let lastIdentifiedBpmnIds = [];
 const cssClassName = 'detection';
 let isOverlaysDisplayed = true;
 let useCSS = true;
+
+function updateStyleByAPI(bpmnIds, bpmnKind) {
+  const style = { font: { spacing: {} }, fill: {}, stroke: {}, gradient: {}, label: {} };
+  switch (bpmnKind) {
+    case 'task':
+      style.font.color = 'red !important';
+      style.fill.color = 'aquamarine';
+      break;
+    case 'userTask':
+      style.font.color = 'red !important';
+      style.fill.color = 'aquamarine';
+      break;
+    case 'scriptTask':
+      style.font.color = 'red !important';
+      style.font.size = 16;
+      style.fill.color = 'aquamarine';
+      break;
+    case 'serviceTask':
+      style.font.color = 'red !important';
+      style.font.size = 16;
+      style.fill.color = 'aquamarine';
+      break;
+    case 'receiveTask':
+    case 'sendTask':
+    case 'manualTask':
+    case 'businessRuleTask':
+      style.font.color = 'red !important';
+      style.fill.color = 'aquamarine';
+      style.fill.opacity = 40;
+      break;
+    case 'startEvent':
+    case 'endEvent':
+    case 'intermediateCatchEvent':
+    case 'intermediateThrowEvent':
+    case 'boundaryEvent':
+      style.font.color = 'red !important';
+      style.stroke.color = 'red';
+      break;
+    case 'exclusiveGateway':
+    case 'inclusiveGateway':
+    case 'parallelGateway':
+    case 'eventBasedGateway':
+    case 'complexGateway':
+      style.font.color = 'red !important';
+      style.font.opacity = 60;
+      style.stroke.color = 'chartreuse';
+      style.stroke.width = 4;
+      break;
+    case 'lane':
+    case 'pool':
+      style.font.color = 'white !important';
+      style.fill.color = 'deeppink';
+      style.stroke.opacity = 80;
+      break;
+    case 'callActivity':
+      style.font.color = 'white';
+      style.font.family = 'Times New Roman';
+      style.font.isItalic = true;
+      style.font.isStrikeThrough = true;
+
+      style.fill.color = 'LimeGreen';
+      break;
+    case 'subProcess':
+      style.font.color = 'white';
+      style.font.size = 14;
+      style.font.family = 'Dialog';
+      style.font.isBold = true;
+      style.font.isItalic = true;
+      style.font.isUnderline = true;
+      style.font.isStrikeThrough = true;
+
+      style.fill.color = 'MediumVioletRed';
+      style.opacity = 60;
+      break;
+    case 'group':
+    case 'textAnnotation':
+      style.font.color = 'MidnightBlue';
+      style.font.size = 18;
+      style.font.family = 'Verdana';
+      style.font.isBold = true;
+      style.font.isUnderline = true;
+
+      style.stroke.color = 'Chartreuse';
+      break;
+    case 'messageFlow':
+    case 'sequenceFlow':
+    case 'association':
+      style.font.color = 'dodgerblue !important';
+      style.stroke.color = 'dodgerblue';
+      style.stroke.width = 4;
+      break;
+  }
+
+  updateStyle(bpmnIds, style);
+}
+
+function resetStyleByAPI() {
+  const style = {
+    font: {
+      color: 'default',
+      size: 10,
+      family: 'Arial',
+      isBold: false,
+      isItalic: false,
+      isUnderline: false,
+      isStrikeThrough: false,
+      opacity: 'default',
+    },
+    fill: {
+      color: 'default',
+      opacity: 'default',
+    },
+    stroke: {
+      color: 'default',
+      opacity: 'default',
+      width: 'default',
+    },
+    opacity: 'default',
+  };
+  updateStyle(lastIdentifiedBpmnIds, style);
+}
 
 function updateSelectedBPMNElements(textArea, bpmnKind) {
   log(`Searching for Bpmn elements of '${bpmnKind}' kind`);
@@ -51,9 +173,14 @@ function updateSelectedBPMNElements(textArea, bpmnKind) {
   // newly identified elements and values
   const newlyIdentifiedBpmnIds = elementsByKinds.map(elt => elt.bpmnSemantic.id);
 
-  // CSS classes update
-  removeCssClasses(lastIdentifiedBpmnIds, cssClassName);
-  addCssClasses(newlyIdentifiedBpmnIds, cssClassName);
+  // style update
+  if (useCSS) {
+    removeCssClasses(lastIdentifiedBpmnIds, cssClassName);
+    addCssClasses(newlyIdentifiedBpmnIds, cssClassName);
+  } else {
+    resetStyleByAPI(lastIdentifiedBpmnIds);
+    updateStyleByAPI(newlyIdentifiedBpmnIds, bpmnKind);
+  }
 
   // Overlays update
   lastIdentifiedBpmnIds.forEach(id => removeAllOverlays(id));
@@ -76,7 +203,7 @@ function configureControls() {
 
   document.getElementById('clear-btn').onclick = function () {
     textArea.value = '';
-    removeCssClasses(lastIdentifiedBpmnIds, cssClassName);
+    useCSS ? removeCssClasses(lastIdentifiedBpmnIds, cssClassName) : resetStyleByAPI(lastIdentifiedBpmnIds);
     lastIdentifiedBpmnIds.forEach(id => removeAllOverlays(id));
 
     // reset identified elements and values
@@ -97,8 +224,14 @@ function configureControls() {
   checkboxUseCSSElt.addEventListener('change', function () {
     useCSS = this.checked;
     log('Request CSS style feature:', useCSS);
-    // TODO to change
-    updateSelectedBPMNElements(textArea, selectedKindElt.value);
+
+    if (useCSS) {
+      resetStyleByAPI(lastIdentifiedBpmnIds);
+      addCssClasses(lastIdentifiedBpmnIds, cssClassName);
+    } else {
+      removeCssClasses(lastIdentifiedBpmnIds, cssClassName);
+      updateStyleByAPI(lastIdentifiedBpmnIds, selectedKindElt.value);
+    }
   });
   checkboxUseCSSElt.checked = useCSS;
 }
