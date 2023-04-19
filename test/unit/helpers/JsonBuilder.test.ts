@@ -17,7 +17,7 @@ limitations under the License.
 import { tAssociationDirection } from '../../../src/model/bpmn/json/baseElement/artifact';
 import { ShapeBpmnElementKind } from '../../../src/model/bpmn/internal';
 
-import type { BuildEventDefinitionParameter, OtherBuildEventKind, BuildTaskKind, BuildGatewayKind } from './JsonBuilder';
+import type { BuildEventDefinitionParameter, OtherBuildEventKind, BuildTaskKind, BuildGatewayKind, BpmnGlobalTaskKind } from './JsonBuilder';
 import { buildDefinitions, EventDefinitionOn } from './JsonBuilder';
 
 describe('build json', () => {
@@ -3500,4 +3500,91 @@ describe('build json', () => {
       });
     });
   });
+
+  describe.each(['globalTask', 'globalBusinessRuleTask', 'globalManualTask', 'globalScriptTask', 'globalUserTask'] as BpmnGlobalTaskKind[])(
+    'build json with %s',
+    (bpmnKind: BpmnGlobalTaskKind) => {
+      it(`build json of definitions containing one ${bpmnKind} (with id)`, () => {
+        const json = buildDefinitions({
+          globalTask: { id: '0', bpmnKind },
+          process: {},
+        });
+
+        expect(json).toEqual({
+          definitions: {
+            targetNamespace: '',
+            collaboration: { id: 'collaboration_id_0' },
+            [bpmnKind]: { id: '0' },
+            process: { id: '0' },
+            BPMNDiagram: {
+              name: 'process 0',
+              BPMNPlane: {},
+            },
+          },
+        });
+      });
+
+      it(`build json of definitions containing one ${bpmnKind} (without id)`, () => {
+        const json = buildDefinitions({
+          globalTask: { bpmnKind },
+          process: {},
+        });
+
+        expect(json).toEqual({
+          definitions: {
+            targetNamespace: '',
+            collaboration: { id: 'collaboration_id_0' },
+            [bpmnKind]: { id: `${bpmnKind}_id_0` },
+            process: { id: '0' },
+            BPMNDiagram: {
+              name: 'process 0',
+              BPMNPlane: {},
+            },
+          },
+        });
+      });
+
+      it(`build json of definitions containing 2 ${bpmnKind} (without id)`, () => {
+        const json = buildDefinitions({
+          globalTask: [{ bpmnKind }, { bpmnKind }],
+          process: {},
+        });
+
+        expect(json).toEqual({
+          definitions: {
+            targetNamespace: '',
+            collaboration: { id: 'collaboration_id_0' },
+            [bpmnKind]: [{ id: `${bpmnKind}_id_0` }, { id: `${bpmnKind}_id_1` }],
+            process: { id: '0' },
+            BPMNDiagram: {
+              name: 'process 0',
+              BPMNPlane: {},
+            },
+          },
+        });
+      });
+
+      if (bpmnKind === 'globalTask') {
+        it(`build json of definitions containing one process with task (without bpmnKind)`, () => {
+          const json = buildDefinitions({
+            globalTask: {},
+            process: {},
+          });
+
+          expect(json).toEqual({
+            definitions: {
+              targetNamespace: '',
+              collaboration: { id: 'collaboration_id_0' },
+              globalTask: { id: 'globalTask_id_0' },
+              process: { id: '0' },
+              BPMNDiagram: {
+                name: 'process 0',
+                BPMNPlane: {},
+              },
+            },
+          });
+        });
+      }
+    },
+  );
 });
