@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BuildCallActivityParameter, BuildGatewayKind, BuildTaskKind, OtherBuildEventKind } from '../../../helpers/JsonBuilder';
+import type { BuildCallActivityParameter, BuildGatewayKind, BuildTaskKind, OtherBuildEventKind, BpmnGlobalTaskKind } from '../../../helpers/JsonBuilder';
 import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilder';
 import { parseJsonAndExpect, parseJsonAndExpectOnlyEdgesAndFlowNodes, parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtils';
 import { verifyEdge, verifyShape } from '../../../helpers/bpmn-model-expect';
@@ -467,37 +467,21 @@ describe('parse bpmn as json for callActivity', () => {
   });
 
   describe('parse bpmn as json for callActivity calling global task', () => {
-    it.each([['globalTask'], ['globalBusinessRuleTask'], ['globalManualTask'], ['globalScriptTask'], ['globalUserTask']])(
+    it.each(['globalTask', 'globalBusinessRuleTask', 'globalManualTask', 'globalScriptTask', 'globalUserTask'] as BpmnGlobalTaskKind[])(
       `should convert, when a call activity (calling %s) is an attribute of 'process'`,
-      (globalTaskKind: string) => {
-        const json = {
-          definitions: {
-            targetNamespace: '',
-            process: {
-              id: 'process 1',
-              callActivity: {
-                id: `call_activity_id_0`,
-                name: `call activity name`,
-                calledElement: 'task_id',
-                incoming: 'flow_in',
-                outgoing: 'flow_out',
-              },
-            },
-            BPMNDiagram: {
-              name: 'process 0',
-              BPMNPlane: {
-                BPMNShape: {
-                  id: `shape_call_activity_id_0`,
-                  bpmnElement: `call_activity_id_0`,
-                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
-                },
-              },
+      (bpmnKind: BpmnGlobalTaskKind) => {
+        const json: BpmnJsonModel = buildDefinitions({
+          process: {
+            callActivity: {
+              id: `call_activity_id_0`,
+              name: `call activity name`,
+              calledElement: 'task_id',
+              incoming: 'flow_in',
+              outgoing: 'flow_out',
             },
           },
-        };
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        json.definitions[globalTaskKind] = { id: 'task_id' };
+          globalTask: { id: 'task_id', bpmnKind },
+        });
 
         const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
@@ -507,15 +491,10 @@ describe('parse bpmn as json for callActivity', () => {
           bpmnElementName: `call activity name`,
           bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
           bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK,
-          bpmnElementGlobalTaskKind: globalTaskKind as GlobalTaskKind,
+          bpmnElementGlobalTaskKind: bpmnKind as GlobalTaskKind,
           bpmnElementIncomingIds: ['flow_in'],
           bpmnElementOutgoingIds: ['flow_out'],
-          bounds: {
-            x: 362,
-            y: 232,
-            width: 36,
-            height: 45,
-          },
+          bounds: { x: 346, y: 856, width: 45, height: 56 },
         });
       },
     );
