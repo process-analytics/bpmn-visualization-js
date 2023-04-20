@@ -145,7 +145,7 @@ describe('parse bpmn as json for sub-process', () => {
       });
     }
 
-    it(`should convert activities, events, gateways, association and sequence-flows in sub-process`, () => {
+    it(`should convert activities, events, gateways, textAnnotation, association and sequence-flows in sub-process`, () => {
       const json = {
         definitions: {
           targetNamespace: '',
@@ -189,6 +189,10 @@ describe('parse bpmn as json for sub-process', () => {
                 sourceRef: 'process_id_1_startEvent_1',
                 targetRef: 'unknown',
               },
+              textAnnotation: {
+                id: 'sub-process_id_1_textAnnotation_1',
+                text: 'SubProcess Text Annotation',
+              },
             },
           },
           BPMNDiagram: {
@@ -219,6 +223,11 @@ describe('parse bpmn as json for sub-process', () => {
                 {
                   id: 'shape_sub-process_id_1_endEvent_1',
                   bpmnElement: 'sub-process_id_1_endEvent_1',
+                  Bounds: { x: 565, y: 335, width: 20, height: 20 },
+                },
+                {
+                  id: 'shape_sub-process_id_1_textAnnotation_1',
+                  bpmnElement: 'sub-process_id_1_textAnnotation_1',
                   Bounds: { x: 565, y: 335, width: 20, height: 20 },
                 },
               ],
@@ -306,6 +315,15 @@ describe('parse bpmn as json for sub-process', () => {
         bpmnElementId: 'sub-process_id_1_exclusiveGateway_1',
         bpmnElementName: 'SubProcess Exclusive Gateway',
         bpmnElementKind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
+        bounds: { x: 565, y: 335, width: 20, height: 20 },
+      });
+
+      verifyShape(model.flowNodes[5], {
+        shapeId: 'shape_sub-process_id_1_textAnnotation_1',
+        parentId: 'sub-process_id_1',
+        bpmnElementId: 'sub-process_id_1_textAnnotation_1',
+        bpmnElementName: 'SubProcess Text Annotation',
+        bpmnElementKind: ShapeBpmnElementKind.TEXT_ANNOTATION,
         bounds: { x: 565, y: 335, width: 20, height: 20 },
       });
 
