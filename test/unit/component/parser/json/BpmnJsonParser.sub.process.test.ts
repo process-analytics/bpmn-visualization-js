@@ -16,7 +16,13 @@ limitations under the License.
 
 import type { BuildProcessParameter } from '../../../helpers/JsonBuilder';
 import { buildDefinitions } from '../../../helpers/JsonBuilder';
-import { parseJson, parseJsonAndExpectOnlySubProcess, verifySubProcess } from '../../../helpers/JsonTestUtils';
+import {
+  parseJson,
+  parseJsonAndExpectOnlyEdgesAndFlowNodes,
+  parseJsonAndExpectOnlyFlowNodes,
+  parseJsonAndExpectOnlySubProcess,
+  verifySubProcess,
+} from '../../../helpers/JsonTestUtils';
 import { getEventShapes } from '../../../helpers/TestUtils';
 import type { ExpectedShape } from '../../../helpers/bpmn-model-expect';
 import { verifyEdge, verifyShape } from '../../../helpers/bpmn-model-expect';
@@ -25,6 +31,7 @@ import type BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
 import { Waypoint } from '../../../../../src/model/bpmn/internal/edge/edge';
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/internal';
 import type { ShapeBpmnEvent } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
+import type { TFlowNode } from '../../../../../src/model/bpmn/json/baseElement/flowElement';
 import type Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 
 function expectNoPoolLane(model: BpmnModel): void {
@@ -56,8 +63,6 @@ describe('parse bpmn as json for sub-process', () => {
           id: 'sub_process_id_0',
           name: `sub-process name`,
           triggeredByEvent: triggeredByEvent,
-          incoming: ['flow_in_1', 'flow_in_2'],
-          outgoing: 'flow_out_1',
           isExpanded,
         },
       } as BuildProcessParameter;
@@ -78,12 +83,140 @@ describe('parse bpmn as json for sub-process', () => {
             bpmnElementName: 'sub-process name',
             bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
             bpmnElementMarkers: expectedBpmnElementMarkers,
-            bpmnElementIncomingIds: ['flow_in_1', 'flow_in_2'],
-            bpmnElementOutgoingIds: ['flow_out_1'],
             bounds: { x: 67, y: 23, width: 456, height: 123 },
           });
         },
       );
+
+      describe(`incoming/outgoing management for ${expandedKind} ${bpmnSubProcessKind} sub-process`, () => {
+        it.each`
+          title       | input         | expectedAttribute
+          ${'string'} | ${'incoming'} | ${'bpmnElementIncomingIds'}
+          ${'array'}  | ${'incoming'} | ${'bpmnElementIncomingIds'}
+          ${'string'} | ${'outgoing'} | ${'bpmnElementOutgoingIds'}
+          ${'array'}  | ${'outgoing'} | ${'bpmnElementOutgoingIds'}
+        `(
+          `should convert as Shape, when a process contains a ${expandedKind} ${bpmnSubProcessKind} sub-process with $input attribute as $title`,
+          ({ title, input, expectedAttribute }: { title: string; input: keyof TFlowNode; expectedAttribute: keyof ExpectedShape }) => {
+            const inputString = String(input);
+            const json = buildDefinitions({
+              process: {
+                subProcess: {
+                  id: 'sub_process_id_0',
+                  triggeredByEvent: triggeredByEvent,
+                  [input]: title === 'array' ? [`flow_${inputString}_1`, `flow_${inputString}_2`] : `flow_${inputString}_1`,
+                  isExpanded,
+                },
+              },
+            });
+
+            const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+
+            verifyShape(model.flowNodes[0], {
+              shapeId: 'shape_sub_process_id_0',
+              bpmnElementId: 'sub_process_id_0',
+              bpmnElementName: undefined,
+              bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
+              bpmnElementMarkers: expectedBpmnElementMarkers,
+              bounds: { x: 67, y: 23, width: 456, height: 123 },
+              [expectedAttribute]: title === 'array' ? [`flow_${inputString}_1`, `flow_${inputString}_2`] : [`flow_${inputString}_1`],
+            });
+          },
+        );
+
+        it.each`
+          title         | flowKind          | expectedAttribute
+          ${'incoming'} | ${'sequenceFlow'} | ${'bpmnElementIncomingIds'}
+          ${'outgoing'} | ${'sequenceFlow'} | ${'bpmnElementOutgoingIds'}
+          ${'incoming'} | ${'association'}  | ${'bpmnElementIncomingIds'}
+          ${'outgoing'} | ${'association'}  | ${'bpmnElementOutgoingIds'}
+        `(
+          `should convert as Shape, when a process contains a ${expandedKind} ${bpmnSubProcessKind} sub-process with $title $flowKind`,
+          ({ title, flowKind, expectedAttribute }: { title: string; flowKind: keyof TFlowNode; expectedAttribute: keyof ExpectedShape }) => {
+            const json = buildDefinitions({
+              process: {
+                subProcess: { id: 'sub_process_id_0', triggeredByEvent: triggeredByEvent, isExpanded },
+                [flowKind]: {
+                  id: `flow_${title}`,
+                  sourceRef: title === 'incoming' ? 'unknown' : 'sub_process_id_0',
+                  targetRef: title === 'incoming' ? 'sub_process_id_0' : 'unknown',
+                },
+              },
+            });
+
+            const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
+
+            verifyShape(model.flowNodes[0], {
+              shapeId: 'shape_sub_process_id_0',
+              bpmnElementId: 'sub_process_id_0',
+              bpmnElementName: undefined,
+              bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
+              bpmnElementMarkers: expectedBpmnElementMarkers,
+              bounds: { x: 67, y: 23, width: 456, height: 123 },
+              [expectedAttribute]: [`flow_${title}`],
+            });
+          },
+        );
+
+        it.each`
+          title         | expectedAttribute
+          ${'incoming'} | ${'bpmnElementIncomingIds'}
+          ${'outgoing'} | ${'bpmnElementOutgoingIds'}
+        `(
+          `should convert as Shape, when a process contains a ${expandedKind} ${bpmnSubProcessKind} sub-process with $title message flow`,
+          ({ title, expectedAttribute }: { title: string; expectedAttribute: keyof ExpectedShape }) => {
+            const json = buildDefinitions({
+              process: {
+                subProcess: { id: 'sub_process_id_0', triggeredByEvent: triggeredByEvent, isExpanded },
+              },
+              messageFlows: {
+                id: `flow_${title}`,
+                sourceRef: title === 'incoming' ? 'unknown' : 'sub_process_id_0',
+                targetRef: title === 'incoming' ? 'sub_process_id_0' : 'unknown',
+              },
+            });
+
+            const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
+
+            verifyShape(model.flowNodes[0], {
+              shapeId: 'shape_sub_process_id_0',
+              bpmnElementId: 'sub_process_id_0',
+              bpmnElementName: undefined,
+              bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
+              bpmnElementMarkers: expectedBpmnElementMarkers,
+              bounds: { x: 67, y: 23, width: 456, height: 123 },
+              [expectedAttribute]: [`flow_${title}`],
+            });
+          },
+        );
+
+        it(`should convert as Shape, when a process contains a ${expandedKind} ${bpmnSubProcessKind} sub-process with incoming/outgoing attributes and incoming/outgoing flows`, () => {
+          const json = buildDefinitions({
+            process: {
+              subProcess: { id: 'sub_process_id_0', triggeredByEvent: triggeredByEvent, incoming: 'flow_in_1', outgoing: ['flow_out_1', 'flow_out_2'], isExpanded },
+              sequenceFlow: [
+                { id: 'flow_in_1', sourceRef: 'unknown', targetRef: 'sub_process_id_0' },
+                { id: 'flow_out_2', sourceRef: 'sub_process_id_0', targetRef: 'unknown' },
+              ],
+              association: [{ id: 'flow_out_3', sourceRef: 'sub_process_id_0', targetRef: 'unknown' }],
+            },
+            messageFlows: { id: 'flow_in_2', sourceRef: 'unknown', targetRef: 'sub_process_id_0' },
+          });
+
+          const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 4, 1);
+
+          verifyShape(model.flowNodes[0], {
+            shapeId: 'shape_sub_process_id_0',
+            bpmnElementId: 'sub_process_id_0',
+            bpmnElementName: undefined,
+            bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
+            bpmnElementMarkers: expectedBpmnElementMarkers,
+            bounds: { x: 67, y: 23, width: 456, height: 123 },
+            bpmnElementIncomingIds: ['flow_in_1', 'flow_in_2'],
+            bpmnElementOutgoingIds: ['flow_out_1', 'flow_out_2', 'flow_out_3'],
+          });
+        });
+      });
     });
 
     it(`should convert as Shape, when a ${bpmnSubProcessKind} sub-process (with/without name & isExpanded) is an attribute (as array) of 'process'`, () => {
@@ -186,8 +319,8 @@ describe('parse bpmn as json for sub-process', () => {
               ],
               association: {
                 id: 'sub-process_id_association_id_0',
-                sourceRef: 'process_id_1_startEvent_1',
-                targetRef: 'unknown',
+                sourceRef: 'sub-process_id_1_startEvent_1',
+                targetRef: 'sub-process_id_1_textAnnotation_1',
               },
               textAnnotation: {
                 id: 'sub-process_id_1_textAnnotation_1',
@@ -284,6 +417,7 @@ describe('parse bpmn as json for sub-process', () => {
           bpmnElementName: 'SubProcess Start Event',
           bpmnElementKind: ShapeBpmnElementKind.EVENT_START,
           bounds: { x: 465, y: 335, width: 10, height: 10 },
+          bpmnElementOutgoingIds: ['sub-process_id_1_sequenceFlow_1', 'sub-process_id_association_id_0'],
         },
         ShapeBpmnEventDefinitionKind.TIMER,
       );
@@ -296,6 +430,7 @@ describe('parse bpmn as json for sub-process', () => {
           bpmnElementName: 'SubProcess End Event',
           bpmnElementKind: ShapeBpmnElementKind.EVENT_END,
           bounds: { x: 565, y: 335, width: 20, height: 20 },
+          bpmnElementIncomingIds: ['sub-process_id_1_sequenceFlow_2'],
         },
         ShapeBpmnEventDefinitionKind.TERMINATE,
       );
@@ -307,6 +442,7 @@ describe('parse bpmn as json for sub-process', () => {
         bpmnElementName: 'SubProcess User Task',
         bpmnElementKind: ShapeBpmnElementKind.TASK_USER,
         bounds: { x: 465, y: 335, width: 10, height: 10 },
+        bpmnElementIncomingIds: ['sub-process_id_1_sequenceFlow_1'],
       });
 
       verifyShape(model.flowNodes[3], {
@@ -316,6 +452,7 @@ describe('parse bpmn as json for sub-process', () => {
         bpmnElementName: 'SubProcess Exclusive Gateway',
         bpmnElementKind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
         bounds: { x: 565, y: 335, width: 20, height: 20 },
+        bpmnElementOutgoingIds: ['sub-process_id_1_sequenceFlow_2'],
       });
 
       verifyShape(model.flowNodes[5], {
@@ -325,6 +462,7 @@ describe('parse bpmn as json for sub-process', () => {
         bpmnElementName: 'SubProcess Text Annotation',
         bpmnElementKind: ShapeBpmnElementKind.TEXT_ANNOTATION,
         bounds: { x: 565, y: 335, width: 20, height: 20 },
+        bpmnElementIncomingIds: ['sub-process_id_association_id_0'],
       });
 
       const edges = model.edges;
@@ -340,8 +478,8 @@ describe('parse bpmn as json for sub-process', () => {
       verifyEdge(model.edges[2], {
         edgeId: 'edge_sub-process_id_association_id_0',
         bpmnElementId: 'sub-process_id_association_id_0',
-        bpmnElementSourceRefId: 'process_id_1_startEvent_1',
-        bpmnElementTargetRefId: 'unknown',
+        bpmnElementSourceRefId: 'sub-process_id_1_startEvent_1',
+        bpmnElementTargetRefId: 'sub-process_id_1_textAnnotation_1',
         waypoints: [new Waypoint(45, 78), new Waypoint(51, 78)],
       });
     });
