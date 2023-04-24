@@ -310,14 +310,18 @@ export function getVersion(): Version {
   return version;
 }
 
+export function updateStyle(bpmnElementIds: string | string[], style: StyleUpdate): void {
+  log('Applying style using the style API: %O', style);
+  bpmnVisualization.bpmnElementsRegistry.updateStyle(bpmnElementIds, style);
+  log('New style applied');
+}
+
 function updateStyleOfElementsIfRequested(): void {
   if (style) {
-    log("Applying style using the style API: '%s'", style);
     const bpmnElementIds = retrieveAllBpmnElementIds();
     log('Number of elements whose style is to be updated', bpmnElementIds.length);
 
-    bpmnVisualization.bpmnElementsRegistry.updateStyle(bpmnElementIds, style);
-    log('New style applied');
+    updateStyle(bpmnElementIds, style);
   }
 }
 
