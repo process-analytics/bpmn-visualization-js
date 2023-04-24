@@ -28,12 +28,108 @@ import {
   ShapeUtil,
   startBpmnVisualization,
   updateLoadOptions,
+  updateStyle,
   windowAlertStatusKoNotifier,
 } from '../../../ts/dev-bundle-index';
 
 let lastIdentifiedBpmnIds = [];
 const cssClassName = 'detection';
 let isOverlaysDisplayed = true;
+let useCSS = true;
+
+function updateStyleByAPI(bpmnIds, bpmnKind) {
+  const style = { font: { spacing: {} }, fill: {}, stroke: {}, gradient: {}, label: {} };
+
+  if (ShapeUtil.isTask(bpmnKind)) {
+    style.font.color = 'Indigo';
+    style.fill.color = 'gold';
+    style.font.size = 14;
+    style.fill.opacity = 20;
+  } else if (ShapeUtil.isEvent(bpmnKind)) {
+    style.font.color = 'MediumTurquoise';
+    style.stroke.color = 'MediumTurquoise';
+  } else if (ShapeUtil.isGateway(bpmnKind)) {
+    style.font.color = 'CadetBlue';
+    style.font.opacity = 85;
+    style.stroke.color = 'OrangeRed';
+    style.stroke.width = 4;
+  } else if (ShapeUtil.isPoolOrLane(bpmnKind)) {
+    style.font.color = 'white !important';
+    style.fill.color = 'deeppink';
+    style.stroke.opacity = 80;
+  } else if (ShapeUtil.isCallActivity(bpmnKind)) {
+    style.font.color = 'white';
+    style.font.family = 'Times New Roman';
+    style.font.isItalic = true;
+    style.font.isStrikeThrough = true;
+
+    style.fill.color = 'LimeGreen';
+  } else if (ShapeUtil.isSubProcess(bpmnKind)) {
+    style.font.color = 'white';
+    style.font.size = 14;
+    style.font.family = 'Dialog';
+    style.font.isBold = true;
+    style.font.isItalic = true;
+    style.font.isUnderline = true;
+    style.font.isStrikeThrough = true;
+
+    style.fill.color = 'MidnightBlue';
+    style.opacity = 60;
+  } else {
+    switch (bpmnKind) {
+      case 'group':
+      case 'textAnnotation':
+        style.font.color = 'Crimson';
+        style.font.size = 18;
+        style.font.family = 'Verdana';
+        style.font.isBold = true;
+        style.font.isUnderline = true;
+
+        style.stroke.color = 'Chartreuse';
+        style.stroke.width = 6;
+        break;
+      case 'messageFlow':
+      case 'sequenceFlow':
+      case 'association':
+        style.font.color = 'Chocolate';
+        style.stroke.color = 'Chocolate';
+        style.stroke.width = 4;
+        break;
+    }
+  }
+
+  updateStyle(bpmnIds, style);
+}
+
+/**
+Temporary implementation until we have https://github.com/process-analytics/bpmn-visualization-js/issues/2458.
+Note that this implementation has limitations, such as resetting font styles without considering what is originally defined in the BPMN model.
+*/
+function resetStyleByAPI() {
+  const style = {
+    font: {
+      color: 'default',
+      size: 10,
+      family: 'Arial',
+      isBold: false,
+      isItalic: false,
+      isUnderline: false,
+      isStrikeThrough: false,
+      opacity: 'default',
+    },
+    fill: {
+      color: 'default',
+      opacity: 'default',
+    },
+    stroke: {
+      color: 'default',
+      opacity: 'default',
+      width: 'default',
+    },
+    opacity: 'default',
+  };
+  updateStyle(lastIdentifiedBpmnIds, style);
+}
 
 function updateSelectedBPMNElements(textArea, bpmnKind) {
   log(`Searching for Bpmn elements of '${bpmnKind}' kind`);
@@ -50,9 +146,14 @@ function updateSelectedBPMNElements(textArea, bpmnKind) {
   // newly identified elements and values
   const newlyIdentifiedBpmnIds = elementsByKinds.map(elt => elt.bpmnSemantic.id);
 
-  // CSS classes update
-  removeCssClasses(lastIdentifiedBpmnIds, cssClassName);
-  addCssClasses(newlyIdentifiedBpmnIds, cssClassName);
+  // style update
+  if (useCSS) {
+    removeCssClasses(lastIdentifiedBpmnIds, cssClassName);
+    addCssClasses(newlyIdentifiedBpmnIds, cssClassName);
+  } else {
+    resetStyleByAPI(lastIdentifiedBpmnIds);
+    updateStyleByAPI(newlyIdentifiedBpmnIds, bpmnKind);
+  }
 
   // Overlays update
   lastIdentifiedBpmnIds.forEach(id => removeAllOverlays(id));
@@ -75,22 +176,37 @@ function configureControls() {
 
   document.getElementById('clear-btn').onclick = function () {
     textArea.value = '';
-    removeCssClasses(lastIdentifiedBpmnIds, cssClassName);
+    useCSS ? removeCssClasses(lastIdentifiedBpmnIds, cssClassName) : resetStyleByAPI(lastIdentifiedBpmnIds);
     lastIdentifiedBpmnIds.forEach(id => removeAllOverlays(id));
 
     // reset identified elements and values
     lastIdentifiedBpmnIds = [];
   };
 
-  // display options
+  // display overlay option
   const checkboxDisplayOverlaysElt = document.getElementById('checkbox-display-overlays');
   checkboxDisplayOverlaysElt.addEventListener('change', function () {
     isOverlaysDisplayed = this.checked;
     log('Request overlays display:', isOverlaysDisplayed);
     updateSelectedBPMNElements(textArea, selectedKindElt.value);
   });
+  checkboxDisplayOverlaysElt.checked = isOverlaysDisplayed;
 
-  checkboxDisplayOverlaysElt.checked = true;
+  // use CSS or API to style the BPMN elements
+  const checkboxUseCSSElt = document.getElementById('checkbox-css-style');
+  checkboxUseCSSElt.addEventListener('change', function () {
+    useCSS = this.checked;
+    log('Request CSS style feature:', useCSS);
+
+    if (useCSS) {
+      resetStyleByAPI(lastIdentifiedBpmnIds);
+      addCssClasses(lastIdentifiedBpmnIds, cssClassName);
+    } else {
+      removeCssClasses(lastIdentifiedBpmnIds, cssClassName);
+      updateStyleByAPI(lastIdentifiedBpmnIds, selectedKindElt.value);
+    }
+  });
+  checkboxUseCSSElt.checked = useCSS;
 }
 
 function getOverlay(bpmnKind) {
