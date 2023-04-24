@@ -39,82 +39,63 @@ let useCSS = true;
 
 function updateStyleByAPI(bpmnIds, bpmnKind) {
   const style = { font: { spacing: {} }, fill: {}, stroke: {}, gradient: {}, label: {} };
-  switch (bpmnKind) {
-    case 'task':
-    case 'userTask':
-    case 'scriptTask':
-    case 'serviceTask':
-    case 'receiveTask':
-    case 'sendTask':
-    case 'manualTask':
-    case 'businessRuleTask':
-      style.font.color = 'Indigo';
-      style.fill.color = 'gold';
-      style.font.size = 14;
-      style.fill.opacity = 20;
-      break;
-    case 'startEvent':
-    case 'endEvent':
-    case 'intermediateCatchEvent':
-    case 'intermediateThrowEvent':
-    case 'boundaryEvent':
-      style.font.color = 'MediumTurquoise';
-      style.stroke.color = 'MediumTurquoise';
-      break;
-    case 'exclusiveGateway':
-    case 'inclusiveGateway':
-    case 'parallelGateway':
-    case 'eventBasedGateway':
-    case 'complexGateway':
-      style.font.color = 'CadetBlue';
-      style.font.opacity = 85;
-      style.stroke.color = 'OrangeRed';
-      style.stroke.width = 4;
-      break;
-    case 'lane':
-    case 'pool':
-      style.font.color = 'white !important';
-      style.fill.color = 'deeppink';
-      style.stroke.opacity = 80;
-      break;
-    case 'callActivity':
-      style.font.color = 'white';
-      style.font.family = 'Times New Roman';
-      style.font.isItalic = true;
-      style.font.isStrikeThrough = true;
 
-      style.fill.color = 'LimeGreen';
-      break;
-    case 'subProcess':
-      style.font.color = 'white';
-      style.font.size = 14;
-      style.font.family = 'Dialog';
-      style.font.isBold = true;
-      style.font.isItalic = true;
-      style.font.isUnderline = true;
-      style.font.isStrikeThrough = true;
+  if (ShapeUtil.isTask(bpmnKind)) {
+    style.font.color = 'Indigo';
+    style.fill.color = 'gold';
+    style.font.size = 14;
+    style.fill.opacity = 20;
+  } else if (ShapeUtil.isEvent(bpmnKind)) {
+    style.font.color = 'MediumTurquoise';
+    style.stroke.color = 'MediumTurquoise';
+  } else if (ShapeUtil.isGateway(bpmnKind)) {
+    style.font.color = 'CadetBlue';
+    style.font.opacity = 85;
+    style.stroke.color = 'OrangeRed';
+    style.stroke.width = 4;
+  } else if (ShapeUtil.isPoolOrLane(bpmnKind)) {
+    style.font.color = 'white !important';
+    style.fill.color = 'deeppink';
+    style.stroke.opacity = 80;
+  } else if (ShapeUtil.isCallActivity(bpmnKind)) {
+    style.font.color = 'white';
+    style.font.family = 'Times New Roman';
+    style.font.isItalic = true;
+    style.font.isStrikeThrough = true;
 
-      style.fill.color = 'MidnightBlue';
-      style.opacity = 60;
-      break;
-    case 'group':
-    case 'textAnnotation':
-      style.font.color = 'Crimson';
-      style.font.size = 18;
-      style.font.family = 'Verdana';
-      style.font.isBold = true;
-      style.font.isUnderline = true;
+    style.fill.color = 'LimeGreen';
+  } else if (ShapeUtil.isSubProcess(bpmnKind)) {
+    style.font.color = 'white';
+    style.font.size = 14;
+    style.font.family = 'Dialog';
+    style.font.isBold = true;
+    style.font.isItalic = true;
+    style.font.isUnderline = true;
+    style.font.isStrikeThrough = true;
 
-      style.stroke.color = 'Chartreuse';
-      style.stroke.width = 6;
-      break;
-    case 'messageFlow':
-    case 'sequenceFlow':
-    case 'association':
-      style.font.color = 'Chocolate';
-      style.stroke.color = 'Chocolate';
-      style.stroke.width = 4;
-      break;
+    style.fill.color = 'MidnightBlue';
+    style.opacity = 60;
+  } else {
+    switch (bpmnKind) {
+      case 'group':
+      case 'textAnnotation':
+        style.font.color = 'Crimson';
+        style.font.size = 18;
+        style.font.family = 'Verdana';
+        style.font.isBold = true;
+        style.font.isUnderline = true;
+
+        style.stroke.color = 'Chartreuse';
+        style.stroke.width = 6;
+        break;
+      case 'messageFlow':
+      case 'sequenceFlow':
+      case 'association':
+        style.font.color = 'Chocolate';
+        style.stroke.color = 'Chocolate';
+        style.stroke.width = 4;
+        break;
+    }
   }
 
   updateStyle(bpmnIds, style);
