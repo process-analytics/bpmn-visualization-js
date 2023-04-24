@@ -91,20 +91,22 @@ export default class ProcessConverter {
   }
 
   private assignIncomingAndOutgoingIdsFromFlows(): void {
-    const getShapeBpmnElement = (id: string): ShapeBpmnElement =>
-      this.convertedElements.findFlowNode(id) ?? this.convertedElements.findLane(id) ?? this.convertedElements.findPoolById(id);
+    const fillShapeBpmnElementAttribute = (
+      shapeBpmnElementId: string,
+      shapeBpmnElementAttributeName: keyof Pick<ShapeBpmnElement, 'outgoingIds' | 'incomingIds'>,
+      valueToAdd: string,
+    ): void => {
+      const shapeBpmnElement =
+        this.convertedElements.findFlowNode(shapeBpmnElementId) ?? this.convertedElements.findLane(shapeBpmnElementId) ?? this.convertedElements.findPoolById(shapeBpmnElementId);
+      if (shapeBpmnElement && !shapeBpmnElement[shapeBpmnElementAttributeName].includes(valueToAdd)) {
+        shapeBpmnElement[shapeBpmnElementAttributeName].push(valueToAdd);
+      }
+    };
 
     const flows = [...this.convertedElements.getMessageFlows(), ...this.convertedElements.getSequenceFlows(), ...this.convertedElements.getAssociationFlows()];
     flows.forEach(flow => {
-      const sourceElement = getShapeBpmnElement(flow.sourceRefId);
-      if (sourceElement && !sourceElement.outgoingIds.includes(flow.id)) {
-        sourceElement.outgoingIds.push(flow.id);
-      }
-
-      const targetElement = getShapeBpmnElement(flow.targetRefId);
-      if (targetElement && !targetElement.incomingIds.includes(flow.id)) {
-        targetElement.incomingIds.push(flow.id);
-      }
+      fillShapeBpmnElementAttribute(flow.sourceRefId, 'outgoingIds', flow.id);
+      fillShapeBpmnElementAttribute(flow.targetRefId, 'incomingIds', flow.id);
     });
   }
 
