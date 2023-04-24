@@ -34,11 +34,9 @@ import envUtils = require('../../../helpers/environment-utils.js');
 const pageCheckLog = debugLogger('bv:test:page-check');
 
 class BpmnPage {
-  private bpmnQuerySelectors: BpmnQuerySelectorsForTests;
+  private bpmnQuerySelectors = new BpmnQuerySelectorsForTests();
 
-  constructor(private bpmnContainerId: string, private page: Page) {
-    this.bpmnQuerySelectors = new BpmnQuerySelectorsForTests();
-  }
+  constructor(private bpmnContainerId: string, private page: Page) {}
 
   async expectAvailableBpmnContainer(options?: PageWaitForSelectorOptions): Promise<void> {
     pageCheckLog('Expecting the BPMN container available (confirm bpmn-visualization initialization)');
@@ -276,13 +274,7 @@ export class PageTester {
 }
 
 export class BpmnPageSvgTester extends PageTester {
-  private bpmnQuerySelectors: BpmnQuerySelectorsForTests;
-
-  constructor(targetedPage: TargetedPageConfiguration, page: Page) {
-    super(targetedPage, page);
-    // TODO duplicated with BpmnPage
-    this.bpmnQuerySelectors = new BpmnQuerySelectorsForTests();
-  }
+  private bpmnQuerySelectors = new BpmnQuerySelectorsForTests();
 
   override async gotoPageAndLoadBpmnDiagram(bpmnDiagramName?: string): Promise<void> {
     await super.gotoPageAndLoadBpmnDiagram(bpmnDiagramName ?? 'not-used-dedicated-diagram-loaded-by-the-page', {
