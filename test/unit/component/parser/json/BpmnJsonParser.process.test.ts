@@ -59,7 +59,6 @@ describe('parse bpmn as json for process/pool', () => {
         bpmnElementId: 'Participant_1',
         bpmnElementName: undefined,
         bpmnElementKind: ShapeBpmnElementKind.POOL,
-        parentId: undefined,
         bounds: {
           x: 158,
           y: 50,
@@ -100,7 +99,6 @@ describe('parse bpmn as json for process/pool', () => {
         bpmnElementId: 'Participant_1',
         bpmnElementName: 'Participant without process ref',
         bpmnElementKind: ShapeBpmnElementKind.POOL,
-        parentId: undefined,
         isHorizontal: isHorizontal,
         bounds: {
           x: 158,
@@ -145,7 +143,6 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_1',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      parentId: undefined,
       bounds: {
         x: 158,
         y: 50,
@@ -191,7 +188,6 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_1',
       bpmnElementName: 'Process 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      parentId: undefined,
       isHorizontal: true,
       bounds: {
         x: 158,
@@ -243,7 +239,6 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_0nuvj8r',
       bpmnElementName: 'Pool 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      parentId: undefined,
       isHorizontal: true,
       bounds: {
         x: 158,
@@ -335,7 +330,6 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_1',
       bpmnElementName: 'Pool 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      parentId: undefined,
       isHorizontal: true,
       bounds: {
         x: 158,
@@ -349,7 +343,6 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_2',
       bpmnElementName: 'Pool 2',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      parentId: undefined,
       isHorizontal: true,
       bounds: {
         x: 158,
@@ -432,7 +425,6 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_1',
       bpmnElementName: 'Pool 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      parentId: undefined,
       isHorizontal: true,
       bounds: {
         x: 158,
@@ -446,7 +438,6 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_2',
       bpmnElementName: 'Pool 2 without processRef',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      parentId: undefined,
       isHorizontal: true,
       bounds: {
         x: 10158,
@@ -501,7 +492,6 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_1',
       bpmnElementName: 'Pool 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      parentId: undefined,
       isHorizontal: true,
       bounds: {
         x: 158,
