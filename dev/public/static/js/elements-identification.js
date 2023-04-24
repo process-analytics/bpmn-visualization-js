@@ -101,6 +101,10 @@ function updateStyleByAPI(bpmnIds, bpmnKind) {
   updateStyle(bpmnIds, style);
 }
 
+/**
+Temporary implementation until we have https://github.com/process-analytics/bpmn-visualization-js/issues/2458.
+Note that this implementation has limitations, such as resetting font styles without considering what is originally defined in the BPMN model.
+*/
 function resetStyleByAPI() {
   const style = {
     font: {
