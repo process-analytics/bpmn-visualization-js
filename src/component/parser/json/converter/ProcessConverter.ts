@@ -101,7 +101,7 @@ export default class ProcessConverter {
         sourceElement.outgoingIds.push(flow.id);
       }
 
-      const targetElement = getShapeBpmnElement(flow.sourceRefId);
+      const targetElement = getShapeBpmnElement(flow.targetRefId);
       if (targetElement && !targetElement.incomingIds.includes(flow.id)) {
         targetElement.incomingIds.push(flow.id);
       }
