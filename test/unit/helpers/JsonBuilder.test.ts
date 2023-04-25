@@ -2748,7 +2748,7 @@ describe('build json', () => {
   );
 
   describe('build json with call activity', () => {
-    it('build json of definitions containing one process with call activity (with id, name and expanded)', () => {
+    it('build json of definitions containing one process with call activity (with id, name and isExpanded)', () => {
       const json = buildDefinitions({
         process: {
           callActivity: { id: '0', name: 'name', calledElement: 'called_process', isExpanded: true },
@@ -2886,10 +2886,10 @@ describe('build json', () => {
   });
 
   describe('build json with subProcess', () => {
-    it('build json of definitions containing one process with subProcess (with id & name)', () => {
+    it('build json of definitions containing one process with subProcess (with id, name, triggeredByEvent, incoming, outgoing & isExpanded)', () => {
       const json = buildDefinitions({
         process: {
-          subProcess: { id: '0', name: 'subProcess name' },
+          subProcess: { id: '0', name: 'subProcess name', triggeredByEvent: true, incoming: 'flow_in', outgoing: ['flow_out_1', 'flow_out_2'], isExpanded: true },
         },
       });
 
@@ -2899,7 +2899,7 @@ describe('build json', () => {
           collaboration: { id: 'collaboration_id_0' },
           process: {
             id: '0',
-            subProcess: { id: '0', name: 'subProcess name' },
+            subProcess: { id: '0', name: 'subProcess name', triggeredByEvent: true, incoming: 'flow_in', outgoing: ['flow_out_1', 'flow_out_2'] },
           },
           BPMNDiagram: {
             name: 'process 0',
@@ -2908,6 +2908,7 @@ describe('build json', () => {
                 id: 'shape_0',
                 bpmnElement: '0',
                 Bounds: { x: 67, y: 23, width: 456, height: 123 },
+                isExpanded: true,
               },
             },
           },
@@ -2915,7 +2916,7 @@ describe('build json', () => {
       });
     });
 
-    it('build json of definitions containing one process with subProcess (without id & name)', () => {
+    it('build json of definitions containing one process with subProcess (without id, name, triggeredByEvent, incoming, outgoing & isExpanded)', () => {
       const json = buildDefinitions({
         process: {
           subProcess: {},
