@@ -20,7 +20,8 @@ const { pathsToModuleNameMapper } = require('ts-jest');
 // parsing fails as the file contains comment, so use the following hack taken from https://stackoverflow.com/questions/61996234/requiring-a-json-with-comments-in-node-js
 const fs = require('fs');
 // let jsonTxt = fs.readFileSync('./tsconfig.json', 'utf8');
-let jsonTxt = fs.readFileSync('../../tsconfig.test.json', 'utf8');
+// TODO only works with npm, not in IntelliJ when running an individual test
+let jsonTxt = fs.readFileSync('./tsconfig.test.json', 'utf8');
 const JSON5 = require('json5');
 const tsconfig = JSON5.parse(jsonTxt);
 const compilerOptions = tsconfig.compilerOptions;
