@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { tAssociationDirection } from '../../../src/model/bpmn/json/baseElement/artifact';
-import { ShapeBpmnElementKind } from '../../../src/model/bpmn/internal';
+import { tAssociationDirection } from '@lib/model/bpmn/json/baseElement/artifact';
+import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 
 import type { BuildEventDefinitionParameter, OtherBuildEventKind, BuildTaskKind, BuildGatewayKind, BpmnGlobalTaskKind } from './JsonBuilder';
 import { buildDefinitions, EventDefinitionOn } from './JsonBuilder';

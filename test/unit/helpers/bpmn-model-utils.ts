@@ -14,19 +14,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type BpmnModel from '../../../src/model/bpmn/internal/BpmnModel';
-import { Edge } from '../../../src/model/bpmn/internal/edge/edge';
-import { AssociationFlow, MessageFlow, SequenceFlow } from '../../../src/model/bpmn/internal/edge/flows';
-import Shape from '../../../src/model/bpmn/internal/shape/Shape';
+import type BpmnModel from '@lib/model/bpmn/internal/BpmnModel';
+import { Edge } from '@lib/model/bpmn/internal/edge/edge';
+import { AssociationFlow, MessageFlow, SequenceFlow } from '@lib/model/bpmn/internal/edge/flows';
+import Shape from '@lib/model/bpmn/internal/shape/Shape';
 import ShapeBpmnElement, {
   ShapeBpmnActivity,
   ShapeBpmnBoundaryEvent,
   ShapeBpmnCallActivity,
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
-} from '../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../src/model/bpmn/internal';
-import { ensureIsArray } from '../../../src/component/helpers/array-utils';
+} from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
+import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';
+import { ensureIsArray } from '@lib/component/helpers/array-utils';
 
 const newBpmnModel = (): BpmnModel => ({
   edges: [],

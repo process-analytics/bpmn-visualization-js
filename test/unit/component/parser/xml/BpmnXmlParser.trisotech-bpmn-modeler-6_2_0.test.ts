@@ -14,14 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
-import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
+import BpmnXmlParser from '@lib/component/parser/xml/BpmnXmlParser';
+import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
 import { readFileSync } from '../../../../helpers/file-helper';
-import type { TSubProcess } from '../../../../../src/model/bpmn/json/baseElement/flowNode/activity/activity';
-import { ensureIsArray } from '../../../../../src/component/helpers/array-utils';
-import type { TStartEvent } from '../../../../../src/model/bpmn/json/baseElement/flowNode/event';
-import type { TTask } from '../../../../../src/model/bpmn/json/baseElement/flowNode/activity/task';
-import type { TSequenceFlow } from '../../../../../src/model/bpmn/json/baseElement/flowElement';
+import type { TSubProcess } from '@lib/model/bpmn/json/baseElement/flowNode/activity/activity';
+import { ensureIsArray } from '@lib/component/helpers/array-utils';
+import type { TStartEvent } from '@lib/model/bpmn/json/baseElement/flowNode/event';
+import type { TTask } from '@lib/model/bpmn/json/baseElement/flowNode/activity/task';
+import type { TSequenceFlow } from '@lib/model/bpmn/json/baseElement/flowElement';
 
 describe('parse bpmn as xml for Trisotech BPMN Modeler 6.2.0', () => {
   it('bpmn with process with extension, ensure elements are present', () => {

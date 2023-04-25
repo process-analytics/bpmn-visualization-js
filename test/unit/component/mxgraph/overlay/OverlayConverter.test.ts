@@ -17,10 +17,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { OverlayConverter } from '../../../../../src/component/mxgraph/overlay/OverlayConverter';
-import type { MxGraphCustomOverlayPosition } from '../../../../../src/component/mxgraph/overlay/custom-overlay';
-import type { Overlay, OverlayPosition } from '../../../../../src/bpmn-visualization';
-import { StyleDefault } from '../../../../../src/bpmn-visualization';
+import { OverlayConverter } from '@lib/component/mxgraph/overlay/OverlayConverter';
+import type { MxGraphCustomOverlayPosition } from '@lib/component/mxgraph/overlay/custom-overlay';
+import type { Overlay, OverlayPosition } from '@lib/bpmn-visualization';
+import { StyleDefault } from '@lib/bpmn-visualization';
 
 describe('overlay converter', () => {
   const overlayConverter = new OverlayConverter();

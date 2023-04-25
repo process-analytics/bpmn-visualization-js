@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { EdgeBpmnSemantic, ShapeBpmnSemantic } from '../../../../src/component/registry';
-import { BpmnModelRegistry } from '../../../../src/component/registry/bpmn-model-registry';
+import type { EdgeBpmnSemantic, ShapeBpmnSemantic } from '@lib/component/registry';
+import { BpmnModelRegistry } from '@lib/component/registry/bpmn-model-registry';
 import { expectAssociationFlow, expectLane, expectMessageFlow, expectPool, expectSequenceFlow, expectStartEvent } from '../../helpers/bpmn-semantic-utils';
 import { associationFlowInModel, laneInModel, messageFlowInModel, poolInModel, sequenceFlowInModel, startEventInModel } from '../../helpers/bpmn-model-utils';
 
