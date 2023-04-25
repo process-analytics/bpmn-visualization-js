@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { TGlobalTask } from '../../../src/model/bpmn/json/baseElement/rootElement/globalTask';
 import type { TArtifact } from '../../../src/model/bpmn/json/baseElement/artifact';
 import type { TAssociation } from '../../../src/model/bpmn/json/baseElement/artifact';
 import type { DiagramElement } from '../../../src/model/bpmn/json/DI';
@@ -25,7 +26,7 @@ import type { TParticipant } from '../../../src/model/bpmn/json/baseElement/part
 import type { TCollaboration } from '../../../src/model/bpmn/json/baseElement/rootElement/collaboration';
 import type { TEventDefinition } from '../../../src/model/bpmn/json/baseElement/rootElement/eventDefinition';
 import type { TProcess } from '../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
-import type { BpmnJsonModel } from '../../../src/model/bpmn/json/BPMN20';
+import type { BpmnJsonModel, TDefinitions } from '../../../src/model/bpmn/json/BPMN20';
 import type { BPMNEdge, BPMNPlane, BPMNShape } from '../../../src/model/bpmn/json/BPMNDI';
 
 type BuildProcessElementParameter = (Pick<TFlowNode, 'id' | 'name'> | Pick<TArtifact, 'id'>) & {
@@ -225,12 +226,26 @@ export interface BuildMessageFlowParameter {
   targetRef: string;
 }
 
+export type BpmnGlobalTaskKind = keyof Pick<TDefinitions, 'globalTask' | 'globalBusinessRuleTask' | 'globalManualTask' | 'globalScriptTask' | 'globalUserTask'>;
+export type BuildGlobalTaskParameter = {
+  id?: string;
+
+  /** @default 'globalTask' */
+  bpmnKind?: BpmnGlobalTaskKind;
+};
+
+export interface BuildTaskParameter extends TFlowNode {
+  /** @default 'task' */
+  bpmnKind?: BuildTaskKind;
+}
+
 export interface BuildDefinitionParameter {
   process: BuildProcessParameter | BuildProcessParameter[];
   messageFlows?: BuildMessageFlowParameter | BuildMessageFlowParameter[];
+  globalTask?: BuildGlobalTaskParameter | BuildGlobalTaskParameter[];
 }
 
-export function buildDefinitions({ process, messageFlows }: BuildDefinitionParameter): BpmnJsonModel {
+export function buildDefinitions({ process, messageFlows, globalTask }: BuildDefinitionParameter): BpmnJsonModel {
   const json: BpmnJsonModel = {
     definitions: {
       targetNamespace: '',
@@ -252,6 +267,10 @@ export function buildDefinitions({ process, messageFlows }: BuildDefinitionParam
 
   if (messageFlows) {
     (Array.isArray(messageFlows) ? messageFlows : [messageFlows]).forEach(messageFlow => addMessageFlow(messageFlow, json));
+  }
+
+  if (globalTask) {
+    (Array.isArray(globalTask) ? globalTask : [globalTask]).forEach((task, index) => addGlobalTask(task, json, index));
   }
   return json;
 }
@@ -284,7 +303,7 @@ function addParticipant(id: string, jsonModel: BpmnJsonModel): void {
 function addMessageFlow(messageFlowParameter: BuildMessageFlowParameter, jsonModel: BpmnJsonModel): void {
   const messageFlow: TMessageFlow = messageFlowParameter;
 
-  const collaboration: TCollaboration = getElementOfArray<TProcess>(jsonModel.definitions.collaboration as TCollaboration);
+  const collaboration: TCollaboration = getElementOfArray<TCollaboration>(jsonModel.definitions.collaboration as TCollaboration);
   updateBpmnElement(collaboration.messageFlow, messageFlow, (value: TMessageFlow | TMessageFlow[]) => (collaboration.messageFlow = value));
 
   addEdge(jsonModel, {
@@ -295,6 +314,16 @@ function addMessageFlow(messageFlowParameter: BuildMessageFlowParameter, jsonMod
     ],
   });
 }
+
+const addGlobalTask = ({ id, bpmnKind = 'globalTask', ...rest }: BuildGlobalTaskParameter, jsonModel: BpmnJsonModel, index: number): void => {
+  const globalTask: TGlobalTask = {
+    id: id ? id : `${bpmnKind}_id_${index}`,
+    ...rest,
+  };
+
+  const definitions = jsonModel.definitions;
+  updateBpmnElement(definitions[bpmnKind], globalTask, (value: TGlobalTask | TGlobalTask[]) => (definitions[bpmnKind] = value));
+};
 
 function addElementsOnProcess(processParameter: BuildProcessParameter, json: BpmnJsonModel, processIndex: number): void {
   if (processParameter.lane) {
