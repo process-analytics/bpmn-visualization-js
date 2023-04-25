@@ -15,8 +15,15 @@ limitations under the License.
 */
 
 // https://kulshekhar.github.io/ts-jest/docs/getting-started/paths-mapping/
-// const { pathsToModuleNameMapper } = require('ts-jest');
-// const { compilerOptions } = require('../../tsconfig.test.json');
+const { pathsToModuleNameMapper } = require('ts-jest');
+// Cannot use const { compilerOptions } = require('../../tsconfig.test.json');
+// parsing fails as the file contains comment, so use the following hack taken from https://stackoverflow.com/questions/61996234/requiring-a-json-with-comments-in-node-js
+const fs = require('fs');
+// let jsonTxt = fs.readFileSync('./tsconfig.json', 'utf8');
+let jsonTxt = fs.readFileSync('../../tsconfig.test.json', 'utf8');
+const JSON5 = require('json5');
+const tsconfig = JSON5.parse(jsonTxt);
+const compilerOptions = tsconfig.compilerOptions;
 
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
@@ -31,11 +38,7 @@ module.exports = {
       },
     ],
   },
-  // moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
-  moduleNameMapper: {
-    '^@lib/(.*)$': '<rootDir>/src/$1',
-    // '^lib/(.*)$': '<rootDir>/common/$1',
-  },
+  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/' }),
   collectCoverageFrom: ['src/**/*.{ts,js}'],
   coveragePathIgnorePatterns: ['/src/model/'],
   coverageReporters: ['lcov', 'text-summary'],
