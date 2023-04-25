@@ -31,11 +31,9 @@ export interface MessageFlowRequestedChecks extends RequestedChecks {
 }
 
 export class HtmlElementLookup {
-  private bpmnQuerySelectors: BpmnQuerySelectorsForTests;
+  private bpmnQuerySelectors = new BpmnQuerySelectorsForTests();
 
-  constructor(private bpmnVisualization: BpmnVisualization) {
-    this.bpmnQuerySelectors = new BpmnQuerySelectorsForTests();
-  }
+  constructor(private bpmnVisualization: BpmnVisualization) {}
 
   expectNoElement(bpmnId: string): void {
     const svgGroupElement = this.findSvgElement(bpmnId);
