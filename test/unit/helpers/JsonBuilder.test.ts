@@ -2987,6 +2987,109 @@ describe('build json', () => {
     });
   });
 
+  describe('build json with textAnnotation on process', () => {
+    it('build json of definitions containing one process with textAnnotation (with id & text)', () => {
+      const json = buildDefinitions({
+        process: {
+          textAnnotation: { id: '0', text: 'my text' },
+        },
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: { id: 'collaboration_id_0' },
+          process: {
+            id: '0',
+            textAnnotation: {
+              id: '0',
+              text: 'my text',
+            },
+          },
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: {
+                id: 'shape_0',
+                bpmnElement: '0',
+                Bounds: { x: 456, y: 23, width: 78, height: 54 },
+              },
+            },
+          },
+        },
+      });
+    });
+
+    it('build json of definitions containing one process with textAnnotation (without id & text)', () => {
+      const json = buildDefinitions({
+        process: {
+          textAnnotation: {},
+        },
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: { id: 'collaboration_id_0' },
+          process: {
+            id: '0',
+            textAnnotation: { id: 'textAnnotation_id_0_0' },
+          },
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: {
+                id: 'shape_textAnnotation_id_0_0',
+                bpmnElement: 'textAnnotation_id_0_0',
+                Bounds: { x: 456, y: 23, width: 78, height: 54 },
+              },
+            },
+          },
+        },
+      });
+    });
+
+    it('build json of definitions containing 2 processes with textAnnotation (without id)', () => {
+      const json = buildDefinitions({
+        process: [{ textAnnotation: {} }, { textAnnotation: {} }],
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: { id: 'collaboration_id_0' },
+          process: [
+            {
+              id: '0',
+              textAnnotation: { id: 'textAnnotation_id_0_0' },
+            },
+            {
+              id: '1',
+              textAnnotation: { id: 'textAnnotation_id_1_0' },
+            },
+          ],
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: [
+                {
+                  id: 'shape_textAnnotation_id_0_0',
+                  bpmnElement: 'textAnnotation_id_0_0',
+                  Bounds: { x: 456, y: 23, width: 78, height: 54 },
+                },
+                {
+                  id: 'shape_textAnnotation_id_1_0',
+                  bpmnElement: 'textAnnotation_id_1_0',
+                  Bounds: { x: 456, y: 23, width: 78, height: 54 },
+                },
+              ],
+            },
+          },
+        },
+      });
+    });
+  });
+
   describe('build json with sequence flow', () => {
     it('build json of definitions containing one process with sequence flow (with id & name)', () => {
       const json = buildDefinitions({

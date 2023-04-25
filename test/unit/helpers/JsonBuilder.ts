@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { TTextAnnotation } from '../../../src/model/bpmn/json/baseElement/artifact';
 import type { TGlobalTask } from '../../../src/model/bpmn/json/baseElement/rootElement/globalTask';
 import type { TArtifact } from '../../../src/model/bpmn/json/baseElement/artifact';
 import type { TAssociation } from '../../../src/model/bpmn/json/baseElement/artifact';
@@ -142,6 +143,12 @@ export interface BuildSequenceFlowParameter extends TFlowElement {
  */
 export type BuildAssociationParameter = Pick<TAssociation, 'id' | 'sourceRef' | 'targetRef' | 'associationDirection'>;
 
+/**
+ * If the id field is set, the default id is override.
+ * Otherwise, the id has the format: `textAnnotation_id_${processIndex}_${index}`
+ */
+export type BuildTextAnnotationParameter = Pick<TTextAnnotation, 'id' | 'text'>;
+
 export interface BuildProcessParameter {
   lane?: BuildLaneParameter | BuildLaneParameter[];
   task?: BuildTaskParameter | BuildTaskParameter[];
@@ -151,6 +158,7 @@ export interface BuildProcessParameter {
   subProcess?: BuildSubProcessParameter | BuildSubProcessParameter[];
   sequenceFlow?: BuildSequenceFlowParameter | BuildSequenceFlowParameter[];
   association?: BuildAssociationParameter | BuildAssociationParameter[];
+  textAnnotation?: BuildTextAnnotationParameter | BuildTextAnnotationParameter[];
 
   /**
    * - If `withParticipant` of `BuildDefinitionParameter` is false, it's corresponding to the id of the process.
@@ -386,6 +394,11 @@ function addElementsOnProcess(processParameter: BuildProcessParameter, json: Bpm
           ],
         },
       ),
+    );
+  }
+  if (processParameter.textAnnotation) {
+    (Array.isArray(processParameter.textAnnotation) ? processParameter.textAnnotation : [processParameter.textAnnotation]).forEach((textAnnotationParameter, index) =>
+      addProcessElementWithShape(json, 'textAnnotation', { ...textAnnotationParameter, index, processIndex }, { Bounds: { x: 456, y: 23, width: 78, height: 54 } }),
     );
   }
 }
