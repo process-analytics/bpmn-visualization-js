@@ -14,6 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+// https://kulshekhar.github.io/ts-jest/docs/getting-started/paths-mapping/
+// const { pathsToModuleNameMapper } = require('ts-jest');
+// const { compilerOptions } = require('../../tsconfig.test.json');
+
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
   rootDir: '../..',
@@ -26,6 +30,11 @@ module.exports = {
         tsconfig: '<rootDir>/tsconfig.test.json',
       },
     ],
+  },
+  // moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
+  moduleNameMapper: {
+    '^@lib/(.*)$': '<rootDir>/src/$1',
+    // '^lib/(.*)$': '<rootDir>/common/$1',
   },
   collectCoverageFrom: ['src/**/*.{ts,js}'],
   coveragePathIgnorePatterns: ['/src/model/'],

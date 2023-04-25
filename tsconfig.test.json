@@ -4,14 +4,14 @@
     "sourceMap": true,
     "baseUrl": ".",
     "paths": {
-      // allow to import sources directly with "src/xx/yy" instead of using relative paths like "../../../src/xx/yy"
-      "@/lib/*": ["src/*"],
+      // allow to import sources directly with "@lib/xx/yy" instead of using relative paths like "../../../src/xx/yy"
+      "@lib/*": ["src/*"],
       // TODO manage ../e2e and other test utils
       // e2e
       // test-config --> ../config
     }
   },
   "include": [
-    "test/**/*"
+    "test/**/*.ts"
   ]
 }
