@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import { tAssociationDirection } from '../../../src/model/bpmn/json/baseElement/artifact';
 import { ShapeBpmnElementKind } from '../../../src/model/bpmn/internal';
 
 import type { BuildEventDefinitionParameter, OtherBuildEventKind, BuildTaskKind, BuildGatewayKind } from './JsonBuilder';
@@ -3369,6 +3370,127 @@ describe('build json', () => {
                   waypoint: [
                     { x: 567, y: 345 },
                     { x: 587, y: 345 },
+                  ],
+                },
+              ],
+            },
+          },
+        },
+      });
+    });
+  });
+
+  describe('build json with association', () => {
+    it('build json of definitions containing one process with association (with id, sourceRef, targetRef & associationDirection)', () => {
+      const json = buildDefinitions({
+        process: {
+          association: { id: '0', associationDirection: tAssociationDirection.One, sourceRef: 'source_1', targetRef: 'target_1' },
+        },
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: { id: 'collaboration_id_0' },
+          process: {
+            id: '0',
+            association: {
+              id: '0',
+              associationDirection: 'One',
+              sourceRef: 'source_1',
+              targetRef: 'target_1',
+            },
+          },
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNEdge: {
+                id: 'edge_0',
+                bpmnElement: '0',
+                waypoint: [
+                  { x: 45, y: 78 },
+                  { x: 51, y: 78 },
+                ],
+              },
+            },
+          },
+        },
+      });
+    });
+
+    it('build json of definitions containing one process with association (without id & associationDirection)', () => {
+      const json = buildDefinitions({
+        process: {
+          association: { sourceRef: 'source_1', targetRef: 'target_1' },
+        },
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: { id: 'collaboration_id_0' },
+          process: {
+            id: '0',
+            association: {
+              id: 'association_id_0_0',
+              sourceRef: 'source_1',
+              targetRef: 'target_1',
+            },
+          },
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNEdge: {
+                id: 'edge_association_id_0_0',
+                bpmnElement: 'association_id_0_0',
+                waypoint: [
+                  { x: 45, y: 78 },
+                  { x: 51, y: 78 },
+                ],
+              },
+            },
+          },
+        },
+      });
+    });
+
+    it('build json of definitions containing 2 processes with association (without id)', () => {
+      const json = buildDefinitions({
+        process: [{ association: { sourceRef: 'source_1', targetRef: 'target_1' } }, { association: { sourceRef: 'source_2', targetRef: 'target_2' } }],
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: { id: 'collaboration_id_0' },
+          process: [
+            {
+              id: '0',
+              association: { id: 'association_id_0_0', sourceRef: 'source_1', targetRef: 'target_1' },
+            },
+            {
+              id: '1',
+              association: { id: 'association_id_1_0', sourceRef: 'source_2', targetRef: 'target_2' },
+            },
+          ],
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNEdge: [
+                {
+                  id: 'edge_association_id_0_0',
+                  bpmnElement: 'association_id_0_0',
+                  waypoint: [
+                    { x: 45, y: 78 },
+                    { x: 51, y: 78 },
+                  ],
+                },
+                {
+                  id: 'edge_association_id_1_0',
+                  bpmnElement: 'association_id_1_0',
+                  waypoint: [
+                    { x: 45, y: 78 },
+                    { x: 51, y: 78 },
                   ],
                 },
               ],
