@@ -1,4 +1,5 @@
 {
+  "$schema": "https://typedoc.org/schema.json",
   "name": "bpmn-visualization API Documentation",
   "readme": "none",
   "out": "./build/docs/api",
@@ -6,5 +7,8 @@
   "excludeExternals": true,
   "excludePrivate": true,
   "categoryOrder": ["Initialization & Configuration", "BPMN", "Navigation","Custom Behavior", "Overlays", "BPMN Theme", "Element Style", "*"],
-  "categorizeByGroup": false
+  "categorizeByGroup": false,
+  "navigation": {
+    "includeCategories": true
+  }
 }
