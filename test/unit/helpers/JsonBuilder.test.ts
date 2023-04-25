@@ -14,9 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import { tAssociationDirection } from '../../../src/model/bpmn/json/baseElement/artifact';
 import { ShapeBpmnElementKind } from '../../../src/model/bpmn/internal';
 
-import type { BuildEventDefinitionParameter, OtherBuildEventKind, BuildTaskKind, BuildGatewayKind } from './JsonBuilder';
+import type { BuildEventDefinitionParameter, OtherBuildEventKind, BuildTaskKind, BuildGatewayKind, BpmnGlobalTaskKind } from './JsonBuilder';
 import { buildDefinitions, EventDefinitionOn } from './JsonBuilder';
 
 describe('build json', () => {
@@ -2748,7 +2749,7 @@ describe('build json', () => {
   );
 
   describe('build json with call activity', () => {
-    it('build json of definitions containing one process with call activity (with id, name and expanded)', () => {
+    it('build json of definitions containing one process with call activity (with id, name and isExpanded)', () => {
       const json = buildDefinitions({
         process: {
           callActivity: { id: '0', name: 'name', calledElement: 'called_process', isExpanded: true },
@@ -2886,10 +2887,10 @@ describe('build json', () => {
   });
 
   describe('build json with subProcess', () => {
-    it('build json of definitions containing one process with subProcess (with id & name)', () => {
+    it('build json of definitions containing one process with subProcess (with id, name, triggeredByEvent, incoming, outgoing & isExpanded)', () => {
       const json = buildDefinitions({
         process: {
-          subProcess: { id: '0', name: 'subProcess name' },
+          subProcess: { id: '0', name: 'subProcess name', triggeredByEvent: true, incoming: 'flow_in', outgoing: ['flow_out_1', 'flow_out_2'], isExpanded: true },
         },
       });
 
@@ -2899,7 +2900,7 @@ describe('build json', () => {
           collaboration: { id: 'collaboration_id_0' },
           process: {
             id: '0',
-            subProcess: { id: '0', name: 'subProcess name' },
+            subProcess: { id: '0', name: 'subProcess name', triggeredByEvent: true, incoming: 'flow_in', outgoing: ['flow_out_1', 'flow_out_2'] },
           },
           BPMNDiagram: {
             name: 'process 0',
@@ -2908,6 +2909,7 @@ describe('build json', () => {
                 id: 'shape_0',
                 bpmnElement: '0',
                 Bounds: { x: 67, y: 23, width: 456, height: 123 },
+                isExpanded: true,
               },
             },
           },
@@ -2915,7 +2917,7 @@ describe('build json', () => {
       });
     });
 
-    it('build json of definitions containing one process with subProcess (without id & name)', () => {
+    it('build json of definitions containing one process with subProcess (without id, name, triggeredByEvent, incoming, outgoing & isExpanded)', () => {
       const json = buildDefinitions({
         process: {
           subProcess: {},
@@ -3377,4 +3379,212 @@ describe('build json', () => {
       });
     });
   });
+
+  describe('build json with association', () => {
+    it('build json of definitions containing one process with association (with id, sourceRef, targetRef & associationDirection)', () => {
+      const json = buildDefinitions({
+        process: {
+          association: { id: '0', associationDirection: tAssociationDirection.One, sourceRef: 'source_1', targetRef: 'target_1' },
+        },
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: { id: 'collaboration_id_0' },
+          process: {
+            id: '0',
+            association: {
+              id: '0',
+              associationDirection: 'One',
+              sourceRef: 'source_1',
+              targetRef: 'target_1',
+            },
+          },
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNEdge: {
+                id: 'edge_0',
+                bpmnElement: '0',
+                waypoint: [
+                  { x: 45, y: 78 },
+                  { x: 51, y: 78 },
+                ],
+              },
+            },
+          },
+        },
+      });
+    });
+
+    it('build json of definitions containing one process with association (without id & associationDirection)', () => {
+      const json = buildDefinitions({
+        process: {
+          association: { sourceRef: 'source_1', targetRef: 'target_1' },
+        },
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: { id: 'collaboration_id_0' },
+          process: {
+            id: '0',
+            association: {
+              id: 'association_id_0_0',
+              sourceRef: 'source_1',
+              targetRef: 'target_1',
+            },
+          },
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNEdge: {
+                id: 'edge_association_id_0_0',
+                bpmnElement: 'association_id_0_0',
+                waypoint: [
+                  { x: 45, y: 78 },
+                  { x: 51, y: 78 },
+                ],
+              },
+            },
+          },
+        },
+      });
+    });
+
+    it('build json of definitions containing 2 processes with association (without id)', () => {
+      const json = buildDefinitions({
+        process: [{ association: { sourceRef: 'source_1', targetRef: 'target_1' } }, { association: { sourceRef: 'source_2', targetRef: 'target_2' } }],
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: { id: 'collaboration_id_0' },
+          process: [
+            {
+              id: '0',
+              association: { id: 'association_id_0_0', sourceRef: 'source_1', targetRef: 'target_1' },
+            },
+            {
+              id: '1',
+              association: { id: 'association_id_1_0', sourceRef: 'source_2', targetRef: 'target_2' },
+            },
+          ],
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNEdge: [
+                {
+                  id: 'edge_association_id_0_0',
+                  bpmnElement: 'association_id_0_0',
+                  waypoint: [
+                    { x: 45, y: 78 },
+                    { x: 51, y: 78 },
+                  ],
+                },
+                {
+                  id: 'edge_association_id_1_0',
+                  bpmnElement: 'association_id_1_0',
+                  waypoint: [
+                    { x: 45, y: 78 },
+                    { x: 51, y: 78 },
+                  ],
+                },
+              ],
+            },
+          },
+        },
+      });
+    });
+  });
+
+  describe.each(['globalTask', 'globalBusinessRuleTask', 'globalManualTask', 'globalScriptTask', 'globalUserTask'] as BpmnGlobalTaskKind[])(
+    'build json with %s',
+    (bpmnKind: BpmnGlobalTaskKind) => {
+      it(`build json of definitions containing one ${bpmnKind} (with id)`, () => {
+        const json = buildDefinitions({
+          globalTask: { id: '0', bpmnKind },
+          process: {},
+        });
+
+        expect(json).toEqual({
+          definitions: {
+            targetNamespace: '',
+            collaboration: { id: 'collaboration_id_0' },
+            [bpmnKind]: { id: '0' },
+            process: { id: '0' },
+            BPMNDiagram: {
+              name: 'process 0',
+              BPMNPlane: {},
+            },
+          },
+        });
+      });
+
+      it(`build json of definitions containing one ${bpmnKind} (without id)`, () => {
+        const json = buildDefinitions({
+          globalTask: { bpmnKind },
+          process: {},
+        });
+
+        expect(json).toEqual({
+          definitions: {
+            targetNamespace: '',
+            collaboration: { id: 'collaboration_id_0' },
+            [bpmnKind]: { id: `${bpmnKind}_id_0` },
+            process: { id: '0' },
+            BPMNDiagram: {
+              name: 'process 0',
+              BPMNPlane: {},
+            },
+          },
+        });
+      });
+
+      it(`build json of definitions containing 2 ${bpmnKind} (without id)`, () => {
+        const json = buildDefinitions({
+          globalTask: [{ bpmnKind }, { bpmnKind }],
+          process: {},
+        });
+
+        expect(json).toEqual({
+          definitions: {
+            targetNamespace: '',
+            collaboration: { id: 'collaboration_id_0' },
+            [bpmnKind]: [{ id: `${bpmnKind}_id_0` }, { id: `${bpmnKind}_id_1` }],
+            process: { id: '0' },
+            BPMNDiagram: {
+              name: 'process 0',
+              BPMNPlane: {},
+            },
+          },
+        });
+      });
+
+      if (bpmnKind === 'globalTask') {
+        it(`build json of definitions containing one process with task (without bpmnKind)`, () => {
+          const json = buildDefinitions({
+            globalTask: {},
+            process: {},
+          });
+
+          expect(json).toEqual({
+            definitions: {
+              targetNamespace: '',
+              collaboration: { id: 'collaboration_id_0' },
+              globalTask: { id: 'globalTask_id_0' },
+              process: { id: '0' },
+              BPMNDiagram: {
+                name: 'process 0',
+                BPMNPlane: {},
+              },
+            },
+          });
+        });
+      }
+    },
+  );
 });
