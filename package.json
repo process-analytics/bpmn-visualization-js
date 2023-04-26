@@ -143,7 +143,7 @@
     "playwright": "~1.30.0",
     "postcss": "~8.4.23",
     "postcss-cli": "~10.1.0",
-    "prettier": "~2.8.7",
+    "prettier": "~2.8.8",
     "rimraf": "~5.0.0",
     "rollup": "~3.21.0",
     "rollup-plugin-node-externals": "~5.1.2",
