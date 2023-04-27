@@ -21,8 +21,8 @@ import {
 } from './helpers/bpmn-visualization-initialization';
 import { readFileSync } from '../helpers/file-helper';
 import { allTestedFitTypes } from './helpers/fit-utils';
-import type { FitType } from '../../src/component/options';
-import { ShapeBpmnElementKind } from '../../src/model/bpmn/internal';
+import type { FitType } from '@lib/component/options';
+import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 
 describe('BpmnVisualization initialization', () => {
   it.each`
