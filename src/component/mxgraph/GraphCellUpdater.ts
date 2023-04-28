@@ -94,7 +94,7 @@ export default class GraphCellUpdater {
     this.graph.batchUpdate(() => {
       for (const cell of cells) {
         let cellStyle = cell.getStyle();
-        styleUpdate.opacity && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_OPACITY, ensureOpacityValue(styleUpdate.opacity)));
+        cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_OPACITY, styleUpdate.opacity, ensureOpacityValue);
         styleUpdate.stroke && (cellStyle = updateStroke(cellStyle, styleUpdate.stroke));
         styleUpdate.font && (cellStyle = updateFont(cellStyle, styleUpdate.font));
 
@@ -111,9 +111,9 @@ export default class GraphCellUpdater {
 const convertDefaultValue = (value: string): string | undefined => (value == 'default' ? undefined : value);
 
 const updateStroke = (cellStyle: string, stroke: Stroke): string => {
-  stroke.color && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKECOLOR, convertDefaultValue(stroke.color)));
-  stroke.opacity && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKE_OPACITY, ensureOpacityValue(stroke.opacity)));
-  stroke.width && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKEWIDTH, ensureStrokeWidthValue(stroke.width)));
+  cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKECOLOR, stroke.color, convertDefaultValue);
+  cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKE_OPACITY, stroke.opacity, ensureOpacityValue);
+  cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKEWIDTH, stroke.width, ensureStrokeWidthValue);
 
   return cellStyle;
 };
