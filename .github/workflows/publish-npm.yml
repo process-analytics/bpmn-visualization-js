@@ -6,13 +6,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-22.04
+    permissions:
+      id-token: write
+      contents: write
     steps:
       - uses: actions/checkout@v3
       - name: Build Setup
         uses: ./.github/actions/build-setup
         with:
           registry-url: 'https://registry.npmjs.org'
-      - run: npm publish
+      - run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Send message to Slack channel
