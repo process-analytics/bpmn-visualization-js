@@ -22,7 +22,7 @@ import { AvailableTestPages, PageTester } from '../e2e/helpers/visu/bpmn-page-ut
 import { ChromiumMetricsCollector } from './helpers/metrics-chromium';
 import type { ChartData, PerformanceMetric } from './helpers/perf-utils';
 import { calculateMetrics } from './helpers/perf-utils';
-import { ZoomType } from '../../src/component/options';
+import { ZoomType } from '@lib//component/options';
 import { performanceDataFilePath } from './helpers/file-utils';
 
 const metricsArray: Array<PerformanceMetric> = [];
