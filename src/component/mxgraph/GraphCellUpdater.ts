@@ -143,20 +143,21 @@ const updateFont = (cellStyle: string, font: Font): string => {
   cellStyle = setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_UNDERLINE, font.isUnderline);
   cellStyle = setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_STRIKETHROUGH, font.isStrikeThrough);
 
-  font.opacity && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_TEXT_OPACITY, ensureOpacityValue(font.opacity)));
+  cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_TEXT_OPACITY, font.opacity, ensureOpacityValue);
 
   return cellStyle;
 };
 
 const updateFill = (cellStyle: string, fill: Fill): string => {
   if (fill.color) {
-    cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILLCOLOR, convertDefaultValue(fill.color));
+    cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILLCOLOR, fill.color, convertDefaultValue);
+
     if (cellStyle.includes(ShapeBpmnElementKind.POOL) || cellStyle.includes(ShapeBpmnElementKind.LANE)) {
-      cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_SWIMLANE_FILLCOLOR, convertDefaultValue(fill.color));
+      cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_SWIMLANE_FILLCOLOR, fill.color, convertDefaultValue);
     }
   }
 
-  fill.opacity && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILL_OPACITY, ensureOpacityValue(fill.opacity)));
+  cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILL_OPACITY, fill.opacity, ensureOpacityValue);
 
   return cellStyle;
 };
