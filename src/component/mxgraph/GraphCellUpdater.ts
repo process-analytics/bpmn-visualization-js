@@ -95,11 +95,11 @@ export default class GraphCellUpdater {
       for (const cell of cells) {
         let cellStyle = cell.getStyle();
         cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_OPACITY, styleUpdate.opacity, ensureOpacityValue);
-        styleUpdate.stroke && (cellStyle = updateStroke(cellStyle, styleUpdate.stroke));
-        styleUpdate.font && (cellStyle = updateFont(cellStyle, styleUpdate.font));
+        cellStyle = updateStroke(cellStyle, styleUpdate.stroke);
+        cellStyle = updateFont(cellStyle, styleUpdate.font);
 
         if (isShapeStyleUpdate(styleUpdate)) {
-          styleUpdate.fill && (cellStyle = updateFill(cellStyle, styleUpdate.fill));
+          cellStyle = updateFill(cellStyle, styleUpdate.fill);
         }
 
         this.graph.model.setStyle(cell, cellStyle);
@@ -111,10 +111,11 @@ export default class GraphCellUpdater {
 const convertDefaultValue = (value: string): string | undefined => (value == 'default' ? undefined : value);
 
 const updateStroke = (cellStyle: string, stroke: Stroke): string => {
-  cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKECOLOR, stroke.color, convertDefaultValue);
-  cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKE_OPACITY, stroke.opacity, ensureOpacityValue);
-  cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKEWIDTH, stroke.width, ensureStrokeWidthValue);
-
+  if (stroke) {
+    cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKECOLOR, stroke.color, convertDefaultValue);
+    cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKE_OPACITY, stroke.opacity, ensureOpacityValue);
+    cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKEWIDTH, stroke.width, ensureStrokeWidthValue);
+  }
   return cellStyle;
 };
 
@@ -134,17 +135,18 @@ const setStyleFlag = (cellStyle: string, key: string, flag: number, value: boole
 };
 
 const updateFont = (cellStyle: string, font: Font): string => {
-  cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTCOLOR, font.color, convertDefaultValue);
-  cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTSIZE, font.size);
-  cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTFAMILY, font.family);
+  if (font) {
+    cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTCOLOR, font.color, convertDefaultValue);
+    cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTSIZE, font.size);
+    cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTFAMILY, font.family);
 
-  cellStyle = setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_BOLD, font.isBold);
-  cellStyle = setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_ITALIC, font.isItalic);
-  cellStyle = setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_UNDERLINE, font.isUnderline);
-  cellStyle = setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_STRIKETHROUGH, font.isStrikeThrough);
+    cellStyle = setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_BOLD, font.isBold);
+    cellStyle = setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_ITALIC, font.isItalic);
+    cellStyle = setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_UNDERLINE, font.isUnderline);
+    cellStyle = setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_STRIKETHROUGH, font.isStrikeThrough);
 
-  cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_TEXT_OPACITY, font.opacity, ensureOpacityValue);
-
+    cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_TEXT_OPACITY, font.opacity, ensureOpacityValue);
+  }
   return cellStyle;
 };
 
