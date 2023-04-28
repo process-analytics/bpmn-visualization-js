@@ -14,9 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import { readFileSync } from '@test/shared/file-helper';
 import BpmnXmlParser from '@lib/component/parser/xml/BpmnXmlParser';
 import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
-import { readFileSync } from '../../../../helpers/file-helper';
 import type { TSubProcess } from '@lib/model/bpmn/json/baseElement/flowNode/activity/activity';
 import { ensureIsArray } from '@lib/component/helpers/array-utils';
 import type { TStartEvent } from '@lib/model/bpmn/json/baseElement/flowNode/event';

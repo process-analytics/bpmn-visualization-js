@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { readFileSync } from '../../../../helpers/file-helper';
+import { readFileSync } from '@test/shared/file-helper';
 import BpmnXmlParser from '@lib/component/parser/xml/BpmnXmlParser';
 import type { BPMNDiagram, BPMNLabel, BPMNShape } from '@lib/model/bpmn/json/BPMNDI';
 import Bounds from '@lib/model/bpmn/internal/Bounds';

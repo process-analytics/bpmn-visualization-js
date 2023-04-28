@@ -17,7 +17,7 @@ limitations under the License.
 import BpmnXmlParser from '@lib/component/parser/xml/BpmnXmlParser';
 import type { BPMNDiagram } from '@lib/model/bpmn/json/BPMNDI';
 import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
-import { readFileSync } from '../../../../helpers/file-helper';
+import { readFileSync } from '@test/shared/file-helper';
 
 describe('parse bpmn as xml for MIWG', () => {
   it('bpmn with process with extension, ensure elements are present', () => {

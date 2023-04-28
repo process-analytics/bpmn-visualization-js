@@ -6,6 +6,7 @@
     "paths": {
       // allow to import sources directly with "@lib/xx/yy" instead of using relative paths like "../../../src/xx/yy"
       "@lib/*": ["src/*"],
+      "@test/shared/*": ["test/helpers/*"],
       // TODO manage ../e2e and other test utils
       // e2e
       // test-config --> ../config

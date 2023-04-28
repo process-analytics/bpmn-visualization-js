@@ -16,7 +16,7 @@ limitations under the License.
 
 import { newBpmnParser } from '@lib/component/parser/BpmnParser';
 
-import { readFileSync } from '../../../helpers/file-helper';
+import { readFileSync } from '@test/shared/file-helper';
 import { expectPoolLaneEdgeFlowNode } from '../../helpers/JsonTestUtils';
 
 describe('parse xml to model', () => {
