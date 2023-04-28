@@ -118,8 +118,15 @@ const updateStroke = (cellStyle: string, stroke: Stroke): string => {
   return cellStyle;
 };
 
-const setStyle = (cellStyle: string, key: string, value: string | number | undefined): string => {
-  return value == undefined ? cellStyle : mxgraph.mxUtils.setStyle(cellStyle, key, value);
+const setStyle = <T extends string | number>(
+  cellStyle: string,
+  key: string,
+  value: T | undefined,
+  converter: (value: T) => T | undefined = (value: T) => {
+    return value;
+  },
+): string => {
+  return value == undefined ? cellStyle : mxgraph.mxUtils.setStyle(cellStyle, key, converter(value));
 };
 
 const setStyleFlag = (cellStyle: string, key: string, flag: number, value: boolean | undefined): string => {
@@ -127,7 +134,7 @@ const setStyleFlag = (cellStyle: string, key: string, flag: number, value: boole
 };
 
 const updateFont = (cellStyle: string, font: Font): string => {
-  font.color && (cellStyle = mxgraph.mxUtils.setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTCOLOR, convertDefaultValue(font.color)));
+  cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTCOLOR, font.color, convertDefaultValue);
   cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTSIZE, font.size);
   cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTFAMILY, font.family);
 
