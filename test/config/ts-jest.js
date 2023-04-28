@@ -14,13 +14,21 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+// Inspired from https://kulshekhar.github.io/ts-jest/docs/getting-started/paths-mapping/
 const { pathsToModuleNameMapper } = require('ts-jest');
 // Cannot use const { compilerOptions } = require('../../tsconfig.test.json');
 // parsing fails as the file contains comment, so use the following hack taken from https://stackoverflow.com/questions/61996234/requiring-a-json-with-comments-in-node-js
 const fs = require('fs');
-// let jsonTxt = fs.readFileSync('./tsconfig.json', 'utf8');
-// TODO only works with npm, not in IntelliJ when running an individual test
-let jsonTxt = fs.readFileSync('./tsconfig.test.json', 'utf8');
+let jsonTxt;
+try {
+  jsonTxt = fs.readFileSync('./tsconfig.test.json', 'utf8');
+} catch {
+  // when running from IDE (IntelliJ/Webstrom, the working directory is not the project root dir
+  // for instance it can be tsconfig: '<rootDir>/test/unit',
+  // so give a try to an alternate file path
+  jsonTxt = fs.readFileSync('../../tsconfig.test.json', 'utf8');
+}
+
 const JSON5 = require('json5');
 const tsconfig = JSON5.parse(jsonTxt);
 const compilerOptions = tsconfig.compilerOptions;
