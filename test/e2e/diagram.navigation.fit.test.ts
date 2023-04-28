@@ -18,7 +18,7 @@ import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import 'jest-playwright-preset';
 import { join } from 'node:path';
 import type { Page } from 'playwright';
-import { FitType } from '../../src/component/options';
+import { FitType } from '@lib//component/options';
 import { getBpmnDiagramNames } from './helpers/test-utils';
 import { AvailableTestPages, PageTester } from './helpers/visu/bpmn-page-utils';
 import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
