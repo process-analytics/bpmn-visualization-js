@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { initializeBpmnVisualizationWithHtmlElement } from './helpers/bpmn-visualization-initialization';
-import { readFileSync } from '../shared/file-helper';
+import { readFileSync } from '@test/shared/file-helper';
 import { allTestedFitTypes } from './helpers/fit-utils';
 import { type FitType, ZoomType } from '@lib/component/options';
 

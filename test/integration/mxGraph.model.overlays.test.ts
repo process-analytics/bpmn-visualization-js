@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { bpmnVisualization } from './helpers/model-expect';
-import { readFileSync } from '../shared/file-helper';
+import { readFileSync } from '@test/shared/file-helper';
 import { ShapeBpmnEventDefinitionKind } from '@lib/bpmn-visualization';
 
 describe('mxGraph model - Overlays', () => {
