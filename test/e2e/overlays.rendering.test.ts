@@ -21,8 +21,8 @@ import { ensureIsArray } from '@lib/component/helpers/array-utils';
 import type { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '@lib/component/registry';
 import { ZoomType } from '@lib/component/options';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '../shared/overlays';
-import type { Point } from './helpers/visu/bpmn-page-utils';
-import { AvailableTestPages, PageTester } from './helpers/visu/bpmn-page-utils';
+import type { Point } from '@test/shared/visu/bpmn-page-utils';
+import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
 import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 

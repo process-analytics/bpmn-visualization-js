@@ -20,7 +20,7 @@ import { join } from 'node:path';
 import type { Page } from 'playwright';
 import { FitType } from '@lib/component/options';
 import { getBpmnDiagramNames } from './helpers/test-utils';
-import { AvailableTestPages, PageTester } from './helpers/visu/bpmn-page-utils';
+import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
 import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 

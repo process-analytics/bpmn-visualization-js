@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
-import { AvailableTestPages, PageTester } from './helpers/visu/bpmn-page-utils';
+import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
 import type { Page } from 'playwright';
 import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 
