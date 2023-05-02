@@ -21,7 +21,7 @@ import type { Point } from './helpers/visu/bpmn-page-utils';
 import { AvailableTestPages, PageTester } from './helpers/visu/bpmn-page-utils';
 import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
-import { ZoomType } from '@lib//component/options';
+import { ZoomType } from '@lib/component/options';
 
 class MouseNavigationImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
