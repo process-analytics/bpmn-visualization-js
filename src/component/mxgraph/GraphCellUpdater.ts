@@ -119,20 +119,12 @@ const updateStroke = (cellStyle: string, stroke: Stroke): string => {
   return cellStyle;
 };
 
-const setStyle = <T extends string | number>(
-  cellStyle: string,
-  key: string,
-  value: T | undefined,
-  converter: (value: T) => T | undefined = (value: T) => {
-    return value;
-  },
-): string => {
+const setStyle = <T extends string | number>(cellStyle: string, key: string, value: T | undefined, converter: (value: T) => T | undefined = (value: T) => value): string => {
   return value == undefined ? cellStyle : mxgraph.mxUtils.setStyle(cellStyle, key, converter(value));
 };
 
-const setStyleFlag = (cellStyle: string, key: string, flag: number, value: boolean | undefined): string => {
-  return value == undefined ? cellStyle : mxgraph.mxUtils.setStyleFlag(cellStyle, key, flag, value);
-};
+const setStyleFlag = (cellStyle: string, key: string, flag: number, value: boolean | undefined): string =>
+  value == undefined ? cellStyle : mxgraph.mxUtils.setStyleFlag(cellStyle, key, flag, value);
 
 const updateFont = (cellStyle: string, font: Font): string => {
   if (font) {
