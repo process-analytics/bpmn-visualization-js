@@ -20,9 +20,14 @@
     // Vitejs requirements https://vitejs.dev/guide/features.html#typescript-compiler-options
     "isolatedModules": true, // https://esbuild.github.io/content-types/#isolated-modules
     "useDefineForClassFields": true,
+    "baseUrl": ".",
+    "paths": {
+      // allow to import sources directly with "@lib/xx/yy" instead of using relative paths like "../../src/xx/yy"
+      "@lib/*": ["src/*"],
+    }
   },
   "include": [
-    "src/**/*",
-    "dev/ts/**/*"
+    "src/**/*.ts",
+    "dev/ts/**/*.ts"
   ]
 }

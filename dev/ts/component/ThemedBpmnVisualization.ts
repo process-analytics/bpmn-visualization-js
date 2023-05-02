@@ -14,9 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { BpmnVisualization, FlowKind, ShapeBpmnElementKind, ShapeUtil, StyleConfigurator, StyleDefault } from '../../../src/bpmn-visualization';
+import { BpmnVisualization, FlowKind, ShapeBpmnElementKind, ShapeUtil, StyleConfigurator, StyleDefault } from '@lib/bpmn-visualization';
 import { logStartup } from '../utils/internal-helpers';
-import { mxgraph } from '../../../src/component/mxgraph/initializer';
+import { mxgraph } from '@lib/component/mxgraph/initializer';
 
 interface Theme {
   defaultFillColor: string;

@@ -27,8 +27,8 @@ import type {
   StyleUpdate,
   Version,
   ZoomType,
-} from '../../src/bpmn-visualization';
-import { FlowKind, ShapeBpmnElementKind } from '../../src/bpmn-visualization';
+} from '@lib/bpmn-visualization';
+import { FlowKind, ShapeBpmnElementKind } from '@lib/bpmn-visualization';
 import { fetchBpmnContent, logDownload, logError, logErrorAndOpenAlert, logStartup, stringify } from './utils/internal-helpers';
 import { log } from './utils/shared-helpers';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
