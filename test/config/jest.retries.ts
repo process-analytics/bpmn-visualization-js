@@ -16,7 +16,7 @@ limitations under the License.
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore js file with commonjs export
-import envUtils = require('../shared/environment-utils.js');
+import envUtils = require('@test/shared/environment-utils.js');
 
 const onCi = envUtils.isRunningOnCi();
 jest.retryTimes(onCi ? 3 : 0);
