@@ -69,8 +69,11 @@ export default class ProcessConverter {
 
   deserialize(processes: string | TProcess | (string | TProcess)[]): void {
     ensureIsArray(processes).forEach(process => this.parseProcess(process));
+
     // Need to call this after all processes have been parsed, because to link a call activity to the elements of the called process, we have to parse all processes before.
     ensureIsArray(processes).forEach(process => this.assignParentOfProcessElementsCalledByCallActivity(process.id));
+
+    this.assignIncomingAndOutgoingIdsFromFlows();
   }
 
   private assignParentOfProcessElementsCalledByCallActivity(processId: string): void {
@@ -85,6 +88,25 @@ export default class ProcessConverter {
         element.parentId = callActivity.id;
       });
     }
+  }
+
+  private assignIncomingAndOutgoingIdsFromFlows(): void {
+    const fillShapeBpmnElementAttribute = (
+      shapeBpmnElementId: string,
+      shapeBpmnElementAttributeName: keyof Pick<ShapeBpmnElement, 'outgoingIds' | 'incomingIds'>,
+      valueToAdd: string,
+    ): void => {
+      const shapeBpmnElement =
+        this.convertedElements.findFlowNode(shapeBpmnElementId) ?? this.convertedElements.findLane(shapeBpmnElementId) ?? this.convertedElements.findPoolById(shapeBpmnElementId);
+      if (shapeBpmnElement && !shapeBpmnElement[shapeBpmnElementAttributeName].includes(valueToAdd)) {
+        shapeBpmnElement[shapeBpmnElementAttributeName].push(valueToAdd);
+      }
+    };
+
+    this.convertedElements.getFlows().forEach(flow => {
+      fillShapeBpmnElementAttribute(flow.sourceRefId, 'outgoingIds', flow.id);
+      fillShapeBpmnElementAttribute(flow.targetRefId, 'incomingIds', flow.id);
+    });
   }
 
   private parseProcess(process: TProcess): void {
@@ -106,7 +128,7 @@ export default class ProcessConverter {
     ShapeUtil.flowNodeKinds()
       .filter(kind => kind != ShapeBpmnElementKind.EVENT_BOUNDARY)
       .forEach(kind => this.buildFlowNodeBpmnElements(process[kind], kind, parentId, process.id));
-    // process boundary events afterwards as we need its parent activity to be available when building it
+    // process boundary events afterward as we need its parent activity to be available when building it
     this.buildFlowNodeBpmnElements(process.boundaryEvent, ShapeBpmnElementKind.EVENT_BOUNDARY, parentId, process.id);
 
     // containers

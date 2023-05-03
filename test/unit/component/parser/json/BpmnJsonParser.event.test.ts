@@ -18,14 +18,22 @@ import type { TEventDefinition } from '@lib/model/bpmn/json/baseElement/rootElem
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
 import { BoundaryEventNotAttachedToActivityWarning, ShapeUnknownBpmnElementWarning } from '@lib/component/parser/json/warnings';
 
-import { expectAsWarning, parseJsonAndExpectEvent, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector } from '../../../helpers/JsonTestUtils';
-import type { ExpectedBoundaryEventShape, ExpectedEventShape } from '../../../helpers/bpmn-model-expect';
+import {
+  expectAsWarning,
+  parseJsonAndExpectEvent,
+  parseJsonAndExpectOnlyEdgesAndFlowNodes,
+  parseJsonAndExpectOnlyFlowNodes,
+  parsingMessageCollector,
+} from '../../../helpers/JsonTestUtils';
+import type { ExpectedBoundaryEventShape, ExpectedEventShape, ExpectedShape } from '../../../helpers/bpmn-model-expect';
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
 import type { BuildDefinitionParameter, BuildEventsParameter, OtherBuildEventKind } from '../../../helpers/JsonBuilder';
 import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilder';
 import { getEventShapes } from '../../../helpers/TestUtils';
 
 type OmitExpectedEventShape = Omit<ExpectedEventShape, 'shapeId' | 'bpmnElementId' | 'bounds'> | Omit<ExpectedBoundaryEventShape, 'shapeId' | 'bpmnElementId' | 'bounds'>;
+
+const expectedBounds = { x: 362, y: 232, width: 36, height: 45 };
 
 function testMustConvertShapes(buildEventParameter: BuildEventsParameter | BuildEventsParameter[], omitExpectedShape: OmitExpectedEventShape, processIsArray = false): void {
   const process = { event: buildEventParameter, task: {} };
@@ -39,7 +47,7 @@ function testMustConvertShapes(buildEventParameter: BuildEventsParameter | Build
       ...omitExpectedShape,
       shapeId: `shape_event_id_0_${index}`,
       bpmnElementId: `event_id_0_${index}`,
-      bounds: { x: 362, y: 232, width: 36, height: 45 },
+      bounds: expectedBounds,
     };
     verifyShape(shape, expectedShape);
   });
@@ -73,39 +81,147 @@ function testMustNotConvertBoundaryEvent(definitionParameter: BuildDefinitionPar
   expect(warning1.bpmnElementId).toBe('event_id_0_0');
 }
 
-function executeEventCommonTests(buildEventParameter: BuildEventsParameter, omitExpectedShape: OmitExpectedEventShape, titleSuffix = ''): void {
+function executeEventCommonTests(buildEventParameter: BuildEventsParameter, omitExpectedShape: OmitExpectedEventShape, titleSuffix: string): void {
   it.each([
     ['object', 'object'],
     ['object', 'array'],
     ['array', 'object'],
     ['array', 'array'],
-  ])(`should convert as Shape, when 'process' (as %s) has '${buildEventParameter.bpmnKind}' (as %s)${titleSuffix}`, (processParameterType: string, eventParameterType: string) => {
-    testMustConvertShapes(eventParameterType === 'array' ? [buildEventParameter, buildEventParameter] : buildEventParameter, omitExpectedShape, processParameterType === 'array');
-  });
+  ])(
+    `should convert as Shape, when 'process' (as %s) has '${buildEventParameter.bpmnKind}' (as %s), ${titleSuffix}`,
+    (processParameterType: string, eventParameterType: string) => {
+      testMustConvertShapes(eventParameterType === 'array' ? [buildEventParameter, buildEventParameter] : buildEventParameter, omitExpectedShape, processParameterType === 'array');
+    },
+  );
 
   it.each([
     ["'name'", 'event name'],
     ["no 'name'", undefined],
-  ])(`should convert as Shape, when '${buildEventParameter.bpmnKind}' has %s${titleSuffix}`, (title: string, eventName: string) => {
+  ])(`should convert as Shape, when '${buildEventParameter.bpmnKind}' has %s, ${titleSuffix}`, (title: string, eventName: string) => {
     testMustConvertShapes({ ...buildEventParameter, name: eventName }, { ...omitExpectedShape, bpmnElementName: eventName });
   });
 
+  describe(`incoming/outgoing management for ${buildEventParameter.bpmnKind}`, () => {
+    it.each`
+      title       | inputAttribute | expectedAttribute
+      ${'string'} | ${'incoming'}  | ${'bpmnElementIncomingIds'}
+      ${'array'}  | ${'incoming'}  | ${'bpmnElementIncomingIds'}
+      ${'string'} | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
+      ${'array'}  | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
+    `(
+      `should convert as Shape with $inputAttribute attribute calculated from ${buildEventParameter.bpmnKind} attribute as $title`,
+      ({ title, inputAttribute, expectedAttribute }: { title: string; inputAttribute: 'incoming' | 'outgoing'; expectedAttribute: keyof ExpectedShape }) => {
+        testMustConvertShapes(
+          { ...buildEventParameter, [inputAttribute]: title === 'array' ? [`flow_${inputAttribute}_1`, `flow_${inputAttribute}_2`] : `flow_${inputAttribute}_1` },
+          { ...omitExpectedShape, [expectedAttribute]: title === 'array' ? [`flow_${inputAttribute}_1`, `flow_${inputAttribute}_2`] : [`flow_${inputAttribute}_1`] },
+        );
+      },
+    );
+
+    it.each`
+      title         | flowKind          | expectedAttribute
+      ${'incoming'} | ${'sequenceFlow'} | ${'bpmnElementIncomingIds'}
+      ${'outgoing'} | ${'sequenceFlow'} | ${'bpmnElementOutgoingIds'}
+      ${'incoming'} | ${'association'}  | ${'bpmnElementIncomingIds'}
+      ${'outgoing'} | ${'association'}  | ${'bpmnElementOutgoingIds'}
+    `(
+      `should convert as Shape with $title attribute calculated from $flowKind`,
+      ({ title, flowKind, expectedAttribute }: { title: string; flowKind: 'sequenceFlow' | 'association'; expectedAttribute: keyof ExpectedShape }) => {
+        const json = buildDefinitions({
+          process: {
+            event: buildEventParameter,
+            task: {},
+            [flowKind]: {
+              id: `flow_${title}`,
+              sourceRef: title === 'incoming' ? 'unknown' : 'event_id_0_0',
+              targetRef: title === 'incoming' ? 'event_id_0_0' : 'unknown',
+            },
+          },
+        });
+
+        const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 2);
+
+        verifyShape(model.flowNodes[1], {
+          ...omitExpectedShape,
+          shapeId: `shape_event_id_0_0`,
+          bpmnElementId: `event_id_0_0`,
+          bounds: expectedBounds,
+          [expectedAttribute]: [`flow_${title}`],
+        });
+      },
+    );
+
+    it.each`
+      title         | expectedAttribute
+      ${'incoming'} | ${'bpmnElementIncomingIds'}
+      ${'outgoing'} | ${'bpmnElementOutgoingIds'}
+    `(`should convert as Shape with $title attribute calculated from message flow`, ({ title, expectedAttribute }: { title: string; expectedAttribute: keyof ExpectedShape }) => {
+      const json = buildDefinitions({
+        process: {
+          event: buildEventParameter,
+          task: {},
+        },
+        messageFlows: {
+          id: `flow_${title}`,
+          sourceRef: title === 'incoming' ? 'unknown' : 'event_id_0_0',
+          targetRef: title === 'incoming' ? 'event_id_0_0' : 'unknown',
+        },
+      });
+
+      const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 2);
+
+      verifyShape(model.flowNodes[1], {
+        ...omitExpectedShape,
+        shapeId: `shape_event_id_0_0`,
+        bpmnElementId: `event_id_0_0`,
+        bounds: expectedBounds,
+        [expectedAttribute]: [`flow_${title}`],
+      });
+    });
+
+    it(`should convert as Shape with incoming/outgoing attributes calculated from ${buildEventParameter.bpmnKind} attributes and from flows`, () => {
+      const json = buildDefinitions({
+        process: {
+          event: { ...buildEventParameter, incoming: 'flow_in_1', outgoing: ['flow_out_1', 'flow_out_2'] },
+          task: {},
+          sequenceFlow: [
+            { id: 'flow_in_1', sourceRef: 'unknown', targetRef: 'event_id_0_0' },
+            { id: 'flow_out_2', sourceRef: 'event_id_0_0', targetRef: 'unknown' },
+          ],
+          association: [{ id: 'flow_out_3', sourceRef: 'event_id_0_0', targetRef: 'unknown' }],
+        },
+        messageFlows: { id: 'flow_in_2', sourceRef: 'unknown', targetRef: 'event_id_0_0' },
+      });
+
+      const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 4, 2);
+
+      verifyShape(model.flowNodes[1], {
+        ...omitExpectedShape,
+        shapeId: `shape_event_id_0_0`,
+        bpmnElementId: `event_id_0_0`,
+        bounds: expectedBounds,
+        bpmnElementIncomingIds: ['flow_in_1', 'flow_in_2'],
+        bpmnElementOutgoingIds: ['flow_out_1', 'flow_out_2', 'flow_out_3'],
+      });
+    });
+  });
+
   if (omitExpectedShape.eventDefinitionKind !== ShapeBpmnEventDefinitionKind.NONE) {
-    it(`should NOT convert, when there are '${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition' and another 'EventDefinition' in the same element${titleSuffix}`, () => {
+    it(`should NOT convert, when there are '${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition' and another 'EventDefinition' in the same element, ${titleSuffix}`, () => {
       testMustNotConvertEvent({
         ...buildEventParameter,
         eventDefinitionParameter: { ...buildEventParameter.eventDefinitionParameter, withDifferentDefinition: true },
       });
     });
 
-    it(`should NOT convert, when there are several '${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition' in the same element${titleSuffix}`, () => {
+    it(`should NOT convert, when there are several '${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition' in the same element, ${titleSuffix}`, () => {
       testMustNotConvertEvent({
         ...buildEventParameter,
         eventDefinitionParameter: { ...buildEventParameter.eventDefinitionParameter, withMultipleDefinitions: true },
       });
     });
 
-    it(`should NOT convert, when 'definitions' has ${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition and '${buildEventParameter.bpmnKind}' has ${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition & eventDefinitionRef${titleSuffix}`, () => {
+    it(`should NOT convert, when 'definitions' has ${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition and '${buildEventParameter.bpmnKind}' has ${buildEventParameter.eventDefinitionParameter.eventDefinitionKind}EventDefinition & eventDefinitionRef, ${titleSuffix}`, () => {
       testMustNotConvertEvent({
         ...buildEventParameter,
         eventDefinitionParameter: { ...buildEventParameter.eventDefinitionParameter, eventDefinitionOn: EventDefinitionOn.BOTH },
@@ -195,14 +311,10 @@ describe('parse bpmn as json for all events', () => {
                 {
                   bpmnKind: expectedShapeBpmnElementKind as OtherBuildEventKind | 'startEvent',
                   eventDefinitionParameter: { eventDefinitionKind, eventDefinitionOn, eventDefinition },
-                  incoming: 'flow_in',
-                  outgoing: 'flow_out',
                 },
                 {
                   bpmnElementKind: expectedShapeBpmnElementKind,
                   bpmnElementName: undefined,
-                  bpmnElementIncomingIds: ['flow_in'],
-                  bpmnElementOutgoingIds: ['flow_out'],
                   eventDefinitionKind: expectedEventDefinitionKind,
                 },
               );
@@ -330,9 +442,6 @@ describe('parse bpmn as json for all events', () => {
               eventDefinitionParameter: { eventDefinitionKind, eventDefinitionOn },
               isInterrupting,
               attachedToRef: 'task_id_0_0',
-              // in practice, the BPMN semantic only defines incoming or outgoing. Tests both at the same time to simplify the tests
-              incoming: ['flow_in'],
-              outgoing: ['flow_out'],
             },
             {
               parentId: 'task_id_0_0',
@@ -340,10 +449,8 @@ describe('parse bpmn as json for all events', () => {
               bpmnElementName: undefined,
               eventDefinitionKind: expectedEventDefinitionKind,
               isInterrupting,
-              bpmnElementIncomingIds: ['flow_in'],
-              bpmnElementOutgoingIds: ['flow_out'],
             },
-            `, 'boundaryEvent' is ${isInterruptingTitle} & attached to an 'activity', (${titleForEventDefinitionIsAttributeOf})`,
+            `'boundaryEvent' is ${isInterruptingTitle} & attached to an 'activity', (${titleForEventDefinitionIsAttributeOf})`,
           );
 
           if (isInterrupting) {
