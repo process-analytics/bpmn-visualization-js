@@ -44,18 +44,43 @@ export class CssRegistry {
    *
    * @param bpmnElementId the BPMN id of the HTML element from the DOM
    * @param classNames the CSS class names to register
-   * @return true if at least one class name from parameters has been added; false otherwise
+   * @return `true` if at least one class name from parameters has been added; `false` otherwise
    */
   addClassNames(bpmnElementId: string, classNames: string[]): boolean {
     return this.updateClassNames(bpmnElementId, classNames, (currentClassNames, className) => currentClassNames.add(className));
   }
 
-  // return `true` if at least one class has been removed
+  /**
+   * Remove the CSS class names for a specific HTML element
+   *
+   * @param bpmnElementId the BPMN id of the HTML element from the DOM
+   * @param classNames the CSS class names to remove
+   * @return `true` if at least one class name from parameters has been removed; `false` otherwise
+   */
   removeClassNames(bpmnElementId: string, classNames: string[]): boolean {
     return this.updateClassNames(bpmnElementId, classNames, (currentClassNames, className) => currentClassNames.delete(className));
   }
 
-  // return true if passed classes array has at least one element - as toggle will always trigger changes in that case
+  /**
+   * Remove all CSS class names for specific HTML element
+   *
+   * @param bpmnElementId the BPMN id of the HTML element from the DOM
+   * @return `true` if at least one class name has been removed; `false` otherwise
+   */
+  removeAllClassNames(bpmnElementId: string): boolean {
+    const currentClassNames = this.getOrInitializeClassNames(bpmnElementId);
+    const initialClassNamesNumber = currentClassNames.size;
+    currentClassNames.clear();
+    return currentClassNames.size < initialClassNamesNumber;
+  }
+
+  /**
+   * Toggle the CSS class names for a specific HTML element
+   *
+   * @param bpmnElementId the BPMN id of the HTML element from the DOM
+   * @param classNames the CSS class names to toggle
+   * @return `true` if `classNames` has at least one element - as toggle will always trigger changes in that case; `false` otherwise
+   */
   toggleClassNames(bpmnElementId: string, classNames: string[]): boolean {
     this.updateClassNames(bpmnElementId, classNames, (currentClassNames, className) =>
       currentClassNames.has(className) ? currentClassNames.delete(className) : currentClassNames.add(className),

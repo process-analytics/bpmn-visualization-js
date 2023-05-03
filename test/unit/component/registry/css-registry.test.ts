@@ -167,6 +167,37 @@ describe('manage css classes for BPMN cells', () => {
     });
   });
 
+  describe('Remove all css classes', () => {
+    it('Remove the only existing class of a HTML element', () => {
+      const bpmnElementId = 'bpmn-id';
+      cssRegistry.addClassNames(bpmnElementId, ['class-to-remove']);
+
+      const result = cssRegistry.removeAllClassNames(bpmnElementId);
+
+      expect(result).toBeTruthy();
+      expect(cssRegistry.getClassNames(bpmnElementId)).toHaveLength(0);
+    });
+
+    it('Remove all classes of a HTML element', () => {
+      const bpmnElementId = 'bpmn-id';
+      cssRegistry.addClassNames(bpmnElementId, ['class-to-remove1', 'class-to-remove2']);
+
+      const result = cssRegistry.removeAllClassNames(bpmnElementId);
+
+      expect(result).toBeTruthy();
+      expect(cssRegistry.getClassNames(bpmnElementId)).toHaveLength(0);
+    });
+
+    it('Do nothing when none had been added first on a HTML element', () => {
+      const bpmnElementId = 'bpmn-id';
+
+      const result = cssRegistry.removeAllClassNames(bpmnElementId);
+
+      expect(result).toBeFalsy();
+      expect(cssRegistry.getClassNames(bpmnElementId)).toHaveLength(0);
+    });
+  });
+
   describe('Toggle css classes', () => {
     it('Toggle an undefined array of classes', () => {
       const bpmnElementId = 'bpmn-id';
