@@ -85,6 +85,13 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         },
       ],
       [
+        'labels.05.default.position.activities',
+        {
+          macos: 0.28 / 100, // 0.2780854945044653%
+          windows: 0.47 / 100, // 0.46907051252580434%
+        },
+      ],
+      [
         'pools.01.labels.and.lanes',
         {
           macos: 0.09 / 100, // 0.08291308761130267%
@@ -187,6 +194,15 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         },
       ],
       [
+        'labels.05.default.position.activities',
+        {
+          linux: 0.46 / 100, // 0.45753886693361556%
+          macos: 0.7 / 100, // 0.6908428450721038%
+          // high value due to font rendering discrepancies with chromium rendering
+          windows: 2.87 / 100, // 2.869412475926314%
+        },
+      ],
+      [
         'pools.01.labels.and.lanes',
         {
           macos: 0.09 / 100, // 0.08552532456441721%
@@ -268,6 +284,12 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         'labels.04.fonts',
         {
           macos: 0.71 / 100, // 0.703880504764276%
+        },
+      ],
+      [
+        'labels.05.default.position.activities',
+        {
+          macos: 1.2 / 100, // 1.192492604936246%
         },
       ],
       [
