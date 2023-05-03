@@ -103,8 +103,7 @@ export default class ProcessConverter {
       }
     };
 
-    const flows = [...this.convertedElements.getMessageFlows(), ...this.convertedElements.getSequenceFlows(), ...this.convertedElements.getAssociationFlows()];
-    flows.forEach(flow => {
+    this.convertedElements.getFlows().forEach(flow => {
       fillShapeBpmnElementAttribute(flow.sourceRefId, 'outgoingIds', flow.id);
       fillShapeBpmnElementAttribute(flow.targetRefId, 'incomingIds', flow.id);
     });

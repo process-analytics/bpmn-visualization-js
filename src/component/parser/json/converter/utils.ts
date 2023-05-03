@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { Flow } from '../../../../model/bpmn/internal/edge/flows';
 import ShapeBpmnElement from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import type { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/flows';
 import type { GlobalTaskKind, ShapeBpmnEventDefinitionKind } from '../../../../model/bpmn/internal';
@@ -26,6 +27,10 @@ import { GroupUnknownCategoryValueWarning } from '../warnings';
  * @internal
  */
 export class ConvertedElements {
+  getFlows(): Flow[] {
+    return [...this.messageFlows.values(), ...this.sequenceFlows.values(), ...this.associationFlows.values()];
+  }
+
   private poolsById: Map<string, ShapeBpmnElement> = new Map();
   findPoolById(id: string): ShapeBpmnElement {
     return this.poolsById.get(id);
@@ -44,9 +49,6 @@ export class ConvertedElements {
   private messageFlows: Map<string, MessageFlow> = new Map();
   findMessageFlow(id: string): MessageFlow {
     return this.messageFlows.get(id);
-  }
-  getMessageFlows(): MessageFlow[] {
-    return Array.from(this.messageFlows.values());
   }
   registerMessageFlow(messageFlow: MessageFlow): void {
     this.messageFlows.set(messageFlow.id, messageFlow);
@@ -72,9 +74,6 @@ export class ConvertedElements {
   findSequenceFlow(id: string): SequenceFlow {
     return this.sequenceFlows.get(id);
   }
-  getSequenceFlows(): SequenceFlow[] {
-    return Array.from(this.sequenceFlows.values());
-  }
   registerSequenceFlow(sequenceFlow: SequenceFlow): void {
     this.sequenceFlows.set(sequenceFlow.id, sequenceFlow);
   }
@@ -82,9 +81,6 @@ export class ConvertedElements {
   private associationFlows: Map<string, AssociationFlow> = new Map();
   findAssociationFlow(id: string): AssociationFlow {
     return this.associationFlows.get(id);
-  }
-  getAssociationFlows(): AssociationFlow[] {
-    return Array.from(this.associationFlows.values());
   }
   registerAssociationFlow(associationFlow: AssociationFlow): void {
     this.associationFlows.set(associationFlow.id, associationFlow);
