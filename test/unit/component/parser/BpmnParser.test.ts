@@ -14,9 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { newBpmnParser } from '../../../../src/component/parser/BpmnParser';
+import { newBpmnParser } from '@lib/component/parser/BpmnParser';
 
-import { readFileSync } from '../../../helpers/file-helper';
+import { readFileSync } from '@test/shared/file-helper';
 import { expectPoolLaneEdgeFlowNode } from '../../helpers/JsonTestUtils';
 
 describe('parse xml to model', () => {

@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { CssRegistry } from '../../../../src/component/registry/css-registry';
+import { CssRegistry } from '@lib/component/registry/css-registry';
 
 const cssRegistry = new CssRegistry();
 beforeEach(() => {

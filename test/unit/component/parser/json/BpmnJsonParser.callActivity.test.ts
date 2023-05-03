@@ -19,9 +19,9 @@ import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilde
 import { parseJsonAndExpect, parseJsonAndExpectOnlyEdgesAndFlowNodes, parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtils';
 import { verifyEdge, verifyShape } from '../../../helpers/bpmn-model-expect';
 
-import type { GlobalTaskKind } from '../../../../../src/model/bpmn/internal';
-import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/internal';
-import type { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
+import type { GlobalTaskKind } from '@lib/model/bpmn/internal';
+import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '@lib/model/bpmn/internal';
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 
 describe('parse bpmn as json for callActivity', () => {
   describe('parse bpmn as json for callActivity calling process', () => {

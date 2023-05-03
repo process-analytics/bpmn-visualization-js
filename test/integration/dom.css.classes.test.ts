@@ -17,7 +17,7 @@ limitations under the License.
 import { readFileSync } from '../helpers/file-helper';
 import { initializeBpmnVisualizationWithContainerId } from './helpers/bpmn-visualization-initialization';
 import { HtmlElementLookup } from './helpers/html-utils';
-import { ShapeBpmnEventDefinitionKind } from '../../src/model/bpmn/internal';
+import { ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
 
 describe('Bpmn Elements registry - CSS class management', () => {
   const bpmnVisualization = initializeBpmnVisualizationWithContainerId();

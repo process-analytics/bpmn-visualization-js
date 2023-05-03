@@ -19,7 +19,7 @@ import type { BuildProcessParameter } from '../../../helpers/JsonBuilder';
 import { parseJsonAndExpectOnlyEdges } from '../../../helpers/JsonTestUtils';
 import { verifyEdge } from '../../../helpers/bpmn-model-expect';
 
-import { Waypoint } from '../../../../../src/model/bpmn/internal/edge/edge';
+import { Waypoint } from '@lib/model/bpmn/internal/edge/edge';
 
 describe('parse bpmn as json for association', () => {
   const processJsonAsObjectWithAssociationJsonAsObject = {

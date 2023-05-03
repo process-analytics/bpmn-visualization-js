@@ -14,6 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+const { moduleNameMapper } = require('../config/ts-jest');
+
 process.env.JEST_PLAYWRIGHT_CONFIG = './test/performance/jest-playwright.config.js';
 
 /** @type {import('ts-jest').JestConfigWithTsJest} */
@@ -31,6 +33,7 @@ module.exports = {
       },
     ],
   },
+  moduleNameMapper,
   setupFiles: ['./test/config/jest.retries.ts'],
   setupFilesAfterEnv: ['jest-extended/all', 'expect-playwright'],
 };

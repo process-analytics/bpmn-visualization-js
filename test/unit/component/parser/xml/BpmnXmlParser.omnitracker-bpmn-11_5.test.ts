@@ -14,10 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
-import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
-import type { BPMNDiagram } from '../../../../../src/model/bpmn/json/BPMNDI';
-import { readFileSync } from '../../../../helpers/file-helper';
+import BpmnXmlParser from '@lib/component/parser/xml/BpmnXmlParser';
+import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
+import type { BPMNDiagram } from '@lib/model/bpmn/json/BPMNDI';
+import { readFileSync } from '@test/shared/file-helper';
 
 describe('parse bpmn as xml for OMNITRACKER BPMN 11.5', () => {
   it('bpmn with process with extension, ensure elements are present', () => {

@@ -14,6 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { FitType } from '../../../src/component/options';
+import { FitType } from '@lib/component/options';
 
 export const allTestedFitTypes = [undefined, null, 'invalid', ...Object.values(FitType)];

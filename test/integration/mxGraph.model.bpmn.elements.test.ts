@@ -23,11 +23,11 @@ import {
   ShapeBpmnEventDefinitionKind,
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
-} from '../../src/bpmn-visualization';
+} from '@lib/bpmn-visualization';
 import { readFileSync } from '../helpers/file-helper';
 import type { ExpectedShapeModelElement } from './helpers/model-expect';
 import { bpmnVisualization, expectEdgesInModel, expectPoolsInModel, expectTotalEdgesInModel, expectShapesInModel, expectTotalShapesInModel } from './helpers/model-expect';
-import { mxgraph } from '../../src/component/mxgraph/initializer';
+import { mxgraph } from '@lib/component/mxgraph/initializer';
 
 describe('mxGraph model - BPMN elements', () => {
   describe('BPMN elements should be available in the mxGraph model', () => {

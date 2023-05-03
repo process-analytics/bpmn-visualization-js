@@ -17,9 +17,9 @@ limitations under the License.
 import { parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtils';
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
 
-import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
-import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind } from '../../../../../src/model/bpmn/internal';
-import type { ShapeBpmnEventBasedGateway } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
+import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
+import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind } from '@lib/model/bpmn/internal';
+import type { ShapeBpmnEventBasedGateway } from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
 
 describe.each([
   ['task', ShapeBpmnElementKind.TASK],

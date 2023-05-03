@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/internal';
-import { ParsingMessageCollector } from '../../../../src/component/parser/parsing-messages';
+import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
+import { ParsingMessageCollector } from '@lib/component/parser/parsing-messages';
 import {
   EdgeUnknownBpmnElementWarning,
   GroupUnknownCategoryValueWarning,
@@ -23,7 +23,7 @@ import {
   LabelStyleMissingFontWarning,
   ShapeUnknownBpmnElementWarning,
   BoundaryEventNotAttachedToActivityWarning,
-} from '../../../../src/component/parser/json/warnings';
+} from '@lib/component/parser/json/warnings';
 
 describe('parsing message collector', () => {
   jest.spyOn(console, 'warn').mockImplementation(() => {

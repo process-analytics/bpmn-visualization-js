@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { ensureInRange, ensureOpacityValue, ensurePositiveValue, ensureStrokeWidthValue, ensureValidZoomConfiguration } from '../../../../src/component/helpers/validators';
+import { ensureInRange, ensureOpacityValue, ensurePositiveValue, ensureStrokeWidthValue, ensureValidZoomConfiguration } from '@lib/component/helpers/validators';
 
 describe('helper functions', () => {
   it.each`

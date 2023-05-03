@@ -21,11 +21,11 @@ import { getEventShapes } from '../../../helpers/TestUtils';
 import type { ExpectedShape } from '../../../helpers/bpmn-model-expect';
 import { verifyEdge, verifyShape } from '../../../helpers/bpmn-model-expect';
 
-import type BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
-import { Waypoint } from '../../../../../src/model/bpmn/internal/edge/edge';
-import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/internal';
-import type { ShapeBpmnEvent } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import type Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
+import type BpmnModel from '@lib/model/bpmn/internal/BpmnModel';
+import { Waypoint } from '@lib/model/bpmn/internal/edge/edge';
+import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';
+import type { ShapeBpmnEvent } from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
+import type Shape from '@lib/model/bpmn/internal/shape/Shape';
 
 function expectNoPoolLane(model: BpmnModel): void {
   expect(model.lanes).toHaveLength(0);

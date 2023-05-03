@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BpmnVisualization, ShapeBpmnEventDefinitionKind } from '../../../src/bpmn-visualization';
-import { BpmnQuerySelectorsForTests } from '../../helpers/query-selectors';
+import type { BpmnVisualization, ShapeBpmnEventDefinitionKind } from '@lib/bpmn-visualization';
+import { BpmnQuerySelectorsForTests } from '@test/shared/query-selectors';
 
 /* eslint-disable jest/no-standalone-expect */
 

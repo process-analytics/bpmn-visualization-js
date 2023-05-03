@@ -17,7 +17,7 @@ limitations under the License.
 import debugLogger from 'debug';
 import 'jest-playwright-preset';
 import { join } from 'node:path';
-import { findFiles } from '../../helpers/file-helper';
+import { findFiles } from '@test/shared/file-helper';
 
 export const configLog = debugLogger('bv:test:config');
 

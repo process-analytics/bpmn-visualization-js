@@ -20,8 +20,8 @@ limitations under the License.
 import { expectAsWarning, parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector, verifyLabelFont } from '../../../helpers/JsonTestUtils';
 import { shapeBpmnElementKindForLabelTests } from '../../../helpers/TestUtils';
 
-import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
-import { LabelStyleMissingFontWarning } from '../../../../../src/component/parser/json/warnings';
+import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
+import { LabelStyleMissingFontWarning } from '@lib/component/parser/json/warnings';
 
 function expectMissingFontWarning(shapeOrEdgeId: string, labelStyleId: string): void {
   const warning = expectAsWarning<LabelStyleMissingFontWarning>(parsingMessageCollector.getWarnings()[0], LabelStyleMissingFontWarning);

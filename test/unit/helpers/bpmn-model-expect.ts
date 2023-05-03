@@ -14,12 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { GlobalTaskKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind } from '../../../src/model/bpmn/internal';
-import type { Edge, Waypoint } from '../../../src/model/bpmn/internal/edge/edge';
-import type Shape from '../../../src/model/bpmn/internal/shape/Shape';
-import { ShapeBpmnActivity, ShapeBpmnBoundaryEvent, ShapeBpmnCallActivity, ShapeBpmnEvent } from '../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import { SequenceFlow } from '../../../src/model/bpmn/internal/edge/flows';
-import { FlowKind, MessageVisibleKind, SequenceFlowKind } from '../../../src/model/bpmn/internal';
+import type { GlobalTaskKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind } from '@lib/model/bpmn/internal';
+import type { Edge, Waypoint } from '@lib/model/bpmn/internal/edge/edge';
+import type Shape from '@lib/model/bpmn/internal/shape/Shape';
+import { ShapeBpmnActivity, ShapeBpmnBoundaryEvent, ShapeBpmnCallActivity, ShapeBpmnEvent } from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
+import { SequenceFlow } from '@lib/model/bpmn/internal/edge/flows';
+import { FlowKind, MessageVisibleKind, SequenceFlowKind } from '@lib/model/bpmn/internal';
 
 export interface ExpectedShape {
   shapeId: string;
