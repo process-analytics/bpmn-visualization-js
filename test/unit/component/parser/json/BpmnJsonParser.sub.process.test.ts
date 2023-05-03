@@ -31,7 +31,6 @@ import type BpmnModel from '../../../../../src/model/bpmn/internal/BpmnModel';
 import { Waypoint } from '../../../../../src/model/bpmn/internal/edge/edge';
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../../../src/model/bpmn/internal';
 import type { ShapeBpmnEvent } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import type { TFlowNode } from '../../../../../src/model/bpmn/json/baseElement/flowElement';
 import type Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
 
 function expectNoPoolLane(model: BpmnModel): void {
@@ -90,20 +89,20 @@ describe('parse bpmn as json for sub-process', () => {
 
       describe(`incoming/outgoing management for ${expandedKind} ${bpmnSubProcessKind} sub-process`, () => {
         it.each`
-          title       | input         | expectedAttribute
-          ${'string'} | ${'incoming'} | ${'bpmnElementIncomingIds'}
-          ${'array'}  | ${'incoming'} | ${'bpmnElementIncomingIds'}
-          ${'string'} | ${'outgoing'} | ${'bpmnElementOutgoingIds'}
-          ${'array'}  | ${'outgoing'} | ${'bpmnElementOutgoingIds'}
+          title       | inputAttribute | expectedAttribute
+          ${'string'} | ${'incoming'}  | ${'bpmnElementIncomingIds'}
+          ${'array'}  | ${'incoming'}  | ${'bpmnElementIncomingIds'}
+          ${'string'} | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
+          ${'array'}  | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
         `(
-          `should convert as Shape, when a process contains a ${expandedKind} ${bpmnSubProcessKind} sub-process with $input attribute as $title`,
-          ({ title, input, expectedAttribute }: { title: string; input: keyof TFlowNode; expectedAttribute: keyof ExpectedShape }) => {
+          `should convert as Shape, when a process contains a ${expandedKind} ${bpmnSubProcessKind} sub-process with $inputAttribute attribute as $title`,
+          ({ title, inputAttribute, expectedAttribute }: { title: string; inputAttribute: 'incoming' | 'outgoing'; expectedAttribute: keyof ExpectedShape }) => {
             const json = buildDefinitions({
               process: {
                 subProcess: {
                   id: 'sub_process_id_0',
                   triggeredByEvent: triggeredByEvent,
-                  [input]: title === 'array' ? [`flow_${input}_1`, `flow_${input}_2`] : `flow_${input}_1`,
+                  [inputAttribute]: title === 'array' ? [`flow_${inputAttribute}_1`, `flow_${inputAttribute}_2`] : `flow_${inputAttribute}_1`,
                   isExpanded,
                 },
               },
@@ -118,7 +117,7 @@ describe('parse bpmn as json for sub-process', () => {
               bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
               bpmnElementMarkers: expectedBpmnElementMarkers,
               bounds: { x: 67, y: 23, width: 456, height: 123 },
-              [expectedAttribute]: title === 'array' ? [`flow_${input}_1`, `flow_${input}_2`] : [`flow_${input}_1`],
+              [expectedAttribute]: title === 'array' ? [`flow_${inputAttribute}_1`, `flow_${inputAttribute}_2`] : [`flow_${inputAttribute}_1`],
             });
           },
         );
@@ -131,7 +130,7 @@ describe('parse bpmn as json for sub-process', () => {
           ${'outgoing'} | ${'association'}  | ${'bpmnElementOutgoingIds'}
         `(
           `should convert as Shape, when a process contains a ${expandedKind} ${bpmnSubProcessKind} sub-process with $title $flowKind`,
-          ({ title, flowKind, expectedAttribute }: { title: string; flowKind: keyof TFlowNode; expectedAttribute: keyof ExpectedShape }) => {
+          ({ title, flowKind, expectedAttribute }: { title: string; flowKind: 'sequenceFlow' | 'association'; expectedAttribute: keyof ExpectedShape }) => {
             const json = buildDefinitions({
               process: {
                 subProcess: { id: 'sub_process_id_0', triggeredByEvent: triggeredByEvent, isExpanded },

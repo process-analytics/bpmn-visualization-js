@@ -23,7 +23,6 @@ import { verifyEdge, verifyShape } from '../../../helpers/bpmn-model-expect';
 import type { GlobalTaskKind } from '../../../../../src/model/bpmn/internal';
 import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/internal';
 import type { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
-import type { TFlowNode } from '../../../../../src/model/bpmn/json/baseElement/flowElement';
 
 describe('parse bpmn as json for callActivity', () => {
   describe('parse bpmn as json for callActivity calling process', () => {
@@ -464,14 +463,14 @@ describe('parse bpmn as json for callActivity', () => {
 
       describe(`incoming/outgoing management for ${expandedKind} call activity`, () => {
         it.each`
-          title       | input         | expectedAttribute
-          ${'string'} | ${'incoming'} | ${'bpmnElementIncomingIds'}
-          ${'array'}  | ${'incoming'} | ${'bpmnElementIncomingIds'}
-          ${'string'} | ${'outgoing'} | ${'bpmnElementOutgoingIds'}
-          ${'array'}  | ${'outgoing'} | ${'bpmnElementOutgoingIds'}
+          title       | inputAttribute | expectedAttribute
+          ${'string'} | ${'incoming'}  | ${'bpmnElementIncomingIds'}
+          ${'array'}  | ${'incoming'}  | ${'bpmnElementIncomingIds'}
+          ${'string'} | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
+          ${'array'}  | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
         `(
-          `should convert as Shape, when a process contains a ${expandedKind} call activity with $input attribute as $title`,
-          ({ title, input, expectedAttribute }: { title: string; input: keyof TFlowNode; expectedAttribute: keyof ExpectedShape }) => {
+          `should convert as Shape, when a process contains a ${expandedKind} call activity with $inputAttribute attribute as $title`,
+          ({ title, inputAttribute, expectedAttribute }: { title: string; inputAttribute: 'incoming' | 'outgoing'; expectedAttribute: keyof ExpectedShape }) => {
             const json = buildDefinitions({
               process: [
                 { id: 'process_1' },
@@ -479,7 +478,7 @@ describe('parse bpmn as json for callActivity', () => {
                   id: 'process_2',
                   callActivity: {
                     id: `call_activity_id_0`,
-                    [input]: title === 'array' ? [`flow_${input}_1`, `flow_${input}_2`] : `flow_${input}_1`,
+                    [inputAttribute]: title === 'array' ? [`flow_${inputAttribute}_1`, `flow_${inputAttribute}_2`] : `flow_${inputAttribute}_1`,
                     calledElement: 'process_1',
                     isExpanded,
                   },
@@ -497,7 +496,7 @@ describe('parse bpmn as json for callActivity', () => {
               bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
               bpmnElementMarkers: expectedBpmnElementMarkers,
               bounds: { x: 346, y: 856, width: 45, height: 56 },
-              [expectedAttribute]: title === 'array' ? [`flow_${input}_1`, `flow_${input}_2`] : [`flow_${input}_1`],
+              [expectedAttribute]: title === 'array' ? [`flow_${inputAttribute}_1`, `flow_${inputAttribute}_2`] : [`flow_${inputAttribute}_1`],
             });
           },
         );
@@ -510,7 +509,7 @@ describe('parse bpmn as json for callActivity', () => {
           ${'outgoing'} | ${'association'}  | ${'bpmnElementOutgoingIds'}
         `(
           `should convert as Shape, when a process contains a ${expandedKind} call activity with $title $flowKind`,
-          ({ title, flowKind, expectedAttribute }: { title: string; flowKind: keyof TFlowNode; expectedAttribute: keyof ExpectedShape }) => {
+          ({ title, flowKind, expectedAttribute }: { title: string; flowKind: 'sequenceFlow' | 'association'; expectedAttribute: keyof ExpectedShape }) => {
             const json = buildDefinitions({
               process: [
                 { id: 'process_1' },
@@ -641,19 +640,19 @@ describe('parse bpmn as json for callActivity', () => {
 
     describe(`incoming/outgoing management for call activity calling global task`, () => {
       it.each`
-        title       | input         | expectedAttribute
-        ${'string'} | ${'incoming'} | ${'bpmnElementIncomingIds'}
-        ${'array'}  | ${'incoming'} | ${'bpmnElementIncomingIds'}
-        ${'string'} | ${'outgoing'} | ${'bpmnElementOutgoingIds'}
-        ${'array'}  | ${'outgoing'} | ${'bpmnElementOutgoingIds'}
+        title       | inputAttribute | expectedAttribute
+        ${'string'} | ${'incoming'}  | ${'bpmnElementIncomingIds'}
+        ${'array'}  | ${'incoming'}  | ${'bpmnElementIncomingIds'}
+        ${'string'} | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
+        ${'array'}  | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
       `(
-        `should convert as Shape, when a process contains a call activity with $input attribute as $title`,
-        ({ title, input, expectedAttribute }: { title: string; input: keyof TFlowNode; expectedAttribute: keyof ExpectedShape }) => {
+        `should convert as Shape, when a process contains a call activity with $inputAttribute attribute as $title`,
+        ({ title, inputAttribute, expectedAttribute }: { title: string; inputAttribute: 'incoming' | 'outgoing'; expectedAttribute: keyof ExpectedShape }) => {
           const json = buildDefinitions({
             process: {
               callActivity: {
                 id: `call_activity_id_0`,
-                [input]: title === 'array' ? [`flow_${input}_1`, `flow_${input}_2`] : `flow_${input}_1`,
+                [inputAttribute]: title === 'array' ? [`flow_${inputAttribute}_1`, `flow_${inputAttribute}_2`] : `flow_${inputAttribute}_1`,
                 calledElement: 'task_id',
               },
             },
@@ -670,7 +669,7 @@ describe('parse bpmn as json for callActivity', () => {
             bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK,
             bpmnElementGlobalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK,
             bounds: { x: 346, y: 856, width: 45, height: 56 },
-            [expectedAttribute]: title === 'array' ? [`flow_${input}_1`, `flow_${input}_2`] : [`flow_${input}_1`],
+            [expectedAttribute]: title === 'array' ? [`flow_${inputAttribute}_1`, `flow_${inputAttribute}_2`] : [`flow_${inputAttribute}_1`],
           });
         },
       );
@@ -683,7 +682,7 @@ describe('parse bpmn as json for callActivity', () => {
         ${'outgoing'} | ${'association'}  | ${'bpmnElementOutgoingIds'}
       `(
         `should convert as Shape, when a process contains a call activity with $title $flowKind`,
-        ({ title, flowKind, expectedAttribute }: { title: string; flowKind: keyof TFlowNode; expectedAttribute: keyof ExpectedShape }) => {
+        ({ title, flowKind, expectedAttribute }: { title: string; flowKind: 'sequenceFlow' | 'association'; expectedAttribute: keyof ExpectedShape }) => {
           const json = buildDefinitions({
             process: {
               callActivity: { id: `call_activity_id_0`, calledElement: 'task_id' },

@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { TFlowNode } from '../../../../../src/model/bpmn/json/baseElement/flowElement';
 import type { TEventDefinition } from '../../../../../src/model/bpmn/json/baseElement/rootElement/eventDefinition';
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '../../../../../src/model/bpmn/internal';
 import { BoundaryEventNotAttachedToActivityWarning, ShapeUnknownBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
@@ -102,17 +101,17 @@ function executeEventCommonTests(buildEventParameter: BuildEventsParameter, omit
 
   describe(`incoming/outgoing management for ${buildEventParameter.bpmnKind}`, () => {
     it.each`
-      title       | input         | expectedAttribute
-      ${'string'} | ${'incoming'} | ${'bpmnElementIncomingIds'}
-      ${'array'}  | ${'incoming'} | ${'bpmnElementIncomingIds'}
-      ${'string'} | ${'outgoing'} | ${'bpmnElementOutgoingIds'}
-      ${'array'}  | ${'outgoing'} | ${'bpmnElementOutgoingIds'}
+      title       | inputAttribute | expectedAttribute
+      ${'string'} | ${'incoming'}  | ${'bpmnElementIncomingIds'}
+      ${'array'}  | ${'incoming'}  | ${'bpmnElementIncomingIds'}
+      ${'string'} | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
+      ${'array'}  | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
     `(
-      `should convert as Shape, when a process contains a '${buildEventParameter.bpmnKind}' with $input attribute as $title, ${titleSuffix}`,
-      ({ title, input, expectedAttribute }: { title: string; input: keyof TFlowNode; expectedAttribute: keyof ExpectedShape }) => {
+      `should convert as Shape, when a process contains a '${buildEventParameter.bpmnKind}' with $inputAttribute attribute as $title, ${titleSuffix}`,
+      ({ title, inputAttribute, expectedAttribute }: { title: string; inputAttribute: 'incoming' | 'outgoing'; expectedAttribute: keyof ExpectedShape }) => {
         testMustConvertShapes(
-          { ...buildEventParameter, [input]: title === 'array' ? [`flow_${input}_1`, `flow_${input}_2`] : `flow_${input}_1` },
-          { ...omitExpectedShape, [expectedAttribute]: title === 'array' ? [`flow_${input}_1`, `flow_${input}_2`] : [`flow_${input}_1`] },
+          { ...buildEventParameter, [inputAttribute]: title === 'array' ? [`flow_${inputAttribute}_1`, `flow_${inputAttribute}_2`] : `flow_${inputAttribute}_1` },
+          { ...omitExpectedShape, [expectedAttribute]: title === 'array' ? [`flow_${inputAttribute}_1`, `flow_${inputAttribute}_2`] : [`flow_${inputAttribute}_1`] },
         );
       },
     );
@@ -125,7 +124,7 @@ function executeEventCommonTests(buildEventParameter: BuildEventsParameter, omit
       ${'outgoing'} | ${'association'}  | ${'bpmnElementOutgoingIds'}
     `(
       `should convert as Shape, when a process contains a '${buildEventParameter.bpmnKind}' with $title $flowKind, ${titleSuffix}`,
-      ({ title, flowKind, expectedAttribute }: { title: string; flowKind: keyof TFlowNode; expectedAttribute: keyof ExpectedShape }) => {
+      ({ title, flowKind, expectedAttribute }: { title: string; flowKind: 'sequenceFlow' | 'association'; expectedAttribute: keyof ExpectedShape }) => {
         const json = buildDefinitions({
           process: {
             event: buildEventParameter,

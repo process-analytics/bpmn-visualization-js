@@ -22,7 +22,6 @@ import { verifyShape } from '../../../helpers/bpmn-model-expect';
 import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
 import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind, ShapeUtil } from '../../../../../src/model/bpmn/internal';
 import type { ShapeBpmnEventBasedGateway } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import type { TFlowNode } from '../../../../../src/model/bpmn/json/baseElement/flowElement';
 
 describe.each([
   ['task', ShapeBpmnElementKind.TASK],
@@ -386,20 +385,20 @@ describe.each([
     const flowNodeParameterKind = isTask ? 'task' : 'gateway';
 
     it.each`
-      title       | input         | expectedAttribute
-      ${'string'} | ${'incoming'} | ${'bpmnElementIncomingIds'}
-      ${'array'}  | ${'incoming'} | ${'bpmnElementIncomingIds'}
-      ${'string'} | ${'outgoing'} | ${'bpmnElementOutgoingIds'}
-      ${'array'}  | ${'outgoing'} | ${'bpmnElementOutgoingIds'}
+      title       | inputAttribute | expectedAttribute
+      ${'string'} | ${'incoming'}  | ${'bpmnElementIncomingIds'}
+      ${'array'}  | ${'incoming'}  | ${'bpmnElementIncomingIds'}
+      ${'string'} | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
+      ${'array'}  | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
     `(
-      `should convert as Shape, when a process contains a ${bpmnKind} with $input attribute as $title`,
-      ({ title, input, expectedAttribute }: { title: string; input: keyof TFlowNode; expectedAttribute: keyof ExpectedShape }) => {
+      `should convert as Shape, when a process contains a ${bpmnKind} with $inputAttribute attribute as $title`,
+      ({ title, inputAttribute, expectedAttribute }: { title: string; inputAttribute: 'incoming' | 'outgoing'; expectedAttribute: keyof ExpectedShape }) => {
         const json = buildDefinitions({
           process: {
             [flowNodeParameterKind]: {
               id: `${bpmnKind}_id_0`,
               bpmnKind,
-              [input]: title === 'array' ? [`flow_${input}_1`, `flow_${input}_2`] : `flow_${input}_1`,
+              [inputAttribute]: title === 'array' ? [`flow_${inputAttribute}_1`, `flow_${inputAttribute}_2`] : `flow_${inputAttribute}_1`,
             },
           },
         });
@@ -412,7 +411,7 @@ describe.each([
           bpmnElementName: undefined,
           bpmnElementKind: expectedShapeBpmnElementKind,
           bounds: isTask ? { x: 362, y: 232, width: 36, height: 45 } : { x: 567, y: 345, width: 25, height: 25 },
-          [expectedAttribute]: title === 'array' ? [`flow_${input}_1`, `flow_${input}_2`] : [`flow_${input}_1`],
+          [expectedAttribute]: title === 'array' ? [`flow_${inputAttribute}_1`, `flow_${inputAttribute}_2`] : [`flow_${inputAttribute}_1`],
         });
       },
     );
@@ -425,7 +424,7 @@ describe.each([
       ${'outgoing'} | ${'association'}  | ${'bpmnElementOutgoingIds'}
     `(
       `should convert as Shape, when a process contains a ${bpmnKind} with $title $flowKind`,
-      ({ title, flowKind, expectedAttribute }: { title: string; flowKind: keyof TFlowNode; expectedAttribute: keyof ExpectedShape }) => {
+      ({ title, flowKind, expectedAttribute }: { title: string; flowKind: 'sequenceFlow' | 'association'; expectedAttribute: keyof ExpectedShape }) => {
         const json = buildDefinitions({
           process: {
             [flowNodeParameterKind]: { id: `${bpmnKind}_id_0`, bpmnKind },
