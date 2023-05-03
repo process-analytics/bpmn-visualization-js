@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { findFiles } from '../helpers/file-helper';
+import { findFiles } from '@test/shared/file-helper';
 
 describe('files lookup', () => {
   it('BPMN fixtures files', () => {

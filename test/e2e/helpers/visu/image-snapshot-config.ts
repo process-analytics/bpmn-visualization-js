@@ -16,7 +16,7 @@ limitations under the License.
 
 import { dirname, join } from 'node:path';
 import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
-import { configLog, getSimplePlatformName, getTestedBrowserFamily } from '../test-utils';
+import { configLog, getSimplePlatformName, getTestedBrowserFamily } from '@test/shared/visu/test-utils';
 
 export interface ImageSnapshotThresholdConfig {
   linux?: number;

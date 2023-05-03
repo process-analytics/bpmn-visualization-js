@@ -16,9 +16,9 @@ limitations under the License.
 
 import * as fs from 'node:fs';
 import type { Page } from 'playwright';
-import { delay } from '../e2e/helpers/test-utils';
-import type { Point } from '../e2e/helpers/visu/bpmn-page-utils';
-import { AvailableTestPages, PageTester } from '../e2e/helpers/visu/bpmn-page-utils';
+import { delay } from '@test/shared/visu/test-utils';
+import type { Point } from '@test/shared/visu/bpmn-page-utils';
+import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
 import { ChromiumMetricsCollector } from './helpers/metrics-chromium';
 import type { ChartData, PerformanceMetric } from './helpers/perf-utils';
 import { calculateMetrics } from './helpers/perf-utils';

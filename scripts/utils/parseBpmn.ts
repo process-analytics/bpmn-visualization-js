@@ -22,7 +22,7 @@ import type { BpmnJsonModel } from '../../src/model/bpmn/json/BPMN20';
 import BpmnXmlParser from '../../src/component/parser/xml/BpmnXmlParser';
 import { newBpmnJsonParser } from '../../src/component/parser/json/BpmnJsonParser';
 import { ParsingMessageCollector } from '../../src/component/parser/parsing-messages';
-import { readFileSync } from '../../test/helpers/file-helper';
+import { readFileSync } from '../../test/shared/file-helper';
 
 const __dirname = resolvePath();
 const argv = parseArgs(process.argv.slice(2));

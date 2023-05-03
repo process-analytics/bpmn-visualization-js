@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-const { isRunningOnCISlowOS, isRunningOnCi } = require('../helpers/environment-utils');
+const { isRunningOnCISlowOS, isRunningOnCi } = require('../shared/environment-utils');
 
 const log = require('debug')('bv:test:config:pw');
 
