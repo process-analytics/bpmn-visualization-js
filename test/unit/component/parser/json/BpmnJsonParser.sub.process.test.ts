@@ -48,6 +48,8 @@ function verifyEventShape(shape: Shape, expectedShape: ExpectedShape, expectedEv
   expect((shape.bpmnElement as ShapeBpmnEvent).eventDefinitionKind).toEqual(expectedEventDefinitionKind);
 }
 
+const expectedBounds = { x: 67, y: 23, width: 456, height: 123 };
+
 describe('parse bpmn as json for sub-process', () => {
   describe.each([
     ['embedded', false, ShapeBpmnSubProcessKind.EMBEDDED],
@@ -82,7 +84,7 @@ describe('parse bpmn as json for sub-process', () => {
             bpmnElementName: 'sub-process name',
             bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
             bpmnElementMarkers: expectedBpmnElementMarkers,
-            bounds: { x: 67, y: 23, width: 456, height: 123 },
+            bounds: expectedBounds,
           });
         },
       );
@@ -116,7 +118,7 @@ describe('parse bpmn as json for sub-process', () => {
               bpmnElementName: undefined,
               bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
               bpmnElementMarkers: expectedBpmnElementMarkers,
-              bounds: { x: 67, y: 23, width: 456, height: 123 },
+              bounds: expectedBounds,
               [expectedAttribute]: title === 'array' ? [`flow_${inputAttribute}_1`, `flow_${inputAttribute}_2`] : [`flow_${inputAttribute}_1`],
             });
           },
@@ -150,7 +152,7 @@ describe('parse bpmn as json for sub-process', () => {
               bpmnElementName: undefined,
               bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
               bpmnElementMarkers: expectedBpmnElementMarkers,
-              bounds: { x: 67, y: 23, width: 456, height: 123 },
+              bounds: expectedBounds,
               [expectedAttribute]: [`flow_${title}`],
             });
           },
@@ -182,7 +184,7 @@ describe('parse bpmn as json for sub-process', () => {
               bpmnElementName: undefined,
               bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
               bpmnElementMarkers: expectedBpmnElementMarkers,
-              bounds: { x: 67, y: 23, width: 456, height: 123 },
+              bounds: expectedBounds,
               [expectedAttribute]: [`flow_${title}`],
             });
           },
@@ -209,7 +211,7 @@ describe('parse bpmn as json for sub-process', () => {
             bpmnElementName: undefined,
             bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
             bpmnElementMarkers: expectedBpmnElementMarkers,
-            bounds: { x: 67, y: 23, width: 456, height: 123 },
+            bounds: expectedBounds,
             bpmnElementIncomingIds: ['flow_in_1', 'flow_in_2'],
             bpmnElementOutgoingIds: ['flow_out_1', 'flow_out_2', 'flow_out_3'],
           });
@@ -242,7 +244,7 @@ describe('parse bpmn as json for sub-process', () => {
         bpmnElementId: 'sub_process_id_0',
         bpmnElementName: 'sub-process name',
         bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
-        bounds: { x: 67, y: 23, width: 456, height: 123 },
+        bounds: expectedBounds,
         bpmnElementMarkers: [ShapeBpmnMarkerKind.EXPAND],
       });
       verifyShape(model.flowNodes[1], {
@@ -250,7 +252,7 @@ describe('parse bpmn as json for sub-process', () => {
         bpmnElementId: 'sub_process_id_1',
         bpmnElementName: undefined,
         bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
-        bounds: { x: 67, y: 23, width: 456, height: 123 },
+        bounds: expectedBounds,
         bpmnElementMarkers: [ShapeBpmnMarkerKind.EXPAND],
       });
     });
@@ -270,7 +272,7 @@ describe('parse bpmn as json for sub-process', () => {
           bpmnElementId: 'sub_process_id_1',
           bpmnElementName: undefined,
           bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
-          bounds: { x: 67, y: 23, width: 456, height: 123 },
+          bounds: expectedBounds,
           bpmnElementMarkers: [ShapeBpmnMarkerKind.EXPAND],
         });
       });

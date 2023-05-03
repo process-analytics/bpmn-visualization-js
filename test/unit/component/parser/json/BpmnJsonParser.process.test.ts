@@ -836,6 +836,8 @@ describe('parse bpmn as json for process/pool', () => {
   });
 
   describe(`incoming/outgoing management for participant referencing a process`, () => {
+    const expectedBounds = { x: 567, y: 345, width: 36, height: 45 };
+
     it.each`
       title         | expectedAttribute
       ${'incoming'} | ${'bpmnElementIncomingIds'}
@@ -859,7 +861,7 @@ describe('parse bpmn as json for process/pool', () => {
           bpmnElementId: 'process_O',
           bpmnElementName: undefined,
           bpmnElementKind: ShapeBpmnElementKind.POOL,
-          bounds: { x: 567, y: 345, width: 36, height: 45 },
+          bounds: expectedBounds,
           isHorizontal: true,
           [expectedAttribute]: [`flow_${title}`],
         });
@@ -884,7 +886,7 @@ describe('parse bpmn as json for process/pool', () => {
         bpmnElementId: 'process_O',
         bpmnElementName: undefined,
         bpmnElementKind: ShapeBpmnElementKind.POOL,
-        bounds: { x: 567, y: 345, width: 36, height: 45 },
+        bounds: expectedBounds,
         isHorizontal: true,
         bpmnElementIncomingIds: ['flow_in_1', 'flow_in_2'],
         bpmnElementOutgoingIds: ['flow_out_2', 'flow_out_3'],

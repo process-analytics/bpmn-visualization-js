@@ -33,6 +33,8 @@ import { getEventShapes } from '../../../helpers/TestUtils';
 
 type OmitExpectedEventShape = Omit<ExpectedEventShape, 'shapeId' | 'bpmnElementId' | 'bounds'> | Omit<ExpectedBoundaryEventShape, 'shapeId' | 'bpmnElementId' | 'bounds'>;
 
+const expectedBounds = { x: 362, y: 232, width: 36, height: 45 };
+
 function testMustConvertShapes(buildEventParameter: BuildEventsParameter | BuildEventsParameter[], omitExpectedShape: OmitExpectedEventShape, processIsArray = false): void {
   const process = { event: buildEventParameter, task: {} };
   const json = buildDefinitions({ process: processIsArray ? [process] : process });
@@ -45,7 +47,7 @@ function testMustConvertShapes(buildEventParameter: BuildEventsParameter | Build
       ...omitExpectedShape,
       shapeId: `shape_event_id_0_${index}`,
       bpmnElementId: `event_id_0_${index}`,
-      bounds: { x: 362, y: 232, width: 36, height: 45 },
+      bounds: expectedBounds,
     };
     verifyShape(shape, expectedShape);
   });
@@ -143,7 +145,7 @@ function executeEventCommonTests(buildEventParameter: BuildEventsParameter, omit
           ...omitExpectedShape,
           shapeId: `shape_event_id_0_0`,
           bpmnElementId: `event_id_0_0`,
-          bounds: { x: 362, y: 232, width: 36, height: 45 },
+          bounds: expectedBounds,
           [expectedAttribute]: [`flow_${title}`],
         });
       },
@@ -174,7 +176,7 @@ function executeEventCommonTests(buildEventParameter: BuildEventsParameter, omit
           ...omitExpectedShape,
           shapeId: `shape_event_id_0_0`,
           bpmnElementId: `event_id_0_0`,
-          bounds: { x: 362, y: 232, width: 36, height: 45 },
+          bounds: expectedBounds,
           [expectedAttribute]: [`flow_${title}`],
         });
       },
@@ -200,7 +202,7 @@ function executeEventCommonTests(buildEventParameter: BuildEventsParameter, omit
         ...omitExpectedShape,
         shapeId: `shape_event_id_0_0`,
         bpmnElementId: `event_id_0_0`,
-        bounds: { x: 362, y: 232, width: 36, height: 45 },
+        bounds: expectedBounds,
         bpmnElementIncomingIds: ['flow_in_1', 'flow_in_2'],
         bpmnElementOutgoingIds: ['flow_out_1', 'flow_out_2', 'flow_out_3'],
       });

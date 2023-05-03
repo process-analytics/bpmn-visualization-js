@@ -24,6 +24,8 @@ import type { GlobalTaskKind } from '../../../../../src/model/bpmn/internal';
 import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/internal';
 import type { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
 
+const expectedBounds = { x: 346, y: 856, width: 45, height: 56 };
+
 describe('parse bpmn as json for callActivity', () => {
   describe('parse bpmn as json for callActivity calling process', () => {
     describe.each([
@@ -61,7 +63,7 @@ describe('parse bpmn as json for callActivity', () => {
             bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
             bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
             bpmnElementMarkers: expectedBpmnElementMarkers,
-            bounds: { x: 346, y: 856, width: 45, height: 56 },
+            bounds: expectedBounds,
           });
         },
       );
@@ -86,7 +88,7 @@ describe('parse bpmn as json for callActivity', () => {
           bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
           bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
           bpmnElementMarkers: expectedBpmnElementMarkers,
-          bounds: { x: 346, y: 856, width: 45, height: 56 },
+          bounds: expectedBounds,
         });
       });
 
@@ -110,7 +112,7 @@ describe('parse bpmn as json for callActivity', () => {
           bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
           bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
           bpmnElementMarkers: expectedBpmnElementMarkers,
-          bounds: { x: 346, y: 856, width: 45, height: 56 },
+          bounds: expectedBounds,
         });
       });
 
@@ -138,7 +140,7 @@ describe('parse bpmn as json for callActivity', () => {
           bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
           bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
           bpmnElementMarkers: expectedBpmnElementMarkers,
-          bounds: { x: 346, y: 856, width: 45, height: 56 },
+          bounds: expectedBounds,
         });
       });
 
@@ -167,7 +169,7 @@ describe('parse bpmn as json for callActivity', () => {
           bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
           bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
           bpmnElementMarkers: expectedBpmnElementMarkers,
-          bounds: { x: 346, y: 856, width: 45, height: 56 },
+          bounds: expectedBounds,
         });
       });
 
@@ -199,7 +201,7 @@ describe('parse bpmn as json for callActivity', () => {
           bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
           bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
           bpmnElementMarkers: expectedBpmnElementMarkers,
-          bounds: { x: 346, y: 856, width: 45, height: 56 },
+          bounds: expectedBounds,
         });
       });
 
@@ -237,7 +239,7 @@ describe('parse bpmn as json for callActivity', () => {
             bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
             bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
             bpmnElementMarkers: expectedBpmnElementMarkers,
-            bounds: { x: 346, y: 856, width: 45, height: 56 },
+            bounds: expectedBounds,
           });
         },
       );
@@ -282,7 +284,7 @@ describe('parse bpmn as json for callActivity', () => {
           bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
           bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
           bpmnElementMarkers: expectedBpmnElementMarkers,
-          bounds: { x: 346, y: 856, width: 45, height: 56 },
+          bounds: expectedBounds,
         });
       });
 
@@ -319,7 +321,7 @@ describe('parse bpmn as json for callActivity', () => {
             bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
             bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
             bpmnElementMarkers: expectedBpmnElementMarkers,
-            bounds: { x: 346, y: 856, width: 45, height: 56 },
+            bounds: expectedBounds,
           });
         },
       );
@@ -352,7 +354,7 @@ describe('parse bpmn as json for callActivity', () => {
           bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
           bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
           bpmnElementMarkers: expectedBpmnElementMarkers,
-          bounds: { x: 346, y: 856, width: 45, height: 56 },
+          bounds: expectedBounds,
         });
       });
 
@@ -391,7 +393,7 @@ describe('parse bpmn as json for callActivity', () => {
           bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
           bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
           bpmnElementMarkers: expectedBpmnElementMarkers,
-          bounds: { x: 346, y: 856, width: 45, height: 56 },
+          bounds: expectedBounds,
         });
       });
 
@@ -419,7 +421,7 @@ describe('parse bpmn as json for callActivity', () => {
           bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
           bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
           bpmnElementMarkers: expectedBpmnElementMarkers,
-          bounds: { x: 346, y: 856, width: 45, height: 56 },
+          bounds: expectedBounds,
         });
 
         verifyEdge(model.edges[0], {
@@ -457,7 +459,7 @@ describe('parse bpmn as json for callActivity', () => {
           bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
           bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
           bpmnElementMarkers: expectedBpmnElementMarkers,
-          bounds: { x: 346, y: 856, width: 45, height: 56 },
+          bounds: expectedBounds,
         });
       });
 
@@ -495,7 +497,7 @@ describe('parse bpmn as json for callActivity', () => {
               bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
               bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
               bpmnElementMarkers: expectedBpmnElementMarkers,
-              bounds: { x: 346, y: 856, width: 45, height: 56 },
+              bounds: expectedBounds,
               [expectedAttribute]: title === 'array' ? [`flow_${inputAttribute}_1`, `flow_${inputAttribute}_2`] : [`flow_${inputAttribute}_1`],
             });
           },
@@ -534,7 +536,7 @@ describe('parse bpmn as json for callActivity', () => {
               bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
               bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
               bpmnElementMarkers: expectedBpmnElementMarkers,
-              bounds: { x: 346, y: 856, width: 45, height: 56 },
+              bounds: expectedBounds,
               [expectedAttribute]: [`flow_${title}`],
             });
           },
@@ -572,7 +574,7 @@ describe('parse bpmn as json for callActivity', () => {
               bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
               bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
               bpmnElementMarkers: expectedBpmnElementMarkers,
-              bounds: { x: 346, y: 856, width: 45, height: 56 },
+              bounds: expectedBounds,
               [expectedAttribute]: [`flow_${title}`],
             });
           },
@@ -604,7 +606,7 @@ describe('parse bpmn as json for callActivity', () => {
             bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
             bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
             bpmnElementMarkers: expectedBpmnElementMarkers,
-            bounds: { x: 346, y: 856, width: 45, height: 56 },
+            bounds: expectedBounds,
             bpmnElementIncomingIds: ['flow_in_1', 'flow_in_2'],
             bpmnElementOutgoingIds: ['flow_out_1', 'flow_out_2', 'flow_out_3'],
           });
@@ -633,7 +635,7 @@ describe('parse bpmn as json for callActivity', () => {
           bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
           bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK,
           bpmnElementGlobalTaskKind: bpmnKind as GlobalTaskKind,
-          bounds: { x: 346, y: 856, width: 45, height: 56 },
+          bounds: expectedBounds,
         });
       },
     );
@@ -668,7 +670,7 @@ describe('parse bpmn as json for callActivity', () => {
             bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
             bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK,
             bpmnElementGlobalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK,
-            bounds: { x: 346, y: 856, width: 45, height: 56 },
+            bounds: expectedBounds,
             [expectedAttribute]: title === 'array' ? [`flow_${inputAttribute}_1`, `flow_${inputAttribute}_2`] : [`flow_${inputAttribute}_1`],
           });
         },
@@ -704,7 +706,7 @@ describe('parse bpmn as json for callActivity', () => {
             bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
             bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK,
             bpmnElementGlobalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK,
-            bounds: { x: 346, y: 856, width: 45, height: 56 },
+            bounds: expectedBounds,
             [expectedAttribute]: [`flow_${title}`],
           });
         },
@@ -738,7 +740,7 @@ describe('parse bpmn as json for callActivity', () => {
             bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
             bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK,
             bpmnElementGlobalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK,
-            bounds: { x: 346, y: 856, width: 45, height: 56 },
+            bounds: expectedBounds,
             [expectedAttribute]: [`flow_${title}`],
           });
         },
@@ -767,7 +769,7 @@ describe('parse bpmn as json for callActivity', () => {
           bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
           bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK,
           bpmnElementGlobalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK,
-          bounds: { x: 346, y: 856, width: 45, height: 56 },
+          bounds: expectedBounds,
           bpmnElementIncomingIds: ['flow_in_1', 'flow_in_2'],
           bpmnElementOutgoingIds: ['flow_out_1', 'flow_out_2', 'flow_out_3'],
         });

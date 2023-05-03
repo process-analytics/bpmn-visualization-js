@@ -383,6 +383,7 @@ describe.each([
   describe(`incoming/outgoing management for ${bpmnKind}`, () => {
     const isTask = ShapeUtil.isTask(bpmnKind);
     const flowNodeParameterKind = isTask ? 'task' : 'gateway';
+    const expectedBounds = isTask ? { x: 362, y: 232, width: 36, height: 45 } : { x: 567, y: 345, width: 25, height: 25 };
 
     it.each`
       title       | inputAttribute | expectedAttribute
@@ -410,7 +411,7 @@ describe.each([
           bpmnElementId: `${bpmnKind}_id_0`,
           bpmnElementName: undefined,
           bpmnElementKind: expectedShapeBpmnElementKind,
-          bounds: isTask ? { x: 362, y: 232, width: 36, height: 45 } : { x: 567, y: 345, width: 25, height: 25 },
+          bounds: expectedBounds,
           [expectedAttribute]: title === 'array' ? [`flow_${inputAttribute}_1`, `flow_${inputAttribute}_2`] : [`flow_${inputAttribute}_1`],
         });
       },
@@ -443,7 +444,7 @@ describe.each([
           bpmnElementId: `${bpmnKind}_id_0`,
           bpmnElementName: undefined,
           bpmnElementKind: expectedShapeBpmnElementKind,
-          bounds: isTask ? { x: 362, y: 232, width: 36, height: 45 } : { x: 567, y: 345, width: 25, height: 25 },
+          bounds: expectedBounds,
           [expectedAttribute]: [`flow_${title}`],
         });
       },
@@ -474,7 +475,7 @@ describe.each([
           bpmnElementId: `${bpmnKind}_id_0`,
           bpmnElementName: undefined,
           bpmnElementKind: expectedShapeBpmnElementKind,
-          bounds: isTask ? { x: 362, y: 232, width: 36, height: 45 } : { x: 567, y: 345, width: 25, height: 25 },
+          bounds: expectedBounds,
           [expectedAttribute]: [`flow_${title}`],
         });
       },
@@ -500,7 +501,7 @@ describe.each([
         bpmnElementId: `${bpmnKind}_id_0`,
         bpmnElementName: undefined,
         bpmnElementKind: expectedShapeBpmnElementKind,
-        bounds: isTask ? { x: 362, y: 232, width: 36, height: 45 } : { x: 567, y: 345, width: 25, height: 25 },
+        bounds: expectedBounds,
         bpmnElementIncomingIds: ['flow_in_1', 'flow_in_2'],
         bpmnElementOutgoingIds: ['flow_out_1', 'flow_out_2', 'flow_out_3'],
       });
