@@ -97,7 +97,7 @@ describe('parse bpmn as json for sub-process', () => {
           ${'string'} | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
           ${'array'}  | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
         `(
-          `should convert as Shape, when a process contains a ${expandedKind} ${bpmnSubProcessKind} sub-process with $inputAttribute attribute as $title`,
+          `should convert as Shape with $inputAttribute attribute calculated from ${expandedKind} ${bpmnSubProcessKind} sub-process attribute as $title`,
           ({ title, inputAttribute, expectedAttribute }: { title: string; inputAttribute: 'incoming' | 'outgoing'; expectedAttribute: keyof ExpectedShape }) => {
             const json = buildDefinitions({
               process: {
@@ -131,7 +131,7 @@ describe('parse bpmn as json for sub-process', () => {
           ${'incoming'} | ${'association'}  | ${'bpmnElementIncomingIds'}
           ${'outgoing'} | ${'association'}  | ${'bpmnElementOutgoingIds'}
         `(
-          `should convert as Shape, when a process contains a ${expandedKind} ${bpmnSubProcessKind} sub-process with $title $flowKind`,
+          `should convert as Shape with $title attribute calculated from $flowKind`,
           ({ title, flowKind, expectedAttribute }: { title: string; flowKind: 'sequenceFlow' | 'association'; expectedAttribute: keyof ExpectedShape }) => {
             const json = buildDefinitions({
               process: {
@@ -163,7 +163,7 @@ describe('parse bpmn as json for sub-process', () => {
           ${'incoming'} | ${'bpmnElementIncomingIds'}
           ${'outgoing'} | ${'bpmnElementOutgoingIds'}
         `(
-          `should convert as Shape, when a process contains a ${expandedKind} ${bpmnSubProcessKind} sub-process with $title message flow`,
+          `should convert as Shape with $title attribute calculated from message flow`,
           ({ title, expectedAttribute }: { title: string; expectedAttribute: keyof ExpectedShape }) => {
             const json = buildDefinitions({
               process: {
@@ -190,7 +190,7 @@ describe('parse bpmn as json for sub-process', () => {
           },
         );
 
-        it(`should convert as Shape, when a process contains a ${expandedKind} ${bpmnSubProcessKind} sub-process with incoming/outgoing attributes and incoming/outgoing flows`, () => {
+        it(`should convert as Shape with incoming/outgoing attributes calculated from ${expandedKind} ${bpmnSubProcessKind} sub-process attributes and from flows`, () => {
           const json = buildDefinitions({
             process: {
               subProcess: { id: 'sub_process_id_0', triggeredByEvent: triggeredByEvent, incoming: 'flow_in_1', outgoing: ['flow_out_1', 'flow_out_2'], isExpanded },

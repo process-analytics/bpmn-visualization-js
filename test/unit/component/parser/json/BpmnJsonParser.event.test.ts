@@ -109,7 +109,7 @@ function executeEventCommonTests(buildEventParameter: BuildEventsParameter, omit
       ${'string'} | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
       ${'array'}  | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
     `(
-      `should convert as Shape, when a process contains a '${buildEventParameter.bpmnKind}' with $inputAttribute attribute as $title, ${titleSuffix}`,
+      `should convert as Shape with $inputAttribute attribute calculated from ${buildEventParameter.bpmnKind} attribute as $title`,
       ({ title, inputAttribute, expectedAttribute }: { title: string; inputAttribute: 'incoming' | 'outgoing'; expectedAttribute: keyof ExpectedShape }) => {
         testMustConvertShapes(
           { ...buildEventParameter, [inputAttribute]: title === 'array' ? [`flow_${inputAttribute}_1`, `flow_${inputAttribute}_2`] : `flow_${inputAttribute}_1` },
@@ -125,7 +125,7 @@ function executeEventCommonTests(buildEventParameter: BuildEventsParameter, omit
       ${'incoming'} | ${'association'}  | ${'bpmnElementIncomingIds'}
       ${'outgoing'} | ${'association'}  | ${'bpmnElementOutgoingIds'}
     `(
-      `should convert as Shape, when a process contains a '${buildEventParameter.bpmnKind}' with $title $flowKind, ${titleSuffix}`,
+      `should convert as Shape with $title attribute calculated from $flowKind`,
       ({ title, flowKind, expectedAttribute }: { title: string; flowKind: 'sequenceFlow' | 'association'; expectedAttribute: keyof ExpectedShape }) => {
         const json = buildDefinitions({
           process: {
@@ -155,34 +155,31 @@ function executeEventCommonTests(buildEventParameter: BuildEventsParameter, omit
       title         | expectedAttribute
       ${'incoming'} | ${'bpmnElementIncomingIds'}
       ${'outgoing'} | ${'bpmnElementOutgoingIds'}
-    `(
-      `should convert as Shape, when a process contains a '${buildEventParameter.bpmnKind}' with $title message flow, ${titleSuffix}`,
-      ({ title, expectedAttribute }: { title: string; expectedAttribute: keyof ExpectedShape }) => {
-        const json = buildDefinitions({
-          process: {
-            event: buildEventParameter,
-            task: {},
-          },
-          messageFlows: {
-            id: `flow_${title}`,
-            sourceRef: title === 'incoming' ? 'unknown' : 'event_id_0_0',
-            targetRef: title === 'incoming' ? 'event_id_0_0' : 'unknown',
-          },
-        });
+    `(`should convert as Shape with $title attribute calculated from message flow`, ({ title, expectedAttribute }: { title: string; expectedAttribute: keyof ExpectedShape }) => {
+      const json = buildDefinitions({
+        process: {
+          event: buildEventParameter,
+          task: {},
+        },
+        messageFlows: {
+          id: `flow_${title}`,
+          sourceRef: title === 'incoming' ? 'unknown' : 'event_id_0_0',
+          targetRef: title === 'incoming' ? 'event_id_0_0' : 'unknown',
+        },
+      });
 
-        const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 2);
+      const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 2);
 
-        verifyShape(model.flowNodes[1], {
-          ...omitExpectedShape,
-          shapeId: `shape_event_id_0_0`,
-          bpmnElementId: `event_id_0_0`,
-          bounds: expectedBounds,
-          [expectedAttribute]: [`flow_${title}`],
-        });
-      },
-    );
+      verifyShape(model.flowNodes[1], {
+        ...omitExpectedShape,
+        shapeId: `shape_event_id_0_0`,
+        bpmnElementId: `event_id_0_0`,
+        bounds: expectedBounds,
+        [expectedAttribute]: [`flow_${title}`],
+      });
+    });
 
-    it(`should convert as Shape, when a process contains a '${buildEventParameter.bpmnKind} with incoming/outgoing attributes and incoming/outgoing flows, ${titleSuffix}`, () => {
+    it(`should convert as Shape with incoming/outgoing attributes calculated from ${buildEventParameter.bpmnKind} attributes and from flows`, () => {
       const json = buildDefinitions({
         process: {
           event: { ...buildEventParameter, incoming: 'flow_in_1', outgoing: ['flow_out_1', 'flow_out_2'] },

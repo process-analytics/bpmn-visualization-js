@@ -392,7 +392,7 @@ describe.each([
       ${'string'} | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
       ${'array'}  | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
     `(
-      `should convert as Shape, when a process contains a ${bpmnKind} with $inputAttribute attribute as $title`,
+      `should convert as Shape with $inputAttribute attribute calculated from ${bpmnKind} attribute as $title`,
       ({ title, inputAttribute, expectedAttribute }: { title: string; inputAttribute: 'incoming' | 'outgoing'; expectedAttribute: keyof ExpectedShape }) => {
         const json = buildDefinitions({
           process: {
@@ -424,7 +424,7 @@ describe.each([
       ${'incoming'} | ${'association'}  | ${'bpmnElementIncomingIds'}
       ${'outgoing'} | ${'association'}  | ${'bpmnElementOutgoingIds'}
     `(
-      `should convert as Shape, when a process contains a ${bpmnKind} with $title $flowKind`,
+      `should convert as Shape with $title attribute calculated from $flowKind`,
       ({ title, flowKind, expectedAttribute }: { title: string; flowKind: 'sequenceFlow' | 'association'; expectedAttribute: keyof ExpectedShape }) => {
         const json = buildDefinitions({
           process: {
@@ -454,34 +454,31 @@ describe.each([
       title         | expectedAttribute
       ${'incoming'} | ${'bpmnElementIncomingIds'}
       ${'outgoing'} | ${'bpmnElementOutgoingIds'}
-    `(
-      `should convert as Shape, when a process contains a ${bpmnKind} with $title message flow`,
-      ({ title, expectedAttribute }: { title: string; expectedAttribute: keyof ExpectedShape }) => {
-        const json = buildDefinitions({
-          process: {
-            [flowNodeParameterKind]: { id: `${bpmnKind}_id_0`, bpmnKind },
-          },
-          messageFlows: {
-            id: `flow_${title}`,
-            sourceRef: title === 'incoming' ? 'unknown' : `${bpmnKind}_id_0`,
-            targetRef: title === 'incoming' ? `${bpmnKind}_id_0` : 'unknown',
-          },
-        });
+    `(`should convert as Shape with $title attribute calculated from message flow`, ({ title, expectedAttribute }: { title: string; expectedAttribute: keyof ExpectedShape }) => {
+      const json = buildDefinitions({
+        process: {
+          [flowNodeParameterKind]: { id: `${bpmnKind}_id_0`, bpmnKind },
+        },
+        messageFlows: {
+          id: `flow_${title}`,
+          sourceRef: title === 'incoming' ? 'unknown' : `${bpmnKind}_id_0`,
+          targetRef: title === 'incoming' ? `${bpmnKind}_id_0` : 'unknown',
+        },
+      });
 
-        const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
+      const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
 
-        verifyShape(model.flowNodes[0], {
-          shapeId: `shape_${bpmnKind}_id_0`,
-          bpmnElementId: `${bpmnKind}_id_0`,
-          bpmnElementName: undefined,
-          bpmnElementKind: expectedShapeBpmnElementKind,
-          bounds: expectedBounds,
-          [expectedAttribute]: [`flow_${title}`],
-        });
-      },
-    );
+      verifyShape(model.flowNodes[0], {
+        shapeId: `shape_${bpmnKind}_id_0`,
+        bpmnElementId: `${bpmnKind}_id_0`,
+        bpmnElementName: undefined,
+        bpmnElementKind: expectedShapeBpmnElementKind,
+        bounds: expectedBounds,
+        [expectedAttribute]: [`flow_${title}`],
+      });
+    });
 
-    it(`should convert as Shape, when a process contains a ${bpmnKind} with incoming/outgoing attributes and incoming/outgoing flows`, () => {
+    it(`should convert as Shape with incoming/outgoing attributes calculated from ${bpmnKind} attributes and from flows`, () => {
       const json = buildDefinitions({
         process: {
           [flowNodeParameterKind]: { id: `${bpmnKind}_id_0`, bpmnKind, incoming: 'flow_in_1', outgoing: ['flow_out_1', 'flow_out_2'] },

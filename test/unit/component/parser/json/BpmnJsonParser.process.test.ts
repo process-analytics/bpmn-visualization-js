@@ -842,33 +842,30 @@ describe('parse bpmn as json for process/pool', () => {
       title         | expectedAttribute
       ${'incoming'} | ${'bpmnElementIncomingIds'}
       ${'outgoing'} | ${'bpmnElementOutgoingIds'}
-    `(
-      `should convert as Shape, when a participant referencing a process with $title message flow`,
-      ({ title, expectedAttribute }: { title: string; expectedAttribute: keyof ExpectedShape }) => {
-        const json = buildDefinitions({
-          process: { withParticipant: true, id: 'process_O' },
-          messageFlows: {
-            id: `flow_${title}`,
-            sourceRef: title === 'incoming' ? 'unknown' : 'process_O',
-            targetRef: title === 'incoming' ? 'process_O' : 'unknown',
-          },
-        });
+    `(`should convert as Shape with $title attribute calculated from message flow`, ({ title, expectedAttribute }: { title: string; expectedAttribute: keyof ExpectedShape }) => {
+      const json = buildDefinitions({
+        process: { withParticipant: true, id: 'process_O' },
+        messageFlows: {
+          id: `flow_${title}`,
+          sourceRef: title === 'incoming' ? 'unknown' : 'process_O',
+          targetRef: title === 'incoming' ? 'process_O' : 'unknown',
+        },
+      });
 
-        const model = parseJsonAndExpect(json, 1, 0, 0, 1);
+      const model = parseJsonAndExpect(json, 1, 0, 0, 1);
 
-        verifyShape(model.pools[0], {
-          shapeId: 'shape_process_O',
-          bpmnElementId: 'process_O',
-          bpmnElementName: undefined,
-          bpmnElementKind: ShapeBpmnElementKind.POOL,
-          bounds: expectedBounds,
-          isHorizontal: true,
-          [expectedAttribute]: [`flow_${title}`],
-        });
-      },
-    );
+      verifyShape(model.pools[0], {
+        shapeId: 'shape_process_O',
+        bpmnElementId: 'process_O',
+        bpmnElementName: undefined,
+        bpmnElementKind: ShapeBpmnElementKind.POOL,
+        bounds: expectedBounds,
+        isHorizontal: true,
+        [expectedAttribute]: [`flow_${title}`],
+      });
+    });
 
-    it(`should convert as Shape, when a participant referencing a process with incoming/outgoing message flows`, () => {
+    it(`should convert as Shape with incoming/outgoing attributes calculated from message flows`, () => {
       const json = buildDefinitions({
         process: { withParticipant: true, id: 'process_O' },
         messageFlows: [
