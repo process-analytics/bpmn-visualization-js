@@ -22,7 +22,7 @@ import {
   initializeBpmnVisualizationWithoutId,
 } from './helpers/bpmn-visualization-initialization';
 import { HtmlElementLookup } from './helpers/html-utils';
-import { readFileSync } from '../helpers/file-helper';
+import { readFileSync } from '../shared/file-helper';
 
 describe.each`
   bpmnVisualization                               | type

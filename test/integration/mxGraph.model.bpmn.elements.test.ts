@@ -24,7 +24,7 @@ import {
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
 } from '@lib/bpmn-visualization';
-import { readFileSync } from '../helpers/file-helper';
+import { readFileSync } from '../shared/file-helper';
 import type { ExpectedShapeModelElement } from './helpers/model-expect';
 import { bpmnVisualization, expectEdgesInModel, expectPoolsInModel, expectTotalEdgesInModel, expectShapesInModel, expectTotalShapesInModel } from './helpers/model-expect';
 import { mxgraph } from '@lib/component/mxgraph/initializer';

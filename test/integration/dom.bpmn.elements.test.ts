@@ -30,7 +30,7 @@ import {
   initializeBpmnVisualizationWithHtmlElement,
   initializeBpmnVisualizationWithoutId,
 } from './helpers/bpmn-visualization-initialization';
-import { readFileSync } from '../helpers/file-helper';
+import { readFileSync } from '../shared/file-helper';
 
 describe('Bpmn Elements registry - retrieve BPMN elements', () => {
   describe.each`
