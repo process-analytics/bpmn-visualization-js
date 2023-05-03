@@ -25,8 +25,8 @@ import type {
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
   Stroke,
-} from '../../../src/bpmn-visualization';
-import { BpmnVisualization, ShapeBpmnElementKind } from '../../../src/bpmn-visualization';
+} from '@lib/bpmn-visualization';
+import { BpmnVisualization, ShapeBpmnElementKind } from '@lib/bpmn-visualization';
 import {
   toBeAssociationFlow,
   toBeBoundaryEvent,

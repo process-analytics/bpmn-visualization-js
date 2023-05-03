@@ -23,8 +23,8 @@ import {
   parsingMessageCollector,
 } from '../../../helpers/JsonTestUtils';
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal';
-import { GroupUnknownCategoryValueWarning, ShapeUnknownBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
+import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
+import { GroupUnknownCategoryValueWarning, ShapeUnknownBpmnElementWarning } from '@lib/component/parser/json/warnings';
 
 describe('parse bpmn as json for group', () => {
   it('Single Group with label in process', () => {

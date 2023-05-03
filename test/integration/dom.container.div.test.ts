@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BpmnVisualization } from '../../src/bpmn-visualization';
-import { ShapeBpmnEventDefinitionKind } from '../../src/bpmn-visualization';
+import type { BpmnVisualization } from '@lib/bpmn-visualization';
+import { ShapeBpmnEventDefinitionKind } from '@lib/bpmn-visualization';
 import {
   initializeBpmnVisualizationWithContainerId,
   initializeBpmnVisualizationWithHtmlElement,

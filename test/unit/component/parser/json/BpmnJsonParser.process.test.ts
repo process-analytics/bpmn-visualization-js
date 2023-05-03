@@ -17,8 +17,8 @@ limitations under the License.
 import { parseJsonAndExpect, parseJsonAndExpectOnlyPools, parseJsonAndExpectOnlyPoolsAndFlowNodes, parseJsonAndExpectOnlyPoolsAndLanes } from '../../../helpers/JsonTestUtils';
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
 
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal';
-import type { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
+import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 
 describe('parse bpmn as json for process/pool', () => {
   describe.each([
