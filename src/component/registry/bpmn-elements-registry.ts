@@ -122,7 +122,7 @@ export class BpmnElementsRegistry {
    *
    * Notice that if you pass ids that are not related to existing BPMN elements, their reference will be kept within the registry but nothing happens on the rendering side.
    *
-   * See also the {@link removeCssClasses} or the {@link toggleCssClasses} methods.
+   * See also the {@link removeCssClasses}, the {@link removeAllCssClasses} or the {@link toggleCssClasses} methods.
    *
    * @example
    * ```javascript
@@ -174,10 +174,32 @@ export class BpmnElementsRegistry {
   }
 
   /**
+   * Remove all CSS classes previously added with the {@link addCssClasses} or the {@link toggleCssClasses} methods from one/several BPMN element(s).
+   *
+   * **Note**: if you pass an id that is not related to an existing BPMN element, nothing happens on the rendering side.
+   *
+   * @example
+   * ```javascript
+   * // Remove from BPMN elements with id: activity_1 and activity_2
+   * bpmnVisualization.bpmnElementsRegistry.removeAllCssClasses(['activity_1', 'activity_2']);
+   *
+   * // Remove from BPMN element with id: task_3
+   * bpmnVisualization.bpmnElementsRegistry.removeAllCssClasses('task_3');
+   * ```
+   *
+   * @param bpmnElementIds The BPMN id of the element(s) where to remove all CSS classes
+   */
+  removeAllCssClasses(bpmnElementIds: string | string[]): void {
+    ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId =>
+      this.updateCellIfChanged(this.cssRegistry.removeAllClassNames.bind(this.cssRegistry)(bpmnElementId), bpmnElementId),
+    );
+  }
+
+  /**
    * Toggle one/several CSS class(es) for one/several BPMN element(s).
    * Notice that if you pass ids that are not related to existing BPMN elements, their reference will be kept within the registry but nothing happens on the rendering side.
    *
-   * See also the {@link addCssClasses} or the {@link removeCssClasses} methods.
+   * See also the {@link addCssClasses}, the {@link removeAllCssClasses} or the {@link removeCssClasses} methods.
    *
    * @example
    * ```javascript
