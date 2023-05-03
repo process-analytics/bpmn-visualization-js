@@ -20,9 +20,9 @@ import { parseJsonAndExpect, parseJsonAndExpectOnlyEdgesAndFlowNodes, parseJsonA
 import type { ExpectedShape } from '../../../helpers/bpmn-model-expect';
 import { verifyEdge, verifyShape } from '../../../helpers/bpmn-model-expect';
 
-import type { GlobalTaskKind } from '../../../../../src/model/bpmn/internal';
-import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/internal';
-import type { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
+import type { GlobalTaskKind } from '@lib/model/bpmn/internal';
+import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '@lib/model/bpmn/internal';
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 
 const expectedBounds = { x: 346, y: 856, width: 45, height: 56 };
 

@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { BpmnVisualization, type GlobalOptions } from '../../../src/bpmn-visualization';
+import { BpmnVisualization, type GlobalOptions } from '@lib/bpmn-visualization';
 import { insertBpmnContainer, insertBpmnContainerWithoutId } from './dom-utils';
 
 export type GlobalOptionsWithoutContainer = Omit<GlobalOptions, 'container'>;

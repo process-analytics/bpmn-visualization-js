@@ -1,9 +1,15 @@
 {
   "extends": "./tsconfig",
   "compilerOptions": {
-    "sourceMap": true
+    "sourceMap": true,
+    "baseUrl": ".",
+    "paths": {
+      // allow to import sources directly with "@lib/xx/yy" instead of using relative paths like "../../../src/xx/yy"
+      "@lib/*": ["src/*"],
+      "@test/shared/*": ["test/helpers/*"],
+    }
   },
   "include": [
-    "test/**/*"
+    "test/**/*.ts"
   ]
 }

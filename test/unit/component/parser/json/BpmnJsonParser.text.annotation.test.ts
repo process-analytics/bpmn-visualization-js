@@ -20,7 +20,7 @@ import { parseJsonAndExpectOnlyEdgesAndFlowNodes, parseJsonAndExpectOnlyFlowNode
 import type { ExpectedShape } from '../../../helpers/bpmn-model-expect';
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
 
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal';
+import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 
 describe('parse bpmn as json for text annotation', () => {
   const processWithArtifactAsObject = {

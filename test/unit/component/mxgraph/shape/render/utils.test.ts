@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { orderActivityMarkers } from '../../../../../../src/component/mxgraph/shape/render/utils';
-import { ShapeBpmnMarkerKind } from '../../../../../../src/model/bpmn/internal';
+import { orderActivityMarkers } from '@lib/component/mxgraph/shape/render/utils';
+import { ShapeBpmnMarkerKind } from '@lib/model/bpmn/internal';
 
 function computeAllPermutations(array: string[]): string[][][] {
   // see https://stackoverflow.com/questions/9960908/permutations-in-javascript and https://code-boxx.com/javascript-permutations-combinations/

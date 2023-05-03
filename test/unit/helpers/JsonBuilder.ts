@@ -14,21 +14,21 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { TTextAnnotation } from '../../../src/model/bpmn/json/baseElement/artifact';
-import type { TGlobalTask } from '../../../src/model/bpmn/json/baseElement/rootElement/globalTask';
-import type { TArtifact } from '../../../src/model/bpmn/json/baseElement/artifact';
-import type { TAssociation } from '../../../src/model/bpmn/json/baseElement/artifact';
-import type { DiagramElement } from '../../../src/model/bpmn/json/DI';
-import type { TBaseElement, TLane, TLaneSet, TMessageFlow } from '../../../src/model/bpmn/json/baseElement/baseElement';
-import type { TFlowElement } from '../../../src/model/bpmn/json/baseElement/flowElement';
-import type { TFlowNode } from '../../../src/model/bpmn/json/baseElement/flowElement';
-import type { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../../src/model/bpmn/json/baseElement/flowNode/event';
-import type { TParticipant } from '../../../src/model/bpmn/json/baseElement/participant';
-import type { TCollaboration } from '../../../src/model/bpmn/json/baseElement/rootElement/collaboration';
-import type { TEventDefinition } from '../../../src/model/bpmn/json/baseElement/rootElement/eventDefinition';
-import type { TProcess } from '../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
-import type { BpmnJsonModel, TDefinitions } from '../../../src/model/bpmn/json/BPMN20';
-import type { BPMNEdge, BPMNPlane, BPMNShape } from '../../../src/model/bpmn/json/BPMNDI';
+import type { TTextAnnotation } from '@lib/model/bpmn/json/baseElement/artifact';
+import type { TGlobalTask } from '@lib/model/bpmn/json/baseElement/rootElement/globalTask';
+import type { TArtifact } from '@lib/model/bpmn/json/baseElement/artifact';
+import type { TAssociation } from '@lib/model/bpmn/json/baseElement/artifact';
+import type { DiagramElement } from '@lib/model/bpmn/json/DI';
+import type { TBaseElement, TLane, TLaneSet, TMessageFlow } from '@lib/model/bpmn/json/baseElement/baseElement';
+import type { TFlowElement } from '@lib/model/bpmn/json/baseElement/flowElement';
+import type { TFlowNode } from '@lib/model/bpmn/json/baseElement/flowElement';
+import type { TBoundaryEvent, TCatchEvent, TThrowEvent } from '@lib/model/bpmn/json/baseElement/flowNode/event';
+import type { TParticipant } from '@lib/model/bpmn/json/baseElement/participant';
+import type { TCollaboration } from '@lib/model/bpmn/json/baseElement/rootElement/collaboration';
+import type { TEventDefinition } from '@lib/model/bpmn/json/baseElement/rootElement/eventDefinition';
+import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
+import type { BpmnJsonModel, TDefinitions } from '@lib/model/bpmn/json/BPMN20';
+import type { BPMNEdge, BPMNPlane, BPMNShape } from '@lib/model/bpmn/json/BPMNDI';
 
 type BuildProcessElementParameter = (Pick<TFlowNode, 'id' | 'name'> | Pick<TArtifact, 'id'>) & {
   index: number;

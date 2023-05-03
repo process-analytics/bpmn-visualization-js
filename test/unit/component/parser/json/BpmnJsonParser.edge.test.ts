@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { expectAsWarning, parseJsonAndExpectOnlyWarnings, parsingMessageCollector } from '../../../helpers/JsonTestUtils';
-import { EdgeUnknownBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
+import { EdgeUnknownBpmnElementWarning } from '@lib/component/parser/json/warnings';
 
 describe('parse bpmn as json for edges', () => {
   // this also covers unsupported bpmn element types that are then not retrieved during the parsing
