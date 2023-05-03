@@ -26,7 +26,7 @@ import { type LoadOptions, FitType, ZoomType } from '@lib/component/options';
 import type { ShapeStyleUpdate } from '@lib/component/registry';
 import type { StyleUpdate } from '@lib/component/registry';
 import { BpmnQuerySelectorsForTests } from '@test/shared/query-selectors';
-import { delay } from '../../e2e/helpers/test-utils';
+import { delay } from './test-utils';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore js file with commonjs export
 import envUtils = require('../environment-utils.js');
