@@ -98,13 +98,12 @@ describe('parse bpmn as json for sub-process', () => {
         `(
           `should convert as Shape, when a process contains a ${expandedKind} ${bpmnSubProcessKind} sub-process with $input attribute as $title`,
           ({ title, input, expectedAttribute }: { title: string; input: keyof TFlowNode; expectedAttribute: keyof ExpectedShape }) => {
-            const inputString = String(input);
             const json = buildDefinitions({
               process: {
                 subProcess: {
                   id: 'sub_process_id_0',
                   triggeredByEvent: triggeredByEvent,
-                  [input]: title === 'array' ? [`flow_${inputString}_1`, `flow_${inputString}_2`] : `flow_${inputString}_1`,
+                  [input]: title === 'array' ? [`flow_${input}_1`, `flow_${input}_2`] : `flow_${input}_1`,
                   isExpanded,
                 },
               },
@@ -119,7 +118,7 @@ describe('parse bpmn as json for sub-process', () => {
               bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
               bpmnElementMarkers: expectedBpmnElementMarkers,
               bounds: { x: 67, y: 23, width: 456, height: 123 },
-              [expectedAttribute]: title === 'array' ? [`flow_${inputString}_1`, `flow_${inputString}_2`] : [`flow_${inputString}_1`],
+              [expectedAttribute]: title === 'array' ? [`flow_${input}_1`, `flow_${input}_2`] : [`flow_${input}_1`],
             });
           },
         );

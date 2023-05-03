@@ -110,10 +110,9 @@ function executeEventCommonTests(buildEventParameter: BuildEventsParameter, omit
     `(
       `should convert as Shape, when a process contains a '${buildEventParameter.bpmnKind}' with $input attribute as $title, ${titleSuffix}`,
       ({ title, input, expectedAttribute }: { title: string; input: keyof TFlowNode; expectedAttribute: keyof ExpectedShape }) => {
-        const inputString = String(input);
         testMustConvertShapes(
-          { ...buildEventParameter, [input]: title === 'array' ? [`flow_${inputString}_1`, `flow_${inputString}_2`] : `flow_${inputString}_1` },
-          { ...omitExpectedShape, [expectedAttribute]: title === 'array' ? [`flow_${inputString}_1`, `flow_${inputString}_2`] : [`flow_${inputString}_1`] },
+          { ...buildEventParameter, [input]: title === 'array' ? [`flow_${input}_1`, `flow_${input}_2`] : `flow_${input}_1` },
+          { ...omitExpectedShape, [expectedAttribute]: title === 'array' ? [`flow_${input}_1`, `flow_${input}_2`] : [`flow_${input}_1`] },
         );
       },
     );

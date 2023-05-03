@@ -472,7 +472,6 @@ describe('parse bpmn as json for callActivity', () => {
         `(
           `should convert as Shape, when a process contains a ${expandedKind} call activity with $input attribute as $title`,
           ({ title, input, expectedAttribute }: { title: string; input: keyof TFlowNode; expectedAttribute: keyof ExpectedShape }) => {
-            const inputString = String(input);
             const json = buildDefinitions({
               process: [
                 { id: 'process_1' },
@@ -480,7 +479,7 @@ describe('parse bpmn as json for callActivity', () => {
                   id: 'process_2',
                   callActivity: {
                     id: `call_activity_id_0`,
-                    [input]: title === 'array' ? [`flow_${inputString}_1`, `flow_${inputString}_2`] : `flow_${inputString}_1`,
+                    [input]: title === 'array' ? [`flow_${input}_1`, `flow_${input}_2`] : `flow_${input}_1`,
                     calledElement: 'process_1',
                     isExpanded,
                   },
@@ -498,7 +497,7 @@ describe('parse bpmn as json for callActivity', () => {
               bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
               bpmnElementMarkers: expectedBpmnElementMarkers,
               bounds: { x: 346, y: 856, width: 45, height: 56 },
-              [expectedAttribute]: title === 'array' ? [`flow_${inputString}_1`, `flow_${inputString}_2`] : [`flow_${inputString}_1`],
+              [expectedAttribute]: title === 'array' ? [`flow_${input}_1`, `flow_${input}_2`] : [`flow_${input}_1`],
             });
           },
         );
@@ -650,12 +649,11 @@ describe('parse bpmn as json for callActivity', () => {
       `(
         `should convert as Shape, when a process contains a call activity with $input attribute as $title`,
         ({ title, input, expectedAttribute }: { title: string; input: keyof TFlowNode; expectedAttribute: keyof ExpectedShape }) => {
-          const inputString = String(input);
           const json = buildDefinitions({
             process: {
               callActivity: {
                 id: `call_activity_id_0`,
-                [input]: title === 'array' ? [`flow_${inputString}_1`, `flow_${inputString}_2`] : `flow_${inputString}_1`,
+                [input]: title === 'array' ? [`flow_${input}_1`, `flow_${input}_2`] : `flow_${input}_1`,
                 calledElement: 'task_id',
               },
             },
@@ -672,7 +670,7 @@ describe('parse bpmn as json for callActivity', () => {
             bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK,
             bpmnElementGlobalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK,
             bounds: { x: 346, y: 856, width: 45, height: 56 },
-            [expectedAttribute]: title === 'array' ? [`flow_${inputString}_1`, `flow_${inputString}_2`] : [`flow_${inputString}_1`],
+            [expectedAttribute]: title === 'array' ? [`flow_${input}_1`, `flow_${input}_2`] : [`flow_${input}_1`],
           });
         },
       );

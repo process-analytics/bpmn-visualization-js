@@ -20,7 +20,7 @@ import type { ExpectedShape } from '../../../helpers/bpmn-model-expect';
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
 
 import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
-import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind } from '../../../../../src/model/bpmn/internal';
+import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind, ShapeUtil } from '../../../../../src/model/bpmn/internal';
 import type { ShapeBpmnEventBasedGateway } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
 import type { TFlowNode } from '../../../../../src/model/bpmn/json/baseElement/flowElement';
 
@@ -382,7 +382,7 @@ describe.each([
   }
 
   describe(`incoming/outgoing management for ${bpmnKind}`, () => {
-    const isTask = bpmnKind.toLowerCase().endsWith('task');
+    const isTask = ShapeUtil.isTask(bpmnKind);
     const flowNodeParameterKind = isTask ? 'task' : 'gateway';
 
     it.each`
@@ -394,14 +394,12 @@ describe.each([
     `(
       `should convert as Shape, when a process contains a ${bpmnKind} with $input attribute as $title`,
       ({ title, input, expectedAttribute }: { title: string; input: keyof TFlowNode; expectedAttribute: keyof ExpectedShape }) => {
-        const inputString = String(input);
-
         const json = buildDefinitions({
           process: {
             [flowNodeParameterKind]: {
               id: `${bpmnKind}_id_0`,
               bpmnKind,
-              [input]: title === 'array' ? [`flow_${inputString}_1`, `flow_${inputString}_2`] : `flow_${inputString}_1`,
+              [input]: title === 'array' ? [`flow_${input}_1`, `flow_${input}_2`] : `flow_${input}_1`,
             },
           },
         });
@@ -414,7 +412,7 @@ describe.each([
           bpmnElementName: undefined,
           bpmnElementKind: expectedShapeBpmnElementKind,
           bounds: isTask ? { x: 362, y: 232, width: 36, height: 45 } : { x: 567, y: 345, width: 25, height: 25 },
-          [expectedAttribute]: title === 'array' ? [`flow_${inputString}_1`, `flow_${inputString}_2`] : [`flow_${inputString}_1`],
+          [expectedAttribute]: title === 'array' ? [`flow_${input}_1`, `flow_${input}_2`] : [`flow_${input}_1`],
         });
       },
     );
