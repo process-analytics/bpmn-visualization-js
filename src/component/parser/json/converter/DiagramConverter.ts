@@ -119,7 +119,7 @@ export default class DiagramConverter {
 
       let isHorizontal;
       if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
-        isHorizontal = shape.isHorizontal !== undefined ? shape.isHorizontal : true;
+        isHorizontal = shape.isHorizontal ?? true;
       }
 
       const label = this.deserializeLabel(shape.BPMNLabel, shape.id);

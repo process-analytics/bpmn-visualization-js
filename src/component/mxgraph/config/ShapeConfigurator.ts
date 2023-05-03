@@ -146,7 +146,7 @@ export default class ShapeConfigurator {
 
       // START bpmn-visualization CUSTOMIZATION
       // add attributes to be able to identify elements in DOM
-      if (this.state && this.state.cell) {
+      if (this.state?.cell) {
         // 'this.state.style' = the style definition associated with the cell
         // 'this.state.cell.style' = the style applied to the cell: 1st element: style name = bpmn shape name
         const cell = this.state.cell;
