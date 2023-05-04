@@ -188,6 +188,8 @@ export class BpmnElementsRegistry {
    * ```
    *
    * @param bpmnElementIds The BPMN id of the element(s) where to remove all CSS classes
+   *
+   * @since 0.34.0
    */
   removeAllCssClasses(bpmnElementIds: string | string[]): void {
     ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId =>
