@@ -32,7 +32,7 @@ export class CssRegistry {
   /**
    * Get the CSS class names for a specific HTML element
    *
-   * @param bpmnElementId the BPMN id of the HTML element from the DOM
+   * @param bpmnElementId the BPMN ID of the HTML element from the DOM
    * @return the registered CSS class names
    */
   getClassNames(bpmnElementId: string): string[] {
@@ -40,9 +40,9 @@ export class CssRegistry {
   }
 
   /**
-   * Get all BPMN element ids with at least one CSS class on its HTML element.
+   * Get all BPMN element IDs with at least one CSS class on its HTML element.
    *
-   * @return an array of string values representing the BPMN element ids.
+   * @return an array of string values representing the BPMN element IDs.
    */
   getBpmnIds(): string[] {
     return Array.from(this.classNamesByBpmnId.keys());
@@ -51,7 +51,7 @@ export class CssRegistry {
   /**
    * Register the CSS class names for a specific HTML element
    *
-   * @param bpmnElementId the BPMN id of the HTML element from the DOM
+   * @param bpmnElementId the BPMN ID of the HTML element from the DOM
    * @param classNames the CSS class names to register
    * @return `true` if at least one class name from parameters has been added; `false` otherwise
    */
@@ -62,7 +62,7 @@ export class CssRegistry {
   /**
    * Remove the CSS class names for a specific HTML element
    *
-   * @param bpmnElementId the BPMN id of the HTML element from the DOM
+   * @param bpmnElementId the BPMN ID of the HTML element from the DOM
    * @param classNames the CSS class names to remove
    * @return `true` if at least one class name from parameters has been removed; `false` otherwise
    */
@@ -73,7 +73,7 @@ export class CssRegistry {
   /**
    * Remove all CSS class names for specific HTML element
    *
-   * @param bpmnElementId the BPMN id of the HTML element from the DOM
+   * @param bpmnElementId the BPMN ID of the HTML element from the DOM
    * @return `true` if at least one class name has been removed; `false` otherwise
    */
   removeAllClassNames(bpmnElementId: string): boolean {
@@ -86,7 +86,7 @@ export class CssRegistry {
   /**
    * Toggle the CSS class names for a specific HTML element
    *
-   * @param bpmnElementId the BPMN id of the HTML element from the DOM
+   * @param bpmnElementId the BPMN ID of the HTML element from the DOM
    * @param classNames the CSS class names to toggle
    * @return `true` if `classNames` has at least one element - as toggle will always trigger changes in that case; `false` otherwise
    */

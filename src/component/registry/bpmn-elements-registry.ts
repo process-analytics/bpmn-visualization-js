@@ -174,30 +174,33 @@ export class BpmnElementsRegistry {
   }
 
   /**
-   * Remove all CSS classes previously added with the {@link addCssClasses} or the {@link toggleCssClasses} methods from one/several BPMN element(s).
+   * Remove all CSS classes that were previously added to one or more BPMN elements using the {@link addCssClasses} or the {@link toggleCssClasses} methods.
    *
-   * **Note**: if you pass an id that is not related to an existing BPMN element, nothing happens on the rendering side.
+   * **Note**: If an ID is passed that is not related to an existing BPMN element, no changes will be made to the rendering.
    *
    * @example
    * ```javascript
-   * // Remove from all BPMN elements
+   * // Remove all CSS classes from all BPMN elements
    * bpmnVisualization.bpmnElementsRegistry.removeAllCssClasses();
    *
-   * // Remove from BPMN elements with id: activity_1 and activity_2
+   * // Remove all CSS classes from BPMN elements with ID: activity_1 and activity_2
    * bpmnVisualization.bpmnElementsRegistry.removeAllCssClasses(['activity_1', 'activity_2']);
    *
-   * // Remove from BPMN element with id: task_3
+   * // Remove all CSS classes from BPMN element with ID: task_3
    * bpmnVisualization.bpmnElementsRegistry.removeAllCssClasses('task_3');
    * ```
    *
-   * @param bpmnElementIds The BPMN id of the element(s) where to remove all CSS classes
-   * In case there are no ids, all CSS classes associated with BPMN elements will be removed.
+   * @param bpmnElementIds The BPMN ID of the element(s) from which to remove all CSS classes.
+   * If no IDs are provided, all CSS classes associated with BPMN elements will be removed.
    *
    * @since 0.34.0
    */
   removeAllCssClasses(bpmnElementIds?: string | string[]): void {
     if (bpmnElementIds) {
-      ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => this.updateCellIfChanged(this.cssRegistry.removeAllClassNames(bpmnElementId), bpmnElementId));
+      ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => {
+        const isChanged = this.cssRegistry.removeAllClassNames(bpmnElementId);
+        return this.updateCellIfChanged(isChanged, bpmnElementId);
+      });
     } else {
       const bpmnIds = this.cssRegistry.getBpmnIds();
       this.cssRegistry.clear();
