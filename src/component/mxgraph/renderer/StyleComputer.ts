@@ -31,23 +31,30 @@ import { BpmnStyleIdentifier } from '../style';
 import { MessageVisibleKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeUtil } from '../../../model/bpmn/internal';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/flows';
 import type { Font } from '../../../model/bpmn/internal/Label';
+import type { RendererOptions } from '../../options';
 
 /**
  * @internal
  */
 export default class StyleComputer {
+  private ignoreModelColors: boolean;
+
+  constructor(options?: RendererOptions) {
+    this.ignoreModelColors = options?.ignoreModelColors;
+  }
+
   computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): string {
     const styles: string[] = [bpmnCell.bpmnElement.kind as string];
 
     let mainStyleValues;
     if (bpmnCell instanceof Shape) {
-      mainStyleValues = StyleComputer.computeShapeStyleValues(bpmnCell);
+      mainStyleValues = this.computeShapeStyleValues(bpmnCell);
     } else {
       styles.push(...StyleComputer.computeEdgeBaseStyles(bpmnCell));
-      mainStyleValues = StyleComputer.computeEdgeStyleValues(bpmnCell);
+      mainStyleValues = this.computeEdgeStyleValues(bpmnCell);
     }
 
-    const fontStyleValues = StyleComputer.computeFontStyleValues(bpmnCell);
+    const fontStyleValues = this.computeFontStyleValues(bpmnCell);
     const labelStyleValues = StyleComputer.computeLabelStyleValues(bpmnCell, labelBounds);
 
     return [] //
@@ -56,14 +63,14 @@ export default class StyleComputer {
       .join(';');
   }
 
-  private static computeShapeStyleValues(shape: Shape): Map<string, string | number> {
+  private computeShapeStyleValues(shape: Shape): Map<string, string | number> {
     const styleValues = new Map<string, string | number>();
     const bpmnElement = shape.bpmnElement;
 
     if (bpmnElement instanceof ShapeBpmnEvent) {
-      this.computeEventShapeStyle(bpmnElement, styleValues);
+      StyleComputer.computeEventShapeStyle(bpmnElement, styleValues);
     } else if (bpmnElement instanceof ShapeBpmnActivity) {
-      this.computeActivityShapeStyle(bpmnElement, styleValues);
+      StyleComputer.computeActivityShapeStyle(bpmnElement, styleValues);
     } else if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
       // mxgraph.mxConstants.STYLE_HORIZONTAL is for the label
       // In BPMN, isHorizontal is for the Shape
@@ -74,15 +81,17 @@ export default class StyleComputer {
       styleValues.set(BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND, String(bpmnElement.gatewayKind));
     }
 
-    const extensions = shape.extensions;
-    const fillColor = extensions['bv:color:fill'];
-    if (fillColor) {
-      styleValues.set(mxgraph.mxConstants.STYLE_FILLCOLOR, fillColor);
-      if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
-        styleValues.set(mxgraph.mxConstants.STYLE_SWIMLANE_FILLCOLOR, fillColor);
+    if (!this.ignoreModelColors) {
+      const extensions = shape.extensions;
+      const fillColor = extensions['bv:color:fill'];
+      if (fillColor) {
+        styleValues.set(mxgraph.mxConstants.STYLE_FILLCOLOR, fillColor);
+        if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
+          styleValues.set(mxgraph.mxConstants.STYLE_SWIMLANE_FILLCOLOR, fillColor);
+        }
       }
+      extensions['bv:color:stroke'] && styleValues.set(mxgraph.mxConstants.STYLE_STROKECOLOR, extensions['bv:color:stroke']);
     }
-    extensions['bv:color:stroke'] && styleValues.set(mxgraph.mxConstants.STYLE_STROKECOLOR, extensions['bv:color:stroke']);
 
     return styleValues;
   }
@@ -124,16 +133,18 @@ export default class StyleComputer {
     return styles;
   }
 
-  private static computeEdgeStyleValues(edge: Edge): Map<string, string | number> {
+  private computeEdgeStyleValues(edge: Edge): Map<string, string | number> {
     const styleValues = new Map<string, string | number>();
 
-    const extensions = edge.extensions;
-    extensions['bv:color:stroke'] && styleValues.set(mxgraph.mxConstants.STYLE_STROKECOLOR, extensions['bv:color:stroke']);
+    if (!this.ignoreModelColors) {
+      const extensions = edge.extensions;
+      extensions['bv:color:stroke'] && styleValues.set(mxgraph.mxConstants.STYLE_STROKECOLOR, extensions['bv:color:stroke']);
+    }
 
     return styleValues;
   }
 
-  private static computeFontStyleValues(bpmnCell: Shape | Edge): Map<string, string | number> {
+  private computeFontStyleValues(bpmnCell: Shape | Edge): Map<string, string | number> {
     const styleValues = new Map<string, string | number>();
 
     const font = bpmnCell.label?.font;
@@ -143,8 +154,10 @@ export default class StyleComputer {
       styleValues.set(mxgraph.mxConstants.STYLE_FONTSTYLE, getFontStyleValue(font));
     }
 
-    const extensions = bpmnCell.label?.extensions;
-    extensions?.['bv:color'] && styleValues.set(mxgraph.mxConstants.STYLE_FONTCOLOR, extensions['bv:color']);
+    if (!this.ignoreModelColors) {
+      const extensions = bpmnCell.label?.extensions;
+      extensions?.['bv:color'] && styleValues.set(mxgraph.mxConstants.STYLE_FONTCOLOR, extensions['bv:color']);
+    }
 
     return styleValues;
   }
@@ -187,7 +200,9 @@ export default class StyleComputer {
     const styleValues: Array<[string, string]> = [];
     styleValues.push(['shape', BpmnStyleIdentifier.MESSAGE_FLOW_ICON]);
     styleValues.push([BpmnStyleIdentifier.IS_INITIATING, String(edge.messageVisibleKind === MessageVisibleKind.INITIATING)]);
-    edge.extensions['bv:color:stroke'] && styleValues.push([mxgraph.mxConstants.STYLE_STROKECOLOR, edge.extensions['bv:color:stroke']]);
+    if (!this.ignoreModelColors) {
+      edge.extensions['bv:color:stroke'] && styleValues.push([mxgraph.mxConstants.STYLE_STROKECOLOR, edge.extensions['bv:color:stroke']]);
+    }
 
     return toArrayOfMxGraphStyleEntries([...styleValues]).join(';');
   }

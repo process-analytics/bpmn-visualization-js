@@ -155,3 +155,12 @@ export enum ZoomType {
   In = 'in',
   Out = 'out',
 }
+
+// TODO JSDoc since, category, description
+/**
+ * @category Initialization & Configuration
+ * @since 0.34.0
+ */
+export type RendererOptions = {
+  ignoreModelColors?: boolean;
+};
