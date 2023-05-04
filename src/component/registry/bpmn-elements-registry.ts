@@ -129,6 +129,8 @@ export class BpmnElementsRegistry {
    * - It also has the specific `bpmn-service-task` to distinguish it from a BPMN User Task which has a `bpmn-user-task`.
    * - In addition, labels also have the `bpmn-label` classes.
    *
+   * See the repository providing the [examples of the `bpmn-visualization` TypeScript library](https://github.com/process-analytics/bpmn-visualization-examples/) for more details.
+   *
    * @example
    * ```javascript
    * // Add 'success-path' to BPMN elements with id: flow_1 and flow_5
@@ -145,7 +147,6 @@ export class BpmnElementsRegistry {
    * @see {@link removeAllCssClasses} to remove all CSS classes from a BPMN element.
    * @see {@link toggleCssClasses} to toggle CSS classes on a BPMN element.
    * @see {@link updateStyle} to directly update the style of BPMN elements.
-   * @see The repository providing the [examples of the `bpmn-visualization` TypeScript library](https://github.com/process-analytics/bpmn-visualization-examples/) for more details.
    */
   addCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
     this.updateCssClasses(bpmnElementIds, classNames, this.cssRegistry.addClassNames.bind(this.cssRegistry));
