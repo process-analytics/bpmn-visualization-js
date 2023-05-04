@@ -96,6 +96,7 @@ describe('BpmnVisualization API', () => {
       bpmnElementsRegistry.addCssClasses('fake_id_1', 'class1');
       bpmnElementsRegistry.removeCssClasses('fake_id_2', 'class2');
       bpmnElementsRegistry.toggleCssClasses('fake_id_3', 'class3');
+      bpmnElementsRegistry.removeAllCssClasses('fake_id_4');
     });
     it('Overlays', () => {
       bpmnElementsRegistry.addOverlays('fake_id_1', { label: 'overlay', position: 'top-center' });

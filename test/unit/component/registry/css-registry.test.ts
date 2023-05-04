@@ -53,6 +53,33 @@ describe('manage css classes for BPMN cells', () => {
     });
   });
 
+  describe('Get bpmn ids', () => {
+    it('getBpmnIds should return a empty array, when no class is registered at all', () => {
+      const bpmnIds = cssRegistry.getBpmnIds();
+
+      expect(bpmnIds).toHaveLength(0);
+    });
+
+    it('getBpmnIds should return an array of BPMN element ids that have at least one CSS class', () => {
+      cssRegistry.addClassNames('bpmn-id-1', ['class-name-1', 'class-name-3']);
+      cssRegistry.addClassNames('bpmn-id-2', ['class-name-2']);
+
+      const bpmnIds = cssRegistry.getBpmnIds();
+
+      expect(bpmnIds).toStrictEqual(['bpmn-id-1', 'bpmn-id-2']);
+    });
+
+    it('getBpmnIds after clearing the whole registry', () => {
+      cssRegistry.addClassNames('bpmn-id-1', ['class1']);
+      cssRegistry.addClassNames('bpmn-id-2', ['class1', 'class2']);
+
+      expect(cssRegistry.getBpmnIds()).toEqual(['bpmn-id-1', 'bpmn-id-2']);
+
+      cssRegistry.clear();
+      expect(cssRegistry.getBpmnIds()).toHaveLength(0);
+    });
+  });
+
   describe('Add css classes', () => {
     it('Add an undefined array of classes', () => {
       expect(cssRegistry.addClassNames('bpmn-id', undefined)).toBeFalsy();
@@ -163,6 +190,37 @@ describe('manage css classes for BPMN cells', () => {
       cssRegistry.addClassNames(bpmnElementId, ['class-to-remove']);
       expect(cssRegistry.removeClassNames(bpmnElementId, ['class-to-remove'])).toBeTruthy();
       expect(cssRegistry.removeClassNames(bpmnElementId, ['class-to-remove'])).toBeFalsy();
+      expect(cssRegistry.getClassNames(bpmnElementId)).toHaveLength(0);
+    });
+  });
+
+  describe('Remove all css classes', () => {
+    it('Remove the only existing class of a HTML element', () => {
+      const bpmnElementId = 'bpmn-id';
+      cssRegistry.addClassNames(bpmnElementId, ['class-to-remove']);
+
+      const result = cssRegistry.removeAllClassNames(bpmnElementId);
+
+      expect(result).toBeTruthy();
+      expect(cssRegistry.getClassNames(bpmnElementId)).toHaveLength(0);
+    });
+
+    it('Remove all classes of a HTML element', () => {
+      const bpmnElementId = 'bpmn-id';
+      cssRegistry.addClassNames(bpmnElementId, ['class-to-remove1', 'class-to-remove2']);
+
+      const result = cssRegistry.removeAllClassNames(bpmnElementId);
+
+      expect(result).toBeTruthy();
+      expect(cssRegistry.getClassNames(bpmnElementId)).toHaveLength(0);
+    });
+
+    it('Do nothing when none had been added first on a HTML element', () => {
+      const bpmnElementId = 'bpmn-id';
+
+      const result = cssRegistry.removeAllClassNames(bpmnElementId);
+
+      expect(result).toBeFalsy();
       expect(cssRegistry.getClassNames(bpmnElementId)).toHaveLength(0);
     });
   });
