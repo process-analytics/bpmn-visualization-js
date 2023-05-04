@@ -20,9 +20,8 @@ import type { ZoomConfiguration } from '../options';
  * @internal
  */
 export function ensureInRange(value: number, min: number, max: number, defaultValue: number): number {
-  let inRangeValue = value == undefined ? defaultValue : value;
-  inRangeValue = Math.min(Math.max(inRangeValue, min), max);
-  return inRangeValue;
+  const inRangeValue = value ?? defaultValue;
+  return Math.min(Math.max(inRangeValue, min), max);
 }
 
 /**

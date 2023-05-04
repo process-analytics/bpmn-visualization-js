@@ -26,10 +26,10 @@ import { type LoadOptions, FitType, ZoomType } from '@lib/component/options';
 import type { ShapeStyleUpdate } from '@lib/component/registry';
 import type { StyleUpdate } from '@lib/component/registry';
 import { BpmnQuerySelectorsForTests } from '@test/shared/query-selectors';
-import { delay } from '../test-utils';
+import { delay } from './test-utils';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore js file with commonjs export
-import envUtils = require('../../../helpers/environment-utils.js');
+import envUtils = require('../environment-utils.js');
 
 const pageCheckLog = debugLogger('bv:test:page-check');
 

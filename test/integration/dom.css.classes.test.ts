@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { readFileSync } from '../helpers/file-helper';
+import { readFileSync } from '@test/shared/file-helper';
 import { initializeBpmnVisualizationWithContainerId } from './helpers/bpmn-visualization-initialization';
 import { HtmlElementLookup } from './helpers/html-utils';
 import { ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';

@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { getSimplePlatformName } from '../../e2e/helpers/test-utils';
+import { getSimplePlatformName } from '@test/shared/visu/test-utils';
 
 // when running tests in IntelliJ/Webstorm, the working directory is not the project root dir
 const rootDir = process.cwd().endsWith('/test/performance') ? './data' : './test/performance/data';

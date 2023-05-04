@@ -6,7 +6,7 @@
     "paths": {
       // allow to import sources directly with "@lib/xx/yy" instead of using relative paths like "../../../src/xx/yy"
       "@lib/*": ["src/*"],
-      "@test/shared/*": ["test/helpers/*"],
+      "@test/shared/*": ["test/shared/*"],
     }
   },
   "include": [
