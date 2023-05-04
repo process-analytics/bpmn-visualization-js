@@ -55,9 +55,8 @@ export class CssRegistry {
    * @param classNames the CSS class names to register
    * @return `true` if at least one class name from parameters has been added; `false` otherwise
    */
-  addClassNames(bpmnElementId: string, classNames: string[]): boolean {
-    return this.updateClassNames(bpmnElementId, classNames, (currentClassNames, className) => currentClassNames.add(className));
-  }
+  addClassNames = (bpmnElementId: string, classNames: string[]): boolean =>
+    this.updateClassNames(bpmnElementId, classNames, (currentClassNames, className) => currentClassNames.add(className));
 
   /**
    * Remove the CSS class names for a specific HTML element
@@ -66,9 +65,8 @@ export class CssRegistry {
    * @param classNames the CSS class names to remove
    * @return `true` if at least one class name from parameters has been removed; `false` otherwise
    */
-  removeClassNames(bpmnElementId: string, classNames: string[]): boolean {
-    return this.updateClassNames(bpmnElementId, classNames, (currentClassNames, className) => currentClassNames.delete(className));
-  }
+  removeClassNames = (bpmnElementId: string, classNames: string[]): boolean =>
+    this.updateClassNames(bpmnElementId, classNames, (currentClassNames, className) => currentClassNames.delete(className));
 
   /**
    * Remove all CSS class names for specific HTML element
@@ -90,12 +88,12 @@ export class CssRegistry {
    * @param classNames the CSS class names to toggle
    * @return `true` if `classNames` has at least one element - as toggle will always trigger changes in that case; `false` otherwise
    */
-  toggleClassNames(bpmnElementId: string, classNames: string[]): boolean {
+  toggleClassNames = (bpmnElementId: string, classNames: string[]): boolean => {
     this.updateClassNames(bpmnElementId, classNames, (currentClassNames, className) =>
       currentClassNames.has(className) ? currentClassNames.delete(className) : currentClassNames.add(className),
     );
     return classNames && classNames.length > 0;
-  }
+  };
 
   private updateClassNames(bpmnElementId: string, classNames: string[], manageClassNames: (currentClassNames: Set<string>, className: string) => void): boolean {
     const currentClassNames = this.getOrInitializeClassNames(bpmnElementId);
