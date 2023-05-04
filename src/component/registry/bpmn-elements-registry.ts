@@ -118,11 +118,16 @@ export class BpmnElementsRegistry {
   }
 
   /**
-   * Add one/several CSS class(es) to one/several BPMN element(s).
+   * Add one or more CSS classes to one or more BPMN elements.
    *
-   * Notice that if you pass ids that are not related to existing BPMN elements, their reference will be kept within the registry but nothing happens on the rendering side.
+   * **Notes**:
    *
-   * See also the {@link removeCssClasses}, the {@link removeAllCssClasses} or the {@link toggleCssClasses} methods.
+   * - If an ID is passed that does not reference an existing BPMN element, its reference is retained in the registry, but no rendering changes are made.
+   * - This method is intended to set CSS classes on specific elements, e.g. to hide or highlight them. During BPMN diagram rendering, `bpmn-visualization` sets specific CSS classes to all elements based on their types.
+   * - To style all elements of a given type, use the default classes instead of adding new ones. The classes allow identification of elements of the same `family' and of the same specific type.
+   * - For example, a BPMN Service Task is an `Activity` and a `Task`. So it has the `bpmn-type-activity` and the `bpmn-type-task` classes. It shares these classes with all types of `Tasks`.
+   * - It also has the specific `bpmn-service-task` to distinguish it from a BPMN User Task which has a `bpmn-user-task`.
+   * - In addition, labels also have the `bpmn-label` classes.
    *
    * @example
    * ```javascript
@@ -133,50 +138,46 @@ export class BpmnElementsRegistry {
    * bpmnVisualization.bpmnElementsRegistry.addCssClasses('task_3', ['suspicious-path', 'additional-info']);
    * ```
    *
-   * **Notes**:
+   * @param bpmnElementIds The BPMN ID of the element(s) to add the CSS classes to.
+   * @param classNames The name of the class(es) to add to the BPMN element(s).
    *
-   * - This method is intended to set CSS classes to specific elements, for instance to hide or highlight them. During BPMN diagram rendering, `bpmn-visualization` set specific CSS classes to all elements regarding their types.
-   * So, if you want to style all elements of a given type, use these default classes instead of adding new ones. The classes allow identifying elements of the same 'family' and of the same specific type.
-   * - For instance, a BPMN Service Task is an `Activity` and a `Task`, so it has the `bpmn-type-activity` and the `bpmn-type-task` classes. It shares these classes with all types of `Tasks`.
-   * It also has the specific `bpmn-service-task` to differentiate it from a BPMN User Task that has a `bpmn-user-task`.
-   * - In addition, labels also have the `bpmn-label` classes.
-   * - It is also possible to directly update the style of BPMN elements, see {@link updateStyle}.
-   * - Notice that if you pass ids that are not related to existing BPMN elements, their reference will be kept within the registry but nothing happens on the rendering side.
-   *
-   * See the repository providing the [examples of the `bpmn-visualization` TypeScript library](https://github.com/process-analytics/bpmn-visualization-examples/) for more details.
-   *
-   * @param bpmnElementIds The BPMN id of the element(s) where to add the CSS classes
-   * @param classNames The name of the class(es) to add to the BPMN element(s)
+   * @see {@link removeCssClasses} to remove specific CSS classes from a BPMN element.
+   * @see {@link removeAllCssClasses} to remove all CSS classes from a BPMN element.
+   * @see {@link toggleCssClasses} to toggle CSS classes on a BPMN element.
+   * @see {@link updateStyle} to directly update the style of BPMN elements.
+   * @see The repository providing the [examples of the `bpmn-visualization` TypeScript library](https://github.com/process-analytics/bpmn-visualization-examples/) for more details.
    */
   addCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
     this.updateCssClasses(bpmnElementIds, classNames, this.cssRegistry.addClassNames.bind(this.cssRegistry));
   }
 
   /**
-   * Remove one/several CSS class(es) previously added with the {@link addCssClasses} or the {@link toggleCssClasses} methods from one/several BPMN element(s).
+   * Remove one or more CSS classes that were previously added to one or more BPMN elements using the {@link addCssClasses} or the {@link toggleCssClasses} methods.
    *
-   * **Note**: if you pass an id that is not related to an existing BPMN element, nothing happens on the rendering side.
+   * **Note**: If an ID is passed that does not reference an existing BPMN element, no rendering changes are made.
    *
    * @example
    * ```javascript
-   * // Remove 'highlight' from BPMN elements with id: activity_1 and activity_2
+   * // Remove 'highlight' from BPMN elements with ID: activity_1 and activity_2
    * bpmnVisualization.bpmnElementsRegistry.removeCssClasses(['activity_1', 'activity_2'], 'highlight');
    *
-   * // Remove 'running' and 'additional-info' from BPMN element with id: task_3
+   * // Remove 'running' and 'additional-info' from BPMN element with ID: task_3
    * bpmnVisualization.bpmnElementsRegistry.removeCssClasses('task_3', ['running', 'additional-info']);
    * ```
    *
-   * @param bpmnElementIds The BPMN id of the element(s) where to remove the CSS classes
-   * @param classNames The name of the class(es) to remove from the BPMN element(s)
+   * @param bpmnElementIds The BPMN ID of the element(s) from which to remove the CSS classes.
+   * @param classNames The name of the class(es) to remove from the BPMN element(s).
+   *
+   * @see {@link removeAllCssClasses} to remove all CSS classes from a BPMN element.
    */
   removeCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
     this.updateCssClasses(bpmnElementIds, classNames, this.cssRegistry.removeClassNames.bind(this.cssRegistry));
   }
 
   /**
-   * Remove all CSS classes that were previously added to one or more BPMN elements using the {@link addCssClasses} or the {@link toggleCssClasses} methods.
+   * Remove any CSS classes that were previously added to one or more BPMN elements using the {@link addCssClasses} or the {@link toggleCssClasses} methods.
    *
-   * **Note**: If an ID is passed that is not related to an existing BPMN element, no changes will be made to the rendering.
+   * **Note**: If an ID is passed that does not reference an existing BPMN element, no rendering changes are made.
    *
    * @example
    * ```javascript
@@ -191,15 +192,16 @@ export class BpmnElementsRegistry {
    * ```
    *
    * @param bpmnElementIds The BPMN ID of the element(s) from which to remove all CSS classes.
-   * If no IDs are provided, all CSS classes associated with BPMN elements will be removed.
+   * If no IDs are specified, all CSS classes associated with BPMN elements will be removed.
    *
+   * @see {@link removeCssClasses} to remove specific classes from a BPMN element.
    * @since 0.34.0
    */
   removeAllCssClasses(bpmnElementIds?: string | string[]): void {
     if (bpmnElementIds) {
       ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => {
         const isChanged = this.cssRegistry.removeAllClassNames(bpmnElementId);
-        return this.updateCellIfChanged(isChanged, bpmnElementId);
+        this.updateCellIfChanged(isChanged, bpmnElementId);
       });
     } else {
       const bpmnIds = this.cssRegistry.getBpmnIds();
@@ -209,22 +211,25 @@ export class BpmnElementsRegistry {
   }
 
   /**
-   * Toggle one/several CSS class(es) for one/several BPMN element(s).
-   * Notice that if you pass ids that are not related to existing BPMN elements, their reference will be kept within the registry but nothing happens on the rendering side.
+   * Toggle one or more CSS classes on one or more BPMN elements.
    *
-   * See also the {@link addCssClasses}, the {@link removeAllCssClasses} or the {@link removeCssClasses} methods.
+   * **Note**: If an ID is passed that does not reference an existing BPMN element, its reference is retained in the registry, but no rendering changes are made.
    *
    * @example
    * ```javascript
-   * // Toggle 'highlight' for BPMN elements with id: activity_1 and activity_2
+   * // Toggle 'highlight' for BPMN elements with ID: activity_1 and activity_2
    * bpmnVisualization.bpmnElementsRegistry.toggleCssClasses(['activity_1', 'activity_2'], 'highlight');
    *
-   * // Toggle 'running' and 'additional-info' for BPMN element with id: task_3
+   * // Toggle 'running' and 'additional-info' for BPMN element with ID: task_3
    * bpmnVisualization.bpmnElementsRegistry.toggleCssClasses('task_3', ['running', 'additional-info']);
    * ```
    *
-   * @param bpmnElementIds The BPMN id of the element(s) where to remove the CSS classes
-   * @param classNames The name of the class(es) to remove from the BPMN element(s)
+   * @param bpmnElementIds The BPMN ID of the element(s) on which to toggle the CSS classes.
+   * @param classNames The name of the class(es) to toggle on the BPMN element(s).
+   *
+   * @see {@link removeCssClasses} to remove specific CSS classes from a BPMN element.
+   * @see {@link removeAllCssClasses} to remove all CSS classes from a BPMN element.
+   * @see {@link addCssClasses} to add CSS classes to a BPMN element.
    */
   toggleCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
     this.updateCssClasses(bpmnElementIds, classNames, this.cssRegistry.toggleClassNames.bind(this.cssRegistry));
