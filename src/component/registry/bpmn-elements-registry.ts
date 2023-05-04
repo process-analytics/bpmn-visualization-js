@@ -180,6 +180,9 @@ export class BpmnElementsRegistry {
    *
    * @example
    * ```javascript
+   * // Remove from all BPMN elements
+   * bpmnVisualization.bpmnElementsRegistry.removeAllCssClasses();
+   *
    * // Remove from BPMN elements with id: activity_1 and activity_2
    * bpmnVisualization.bpmnElementsRegistry.removeAllCssClasses(['activity_1', 'activity_2']);
    *
@@ -188,11 +191,18 @@ export class BpmnElementsRegistry {
    * ```
    *
    * @param bpmnElementIds The BPMN id of the element(s) where to remove all CSS classes
+   * In case there are no ids, all CSS classes associated with BPMN elements will be removed.
    *
    * @since 0.34.0
    */
-  removeAllCssClasses(bpmnElementIds: string | string[]): void {
-    ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => this.updateCellIfChanged(this.cssRegistry.removeAllClassNames(bpmnElementId), bpmnElementId));
+  removeAllCssClasses(bpmnElementIds?: string | string[]): void {
+    if (bpmnElementIds) {
+      ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => this.updateCellIfChanged(this.cssRegistry.removeAllClassNames(bpmnElementId), bpmnElementId));
+    } else {
+      const bpmnIds = this.cssRegistry.getBpmnIds();
+      this.cssRegistry.clear();
+      bpmnIds.forEach(bpmnElementId => this.updateCellIfChanged(true, bpmnElementId));
+    }
   }
 
   /**

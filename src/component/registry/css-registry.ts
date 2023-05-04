@@ -40,6 +40,15 @@ export class CssRegistry {
   }
 
   /**
+   * Get all BPMN element ids with at least one CSS class on its HTML element.
+   *
+   * @return an array of string values representing the BPMN element ids.
+   */
+  getBpmnIds(): string[] {
+    return Array.from(this.classNamesByBpmnId.keys());
+  }
+
+  /**
    * Register the CSS class names for a specific HTML element
    *
    * @param bpmnElementId the BPMN id of the HTML element from the DOM

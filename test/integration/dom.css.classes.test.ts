@@ -147,6 +147,14 @@ describe('Bpmn Elements registry - CSS class management', () => {
       htmlElementLookup.expectLane('lane_03', { label: 'Lane 3' });
       htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0' });
 
+      // remove all classes from all elements
+      bpmnVisualization.bpmnElementsRegistry.addCssClasses(['lane_03', 'userTask_0'], ['class1', 'class2', 'class3']);
+      htmlElementLookup.expectLane('lane_03', { label: 'Lane 3', additionalClasses: ['class1', 'class2', 'class3'] });
+      htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0', additionalClasses: ['class1', 'class2', 'class3'] });
+      bpmnVisualization.bpmnElementsRegistry.removeAllCssClasses();
+      htmlElementLookup.expectLane('lane_03', { label: 'Lane 3' });
+      htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0' });
+
       // add the class with spaces and remove all
       bpmnVisualization.bpmnElementsRegistry.addCssClasses(['lane_03'], ['extra-class1 extra-class2 extra-class3']);
       htmlElementLookup.expectLane('lane_03', { additionalClasses: ['extra-class1', 'extra-class2', 'extra-class3'] });
