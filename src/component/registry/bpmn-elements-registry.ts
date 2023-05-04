@@ -192,9 +192,7 @@ export class BpmnElementsRegistry {
    * @since 0.34.0
    */
   removeAllCssClasses(bpmnElementIds: string | string[]): void {
-    ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId =>
-      this.updateCellIfChanged(this.cssRegistry.removeAllClassNames.bind(this.cssRegistry)(bpmnElementId), bpmnElementId),
-    );
+    ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => this.updateCellIfChanged(this.cssRegistry.removeAllClassNames(bpmnElementId), bpmnElementId));
   }
 
   /**
