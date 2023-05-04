@@ -149,7 +149,7 @@ export class BpmnElementsRegistry {
    * @see {@link updateStyle} to directly update the style of BPMN elements.
    */
   addCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
-    this.updateCssClasses(bpmnElementIds, classNames, this.cssRegistry.addClassNames.bind(this.cssRegistry));
+    this.updateCssClasses(bpmnElementIds, classNames, this.cssRegistry.addClassNames);
   }
 
   /**
@@ -172,7 +172,7 @@ export class BpmnElementsRegistry {
    * @see {@link removeAllCssClasses} to remove all CSS classes from a BPMN element.
    */
   removeCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
-    this.updateCssClasses(bpmnElementIds, classNames, this.cssRegistry.removeClassNames.bind(this.cssRegistry));
+    this.updateCssClasses(bpmnElementIds, classNames, this.cssRegistry.removeClassNames);
   }
 
   /**
@@ -233,7 +233,7 @@ export class BpmnElementsRegistry {
    * @see {@link addCssClasses} to add CSS classes to a BPMN element.
    */
   toggleCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
-    this.updateCssClasses(bpmnElementIds, classNames, this.cssRegistry.toggleClassNames.bind(this.cssRegistry));
+    this.updateCssClasses(bpmnElementIds, classNames, this.cssRegistry.toggleClassNames);
   }
 
   private updateCssClasses(bpmnElementIds: string | string[], classNames: string | string[], updateClassNames: (bpmnElementId: string, classNames: string[]) => boolean): void {
