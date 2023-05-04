@@ -126,7 +126,7 @@ describe('Bpmn Elements registry - CSS class management', () => {
   });
 
   describe('Remove all classes', () => {
-    it('Remove all classes to one or several BPMN elements', () => {
+    it('Remove all classes from a single element with a single class', () => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
 
       // default classes
@@ -138,6 +138,14 @@ describe('Bpmn Elements registry - CSS class management', () => {
       htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0', additionalClasses: ['class1'] });
       bpmnVisualization.bpmnElementsRegistry.removeAllCssClasses('userTask_0');
       htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0' });
+    });
+
+    it('Remove all classes from several elements with several classes', () => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
+
+      // default classes
+      htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0' });
+      htmlElementLookup.expectLane('lane_03', { label: 'Lane 3' });
 
       // remove all classes from several elements with several classes
       bpmnVisualization.bpmnElementsRegistry.addCssClasses(['lane_03', 'userTask_0'], ['class1', 'class2', 'class3']);
@@ -146,6 +154,14 @@ describe('Bpmn Elements registry - CSS class management', () => {
       bpmnVisualization.bpmnElementsRegistry.removeAllCssClasses(['lane_03', 'userTask_0']);
       htmlElementLookup.expectLane('lane_03', { label: 'Lane 3' });
       htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0' });
+    });
+
+    it('Remove all classes from all elements', () => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
+
+      // default classes
+      htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0' });
+      htmlElementLookup.expectLane('lane_03', { label: 'Lane 3' });
 
       // remove all classes from all elements
       bpmnVisualization.bpmnElementsRegistry.addCssClasses(['lane_03', 'userTask_0'], ['class1', 'class2', 'class3']);
@@ -154,6 +170,14 @@ describe('Bpmn Elements registry - CSS class management', () => {
       bpmnVisualization.bpmnElementsRegistry.removeAllCssClasses();
       htmlElementLookup.expectLane('lane_03', { label: 'Lane 3' });
       htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0' });
+    });
+
+    it('Remove all classes which be adding with spaces', () => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
+
+      // default classes
+      htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0' });
+      htmlElementLookup.expectLane('lane_03', { label: 'Lane 3' });
 
       // add the class with spaces and remove all
       bpmnVisualization.bpmnElementsRegistry.addCssClasses(['lane_03'], ['extra-class1 extra-class2 extra-class3']);
