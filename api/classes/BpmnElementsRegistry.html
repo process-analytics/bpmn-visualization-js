@@ -27,7 +27,7 @@ How to access it:</p>
 <ul class="tsd-hierarchy">
 <li><span class="target">BpmnElementsRegistry</span></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/fc1cf91/src/component/registry/bpmn-elements-registry.ts#L54">component/registry/bpmn-elements-registry.ts:54</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/9e45349/src/component/registry/bpmn-elements-registry.ts#L54">component/registry/bpmn-elements-registry.ts:54</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -39,6 +39,7 @@ How to access it:</p>
 <a href="BpmnElementsRegistry.html#addOverlays" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>add<wbr/>Overlays</span></a>
 <a href="BpmnElementsRegistry.html#getElementsByIds" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Elements<wbr/>By<wbr/>Ids</span></a>
 <a href="BpmnElementsRegistry.html#getElementsByKinds" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Elements<wbr/>By<wbr/>Kinds</span></a>
+<a href="BpmnElementsRegistry.html#removeAllCssClasses" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>remove<wbr/>All<wbr/>Css<wbr/>Classes</span></a>
 <a href="BpmnElementsRegistry.html#removeAllOverlays" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>remove<wbr/>All<wbr/>Overlays</span></a>
 <a href="BpmnElementsRegistry.html#removeCssClasses" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>remove<wbr/>Css<wbr/>Classes</span></a>
 <a href="BpmnElementsRegistry.html#toggleCssClasses" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>toggle<wbr/>Css<wbr/>Classes</span></a>
@@ -51,38 +52,42 @@ How to access it:</p>
 <ul class="tsd-signatures">
 <li class="tsd-signature tsd-anchor-link" id="addCssClasses.addCssClasses-1"><span class="tsd-kind-call-signature">add<wbr/>Css<wbr/>Classes</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">bpmnElementIds</span>, <span class="tsd-kind-parameter">classNames</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#addCssClasses.addCssClasses-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Add one/several CSS class(es) to one/several BPMN element(s).</p>
-<p>Notice that if you pass ids that are not related to existing BPMN elements, their reference will be kept within the registry but nothing happens on the rendering side.</p>
-<p>See also the <a href="BpmnElementsRegistry.html#removeCssClasses" class="tsd-kind-method">removeCssClasses</a> or the <a href="BpmnElementsRegistry.html#toggleCssClasses" class="tsd-kind-method">toggleCssClasses</a> methods.</p>
+<div class="tsd-comment tsd-typography"><p>Add one or more CSS classes to one or more BPMN elements.</p>
+<p><strong>Notes</strong>:</p>
+<ul>
+<li>If an ID is passed that does not reference an existing BPMN element, its reference is retained in the registry, but no rendering changes are made.</li>
+<li>This method is intended to set CSS classes on specific elements, e.g. to hide or highlight them. During BPMN diagram rendering, <code>bpmn-visualization</code> sets specific CSS classes to all elements based on their types.</li>
+<li>To style all elements of a given type, use the default classes instead of adding new ones. The classes allow identification of elements of the same `family&#39; and of the same specific type.</li>
+<li>For example, a BPMN Service Task is an <code>Activity</code> and a <code>Task</code>. So it has the <code>bpmn-type-activity</code> and the <code>bpmn-type-task</code> classes. It shares these classes with all types of <code>Tasks</code>.</li>
+<li>It also has the specific <code>bpmn-service-task</code> to distinguish it from a BPMN User Task which has a <code>bpmn-user-task</code>.</li>
+<li>In addition, labels also have the <code>bpmn-label</code> classes.</li>
+</ul>
+<p>See the repository providing the <a href="https://github.com/process-analytics/bpmn-visualization-examples/">examples of the <code>bpmn-visualization</code> TypeScript library</a> for more details.</p>
 
 <h3>Example</h3><pre><code class="language-javascript"><span class="hl-6">// Add &#39;success-path&#39; to BPMN elements with id: flow_1 and flow_5</span><br/><span class="hl-4">bpmnVisualization</span><span class="hl-1">.</span><span class="hl-4">bpmnElementsRegistry</span><span class="hl-1">.</span><span class="hl-5">addCssClasses</span><span class="hl-1">([</span><span class="hl-7">&#39;flow_1&#39;</span><span class="hl-1">, </span><span class="hl-7">&#39;flow_5&#39;</span><span class="hl-1">], </span><span class="hl-7">&#39;success-path&#39;</span><span class="hl-1">);</span><br/><br/><span class="hl-6">// Add &#39;suspicious-path&#39; and &#39;additional-info&#39; to BPMN element with id: task_3</span><br/><span class="hl-4">bpmnVisualization</span><span class="hl-1">.</span><span class="hl-4">bpmnElementsRegistry</span><span class="hl-1">.</span><span class="hl-5">addCssClasses</span><span class="hl-1">(</span><span class="hl-7">&#39;task_3&#39;</span><span class="hl-1">, [</span><span class="hl-7">&#39;suspicious-path&#39;</span><span class="hl-1">, </span><span class="hl-7">&#39;additional-info&#39;</span><span class="hl-1">]);</span>
 </code><button>Copy</button></pre>
-<p><strong>Notes</strong>:</p>
-<ul>
-<li>This method is intended to set CSS classes to specific elements, for instance to hide or highlight them. During BPMN diagram rendering, <code>bpmn-visualization</code> set specific CSS classes to all elements regarding their types.
-So, if you want to style all elements of a given type, use these default classes instead of adding new ones. The classes allow identifying elements of the same &#39;family&#39; and of the same specific type.</li>
-<li>For instance, a BPMN Service Task is an <code>Activity</code> and a <code>Task</code>, so it has the <code>bpmn-type-activity</code> and the <code>bpmn-type-task</code> classes. It shares these classes with all types of <code>Tasks</code>.
-It also has the specific <code>bpmn-service-task</code> to differentiate it from a BPMN User Task that has a <code>bpmn-user-task</code>.</li>
-<li>In addition, labels also have the <code>bpmn-label</code> classes.</li>
-<li>It is also possible to directly update the style of BPMN elements, see <a href="BpmnElementsRegistry.html#updateStyle" class="tsd-kind-method">updateStyle</a>.</li>
-<li>Notice that if you pass ids that are not related to existing BPMN elements, their reference will be kept within the registry but nothing happens on the rendering side.</li>
+
+<h3>See</h3><ul>
+<li><a href="BpmnElementsRegistry.html#removeCssClasses" class="tsd-kind-method">removeCssClasses</a> to remove specific CSS classes from a BPMN element.</li>
+<li><a href="BpmnElementsRegistry.html#removeAllCssClasses" class="tsd-kind-method">removeAllCssClasses</a> to remove all CSS classes from a BPMN element.</li>
+<li><a href="BpmnElementsRegistry.html#toggleCssClasses" class="tsd-kind-method">toggleCssClasses</a> to toggle CSS classes on a BPMN element.</li>
+<li><a href="BpmnElementsRegistry.html#updateStyle" class="tsd-kind-method">updateStyle</a> to directly update the style of BPMN elements.</li>
 </ul>
-<p>See the repository providing the <a href="https://github.com/process-analytics/bpmn-visualization-examples/">examples of the <code>bpmn-visualization</code> TypeScript library</a> for more details.</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
 <h5><span class="tsd-kind-parameter">bpmnElementIds</span>: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
-<div class="tsd-comment tsd-typography"><p>The BPMN id of the element(s) where to add the CSS classes</p>
+<div class="tsd-comment tsd-typography"><p>The BPMN ID of the element(s) to add the CSS classes to.</p>
 </div></li>
 <li>
 <h5><span class="tsd-kind-parameter">classNames</span>: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
-<div class="tsd-comment tsd-typography"><p>The name of the class(es) to add to the BPMN element(s)</p>
+<div class="tsd-comment tsd-typography"><p>The name of the class(es) to add to the BPMN element(s).</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/fc1cf91/src/component/registry/bpmn-elements-registry.ts#L151">component/registry/bpmn-elements-registry.ts:151</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/9e45349/src/component/registry/bpmn-elements-registry.ts#L151">component/registry/bpmn-elements-registry.ts:151</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="addOverlays" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>add<wbr/>Overlays</span><a href="#addOverlays" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -107,7 +112,7 @@ It also has the specific <code>bpmn-service-task</code> to differentiate it from
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/fc1cf91/src/component/registry/bpmn-elements-registry.ts#L254">component/registry/bpmn-elements-registry.ts:254</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/9e45349/src/component/registry/bpmn-elements-registry.ts#L295">component/registry/bpmn-elements-registry.ts:295</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="getElementsByIds" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Elements<wbr/>By<wbr/>Ids</span><a href="#getElementsByIds" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -127,7 +132,7 @@ Attempts to retrieve too many elements, especially on large BPMN diagram, may le
 <h5><span class="tsd-kind-parameter">bpmnElementIds</span>: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="../interfaces/BpmnElement.html" class="tsd-signature-type tsd-kind-interface">BpmnElement</a><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/fc1cf91/src/component/registry/bpmn-elements-registry.ts#L84">component/registry/bpmn-elements-registry.ts:84</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/9e45349/src/component/registry/bpmn-elements-registry.ts#L84">component/registry/bpmn-elements-registry.ts:84</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="getElementsByKinds" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Elements<wbr/>By<wbr/>Kinds</span><a href="#getElementsByKinds" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -146,7 +151,33 @@ Attempts to retrieve too many elements, especially on large BPMN diagrams, may l
 <h5><span class="tsd-kind-parameter">bpmnKinds</span>: <a href="../types/BpmnElementKind.html" class="tsd-signature-type tsd-kind-type-alias">BpmnElementKind</a><span class="tsd-signature-symbol"> | </span><a href="../types/BpmnElementKind.html" class="tsd-signature-type tsd-kind-type-alias">BpmnElementKind</a><span class="tsd-signature-symbol">[]</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="../interfaces/BpmnElement.html" class="tsd-signature-type tsd-kind-interface">BpmnElement</a><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/fc1cf91/src/component/registry/bpmn-elements-registry.ts#L106">component/registry/bpmn-elements-registry.ts:106</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/9e45349/src/component/registry/bpmn-elements-registry.ts#L106">component/registry/bpmn-elements-registry.ts:106</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member"><a id="removeAllCssClasses" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>remove<wbr/>All<wbr/>Css<wbr/>Classes</span><a href="#removeAllCssClasses" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="tsd-signature tsd-anchor-link" id="removeAllCssClasses.removeAllCssClasses-1"><span class="tsd-kind-call-signature">remove<wbr/>All<wbr/>Css<wbr/>Classes</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">bpmnElementIds</span><span class="tsd-signature-symbol">?</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#removeAllCssClasses.removeAllCssClasses-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Remove any CSS classes that were previously added to one or more BPMN elements using the <a href="BpmnElementsRegistry.html#addCssClasses" class="tsd-kind-method">addCssClasses</a> or the <a href="BpmnElementsRegistry.html#toggleCssClasses" class="tsd-kind-method">toggleCssClasses</a> methods.</p>
+<p><strong>Note</strong>: If an ID is passed that does not reference an existing BPMN element, no rendering changes are made.</p>
+
+<h3>Example</h3><pre><code class="language-javascript"><span class="hl-6">// Remove all CSS classes from all BPMN elements</span><br/><span class="hl-4">bpmnVisualization</span><span class="hl-1">.</span><span class="hl-4">bpmnElementsRegistry</span><span class="hl-1">.</span><span class="hl-5">removeAllCssClasses</span><span class="hl-1">();</span><br/><br/><span class="hl-6">// Remove all CSS classes from BPMN elements with ID: activity_1 and activity_2</span><br/><span class="hl-4">bpmnVisualization</span><span class="hl-1">.</span><span class="hl-4">bpmnElementsRegistry</span><span class="hl-1">.</span><span class="hl-5">removeAllCssClasses</span><span class="hl-1">([</span><span class="hl-7">&#39;activity_1&#39;</span><span class="hl-1">, </span><span class="hl-7">&#39;activity_2&#39;</span><span class="hl-1">]);</span><br/><br/><span class="hl-6">// Remove all CSS classes from BPMN element with ID: task_3</span><br/><span class="hl-4">bpmnVisualization</span><span class="hl-1">.</span><span class="hl-4">bpmnElementsRegistry</span><span class="hl-1">.</span><span class="hl-5">removeAllCssClasses</span><span class="hl-1">(</span><span class="hl-7">&#39;task_3&#39;</span><span class="hl-1">);</span>
+</code><button>Copy</button></pre>
+
+<h3>See</h3><p><a href="BpmnElementsRegistry.html#removeCssClasses" class="tsd-kind-method">removeCssClasses</a> to remove specific classes from a BPMN element.</p>
+
+<h3>Since</h3><p>0.34.0</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5><code class="tsd-tag ts-flagOptional">Optional</code> <span class="tsd-kind-parameter">bpmnElementIds</span>: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+<div class="tsd-comment tsd-typography"><p>The BPMN ID of the element(s) from which to remove all CSS classes.
+If no IDs are specified, all CSS classes associated with BPMN elements will be removed.</p>
+</div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/9e45349/src/component/registry/bpmn-elements-registry.ts#L201">component/registry/bpmn-elements-registry.ts:201</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="removeAllOverlays" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>remove<wbr/>All<wbr/>Overlays</span><a href="#removeAllOverlays" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -168,58 +199,65 @@ Attempts to retrieve too many elements, especially on large BPMN diagrams, may l
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/fc1cf91/src/component/registry/bpmn-elements-registry.ts#L273">component/registry/bpmn-elements-registry.ts:273</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/9e45349/src/component/registry/bpmn-elements-registry.ts#L314">component/registry/bpmn-elements-registry.ts:314</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="removeCssClasses" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>remove<wbr/>Css<wbr/>Classes</span><a href="#removeCssClasses" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures">
 <li class="tsd-signature tsd-anchor-link" id="removeCssClasses.removeCssClasses-1"><span class="tsd-kind-call-signature">remove<wbr/>Css<wbr/>Classes</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">bpmnElementIds</span>, <span class="tsd-kind-parameter">classNames</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#removeCssClasses.removeCssClasses-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Remove one/several CSS class(es) previously added with the <a href="BpmnElementsRegistry.html#addCssClasses" class="tsd-kind-method">addCssClasses</a> or the <a href="BpmnElementsRegistry.html#toggleCssClasses" class="tsd-kind-method">toggleCssClasses</a> methods from one/several BPMN element(s).</p>
-<p><strong>Note</strong>: if you pass an id that is not related to an existing BPMN element, nothing happens on the rendering side.</p>
+<div class="tsd-comment tsd-typography"><p>Remove one or more CSS classes that were previously added to one or more BPMN elements using the <a href="BpmnElementsRegistry.html#addCssClasses" class="tsd-kind-method">addCssClasses</a> or the <a href="BpmnElementsRegistry.html#toggleCssClasses" class="tsd-kind-method">toggleCssClasses</a> methods.</p>
+<p><strong>Note</strong>: If an ID is passed that does not reference an existing BPMN element, no rendering changes are made.</p>
 
-<h3>Example</h3><pre><code class="language-javascript"><span class="hl-6">// Remove &#39;highlight&#39; from BPMN elements with id: activity_1 and activity_2</span><br/><span class="hl-4">bpmnVisualization</span><span class="hl-1">.</span><span class="hl-4">bpmnElementsRegistry</span><span class="hl-1">.</span><span class="hl-5">removeCssClasses</span><span class="hl-1">([</span><span class="hl-7">&#39;activity_1&#39;</span><span class="hl-1">, </span><span class="hl-7">&#39;activity_2&#39;</span><span class="hl-1">], </span><span class="hl-7">&#39;highlight&#39;</span><span class="hl-1">);</span><br/><br/><span class="hl-6">// Remove &#39;running&#39; and &#39;additional-info&#39; from BPMN element with id: task_3</span><br/><span class="hl-4">bpmnVisualization</span><span class="hl-1">.</span><span class="hl-4">bpmnElementsRegistry</span><span class="hl-1">.</span><span class="hl-5">removeCssClasses</span><span class="hl-1">(</span><span class="hl-7">&#39;task_3&#39;</span><span class="hl-1">, [</span><span class="hl-7">&#39;running&#39;</span><span class="hl-1">, </span><span class="hl-7">&#39;additional-info&#39;</span><span class="hl-1">]);</span>
+<h3>Example</h3><pre><code class="language-javascript"><span class="hl-6">// Remove &#39;highlight&#39; from BPMN elements with ID: activity_1 and activity_2</span><br/><span class="hl-4">bpmnVisualization</span><span class="hl-1">.</span><span class="hl-4">bpmnElementsRegistry</span><span class="hl-1">.</span><span class="hl-5">removeCssClasses</span><span class="hl-1">([</span><span class="hl-7">&#39;activity_1&#39;</span><span class="hl-1">, </span><span class="hl-7">&#39;activity_2&#39;</span><span class="hl-1">], </span><span class="hl-7">&#39;highlight&#39;</span><span class="hl-1">);</span><br/><br/><span class="hl-6">// Remove &#39;running&#39; and &#39;additional-info&#39; from BPMN element with ID: task_3</span><br/><span class="hl-4">bpmnVisualization</span><span class="hl-1">.</span><span class="hl-4">bpmnElementsRegistry</span><span class="hl-1">.</span><span class="hl-5">removeCssClasses</span><span class="hl-1">(</span><span class="hl-7">&#39;task_3&#39;</span><span class="hl-1">, [</span><span class="hl-7">&#39;running&#39;</span><span class="hl-1">, </span><span class="hl-7">&#39;additional-info&#39;</span><span class="hl-1">]);</span>
 </code><button>Copy</button></pre>
+
+<h3>See</h3><p><a href="BpmnElementsRegistry.html#removeAllCssClasses" class="tsd-kind-method">removeAllCssClasses</a> to remove all CSS classes from a BPMN element.</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
 <h5><span class="tsd-kind-parameter">bpmnElementIds</span>: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
-<div class="tsd-comment tsd-typography"><p>The BPMN id of the element(s) where to remove the CSS classes</p>
+<div class="tsd-comment tsd-typography"><p>The BPMN ID of the element(s) from which to remove the CSS classes.</p>
 </div></li>
 <li>
 <h5><span class="tsd-kind-parameter">classNames</span>: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
-<div class="tsd-comment tsd-typography"><p>The name of the class(es) to remove from the BPMN element(s)</p>
+<div class="tsd-comment tsd-typography"><p>The name of the class(es) to remove from the BPMN element(s).</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/fc1cf91/src/component/registry/bpmn-elements-registry.ts#L172">component/registry/bpmn-elements-registry.ts:172</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/9e45349/src/component/registry/bpmn-elements-registry.ts#L174">component/registry/bpmn-elements-registry.ts:174</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="toggleCssClasses" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>toggle<wbr/>Css<wbr/>Classes</span><a href="#toggleCssClasses" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures">
 <li class="tsd-signature tsd-anchor-link" id="toggleCssClasses.toggleCssClasses-1"><span class="tsd-kind-call-signature">toggle<wbr/>Css<wbr/>Classes</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">bpmnElementIds</span>, <span class="tsd-kind-parameter">classNames</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#toggleCssClasses.toggleCssClasses-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Toggle one/several CSS class(es) for one/several BPMN element(s).
-Notice that if you pass ids that are not related to existing BPMN elements, their reference will be kept within the registry but nothing happens on the rendering side.</p>
-<p>See also the <a href="BpmnElementsRegistry.html#addCssClasses" class="tsd-kind-method">addCssClasses</a> or the <a href="BpmnElementsRegistry.html#removeCssClasses" class="tsd-kind-method">removeCssClasses</a> methods.</p>
+<div class="tsd-comment tsd-typography"><p>Toggle one or more CSS classes on one or more BPMN elements.</p>
+<p><strong>Note</strong>: If an ID is passed that does not reference an existing BPMN element, its reference is retained in the registry, but no rendering changes are made.</p>
 
-<h3>Example</h3><pre><code class="language-javascript"><span class="hl-6">// Toggle &#39;highlight&#39; for BPMN elements with id: activity_1 and activity_2</span><br/><span class="hl-4">bpmnVisualization</span><span class="hl-1">.</span><span class="hl-4">bpmnElementsRegistry</span><span class="hl-1">.</span><span class="hl-5">toggleCssClasses</span><span class="hl-1">([</span><span class="hl-7">&#39;activity_1&#39;</span><span class="hl-1">, </span><span class="hl-7">&#39;activity_2&#39;</span><span class="hl-1">], </span><span class="hl-7">&#39;highlight&#39;</span><span class="hl-1">);</span><br/><br/><span class="hl-6">// Toggle &#39;running&#39; and &#39;additional-info&#39; for BPMN element with id: task_3</span><br/><span class="hl-4">bpmnVisualization</span><span class="hl-1">.</span><span class="hl-4">bpmnElementsRegistry</span><span class="hl-1">.</span><span class="hl-5">toggleCssClasses</span><span class="hl-1">(</span><span class="hl-7">&#39;task_3&#39;</span><span class="hl-1">, [</span><span class="hl-7">&#39;running&#39;</span><span class="hl-1">, </span><span class="hl-7">&#39;additional-info&#39;</span><span class="hl-1">]);</span>
+<h3>Example</h3><pre><code class="language-javascript"><span class="hl-6">// Toggle &#39;highlight&#39; for BPMN elements with ID: activity_1 and activity_2</span><br/><span class="hl-4">bpmnVisualization</span><span class="hl-1">.</span><span class="hl-4">bpmnElementsRegistry</span><span class="hl-1">.</span><span class="hl-5">toggleCssClasses</span><span class="hl-1">([</span><span class="hl-7">&#39;activity_1&#39;</span><span class="hl-1">, </span><span class="hl-7">&#39;activity_2&#39;</span><span class="hl-1">], </span><span class="hl-7">&#39;highlight&#39;</span><span class="hl-1">);</span><br/><br/><span class="hl-6">// Toggle &#39;running&#39; and &#39;additional-info&#39; for BPMN element with ID: task_3</span><br/><span class="hl-4">bpmnVisualization</span><span class="hl-1">.</span><span class="hl-4">bpmnElementsRegistry</span><span class="hl-1">.</span><span class="hl-5">toggleCssClasses</span><span class="hl-1">(</span><span class="hl-7">&#39;task_3&#39;</span><span class="hl-1">, [</span><span class="hl-7">&#39;running&#39;</span><span class="hl-1">, </span><span class="hl-7">&#39;additional-info&#39;</span><span class="hl-1">]);</span>
 </code><button>Copy</button></pre>
+
+<h3>See</h3><ul>
+<li><a href="BpmnElementsRegistry.html#removeCssClasses" class="tsd-kind-method">removeCssClasses</a> to remove specific CSS classes from a BPMN element.</li>
+<li><a href="BpmnElementsRegistry.html#removeAllCssClasses" class="tsd-kind-method">removeAllCssClasses</a> to remove all CSS classes from a BPMN element.</li>
+<li><a href="BpmnElementsRegistry.html#addCssClasses" class="tsd-kind-method">addCssClasses</a> to add CSS classes to a BPMN element.</li>
+</ul>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
 <h5><span class="tsd-kind-parameter">bpmnElementIds</span>: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
-<div class="tsd-comment tsd-typography"><p>The BPMN id of the element(s) where to remove the CSS classes</p>
+<div class="tsd-comment tsd-typography"><p>The BPMN ID of the element(s) on which to toggle the CSS classes.</p>
 </div></li>
 <li>
 <h5><span class="tsd-kind-parameter">classNames</span>: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
-<div class="tsd-comment tsd-typography"><p>The name of the class(es) to remove from the BPMN element(s)</p>
+<div class="tsd-comment tsd-typography"><p>The name of the class(es) to toggle on the BPMN element(s).</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/fc1cf91/src/component/registry/bpmn-elements-registry.ts#L194">component/registry/bpmn-elements-registry.ts:194</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/9e45349/src/component/registry/bpmn-elements-registry.ts#L235">component/registry/bpmn-elements-registry.ts:235</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="updateStyle" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>update<wbr/>Style</span><a href="#updateStyle" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -254,7 +292,7 @@ So, if you want to style all elements of a given type, change the default config
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/fc1cf91/src/component/registry/bpmn-elements-registry.ts#L303">component/registry/bpmn-elements-registry.ts:303</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/9e45349/src/component/registry/bpmn-elements-registry.ts#L344">component/registry/bpmn-elements-registry.ts:344</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -276,6 +314,7 @@ So, if you want to style all elements of a given type, change the default config
 <li><a href="#addOverlays" class=""><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>add<wbr/>Overlays</span></a></li>
 <li><a href="#getElementsByIds" class=""><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Elements<wbr/>By<wbr/>Ids</span></a></li>
 <li><a href="#getElementsByKinds" class=""><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Elements<wbr/>By<wbr/>Kinds</span></a></li>
+<li><a href="#removeAllCssClasses" class=""><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>remove<wbr/>All<wbr/>Css<wbr/>Classes</span></a></li>
 <li><a href="#removeAllOverlays" class=""><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>remove<wbr/>All<wbr/>Overlays</span></a></li>
 <li><a href="#removeCssClasses" class=""><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>remove<wbr/>Css<wbr/>Classes</span></a></li>
 <li><a href="#toggleCssClasses" class=""><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>toggle<wbr/>Css<wbr/>Classes</span></a></li>
