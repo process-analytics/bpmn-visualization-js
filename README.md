@@ -113,10 +113,10 @@ Then use this snippet to load your BPMN diagram in a page:
 ```javascript
 import { BpmnVisualization } from 'bpmn-visualization';
 
-let bpmnContent; // your BPMN 2.0 XML content
 // initialize `bpmn-visualization` and load the BPMN diagram
 // 'bpmn-container' is the id of the HTMLElement that renders the BPMN Diagram
 const bpmnVisualization = new BpmnVisualization({ container: 'bpmn-container' });
+let bpmnContent; // your BPMN 2.0 XML content
 bpmnVisualization.load(bpmnContent);
 ```
 
@@ -155,10 +155,10 @@ In the HTML page:
 <div id="bpmn-container"></div>
 ...
 <script>
-  let bpmnContent; // your BPMN 2.0 XML content
   // initialize `bpmn-visualization` and load the BPMN diagram
   // 'bpmn-container' is the id of the HTMLElement that renders the BPMN Diagram
   const bpmnVisualization = new bpmnvisu.BpmnVisualization({ container: 'bpmn-container'});
+  let bpmnContent; // your BPMN 2.0 XML content
   bpmnVisualization.load(bpmnContent);
 </script>
 ```
