@@ -68,6 +68,13 @@ template: |
 
   **TODO: add screenshots and user oriented info**
 
+  **TODO: highlight changes from the `examples` repository**
+  Important updates and/or new features may be available in this repository and are worth mentioning.
+  In this case:
+    - release the `examples` repository first
+    - add a link to the RN https://github.com/$OWNER/bpmn-visualization-examples/releases/tag/v0.34.0
+  Optional: add link to sthe live tatically.io environment including the tag (not the `master` branch) 
+
   # What's Changed
 
   **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$NEXT_PATCH_VERSION
