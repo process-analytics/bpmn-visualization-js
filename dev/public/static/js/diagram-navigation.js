@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { documentReady, fit, FitType, startBpmnVisualization, zoom, ZoomType } from '../../../ts/dev-bundle-index';
+import { disableNavigation, documentReady, enableNavigation, fit, FitType, startBpmnVisualization, zoom, ZoomType } from '../../../ts/dev-bundle-index';
 import { configureControlsPanel, configureMousePointer } from './helpers/controls.js';
 
 function configureFitAndZoomButtons() {
@@ -24,6 +24,8 @@ function configureFitAndZoomButtons() {
   Object.values(ZoomType).forEach(zoomType => {
     document.getElementById(`zoom-${zoomType}`).onclick = () => zoom(zoomType);
   });
+  document.getElementById('lock-navigation').onclick = () => disableNavigation();
+  document.getElementById('unlock-navigation').onclick = () => enableNavigation();
 }
 
 function configureZoomThrottleInput(parameters) {

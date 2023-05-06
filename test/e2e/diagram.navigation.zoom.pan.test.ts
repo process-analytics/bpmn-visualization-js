@@ -21,7 +21,7 @@ import type { Point } from '@test/shared/visu/bpmn-page-utils';
 import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
 import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
-import { ZoomType } from '@lib/component/options';
+import { ZoomType } from '../../src/component/options';
 
 class MouseNavigationImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
@@ -101,6 +101,63 @@ describe('diagram navigation - zoom and pan with mouse', () => {
       ...config,
       customSnapshotIdentifier: 'initial.zoom',
       customDiffDir: join(config.customDiffDir, `mouse-zoom-in-out-${xTimes}-times`),
+    });
+  });
+});
+
+describe('diagram navigation - disable and enable', () => {
+  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new MouseNavigationImageSnapshotThresholds(), 'navigation');
+  let containerCenter: Point;
+
+  beforeEach(async () => {
+    await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName);
+    containerCenter = await pageTester.getContainerCenter();
+  });
+
+  it('mouse panning', async () => {
+    pageTester.clickOnButton('lock-navigation');
+    await pageTester.mousePanning({ originPoint: containerCenter, destinationPoint: { x: containerCenter.x + 150, y: containerCenter.y + 40 } });
+
+    const image = await page.screenshot({ fullPage: true });
+    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+    expect(image).toMatchImageSnapshot({
+      ...config,
+      customSnapshotIdentifier: 'disabled.mouse.panning',
+    });
+
+    pageTester.clickOnButton('unlock-navigation');
+    await pageTester.mousePanning({ originPoint: containerCenter, destinationPoint: { x: containerCenter.x + 150, y: containerCenter.y + 40 } });
+
+    const image2 = await page.screenshot({ fullPage: true });
+    const config2 = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+    expect(image2).toMatchImageSnapshot({
+      ...config2,
+      customSnapshotIdentifier: 'enabled.mouse.panning',
+    });
+  });
+
+  describe.each([ZoomType.In, ZoomType.Out])(`ctrl + mouse: zoom %s`, (zoomType: ZoomType) => {
+    it('zoom %s times', async () => {
+      pageTester.clickOnButton('lock-navigation');
+      await pageTester.mouseZoom({ x: containerCenter.x + 200, y: containerCenter.y }, zoomType, 3);
+
+      const image = await page.screenshot({ fullPage: true });
+      const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+      expect(image).toMatchImageSnapshot({
+        ...config,
+        customSnapshotIdentifier: `disabled.mouse.zoom.${zoomType}.3.times`,
+      });
+
+      // Enable
+      pageTester.clickOnButton('unlock-navigation');
+      await pageTester.mouseZoom({ x: containerCenter.x + 200, y: containerCenter.y }, zoomType, 3);
+
+      const image2 = await page.screenshot({ fullPage: true });
+      const config2 = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+      expect(image2).toMatchImageSnapshot({
+        ...config2,
+        customSnapshotIdentifier: `enabled.mouse.zoom.${zoomType}.3.times`,
+      });
     });
   });
 });

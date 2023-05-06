@@ -19,8 +19,6 @@ import ShapeConfigurator from './config/ShapeConfigurator';
 import MarkerConfigurator from './config/MarkerConfigurator';
 import type { GlobalOptions } from '../options';
 import { BpmnGraph } from './BpmnGraph';
-import { mxgraph } from './initializer';
-import type { mxMouseEvent } from 'mxgraph';
 
 /**
  * Configure the BpmnMxGraph graph that can be used by the lib
@@ -63,33 +61,10 @@ export default class GraphConfigurator {
   }
 
   private configureNavigationSupport(options: GlobalOptions): void {
-    const panningHandler = this.graph.panningHandler;
     if (options?.navigation?.enabled) {
-      // Pan configuration
-      panningHandler.addListener(mxgraph.mxEvent.PAN_START, this.getPanningHandler('grab'));
-      panningHandler.addListener(mxgraph.mxEvent.PAN_END, this.getPanningHandler('default'));
-
-      panningHandler.usePopupTrigger = false; // only use the left button to trigger panning
-      // Reimplement the function as we also want to trigger 'panning on cells' (ignoreCell to true) and only on left-click
-      // The mxGraph standard implementation doesn't ignore right click in this case, so do it by ourselves
-      panningHandler.isForcePanningEvent = (me): boolean => mxgraph.mxEvent.isLeftMouseButton(me.getEvent()) || mxgraph.mxEvent.isMultiTouchEvent(me.getEvent());
-      this.graph.setPanning(true);
-
-      // Zoom configuration
-      this.graph.registerMouseWheelZoomListeners(options.navigation.zoom);
+      this.graph.enableNavigation(options.navigation.zoom ?? {});
     } else {
-      this.graph.setPanning(false);
-      // Disable gesture support for zoom
-      panningHandler.setPinchEnabled(false);
-      // Disable panning on touch device
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars -- prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
-      panningHandler.isForcePanningEvent = (_me: mxMouseEvent): boolean => false;
+      this.graph.disableNavigation();
     }
-  }
-
-  private getPanningHandler(cursor: 'grab' | 'default'): () => void {
-    return (): void => {
-      this.graph.isEnabled() && (this.container.style.cursor = cursor);
-    };
   }
 }

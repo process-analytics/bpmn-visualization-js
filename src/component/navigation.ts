@@ -36,4 +36,12 @@ export class Navigation {
   zoom(type: ZoomType): void {
     type == 'in' ? this.graph.zoomIn() : this.graph.zoomOut();
   }
+
+  enable(): void {
+    this.graph.enableNavigation();
+  }
+
+  disable(): void {
+    this.graph.disableNavigation();
+  }
 }

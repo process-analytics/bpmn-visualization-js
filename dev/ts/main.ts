@@ -97,6 +97,17 @@ export function zoom(zoomType: ZoomType): void {
   log('Zoom done');
 }
 
+export function enableNavigation(): void {
+  log('Enabling Navigation');
+  bpmnVisualization.navigation.enable();
+  log('Navigation enabled');
+}
+export function disableNavigation(): void {
+  log('Disabling Naviagtion');
+  bpmnVisualization.navigation.disable();
+  log('Navigation disabled');
+}
+
 export function getElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[]): BpmnElement[] {
   return bpmnVisualization.bpmnElementsRegistry.getElementsByKinds(bpmnKinds);
 }
