@@ -20,7 +20,7 @@ import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from '
 import type { Page } from 'playwright';
 import { getBpmnDiagramNames } from './helpers/test-utils';
 
-class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
+class ImageSnapshotThresholdsModelColors extends MultiBrowserImageSnapshotThresholds {
   constructor() {
     // threshold for webkit is taken from macOS only
     super({ chromium: 0 / 100, firefox: 0.006 / 100, webkit: 0.07 / 100 });
@@ -64,18 +64,31 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   }
 }
 
-describe('BPMN in color', () => {
-  const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new ImageSnapshotThresholds(), 'bpmn-colors');
+class ImageSnapshotThresholdsIgnoreModelColors extends MultiBrowserImageSnapshotThresholds {
+  constructor() {
+    // threshold for webkit is taken from macOS only
+    super({ chromium: 0 / 100, firefox: 0 / 100, webkit: 0 / 100 });
+  }
+}
 
+describe('BPMN in color', () => {
   const diagramSubfolder = 'bpmn-in-color';
   const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder }, <Page>page);
   const bpmnDiagramNames = getBpmnDiagramNames(diagramSubfolder);
 
-  it.each(bpmnDiagramNames)(`%s`, async (bpmnDiagramName: string) => {
-    await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName);
+  describe.each([false, true])('Ignore colors from model: %s', (ignoreModelColors: boolean) => {
+    const imageSnapshotConfigurator = ignoreModelColors
+      ? new ImageSnapshotConfigurator(new ImageSnapshotThresholdsIgnoreModelColors(), 'bpmn-colors/ignored')
+      : new ImageSnapshotConfigurator(new ImageSnapshotThresholdsModelColors(), 'bpmn-colors/enabled');
 
-    const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-    expect(image).toMatchImageSnapshot(config);
+    it.each(bpmnDiagramNames)(`%s`, async (bpmnDiagramName: string) => {
+      await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName, {
+        rendererIgnoreModelColors: ignoreModelColors,
+      });
+
+      const image = await page.screenshot({ fullPage: true });
+      const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
+      expect(image).toMatchImageSnapshot(config);
+    });
   });
 });

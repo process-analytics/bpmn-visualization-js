@@ -267,10 +267,11 @@ export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguratio
 
   const parameters = new URLSearchParams(window.location.search);
   const rendererIgnoreModelColors = parameters.get('renderer.ignore.model.colors');
-  if (rendererIgnoreModelColors === 'false') {
-    log('Enable support for colors from the BPMN Model');
+  if (rendererIgnoreModelColors) {
+    const ignoreModelColors = rendererIgnoreModelColors === 'true';
+    log('Ignore support for colors from the BPMN Model?', ignoreModelColors);
     !config.globalOptions.renderer && (config.globalOptions.renderer = {});
-    config.globalOptions.renderer.ignoreModelColors = false;
+    config.globalOptions.renderer.ignoreModelColors = ignoreModelColors;
   }
 
   bpmnVisualization = new ThemedBpmnVisualization(config.globalOptions);
