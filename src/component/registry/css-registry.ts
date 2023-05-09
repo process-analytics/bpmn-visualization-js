@@ -20,48 +20,80 @@ import { ensureIsArray } from '../helpers/array-utils';
  * @internal
  */
 export class CssRegistry {
-  private classNamesByBPMNId = new Map<string, Set<string>>();
+  private classNamesByBpmnId = new Map<string, Set<string>>();
 
   /**
    * Clear all classes that were registered.
    */
-  clear(): void {
-    this.classNamesByBPMNId.clear();
-  }
+  clear = (): void => {
+    this.classNamesByBpmnId.clear();
+  };
 
   /**
    * Get the CSS class names for a specific HTML element
    *
-   * @param bpmnElementId the BPMN id of the HTML element from the DOM
+   * @param bpmnElementId the BPMN ID of the HTML element from the DOM
    * @return the registered CSS class names
    */
   getClassNames(bpmnElementId: string): string[] {
-    return Array.from(this.classNamesByBPMNId.get(bpmnElementId) ?? []);
+    return Array.from(this.classNamesByBpmnId.get(bpmnElementId) ?? []);
+  }
+
+  /**
+   * Get all registered BPMN element IDs.
+   *
+   * @return an array representing the BPMN element IDs.
+   */
+  getBpmnIds(): string[] {
+    return Array.from(this.classNamesByBpmnId.keys());
   }
 
   /**
    * Register the CSS class names for a specific HTML element
    *
-   * @param bpmnElementId the BPMN id of the HTML element from the DOM
+   * @param bpmnElementId the BPMN ID of the HTML element from the DOM
    * @param classNames the CSS class names to register
-   * @return true if at least one class name from parameters has been added; false otherwise
+   * @return `true` if at least one class name from parameters has been added; `false` otherwise
    */
-  addClassNames(bpmnElementId: string, classNames: string[]): boolean {
-    return this.updateClassNames(bpmnElementId, classNames, (currentClassNames, className) => currentClassNames.add(className));
+  addClassNames = (bpmnElementId: string, classNames: string[]): boolean =>
+    this.updateClassNames(bpmnElementId, classNames, (currentClassNames, className) => currentClassNames.add(className));
+
+  /**
+   * Remove the CSS class names for a specific HTML element
+   *
+   * @param bpmnElementId the BPMN ID of the HTML element from the DOM
+   * @param classNames the CSS class names to remove
+   * @return `true` if at least one class name from parameters has been removed; `false` otherwise
+   */
+  removeClassNames = (bpmnElementId: string, classNames: string[]): boolean =>
+    this.updateClassNames(bpmnElementId, classNames, (currentClassNames, className) => currentClassNames.delete(className));
+
+  /**
+   * Remove all CSS class names for specific HTML element
+   *
+   * @param bpmnElementId the BPMN ID of the HTML element from the DOM
+   * @return `true` if at least one class name has been removed; `false` otherwise
+   */
+  removeAllClassNames(bpmnElementId: string): boolean {
+    const currentClassNames = this.getOrInitializeClassNames(bpmnElementId);
+    const initialClassNamesNumber = currentClassNames.size;
+    currentClassNames.clear();
+    return currentClassNames.size < initialClassNamesNumber;
   }
 
-  // return `true` if at least one class has been removed
-  removeClassNames(bpmnElementId: string, classNames: string[]): boolean {
-    return this.updateClassNames(bpmnElementId, classNames, (currentClassNames, className) => currentClassNames.delete(className));
-  }
-
-  // return true if passed classes array has at least one element - as toggle will always trigger changes in that case
-  toggleClassNames(bpmnElementId: string, classNames: string[]): boolean {
+  /**
+   * Toggle the CSS class names for a specific HTML element
+   *
+   * @param bpmnElementId the BPMN ID of the HTML element from the DOM
+   * @param classNames the CSS class names to toggle
+   * @return `true` if `classNames` has at least one element - as toggle will always trigger changes in that case; `false` otherwise
+   */
+  toggleClassNames = (bpmnElementId: string, classNames: string[]): boolean => {
     this.updateClassNames(bpmnElementId, classNames, (currentClassNames, className) =>
       currentClassNames.has(className) ? currentClassNames.delete(className) : currentClassNames.add(className),
     );
     return classNames && classNames.length > 0;
-  }
+  };
 
   private updateClassNames(bpmnElementId: string, classNames: string[], manageClassNames: (currentClassNames: Set<string>, className: string) => void): boolean {
     const currentClassNames = this.getOrInitializeClassNames(bpmnElementId);
@@ -71,10 +103,10 @@ export class CssRegistry {
   }
 
   private getOrInitializeClassNames(bpmnElementId: string): Set<string> {
-    let classNames = this.classNamesByBPMNId.get(bpmnElementId);
+    let classNames = this.classNamesByBpmnId.get(bpmnElementId);
     if (classNames == null) {
       classNames = new Set();
-      this.classNamesByBPMNId.set(bpmnElementId, classNames);
+      this.classNamesByBpmnId.set(bpmnElementId, classNames);
     }
     return classNames;
   }

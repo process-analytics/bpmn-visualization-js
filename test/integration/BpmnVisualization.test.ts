@@ -15,13 +15,14 @@ limitations under the License.
 */
 
 import {
+  type GlobalOptionsWithoutContainer,
   initializeBpmnVisualizationWithContainerId,
   initializeBpmnVisualizationWithHtmlElement,
-  type GlobalOptionsWithoutContainer,
 } from './helpers/bpmn-visualization-initialization';
-import { readFileSync } from '../helpers/file-helper';
+import { readFileSync } from '@test/shared/file-helper';
 import { allTestedFitTypes } from './helpers/fit-utils';
-import type { FitType } from '../../src/component/options';
+import type { FitType } from '@lib/component/options';
+import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 
 describe('BpmnVisualization initialization', () => {
   it.each`
@@ -77,6 +78,32 @@ describe('BpmnVisualization API', () => {
       const newVersion = bpmnVisualization.getVersion();
       expect(newVersion.lib).not.toBe(initialVersion.lib);
       expect(newVersion.dependencies).not.toBe(initialVersion.dependencies);
+    });
+  });
+
+  // The API should not fail
+  describe('Registry access when no loaded diagram', () => {
+    const bv = initializeBpmnVisualizationWithContainerId('bpmn-no-loaded-diagram');
+    const bpmnElementsRegistry = bv.bpmnElementsRegistry;
+
+    it('getElementsByIds', () => {
+      expect(bpmnElementsRegistry.getElementsByIds('fake_id')).toHaveLength(0);
+    });
+    it('getElementsByKinds', () => {
+      expect(bpmnElementsRegistry.getElementsByKinds(ShapeBpmnElementKind.CALL_ACTIVITY)).toHaveLength(0);
+    });
+    it('CSS classes', () => {
+      bpmnElementsRegistry.addCssClasses('fake_id_1', 'class1');
+      bpmnElementsRegistry.removeCssClasses('fake_id_2', 'class2');
+      bpmnElementsRegistry.toggleCssClasses('fake_id_3', 'class3');
+      bpmnElementsRegistry.removeAllCssClasses('fake_id_4');
+    });
+    it('Overlays', () => {
+      bpmnElementsRegistry.addOverlays('fake_id_1', { label: 'overlay', position: 'top-center' });
+      bpmnElementsRegistry.removeAllOverlays('fake_id_2');
+    });
+    it('updateStyle', () => {
+      bpmnElementsRegistry.updateStyle('fake_id', { fill: { color: 'red' } });
     });
   });
 });

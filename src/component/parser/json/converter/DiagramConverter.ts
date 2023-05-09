@@ -118,7 +118,7 @@ export default class DiagramConverter {
 
       let isHorizontal;
       if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
-        isHorizontal = bpmnShape.isHorizontal !== undefined ? bpmnShape.isHorizontal : true;
+        isHorizontal = bpmnShape.isHorizontal ?? true;
       }
 
       const bpmnLabel = bpmnShape.BPMNLabel;

@@ -14,10 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { readFileSync } from '../helpers/file-helper';
+import { readFileSync } from '@test/shared/file-helper';
 import { initializeBpmnVisualizationWithContainerId } from './helpers/bpmn-visualization-initialization';
 import { HtmlElementLookup } from './helpers/html-utils';
-import { ShapeBpmnEventDefinitionKind } from '../../src/model/bpmn/internal';
+import { ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
 
 describe('Bpmn Elements registry - CSS class management', () => {
   const bpmnVisualization = initializeBpmnVisualizationWithContainerId();
@@ -122,6 +122,77 @@ describe('Bpmn Elements registry - CSS class management', () => {
       htmlElementLookup.expectNoElement(nonExistingBpmnId);
       // this call ensures that there is not issue on the rendering part
       bpmnVisualization.bpmnElementsRegistry.removeCssClasses(nonExistingBpmnId, 'class1');
+    });
+  });
+
+  describe('Remove all classes', () => {
+    it('Remove all classes from a single element with a single class', () => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
+
+      // default classes
+      htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0' });
+      htmlElementLookup.expectLane('lane_03', { label: 'Lane 3' });
+
+      // remove all classes from a single element with a single class
+      bpmnVisualization.bpmnElementsRegistry.addCssClasses('userTask_0', 'class1');
+      htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0', additionalClasses: ['class1'] });
+      bpmnVisualization.bpmnElementsRegistry.removeAllCssClasses('userTask_0');
+      htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0' });
+    });
+
+    it('Remove all classes from several elements with several classes', () => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
+
+      // default classes
+      htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0' });
+      htmlElementLookup.expectLane('lane_03', { label: 'Lane 3' });
+
+      // remove all classes from several elements with several classes
+      bpmnVisualization.bpmnElementsRegistry.addCssClasses(['lane_03', 'userTask_0'], ['class1', 'class2', 'class3']);
+      htmlElementLookup.expectLane('lane_03', { label: 'Lane 3', additionalClasses: ['class1', 'class2', 'class3'] });
+      htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0', additionalClasses: ['class1', 'class2', 'class3'] });
+      bpmnVisualization.bpmnElementsRegistry.removeAllCssClasses(['lane_03', 'userTask_0']);
+      htmlElementLookup.expectLane('lane_03', { label: 'Lane 3' });
+      htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0' });
+    });
+
+    it('Remove all classes from all elements', () => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
+
+      // default classes
+      htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0' });
+      htmlElementLookup.expectLane('lane_03', { label: 'Lane 3' });
+
+      // remove all classes from all elements
+      bpmnVisualization.bpmnElementsRegistry.addCssClasses(['lane_03', 'userTask_0'], ['class1', 'class2', 'class3']);
+      htmlElementLookup.expectLane('lane_03', { label: 'Lane 3', additionalClasses: ['class1', 'class2', 'class3'] });
+      htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0', additionalClasses: ['class1', 'class2', 'class3'] });
+      bpmnVisualization.bpmnElementsRegistry.removeAllCssClasses();
+      htmlElementLookup.expectLane('lane_03', { label: 'Lane 3' });
+      htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0' });
+    });
+
+    it('Remove all classes which be adding with spaces', () => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
+
+      // default classes
+      htmlElementLookup.expectUserTask('userTask_0', { label: 'User Task 0' });
+      htmlElementLookup.expectLane('lane_03', { label: 'Lane 3' });
+
+      // add the class with spaces and remove all
+      bpmnVisualization.bpmnElementsRegistry.addCssClasses(['lane_03'], ['extra-class1 extra-class2 extra-class3']);
+      htmlElementLookup.expectLane('lane_03', { additionalClasses: ['extra-class1', 'extra-class2', 'extra-class3'] });
+      bpmnVisualization.bpmnElementsRegistry.removeAllCssClasses(['lane_03']);
+      htmlElementLookup.expectLane('lane_03');
+    });
+
+    it('BPMN element does not exist', () => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
+
+      const nonExistingBpmnId = 'i-do-not-exist-for-removal';
+      htmlElementLookup.expectNoElement(nonExistingBpmnId);
+      // this call ensures that there is not issue on the rendering part
+      bpmnVisualization.bpmnElementsRegistry.removeAllCssClasses(nonExistingBpmnId);
     });
   });
 

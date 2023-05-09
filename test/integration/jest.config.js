@@ -14,6 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+const { moduleNameMapper } = require('../config/ts-jest');
+
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
   rootDir: '../..',
@@ -28,6 +30,7 @@ module.exports = {
       },
     ],
   },
+  moduleNameMapper,
   collectCoverageFrom: ['src/**/*.{ts,js}'],
   coveragePathIgnorePatterns: ['/src/model/'],
   coverageReporters: ['lcov', 'text-summary'],

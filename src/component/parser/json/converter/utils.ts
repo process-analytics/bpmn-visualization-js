@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import ShapeBpmnElement from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
-import type { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/flows';
+import type { Flow, AssociationFlow, MessageFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/flows';
 import type { GlobalTaskKind, ShapeBpmnEventDefinitionKind } from '../../../../model/bpmn/internal';
 import { ShapeBpmnElementKind } from '../../../../model/bpmn/internal';
 import type { TGroup } from '../../../../model/bpmn/json/baseElement/artifact';
@@ -26,6 +26,10 @@ import { GroupUnknownCategoryValueWarning } from '../warnings';
  * @internal
  */
 export class ConvertedElements {
+  getFlows(): Flow[] {
+    return [...this.messageFlows.values(), ...this.sequenceFlows.values(), ...this.associationFlows.values()];
+  }
+
   private poolsById: Map<string, ShapeBpmnElement> = new Map();
   findPoolById(id: string): ShapeBpmnElement {
     return this.poolsById.get(id);

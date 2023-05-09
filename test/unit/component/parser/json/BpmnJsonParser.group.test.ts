@@ -23,8 +23,8 @@ import {
   parsingMessageCollector,
 } from '../../../helpers/JsonTestUtils';
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal';
-import { GroupUnknownCategoryValueWarning, ShapeUnknownBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
+import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
+import { GroupUnknownCategoryValueWarning, ShapeUnknownBpmnElementWarning } from '@lib/component/parser/json/warnings';
 
 describe('parse bpmn as json for group', () => {
   it('Single Group with label in process', () => {
@@ -68,7 +68,6 @@ describe('parse bpmn as json for group', () => {
       bpmnElementId: 'Group_0',
       bpmnElementName: 'Group 0 label',
       bpmnElementKind: ShapeBpmnElementKind.GROUP,
-      parentId: undefined,
       bounds: {
         x: 160,
         y: 110,
@@ -144,7 +143,6 @@ describe('parse bpmn as json for group', () => {
       bpmnElementId: 'Group_0',
       bpmnElementName: 'Another Group 0 label',
       bpmnElementKind: ShapeBpmnElementKind.GROUP,
-      parentId: undefined,
       bounds: {
         x: 160,
         y: 110,
@@ -157,7 +155,6 @@ describe('parse bpmn as json for group', () => {
       bpmnElementId: 'Group_1',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.GROUP,
-      parentId: undefined,
       bounds: {
         x: 1160,
         y: 1110,

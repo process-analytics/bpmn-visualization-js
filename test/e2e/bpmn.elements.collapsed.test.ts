@@ -16,9 +16,9 @@ limitations under the License.
 
 import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
-import { AvailableTestPages, PageTester } from './helpers/visu/bpmn-page-utils';
+import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
 import type { Page } from 'playwright';
-import { getBpmnDiagramNames } from './helpers/test-utils';
+import { getBpmnDiagramNames } from '@test/shared/visu/test-utils';
 
 // key: diagram name
 // values: the ids of the elements to collapse. The elements are collapsed one by one, in dedicated tests

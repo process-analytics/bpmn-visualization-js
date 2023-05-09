@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal';
-import { LaneUnknownFlowNodeRefWarning } from '../../../../../src/component/parser/json/warnings';
+import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
+import { LaneUnknownFlowNodeRefWarning } from '@lib/component/parser/json/warnings';
 
 import { expectAsWarning, parseJson, parseJsonAndExpectOnlyLanes, parsingMessageCollector } from '../../../helpers/JsonTestUtils';
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
@@ -408,7 +408,6 @@ describe('parse bpmn as json for lane', () => {
         shapeId: 'Lane_1gdg64y_di',
         bpmnElementId: 'Lane_1gdg64y',
         bpmnElementName: undefined,
-        parentId: undefined,
         bpmnElementKind: ShapeBpmnElementKind.LANE,
         bounds: {
           x: 186,
@@ -423,7 +422,6 @@ describe('parse bpmn as json for lane', () => {
         shapeId: 'Lane_040h8y5_di',
         bpmnElementId: 'Lane_040h8y5',
         bpmnElementName: undefined,
-        parentId: undefined,
         bpmnElementKind: ShapeBpmnElementKind.LANE,
         bounds: {
           x: 186,
@@ -492,7 +490,6 @@ describe('parse bpmn as json for lane', () => {
         bpmnElementId: 'Lane_12u5n6x',
         bpmnElementName: undefined,
         bpmnElementKind: ShapeBpmnElementKind.LANE,
-        parentId: undefined,
         bounds: {
           x: 362,
           y: 232,
@@ -530,7 +527,6 @@ describe('parse bpmn as json for lane', () => {
       bpmnElementId: 'Lane_12u5n6x',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.LANE,
-      parentId: undefined,
       bounds: {
         x: 362,
         y: 232,

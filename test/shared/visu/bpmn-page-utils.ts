@@ -22,23 +22,21 @@ import debugLogger from 'debug';
 import 'expect-playwright';
 import type { PageWaitForSelectorOptions } from 'expect-playwright';
 import type { ElementHandle, Page } from 'playwright';
-import { type LoadOptions, FitType, ZoomType } from '../../../../src/component/options';
-import type { ShapeStyleUpdate } from '../../../../src/component/registry';
-import type { StyleUpdate } from '../../../../src/component/registry';
-import { BpmnQuerySelectorsForTests } from '../../../helpers/query-selectors';
-import { delay } from '../test-utils';
+import { type LoadOptions, FitType, ZoomType } from '@lib/component/options';
+import type { ShapeStyleUpdate } from '@lib/component/registry';
+import type { StyleUpdate } from '@lib/component/registry';
+import { BpmnQuerySelectorsForTests } from '@test/shared/query-selectors';
+import { delay } from './test-utils';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore js file with commonjs export
-import envUtils = require('../../../helpers/environment-utils.js');
+import envUtils = require('../environment-utils.js');
 
 const pageCheckLog = debugLogger('bv:test:page-check');
 
 class BpmnPage {
-  private bpmnQuerySelectors: BpmnQuerySelectorsForTests;
+  private bpmnQuerySelectors = new BpmnQuerySelectorsForTests();
 
-  constructor(private bpmnContainerId: string, private page: Page) {
-    this.bpmnQuerySelectors = new BpmnQuerySelectorsForTests();
-  }
+  constructor(private bpmnContainerId: string, private page: Page) {}
 
   async expectAvailableBpmnContainer(options?: PageWaitForSelectorOptions): Promise<void> {
     pageCheckLog('Expecting the BPMN container available (confirm bpmn-visualization initialization)');
@@ -277,13 +275,7 @@ export class PageTester {
 }
 
 export class BpmnPageSvgTester extends PageTester {
-  private bpmnQuerySelectors: BpmnQuerySelectorsForTests;
-
-  constructor(targetedPage: TargetedPageConfiguration, page: Page) {
-    super(targetedPage, page);
-    // TODO duplicated with BpmnPage
-    this.bpmnQuerySelectors = new BpmnQuerySelectorsForTests();
-  }
+  private bpmnQuerySelectors = new BpmnQuerySelectorsForTests();
 
   override async gotoPageAndLoadBpmnDiagram(bpmnDiagramName?: string): Promise<void> {
     await super.gotoPageAndLoadBpmnDiagram(bpmnDiagramName ?? 'not-used-dedicated-diagram-loaded-by-the-page', {

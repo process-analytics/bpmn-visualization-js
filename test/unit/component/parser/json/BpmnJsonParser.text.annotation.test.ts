@@ -14,126 +14,131 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtils';
+import { buildDefinitions } from '../../../helpers/JsonBuilder';
+import type { BuildProcessParameter } from '../../../helpers/JsonBuilder';
+import { parseJsonAndExpectOnlyEdgesAndFlowNodes, parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtils';
+import type { ExpectedShape } from '../../../helpers/bpmn-model-expect';
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
 
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal';
-import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
+import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 
 describe('parse bpmn as json for text annotation', () => {
-  const processWithArtifactAsObject = {} as TProcess;
-  processWithArtifactAsObject['textAnnotation'] = {
-    id: `textAnnotation_id_0`,
-    text: `textAnnotation name`,
+  const processWithArtifactAsObject = {
+    textAnnotation: {
+      id: `textAnnotation_id_0`,
+      text: `textAnnotation name`,
+    },
   };
 
   it.each([
     ['object', processWithArtifactAsObject],
     ['array', [processWithArtifactAsObject]],
-  ])(`should convert as Shape, when a text annotation is an attribute (as object) of 'process' (as %s)`, (title: string, processJson: TProcess) => {
-    const json = {
-      definitions: {
-        targetNamespace: '',
-        process: processJson,
-        BPMNDiagram: {
-          name: 'process 0',
-          BPMNPlane: {
-            BPMNShape: {
-              id: `shape_textAnnotation_id_0`,
-              bpmnElement: `textAnnotation_id_0`,
-              Bounds: { x: 362, y: 232, width: 36, height: 45 },
-            },
-          },
-        },
-      },
-    };
+  ])(
+    `should convert as Shape, when a text annotation is an attribute (as object) of 'process' (as %s)`,
+    (title: string, processParameter: BuildProcessParameter | BuildProcessParameter[]) => {
+      const json = buildDefinitions({ process: processParameter });
 
-    const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+      const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
-    verifyShape(model.flowNodes[0], {
-      shapeId: `shape_textAnnotation_id_0`,
-      bpmnElementId: `textAnnotation_id_0`,
-      bpmnElementName: `textAnnotation name`,
-      bpmnElementKind: ShapeBpmnElementKind.TEXT_ANNOTATION,
-      bounds: {
-        x: 362,
-        y: 232,
-        width: 36,
-        height: 45,
-      },
-    });
-  });
+      verifyShape(model.flowNodes[0], {
+        shapeId: `shape_textAnnotation_id_0`,
+        bpmnElementId: `textAnnotation_id_0`,
+        bpmnElementName: `textAnnotation name`,
+        bpmnElementKind: ShapeBpmnElementKind.TEXT_ANNOTATION,
+        bounds: { x: 456, y: 23, width: 78, height: 54 },
+      });
+    },
+  );
 
   it(`should convert as Shape, when a text annotation (with/without text) is an attribute (as array) of 'process'`, () => {
-    const json = {
-      definitions: {
-        targetNamespace: '',
-        process: {
-          textAnnotation: [
-            {
-              id: 'TextAnnotation_01',
-              text: 'Task Annotation',
-            },
-            {
-              id: 'TextAnnotation_02',
-            },
-          ],
-        },
-        BPMNDiagram: {
-          name: 'process 0',
-          BPMNPlane: {
-            BPMNShape: [
-              {
-                id: 'TextAnnotation_01_di',
-                bpmnElement: 'TextAnnotation_01',
-                Bounds: {
-                  x: 430,
-                  y: 160,
-                  width: 100,
-                  height: 30,
-                },
-              },
-              {
-                id: 'TextAnnotation_02_di',
-                bpmnElement: 'TextAnnotation_02',
-                Bounds: {
-                  x: 180,
-                  y: 80,
-                  width: 270,
-                  height: 54,
-                },
-              },
-            ],
+    const json = buildDefinitions({
+      process: {
+        textAnnotation: [
+          {
+            id: 'TextAnnotation_01',
+            text: 'Task Annotation',
           },
-        },
+          {
+            id: 'TextAnnotation_02',
+          },
+        ],
       },
-    };
+    });
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
 
     verifyShape(model.flowNodes[0], {
-      shapeId: 'TextAnnotation_01_di',
+      shapeId: 'shape_TextAnnotation_01',
       bpmnElementId: 'TextAnnotation_01',
       bpmnElementName: 'Task Annotation',
       bpmnElementKind: ShapeBpmnElementKind.TEXT_ANNOTATION,
-      bounds: {
-        x: 430,
-        y: 160,
-        width: 100,
-        height: 30,
-      },
+      bounds: { x: 456, y: 23, width: 78, height: 54 },
     });
     verifyShape(model.flowNodes[1], {
-      shapeId: 'TextAnnotation_02_di',
+      shapeId: 'shape_TextAnnotation_02',
       bpmnElementId: 'TextAnnotation_02',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.TEXT_ANNOTATION,
-      bounds: {
-        x: 180,
-        y: 80,
-        width: 270,
-        height: 54,
+      bounds: { x: 456, y: 23, width: 78, height: 54 },
+    });
+  });
+
+  describe(`incoming/outgoing management for text annotation in process`, () => {
+    it.each`
+      title         | expectedAttribute
+      ${'incoming'} | ${'bpmnElementIncomingIds'}
+      ${'outgoing'} | ${'bpmnElementOutgoingIds'}
+    `(
+      `should convert as Shape, when a process contains a text annotation with $title association`,
+      ({ title, expectedAttribute }: { title: string; expectedAttribute: keyof ExpectedShape }) => {
+        const json = buildDefinitions({
+          process: {
+            textAnnotation: { id: `text_annotation_id_0` },
+            association: {
+              id: `flow_${title}`,
+              sourceRef: title === 'incoming' ? 'unknown' : 'text_annotation_id_0',
+              targetRef: title === 'incoming' ? 'text_annotation_id_0' : 'unknown',
+            },
+          },
+        });
+
+        const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
+
+        verifyShape(model.flowNodes[0], {
+          shapeId: `shape_text_annotation_id_0`,
+          bpmnElementId: `text_annotation_id_0`,
+          bpmnElementName: undefined,
+          bpmnElementKind: ShapeBpmnElementKind.TEXT_ANNOTATION,
+          bounds: { x: 456, y: 23, width: 78, height: 54 },
+          [expectedAttribute]: [`flow_${title}`],
+        });
       },
+    );
+
+    it(`should convert as Shape, when a process contains a text annotation with incoming/outgoing associations`, () => {
+      const json = buildDefinitions({
+        process: {
+          textAnnotation: { id: `text_annotation_id_0` },
+          association: [
+            { id: 'flow_in_1', sourceRef: 'unknown', targetRef: 'text_annotation_id_0' },
+            { id: 'flow_in_2', sourceRef: 'unknown', targetRef: 'text_annotation_id_0' },
+            { id: 'flow_out_2', sourceRef: 'text_annotation_id_0', targetRef: 'unknown' },
+            { id: 'flow_out_3', sourceRef: 'text_annotation_id_0', targetRef: 'unknown' },
+          ],
+        },
+      });
+
+      const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 4, 1);
+
+      verifyShape(model.flowNodes[0], {
+        shapeId: `shape_text_annotation_id_0`,
+        bpmnElementId: `text_annotation_id_0`,
+        bpmnElementName: undefined,
+        bpmnElementKind: ShapeBpmnElementKind.TEXT_ANNOTATION,
+        bounds: { x: 456, y: 23, width: 78, height: 54 },
+        bpmnElementIncomingIds: ['flow_in_1', 'flow_in_2'],
+        bpmnElementOutgoingIds: ['flow_out_2', 'flow_out_3'],
+      });
     });
   });
 });

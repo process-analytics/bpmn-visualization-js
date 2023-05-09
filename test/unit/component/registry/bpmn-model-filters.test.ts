@@ -14,11 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { ModelFiltering } from '../../../../src/component/registry/bpmn-model-filters';
-import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/internal';
-import type Shape from '../../../../src/model/bpmn/internal/shape/Shape';
-import type { Edge } from '../../../../src/model/bpmn/internal/edge/edge';
-import type { ModelFilter } from '../../../../src/component/options';
+import { ModelFiltering } from '@lib/component/registry/bpmn-model-filters';
+import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
+import type Shape from '@lib/model/bpmn/internal/shape/Shape';
+import type { Edge } from '@lib/model/bpmn/internal/edge/edge';
+import type { ModelFilter } from '@lib/component/options';
 
 import { buildEdgeId, buildShapeId, poolInModel, toBpmnModel } from '../../helpers/bpmn-model-utils';
 import type { ExpectedEdge, ExpectedShape } from '../../helpers/bpmn-model-expect';

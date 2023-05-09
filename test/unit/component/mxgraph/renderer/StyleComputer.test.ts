@@ -17,8 +17,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import StyleComputer from '../../../../../src/component/mxgraph/renderer/StyleComputer';
-import Shape from '../../../../../src/model/bpmn/internal/shape/Shape';
+import StyleComputer from '@lib/component/mxgraph/renderer/StyleComputer';
+import Shape from '@lib/model/bpmn/internal/shape/Shape';
 import ShapeBpmnElement, {
   ShapeBpmnActivity,
   ShapeBpmnBoundaryEvent,
@@ -27,8 +27,8 @@ import ShapeBpmnElement, {
   ShapeBpmnEventBasedGateway,
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
-} from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import type { BpmnEventKind, GlobalTaskKind } from '../../../../../src/bpmn-visualization';
+} from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
+import type { BpmnEventKind, GlobalTaskKind } from '@lib/bpmn-visualization';
 import {
   AssociationDirectionKind,
   MessageVisibleKind,
@@ -40,11 +40,11 @@ import {
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
   ShapeUtil,
-} from '../../../../../src/bpmn-visualization';
-import Label, { Font } from '../../../../../src/model/bpmn/internal/Label';
-import { Edge } from '../../../../../src/model/bpmn/internal/edge/edge';
-import { AssociationFlow, MessageFlow, SequenceFlow } from '../../../../../src/model/bpmn/internal/edge/flows';
-import Bounds from '../../../../../src/model/bpmn/internal/Bounds';
+} from '@lib/bpmn-visualization';
+import Label, { Font } from '@lib/model/bpmn/internal/Label';
+import { Edge } from '@lib/model/bpmn/internal/edge/edge';
+import { AssociationFlow, MessageFlow, SequenceFlow } from '@lib/model/bpmn/internal/edge/flows';
+import Bounds from '@lib/model/bpmn/internal/Bounds';
 import type { ExpectedFont } from '../../../helpers/bpmn-model-expect';
 
 function toFont(font: ExpectedFont): Font {

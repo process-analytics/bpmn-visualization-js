@@ -14,14 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { ShapeBpmnSubProcessKind, ShapeBpmnEventDefinitionKind } from '../../../src/model/bpmn/internal';
-import { newBpmnJsonParser } from '../../../src/component/parser/json/BpmnJsonParser';
-import type BpmnModel from '../../../src/model/bpmn/internal/BpmnModel';
-import { ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import type Label from '../../../src/model/bpmn/internal/Label';
-import type { BpmnJsonModel } from '../../../src/model/bpmn/json/BPMN20';
-import type { JsonParsingWarning } from '../../../src/component/parser/parsing-messages';
-import { ParsingMessageCollector } from '../../../src/component/parser/parsing-messages';
+import type { ShapeBpmnSubProcessKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
+import { newBpmnJsonParser } from '@lib/component/parser/json/BpmnJsonParser';
+import type BpmnModel from '@lib/model/bpmn/internal/BpmnModel';
+import { ShapeBpmnEvent, ShapeBpmnSubProcess } from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
+import type Label from '@lib/model/bpmn/internal/Label';
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
+import type { JsonParsingWarning } from '@lib/component/parser/parsing-messages';
+import { ParsingMessageCollector } from '@lib/component/parser/parsing-messages';
 import type { ExpectedBounds, ExpectedFont, ExpectedLabel } from './bpmn-model-expect';
 
 class ParsingMessageCollectorTester extends ParsingMessageCollector {

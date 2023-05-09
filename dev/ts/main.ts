@@ -59,10 +59,13 @@ export function getCurrentTheme(): string | undefined {
 
 export function switchTheme(theme: string): void {
   log('Switching theme from %s to %s', currentTheme, theme);
-  const knownTheme = bpmnVisualization.configureTheme(theme);
-  if (knownTheme) {
+  const isKnownTheme = bpmnVisualization.configureTheme(theme);
+  if (isKnownTheme) {
     bpmnVisualization.graph.refresh();
     log('Theme switch done');
+    currentTheme = theme;
+  } else {
+    log('Unknown theme, do nothing');
   }
 }
 
@@ -315,14 +318,18 @@ export function getVersion(): Version {
   return version;
 }
 
+export function updateStyle(bpmnElementIds: string | string[], style: StyleUpdate): void {
+  log('Applying style using the style API: %O', style);
+  bpmnVisualization.bpmnElementsRegistry.updateStyle(bpmnElementIds, style);
+  log('New style applied');
+}
+
 function updateStyleOfElementsIfRequested(): void {
   if (style) {
-    log("Applying style using the style API: '%s'", style);
     const bpmnElementIds = retrieveAllBpmnElementIds();
     log('Number of elements whose style is to be updated', bpmnElementIds.length);
 
-    bpmnVisualization.bpmnElementsRegistry.updateStyle(bpmnElementIds, style);
-    log('New style applied');
+    updateStyle(bpmnElementIds, style);
   }
 }
 

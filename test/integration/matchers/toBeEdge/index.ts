@@ -16,11 +16,11 @@ limitations under the License.
 
 import type { BpmnCellStyle, ExpectedCell } from '../matcher-utils';
 import { buildCellMatcher, buildExpectedCellStyleWithCommonAttributes, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
-import { FlowKind, MessageVisibleKind } from '../../../../src/model/bpmn/internal';
+import { FlowKind, MessageVisibleKind } from '@lib/model/bpmn/internal';
 import type { ExpectedEdgeModelElement, ExpectedSequenceFlowModelElement } from '../../helpers/model-expect';
 import { getDefaultParentId } from '../../helpers/model-expect';
-import { BpmnStyleIdentifier } from '../../../../src/component/mxgraph/style';
-import { mxgraph } from '../../../../src/component/mxgraph/initializer';
+import { BpmnStyleIdentifier } from '@lib/component/mxgraph/style';
+import { mxgraph } from '@lib/component/mxgraph/initializer';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 

@@ -20,7 +20,7 @@ import { computeBanner } from './scripts/shared/banner.mjs';
 import pkg from './package.json' assert { type: 'json' };
 
 import terser from '@rollup/plugin-terser';
-import autoExternal from 'rollup-plugin-auto-external';
+import externals from 'rollup-plugin-node-externals';
 import sizes from 'rollup-plugin-sizes';
 
 import typescript from 'rollup-plugin-typescript2';
@@ -75,7 +75,7 @@ const configESM = {
   plugins: [
     typescriptPlugin(),
     // ensure we do not bundle dependencies
-    autoExternal(),
+    externals({ devDeps: true }),
     // to have sizes of dependencies listed at the end of build log
     sizes(),
   ],

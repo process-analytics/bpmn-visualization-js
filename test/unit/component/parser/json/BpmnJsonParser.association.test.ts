@@ -14,11 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import { buildDefinitions } from '../../../helpers/JsonBuilder';
+import type { BuildProcessParameter } from '../../../helpers/JsonBuilder';
 import { parseJsonAndExpectOnlyEdges } from '../../../helpers/JsonTestUtils';
 import { verifyEdge } from '../../../helpers/bpmn-model-expect';
 
-import { Waypoint } from '../../../../../src/model/bpmn/internal/edge/edge';
-import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
+import { Waypoint } from '@lib/model/bpmn/internal/edge/edge';
 
 describe('parse bpmn as json for association', () => {
   const processJsonAsObjectWithAssociationJsonAsObject = {
@@ -32,73 +33,40 @@ describe('parse bpmn as json for association', () => {
   it.each([
     ['object', processJsonAsObjectWithAssociationJsonAsObject],
     ['array', [processJsonAsObjectWithAssociationJsonAsObject]],
-  ])(`should convert as Edge, when an association is an attribute (as object) of 'process' (as %s)`, (title: string, processJson: TProcess | TProcess[]) => {
-    const json = {
-      definitions: {
-        targetNamespace: '',
-        process: processJson,
-        BPMNDiagram: {
-          name: 'process 0',
-          BPMNPlane: {
-            BPMNEdge: {
-              id: 'edge_association_id_0',
-              bpmnElement: 'association_id_0',
-              waypoint: [{ x: 362, y: 232 }],
-            },
-          },
-        },
-      },
-    };
+  ])(
+    `should convert as Edge, when an association is an attribute (as object) of 'process' (as %s)`,
+    (title: string, processParameter: BuildProcessParameter | BuildProcessParameter[]) => {
+      const json = buildDefinitions({ process: processParameter });
 
-    const model = parseJsonAndExpectOnlyEdges(json, 1);
+      const model = parseJsonAndExpectOnlyEdges(json, 1);
 
-    verifyEdge(model.edges[0], {
-      edgeId: 'edge_association_id_0',
-      bpmnElementId: 'association_id_0',
-      bpmnElementSourceRefId: 'Activity_01',
-      bpmnElementTargetRefId: 'Annotation_01',
-      waypoints: [new Waypoint(362, 232)],
-    });
-  });
+      verifyEdge(model.edges[0], {
+        edgeId: 'edge_association_id_0',
+        bpmnElementId: 'association_id_0',
+        bpmnElementSourceRefId: 'Activity_01',
+        bpmnElementTargetRefId: 'Annotation_01',
+        waypoints: [new Waypoint(45, 78), new Waypoint(51, 78)],
+      });
+    },
+  );
 
   it(`should convert as Edge, when an association is an attribute (as array) of 'process'`, () => {
-    const json = {
-      definitions: {
-        targetNamespace: '',
-        process: {
-          association: [
-            {
-              id: 'association_id_0',
-              sourceRef: 'Activity_01',
-              targetRef: 'Annotation_01',
-            },
-            {
-              id: 'association_id_1',
-              instantiate: true,
-              sourceRef: 'Activity_02',
-              targetRef: 'Annotation_02',
-            },
-          ],
-        },
-        BPMNDiagram: {
-          name: 'process 0',
-          BPMNPlane: {
-            BPMNEdge: [
-              {
-                id: 'edge_association_id_0',
-                bpmnElement: 'association_id_0',
-                waypoint: [{ x: 362, y: 232 }],
-              },
-              {
-                id: 'edge_association_id_1',
-                bpmnElement: 'association_id_1',
-                waypoint: [{ x: 362, y: 232 }],
-              },
-            ],
+    const json = buildDefinitions({
+      process: {
+        association: [
+          {
+            id: 'association_id_0',
+            sourceRef: 'Activity_01',
+            targetRef: 'Annotation_01',
           },
-        },
+          {
+            id: 'association_id_1',
+            sourceRef: 'Activity_02',
+            targetRef: 'Annotation_02',
+          },
+        ],
       },
-    };
+    });
 
     const model = parseJsonAndExpectOnlyEdges(json, 2);
 
@@ -107,7 +75,7 @@ describe('parse bpmn as json for association', () => {
       bpmnElementId: 'association_id_0',
       bpmnElementSourceRefId: 'Activity_01',
       bpmnElementTargetRefId: 'Annotation_01',
-      waypoints: [new Waypoint(362, 232)],
+      waypoints: [new Waypoint(45, 78), new Waypoint(51, 78)],
     });
 
     verifyEdge(model.edges[1], {
@@ -115,7 +83,7 @@ describe('parse bpmn as json for association', () => {
       bpmnElementId: 'association_id_1',
       bpmnElementSourceRefId: 'Activity_02',
       bpmnElementTargetRefId: 'Annotation_02',
-      waypoints: [new Waypoint(362, 232)],
+      waypoints: [new Waypoint(45, 78), new Waypoint(51, 78)],
     });
   });
 

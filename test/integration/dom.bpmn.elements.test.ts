@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BpmnVisualization } from '../../src/bpmn-visualization';
-import { FlowKind, ShapeBpmnElementKind } from '../../src/bpmn-visualization';
+import type { BpmnVisualization } from '@lib/bpmn-visualization';
+import { FlowKind, ShapeBpmnElementKind } from '@lib/bpmn-visualization';
 import {
   expectEndEventBpmnElement,
   expectPoolBpmnElement,
@@ -30,7 +30,7 @@ import {
   initializeBpmnVisualizationWithHtmlElement,
   initializeBpmnVisualizationWithoutId,
 } from './helpers/bpmn-visualization-initialization';
-import { readFileSync } from '../helpers/file-helper';
+import { readFileSync } from '@test/shared/file-helper';
 
 describe('Bpmn Elements registry - retrieve BPMN elements', () => {
   describe.each`

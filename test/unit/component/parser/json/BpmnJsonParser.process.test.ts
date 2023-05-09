@@ -14,11 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import { buildDefinitions } from '../../../helpers/JsonBuilder';
 import { parseJsonAndExpect, parseJsonAndExpectOnlyPools, parseJsonAndExpectOnlyPoolsAndFlowNodes, parseJsonAndExpectOnlyPoolsAndLanes } from '../../../helpers/JsonTestUtils';
+import type { ExpectedShape } from '../../../helpers/bpmn-model-expect';
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
 
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal';
-import type { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
+import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 
 describe('parse bpmn as json for process/pool', () => {
   describe.each([
@@ -59,7 +61,6 @@ describe('parse bpmn as json for process/pool', () => {
         bpmnElementId: 'Participant_1',
         bpmnElementName: undefined,
         bpmnElementKind: ShapeBpmnElementKind.POOL,
-        parentId: undefined,
         bounds: {
           x: 158,
           y: 50,
@@ -100,7 +101,6 @@ describe('parse bpmn as json for process/pool', () => {
         bpmnElementId: 'Participant_1',
         bpmnElementName: 'Participant without process ref',
         bpmnElementKind: ShapeBpmnElementKind.POOL,
-        parentId: undefined,
         isHorizontal: isHorizontal,
         bounds: {
           x: 158,
@@ -145,7 +145,6 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_1',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      parentId: undefined,
       bounds: {
         x: 158,
         y: 50,
@@ -191,7 +190,6 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_1',
       bpmnElementName: 'Process 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      parentId: undefined,
       isHorizontal: true,
       bounds: {
         x: 158,
@@ -243,7 +241,6 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_0nuvj8r',
       bpmnElementName: 'Pool 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      parentId: undefined,
       isHorizontal: true,
       bounds: {
         x: 158,
@@ -335,7 +332,6 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_1',
       bpmnElementName: 'Pool 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      parentId: undefined,
       isHorizontal: true,
       bounds: {
         x: 158,
@@ -349,7 +345,6 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_2',
       bpmnElementName: 'Pool 2',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      parentId: undefined,
       isHorizontal: true,
       bounds: {
         x: 158,
@@ -432,7 +427,6 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_1',
       bpmnElementName: 'Pool 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      parentId: undefined,
       isHorizontal: true,
       bounds: {
         x: 158,
@@ -446,7 +440,6 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_2',
       bpmnElementName: 'Pool 2 without processRef',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      parentId: undefined,
       isHorizontal: true,
       bounds: {
         x: 10158,
@@ -501,7 +494,6 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_1',
       bpmnElementName: 'Pool 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      parentId: undefined,
       isHorizontal: true,
       bounds: {
         x: 158,
@@ -841,5 +833,61 @@ describe('parse bpmn as json for process/pool', () => {
     const model = parseJsonAndExpect(json, 0, 0, 5, 4);
 
     model.flowNodes.map(flowNode => flowNode.bpmnElement).forEach(bpmnElement => expect(bpmnElement.parentId).toBeUndefined());
+  });
+
+  describe(`incoming/outgoing management for participant referencing a process`, () => {
+    const expectedBounds = { x: 567, y: 345, width: 36, height: 45 };
+
+    it.each`
+      title         | expectedAttribute
+      ${'incoming'} | ${'bpmnElementIncomingIds'}
+      ${'outgoing'} | ${'bpmnElementOutgoingIds'}
+    `(`should convert as Shape with $title attribute calculated from message flow`, ({ title, expectedAttribute }: { title: string; expectedAttribute: keyof ExpectedShape }) => {
+      const json = buildDefinitions({
+        process: { withParticipant: true, id: 'process_O' },
+        messageFlows: {
+          id: `flow_${title}`,
+          sourceRef: title === 'incoming' ? 'unknown' : 'process_O',
+          targetRef: title === 'incoming' ? 'process_O' : 'unknown',
+        },
+      });
+
+      const model = parseJsonAndExpect(json, 1, 0, 0, 1);
+
+      verifyShape(model.pools[0], {
+        shapeId: 'shape_process_O',
+        bpmnElementId: 'process_O',
+        bpmnElementName: undefined,
+        bpmnElementKind: ShapeBpmnElementKind.POOL,
+        bounds: expectedBounds,
+        isHorizontal: true,
+        [expectedAttribute]: [`flow_${title}`],
+      });
+    });
+
+    it(`should convert as Shape with incoming/outgoing attributes calculated from message flows`, () => {
+      const json = buildDefinitions({
+        process: { withParticipant: true, id: 'process_O' },
+        messageFlows: [
+          { id: 'flow_in_1', sourceRef: 'unknown', targetRef: 'process_O' },
+          { id: 'flow_in_2', sourceRef: 'unknown', targetRef: 'process_O' },
+          { id: 'flow_out_2', sourceRef: 'process_O', targetRef: 'unknown' },
+          { id: 'flow_out_3', sourceRef: 'process_O', targetRef: 'unknown' },
+        ],
+      });
+
+      const model = parseJsonAndExpect(json, 1, 0, 0, 4);
+
+      verifyShape(model.pools[0], {
+        shapeId: 'shape_process_O',
+        bpmnElementId: 'process_O',
+        bpmnElementName: undefined,
+        bpmnElementKind: ShapeBpmnElementKind.POOL,
+        bounds: expectedBounds,
+        isHorizontal: true,
+        bpmnElementIncomingIds: ['flow_in_1', 'flow_in_2'],
+        bpmnElementOutgoingIds: ['flow_out_2', 'flow_out_3'],
+      });
+    });
   });
 });

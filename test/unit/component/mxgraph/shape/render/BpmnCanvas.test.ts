@@ -17,8 +17,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { IconStyleConfiguration, ShapeConfiguration, Size } from '../../../../../../src/component/mxgraph/shape/render';
-import { computeScaledIconSize } from '../../../../../../src/component/mxgraph/shape/render/BpmnCanvas';
+import type { IconStyleConfiguration, ShapeConfiguration, Size } from '@lib/component/mxgraph/shape/render';
+import { computeScaledIconSize } from '@lib/component/mxgraph/shape/render/BpmnCanvas';
 
 describe('compute scaled icon size', () => {
   function newIconStyleConfiguration(strokeWidth = 0): IconStyleConfiguration {

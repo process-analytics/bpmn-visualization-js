@@ -20,9 +20,9 @@ import type { ExpectedShapeModelElement } from './helpers/model-expect';
 import { bpmnVisualization } from './helpers/model-expect';
 import { buildReceivedViewStateStyle } from './matchers/matcher-utils';
 import { buildExpectedShapeCellStyle } from './matchers/toBeShape';
-import { readFileSync } from '../helpers/file-helper';
-import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '../../src/model/bpmn/internal';
-import type { EdgeStyleUpdate, Fill, Font, Stroke, StyleUpdate } from '../../src/component/registry';
+import { readFileSync } from '@test/shared/file-helper';
+import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
+import type { EdgeStyleUpdate, Fill, Font, Stroke, StyleUpdate } from '@lib/component/registry';
 
 describe('mxGraph model - update style', () => {
   describe('Shapes', () => {
