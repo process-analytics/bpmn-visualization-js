@@ -158,8 +158,9 @@ export enum ZoomType {
   Out = 'out',
 }
 
-// TODO JSDoc since, category, description
 /**
+ * Global configuration for the rendering of the BPMN elements.
+ *
  * @category Initialization & Configuration
  * @since 0.35.0
  */
@@ -170,7 +171,6 @@ export type RendererOptions = {
    *
    * Otherwise, disable the support.
    *
-   * @since 0.35.0
    * @default true
    */
   ignoreModelColors?: boolean;
