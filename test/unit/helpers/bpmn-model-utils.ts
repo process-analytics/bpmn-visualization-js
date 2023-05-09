@@ -112,7 +112,10 @@ const newCallActivity = (parent: string, id: string, name: string, isExpanded: b
   new Shape(buildShapeId(id), new ShapeBpmnCallActivity(id, name, ShapeBpmnCallActivityKind.CALLING_PROCESS, parent, isExpanded ? undefined : [ShapeBpmnMarkerKind.EXPAND]));
 const newGroup = (parent: string, id: string, name: string): Shape => new Shape(buildShapeId(id), new ShapeBpmnElement(id, name, ShapeBpmnElementKind.GROUP, parent));
 const newSubProcess = (parent: string, id: string, name: string, isExpanded: boolean): Shape =>
-  new Shape(buildShapeId(id), new ShapeBpmnSubProcess(id, name, ShapeBpmnSubProcessKind.EMBEDDED, parent, isExpanded ? undefined : [ShapeBpmnMarkerKind.EXPAND]));
+  new Shape(
+    buildShapeId(id),
+    new ShapeBpmnSubProcess(id, name, ShapeBpmnElementKind.SUB_PROCESS, ShapeBpmnSubProcessKind.EMBEDDED, parent, isExpanded ? undefined : [ShapeBpmnMarkerKind.EXPAND]),
+  );
 
 const addContainerElements = (bpmnModel: BpmnModel, containerWithLanes: ContainerWithLanes & BaseElement): void => {
   const parentId = containerWithLanes.id;

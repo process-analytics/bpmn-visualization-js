@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { BpmnSubProcessKind } from './kinds';
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from './kinds';
 import type { FilterParameter } from '../../../../component/helpers/array-utils';
 import { filter } from '../../../../component/helpers/array-utils';
@@ -47,8 +48,9 @@ export class ShapeUtil {
     return ShapeBpmnElementKind.CALL_ACTIVITY === kind;
   }
 
-  static isSubProcess(kind: ShapeBpmnElementKind): boolean {
-    return ShapeBpmnElementKind.SUB_PROCESS === kind;
+  static isSubProcess(kind: ShapeBpmnElementKind): kind is BpmnSubProcessKind {
+    // TODO see if we can infer the list from the type or use the type here
+    return SUB_PROCESS_KINDS.includes(kind);
   }
 
   static canHaveNoneEvent(kind: ShapeBpmnElementKind): boolean {
@@ -112,7 +114,10 @@ const GATEWAY_KINDS = filterKind('Gateway');
 
 const TASK_KINDS = filterKind('Task', { ignoreCase: true, notStartingWith: 'global' });
 
-const ACTIVITY_KINDS = [...TASK_KINDS, ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.SUB_PROCESS];
+const SUB_PROCESS_KINDS = [ShapeBpmnElementKind.SUB_PROCESS, ShapeBpmnElementKind.SUB_PROCESS_TRANSACTION];
+
+const ACTIVITY_KINDS = [...TASK_KINDS, ShapeBpmnElementKind.CALL_ACTIVITY, ...SUB_PROCESS_KINDS];
+
 const FLOW_NODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS = [
   ...ACTIVITY_KINDS,
   ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,

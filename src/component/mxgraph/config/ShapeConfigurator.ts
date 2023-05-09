@@ -64,8 +64,9 @@ export default class ShapeConfigurator {
     mxgraph.mxCellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_INCLUSIVE, InclusiveGatewayShape);
     mxgraph.mxCellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_PARALLEL, ParallelGatewayShape);
     // activities
-    mxgraph.mxCellRenderer.registerShape(ShapeBpmnElementKind.SUB_PROCESS, SubProcessShape);
     mxgraph.mxCellRenderer.registerShape(ShapeBpmnElementKind.CALL_ACTIVITY, CallActivityShape);
+    mxgraph.mxCellRenderer.registerShape(ShapeBpmnElementKind.SUB_PROCESS, SubProcessShape);
+    mxgraph.mxCellRenderer.registerShape(ShapeBpmnElementKind.SUB_PROCESS_TRANSACTION, SubProcessShape);
     // tasks
     mxgraph.mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK, TaskShape);
     mxgraph.mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_SERVICE, ServiceTaskShape);

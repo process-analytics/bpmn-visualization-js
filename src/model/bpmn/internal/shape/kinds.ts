@@ -21,15 +21,15 @@ limitations under the License.
 export enum ShapeBpmnElementKind {
   LANE = 'lane',
   POOL = 'pool',
+
   CALL_ACTIVITY = 'callActivity',
   SUB_PROCESS = 'subProcess',
-  // When adding support, uncomment related content in tests
+  // When adding support, uncomment/update tests (follow what was done for SUB_PROCESS_TRANSACTION)
   // test/unit/component/mxgraph/renderer/StyleComputer.test.ts
   // test/unit/component/parser/json/BpmnJsonParser.marker.test.ts (adhoc requires special checks as an additional marker should be present)
-  // Generalize test/unit/component/parser/json/BpmnJsonParser.sub.process.test.ts
-  // See also, ShapeBpmnSubProcessKind
+  // test/unit/component/parser/json/BpmnJsonParser.sub.process.test.ts
   // SUB_PROCESS_AD_HOC = 'adHocSubProcess',
-  // SUB_PROCESS_TRANSACTION = 'transaction',
+  SUB_PROCESS_TRANSACTION = 'transaction',
 
   TASK = 'task',
   TASK_USER = 'userTask',
@@ -83,6 +83,12 @@ export type GlobalTaskKind =
   | ShapeBpmnElementKind.GLOBAL_TASK_SCRIPT
   | ShapeBpmnElementKind.GLOBAL_TASK_USER
   | ShapeBpmnElementKind.GLOBAL_TASK_BUSINESS_RULE;
+
+/**
+ * {@link ShapeBpmnElementKind} related to BPMN sub processes.
+ * @internal
+ */
+export type BpmnSubProcessKind = ShapeBpmnElementKind.SUB_PROCESS | ShapeBpmnElementKind.SUB_PROCESS_TRANSACTION;
 
 /**
  * @category BPMN
@@ -142,7 +148,4 @@ export enum ShapeBpmnMarkerKind {
 export enum ShapeBpmnSubProcessKind {
   EMBEDDED = 'embedded',
   EVENT = 'event',
-  // The following may be only needed for rendering, as we have special types for adHoc and transaction subprocess in ShapeBpmnElementKind
-  // TRANSACTION = 'transaction',
-  // AD_HOC = 'ad_hoc',
 }

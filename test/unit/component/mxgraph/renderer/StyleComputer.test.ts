@@ -28,7 +28,7 @@ import ShapeBpmnElement, {
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
-import type { BpmnEventKind, GlobalTaskKind } from '@lib/bpmn-visualization';
+import type { BpmnEventKind, GlobalTaskKind, BpmnSubProcessKind } from '@lib/bpmn-visualization';
 import {
   AssociationDirectionKind,
   MessageVisibleKind,
@@ -39,6 +39,7 @@ import {
   ShapeBpmnEventDefinitionKind,
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
+  ShapeUtil,
 } from '@lib/bpmn-visualization';
 import Label, { Font } from '@lib/model/bpmn/internal/Label';
 import { Edge } from '@lib/model/bpmn/internal/edge/edge';
@@ -93,8 +94,8 @@ function newShapeBpmnStartEvent(eventDefinitionKind: ShapeBpmnEventDefinitionKin
   return new ShapeBpmnStartEvent('id', 'name', eventDefinitionKind, null, isInterrupting);
 }
 
-function newShapeBpmnSubProcess(subProcessKind: ShapeBpmnSubProcessKind, marker?: ShapeBpmnMarkerKind[]): ShapeBpmnSubProcess {
-  return new ShapeBpmnSubProcess('id', 'name', subProcessKind, null, marker);
+function newShapeBpmnSubProcess(bpmnSubProcessKind: BpmnSubProcessKind, subProcessKind: ShapeBpmnSubProcessKind, marker?: ShapeBpmnMarkerKind[]): ShapeBpmnSubProcess {
+  return new ShapeBpmnSubProcess('id', 'name', bpmnSubProcessKind, subProcessKind, null, marker);
 }
 
 function newShapeBpmnEventBasedGateway(instantiate: boolean, gatewayKind: ShapeBpmnEventBasedGatewayKind): ShapeBpmnElement {
@@ -271,23 +272,32 @@ describe('Style Computer', () => {
   });
 
   describe('compute style - sub-processes', () => {
-    describe.each([
-      ['expanded', []],
-      ['collapsed', [ShapeBpmnMarkerKind.EXPAND]],
-    ])(`compute style - %s sub-processes`, (expandKind: string, markers: ShapeBpmnMarkerKind[]) => {
-      it(`${expandKind} embedded sub-process without label bounds`, () => {
-        const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, markers), newLabel({ name: 'Arial' }));
-        const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
-        const additionalTerminalStyle = !markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';verticalAlign=top' : '';
-        expect(computeStyle(shape)).toBe(`subProcess;bpmn.subProcessKind=embedded${additionalMarkerStyle};fontFamily=Arial${additionalTerminalStyle}`);
-      });
+    // TODO generalize (from types or array, array in ShapeUtils or filter flow nodes that matches the criteria)
+    // TODO same needs as in json parser tests
+    const bpmnSubProcessKinds: BpmnSubProcessKind[] = [ShapeBpmnElementKind.SUB_PROCESS, ShapeBpmnElementKind.SUB_PROCESS_TRANSACTION];
 
-      it(`${expandKind} embedded sub-process with label bounds`, () => {
-        const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, markers), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
-        const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
-        expect(computeStyle(shape)).toBe(
-          `subProcess;bpmn.subProcessKind=embedded${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=ignore;verticalLabelPosition=middle`,
-        );
+    describe.each(bpmnSubProcessKinds)('BpmnSubProcessKind: %s', (bpmnSubProcessKind: BpmnSubProcessKind): void => {
+      describe.each([
+        ['expanded', []],
+        ['collapsed', [ShapeBpmnMarkerKind.EXPAND]],
+      ])(`compute style - %s sub-processes`, (expandKind: string, markers: ShapeBpmnMarkerKind[]) => {
+        it(`${expandKind} embedded sub-process without label bounds`, () => {
+          const shape = newShape(newShapeBpmnSubProcess(bpmnSubProcessKind, ShapeBpmnSubProcessKind.EMBEDDED, markers), newLabel({ name: 'Arial' }));
+          const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
+          const additionalTerminalStyle = !markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';verticalAlign=top' : '';
+          expect(computeStyle(shape)).toBe(`${bpmnSubProcessKind};bpmn.subProcessKind=embedded${additionalMarkerStyle};fontFamily=Arial${additionalTerminalStyle}`);
+        });
+
+        it(`${expandKind} embedded sub-process with label bounds`, () => {
+          const shape = newShape(
+            newShapeBpmnSubProcess(bpmnSubProcessKind, ShapeBpmnSubProcessKind.EMBEDDED, markers),
+            newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)),
+          );
+          const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
+          expect(computeStyle(shape)).toBe(
+            `${bpmnSubProcessKind};bpmn.subProcessKind=embedded${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=ignore;verticalLabelPosition=middle`,
+          );
+        });
       });
     });
   });
@@ -395,7 +405,7 @@ describe('Style Computer', () => {
     [ShapeBpmnElementKind.SUB_PROCESS],
     // To uncomment when it's supported
     // [ShapeBpmnElementKind.SUB_PROCESS_AD_HOC], // this is a special case, as an additional marker should be added
-    // [ShapeBpmnElementKind.SUB_PROCESS_TRANSACTION],
+    [ShapeBpmnElementKind.SUB_PROCESS_TRANSACTION],
     [ShapeBpmnElementKind.TASK],
     [ShapeBpmnElementKind.TASK_SERVICE],
     [ShapeBpmnElementKind.TASK_USER],
@@ -414,10 +424,10 @@ describe('Style Computer', () => {
           expect(computeStyle(shape)).toBe(`${bpmnKind}${additionalReceiveTaskStyle};bpmn.markers=${markerKind};fontFamily=Arial`);
         });
 
-        if (bpmnKind == ShapeBpmnElementKind.SUB_PROCESS) {
+        if (ShapeUtil.isSubProcess(bpmnKind)) {
           it(`${bpmnKind} with Loop & Expand (collapsed) markers`, () => {
-            const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, [markerKind, ShapeBpmnMarkerKind.EXPAND]));
-            expect(computeStyle(shape)).toBe(`subProcess;bpmn.subProcessKind=embedded;bpmn.markers=${markerKind},expand`);
+            const shape = newShape(newShapeBpmnSubProcess(bpmnKind, ShapeBpmnSubProcessKind.EMBEDDED, [markerKind, ShapeBpmnMarkerKind.EXPAND]));
+            expect(computeStyle(shape)).toBe(`${bpmnKind};bpmn.subProcessKind=embedded;bpmn.markers=${markerKind},expand`);
           });
         }
 

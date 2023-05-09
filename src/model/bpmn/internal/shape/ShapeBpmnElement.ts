@@ -14,7 +14,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BpmnEventKind, GlobalTaskKind, ShapeBpmnCallActivityKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from './kinds';
+import type {
+  BpmnEventKind,
+  GlobalTaskKind,
+  ShapeBpmnCallActivityKind,
+  ShapeBpmnEventDefinitionKind,
+  ShapeBpmnMarkerKind,
+  ShapeBpmnSubProcessKind,
+  BpmnSubProcessKind,
+} from './kinds';
 import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind } from './kinds';
 
 /**
@@ -56,8 +64,15 @@ export class ShapeBpmnCallActivity extends ShapeBpmnActivity {
  * @internal
  */
 export class ShapeBpmnSubProcess extends ShapeBpmnActivity {
-  constructor(id: string, name: string, readonly subProcessKind: ShapeBpmnSubProcessKind, parentId: string, markers?: ShapeBpmnMarkerKind[]) {
-    super(id, name, ShapeBpmnElementKind.SUB_PROCESS, parentId, undefined, markers);
+  constructor(
+    id: string,
+    name: string,
+    BpmnSubProcessKind: BpmnSubProcessKind,
+    readonly subProcessKind: ShapeBpmnSubProcessKind,
+    parentId: string,
+    markers?: ShapeBpmnMarkerKind[],
+  ) {
+    super(id, name, BpmnSubProcessKind, parentId, undefined, markers);
   }
 }
 
