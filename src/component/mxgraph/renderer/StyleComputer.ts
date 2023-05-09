@@ -40,7 +40,7 @@ export default class StyleComputer {
   private ignoreModelColors: boolean;
 
   constructor(options?: RendererOptions) {
-    this.ignoreModelColors = options?.ignoreModelColors;
+    this.ignoreModelColors = options?.ignoreModelColors ?? true;
   }
 
   computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): string {

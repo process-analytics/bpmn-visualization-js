@@ -472,7 +472,7 @@ describe('Style Computer', () => {
     describe.each([[undefined], [false], [true]])(`Ignore colors from model: %s`, (ignoreModelColors: boolean) => {
       // 'undefined' RendererOptions tested in other tests in this file
       const styleComputer = new StyleComputer(ignoreModelColors === undefined ? {} : { ignoreModelColors });
-      const expectAdditionalColorsStyle = !ignoreModelColors;
+      const expectAdditionalColorsStyle = !(ignoreModelColors ?? true);
 
       function computeStyleWithRendererOptions(element: Shape | Edge): string {
         return styleComputer.computeStyle(element, element.label?.bounds);
