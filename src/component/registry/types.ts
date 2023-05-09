@@ -82,21 +82,15 @@ export type OverlayStyle = {
 
 /**
  * The font family is {@link StyleDefault.DEFAULT_FONT_FAMILY}.
+ *
  * @category Overlays
  */
-export type OverlayFont = {
-  /** @default {@link StyleDefault.DEFAULT_OVERLAY_FONT_COLOR} */
-  color?: string;
-  /** @default {@link StyleDefault.DEFAULT_OVERLAY_FONT_SIZE} */
-  size?: number;
-};
+export type OverlayFont = StyleWithColor & StyleWithSize;
 
 /**
  * @category Overlays
  */
-export type OverlayFill = {
-  /** @default {@link StyleDefault.DEFAULT_OVERLAY_FILL_COLOR} */
-  color?: string;
+export type OverlayFill = StyleWithColor & {
   /**
    * A number between `0` (transparent) and `100` (opaque).
    *
@@ -109,21 +103,19 @@ export type OverlayFill = {
 /**
  * @category Overlays
  */
-export type OverlayStroke = {
+export type OverlayStroke =
   /**
    * If you don't want to display a stroke, you can set the color to
    *   * `transparent`
    *   * the same value as for the fill color. This increases the padding/margin.
    *
-   * @default {@link StyleDefault.DEFAULT_OVERLAY_STROKE_COLOR}
    * */
-  color?: string;
-  /**
-   * **IMPORTANT**: this property is currently not taken into account by the default Overlay. See https://github.com/process-analytics/bpmn-visualization-js/issues/1234
-   * @default {@link StyleDefault.DEFAULT_OVERLAY_STROKE_WIDTH}
-   */
-  width?: number;
-};
+  StyleWithColor &
+    /**
+     * **IMPORTANT**: this property is currently not taken into account by the default Overlay. See https://github.com/process-analytics/bpmn-visualization-js/issues/1234
+     * @default {@link StyleDefault.DEFAULT_OVERLAY_STROKE_WIDTH}
+     */
+    StyleWithWidth;
 
 /**
  * @category Overlays
@@ -159,14 +151,13 @@ export type ShapeStyleUpdate = EdgeStyleUpdate & { fill?: Fill };
  *
  * For example, updating the stroke width of a task using the same value as the default stroke width of a Call Activity can be confusing. In this case, you should also change another property such as the stroke color to allow the user to differentiate between them.
  */
-export type Stroke = StyleWithOpacity & {
+export type Stroke = StyleWithOpacity &
   /**
    * Possible values are all HTML color names or HEX codes, as well as special keywords such as:
    * - `default` to use the color defined in the BPMN element default style
    * - `none` for no color
    */
-  color?: 'default' | 'none' | string;
-
+  StyleWithColor<'default' | 'none' | string> &
   /**
    * Defines the stroke width in pixels.
    *
@@ -177,8 +168,7 @@ export type Stroke = StyleWithOpacity & {
    *
    * To hide the stroke, set the `color` property to `'none'`.
    */
-  width?: 'default' | number;
-};
+  StyleWithWidth<'default' | number>;
 
 /**
  * Note about properties that can be reset to default values.
@@ -188,52 +178,45 @@ export type Stroke = StyleWithOpacity & {
  *
  * @category Element Style
  */
-export type Font = StyleWithOpacity & {
+export type Font = StyleWithOpacity &
   /**
    * Possible values are all HTML color names or HEX codes, as well as special keywords such as:
    * - `default` to use the color defined in the BPMN element default style
    */
-  color?: 'default' | string;
+  StyleWithColor<'default' | string> &
+  StyleWithSize & {
+    family?: string;
+    /**
+     *  @default false
+     */
+    isBold?: boolean;
 
-  /**
-   *  The type of the value is int (in px).
-   */
-  size?: number;
+    /**
+     *  @default false
+     */
+    isItalic?: boolean;
 
-  family?: string;
+    /**
+     *  @default false
+     */
+    isUnderline?: boolean;
 
-  /**
-   *  @default false
-   */
-  isBold?: boolean;
-
-  /**
-   *  @default false
-   */
-  isItalic?: boolean;
-
-  /**
-   *  @default false
-   */
-  isUnderline?: boolean;
-
-  /**
-   *  @default false
-   */
-  isStrikeThrough?: boolean;
-};
+    /**
+     *  @default false
+     */
+    isStrikeThrough?: boolean;
+  };
 
 /**
  * @category Element Style
  */
-export type Fill = StyleWithOpacity & {
+export type Fill = StyleWithOpacity &
   /**
    * Possible values are all HTML color names or HEX codes, as well as special keywords such as:
    * - `default` to use the color defined in the BPMN element default style
    * - `none` for no color
    */
-  color?: 'default' | 'none' | string;
-};
+  StyleWithColor<'default' | 'none' | string>;
 
 /**
  * @category Element Style
@@ -253,3 +236,43 @@ export type StyleWithOpacity = {
  *  @category Element Style
  */
 export type Opacity = 'default' | number;
+
+/**
+ * @category Element Style
+ * @category Overlays
+ */
+export type StyleWithColor<T = string> = {
+  /**  Possible values are all HTML color names or HEX codes.
+   *
+   * @default For {@link Overlay}, {@link StyleDefault.DEFAULT_OVERLAY_FONT_COLOR} or {@link StyleDefault.DEFAULT_OVERLAY_STROKE_COLOR}
+   **/
+  color?: T;
+};
+
+/**
+ * @category Element Style
+ * @category Overlays
+ */
+export type StyleWithSize = {
+  /**
+   *  The type of the value is int (in px).
+   *
+   *  @default For {@link Overlay}, {@link StyleDefault.DEFAULT_OVERLAY_FONT_SIZE} or {@link StyleDefault.DEFAULT_OVERLAY_FILL_COLOR}
+   */
+  size?: number;
+};
+
+/**
+ * @category Element Style
+ * @category Overlays
+ */
+export type StyleWithWidth<T = number> = {
+  /**
+   * If you don't want to display a stroke, you can set the color to
+   *   * `transparent`
+   *   * the same value as for the fill color. This increases the padding/margin.
+   *
+   * @default {@link StyleDefault.DEFAULT_OVERLAY_STROKE_COLOR}
+   * */
+  width?: T;
+};
