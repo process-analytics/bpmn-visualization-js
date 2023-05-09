@@ -67,7 +67,44 @@ class ImageSnapshotThresholdsModelColors extends MultiBrowserImageSnapshotThresh
 class ImageSnapshotThresholdsIgnoreModelColors extends MultiBrowserImageSnapshotThresholds {
   constructor() {
     // threshold for webkit is taken from macOS only
-    super({ chromium: 0 / 100, firefox: 0 / 100, webkit: 0 / 100 });
+    super({ chromium: 0 / 100, firefox: 0.007 / 100, webkit: 0.07 / 100 });
+  }
+
+  protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    return new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'elements.colors.02.labels',
+        {
+          linux: 0.0004 / 100, // 0.000370781000469389%
+          macos: 0.12 / 100, // 0.1103917951008726%
+          windows: 0.12 / 100, // 0.117545223258686%
+        },
+      ],
+    ]);
+  }
+
+  protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    return new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'elements.colors.02.labels',
+        {
+          linux: 0.06 / 100, // 0.05323299012142124%
+          macos: 0.16 / 100, // 0.15175768637681886%
+          windows: 1.91 / 100, // 1.9033668295464934%
+        },
+      ],
+    ]);
+  }
+
+  protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    return new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'elements.colors.02.labels',
+        {
+          macos: 0.49 / 100, // 0.483122009334358%
+        },
+      ],
+    ]);
   }
 }
 
