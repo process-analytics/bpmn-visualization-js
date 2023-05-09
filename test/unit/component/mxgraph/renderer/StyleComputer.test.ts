@@ -497,6 +497,10 @@ describe('Style Computer', () => {
           const additionalColorsStyle = expectAdditionalColorsStyle ? ';fillColor=#AA0003;swimlaneFillColor=#AA0003;strokeColor=#FF02AA;fontColor=#aa0101' : '';
           expect(computeStyleWithRendererOptions(shape)).toBe(`${kind};horizontal=1${additionalColorsStyle}`);
         });
+        it('no extension', () => {
+          const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.TASK));
+          expect(computeStyleWithRendererOptions(shape)).toBe(`task`);
+        });
       });
 
       describe('edges', () => {
