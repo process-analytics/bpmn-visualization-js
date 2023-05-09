@@ -248,6 +248,7 @@ describe('parse xml to model', () => {
           'bv:color:fill': '#55a3f3',
           'bv:color:stroke': '#000000',
         },
+        bpmnElementIncomingIds: ['Association_1buem20'],
       });
       verifyLabel(shape.label, undefined);
     });

@@ -70,7 +70,7 @@ export class BpmnVisualization {
   private readonly rendererOptions: RendererOptions;
 
   constructor(options: GlobalOptions) {
-    this.rendererOptions = options.renderer;
+    this.rendererOptions = options?.renderer;
     // mxgraph configuration
     const configurator = new GraphConfigurator(htmlElement(options?.container));
     this.graph = configurator.configure(options);
