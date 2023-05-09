@@ -74,27 +74,27 @@ export type OverlayPosition = OverlayShapePosition | OverlayEdgePosition;
 /**
  * @category Overlays
  */
-export interface OverlayStyle {
+export type OverlayStyle = {
   font?: OverlayFont;
   fill?: OverlayFill;
   stroke?: OverlayStroke;
-}
+};
 
 /**
  * The font family is {@link StyleDefault.DEFAULT_FONT_FAMILY}.
  * @category Overlays
  */
-export interface OverlayFont {
+export type OverlayFont = {
   /** @default {@link StyleDefault.DEFAULT_OVERLAY_FONT_COLOR} */
   color?: string;
   /** @default {@link StyleDefault.DEFAULT_OVERLAY_FONT_SIZE} */
   size?: number;
-}
+};
 
 /**
  * @category Overlays
  */
-export interface OverlayFill {
+export type OverlayFill = {
   /** @default {@link StyleDefault.DEFAULT_OVERLAY_FILL_COLOR} */
   color?: string;
   /**
@@ -104,12 +104,12 @@ export interface OverlayFill {
    * @default {@link StyleDefault.DEFAULT_OVERLAY_FILL_OPACITY}
    */
   opacity?: number;
-}
+};
 
 /**
  * @category Overlays
  */
-export interface OverlayStroke {
+export type OverlayStroke = {
   /**
    * If you don't want to display a stroke, you can set the color to
    *   * `transparent`
@@ -123,16 +123,16 @@ export interface OverlayStroke {
    * @default {@link StyleDefault.DEFAULT_OVERLAY_STROKE_WIDTH}
    */
   width?: number;
-}
+};
 
 /**
  * @category Overlays
  */
-export interface Overlay {
+export type Overlay = {
   position: OverlayPosition;
   label?: string;
   style?: OverlayStyle;
-}
+};
 
 /**
  * @category Element Style
