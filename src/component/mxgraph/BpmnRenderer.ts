@@ -23,7 +23,7 @@ import { MessageVisibleKind, ShapeUtil } from '../../model/bpmn/internal';
 import CoordinatesTranslator from './renderer/CoordinatesTranslator';
 import StyleComputer from './renderer/StyleComputer';
 import type { BpmnGraph } from './BpmnGraph';
-import type { FitOptions } from '../options';
+import type { FitOptions, RendererOptions } from '../options';
 import type { RenderedModel } from '../registry/bpmn-model-registry';
 import { mxgraph } from './initializer';
 import type { mxCell } from 'mxgraph';
@@ -139,8 +139,8 @@ export class BpmnRenderer {
 /**
  * @internal
  */
-export function newBpmnRenderer(graph: BpmnGraph): BpmnRenderer {
-  return new BpmnRenderer(graph, new CoordinatesTranslator(graph), new StyleComputer());
+export function newBpmnRenderer(graph: BpmnGraph, options: RendererOptions): BpmnRenderer {
+  return new BpmnRenderer(graph, new CoordinatesTranslator(graph), new StyleComputer(options));
 }
 
 /**

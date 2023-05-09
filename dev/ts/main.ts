@@ -264,14 +264,21 @@ function configurePoolsFilteringFromParameters(parameters: URLSearchParams): Mod
 export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): void {
   const log = logStartup;
   log(`Initializing BpmnVisualization with container '${config.globalOptions.container}'...`);
+
+  const parameters = new URLSearchParams(window.location.search);
+  const rendererIgnoreModelColors = parameters.get('renderer.ignore.model.colors');
+  if (rendererIgnoreModelColors === 'false') {
+    log('Enable support for colors from the BPMN Model');
+    !config.globalOptions.renderer && (config.globalOptions.renderer = {});
+    config.globalOptions.renderer.ignoreModelColors = false;
+  }
+
   bpmnVisualization = new ThemedBpmnVisualization(config.globalOptions);
   log('Initialization completed');
   new DropFileUserInterface(window, 'drop-container', bpmnVisualization.graph.container, readAndLoadFile);
   log('Drag&Drop support initialized');
 
   statusKoNotifier = config.statusKoNotifier ?? logOnlyStatusKoNotifier;
-
-  const parameters = new URLSearchParams(window.location.search);
 
   log('Configuring Load Options');
   loadOptions = config.loadOptions || {};

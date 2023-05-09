@@ -23,6 +23,8 @@ export interface GlobalOptions {
   container: string | HTMLElement;
   /** Configure the BPMN diagram navigation (panning and zoom). */
   navigation?: NavigationConfiguration;
+  /** Configure how the BPMN diagram and its elements are rendered. */
+  renderer?: RendererOptions;
 }
 
 /**
@@ -159,8 +161,17 @@ export enum ZoomType {
 // TODO JSDoc since, category, description
 /**
  * @category Initialization & Configuration
- * @since 0.34.0
+ * @since 0.35.0
  */
 export type RendererOptions = {
+  /**
+   * If set to `false`, support the "BPMN in Colors" specification with a fallback with bpmn.io colors. For more details about the support, see
+   * {@link https://github.com/process-analytics/bpmn-visualization-js/pull/2614}.
+   *
+   * Otherwise, disable the support.
+   *
+   * @since 0.35.0
+   * @default true
+   */
   ignoreModelColors?: boolean;
 };
