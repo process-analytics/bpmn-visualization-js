@@ -115,11 +115,11 @@ export function parseJsonAndExpectOnlyEdgesAndFlowNodes(json: BpmnJsonModel, num
 }
 
 export function verifySubProcess(model: BpmnModel, kind: ShapeBpmnSubProcessKind, expectedNumber: number): void {
-  const events = model.flowNodes.filter(shape => {
+  const subProcesses = model.flowNodes.filter(shape => {
     const bpmnElement = shape.bpmnElement;
     return bpmnElement instanceof ShapeBpmnSubProcess && (bpmnElement as ShapeBpmnSubProcess).subProcessKind === kind;
   });
-  expect(events).toHaveLength(expectedNumber);
+  expect(subProcesses).toHaveLength(expectedNumber);
 }
 
 export function verifyLabelFont(label: Label, expectedFont?: ExpectedFont): void {

@@ -57,13 +57,13 @@ To update the model
 Except for special container elements like `Pool`, `Lane` and `Subprocess`, detecting a new BPMN element only requires to
 add a new value in the `ShapeBpmnElementKind` enum.
 
-The `ProcessConverter` uses the `ShapeBpmnElementKind` values to detect elements in the BPMN source.
+The `ProcessConverter` uses the `ShapeBpmnElementKind` values to detect elements in the BPMN source except for `Subprocess` (see below).
 
 ### Elements requiring special attention 
 
 - For BPMN Events, the actual type in controlled by `EventDefinition` fields in the BPMN specification. Detecting new event
 types requires changes in `ShapeBpmnEventDefinitionKind` to add the newly supported BPMN Event Definition.
-- For BPMN SubProcesses, the actual type is controlled by `ShapeBpmnSubProcessKind` which is set accordingly during the BPMN parsing.
+- For BPMN SubProcesses (embedded, event, transaction and adhoc), they are all identified as `ShapeBpmnElementKind.SUB_PROCESS`. Their actual type is controlled by `ShapeBpmnSubProcessKind` which is set accordingly during the BPMN parsing.
 
 ### Initial Shape Rendering
 
