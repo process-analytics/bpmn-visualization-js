@@ -141,7 +141,7 @@ the BPMN elements are rendered with their final shapes.
 - Missing start event icon
 
 .^|Transaction Sub-Process
-^.^|icon:flask[]
+^.^|icon:check-circle-o[]
 ^.^|
 .^|Detection only. For rendering, see https://xxx[]
 |===

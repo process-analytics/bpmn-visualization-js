@@ -29,6 +29,7 @@ import {
   ServiceTaskShape,
   SubProcessShape,
   TaskShape,
+  TransactionSubProcessShape,
   UserTaskShape,
 } from '../shape/activity-shapes';
 import { TextAnnotationShape } from '../shape/text-annotation-shapes';
@@ -66,7 +67,7 @@ export default class ShapeConfigurator {
     // activities
     mxgraph.mxCellRenderer.registerShape(ShapeBpmnElementKind.CALL_ACTIVITY, CallActivityShape);
     mxgraph.mxCellRenderer.registerShape(ShapeBpmnElementKind.SUB_PROCESS, SubProcessShape);
-    mxgraph.mxCellRenderer.registerShape(ShapeBpmnElementKind.SUB_PROCESS_TRANSACTION, SubProcessShape);
+    mxgraph.mxCellRenderer.registerShape(ShapeBpmnElementKind.SUB_PROCESS_TRANSACTION, TransactionSubProcessShape);
     // tasks
     mxgraph.mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK, TaskShape);
     mxgraph.mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_SERVICE, ServiceTaskShape);
