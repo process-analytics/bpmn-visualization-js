@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import { bpmnSubProcessKinds } from '@test/shared/model/bpmn-semantic-utils';
 import type { BuildProcessParameter } from '../../../helpers/JsonBuilder';
 import { buildDefinitions } from '../../../helpers/JsonBuilder';
 import {
@@ -50,9 +51,6 @@ function verifyEventShape(shape: Shape, expectedShape: ExpectedShape, expectedEv
 }
 
 describe('parse bpmn as json for sub-process', () => {
-  // TODO generalize (from types or array, array in ShapeUtils or filter flow nodes that matches the criteria)
-  const bpmnSubProcessKinds: BpmnSubProcessKind[] = [ShapeBpmnElementKind.SUB_PROCESS, ShapeBpmnElementKind.SUB_PROCESS_TRANSACTION];
-
   describe.each(bpmnSubProcessKinds)('BpmnSubProcessKind: %s', (bpmnSubProcessKind: BpmnSubProcessKind): void => {
     const expectedBounds: ExpectedBounds =
       bpmnSubProcessKind == ShapeBpmnElementKind.SUB_PROCESS ? { x: 67, y: 23, width: 456, height: 123 } : { x: 167, y: 123, width: 456, height: 123 };

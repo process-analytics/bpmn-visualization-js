@@ -24,10 +24,12 @@ export enum ShapeBpmnElementKind {
 
   CALL_ACTIVITY = 'callActivity',
   SUB_PROCESS = 'subProcess',
-  // When adding support, uncomment/update tests (follow what was done for SUB_PROCESS_TRANSACTION)
-  // test/unit/component/mxgraph/renderer/StyleComputer.test.ts
-  // test/unit/component/parser/json/BpmnJsonParser.marker.test.ts (adhoc requires special checks as an additional marker should be present)
-  // test/unit/component/parser/json/BpmnJsonParser.sub.process.test.ts
+  // When adding support, uncomment/update tests
+  //   test/unit/component/mxgraph/renderer/StyleComputer.test.ts
+  //   test/unit/component/parser/json/BpmnJsonParser.marker.test.ts (adhoc requires special checks as an additional marker should be present)
+  //   test/unit/component/parser/json/BpmnJsonParser.sub.process.test.ts
+  //   test/shared/bpmn-semantic-utils.ts bpmnSubProcessKinds
+  // Also update BpmnSubProcessKind, ShapeUtil.SUB_PROCESS_KINDS
   // SUB_PROCESS_AD_HOC = 'adHocSubProcess',
   SUB_PROCESS_TRANSACTION = 'transaction',
 
@@ -86,6 +88,7 @@ export type GlobalTaskKind =
 
 /**
  * {@link ShapeBpmnElementKind} related to BPMN sub processes.
+ * @category BPMN
  * @internal
  */
 export type BpmnSubProcessKind = ShapeBpmnElementKind.SUB_PROCESS | ShapeBpmnElementKind.SUB_PROCESS_TRANSACTION;

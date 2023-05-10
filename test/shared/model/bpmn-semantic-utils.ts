@@ -15,7 +15,10 @@ limitations under the License.
 */
 
 import type { BpmnSemantic, EdgeBpmnSemantic, ShapeBpmnSemantic } from '@lib/component/registry';
+import type { BpmnSubProcessKind } from '@lib/model/bpmn/internal';
 import { FlowKind, ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
+
+export const bpmnSubProcessKinds: BpmnSubProcessKind[] = [ShapeBpmnElementKind.SUB_PROCESS, ShapeBpmnElementKind.SUB_PROCESS_TRANSACTION];
 
 export interface ExpectedBaseBpmnElement {
   id: string;

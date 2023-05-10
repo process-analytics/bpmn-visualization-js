@@ -45,6 +45,7 @@ import Label, { Font } from '@lib/model/bpmn/internal/Label';
 import { Edge } from '@lib/model/bpmn/internal/edge/edge';
 import { AssociationFlow, MessageFlow, SequenceFlow } from '@lib/model/bpmn/internal/edge/flows';
 import Bounds from '@lib/model/bpmn/internal/Bounds';
+import { bpmnSubProcessKinds } from '@test/shared/model/bpmn-semantic-utils';
 import type { ExpectedFont } from '../../../helpers/bpmn-model-expect';
 
 function toFont(font: ExpectedFont): Font {
@@ -272,10 +273,6 @@ describe('Style Computer', () => {
   });
 
   describe('compute style - sub-processes', () => {
-    // TODO generalize (from types or array, array in ShapeUtils or filter flow nodes that matches the criteria)
-    // TODO same needs as in json parser tests
-    const bpmnSubProcessKinds: BpmnSubProcessKind[] = [ShapeBpmnElementKind.SUB_PROCESS, ShapeBpmnElementKind.SUB_PROCESS_TRANSACTION];
-
     describe.each(bpmnSubProcessKinds)('BpmnSubProcessKind: %s', (bpmnSubProcessKind: BpmnSubProcessKind): void => {
       describe.each([
         ['expanded', []],

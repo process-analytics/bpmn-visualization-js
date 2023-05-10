@@ -49,7 +49,6 @@ export class ShapeUtil {
   }
 
   static isSubProcess(kind: ShapeBpmnElementKind): kind is BpmnSubProcessKind {
-    // TODO see if we can infer the list from the type or use the type here
     return SUB_PROCESS_KINDS.includes(kind);
   }
 
