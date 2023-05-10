@@ -67,12 +67,12 @@ export class ShapeBpmnSubProcess extends ShapeBpmnActivity {
   constructor(
     id: string,
     name: string,
-    BpmnSubProcessKind: BpmnSubProcessKind,
+    bpmnSubProcessKind: BpmnSubProcessKind,
     readonly subProcessKind: ShapeBpmnSubProcessKind,
     parentId: string,
     markers?: ShapeBpmnMarkerKind[],
   ) {
-    super(id, name, BpmnSubProcessKind, parentId, undefined, markers);
+    super(id, name, bpmnSubProcessKind, parentId, undefined, markers);
   }
 }
 
