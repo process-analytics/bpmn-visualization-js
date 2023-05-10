@@ -139,6 +139,11 @@ the BPMN elements are rendered with their final shapes.
 ^.^|
 .^|Collapsed sub-process : + 
 - Missing start event icon
+
+.^|Transaction Sub-Process
+^.^|icon:flask[]
+^.^|
+.^|Detection only. For rendering, see https://xxx[]
 |===
 
 [cols="1,1,1,4", options="header"]
