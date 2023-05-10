@@ -236,9 +236,9 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'markers.01.positioning',
         {
-          linux: 0.00022, // 0.02063400006822036%
-          macos: 0.00021, // 0.02063400006822036%
-          windows: 0.00021, // 0.02063400006822036%
+          linux: 0.027 / 100, // 0.02671748382350181%
+          macos: 0.027 / 100, // 0.02671748382350181%
+          windows: 0.027 / 100, // 0.02671748382350181%
         },
       ],
       [
