@@ -89,7 +89,6 @@ export type GlobalTaskKind =
 /**
  * {@link ShapeBpmnElementKind} related to BPMN sub processes.
  * @category BPMN
- * @internal
  */
 export type BpmnSubProcessKind = ShapeBpmnElementKind.SUB_PROCESS | ShapeBpmnElementKind.SUB_PROCESS_TRANSACTION;
 
