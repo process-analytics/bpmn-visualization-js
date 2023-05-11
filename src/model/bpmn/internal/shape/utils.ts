@@ -48,8 +48,8 @@ export class ShapeUtil {
     return ShapeBpmnElementKind.CALL_ACTIVITY === kind;
   }
 
-  static isSubProcess(kind: ShapeBpmnElementKind): kind is BpmnSubProcessKind {
-    return SUB_PROCESS_KINDS.includes(kind);
+  static isSubProcess(kind: ShapeBpmnElementKind | string): kind is BpmnSubProcessKind {
+    return isKindOf(SUB_PROCESS_KINDS, kind);
   }
 
   static canHaveNoneEvent(kind: ShapeBpmnElementKind): boolean {

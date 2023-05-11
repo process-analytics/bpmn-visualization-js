@@ -50,6 +50,7 @@ export function computeAllBpmnClassNames(style: string, isLabel: boolean): strin
   typeClasses.set('bpmn-type-event', ShapeUtil.isEvent(bpmnElementKind));
   typeClasses.set('bpmn-type-flow', isFlowKind(bpmnElementKind));
   typeClasses.set('bpmn-type-gateway', ShapeUtil.isGateway(bpmnElementKind));
+  typeClasses.set('bpmn-type-sub-process', ShapeUtil.isSubProcess(bpmnElementKind));
   typeClasses.set('bpmn-type-task', ShapeUtil.isTask(bpmnElementKind));
   [...typeClasses].filter(([, isType]) => isType).forEach(([className]) => classes.push(className));
 
