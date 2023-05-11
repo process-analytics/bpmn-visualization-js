@@ -16,18 +16,8 @@
       <bpmn:sequenceFlow id="Flow_1hcw0dr" sourceRef="Activity_0j9k07r" targetRef="Event_00gm5sy" />
     </bpmn:subProcess>
     <bpmn:adHocSubProcess id="Activity_17i9yw7">
-      <bpmn:startEvent id="Event_1fs18ce">
-        <bpmn:outgoing>Flow_01ckwg9</bpmn:outgoing>
-      </bpmn:startEvent>
-      <bpmn:task id="Activity_1iwwezf">
-        <bpmn:incoming>Flow_01ckwg9</bpmn:incoming>
-        <bpmn:outgoing>Flow_1hhadx2</bpmn:outgoing>
-      </bpmn:task>
-      <bpmn:endEvent id="Event_0rkgmen">
-        <bpmn:incoming>Flow_1hhadx2</bpmn:incoming>
-      </bpmn:endEvent>
-      <bpmn:sequenceFlow id="Flow_01ckwg9" sourceRef="Event_1fs18ce" targetRef="Activity_1iwwezf" />
-      <bpmn:sequenceFlow id="Flow_1hhadx2" sourceRef="Activity_1iwwezf" targetRef="Event_0rkgmen" />
+      <bpmn:task id="Activity_1iwwezf" />
+      <bpmn:task id="Activity_0vkiho5" />
     </bpmn:adHocSubProcess>
     <bpmn:subProcess id="Activity_188fcmd" triggeredByEvent="true">
       <bpmn:startEvent id="Event_1hvyl5q">
@@ -83,23 +73,12 @@
       <bpmndi:BPMNShape id="Activity_0uy6cbn_di" bpmnElement="Activity_17i9yw7" isExpanded="true">
         <dc:Bounds x="580" y="190" width="350" height="200" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_1xmtzy1" bpmnElement="Event_1fs18ce">
-        <dc:Bounds x="620" y="272" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_17pv24k" bpmnElement="Activity_1iwwezf">
-        <dc:Bounds x="710" y="250" width="100" height="80" />
+        <dc:Bounds x="610" y="210" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_1javzcl" bpmnElement="Event_0rkgmen">
-        <dc:Bounds x="872" y="272" width="36" height="36" />
+      <bpmndi:BPMNShape id="Activity_0vkiho5_di" bpmnElement="Activity_0vkiho5">
+        <dc:Bounds x="770" y="210" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="BPMNEdge_13qvbc5" bpmnElement="Flow_01ckwg9">
-        <di:waypoint x="656" y="290" />
-        <di:waypoint x="710" y="290" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_10mn4ef" bpmnElement="Flow_1hhadx2">
-        <di:waypoint x="810" y="290" />
-        <di:waypoint x="872" y="290" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Activity_1dfo5za_di" bpmnElement="Activity_188fcmd" isExpanded="true">
         <dc:Bounds x="150" y="480" width="350" height="200" />
       </bpmndi:BPMNShape>
