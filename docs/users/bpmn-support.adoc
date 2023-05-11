@@ -143,7 +143,7 @@ the BPMN elements are rendered with their final shapes.
 .^|Transaction Sub-Process
 ^.^|icon:check-circle-o[]
 ^.^|
-.^|Detection only. For rendering, see https://xxx[]
+.^|
 |===
 
 [cols="1,1,1,4", options="header"]
