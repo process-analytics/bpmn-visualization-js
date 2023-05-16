@@ -146,7 +146,7 @@
     "prettier": "~2.8.8",
     "rimraf": "~5.0.0",
     "rollup": "~3.21.7",
-    "rollup-plugin-node-externals": "~5.1.2",
+    "rollup-plugin-node-externals": "~6.0.1",
     "rollup-plugin-sizes": "~1.0.5",
     "rollup-plugin-typescript2": "~0.34.1",
     "tailwindcss": "~3.3.2",
