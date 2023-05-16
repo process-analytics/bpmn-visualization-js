@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import debugLogger from 'debug';
 import 'jest-playwright-preset';
 import { join } from 'node:path';
 import type { Page } from 'playwright';
@@ -22,6 +23,8 @@ import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-util
 import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 import { ZoomType } from '../../src/component/options';
+
+const log = debugLogger('bv:test:e2e:navigation:zoom-pan');
 
 class MouseNavigationImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
@@ -62,23 +65,40 @@ describe('diagram navigation - zoom and pan with mouse', () => {
   let containerCenter: Point;
 
   beforeEach(async () => {
+    log("Start test: '%s' (test file path: '%s')", expect.getState().currentTestName, expect.getState().testPath);
+
     await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName);
     containerCenter = await pageTester.getContainerCenter();
   });
+  afterEach(() => {
+    log("End test: '%s' (test file path: '%s')", expect.getState().currentTestName, expect.getState().testPath);
+  });
 
   it('mouse panning', async () => {
+    log('Starting mouse panning checks');
+    log('Doing mouse panning');
     await pageTester.mousePanning({ originPoint: containerCenter, destinationPoint: { x: containerCenter.x + 150, y: containerCenter.y + 40 } });
+    log('Mouse panning done');
 
+    log('Checking image match');
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image).toMatchImageSnapshot({
       ...config,
       customSnapshotIdentifier: 'mouse.panning',
     });
+    log('Image match OK');
   });
 
-  describe.each([ZoomType.In, ZoomType.Out])(`ctrl + mouse: zoom %s`, (zoomType: ZoomType) => {
-    it.each([1, 3])('zoom %s times', async (xTimes: number) => {
+  describe.each([ZoomType.In, ZoomType.Out])(`ctrl + mouse: zoom [%s]`, (zoomType: ZoomType) => {
+    beforeEach(() => {
+      log("Start test: '%s' (test file path: '%s')", expect.getState().currentTestName, expect.getState().testPath);
+    });
+    afterEach(() => {
+      log("End test: '%s' (test file path: '%s')", expect.getState().currentTestName, expect.getState().testPath);
+    });
+
+    it.each([1, 3])('zoom [%s times]', async (xTimes: number) => {
       await pageTester.mouseZoom({ x: containerCenter.x + 200, y: containerCenter.y }, zoomType, xTimes);
 
       const image = await page.screenshot({ fullPage: true });

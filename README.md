@@ -81,7 +81,7 @@ Planned features:
 
 ## 🌏 Browsers Support
 
-| <img src="https://www.google.com/chrome/static/images/chrome-logo.svg" alt="Chrome" width="18px" height="18px" /> Chrome | <img src="https://user-media-prod-cdn.itsre-sumo.mozilla.net/uploads/products/2020-04-14-08-36-13-8dda6f.png" alt="Firefox" width="18px" height="18px" /> Firefox | <img src="https://upload.wikimedia.org/wikipedia/commons/5/52/Safari_browser_logo.svg" alt="Safari" width="18px" height="18px" /> Safari | <img src="https://avatars0.githubusercontent.com/u/11354582?s=200&v=4" alt="Edge" width="18px" height="18px" /> Edge |
+| <img src="https://www.google.com/chrome/static/images/chrome-logo.svg" alt="Chrome" width="18px" height="18px" /> Chrome | <img src="http://blog.mozilla.org/design/files/2019/10/Fx-Browser-icon-fullColor.svg" alt="Firefox" height="18px" /> Firefox | <img src="https://upload.wikimedia.org/wikipedia/commons/5/52/Safari_browser_logo.svg" alt="Safari" width="18px" height="18px" /> Safari | <img src="https://avatars0.githubusercontent.com/u/11354582?s=200&v=4" alt="Edge" width="18px" height="18px" /> Edge |
 | :---------: | :---------: | :---------: | :---------: |
 |  ✔️ |  ✔️ |  ✔️ |  ✔️ |
 
@@ -113,10 +113,10 @@ Then use this snippet to load your BPMN diagram in a page:
 ```javascript
 import { BpmnVisualization } from 'bpmn-visualization';
 
-let bpmnContent; // your BPMN 2.0 XML content
 // initialize `bpmn-visualization` and load the BPMN diagram
 // 'bpmn-container' is the id of the HTMLElement that renders the BPMN Diagram
 const bpmnVisualization = new BpmnVisualization({ container: 'bpmn-container' });
+let bpmnContent; // your BPMN 2.0 XML content
 bpmnVisualization.load(bpmnContent);
 ```
 
@@ -155,10 +155,10 @@ In the HTML page:
 <div id="bpmn-container"></div>
 ...
 <script>
-  let bpmnContent; // your BPMN 2.0 XML content
   // initialize `bpmn-visualization` and load the BPMN diagram
   // 'bpmn-container' is the id of the HTMLElement that renders the BPMN Diagram
   const bpmnVisualization = new bpmnvisu.BpmnVisualization({ container: 'bpmn-container'});
+  let bpmnContent; // your BPMN 2.0 XML content
   bpmnVisualization.load(bpmnContent);
 </script>
 ```
