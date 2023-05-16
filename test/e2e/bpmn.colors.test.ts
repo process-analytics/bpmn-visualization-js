@@ -64,7 +64,7 @@ class ImageSnapshotThresholdsModelColors extends MultiBrowserImageSnapshotThresh
   }
 }
 
-class ImageSnapshotThresholdsIgnoreModelColors extends MultiBrowserImageSnapshotThresholds {
+class ImageSnapshotThresholdsIgnoreBpmnColors extends MultiBrowserImageSnapshotThresholds {
   constructor() {
     // threshold for webkit is taken from macOS only
     super({ chromium: 0 / 100, firefox: 0.007 / 100, webkit: 0.07 / 100 });
@@ -113,14 +113,14 @@ describe('BPMN in color', () => {
   const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder }, <Page>page);
   const bpmnDiagramNames = getBpmnDiagramNames(diagramSubfolder);
 
-  describe.each([false, true])('Ignore colors from model: %s', (ignoreModelColors: boolean) => {
-    const imageSnapshotConfigurator = ignoreModelColors
-      ? new ImageSnapshotConfigurator(new ImageSnapshotThresholdsIgnoreModelColors(), 'bpmn-colors/ignored')
+  describe.each([false, true])('Ignore BPMN colors: %s', (ignoreBpmnColors: boolean) => {
+    const imageSnapshotConfigurator = ignoreBpmnColors
+      ? new ImageSnapshotConfigurator(new ImageSnapshotThresholdsIgnoreBpmnColors(), 'bpmn-colors/ignored')
       : new ImageSnapshotConfigurator(new ImageSnapshotThresholdsModelColors(), 'bpmn-colors/enabled');
 
     it.each(bpmnDiagramNames)(`%s`, async (bpmnDiagramName: string) => {
       await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName, {
-        rendererIgnoreModelColors: ignoreModelColors,
+        rendererIgnoreBpmnColors: ignoreBpmnColors,
       });
 
       const image = await page.screenshot({ fullPage: true });

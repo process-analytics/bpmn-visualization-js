@@ -37,10 +37,10 @@ import type { RendererOptions } from '../../options';
  * @internal
  */
 export default class StyleComputer {
-  private readonly ignoreModelColors: boolean;
+  private readonly ignoreBpmnColors: boolean;
 
   constructor(options?: RendererOptions) {
-    this.ignoreModelColors = options?.ignoreModelColors ?? true;
+    this.ignoreBpmnColors = options?.ignoreBpmnColors ?? true;
   }
 
   computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): string {
@@ -81,7 +81,7 @@ export default class StyleComputer {
       styleValues.set(BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND, String(bpmnElement.gatewayKind));
     }
 
-    if (!this.ignoreModelColors) {
+    if (!this.ignoreBpmnColors) {
       const extensions = shape.extensions;
       const fillColor = extensions['bv:color:fill'];
       if (fillColor) {
@@ -136,7 +136,7 @@ export default class StyleComputer {
   private computeEdgeStyleValues(edge: Edge): Map<string, string | number> {
     const styleValues = new Map<string, string | number>();
 
-    if (!this.ignoreModelColors) {
+    if (!this.ignoreBpmnColors) {
       const extensions = edge.extensions;
       extensions['bv:color:stroke'] && styleValues.set(mxgraph.mxConstants.STYLE_STROKECOLOR, extensions['bv:color:stroke']);
     }
@@ -154,7 +154,7 @@ export default class StyleComputer {
       styleValues.set(mxgraph.mxConstants.STYLE_FONTSTYLE, getFontStyleValue(font));
     }
 
-    if (!this.ignoreModelColors) {
+    if (!this.ignoreBpmnColors) {
       const extensions = bpmnCell.label?.extensions;
       extensions?.['bv:color'] && styleValues.set(mxgraph.mxConstants.STYLE_FONTCOLOR, extensions['bv:color']);
     }
@@ -200,7 +200,7 @@ export default class StyleComputer {
     const styleValues: Array<[string, string]> = [];
     styleValues.push(['shape', BpmnStyleIdentifier.MESSAGE_FLOW_ICON]);
     styleValues.push([BpmnStyleIdentifier.IS_INITIATING, String(edge.messageVisibleKind === MessageVisibleKind.INITIATING)]);
-    if (!this.ignoreModelColors) {
+    if (!this.ignoreBpmnColors) {
       edge.extensions['bv:color:stroke'] && styleValues.push([mxgraph.mxConstants.STYLE_STROKECOLOR, edge.extensions['bv:color:stroke']]);
     }
 

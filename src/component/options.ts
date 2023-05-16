@@ -173,5 +173,5 @@ export type RendererOptions = {
    *
    * @default true
    */
-  ignoreModelColors?: boolean;
+  ignoreBpmnColors?: boolean;
 };

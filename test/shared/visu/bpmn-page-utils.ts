@@ -133,7 +133,7 @@ export interface PageOptions {
   styleOptions?: StyleOptions;
   bpmnElementIdToCollapse?: string;
   poolIdsToFilter?: string | string[];
-  rendererIgnoreModelColors?: boolean;
+  rendererIgnoreBpmnColors?: boolean;
 }
 
 export interface Point {
@@ -234,7 +234,7 @@ export class PageTester {
     // the array is transformed into string with the 'comma' separator, as expected by the page
     otherPageOptions?.poolIdsToFilter && (url += `&bpmn.filter.pool.ids=${otherPageOptions.poolIdsToFilter}`);
     // renderer options
-    otherPageOptions?.rendererIgnoreModelColors !== undefined && (url += `&renderer.ignore.model.colors=${otherPageOptions.rendererIgnoreModelColors}`);
+    otherPageOptions?.rendererIgnoreBpmnColors !== undefined && (url += `&renderer.ignore.bpmn.colors=${otherPageOptions.rendererIgnoreBpmnColors}`);
 
     return url;
   }

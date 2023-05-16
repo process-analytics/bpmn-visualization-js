@@ -469,10 +469,10 @@ describe('Style Computer', () => {
   });
 
   describe('compute style - colors', () => {
-    describe.each([[undefined], [false], [true]])(`Ignore colors from model: %s`, (ignoreModelColors: boolean) => {
+    describe.each([[undefined], [false], [true]])(`Ignore BPMN colors: %s`, (ignoreBpmnColors: boolean) => {
       // 'undefined' RendererOptions tested in other tests in this file
-      const styleComputer = new StyleComputer(ignoreModelColors === undefined ? {} : { ignoreModelColors });
-      const expectAdditionalColorsStyle = !(ignoreModelColors ?? true);
+      const styleComputer = new StyleComputer(ignoreBpmnColors === undefined ? {} : { ignoreBpmnColors: ignoreBpmnColors });
+      const expectAdditionalColorsStyle = !(ignoreBpmnColors ?? true);
 
       function computeStyleWithRendererOptions(element: Shape | Edge): string {
         return styleComputer.computeStyle(element, element.label?.bounds);
