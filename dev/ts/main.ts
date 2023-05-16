@@ -239,15 +239,21 @@ function configureStyleFromParameters(parameters: URLSearchParams): void {
   }
 
   // Collect style properties to update them later with the bpmn-visualization API
-  // The implementation will be generalized when more properties will be supported (in particular, the query parameter name)
-  // For example, we could extract all query params starting with style.api, then rebuild the StyleUpdate from the extracted params
-  style = { stroke: {}, font: {}, fill: {} };
+  logStartup(`Configuring the "Update Style" API from query parameters`);
+  // Only create the StyleUpdate object if some parameters are set
+  if (Array.from(parameters.keys()).filter(key => key.startsWith('style.api.')).length > 0) {
+    style = { stroke: {}, font: {}, fill: {} };
 
-  parameters.get('style.api.stroke.color') && (style.stroke.color = parameters.get('style.api.stroke.color'));
-  parameters.get('style.api.font.color') && (style.font.color = parameters.get('style.api.font.color'));
-  parameters.get('style.api.font.opacity') && (style.font.opacity = Number(parameters.get('style.api.font.opacity')));
-  parameters.get('style.api.fill.color') && (style.fill.color = parameters.get('style.api.fill.color'));
-  parameters.get('style.api.fill.opacity') && (style.fill.opacity = Number(parameters.get('style.api.fill.opacity')));
+    parameters.get('style.api.stroke.color') && (style.stroke.color = parameters.get('style.api.stroke.color'));
+    parameters.get('style.api.font.color') && (style.font.color = parameters.get('style.api.font.color'));
+    parameters.get('style.api.font.opacity') && (style.font.opacity = Number(parameters.get('style.api.font.opacity')));
+    parameters.get('style.api.fill.color') && (style.fill.color = parameters.get('style.api.fill.color'));
+    parameters.get('style.api.fill.opacity') && (style.fill.opacity = Number(parameters.get('style.api.fill.opacity')));
+
+    logStartup(`Prepared "Update Style" API object`, style);
+  } else {
+    logStartup(`No query parameters, do not set the "Update Style" API object`);
+  }
 }
 
 function configureBpmnElementIdToCollapseFromParameters(parameters: URLSearchParams): void {
