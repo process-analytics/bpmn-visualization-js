@@ -162,7 +162,7 @@ export type ShapeStyleUpdate = EdgeStyleUpdate & { fill?: Fill };
 export type Stroke = StyleWithOpacity & {
   /**
    * Possible values are all HTML color names or HEX codes, as well as special keywords such as:
-   * - `default` to use the color defined in the BPMN element default style
+   * - `default` to use the color defined in the BPMN element default style. **WARN**: this doesn't use the color set in the BPMN source when the "BPMN in Color" support is enabled.
    * - `none` for no color
    */
   color?: 'default' | 'none' | string;
@@ -183,15 +183,15 @@ export type Stroke = StyleWithOpacity & {
 /**
  * Note about properties that can be reset to default values.
  *
- * Except for color, all style properties can be set in the BPMN diagram via LabelStyle and can then override the default values. Currently, there is no way to know if
- * they are overridden. So it is not possible to reset each property with the "Update Style" API.
+ * Except for color (when the "BPMN in Color" support is disabled), all style properties can be set in the BPMN diagram via LabelStyle and can then override the default values.
+ * Currently, there is no way to know if they are overridden. So it is not possible to reset each property with the "Update Style" API.
  *
  * @category Element Style
  */
 export type Font = StyleWithOpacity & {
   /**
    * Possible values are all HTML color names or HEX codes, as well as special keywords such as:
-   * - `default` to use the color defined in the BPMN element default style
+   * - `default` to use the color defined in the BPMN element default style. **WARN**: this doesn't use the color set in the BPMN source when the "BPMN in Color" support is enabled.
    */
   color?: 'default' | string;
 
@@ -229,7 +229,7 @@ export type Font = StyleWithOpacity & {
 export type Fill = StyleWithOpacity & {
   /**
    * Possible values are all HTML color names or HEX codes, as well as special keywords such as:
-   * - `default` to use the color defined in the BPMN element default style
+   * - `default` to use the color defined in the BPMN element default style. **WARN**: this doesn't use the color set in the BPMN source when the "BPMN in Color" support is enabled.
    * - `none` for no color
    */
   color?: 'default' | 'none' | string;
