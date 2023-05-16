@@ -166,7 +166,7 @@ export enum ZoomType {
  */
 export type RendererOptions = {
   /**
-   * If set to `false`, support the "BPMN in Colors" specification with a fallback with bpmn.io colors. For more details about the support, see
+   * If set to `false`, support the "BPMN in Color" specification with a fallback with bpmn.io colors. For more details about the support, see
    * {@link https://github.com/process-analytics/bpmn-visualization-js/pull/2614}.
    *
    * Otherwise, disable the support.
