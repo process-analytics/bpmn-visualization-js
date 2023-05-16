@@ -57,6 +57,7 @@ import {
 import type { mxCell, mxGeometry } from 'mxgraph';
 import type { ExpectedOverlay } from '../matchers/matcher-utils';
 import { getCell } from '../matchers/matcher-utils';
+import { toBeTransactionSubProcess } from '../matchers/toBeShape';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -85,6 +86,7 @@ declare global {
       toBeEventBasedGateway(modelElement: ExpectedEventBasedGatewayModelElement): R;
       toBeExclusiveGateway(modelElement: ExpectedEventBasedGatewayModelElement): R;
       toBeSubProcess(modelElement: ExpectedSubProcessModelElement): R;
+      toBeTransactionSubProcess(modelElement: ExpectedSubProcessModelElement): R;
       toBePool(modelElement: ExpectedShapeModelElement): R;
       toBeLane(modelElement: ExpectedShapeModelElement): R;
     }
@@ -115,6 +117,7 @@ expect.extend({
   toBeEventBasedGateway,
   toBeExclusiveGateway,
   toBeSubProcess,
+  toBeTransactionSubProcess,
   toBePool,
   toBeLane,
 });

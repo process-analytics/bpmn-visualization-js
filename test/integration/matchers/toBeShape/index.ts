@@ -43,6 +43,7 @@ function expectedStrokeWidth(kind: ShapeBpmnElementKind): number {
     ShapeBpmnElementKind.GATEWAY_PARALLEL,
     ShapeBpmnElementKind.GROUP,
     ShapeBpmnElementKind.SUB_PROCESS,
+    ShapeBpmnElementKind.SUB_PROCESS_TRANSACTION,
     ShapeBpmnElementKind.TASK,
     ShapeBpmnElementKind.TASK_BUSINESS_RULE,
     ShapeBpmnElementKind.TASK_MANUAL,
@@ -153,6 +154,10 @@ export function toBeCallActivity(this: MatcherContext, received: string, expecte
 
 export function toBeSubProcess(this: MatcherContext, received: string, expected: ExpectedSubProcessModelElement): CustomMatcherResult {
   return buildShapeMatcher('toBeSubProcess', this, received, { ...expected, kind: ShapeBpmnElementKind.SUB_PROCESS });
+}
+
+export function toBeTransactionSubProcess(this: MatcherContext, received: string, expected: ExpectedSubProcessModelElement): CustomMatcherResult {
+  return buildShapeMatcher('toBeTransactionSubProcess', this, received, { ...expected, kind: ShapeBpmnElementKind.SUB_PROCESS_TRANSACTION });
 }
 
 export function toBeTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {

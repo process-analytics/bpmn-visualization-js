@@ -787,6 +787,120 @@ describe('mxGraph model - BPMN elements', () => {
             });
           });
         });
+
+        describe('Transaction Sub Process', () => {
+          describe('Expanded', () => {
+            test('Without marker', () => {
+              expect('expanded_transaction_sub_process_id').toBeTransactionSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
+                label: 'Expanded Transaction Sub-Process',
+                parentId: 'participant_1_id',
+                verticalAlign: 'top',
+              });
+            });
+            test('With loop', () => {
+              expect('expanded_transaction_sub_process_with_loop_id').toBeTransactionSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
+                label: 'Expanded Transaction Sub-Process With Loop',
+                markers: [ShapeBpmnMarkerKind.LOOP],
+                parentId: 'participant_1_id',
+                verticalAlign: 'top',
+              });
+            });
+            test('With multi instance sequential', () => {
+              expect('expanded_transaction_sub_process_with_sequential_multi_instance_id').toBeTransactionSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
+                label: 'Expanded Transaction Sub-Process With Sequential Multi-instance',
+                markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
+                parentId: 'participant_1_id',
+                verticalAlign: 'top',
+              });
+            });
+            test('With multi instance parallel', () => {
+              expect('expanded_transaction_sub_process_with_parallel_multi_instance_id').toBeTransactionSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
+                label: 'Expanded Transaction Sub-Process With Parallel Multi-instance',
+                markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+                parentId: 'participant_1_id',
+                verticalAlign: 'top',
+              });
+            });
+          });
+
+          describe('Collapsed', () => {
+            test('Without marker', () => {
+              expect('collapsed_transaction_sub_process_id').toBeTransactionSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
+                label: 'Collapsed Transaction Sub-Process',
+                markers: [ShapeBpmnMarkerKind.EXPAND],
+                parentId: 'participant_1_id',
+              });
+            });
+            test('With loop', () => {
+              expect('collapsed_transaction_sub_process_with_loop_id').toBeTransactionSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
+                label: 'Collapsed Transaction Sub-Process With Loop',
+                markers: [ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.EXPAND],
+                parentId: 'participant_1_id',
+              });
+            });
+            test('With multi instance sequential', () => {
+              expect('collapsed_transaction_sub_process_with_sequential_multi_instance_id').toBeTransactionSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
+                label: 'Collapsed Transaction Sub-Process With Sequential Multi-instance',
+                markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.EXPAND],
+                parentId: 'participant_1_id',
+              });
+            });
+            test('With multi instance parallel', () => {
+              expect('collapsed_transaction_sub_process_with_parallel_multi_instance_id').toBeTransactionSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
+                label: 'Collapsed Transaction Sub-Process With Parallel Multi-instance',
+                markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.EXPAND],
+                parentId: 'participant_1_id',
+              });
+            });
+          });
+
+          test('Elements in expanded Sub Process', async () => {
+            expect('start_event_in_transaction_sub_process_id').toBeShape({
+              kind: ShapeBpmnElementKind.EVENT_START,
+              label: 'Start Event In Transaction Sub-Process',
+              parentId: 'expanded_transaction_sub_process_id',
+              verticalAlign: 'top',
+            });
+            expect('task_in_transaction_sub_process_id').toBeShape({
+              kind: ShapeBpmnElementKind.TASK,
+              label: 'Task In Transaction Sub-Process',
+              parentId: 'expanded_transaction_sub_process_id',
+              verticalAlign: 'middle',
+            });
+            expect('end_event_in_transaction_sub_process_id').toBeShape({
+              kind: ShapeBpmnElementKind.EVENT_END,
+              label: 'End Event In Transaction Sub-Process',
+              parentId: 'expanded_transaction_sub_process_id',
+              verticalAlign: 'top',
+            });
+            expect('sequence_flow_in_transaction_sub_process_1_id').toBeSequenceFlow({
+              parentId: 'expanded_transaction_sub_process_id',
+              verticalAlign: 'bottom',
+            });
+            expect('sequence_flow_in_transaction_sub_process_2_id').toBeSequenceFlow({
+              parentId: 'expanded_transaction_sub_process_id',
+              verticalAlign: 'bottom',
+            });
+          });
+
+          test('Elements of collapsed Sub Process', async () => {
+            expect('message_boundary_event_attached_to_collapsed_transaction_sub_process_id').toBeBoundaryEvent({
+              eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
+              label: 'Interrupting Message Boundary Event attached to collapsed Transaction Sub-Process',
+              parentId: 'collapsed_transaction_sub_process_id',
+              isInterrupting: true,
+            });
+            expect('task_in_collapsed_transaction_sub_process_id').not.toBeCell();
+          });
+        });
       });
 
       describe('Call Activities', () => {
