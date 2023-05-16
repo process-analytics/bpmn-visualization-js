@@ -37,7 +37,7 @@ import type { RendererOptions } from '../../options';
  * @internal
  */
 export default class StyleComputer {
-  private ignoreModelColors: boolean;
+  private readonly ignoreModelColors: boolean;
 
   constructor(options?: RendererOptions) {
     this.ignoreModelColors = options?.ignoreModelColors ?? true;
