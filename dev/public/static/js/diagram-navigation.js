@@ -24,8 +24,8 @@ function configureFitAndZoomButtons() {
   Object.values(ZoomType).forEach(zoomType => {
     document.getElementById(`zoom-${zoomType}`).onclick = () => zoom(zoomType);
   });
-  document.getElementById('lock-navigation').onclick = () => disableNavigation();
-  document.getElementById('unlock-navigation').onclick = () => enableNavigation();
+  document.getElementById('disable-navigation').onclick = () => disableNavigation();
+  document.getElementById('enable-navigation').onclick = () => enableNavigation();
 }
 
 function configureZoomThrottleInput(parameters) {

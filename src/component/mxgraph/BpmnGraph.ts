@@ -20,14 +20,14 @@ import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/va
 import debounce from 'lodash.debounce';
 import throttle from 'lodash.throttle';
 import { mxgraph } from './initializer';
-import type { mxCellState, mxGraphView, mxMouseEvent, mxPoint } from 'mxgraph';
+import type { mxCellState, mxGraphView, mxMouseEvent, mxPanningHandler, mxPoint } from 'mxgraph';
 
 const zoomFactorIn = 1.25;
 const zoomFactorOut = 1 / zoomFactorIn;
 
 export class BpmnGraph extends mxgraph.mxGraph {
   private currentZoomLevel = 1;
-
+  private navigationEnabled = false;
   /**
    * @internal
    */
@@ -170,8 +170,8 @@ export class BpmnGraph extends mxgraph.mxGraph {
     const panningHandler = this.panningHandler;
 
     // Pan configuration
-    panningHandler.addListener(mxgraph.mxEvent.PAN_START, this.getPanningHandler('grab'));
-    panningHandler.addListener(mxgraph.mxEvent.PAN_END, this.getPanningHandler('default'));
+    panningHandler.addListener(mxgraph.mxEvent.PAN_START, this.panStartHandler);
+    panningHandler.addListener(mxgraph.mxEvent.PAN_END, this.panEndHandler);
 
     panningHandler.usePopupTrigger = false; // only use the left button to trigger panning
     // Reimplement the function as we also want to trigger 'panning on cells' (ignoreCell to true) and only on left-click
@@ -185,6 +185,7 @@ export class BpmnGraph extends mxgraph.mxGraph {
       // Zoom configuration
       this.registerMouseWheelZoomListeners(zoomConfig);
     }
+    this.navigationEnabled = true;
   }
   /**
    * @internal
@@ -193,23 +194,26 @@ export class BpmnGraph extends mxgraph.mxGraph {
     const panningHandler = this.panningHandler;
     this.setPanning(false);
     // Remove panningHandler Listeners
-    panningHandler.eventListeners = [];
+    panningHandler.removeListener(this.panStartHandler);
+    panningHandler.removeListener(this.panEndHandler);
     // Disable gesture support for zoom
     panningHandler.setPinchEnabled(false);
     // Disable panning on touch device
     // eslint-disable-next-line @typescript-eslint/no-unused-vars -- prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
     panningHandler.isForcePanningEvent = (_me: mxMouseEvent): boolean => false;
+    this.navigationEnabled = false;
   }
-  private getPanningHandler(cursor: 'grab' | 'default'): () => void {
-    return (): void => {
-      this.isEnabled() && (this.container.style.cursor = cursor);
-    };
+  private panStartHandler(panningHandler: mxPanningHandler): void {
+    panningHandler.graph.isEnabled() && (panningHandler.graph.container.style.cursor = 'grab');
+  }
+  private panEndHandler(panningHandler: mxPanningHandler): void {
+    panningHandler.graph.isEnabled() && (panningHandler.graph.container.style.cursor = 'default');
   }
 
   // Update the currentZoomLevel when performScaling is false, use the currentZoomLevel to set the scale otherwise
   // Initial implementation inspired by https://github.com/algenty/grafana-flowcharting/blob/0.9.0/src/graph_class.ts#L1254
   private manageMouseWheelZoomEvent(up: boolean, evt: MouseEvent, performScaling: boolean): void {
-    if (!this.panningHandler.pinchEnabled) {
+    if (!this.navigationEnabled) {
       return;
     }
     if (!performScaling) {
