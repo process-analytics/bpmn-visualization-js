@@ -26,6 +26,6 @@ export abstract class JsonParsingWarning {
 export class ParsingMessageCollector {
   warning(warning: JsonParsingWarning): void {
     const message = warning.getMessage();
-    console.warn(message.template, ...message.arguments);
+    console.warn(`[bv-parser] ${message.template}`, ...message.arguments);
   }
 }

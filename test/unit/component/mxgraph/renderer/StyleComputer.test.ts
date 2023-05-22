@@ -28,7 +28,7 @@ import ShapeBpmnElement, {
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
-import type { BpmnEventKind, GlobalTaskKind } from '@lib/bpmn-visualization';
+import type { BpmnEventKind, GlobalTaskKind } from '@lib/model/bpmn/internal';
 import {
   AssociationDirectionKind,
   MessageVisibleKind,
@@ -39,7 +39,7 @@ import {
   ShapeBpmnEventDefinitionKind,
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
-} from '@lib/bpmn-visualization';
+} from '@lib/model/bpmn/internal';
 import Label, { Font } from '@lib/model/bpmn/internal/Label';
 import { Edge } from '@lib/model/bpmn/internal/edge/edge';
 import { AssociationFlow, MessageFlow, SequenceFlow } from '@lib/model/bpmn/internal/edge/flows';
