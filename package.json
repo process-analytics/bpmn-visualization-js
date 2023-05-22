@@ -101,10 +101,10 @@
     "strnum": "1.0.5"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "~7.34.9",
+    "@microsoft/api-extractor": "~7.35.0",
     "@rollup/plugin-commonjs": "~25.0.0",
     "@rollup/plugin-node-resolve": "~15.0.2",
-    "@rollup/plugin-terser": "~0.4.1",
+    "@rollup/plugin-terser": "~0.4.3",
     "@types/debug": "~4.1.7",
     "@types/jest-image-snapshot": "~6.1.0",
     "@types/lodash-es": "~4.17.7",
@@ -117,7 +117,7 @@
     "cross-env": "~7.0.3",
     "cssnano": "~6.0.1",
     "debug": "~4.3.4",
-    "eslint": "~8.40.0",
+    "eslint": "~8.41.0",
     "eslint-config-prettier": "~8.8.0",
     "eslint-plugin-jest": "~27.2.1",
     "eslint-plugin-notice": "~0.9.10",
@@ -142,8 +142,8 @@
     "postcss": "~8.4.23",
     "postcss-cli": "~10.1.0",
     "prettier": "~2.8.8",
-    "rimraf": "~5.0.0",
-    "rollup": "~3.21.8",
+    "rimraf": "~5.0.1",
+    "rollup": "~3.23.0",
     "rollup-plugin-node-externals": "~6.0.1",
     "rollup-plugin-sizes": "~1.0.5",
     "rollup-plugin-typescript2": "~0.34.1",
@@ -151,7 +151,7 @@
     "ts-jest": "~29.1.0",
     "typedoc": "~0.24.7",
     "typescript": "~5.0.4",
-    "vite": "~4.3.6"
+    "vite": "~4.3.8"
   },
   "overrides": {
     "@types/node": "^16.18.0"
