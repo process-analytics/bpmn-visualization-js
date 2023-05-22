@@ -29,7 +29,7 @@ import type {
   ZoomType,
 } from '../../src/bpmn-visualization';
 import { FlowKind, ShapeBpmnElementKind } from '../../src/bpmn-visualization';
-import { fetchBpmnContent, logDownload, logError, logErrorAndOpenAlert, logStartup, stringify } from './utils/internal-helpers';
+import { fetchBpmnContent, logDownload, logError, logErrorAndOpenAlert, logStartup } from './utils/internal-helpers';
 import { log } from './utils/shared-helpers';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 import { SvgExporter } from './component/SvgExporter';
@@ -44,9 +44,9 @@ let currentTheme: string;
 let style: StyleUpdate;
 
 export function updateLoadOptions(fitOptions: FitOptions): void {
-  log('Updating load options', fitOptions);
+  log('Updating load options');
   loadOptions.fit = fitOptions;
-  log('Load options updated!', stringify(loadOptions));
+  log('Load options updated', loadOptions);
 }
 
 export function getCurrentLoadOptions(): LoadOptions {
@@ -73,7 +73,7 @@ function loadBpmn(bpmn: string, handleError = true): void {
   log('Loading bpmn...');
   try {
     bpmnVisualization.load(bpmn, loadOptions);
-    log('BPMN loaded with configuration', stringify(loadOptions));
+    log('BPMN loaded with configuration', loadOptions);
     collapseBpmnElement(bpmnElementIdToCollapse);
     document.dispatchEvent(new CustomEvent('diagramLoaded'));
   } catch (error) {
@@ -88,7 +88,7 @@ function loadBpmn(bpmn: string, handleError = true): void {
 export function fit(fitOptions: FitOptions): void {
   log('Fitting...');
   bpmnVisualization.navigation.fit(fitOptions);
-  log('Fit done with configuration', stringify(fitOptions));
+  log('Fit done with configuration', fitOptions);
 }
 
 export function zoom(zoomType: ZoomType): void {
