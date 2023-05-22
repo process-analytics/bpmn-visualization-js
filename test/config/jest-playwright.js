@@ -90,7 +90,7 @@ const computeConfigurationForDevServerUsage = defaultBrowsers => {
     command: `npm run dev`,
     port: 10001,
     basePath: '/dev/public/index.html',
-    // if default or tcp, the test starts right await whereas the dev server is not available on http
+    // if default or tcp, the test starts right away whereas the dev server is not available on http
     // for more details, see https://github.com/process-analytics/bpmn-visualization-js/pull/1056
     protocol: 'http',
     // high value mainly for GitHub Workflows running on macOS (slow machines) and to build the bundle before start
