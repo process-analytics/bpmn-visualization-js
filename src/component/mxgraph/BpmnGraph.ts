@@ -27,7 +27,10 @@ const zoomFactorOut = 1 / zoomFactorIn;
 
 export class BpmnGraph extends mxgraph.mxGraph {
   private currentZoomLevel = 1;
-  private navigationEnabled = false;
+  private navigationHandlers: {
+    event: string;
+    funct: (evt: WheelEvent & { scale: number }) => void;
+  }[] = [];
   /**
    * @internal
    */
@@ -159,14 +162,63 @@ export class BpmnGraph extends mxgraph.mxGraph {
    */
   registerMouseWheelZoomListeners(config: ZoomConfiguration): void {
     config = ensureValidZoomConfiguration(config);
-    mxgraph.mxEvent.addMouseWheelListener(debounce(this.createMouseWheelZoomListener(true), config.debounceDelay), this.container);
-    mxgraph.mxEvent.addMouseWheelListener(throttle(this.createMouseWheelZoomListener(false), config.throttleDelay), this.container);
+    this.addMouseWheelListener(debounce(this.createMouseWheelZoomListener(true), config.debounceDelay), this.container);
+    this.addMouseWheelListener(throttle(this.createMouseWheelZoomListener(false), config.throttleDelay), this.container);
+  }
+  private addMouseWheelListener(funct: (evt: Event, up: boolean) => void, target: HTMLElement | Window): void {
+    target = target != null ? target : window;
+    const wheelHandler = function (evt: WheelEvent): void {
+      //To prevent window zoom on trackpad pinch
+      if (evt.ctrlKey) {
+        evt.preventDefault();
+      }
+      // Handles the event using the given function
+      if (Math.abs(evt.deltaX) > 0.5 || Math.abs(evt.deltaY) > 0.5) {
+        funct(evt, evt.deltaY == 0 ? -evt.deltaX > 0 : -evt.deltaY > 0);
+      }
+    };
+    this.navigationHandlers.push({
+      event: 'wheel',
+      funct: wheelHandler,
+    });
+    mxgraph.mxEvent.addListener(target, 'wheel', wheelHandler);
+
+    // Touch gestures
+    if (mxgraph.mxClient.IS_SF && !mxgraph.mxClient.IS_TOUCH) {
+      let scale = 1;
+
+      const gestureStart = function (evt: Event): void {
+        mxgraph.mxEvent.consume(evt);
+        scale = 1;
+      };
+      // Non standard event type (=> manual defintion of type GestureEvent)
+      const gestureChange = function (evt: Event & { scale: number }): void {
+        mxgraph.mxEvent.consume(evt);
+        const diff = scale - evt.scale;
+
+        if (Math.abs(diff) > 0.2) {
+          funct(evt, diff < 0);
+          scale = evt.scale;
+        }
+      };
+      const gestureEnd = function (evt: Event): void {
+        mxgraph.mxEvent.consume(evt);
+      };
+      mxgraph.mxEvent.addListener(target, 'gesturestart', gestureStart);
+      mxgraph.mxEvent.addListener(target, 'gesturechange', gestureChange);
+      mxgraph.mxEvent.addListener(target, 'gestureend', gestureEnd);
+      this.navigationHandlers.push({ event: 'gesturestart', funct: gestureStart }, { event: 'gesturechange', funct: gestureChange }, { event: 'gestureend', funct: gestureEnd });
+    }
   }
 
   /**
    * @internal
    */
   enableNavigation(zoomConfig?: ZoomConfiguration): void {
+    // Remove listeners that may have been added before
+    for (const handler of this.navigationHandlers) {
+      mxgraph.mxEvent.removeListener(this.container, handler.event, handler.funct);
+    }
     const panningHandler = this.panningHandler;
 
     // Pan configuration
@@ -180,12 +232,8 @@ export class BpmnGraph extends mxgraph.mxGraph {
     panningHandler.setPinchEnabled(true);
     this.setPanning(true);
 
-    // Only set on Graph initizalization
-    if (zoomConfig) {
-      // Zoom configuration
-      this.registerMouseWheelZoomListeners(zoomConfig);
-    }
-    this.navigationEnabled = true;
+    // Zoom configuration
+    this.registerMouseWheelZoomListeners(zoomConfig);
   }
   /**
    * @internal
@@ -201,7 +249,11 @@ export class BpmnGraph extends mxgraph.mxGraph {
     // Disable panning on touch device
     // eslint-disable-next-line @typescript-eslint/no-unused-vars -- prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
     panningHandler.isForcePanningEvent = (_me: mxMouseEvent): boolean => false;
-    this.navigationEnabled = false;
+    // Remove event kisteners
+    for (const handler of this.navigationHandlers) {
+      mxgraph.mxEvent.removeListener(this.container, handler.event, handler.funct);
+    }
+    this.navigationHandlers = [];
   }
   private panStartHandler(panningHandler: mxPanningHandler): void {
     panningHandler.graph.isEnabled() && (panningHandler.graph.container.style.cursor = 'grab');
@@ -213,9 +265,6 @@ export class BpmnGraph extends mxgraph.mxGraph {
   // Update the currentZoomLevel when performScaling is false, use the currentZoomLevel to set the scale otherwise
   // Initial implementation inspired by https://github.com/algenty/grafana-flowcharting/blob/0.9.0/src/graph_class.ts#L1254
   private manageMouseWheelZoomEvent(up: boolean, evt: MouseEvent, performScaling: boolean): void {
-    if (!this.navigationEnabled) {
-      return;
-    }
     if (!performScaling) {
       this.currentZoomLevel *= up ? zoomFactorIn : zoomFactorOut;
     } else {
