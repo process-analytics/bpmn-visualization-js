@@ -14,13 +14,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import debugLogger from 'debug';
 import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import { toMatchImageSnapshot } from 'jest-image-snapshot';
-import { copyFileSync } from 'node:fs';
 import { addAttach } from 'jest-html-reporters/helper';
+import { copyFileSync } from 'node:fs';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 
+const jestLog = debugLogger('bv:test:jest:img');
 const toMatchImageSnapshotWithRealSignature = toMatchImageSnapshot as (received: unknown, options?: MatchImageSnapshotOptions) => CustomMatcherResult;
 
 // The path is relative from the jest-html-reporters page to the folder storing the images
@@ -39,11 +41,15 @@ class RetriesCounter {
   private readonly retryTimes = parseInt(global[Symbol.for('RETRY_TIMES')], 10) || 0;
 
   hasReachMaxRetries(testId: unknown): boolean {
-    return !this.retryTimes || this.timesCalled.get(testId) > this.retryTimes;
+    return !this.retryTimes || this.getExecutionCount(testId) > this.retryTimes;
   }
 
   incrementExecutionCount(testId: unknown): void {
-    this.timesCalled.set(testId, (this.timesCalled.get(testId) || 0) + 1);
+    this.timesCalled.set(testId, this.getExecutionCount(testId) + 1);
+  }
+
+  getExecutionCount(testId: unknown): number {
+    return this.timesCalled.get(testId) ?? 0;
   }
 }
 
@@ -108,10 +114,16 @@ function saveAndRegisterImages(matcherContext: MatcherContext, received: Buffer,
 // All options properties used here are always set in bpmn-visualization tests
 // If the following implementation would be done directly in jest-image-snapshot, this won't be required as it set default values we cannot access here
 function toMatchImageSnapshotCustom(this: MatcherContext, received: Buffer, options: MatchImageSnapshotOptions): CustomMatcherResult {
+  const testId = this.currentTestName;
+  retriesCounter.incrementExecutionCount(testId);
+  jestLog("Test: '%s' (test file path: '%s')", this.currentTestName, this.testPath);
+  const executionCount = retriesCounter.getExecutionCount(testId);
+  jestLog('Ready to execute toMatchImageSnapshot, execution count: %s', executionCount);
   const result = toMatchImageSnapshotWithRealSignature.call(this, received, options);
+  jestLog('toMatchImageSnapshot executed');
+
   if (!result.pass) {
-    const testId = this.currentTestName;
-    retriesCounter.incrementExecutionCount(testId);
+    jestLog('Result: failure');
     if (retriesCounter.hasReachMaxRetries(testId)) {
       saveAndRegisterImages(this, received, options);
     }
@@ -119,8 +131,10 @@ function toMatchImageSnapshotCustom(this: MatcherContext, received: Buffer, opti
     // Add configured failure threshold in the error message
     const messages = result.message().split('\n');
     // For generalization, check options.failureThresholdType for percentage/pixel
-    const newMessage = [`${messages[0]} Failure threshold was set to ${options.failureThreshold * 100}%.`, ...messages.slice(1)].join('\n');
+    const newMessage = [`${messages[0]} Failure threshold was set to ${options.failureThreshold * 100}%. Execution count: ${executionCount}.`, ...messages.slice(1)].join('\n');
     result.message = () => newMessage;
+  } else {
+    jestLog('Result: success');
   }
 
   return result;
