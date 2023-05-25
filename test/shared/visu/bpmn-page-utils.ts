@@ -251,10 +251,12 @@ export class PageTester {
   }
 
   async mousePanning({ originPoint, destinationPoint }: PanningOptions): Promise<void> {
+    pageCheckLog('Start mouse panning. Origin: %o / Destination: %o', originPoint, destinationPoint);
     await this.page.mouse.move(originPoint.x, originPoint.y);
     await this.page.mouse.down();
     await this.page.mouse.move(destinationPoint.x, destinationPoint.y);
     await this.page.mouse.up();
+    pageCheckLog('Mouse panning done');
   }
 
   async mouseZoomNoDelay(point: Point, zoomType: ZoomType): Promise<void> {
@@ -266,11 +268,13 @@ export class PageTester {
   }
 
   async mouseZoom(point: Point, zoomType: ZoomType, xTimes = 1): Promise<void> {
+    pageCheckLog('Start mouse zoom - point: %o / type: %o / xTimes: %s', point, zoomType, xTimes);
     for (let i = 0; i < xTimes; i++) {
       await this.mouseZoomNoDelay(point, zoomType);
       // delay here is needed to make the tests pass on macOS, delay must be greater than debounce timing, so it surely gets triggered
       await delay(envUtils.isRunningOnCISlowOS() ? 300 : 150);
     }
+    pageCheckLog('Mouse zoom done');
   }
 }
 

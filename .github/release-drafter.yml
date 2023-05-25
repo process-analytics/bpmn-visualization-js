@@ -73,7 +73,7 @@ template: |
   In this case:
     - release the `examples` repository first
     - add a link to the RN https://github.com/$OWNER/bpmn-visualization-examples/releases/tag/v0.34.0
-  Optional: add link to sthe live tatically.io environment including the tag (not the `master` branch) 
+  Optional: add link to the live statically.io environment including the tag (not the `master` branch) 
 
   # What's Changed
 

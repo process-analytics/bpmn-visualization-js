@@ -39,27 +39,27 @@ describe('parsing message collector', () => {
   describe('console.warn when warning is registered', () => {
     it('unknown edge bpmn element', () => {
       parsingMessageCollector.warning(new EdgeUnknownBpmnElementWarning('edge-bpmnElement-unknown'));
-      expect(console.warn).toHaveBeenCalledWith('Edge json deserialization: unable to find bpmn element with id %s', 'edge-bpmnElement-unknown');
+      expect(console.warn).toHaveBeenCalledWith('[bv-parser] Edge json deserialization: unable to find bpmn element with id %s', 'edge-bpmnElement-unknown');
     });
     it('unknown shape bpmn element', () => {
       parsingMessageCollector.warning(new ShapeUnknownBpmnElementWarning('shape-bpmnElement-unknown'));
-      expect(console.warn).toHaveBeenCalledWith('Shape json deserialization: unable to find bpmn element with id %s', 'shape-bpmnElement-unknown');
+      expect(console.warn).toHaveBeenCalledWith('[bv-parser] Shape json deserialization: unable to find bpmn element with id %s', 'shape-bpmnElement-unknown');
     });
 
     it('missing font in label style', () => {
       parsingMessageCollector.warning(new LabelStyleMissingFontWarning('BPMNEdge_id_0', 'non-existing_style_id'));
-      expect(console.warn).toHaveBeenCalledWith('Unable to assign font from style %s to shape/edge %s', 'non-existing_style_id', 'BPMNEdge_id_0');
+      expect(console.warn).toHaveBeenCalledWith('[bv-parser] Unable to assign font from style %s to shape/edge %s', 'non-existing_style_id', 'BPMNEdge_id_0');
     });
 
     it('unknown flow node ref in lane', () => {
       parsingMessageCollector.warning(new LaneUnknownFlowNodeRefWarning('lane_id', 'non-existing_flow_node_ref'));
-      expect(console.warn).toHaveBeenCalledWith('Unable to assign lane %s as parent: flow node %s is not found', 'non-existing_flow_node_ref', 'lane_id');
+      expect(console.warn).toHaveBeenCalledWith('[bv-parser] Unable to assign lane %s as parent: flow node %s is not found', 'non-existing_flow_node_ref', 'lane_id');
     });
 
     it('unknown category value ref in group', () => {
       parsingMessageCollector.warning(new GroupUnknownCategoryValueWarning('Group_0', 'non-existing_category_value_ref'));
       expect(console.warn).toHaveBeenCalledWith(
-        'Group json deserialization: unable to find category value ref %s for bpmn element %s',
+        '[bv-parser] Group json deserialization: unable to find category value ref %s for bpmn element %s',
         'non-existing_category_value_ref',
         'Group_0',
       );
@@ -67,7 +67,12 @@ describe('parsing message collector', () => {
 
     it('boundary event not attached to activity', () => {
       parsingMessageCollector.warning(new BoundaryEventNotAttachedToActivityWarning('boundary_event_0', 'lane_id_ref', ShapeBpmnElementKind.LANE));
-      expect(console.warn).toHaveBeenCalledWith('The boundary event %s must be attached to an activity, and not to %s of kind %s', 'boundary_event_0', 'lane_id_ref', 'lane');
+      expect(console.warn).toHaveBeenCalledWith(
+        '[bv-parser] The boundary event %s must be attached to an activity, and not to %s of kind %s',
+        'boundary_event_0',
+        'lane_id_ref',
+        'lane',
+      );
     });
   });
 });

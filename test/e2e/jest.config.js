@@ -24,7 +24,8 @@ module.exports = {
   rootDir: '../..',
   roots: ['./test/e2e'],
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
-  testTimeout: 200000,
+  testTimeout: 100_000,
+  verbose: false, // if true, report each individual test run with execution time
   transform: {
     '^.+\\.ts?$': [
       'ts-jest',

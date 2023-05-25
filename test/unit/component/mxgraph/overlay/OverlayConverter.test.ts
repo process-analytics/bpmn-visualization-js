@@ -19,8 +19,8 @@ limitations under the License.
 
 import { OverlayConverter } from '@lib/component/mxgraph/overlay/OverlayConverter';
 import type { MxGraphCustomOverlayPosition } from '@lib/component/mxgraph/overlay/custom-overlay';
-import type { Overlay, OverlayPosition } from '@lib/bpmn-visualization';
-import { StyleDefault } from '@lib/bpmn-visualization';
+import { StyleDefault } from '@lib/component/mxgraph/style';
+import type { Overlay, OverlayPosition } from '@lib/component/registry/types';
 
 describe('overlay converter', () => {
   const overlayConverter = new OverlayConverter();

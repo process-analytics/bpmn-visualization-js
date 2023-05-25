@@ -18,11 +18,12 @@ import { initializeBpmnVisualizationWithContainerId } from './helpers/bpmn-visua
 import { HtmlElementLookup } from './helpers/html-utils';
 import type { ExpectedShapeModelElement } from './helpers/model-expect';
 import { bpmnVisualization } from './helpers/model-expect';
-import { buildReceivedViewStateStyle } from './matchers/matcher-utils';
+import { buildReceivedResolvedModelCellStyle, buildReceivedViewStateStyle } from './matchers/matcher-utils';
 import { buildExpectedShapeCellStyle } from './matchers/toBeShape';
 import { readFileSync } from '@test/shared/file-helper';
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
 import type { EdgeStyleUpdate, Fill, Font, Stroke, StyleUpdate } from '@lib/component/registry';
+import type { mxCell } from 'mxgraph';
 
 describe('mxGraph model - update style', () => {
   describe('Shapes', () => {
@@ -580,25 +581,26 @@ describe('mxGraph model - update style', () => {
     const bv = initializeBpmnVisualizationWithContainerId('bpmn-container-style-css-cross-tests');
     const htmlElementLookup = new HtmlElementLookup(bv);
 
-    // we cannot reuse the model expect functions here. They are using the shared bpmnVisualization that we cannot use here.
-    // So use the minimal expect function. We only need to check a part of the data, the rest is already checked in details in other tests.
-    const checkViewStateStyle = (bpmnElementId: string, expectedModel: ExpectedShapeModelElement): void => {
+    const getCell = (bpmnElementId: string): mxCell => {
       const graph = bv.graph;
       const cell = graph.model.getCell(bpmnElementId);
       if (!cell) {
         throw new Error(`Unable to find cell in the model with id ${bpmnElementId}`);
       }
-
-      const receivedViewStateStyle = buildReceivedViewStateStyle(cell, bv);
-      expect(receivedViewStateStyle).toEqual(buildExpectedShapeCellStyle(expectedModel));
+      return cell;
     };
 
-    it.each(
-      // We have a bug when the CSS classes are applied first, they are dropped after the call of the updateStyle method
-      // See https://github.com/process-analytics/bpmn-visualization-js/issues/2561
-      // When fixed, it.each should use [true, false]
-      [true],
-    )('Apply style update first %s', (isStyleUpdateAppliedFirst: boolean) => {
+    // we cannot reuse the model expect functions here. They are using the shared bpmnVisualization that we cannot use here.
+    // So use the minimal expect function. We only need to check a part of the data, the rest is already checked in details in other tests.
+    const checkViewStateStyle = (bpmnElementId: string, expectedModel: ExpectedShapeModelElement): void => {
+      expect(buildReceivedViewStateStyle(getCell(bpmnElementId), bv)).toEqual(buildExpectedShapeCellStyle(expectedModel));
+    };
+
+    const checkModelStyle = (bpmnElementId: string, expectedModel: ExpectedShapeModelElement): void => {
+      expect(buildReceivedResolvedModelCellStyle(getCell(bpmnElementId), bv)).toEqual(buildExpectedShapeCellStyle(expectedModel));
+    };
+
+    it.each([true, false])('Apply style update first %s', (isStyleUpdateAppliedFirst: boolean) => {
       bv.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
 
       const bpmnElementId = 'endEvent_message_1';
@@ -612,11 +614,14 @@ describe('mxGraph model - update style', () => {
         bv.bpmnElementsRegistry.updateStyle(bpmnElementId, { stroke: { color: strokeColor } });
       }
 
-      checkViewStateStyle(bpmnElementId, {
+      const expectedModel = {
+        extraCssClasses: ['class-1', 'class-2'],
         kind: ShapeBpmnElementKind.EVENT_END,
         stroke: { color: strokeColor },
         verticalAlign: 'top', // when events have a label
-      });
+      };
+      checkModelStyle(bpmnElementId, expectedModel);
+      checkViewStateStyle(bpmnElementId, expectedModel);
       htmlElementLookup.expectEndEvent(bpmnElementId, ShapeBpmnEventDefinitionKind.MESSAGE, { label: 'message end 2', additionalClasses: ['class-1', 'class-2'] });
     });
   });

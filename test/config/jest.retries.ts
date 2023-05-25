@@ -19,4 +19,4 @@ limitations under the License.
 import envUtils = require('@test/shared/environment-utils.js');
 
 const onCi = envUtils.isRunningOnCi();
-jest.retryTimes(onCi ? 3 : 0);
+jest.retryTimes(onCi ? 3 : 0, { logErrorsBeforeRetry: true });

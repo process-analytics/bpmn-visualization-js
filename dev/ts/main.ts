@@ -29,7 +29,7 @@ import type {
   ZoomType,
 } from '../../src/bpmn-visualization';
 import { FlowKind, ShapeBpmnElementKind } from '../../src/bpmn-visualization';
-import { fetchBpmnContent, logDownload, logError, logErrorAndOpenAlert, logStartup, stringify } from './utils/internal-helpers';
+import { fetchBpmnContent, logDownload, logError, logErrorAndOpenAlert, logStartup } from './utils/internal-helpers';
 import { log } from './utils/shared-helpers';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 import { SvgExporter } from './component/SvgExporter';
@@ -44,9 +44,9 @@ let currentTheme: string;
 let style: StyleUpdate;
 
 export function updateLoadOptions(fitOptions: FitOptions): void {
-  log('Updating load options', fitOptions);
+  log('Updating load options');
   loadOptions.fit = fitOptions;
-  log('Load options updated!', stringify(loadOptions));
+  log('Load options updated', loadOptions);
 }
 
 export function getCurrentLoadOptions(): LoadOptions {
@@ -73,7 +73,7 @@ function loadBpmn(bpmn: string, handleError = true): void {
   log('Loading bpmn...');
   try {
     bpmnVisualization.load(bpmn, loadOptions);
-    log('BPMN loaded with configuration', stringify(loadOptions));
+    log('BPMN loaded with configuration', loadOptions);
     collapseBpmnElement(bpmnElementIdToCollapse);
     document.dispatchEvent(new CustomEvent('diagramLoaded'));
   } catch (error) {
@@ -88,7 +88,7 @@ function loadBpmn(bpmn: string, handleError = true): void {
 export function fit(fitOptions: FitOptions): void {
   log('Fitting...');
   bpmnVisualization.navigation.fit(fitOptions);
-  log('Fit done with configuration', stringify(fitOptions));
+  log('Fit done with configuration', fitOptions);
 }
 
 export function zoom(zoomType: ZoomType): void {
@@ -239,15 +239,21 @@ function configureStyleFromParameters(parameters: URLSearchParams): void {
   }
 
   // Collect style properties to update them later with the bpmn-visualization API
-  // The implementation will be generalized when more properties will be supported (in particular, the query parameter name)
-  // For example, we could extract all query params starting with style.api, then rebuild the StyleUpdate from the extracted params
-  style = { stroke: {}, font: {}, fill: {} };
+  logStartup(`Configuring the "Update Style" API from query parameters`);
+  // Only create the StyleUpdate object if some parameters are set
+  if (Array.from(parameters.keys()).filter(key => key.startsWith('style.api.')).length > 0) {
+    style = { stroke: {}, font: {}, fill: {} };
 
-  parameters.get('style.api.stroke.color') && (style.stroke.color = parameters.get('style.api.stroke.color'));
-  parameters.get('style.api.font.color') && (style.font.color = parameters.get('style.api.font.color'));
-  parameters.get('style.api.font.opacity') && (style.font.opacity = Number(parameters.get('style.api.font.opacity')));
-  parameters.get('style.api.fill.color') && (style.fill.color = parameters.get('style.api.fill.color'));
-  parameters.get('style.api.fill.opacity') && (style.fill.opacity = Number(parameters.get('style.api.fill.opacity')));
+    parameters.get('style.api.stroke.color') && (style.stroke.color = parameters.get('style.api.stroke.color'));
+    parameters.get('style.api.font.color') && (style.font.color = parameters.get('style.api.font.color'));
+    parameters.get('style.api.font.opacity') && (style.font.opacity = Number(parameters.get('style.api.font.opacity')));
+    parameters.get('style.api.fill.color') && (style.fill.color = parameters.get('style.api.fill.color'));
+    parameters.get('style.api.fill.opacity') && (style.fill.opacity = Number(parameters.get('style.api.fill.opacity')));
+
+    logStartup(`Prepared "Update Style" API object`, style);
+  } else {
+    logStartup(`No query parameters, do not set the "Update Style" API object`);
+  }
 }
 
 function configureBpmnElementIdToCollapseFromParameters(parameters: URLSearchParams): void {

@@ -144,6 +144,8 @@ type ExpectedModelElement = {
   stroke?: Stroke;
   verticalAlign?: string;
   opacity?: number;
+  // custom bpmn-visualization
+  extraCssClasses?: string[];
 };
 
 export interface ExpectedShapeModelElement extends ExpectedModelElement {
