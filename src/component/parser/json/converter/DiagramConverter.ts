@@ -19,8 +19,7 @@ import Bounds from '../../../../model/bpmn/internal/Bounds';
 import type ShapeBpmnElement from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { ShapeBpmnCallActivity, ShapeBpmnSubProcess } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { Edge, Waypoint } from '../../../../model/bpmn/internal/edge/edge';
-import type { Shapes } from '../../../../model/bpmn/internal/BpmnModel';
-import type BpmnModel from '../../../../model/bpmn/internal/BpmnModel';
+import type BpmnModel, { Shapes } from '../../../../model/bpmn/internal/BpmnModel';
 import Label, { Font } from '../../../../model/bpmn/internal/Label';
 import { MessageVisibleKind, ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind, ShapeUtil } from '../../../../model/bpmn/internal';
 import type { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../../../../model/bpmn/json/BPMNDI';
@@ -177,11 +176,10 @@ export default class DiagramConverter {
 
   // 'BPMN in Color' extensions  with fallback to bpmn.io colors
   private static setColorExtensionsOnEdge(edge: Edge, bpmnEdge: BPMNEdge): void {
-    const extensions = edge.extensions;
     if ('border-color' in bpmnEdge) {
-      extensions.strokeColor = <string>bpmnEdge['border-color'];
+      edge.extensions.strokeColor = <string>bpmnEdge['border-color'];
     } else if ('stroke' in bpmnEdge) {
-      extensions.strokeColor = <string>bpmnEdge['stroke'];
+      edge.extensions.strokeColor = <string>bpmnEdge['stroke'];
     }
   }
 
