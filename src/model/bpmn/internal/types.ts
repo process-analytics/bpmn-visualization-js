@@ -17,35 +17,21 @@ limitations under the License.
 /**
  * @internal
  */
-export type ShapeColorExtensions = 'bv:color:fill' | EdgeColorExtensions;
-
-/**
- * @internal
- */
 export type ShapeExtensions = {
-  [key in ShapeColorExtensions | string]: string;
+  fillColor?: string;
+  strokeColor?: string;
 };
-
-/**
- * @internal
- */
-export type EdgeColorExtensions = 'bv:color:stroke';
 
 /**
  * @internal
  */
 export type EdgeExtensions = {
-  [key in EdgeColorExtensions | string]: string;
+  strokeColor?: string;
 };
 
 /**
  * @internal
  */
-export type LabelColorExtensions = 'bv:color';
-
-/**
- * @internal
- */
 export type LabelExtensions = {
-  [key in LabelColorExtensions | string]: string;
+  color?: string;
 };

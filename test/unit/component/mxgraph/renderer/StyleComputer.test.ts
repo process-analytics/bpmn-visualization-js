@@ -57,7 +57,7 @@ function newLabel(font: ExpectedFont, bounds?: Bounds): Label {
 
 function newLabelExtension(color: string): Label {
   const label = new Label(undefined, undefined);
-  label.extensions['bv:color'] = color;
+  label.extensions.color = color;
   return label;
 }
 
@@ -485,15 +485,15 @@ describe('Style Computer', () => {
       describe('shapes', () => {
         it.each(Object.values(ShapeUtil.flowNodeKinds()))('%s', (kind: ShapeBpmnElementKind) => {
           const shape = newShape(newShapeBpmnElement(kind), newLabelExtension('#010101'));
-          shape.extensions['bv:color:fill'] = '#000003';
-          shape.extensions['bv:color:stroke'] = '#FF0203';
+          shape.extensions.fillColor = '#000003';
+          shape.extensions.strokeColor = '#FF0203';
           const additionalColorsStyle = expectAdditionalColorsStyle ? ';fillColor=#000003;strokeColor=#FF0203;fontColor=#010101' : '';
           expect(computeStyleWithRendererOptions(shape)).toBe(`${kind}${additionalColorsStyle}`);
         });
         it.each([ShapeBpmnElementKind.LANE, ShapeBpmnElementKind.POOL])('%s', (kind: ShapeBpmnElementKind) => {
           const shape = newShape(newShapeBpmnElement(kind), newLabelExtension('#aa0101'));
-          shape.extensions['bv:color:fill'] = '#AA0003';
-          shape.extensions['bv:color:stroke'] = '#FF02AA';
+          shape.extensions.fillColor = '#AA0003';
+          shape.extensions.strokeColor = '#FF02AA';
           const additionalColorsStyle = expectAdditionalColorsStyle ? ';fillColor=#AA0003;swimlaneFillColor=#AA0003;strokeColor=#FF02AA;fontColor=#aa0101' : '';
           expect(computeStyleWithRendererOptions(shape)).toBe(`${kind};horizontal=1${additionalColorsStyle}`);
         });
@@ -506,25 +506,25 @@ describe('Style Computer', () => {
       describe('edges', () => {
         it('sequence flow', () => {
           const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.DEFAULT), undefined, newLabelExtension('#aaaaaa'));
-          edge.extensions['bv:color:stroke'] = '#111111';
+          edge.extensions.strokeColor = '#111111';
           const additionalColorsStyle = expectAdditionalColorsStyle ? ';strokeColor=#111111;fontColor=#aaaaaa' : '';
           expect(computeStyleWithRendererOptions(edge)).toBe(`sequenceFlow;default${additionalColorsStyle}`);
         });
         it('message flow', () => {
           const edge = new Edge('id', newMessageFlow(), undefined, newLabelExtension('#aaaabb'));
-          edge.extensions['bv:color:stroke'] = '#1111bb';
+          edge.extensions.strokeColor = '#1111bb';
           const additionalColorsStyle = expectAdditionalColorsStyle ? ';strokeColor=#1111bb;fontColor=#aaaabb' : '';
           expect(computeStyleWithRendererOptions(edge)).toBe(`messageFlow${additionalColorsStyle}`);
         });
         it('message flow icon', () => {
           const edge = new Edge('id', newMessageFlow());
-          edge.extensions['bv:color:stroke'] = '#11aabb';
+          edge.extensions.strokeColor = '#11aabb';
           const additionalColorsStyle = expectAdditionalColorsStyle ? ';strokeColor=#11aabb' : '';
           expect(computeMessageFlowIconStyleWithRendererOptions(edge)).toBe(`shape=bpmn.messageFlowIcon;bpmn.isInitiating=false${additionalColorsStyle}`);
         });
         it('association flow', () => {
           const edge = new Edge('id', newAssociationFlow(AssociationDirectionKind.ONE), undefined, newLabelExtension('#aaaacc'));
-          edge.extensions['bv:color:stroke'] = '#1111cc';
+          edge.extensions.strokeColor = '#1111cc';
           const additionalColorsStyle = expectAdditionalColorsStyle ? ';strokeColor=#1111cc;fontColor=#aaaacc' : '';
           expect(computeStyleWithRendererOptions(edge)).toBe(`association;One${additionalColorsStyle}`);
         });

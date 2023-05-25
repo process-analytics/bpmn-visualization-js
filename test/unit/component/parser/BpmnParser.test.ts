@@ -69,13 +69,13 @@ describe('parse xml to model', () => {
           bpmnElementOutgoingIds: ['sequence_flow_1'],
           bounds: { x: 230, y: 168, width: 96, height: 76 },
           extensions: {
-            'bv:color:fill': '#ffffff',
-            'bv:color:stroke': '#FF6600',
+            fillColor: '#ffffff',
+            strokeColor: '#FF6600',
           },
         });
         verifyLabel(shape.label, {
           bounds: { x: 230, y: 200, width: 96, height: 12 },
-          extensions: { 'bv:color': '#000000' },
+          extensions: { color: '#000000' },
           font: { isBold: false, isItalic: false, isStrikeThrough: false, isUnderline: false, name: 'Arial', size: 8 },
         });
       });
@@ -90,13 +90,13 @@ describe('parse xml to model', () => {
           bpmnElementIncomingIds: ['_82e55eb0-f279-48e2-bbda-1f2617613586'],
           bounds: { x: 788, y: 188, width: 36, height: 36 },
           extensions: {
-            'bv:color:fill': '#ffffff',
-            'bv:color:stroke': '#000000',
+            fillColor: '#ffffff',
+            strokeColor: '#000000',
           },
         });
         verifyLabel(shape.label, {
           bounds: { x: 751, y: 234, width: 110, height: 12 },
-          extensions: { 'bv:color': '#FF0000' },
+          extensions: { color: '#FF0000' },
           font: { isBold: false, isItalic: false, isStrikeThrough: false, isUnderline: false, name: 'Arial', size: 8 },
         });
       });
@@ -114,12 +114,12 @@ describe('parse xml to model', () => {
             { x: 417, y: 206 },
           ],
           extensions: {
-            'bv:color:stroke': '#FF6600',
+            strokeColor: '#FF6600',
           },
         });
         verifyLabel(edge.label, {
           bounds: { x: 316.359375, y: 211, width: 110, height: 12 },
-          extensions: { 'bv:color': '#000000' },
+          extensions: { color: '#000000' },
           font: { isBold: false, isItalic: false, isStrikeThrough: false, isUnderline: false, name: 'Arial', size: 8 },
         });
       });
@@ -144,8 +144,8 @@ describe('parse xml to model', () => {
         bpmnElementOutgoingIds: ['Flow_047ue01', 'Flow_0ngzmge'],
         bounds: { x: 135, y: 115, width: 50, height: 50 },
         extensions: {
-          'bv:color:fill': '#FFD726',
-          'bv:color:stroke': '#000000',
+          fillColor: '#FFD726',
+          strokeColor: '#000000',
         },
         parentId: 'Lane_0jqhnmr',
       });
@@ -165,14 +165,14 @@ describe('parse xml to model', () => {
         bpmnElementOutgoingIds: ['Flow_0kec6du'],
         bounds: { x: 480, y: -250, width: 100, height: 80 },
         extensions: {
-          'bv:color:fill': '#da1217',
-          'bv:color:stroke': '#8abff7',
+          fillColor: '#da1217',
+          strokeColor: '#8abff7',
         },
         parentId: 'Lane_0t0ihv3',
       });
       verifyLabel(shape.label, {
         extensions: {
-          'bv:color': '#8abff7',
+          color: '#8abff7',
         },
       });
     });
@@ -190,7 +190,7 @@ describe('parse xml to model', () => {
           { x: 1012, y: -380 },
         ],
         extensions: {
-          'bv:color:stroke': '#ff00ff',
+          strokeColor: '#ff00ff',
         },
       });
       verifyLabel(edge.label, undefined);
@@ -210,11 +210,11 @@ describe('parse xml to model', () => {
           { x: 1012, y: -520 },
         ],
         extensions: {
-          'bv:color:stroke': '#8abff7',
+          strokeColor: '#8abff7',
         },
       });
       verifyLabel(edge.label, {
-        extensions: { 'bv:color': '#8abff7' },
+        extensions: { color: '#8abff7' },
       });
     });
 
@@ -228,8 +228,8 @@ describe('parse xml to model', () => {
         isHorizontal: true,
         bounds: { x: -230, y: -630, width: 1720, height: 910 },
         extensions: {
-          'bv:color:fill': '#ffffff',
-          'bv:color:stroke': '#000000',
+          fillColor: '#ffffff',
+          strokeColor: '#000000',
         },
       });
       verifyLabel(shape.label, undefined);
@@ -245,8 +245,8 @@ describe('parse xml to model', () => {
         isHorizontal: true,
         bounds: { x: -230, y: -740, width: 1720, height: 60 },
         extensions: {
-          'bv:color:fill': '#55a3f3',
-          'bv:color:stroke': '#000000',
+          fillColor: '#55a3f3',
+          strokeColor: '#000000',
         },
         bpmnElementIncomingIds: ['Association_1buem20'],
       });
@@ -263,8 +263,8 @@ describe('parse xml to model', () => {
         isHorizontal: true,
         bounds: { x: -200, y: 20, width: 1690, height: 260 },
         extensions: {
-          'bv:color:fill': '#f1f1f1',
-          'bv:color:stroke': '#000000',
+          fillColor: '#f1f1f1',
+          strokeColor: '#000000',
         },
         parentId: 'Participant_1f8y1kd',
       });
@@ -281,8 +281,8 @@ describe('parse xml to model', () => {
         isHorizontal: true,
         bounds: { x: -170, y: -280, width: 1660, height: 140 },
         extensions: {
-          'bv:color:fill': '#f1f1f1',
-          'bv:color:stroke': '#000000',
+          fillColor: '#f1f1f1',
+          strokeColor: '#000000',
         },
         parentId: 'Lane_0yqg0gw',
       });

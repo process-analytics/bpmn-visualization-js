@@ -83,14 +83,14 @@ export default class StyleComputer {
 
     if (!this.ignoreBpmnColors) {
       const extensions = shape.extensions;
-      const fillColor = extensions['bv:color:fill'];
+      const fillColor = extensions.fillColor;
       if (fillColor) {
         styleValues.set(mxgraph.mxConstants.STYLE_FILLCOLOR, fillColor);
         if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
           styleValues.set(mxgraph.mxConstants.STYLE_SWIMLANE_FILLCOLOR, fillColor);
         }
       }
-      extensions['bv:color:stroke'] && styleValues.set(mxgraph.mxConstants.STYLE_STROKECOLOR, extensions['bv:color:stroke']);
+      extensions.strokeColor && styleValues.set(mxgraph.mxConstants.STYLE_STROKECOLOR, extensions.strokeColor);
     }
 
     return styleValues;
@@ -138,7 +138,7 @@ export default class StyleComputer {
 
     if (!this.ignoreBpmnColors) {
       const extensions = edge.extensions;
-      extensions['bv:color:stroke'] && styleValues.set(mxgraph.mxConstants.STYLE_STROKECOLOR, extensions['bv:color:stroke']);
+      extensions.strokeColor && styleValues.set(mxgraph.mxConstants.STYLE_STROKECOLOR, extensions.strokeColor);
     }
 
     return styleValues;
@@ -156,7 +156,7 @@ export default class StyleComputer {
 
     if (!this.ignoreBpmnColors) {
       const extensions = bpmnCell.label?.extensions;
-      extensions?.['bv:color'] && styleValues.set(mxgraph.mxConstants.STYLE_FONTCOLOR, extensions['bv:color']);
+      extensions?.color && styleValues.set(mxgraph.mxConstants.STYLE_FONTCOLOR, extensions.color);
     }
 
     return styleValues;
@@ -201,7 +201,7 @@ export default class StyleComputer {
     styleValues.push(['shape', BpmnStyleIdentifier.MESSAGE_FLOW_ICON]);
     styleValues.push([BpmnStyleIdentifier.IS_INITIATING, String(edge.messageVisibleKind === MessageVisibleKind.INITIATING)]);
     if (!this.ignoreBpmnColors) {
-      edge.extensions['bv:color:stroke'] && styleValues.push([mxgraph.mxConstants.STYLE_STROKECOLOR, edge.extensions['bv:color:stroke']]);
+      edge.extensions.strokeColor && styleValues.push([mxgraph.mxConstants.STYLE_STROKECOLOR, edge.extensions.strokeColor]);
     }
 
     return toArrayOfMxGraphStyleEntries([...styleValues]).join(';');
