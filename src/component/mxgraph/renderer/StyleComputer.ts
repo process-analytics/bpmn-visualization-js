@@ -57,8 +57,8 @@ export default class StyleComputer {
     const fontStyleValues = this.computeFontStyleValues(bpmnCell);
     const labelStyleValues = StyleComputer.computeLabelStyleValues(bpmnCell, labelBounds);
 
-    return [] //
-      .concat([...styles])
+    return []
+      .concat(styles)
       .concat(toArrayOfMxGraphStyleEntries([...mainStyleValues, ...fontStyleValues, ...labelStyleValues]))
       .join(';');
   }
@@ -204,7 +204,7 @@ export default class StyleComputer {
       edge.extensions.strokeColor && styleValues.push([mxgraph.mxConstants.STYLE_STROKECOLOR, edge.extensions.strokeColor]);
     }
 
-    return toArrayOfMxGraphStyleEntries([...styleValues]).join(';');
+    return toArrayOfMxGraphStyleEntries(styleValues).join(';');
   }
 }
 
