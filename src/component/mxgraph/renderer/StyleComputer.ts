@@ -57,8 +57,7 @@ export default class StyleComputer {
     const fontStyleValues = this.computeFontStyleValues(bpmnCell);
     const labelStyleValues = StyleComputer.computeLabelStyleValues(bpmnCell, labelBounds);
 
-    return []
-      .concat(styles)
+    return styles //
       .concat(toArrayOfMxGraphStyleEntries([...mainStyleValues, ...fontStyleValues, ...labelStyleValues]))
       .join(';');
   }
