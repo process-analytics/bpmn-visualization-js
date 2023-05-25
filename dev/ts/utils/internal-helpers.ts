@@ -16,10 +16,6 @@ limitations under the License.
 
 import { log } from './shared-helpers';
 
-export function stringify(value: unknown): string {
-  return JSON.stringify(value, undefined, 2);
-}
-
 export function _log(header: string, message: unknown, ...optionalParams: unknown[]): void {
   // eslint-disable-next-line no-console
   console.info(header + ' ' + message, ...optionalParams);
