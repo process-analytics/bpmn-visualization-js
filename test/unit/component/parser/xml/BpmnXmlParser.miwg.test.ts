@@ -175,7 +175,7 @@ describe('parse bpmn as xml for MIWG', () => {
       definitions: {
         process: {
           startEvent: { name: 'Start Event \n(Main) with &unknown; entity' },
-          task: [{ id: '_ec59e164-68b4-4f94-98de-ffb1c58a84af ♠' }, expect.anything(), expect.anything()],
+          task: [{ id: '<_ec59e164-68b4-4f94-98de-ffb1c58a84af>' }, expect.anything(), expect.anything()],
         },
         BPMNDiagram: expect.anything(),
       },

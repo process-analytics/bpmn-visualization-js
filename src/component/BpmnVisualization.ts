@@ -18,7 +18,7 @@ import GraphConfigurator from './mxgraph/GraphConfigurator';
 import { newBpmnRenderer } from './mxgraph/BpmnRenderer';
 import { newBpmnParser } from './parser/BpmnParser';
 import type { BpmnGraph } from './mxgraph/BpmnGraph';
-import type { GlobalOptions, LoadOptions } from './options';
+import type { GlobalOptions, LoadOptions, ParserOptions } from './options';
 import type { BpmnElementsRegistry } from './registry';
 import { newBpmnElementsRegistry } from './registry/bpmn-elements-registry';
 import { BpmnModelRegistry } from './registry/bpmn-model-registry';
@@ -67,6 +67,8 @@ export class BpmnVisualization {
 
   private readonly bpmnModelRegistry: BpmnModelRegistry;
 
+  private readonly parserOptions: ParserOptions;
+
   constructor(options: GlobalOptions) {
     // mxgraph configuration
     const configurator = new GraphConfigurator(htmlElement(options?.container));
@@ -75,6 +77,7 @@ export class BpmnVisualization {
     this.navigation = new Navigation(this.graph);
     this.bpmnModelRegistry = new BpmnModelRegistry();
     this.bpmnElementsRegistry = newBpmnElementsRegistry(this.bpmnModelRegistry, this.graph);
+    this.parserOptions = options?.parser;
   }
 
   /**
@@ -84,7 +87,7 @@ export class BpmnVisualization {
    * @throws `Error` when loading fails. This is generally due to a parsing error caused by a malformed BPMN content
    */
   load(xml: string, options?: LoadOptions): void {
-    const bpmnModel = newBpmnParser().parse(xml);
+    const bpmnModel = newBpmnParser(this.parserOptions).parse(xml);
     const renderedModel = this.bpmnModelRegistry.load(bpmnModel, options?.modelFilter);
     newBpmnRenderer(this.graph).render(renderedModel, options?.fit);
   }

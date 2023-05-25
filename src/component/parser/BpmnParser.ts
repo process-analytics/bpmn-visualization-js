@@ -19,6 +19,7 @@ import BpmnXmlParser from './xml/BpmnXmlParser';
 import type BpmnJsonParser from './json/BpmnJsonParser';
 import { newBpmnJsonParser } from './json/BpmnJsonParser';
 import { ParsingMessageCollector } from './parsing-messages';
+import type { ParserOptions } from '../options';
 
 /**
  * @internal
@@ -35,6 +36,6 @@ class BpmnParser {
 /**
  * @internal
  */
-export function newBpmnParser(): BpmnParser {
-  return new BpmnParser(newBpmnJsonParser(new ParsingMessageCollector()), new BpmnXmlParser());
+export function newBpmnParser(options?: ParserOptions): BpmnParser {
+  return new BpmnParser(newBpmnJsonParser(new ParsingMessageCollector()), new BpmnXmlParser(options));
 }
