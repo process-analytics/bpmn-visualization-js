@@ -18,7 +18,7 @@ import GraphConfigurator from './mxgraph/GraphConfigurator';
 import { newBpmnRenderer } from './mxgraph/BpmnRenderer';
 import { newBpmnParser } from './parser/BpmnParser';
 import type { BpmnGraph } from './mxgraph/BpmnGraph';
-import type { GlobalOptions, LoadOptions, ParserOptions } from './options';
+import type { GlobalOptions, LoadOptions, ParserOptions, RendererOptions } from './options';
 import type { BpmnElementsRegistry } from './registry';
 import { newBpmnElementsRegistry } from './registry/bpmn-elements-registry';
 import { BpmnModelRegistry } from './registry/bpmn-model-registry';
@@ -69,7 +69,10 @@ export class BpmnVisualization {
 
   private readonly parserOptions: ParserOptions;
 
+  private readonly rendererOptions: RendererOptions;
+
   constructor(options: GlobalOptions) {
+    this.rendererOptions = options?.renderer;
     // mxgraph configuration
     const configurator = new GraphConfigurator(htmlElement(options?.container));
     this.graph = configurator.configure(options);
@@ -89,7 +92,7 @@ export class BpmnVisualization {
   load(xml: string, options?: LoadOptions): void {
     const bpmnModel = newBpmnParser(this.parserOptions).parse(xml);
     const renderedModel = this.bpmnModelRegistry.load(bpmnModel, options?.modelFilter);
-    newBpmnRenderer(this.graph).render(renderedModel, options?.fit);
+    newBpmnRenderer(this.graph, this.rendererOptions).render(renderedModel, options?.fit);
   }
 
   getVersion(): Version {

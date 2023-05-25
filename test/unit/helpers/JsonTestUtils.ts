@@ -22,7 +22,7 @@ import type Label from '@lib/model/bpmn/internal/Label';
 import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 import type { JsonParsingWarning } from '@lib/component/parser/parsing-messages';
 import { ParsingMessageCollector } from '@lib/component/parser/parsing-messages';
-import type { ExpectedBounds, ExpectedFont } from './bpmn-model-expect';
+import type { ExpectedBounds, ExpectedFont, ExpectedLabel } from './bpmn-model-expect';
 
 class ParsingMessageCollectorTester extends ParsingMessageCollector {
   private warnings: Array<JsonParsingWarning> = [];
@@ -150,6 +150,17 @@ export function verifyLabelBounds(label: Label, expectedBounds?: ExpectedBounds)
   } else {
     expect(bounds).toBeUndefined();
   }
+}
+
+export function verifyLabel(label: Label, expectedLabel: ExpectedLabel): void {
+  if (!expectedLabel) {
+    expect(label).toBeUndefined();
+    return;
+  }
+
+  verifyLabelBounds(label, expectedLabel.bounds);
+  expect(label.extensions).toEqual(expectedLabel.extensions ?? {});
+  verifyLabelFont(label, expectedLabel.font);
 }
 
 export function parseJsonAndExpectEvent(json: BpmnJsonModel, eventDefinitionKind: ShapeBpmnEventDefinitionKind, expectedNumber: number): BpmnModel {

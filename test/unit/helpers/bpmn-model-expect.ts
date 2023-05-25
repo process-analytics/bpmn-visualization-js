@@ -15,11 +15,13 @@ limitations under the License.
 */
 
 import type { GlobalTaskKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind } from '@lib/model/bpmn/internal';
+import { FlowKind, MessageVisibleKind, SequenceFlowKind } from '@lib/model/bpmn/internal';
+import type BpmnModel from '@lib/model/bpmn/internal/BpmnModel';
 import type { Edge, Waypoint } from '@lib/model/bpmn/internal/edge/edge';
 import type Shape from '@lib/model/bpmn/internal/shape/Shape';
 import { ShapeBpmnActivity, ShapeBpmnBoundaryEvent, ShapeBpmnCallActivity, ShapeBpmnEvent } from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
 import { SequenceFlow } from '@lib/model/bpmn/internal/edge/flows';
-import { FlowKind, MessageVisibleKind, SequenceFlowKind } from '@lib/model/bpmn/internal';
+import type { EdgeExtensions, LabelExtensions, ShapeExtensions } from '@lib/model/bpmn/internal/types';
 
 export interface ExpectedShape {
   shapeId: string;
@@ -31,6 +33,7 @@ export interface ExpectedShape {
   parentId?: string;
   bounds?: ExpectedBounds;
   isHorizontal?: boolean;
+  extensions?: ShapeExtensions;
 }
 
 export interface ExpectedActivityShape extends ExpectedShape {
@@ -58,11 +61,18 @@ export interface ExpectedEdge {
   bpmnElementTargetRefId: string;
   waypoints: Waypoint[];
   messageVisibleKind?: MessageVisibleKind;
+  extensions?: EdgeExtensions;
 }
 
 export interface ExpectedSequenceEdge extends ExpectedEdge {
   bpmnElementSequenceFlowKind?: SequenceFlowKind;
 }
+
+export type ExpectedLabel = {
+  bounds?: ExpectedBounds;
+  extensions?: LabelExtensions;
+  font?: ExpectedFont;
+};
 
 export interface ExpectedFont {
   name?: string;
@@ -128,6 +138,8 @@ export const verifyShape = (
     expect(bounds.width).toEqual(expectedBounds.width);
     expect(bounds.height).toEqual(expectedBounds.height);
   }
+
+  expect(shape.extensions).toEqual(expectedShape.extensions ?? {});
 };
 
 export const verifyEdge = (edge: Edge, expectedValue: ExpectedEdge | ExpectedSequenceEdge): void => {
@@ -155,4 +167,14 @@ export const verifyEdge = (edge: Edge, expectedValue: ExpectedEdge | ExpectedSeq
       expect(bpmnElement.sequenceFlowKind).toEqual(SequenceFlowKind.NORMAL);
     }
   }
+
+  expect(edge.extensions).toEqual(expectedValue.extensions ?? {});
 };
+
+export const getPoolByBpmnElementId = (model: BpmnModel, id: string): Shape => model.pools.find(shape => shape.bpmnElement.id === id);
+
+export const getLaneByBpmnElementId = (model: BpmnModel, id: string): Shape => model.lanes.find(shape => shape.bpmnElement.id === id);
+
+export const getFlowNodeByBpmnElementId = (model: BpmnModel, id: string): Shape => model.flowNodes.find(shape => shape.bpmnElement.id === id);
+
+export const getEdgeByBpmnElementId = (model: BpmnModel, id: string): Edge => model.edges.find(edge => edge.bpmnElement.id === id);

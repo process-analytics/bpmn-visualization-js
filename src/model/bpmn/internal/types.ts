@@ -1,5 +1,5 @@
 /*
-Copyright 2020 Bonitasoft S.A.
+Copyright 2023 Bonitasoft S.A.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,16 +14,24 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type ShapeBpmnElement from './ShapeBpmnElement';
-import type Bounds from '../Bounds';
-import type Label from '../Label';
-import type { ShapeExtensions } from '../types';
+/**
+ * @internal
+ */
+export type ShapeExtensions = {
+  fillColor?: string;
+  strokeColor?: string;
+};
 
 /**
  * @internal
  */
-export default class Shape {
-  readonly extensions: ShapeExtensions = {};
+export type EdgeExtensions = {
+  strokeColor?: string;
+};
 
-  constructor(readonly id: string, readonly bpmnElement: ShapeBpmnElement, readonly bounds?: Bounds, readonly label?: Label, readonly isHorizontal?: boolean) {}
-}
+/**
+ * @internal
+ */
+export type LabelExtensions = {
+  color?: string;
+};

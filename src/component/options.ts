@@ -25,6 +25,8 @@ export interface GlobalOptions {
   navigation?: NavigationConfiguration;
   /** Configure the BPMN parser. */
   parser?: ParserOptions;
+  /** Configure how the BPMN diagram and its elements are rendered. */
+  renderer?: RendererOptions;
 }
 
 /**
@@ -179,4 +181,22 @@ export type ParserOptions = {
    * @param val the value of the 'name' attribute to be processed.
    */
   additionalXmlAttributeProcessor?: (val: string) => string;
+};
+
+/**
+ * Global configuration for the rendering of the BPMN elements.
+ *
+ * @category Initialization & Configuration
+ * @since 0.35.0
+ */
+export type RendererOptions = {
+  /**
+   * If set to `false`, support the "BPMN in Color" specification with a fallback with bpmn.io colors. For more details about the support, see
+   * {@link https://github.com/process-analytics/bpmn-visualization-js/pull/2614}.
+   *
+   * Otherwise, disable the support.
+   *
+   * @default true
+   */
+  ignoreBpmnColors?: boolean;
 };
