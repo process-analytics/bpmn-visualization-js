@@ -129,6 +129,18 @@ image::images/bpmn-theme-custom-colors.png[Custom BPMN Theme]
 _Custom BPMN Theme_
 
 
+==== `BPMN in Color` Support
+
+As of version 0.35.0, `bpmn-visualization` supports the https://github.com/bpmn-miwg/bpmn-in-color[BPMN in Color Specification] with a fallback to the
+https://github.com/bpmn-io/bpmn-moddle/blob/ea7fa6a94c55f49fe1da1f019dc9a40d62967252/resources/bpmn-io/json/bioc.json[bpmn.io specific BPMN extensions for colors] (a.k.a `bioc`).
+
+This support is disabled by default, and it can be enabled at the library initialization.
+
+image::images/bpmn-in-color-C.1.0.png[C.1.0 with "BPMN in Color"]
+
+_miwg-test-suite C.1.0 reference diagram using "BPMN in Color"_
+
+
 [[diagram-navigation]]
 === Diagram Navigation
 

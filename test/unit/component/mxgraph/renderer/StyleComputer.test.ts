@@ -28,7 +28,7 @@ import ShapeBpmnElement, {
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
-import type { BpmnEventKind, GlobalTaskKind } from '@lib/bpmn-visualization';
+import type { BpmnEventKind, GlobalTaskKind } from '@lib/model/bpmn/internal';
 import {
   AssociationDirectionKind,
   MessageVisibleKind,
@@ -39,7 +39,8 @@ import {
   ShapeBpmnEventDefinitionKind,
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
-} from '@lib/bpmn-visualization';
+  ShapeUtil,
+} from '@lib/model/bpmn/internal';
 import Label, { Font } from '@lib/model/bpmn/internal/Label';
 import { Edge } from '@lib/model/bpmn/internal/edge/edge';
 import { AssociationFlow, MessageFlow, SequenceFlow } from '@lib/model/bpmn/internal/edge/flows';
@@ -52,6 +53,12 @@ function toFont(font: ExpectedFont): Font {
 
 function newLabel(font: ExpectedFont, bounds?: Bounds): Label {
   return new Label(toFont(font), bounds);
+}
+
+function newLabelExtension(color: string): Label {
+  const label = new Label(undefined, undefined);
+  label.extensions.color = color;
+  return label;
 }
 
 /**
@@ -118,6 +125,7 @@ function newAssociationFlow(kind: AssociationDirectionKind): AssociationFlow {
 }
 
 describe('Style Computer', () => {
+  // use a shared instance to check that there is no state stored in the implementation
   const styleComputer = new StyleComputer();
 
   // shortcut as the current computeStyle implementation requires to pass the BPMN label bounds as extra argument
@@ -458,5 +466,69 @@ describe('Style Computer', () => {
         expect(computeStyle(shape)).toBe(`eventBasedGateway;bpmn.isInstantiating=${!!instantiate};bpmn.gatewayKind=${gatewayKind};fontFamily=Arial`);
       },
     );
+  });
+
+  describe('compute style - colors', () => {
+    describe.each([[undefined], [false], [true]])(`Ignore BPMN colors: %s`, (ignoreBpmnColors: boolean) => {
+      // 'undefined' RendererOptions tested in other tests in this file
+      const styleComputer = new StyleComputer(ignoreBpmnColors === undefined ? {} : { ignoreBpmnColors: ignoreBpmnColors });
+      const expectAdditionalColorsStyle = !(ignoreBpmnColors ?? true);
+
+      function computeStyleWithRendererOptions(element: Shape | Edge): string {
+        return styleComputer.computeStyle(element, element.label?.bounds);
+      }
+
+      function computeMessageFlowIconStyleWithRendererOptions(edge: Edge): string {
+        return styleComputer.computeMessageFlowIconStyle(edge);
+      }
+
+      describe('shapes', () => {
+        it.each(Object.values(ShapeUtil.flowNodeKinds()))('%s', (kind: ShapeBpmnElementKind) => {
+          const shape = newShape(newShapeBpmnElement(kind), newLabelExtension('#010101'));
+          shape.extensions.fillColor = '#000003';
+          shape.extensions.strokeColor = '#FF0203';
+          const additionalColorsStyle = expectAdditionalColorsStyle ? ';fillColor=#000003;strokeColor=#FF0203;fontColor=#010101' : '';
+          expect(computeStyleWithRendererOptions(shape)).toBe(`${kind}${additionalColorsStyle}`);
+        });
+        it.each([ShapeBpmnElementKind.LANE, ShapeBpmnElementKind.POOL])('%s', (kind: ShapeBpmnElementKind) => {
+          const shape = newShape(newShapeBpmnElement(kind), newLabelExtension('#aa0101'));
+          shape.extensions.fillColor = '#AA0003';
+          shape.extensions.strokeColor = '#FF02AA';
+          const additionalColorsStyle = expectAdditionalColorsStyle ? ';fillColor=#AA0003;swimlaneFillColor=#AA0003;strokeColor=#FF02AA;fontColor=#aa0101' : '';
+          expect(computeStyleWithRendererOptions(shape)).toBe(`${kind};horizontal=1${additionalColorsStyle}`);
+        });
+        it('no extension', () => {
+          const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.TASK));
+          expect(computeStyleWithRendererOptions(shape)).toBe(`task`);
+        });
+      });
+
+      describe('edges', () => {
+        it('sequence flow', () => {
+          const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.DEFAULT), undefined, newLabelExtension('#aaaaaa'));
+          edge.extensions.strokeColor = '#111111';
+          const additionalColorsStyle = expectAdditionalColorsStyle ? ';strokeColor=#111111;fontColor=#aaaaaa' : '';
+          expect(computeStyleWithRendererOptions(edge)).toBe(`sequenceFlow;default${additionalColorsStyle}`);
+        });
+        it('message flow', () => {
+          const edge = new Edge('id', newMessageFlow(), undefined, newLabelExtension('#aaaabb'));
+          edge.extensions.strokeColor = '#1111bb';
+          const additionalColorsStyle = expectAdditionalColorsStyle ? ';strokeColor=#1111bb;fontColor=#aaaabb' : '';
+          expect(computeStyleWithRendererOptions(edge)).toBe(`messageFlow${additionalColorsStyle}`);
+        });
+        it('message flow icon', () => {
+          const edge = new Edge('id', newMessageFlow());
+          edge.extensions.strokeColor = '#11aabb';
+          const additionalColorsStyle = expectAdditionalColorsStyle ? ';strokeColor=#11aabb' : '';
+          expect(computeMessageFlowIconStyleWithRendererOptions(edge)).toBe(`shape=bpmn.messageFlowIcon;bpmn.isInitiating=false${additionalColorsStyle}`);
+        });
+        it('association flow', () => {
+          const edge = new Edge('id', newAssociationFlow(AssociationDirectionKind.ONE), undefined, newLabelExtension('#aaaacc'));
+          edge.extensions.strokeColor = '#1111cc';
+          const additionalColorsStyle = expectAdditionalColorsStyle ? ';strokeColor=#1111cc;fontColor=#aaaacc' : '';
+          expect(computeStyleWithRendererOptions(edge)).toBe(`association;One${additionalColorsStyle}`);
+        });
+      });
+    });
   });
 });

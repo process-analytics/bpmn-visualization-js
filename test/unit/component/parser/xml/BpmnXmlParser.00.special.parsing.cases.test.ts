@@ -70,9 +70,9 @@ describe('Special parsing cases', () => {
     expect(json).toMatchObject({
       definitions: {
         process: {
-          startEvent: { name: '®Start Event 1 &reg;\nbuilt with ♠' },
-          task: { name: 'Task 1&nbsp;or task 2∕3⧵4' },
-          endEvent: { name: '&unknown; End Event & 1/2\\3 Ø \n &yen; / ¥' },
+          startEvent: { name: '&#174;Start Event 1 &reg;\nbuilt with &#9824;' },
+          task: { name: 'Task 1&nbsp;or task 2&#x2215;3&#10741;4' },
+          endEvent: { name: '&unknown; End Event & 1/2\\3 &#x00D8; \n &yen; / &#165;' },
           sequenceFlow: [{ name: '<Sequence> Flow 1&2' }, { name: 'Sequence \'Flow" 2' }],
         },
         BPMNDiagram: expect.anything(),

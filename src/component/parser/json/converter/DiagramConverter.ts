@@ -22,11 +22,10 @@ import { Edge, Waypoint } from '../../../../model/bpmn/internal/edge/edge';
 import type { Shapes } from '../../../../model/bpmn/internal/BpmnModel';
 import type BpmnModel from '../../../../model/bpmn/internal/BpmnModel';
 import Label, { Font } from '../../../../model/bpmn/internal/Label';
-import { MessageVisibleKind } from '../../../../model/bpmn/internal/edge/kinds';
+import { MessageVisibleKind, ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind, ShapeUtil } from '../../../../model/bpmn/internal';
 import type { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../../../../model/bpmn/json/BPMNDI';
 import type { Point } from '../../../../model/bpmn/json/DC';
 import type { ConvertedElements } from './utils';
-import { ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind, ShapeUtil } from '../../../../model/bpmn/internal';
 import { ensureIsArray } from '../../../helpers/array-utils';
 import type { ParsingMessageCollector } from '../../parsing-messages';
 import { EdgeUnknownBpmnElementWarning, LabelStyleMissingFontWarning, ShapeUnknownBpmnElementWarning } from '../warnings';
@@ -104,26 +103,44 @@ export default class DiagramConverter {
     return false;
   }
 
-  private deserializeShape(shape: BPMNShape, findShapeElement: (bpmnElement: string) => ShapeBpmnElement): Shape | undefined {
-    const bpmnElement = findShapeElement(shape.bpmnElement);
+  private deserializeShape(bpmnShape: BPMNShape, findShapeElement: (bpmnElement: string) => ShapeBpmnElement): Shape | undefined {
+    const bpmnElement = findShapeElement(bpmnShape.bpmnElement);
     if (bpmnElement) {
-      const bounds = DiagramConverter.deserializeBounds(shape);
+      const bounds = DiagramConverter.deserializeBounds(bpmnShape);
 
       if (
         (bpmnElement instanceof ShapeBpmnSubProcess ||
           (bpmnElement instanceof ShapeBpmnCallActivity && bpmnElement.callActivityKind === ShapeBpmnCallActivityKind.CALLING_PROCESS)) &&
-        !shape.isExpanded
+        !bpmnShape.isExpanded
       ) {
         bpmnElement.markers.push(ShapeBpmnMarkerKind.EXPAND);
       }
 
       let isHorizontal;
       if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
-        isHorizontal = shape.isHorizontal ?? true;
+        isHorizontal = bpmnShape.isHorizontal ?? true;
       }
 
-      const label = this.deserializeLabel(shape.BPMNLabel, shape.id);
-      return new Shape(shape.id, bpmnElement, bounds, label, isHorizontal);
+      const bpmnLabel = bpmnShape.BPMNLabel;
+      const label = this.deserializeLabel(bpmnLabel, bpmnShape.id);
+      const shape = new Shape(bpmnShape.id, bpmnElement, bounds, label, isHorizontal);
+      DiagramConverter.setColorExtensionsOnShape(shape, bpmnShape);
+
+      return shape;
+    }
+  }
+
+  // 'BPMN in Color' extensions with fallback to bpmn.io colors
+  private static setColorExtensionsOnShape(shape: Shape, bpmnShape: BPMNShape): void {
+    if ('background-color' in bpmnShape) {
+      shape.extensions.fillColor = <string>bpmnShape['background-color'];
+    } else if ('fill' in bpmnShape) {
+      shape.extensions.fillColor = <string>bpmnShape['fill'];
+    }
+    if ('border-color' in bpmnShape) {
+      shape.extensions.strokeColor = <string>bpmnShape['border-color'];
+    } else if ('stroke' in bpmnShape) {
+      shape.extensions.strokeColor = <string>bpmnShape['stroke'];
     }
   }
 
@@ -136,24 +153,35 @@ export default class DiagramConverter {
 
   private deserializeEdges(edges: BPMNEdge | BPMNEdge[]): Edge[] {
     return ensureIsArray(edges)
-      .map(edge => {
+      .map(bpmnEdge => {
         const flow =
-          this.convertedElements.findSequenceFlow(edge.bpmnElement) ||
-          this.convertedElements.findMessageFlow(edge.bpmnElement) ||
-          this.convertedElements.findAssociationFlow(edge.bpmnElement);
+          this.convertedElements.findSequenceFlow(bpmnEdge.bpmnElement) ||
+          this.convertedElements.findMessageFlow(bpmnEdge.bpmnElement) ||
+          this.convertedElements.findAssociationFlow(bpmnEdge.bpmnElement);
 
         if (!flow) {
-          this.parsingMessageCollector.warning(new EdgeUnknownBpmnElementWarning(edge.bpmnElement));
+          this.parsingMessageCollector.warning(new EdgeUnknownBpmnElementWarning(bpmnEdge.bpmnElement));
           return;
         }
 
-        const waypoints = this.deserializeWaypoints(edge.waypoint);
-        const label = this.deserializeLabel(edge.BPMNLabel, edge.id);
-        const messageVisibleKind = edge.messageVisibleKind ? (edge.messageVisibleKind as unknown as MessageVisibleKind) : MessageVisibleKind.NONE;
+        const waypoints = this.deserializeWaypoints(bpmnEdge.waypoint);
+        const label = this.deserializeLabel(bpmnEdge.BPMNLabel, bpmnEdge.id);
+        const messageVisibleKind = bpmnEdge.messageVisibleKind ? (bpmnEdge.messageVisibleKind as unknown as MessageVisibleKind) : MessageVisibleKind.NONE;
 
-        return new Edge(edge.id, flow, waypoints, label, messageVisibleKind);
+        const edge = new Edge(bpmnEdge.id, flow, waypoints, label, messageVisibleKind);
+        DiagramConverter.setColorExtensionsOnEdge(edge, bpmnEdge);
+        return edge;
       })
       .filter(Boolean);
+  }
+
+  // 'BPMN in Color' extensions  with fallback to bpmn.io colors
+  private static setColorExtensionsOnEdge(edge: Edge, bpmnEdge: BPMNEdge): void {
+    if ('border-color' in bpmnEdge) {
+      edge.extensions.strokeColor = <string>bpmnEdge['border-color'];
+    } else if ('stroke' in bpmnEdge) {
+      edge.extensions.strokeColor = <string>bpmnEdge['stroke'];
+    }
   }
 
   private deserializeWaypoints(waypoints: Point[]): Waypoint[] {
@@ -164,9 +192,13 @@ export default class DiagramConverter {
     if (bpmnLabel && typeof bpmnLabel === 'object') {
       const font = this.findFont(bpmnLabel.labelStyle, id);
       const bounds = DiagramConverter.deserializeBounds(bpmnLabel);
-
+      const label = new Label(font, bounds);
+      if ('color' in bpmnLabel) {
+        label.extensions.color = <string>bpmnLabel.color;
+        return label;
+      }
       if (font || bounds) {
-        return new Label(font, bounds);
+        return label;
       }
     }
   }

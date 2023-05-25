@@ -17,11 +17,14 @@ limitations under the License.
 import type Label from '../Label';
 import type { Flow } from './flows';
 import { MessageVisibleKind } from './kinds';
+import type { EdgeExtensions } from '../types';
 
 /**
  * @internal
  */
 export class Edge {
+  readonly extensions: EdgeExtensions = {};
+
   constructor(
     readonly id: string,
     readonly bpmnElement: Flow,

@@ -15,11 +15,14 @@ limitations under the License.
 */
 
 import type Bounds from './Bounds';
+import type { LabelExtensions } from './types';
 
 /**
  * @internal
  */
 export default class Label {
+  readonly extensions: LabelExtensions = {};
+
   constructor(readonly font?: Font, readonly bounds?: Bounds) {}
 }
 

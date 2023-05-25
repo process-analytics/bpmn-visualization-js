@@ -31,39 +31,45 @@ import { BpmnStyleIdentifier } from '../style';
 import { MessageVisibleKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeUtil } from '../../../model/bpmn/internal';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/flows';
 import type { Font } from '../../../model/bpmn/internal/Label';
+import type { RendererOptions } from '../../options';
 
 /**
  * @internal
  */
 export default class StyleComputer {
+  private readonly ignoreBpmnColors: boolean;
+
+  constructor(options?: RendererOptions) {
+    this.ignoreBpmnColors = options?.ignoreBpmnColors ?? true;
+  }
+
   computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): string {
     const styles: string[] = [bpmnCell.bpmnElement.kind as string];
 
-    let shapeStyleValues;
+    let mainStyleValues;
     if (bpmnCell instanceof Shape) {
-      shapeStyleValues = StyleComputer.computeShapeStyle(bpmnCell);
+      mainStyleValues = this.computeShapeStyleValues(bpmnCell);
     } else {
-      styles.push(...StyleComputer.computeEdgeStyle(bpmnCell));
-      shapeStyleValues = new Map<string, string | number>();
+      styles.push(...StyleComputer.computeEdgeBaseStyles(bpmnCell));
+      mainStyleValues = this.computeEdgeStyleValues(bpmnCell);
     }
 
-    const fontStyleValues = StyleComputer.computeFontStyleValues(bpmnCell);
+    const fontStyleValues = this.computeFontStyleValues(bpmnCell);
     const labelStyleValues = StyleComputer.computeLabelStyleValues(bpmnCell, labelBounds);
 
-    return [] //
-      .concat([...styles])
-      .concat([...shapeStyleValues, ...fontStyleValues, ...labelStyleValues].filter(([, v]) => v && v != 'undefined').map(([key, value]) => key + '=' + value))
+    return styles //
+      .concat(toArrayOfMxGraphStyleEntries([...mainStyleValues, ...fontStyleValues, ...labelStyleValues]))
       .join(';');
   }
 
-  private static computeShapeStyle(shape: Shape): Map<string, string | number> {
+  private computeShapeStyleValues(shape: Shape): Map<string, string | number> {
     const styleValues = new Map<string, string | number>();
     const bpmnElement = shape.bpmnElement;
 
     if (bpmnElement instanceof ShapeBpmnEvent) {
-      this.computeEventShapeStyle(bpmnElement, styleValues);
+      StyleComputer.computeEventShapeStyle(bpmnElement, styleValues);
     } else if (bpmnElement instanceof ShapeBpmnActivity) {
-      this.computeActivityShapeStyle(bpmnElement, styleValues);
+      StyleComputer.computeActivityShapeStyle(bpmnElement, styleValues);
     } else if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
       // mxgraph.mxConstants.STYLE_HORIZONTAL is for the label
       // In BPMN, isHorizontal is for the Shape
@@ -72,6 +78,18 @@ export default class StyleComputer {
     } else if (bpmnElement instanceof ShapeBpmnEventBasedGateway) {
       styleValues.set(BpmnStyleIdentifier.IS_INSTANTIATING, String(bpmnElement.instantiate));
       styleValues.set(BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND, String(bpmnElement.gatewayKind));
+    }
+
+    if (!this.ignoreBpmnColors) {
+      const extensions = shape.extensions;
+      const fillColor = extensions.fillColor;
+      if (fillColor) {
+        styleValues.set(mxgraph.mxConstants.STYLE_FILLCOLOR, fillColor);
+        if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
+          styleValues.set(mxgraph.mxConstants.STYLE_SWIMLANE_FILLCOLOR, fillColor);
+        }
+      }
+      extensions.strokeColor && styleValues.set(mxgraph.mxConstants.STYLE_STROKECOLOR, extensions.strokeColor);
     }
 
     return styleValues;
@@ -100,7 +118,7 @@ export default class StyleComputer {
     }
   }
 
-  private static computeEdgeStyle(edge: Edge): string[] {
+  private static computeEdgeBaseStyles(edge: Edge): string[] {
     const styles: string[] = [];
 
     const bpmnElement = edge.bpmnElement;
@@ -114,7 +132,18 @@ export default class StyleComputer {
     return styles;
   }
 
-  private static computeFontStyleValues(bpmnCell: Shape | Edge): Map<string, string | number> {
+  private computeEdgeStyleValues(edge: Edge): Map<string, string | number> {
+    const styleValues = new Map<string, string | number>();
+
+    if (!this.ignoreBpmnColors) {
+      const extensions = edge.extensions;
+      extensions.strokeColor && styleValues.set(mxgraph.mxConstants.STYLE_STROKECOLOR, extensions.strokeColor);
+    }
+
+    return styleValues;
+  }
+
+  private computeFontStyleValues(bpmnCell: Shape | Edge): Map<string, string | number> {
     const styleValues = new Map<string, string | number>();
 
     const font = bpmnCell.label?.font;
@@ -122,6 +151,11 @@ export default class StyleComputer {
       styleValues.set(mxgraph.mxConstants.STYLE_FONTFAMILY, font.name);
       styleValues.set(mxgraph.mxConstants.STYLE_FONTSIZE, font.size);
       styleValues.set(mxgraph.mxConstants.STYLE_FONTSTYLE, getFontStyleValue(font));
+    }
+
+    if (!this.ignoreBpmnColors) {
+      const extensions = bpmnCell.label?.extensions;
+      extensions?.color && styleValues.set(mxgraph.mxConstants.STYLE_FONTCOLOR, extensions.color);
     }
 
     return styleValues;
@@ -162,7 +196,14 @@ export default class StyleComputer {
   }
 
   computeMessageFlowIconStyle(edge: Edge): string {
-    return `shape=${BpmnStyleIdentifier.MESSAGE_FLOW_ICON};${BpmnStyleIdentifier.IS_INITIATING}=${edge.messageVisibleKind === MessageVisibleKind.INITIATING}`;
+    const styleValues: Array<[string, string]> = [];
+    styleValues.push(['shape', BpmnStyleIdentifier.MESSAGE_FLOW_ICON]);
+    styleValues.push([BpmnStyleIdentifier.IS_INITIATING, String(edge.messageVisibleKind === MessageVisibleKind.INITIATING)]);
+    if (!this.ignoreBpmnColors) {
+      edge.extensions.strokeColor && styleValues.push([mxgraph.mxConstants.STYLE_STROKECOLOR, edge.extensions.strokeColor]);
+    }
+
+    return toArrayOfMxGraphStyleEntries(styleValues).join(';');
   }
 }
 
@@ -185,4 +226,8 @@ export function getFontStyleValue(font: Font): number {
     value += mxgraph.mxConstants.FONT_UNDERLINE;
   }
   return value;
+}
+
+function toArrayOfMxGraphStyleEntries(styleValues: Array<[string, string | number]>): string[] {
+  return styleValues.filter(([, v]) => v && v != 'undefined').map(([key, value]) => `${key}=${value}`);
 }

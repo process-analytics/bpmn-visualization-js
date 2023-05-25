@@ -1,5 +1,5 @@
 /*
-Copyright 2021 Bonitasoft S.A.
+Copyright 2023 Bonitasoft S.A.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,18 +14,24 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-export interface MessageDetails {
-  template: string;
-  arguments: Array<string>;
-}
+/**
+ * @internal
+ */
+export type ShapeExtensions = {
+  fillColor?: string;
+  strokeColor?: string;
+};
 
-export abstract class JsonParsingWarning {
-  abstract getMessage(): MessageDetails;
-}
+/**
+ * @internal
+ */
+export type EdgeExtensions = {
+  strokeColor?: string;
+};
 
-export class ParsingMessageCollector {
-  warning(warning: JsonParsingWarning): void {
-    const message = warning.getMessage();
-    console.warn(`[bv-parser] ${message.template}`, ...message.arguments);
-  }
-}
+/**
+ * @internal
+ */
+export type LabelExtensions = {
+  color?: string;
+};

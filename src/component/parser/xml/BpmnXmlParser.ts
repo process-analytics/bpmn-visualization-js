@@ -15,15 +15,33 @@ limitations under the License.
 */
 
 import { XMLParser, type X2jOptions } from 'fast-xml-parser';
-import { decodeXML } from 'entities';
 import type { BpmnJsonModel } from '../../../model/bpmn/json/BPMN20';
+import type { ParserOptions } from '../../options';
+
+type Replacement = {
+  regex: RegExp;
+  val: string;
+};
+const entitiesReplacements: Replacement[] = [
+  { regex: /&(amp|#38|#x26);/g, val: '&' },
+  { regex: /&(apos|#39|#x27);/g, val: "'" },
+  { regex: /&#(xa|xA|10);/g, val: '\n' },
+  { regex: /&(gt|#62|#x3e|#x3E);/g, val: '>' },
+  { regex: /&(lt|#60|#x3c|#x3C);/g, val: '<' },
+  { regex: /&(quot|#34|#x22);/g, val: '"' },
+];
+
+/**
+ * @internal
+ */
+export type XmlParserOptions = Pick<ParserOptions, 'additionalXmlAttributeProcessor'>;
 
 /**
  * Parse bpmn xml source
  * @internal
  */
 export default class BpmnXmlParser {
-  private x2jOptions: Partial<X2jOptions> = {
+  private readonly x2jOptions: Partial<X2jOptions> = {
     attributeNamePrefix: '', // default to '@_'
     removeNSPrefix: true,
     ignoreAttributes: false,
@@ -31,10 +49,12 @@ export default class BpmnXmlParser {
     // entities management
     processEntities: false, // If you don't have entities in your XML document then it is recommended to disable it for better performance.
     attributeValueProcessor: (_name: string, val: string) => {
-      return decodeXML(val);
+      return this.processAttribute(val);
     },
   };
   private xmlParser: XMLParser = new XMLParser(this.x2jOptions);
+
+  constructor(private options?: XmlParserOptions) {}
 
   parse(xml: string): BpmnJsonModel {
     let model: BpmnJsonModel;
@@ -51,5 +71,15 @@ export default class BpmnXmlParser {
       throw new Error(`XML parsing failed. Unable to retrieve 'definitions' from the BPMN source.`);
     }
     return model;
+  }
+
+  private processAttribute(val: string): string {
+    for (const replacement of entitiesReplacements) {
+      val = val.replace(replacement.regex, replacement.val);
+    }
+    if (this.options?.additionalXmlAttributeProcessor) {
+      val = this.options.additionalXmlAttributeProcessor(val);
+    }
+    return val;
   }
 }

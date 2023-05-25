@@ -45,16 +45,14 @@ export default class GraphCellUpdater {
   }
 
   private updateAndRefreshCssClassesOfElement(elementId: string, cssClasses: string[]): void {
-    const mxCell = this.graph.getModel().getCell(elementId);
-    if (!mxCell) {
+    const cell = this.graph.getModel().getCell(elementId);
+    if (!cell) {
       return;
     }
-    const view = this.graph.getView();
-    const state = view.getState(mxCell);
-    state.style[BpmnStyleIdentifier.EXTRA_CSS_CLASSES] = cssClasses;
-    state.shape.redraw();
-    // Ensure that label classes are also updated. When there is no label, state.text is null
-    state.text?.redraw();
+
+    let cellStyle = cell.getStyle();
+    cellStyle = setStyle(cellStyle, BpmnStyleIdentifier.EXTRA_CSS_CLASSES, cssClasses.join(','));
+    this.graph.model.setStyle(cell, cellStyle);
   }
 
   addOverlays(bpmnElementId: string, overlays: Overlay | Overlay[]): void {

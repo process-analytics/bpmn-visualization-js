@@ -20,6 +20,7 @@ import type { mxCell, mxGeometry, StyleMap } from 'mxgraph';
 import type { Opacity } from '@lib/component/registry';
 import type { MxGraphCustomOverlay, MxGraphCustomOverlayStyle } from '@lib/component/mxgraph/overlay/custom-overlay';
 import { getFontStyleValue as computeFontStyleValue } from '@lib/component/mxgraph/renderer/StyleComputer';
+import { BpmnStyleIdentifier } from '@lib/component/mxgraph/style';
 import { Font } from '@lib/model/bpmn/internal/Label';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
@@ -45,6 +46,8 @@ export interface BpmnCellStyle extends StyleMap {
   endSize?: number;
   shape?: string;
   horizontal?: number;
+  // custom bpmn-visualization
+  extraCssClasses?: string[];
 }
 
 export interface ExpectedCell {
@@ -142,6 +145,8 @@ export function buildExpectedCellStyleWithCommonAttributes(expectedModelElt: Exp
     fontColor: font?.color ?? 'Black',
     fontStyle: getFontStyleValue(font),
     fontOpacity: expectedModelElt.font?.opacity,
+    // custom bpmn-visualization
+    extraCssClasses: expectedModelElt.extraCssClasses,
   };
 }
 
@@ -165,9 +170,10 @@ export function buildReceivedViewStateStyle(cell: mxCell, bv = bpmnVisualization
  * It returns the style + properties resolved from the referenced styleNames (generally at the beginning of the "cell.style" string) as computed by mxStylesheet.prototype.getCellStyle.
  *
  * @param cell The Cell to consider for the computation of the resolved style.
+ * @param bv The instance of BpmnVisualization under test
  */
-function buildReceivedResolvedModelCellStyle(cell: mxCell): BpmnCellStyle {
-  return toBpmnStyle(bpmnVisualization.graph.getCellStyle(cell), cell.edge);
+export function buildReceivedResolvedModelCellStyle(cell: mxCell, bv = bpmnVisualization): BpmnCellStyle {
+  return toBpmnStyle(bv.graph.getCellStyle(cell), cell.edge);
 }
 
 function toBpmnStyle(rawStyle: StyleMap, isEdge: boolean): BpmnCellStyle {
@@ -184,6 +190,8 @@ function toBpmnStyle(rawStyle: StyleMap, isEdge: boolean): BpmnCellStyle {
     fontColor: rawStyle.fontColor,
     fontStyle: rawStyle.fontStyle,
     fontOpacity: rawStyle.textOpacity,
+    // custom bpmn-visualization
+    extraCssClasses: rawStyle[BpmnStyleIdentifier.EXTRA_CSS_CLASSES]?.split(','),
   };
 
   if (isEdge) {

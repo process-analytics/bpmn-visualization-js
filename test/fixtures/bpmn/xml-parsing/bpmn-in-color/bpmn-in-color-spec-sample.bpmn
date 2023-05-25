@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<semantic:definitions
+    xmlns:semantic="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    xmlns:trisobpmn="http://www.trisotech.com/2014/triso/bpmn"
+    xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+    xmlns:trisofeed="http://trisotech.com/feed"
+    xmlns:bpsim="http://www.bpsim.org/schemas/1.0"
+    xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+    xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:color="http://www.omg.org/spec/BPMN/non-normative/color/1.0"
+    xmlns="http://www.trisotech.com/definitions/_a4c47e3e-f20b-4677-a854-a51220fb53f7" id="_54daf565-ab8f-495b-affa-1c2271e9ceb4" exporter="BPMN 2.0 Web Modeler" exporterVersion="4.2.12" trisobpmn:logoChoice="Default" name="BPMN In Color Sample" targetNamespace="http://www.trisotech.com/definitions/_a4c47e3e-f20b-4677-a854-a51220fb53f7" expressionLanguage="http://www.w3.org/1999/XPath" typeLanguage="http://www.w3.org/2001/XMLSchema">
+    <semantic:process id="_1e131ed9-d102-4ba3-a315-d324759c4680" name="Untitled Diagram">
+        <semantic:startEvent id="_78b4da98-f775-430d-8e2e-2981e0e0fb5d" name="Green Fill">
+            <semantic:outgoing>_703bc99e-e861-4841-9883-977244bf69a3</semantic:outgoing>
+        </semantic:startEvent>
+        <semantic:sequenceFlow id="_703bc99e-e861-4841-9883-977244bf69a3" sourceRef="_78b4da98-f775-430d-8e2e-2981e0e0fb5d" targetRef="task_orange_border"/>
+        <semantic:task id="task_orange_border" name="Orange Border" startQuantity="1" completionQuantity="1" isForCompensation="false">
+            <semantic:incoming>_703bc99e-e861-4841-9883-977244bf69a3</semantic:incoming>
+            <semantic:outgoing>sequence_flow_1</semantic:outgoing>
+        </semantic:task>
+        <semantic:sequenceFlow id="sequence_flow_1" name="Orange link" sourceRef="task_orange_border" targetRef="_228e45d8-ece8-42a3-b11c-89695e468954"/>
+        <semantic:endEvent id="endEvent_red_font" name="Red Font">
+            <semantic:incoming>_82e55eb0-f279-48e2-bbda-1f2617613586</semantic:incoming>
+        </semantic:endEvent>
+        <semantic:sequenceFlow id="_82e55eb0-f279-48e2-bbda-1f2617613586" name="No Color" sourceRef="_893e9069-78f0-4d90-a663-194aefed6a7f" targetRef="endEvent_red_font"/>
+        <semantic:task id="_228e45d8-ece8-42a3-b11c-89695e468954" name="Pink Fill
+Green Border
+Blue Font" startQuantity="1" completionQuantity="1" isForCompensation="false">
+            <semantic:incoming>sequence_flow_1</semantic:incoming>
+            <semantic:outgoing>_e3aaaf68-3efa-47ff-b668-d4b06ed5ba92</semantic:outgoing>
+        </semantic:task>
+        <semantic:sequenceFlow id="_e3aaaf68-3efa-47ff-b668-d4b06ed5ba92" name="No color" sourceRef="_228e45d8-ece8-42a3-b11c-89695e468954" targetRef="_893e9069-78f0-4d90-a663-194aefed6a7f"/>
+        <semantic:task id="_893e9069-78f0-4d90-a663-194aefed6a7f" name="No Color" startQuantity="1" completionQuantity="1" isForCompensation="false">
+            <semantic:incoming>_e3aaaf68-3efa-47ff-b668-d4b06ed5ba92</semantic:incoming>
+            <semantic:outgoing>_82e55eb0-f279-48e2-bbda-1f2617613586</semantic:outgoing>
+        </semantic:task>
+    </semantic:process>
+    <bpmndi:BPMNDiagram id="_f6772987-bc53-476d-aa2a-e03ad6926777" name="Untitled Diagram" documentation="">
+        <bpmndi:BPMNPlane bpmnElement="_1e131ed9-d102-4ba3-a315-d324759c4680" id="_f6772987-bc53-476d-aa2a-e03ad6926777_plane" trisobpmn:diagramWidth="2219.5" trisobpmn:diagramHeight="1050">
+            <bpmndi:BPMNShape id="_60c63255-9daf-4a2c-8513-03e9471bfbac" bpmnElement="_78b4da98-f775-430d-8e2e-2981e0e0fb5d" color:background-color="#008000" color:border-color="#000000">
+                <dc:Bounds x="153" y="190" width="32" height="32"/>
+                <bpmndi:BPMNLabel color:color="#000000" labelStyle="LS_f6772987-bc53-476d-aa2a-e03ad6926777">
+                    <dc:Bounds height="12" width="110" x="114" y="232"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="_fad4298f-0960-4c29-a42e-e43a756aa310" bpmnElement="_703bc99e-e861-4841-9883-977244bf69a3" color:border-color="#000000">
+                <di:waypoint x="184" y="206"/>
+                <di:waypoint x="230" y="206"/>
+                <bpmndi:BPMNLabel color:color="#000000" labelStyle="LS_f6772987-bc53-476d-aa2a-e03ad6926777"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="task_orange_border_shape_id" bpmnElement="task_orange_border" color:background-color="#ffffff" color:border-color="#FF6600">
+                <dc:Bounds x="230" y="168" width="96" height="76"/>
+                <bpmndi:BPMNLabel color:color="#000000" labelStyle="LS_f6772987-bc53-476d-aa2a-e03ad6926777">
+                    <dc:Bounds height="12" width="96" x="230" y="200"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="sequence_flow_1_edge_id" bpmnElement="sequence_flow_1" color:border-color="#FF6600">
+                <di:waypoint x="325" y="206"/>
+                <di:waypoint x="417" y="206"/>
+                <bpmndi:BPMNLabel color:color="#000000" labelStyle="LS_f6772987-bc53-476d-aa2a-e03ad6926777">
+                    <dc:Bounds height="12" width="110" x="316.359375" y="211"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="endEvent_red_font_shape_id" bpmnElement="endEvent_red_font" color:background-color="#ffffff" color:border-color="#000000">
+                <dc:Bounds x="788" y="188" width="36" height="36"/>
+                <bpmndi:BPMNLabel color:color="#FF0000" labelStyle="LS_f6772987-bc53-476d-aa2a-e03ad6926777">
+                    <dc:Bounds height="12" width="110" x="751" y="234"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="_a800506e-6bf2-4ed9-908b-3271bf6f5773" bpmnElement="_82e55eb0-f279-48e2-bbda-1f2617613586" color:border-color="#000000">
+                <di:waypoint x="697" y="206"/>
+                <di:waypoint x="788" y="206"/>
+                <bpmndi:BPMNLabel color:color="#000000" labelStyle="LS_f6772987-bc53-476d-aa2a-e03ad6926777">
+                    <dc:Bounds height="12" width="110" x="688.35546875" y="211"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="_fccc92cf-037c-4074-b0d0-60acdecc940a" bpmnElement="_228e45d8-ece8-42a3-b11c-89695e468954" color:background-color="#FF00FF" color:border-color="#00FF00">
+                <dc:Bounds x="416" y="168" width="96" height="76"/>
+                <bpmndi:BPMNLabel color:color="#3366FF" labelStyle="LS_f6772987-bc53-476d-aa2a-e03ad6926777">
+                    <dc:Bounds height="40" width="96" x="416" y="186"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="_1e7a0383-5e06-42fa-b787-5525def034ff" bpmnElement="_e3aaaf68-3efa-47ff-b668-d4b06ed5ba92" color:border-color="#000000">
+                <di:waypoint x="511" y="206"/>
+                <di:waypoint x="603" y="206"/>
+                <bpmndi:BPMNLabel color:color="#000000" labelStyle="LS_f6772987-bc53-476d-aa2a-e03ad6926777">
+                    <dc:Bounds height="12" width="110" x="502.359375" y="211"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="_ef4a0cdf-7ff8-46a9-9b79-4de0f1560e50" bpmnElement="_893e9069-78f0-4d90-a663-194aefed6a7f" color:background-color="#ffffff" color:border-color="#000000">
+                <dc:Bounds x="602" y="168" width="96" height="76"/>
+                <bpmndi:BPMNLabel color:color="#000000" labelStyle="LS_f6772987-bc53-476d-aa2a-e03ad6926777">
+                    <dc:Bounds height="12" width="96" x="602" y="200"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+        </bpmndi:BPMNPlane>
+        <bpmndi:BPMNLabelStyle id="LS_f6772987-bc53-476d-aa2a-e03ad6926777">
+            <dc:Font isBold="false" isItalic="false" isStrikeThrough="false" isUnderline="false" name="Arial" size="8"/>
+        </bpmndi:BPMNLabelStyle>
+    </bpmndi:BPMNDiagram>
+    <semantic:relationship type="ActivityStream">
+        <semantic:extensionElements>
+            <rss
+                xmlns="http://purl.org/rss/2.0/"
+                xmlns:trisofeed="http://trisotech.com/feed" version="2.0">
+                <channel/>
+            </rss>
+        </semantic:extensionElements>
+        <semantic:source>_54daf565-ab8f-495b-affa-1c2271e9ceb4</semantic:source>
+        <semantic:target>_54daf565-ab8f-495b-affa-1c2271e9ceb4</semantic:target>
+    </semantic:relationship>
+</semantic:definitions>
