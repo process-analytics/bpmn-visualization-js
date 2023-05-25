@@ -135,48 +135,52 @@ describe('diagram navigation - disable and enable', () => {
   });
 
   it('mouse panning', async () => {
-    pageTester.clickOnButton('disable-navigation');
+    await pageTester.clickOnButton('disable-navigation');
     await pageTester.mousePanning({ originPoint: containerCenter, destinationPoint: { x: containerCenter.x + 150, y: containerCenter.y + 40 } });
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image).toMatchImageSnapshot({
       ...config,
-      customSnapshotIdentifier: 'disabled.mouse.panning',
+      customSnapshotIdentifier: 'disabled.initial.zoom',
+      customDiffDir: join(config.customDiffDir, 'disabled.mouse.panning'),
     });
 
-    pageTester.clickOnButton('enable-navigation');
+    await pageTester.clickOnButton('enable-navigation');
     await pageTester.mousePanning({ originPoint: containerCenter, destinationPoint: { x: containerCenter.x + 150, y: containerCenter.y + 40 } });
 
     const image2 = await page.screenshot({ fullPage: true });
     const config2 = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image2).toMatchImageSnapshot({
       ...config2,
-      customSnapshotIdentifier: 'enabled.mouse.panning',
+      customSnapshotIdentifier: 'mouse.panning',
+      customDiffDir: join(config.customDiffDir, 'enabled.mouse.panning'),
     });
   });
 
   describe.each([ZoomType.In, ZoomType.Out])(`ctrl + mouse: zoom %s`, (zoomType: ZoomType) => {
     it('zoom %s times', async () => {
-      pageTester.clickOnButton('disable-navigation');
+      await pageTester.clickOnButton('disable-navigation');
       await pageTester.mouseZoom({ x: containerCenter.x + 200, y: containerCenter.y }, zoomType, 3);
 
       const image = await page.screenshot({ fullPage: true });
       const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
       expect(image).toMatchImageSnapshot({
         ...config,
-        customSnapshotIdentifier: `disabled.mouse.zoom.${zoomType}.3.times`,
+        customSnapshotIdentifier: 'disabled.initial.zoom',
+        customDiffDir: join(config.customDiffDir, `disabled.mouse.zoom.${zoomType}.3.times`),
       });
 
       // Enable
-      pageTester.clickOnButton('enable-navigation');
+      await pageTester.clickOnButton('enable-navigation');
       await pageTester.mouseZoom({ x: containerCenter.x + 200, y: containerCenter.y }, zoomType, 3);
 
       const image2 = await page.screenshot({ fullPage: true });
       const config2 = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
       expect(image2).toMatchImageSnapshot({
         ...config2,
-        customSnapshotIdentifier: `enabled.mouse.zoom.${zoomType}.3.times`,
+        customSnapshotIdentifier: `mouse.zoom.${zoomType}.3.times`,
+        customDiffDir: join(config.customDiffDir, `enabled.mouse.zoom.${zoomType}.3.times`),
       });
     });
   });

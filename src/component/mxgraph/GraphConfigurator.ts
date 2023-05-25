@@ -62,7 +62,7 @@ export default class GraphConfigurator {
 
   private configureNavigationSupport(options: GlobalOptions): void {
     if (options?.navigation?.enabled) {
-      this.graph.enableNavigation(options.navigation.zoom ?? {});
+      this.graph.enableNavigation(options.navigation.zoom);
     } else {
       this.graph.disableNavigation();
     }
