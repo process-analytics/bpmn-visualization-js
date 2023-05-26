@@ -23,13 +23,6 @@ export enum ShapeBpmnElementKind {
   POOL = 'pool',
   CALL_ACTIVITY = 'callActivity',
   SUB_PROCESS = 'subProcess',
-  // When adding support, uncomment related content in tests
-  // test/unit/component/mxgraph/renderer/StyleComputer.test.ts
-  // test/unit/component/parser/json/BpmnJsonParser.marker.test.ts (adhoc requires special checks as an additional marker should be present)
-  // Generalize test/unit/component/parser/json/BpmnJsonParser.sub.process.test.ts
-  // See also, ShapeBpmnSubProcessKind
-  // SUB_PROCESS_AD_HOC = 'adHocSubProcess',
-  // SUB_PROCESS_TRANSACTION = 'transaction',
 
   TASK = 'task',
   TASK_USER = 'userTask',
@@ -142,7 +135,11 @@ export enum ShapeBpmnMarkerKind {
 export enum ShapeBpmnSubProcessKind {
   EMBEDDED = 'embedded',
   EVENT = 'event',
-  // The following may be only needed for rendering, as we have special types for adHoc and transaction subprocess in ShapeBpmnElementKind
+  // When adding support, uncomment/update tests
+  //   test/unit/component/mxgraph/renderer/StyleComputer.test.ts
+  //   test/unit/component/parser/json/BpmnJsonParser.marker.test.ts (adhoc requires special checks as an additional marker should be present)
+  // Create a dedicated describe or a dedicated file inspired from
+  //   test/unit/component/parser/json/BpmnJsonParser.sub.process.test.ts
   // TRANSACTION = 'transaction',
   // AD_HOC = 'ad_hoc',
 }
