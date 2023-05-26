@@ -156,6 +156,7 @@ export interface BuildProcessParameter {
   gateway?: BuildGatewayParameter | BuildGatewayParameter[];
   callActivity?: BuildCallActivityParameter | BuildCallActivityParameter[];
   subProcess?: BuildSubProcessParameter | BuildSubProcessParameter[];
+  transaction?: BuildSubProcessParameter | BuildSubProcessParameter[];
   sequenceFlow?: BuildSequenceFlowParameter | BuildSequenceFlowParameter[];
   association?: BuildAssociationParameter | BuildAssociationParameter[];
   textAnnotation?: BuildTextAnnotationParameter | BuildTextAnnotationParameter[];
@@ -359,6 +360,11 @@ function addElementsOnProcess(processParameter: BuildProcessParameter, json: Bpm
   if (processParameter.subProcess) {
     (Array.isArray(processParameter.subProcess) ? processParameter.subProcess : [processParameter.subProcess]).forEach(({ isExpanded, ...rest }, index) =>
       addProcessElementWithShape(json, 'subProcess', { ...rest, index, processIndex }, { Bounds: { x: 67, y: 23, width: 456, height: 123 }, isExpanded }),
+    );
+  }
+  if (processParameter.transaction) {
+    (Array.isArray(processParameter.transaction) ? processParameter.transaction : [processParameter.transaction]).forEach(({ isExpanded, ...rest }, index) =>
+      addProcessElementWithShape(json, 'transaction', { ...rest, index, processIndex }, { Bounds: { x: 167, y: 123, width: 456, height: 123 }, isExpanded }),
     );
   }
   if (processParameter.event) {

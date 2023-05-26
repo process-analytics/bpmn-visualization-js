@@ -26,7 +26,7 @@ describe.each([
   ['subProcess', ShapeBpmnElementKind.SUB_PROCESS],
   // Uncomment when it's supported
   // ['adHocSubProcess', ShapeBpmnElementKind.SUB_PROCESS],
-  // ['transaction', ShapeBpmnElementKind.SUB_PROCESS],
+  ['transaction', ShapeBpmnElementKind.SUB_PROCESS],
   ['task', ShapeBpmnElementKind.TASK],
   ['serviceTask', ShapeBpmnElementKind.TASK_SERVICE],
   ['userTask', ShapeBpmnElementKind.TASK_USER],

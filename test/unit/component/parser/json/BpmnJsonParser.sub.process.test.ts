@@ -24,7 +24,7 @@ import {
   verifySubProcess,
 } from '../../../helpers/JsonTestUtils';
 import { getEventShapes } from '../../../helpers/TestUtils';
-import type { ExpectedShape } from '../../../helpers/bpmn-model-expect';
+import type { ExpectedBounds, ExpectedShape } from '../../../helpers/bpmn-model-expect';
 import { verifyEdge, verifyShape } from '../../../helpers/bpmn-model-expect';
 
 import type BpmnModel from '@lib/model/bpmn/internal/BpmnModel';
@@ -48,19 +48,25 @@ function verifyEventShape(shape: Shape, expectedShape: ExpectedShape, expectedEv
   expect((shape.bpmnElement as ShapeBpmnEvent).eventDefinitionKind).toEqual(expectedEventDefinitionKind);
 }
 
-const expectedBounds = { x: 67, y: 23, width: 456, height: 123 };
+type BpmnSubprocessSemanticType = 'subProcess' | 'transaction';
 
 describe('parse bpmn as json for sub-process', () => {
   describe.each([
-    ['embedded', false, ShapeBpmnSubProcessKind.EMBEDDED],
-    ['event', true, ShapeBpmnSubProcessKind.EVENT],
-  ])('parse bpmn as json for %s sub-process', (bpmnSubProcessKind: string, triggeredByEvent: boolean, expectedShapeBpmnSubProcessKind: ShapeBpmnSubProcessKind) => {
+    [ShapeBpmnSubProcessKind.EMBEDDED, false],
+    [ShapeBpmnSubProcessKind.EVENT, true],
+    [ShapeBpmnSubProcessKind.TRANSACTION, false],
+  ])('ShapeBpmnSubProcessKind: %s', (expectedShapeBpmnSubProcessKind: ShapeBpmnSubProcessKind, triggeredByEvent: boolean) => {
+    const expectedBounds: ExpectedBounds =
+      expectedShapeBpmnSubProcessKind === ShapeBpmnSubProcessKind.TRANSACTION ? { x: 167, y: 123, width: 456, height: 123 } : { x: 67, y: 23, width: 456, height: 123 };
+
+    const bpmnSubprocessSemanticType: BpmnSubprocessSemanticType = expectedShapeBpmnSubProcessKind === ShapeBpmnSubProcessKind.TRANSACTION ? 'transaction' : 'subProcess';
+
     describe.each([
       ['expanded', true, []],
       ['collapsed', false, [ShapeBpmnMarkerKind.EXPAND]],
-    ])(`parse bpmn as json for %s ${bpmnSubProcessKind} sub-process`, (expandedKind: string, isExpanded: boolean, expectedBpmnElementMarkers: ShapeBpmnMarkerKind[]) => {
+    ])(`'Expansion kind: %s'`, (expandedKind: string, isExpanded: boolean, expectedBpmnElementMarkers: ShapeBpmnMarkerKind[]) => {
       const processWithSubProcessAsObject = {
-        subProcess: {
+        [bpmnSubprocessSemanticType]: {
           id: 'sub_process_id_0',
           name: `sub-process name`,
           triggeredByEvent: triggeredByEvent,
@@ -72,7 +78,7 @@ describe('parse bpmn as json for sub-process', () => {
         ['object', processWithSubProcessAsObject],
         ['array', [processWithSubProcessAsObject]],
       ])(
-        `should convert as Shape, when a ${expandedKind} ${bpmnSubProcessKind} sub-process is an attribute (as object) of 'process' (as %s)`,
+        `should convert as Shape, when a ${expandedKind} ${expectedShapeBpmnSubProcessKind} sub-process is an attribute (as object) of 'process' (as %s)`,
         (title: string, processParameter: BuildProcessParameter | BuildProcessParameter[]) => {
           const json = buildDefinitions({ process: processParameter });
 
@@ -89,7 +95,7 @@ describe('parse bpmn as json for sub-process', () => {
         },
       );
 
-      describe(`incoming/outgoing management for ${expandedKind} ${bpmnSubProcessKind} sub-process`, () => {
+      describe(`incoming/outgoing management for ${expandedKind} ${expectedShapeBpmnSubProcessKind} sub-process`, () => {
         it.each`
           title       | inputAttribute | expectedAttribute
           ${'string'} | ${'incoming'}  | ${'bpmnElementIncomingIds'}
@@ -97,11 +103,11 @@ describe('parse bpmn as json for sub-process', () => {
           ${'string'} | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
           ${'array'}  | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
         `(
-          `should convert as Shape with $inputAttribute attribute calculated from ${expandedKind} ${bpmnSubProcessKind} sub-process attribute as $title`,
+          `should convert as Shape with $inputAttribute attribute calculated from ${expandedKind} ${expectedShapeBpmnSubProcessKind} sub-process attribute as $title`,
           ({ title, inputAttribute, expectedAttribute }: { title: string; inputAttribute: 'incoming' | 'outgoing'; expectedAttribute: keyof ExpectedShape }) => {
             const json = buildDefinitions({
               process: {
-                subProcess: {
+                [bpmnSubprocessSemanticType]: {
                   id: 'sub_process_id_0',
                   triggeredByEvent: triggeredByEvent,
                   [inputAttribute]: title === 'array' ? [`flow_${inputAttribute}_1`, `flow_${inputAttribute}_2`] : `flow_${inputAttribute}_1`,
@@ -112,6 +118,7 @@ describe('parse bpmn as json for sub-process', () => {
 
             const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
+            verifySubProcess(model, expectedShapeBpmnSubProcessKind, 1);
             verifyShape(model.flowNodes[0], {
               shapeId: 'shape_sub_process_id_0',
               bpmnElementId: 'sub_process_id_0',
@@ -135,7 +142,7 @@ describe('parse bpmn as json for sub-process', () => {
           ({ title, flowKind, expectedAttribute }: { title: string; flowKind: 'sequenceFlow' | 'association'; expectedAttribute: keyof ExpectedShape }) => {
             const json = buildDefinitions({
               process: {
-                subProcess: { id: 'sub_process_id_0', triggeredByEvent: triggeredByEvent, isExpanded },
+                [bpmnSubprocessSemanticType]: { id: 'sub_process_id_0', triggeredByEvent: triggeredByEvent, isExpanded },
                 [flowKind]: {
                   id: `flow_${title}`,
                   sourceRef: title === 'incoming' ? 'unknown' : 'sub_process_id_0',
@@ -146,6 +153,7 @@ describe('parse bpmn as json for sub-process', () => {
 
             const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
 
+            verifySubProcess(model, expectedShapeBpmnSubProcessKind, 1);
             verifyShape(model.flowNodes[0], {
               shapeId: 'shape_sub_process_id_0',
               bpmnElementId: 'sub_process_id_0',
@@ -167,7 +175,7 @@ describe('parse bpmn as json for sub-process', () => {
           ({ title, expectedAttribute }: { title: string; expectedAttribute: keyof ExpectedShape }) => {
             const json = buildDefinitions({
               process: {
-                subProcess: { id: 'sub_process_id_0', triggeredByEvent: triggeredByEvent, isExpanded },
+                [bpmnSubprocessSemanticType]: { id: 'sub_process_id_0', triggeredByEvent: triggeredByEvent, isExpanded },
               },
               messageFlows: {
                 id: `flow_${title}`,
@@ -178,6 +186,7 @@ describe('parse bpmn as json for sub-process', () => {
 
             const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
 
+            verifySubProcess(model, expectedShapeBpmnSubProcessKind, 1);
             verifyShape(model.flowNodes[0], {
               shapeId: 'shape_sub_process_id_0',
               bpmnElementId: 'sub_process_id_0',
@@ -190,10 +199,16 @@ describe('parse bpmn as json for sub-process', () => {
           },
         );
 
-        it(`should convert as Shape with incoming/outgoing attributes calculated from ${expandedKind} ${bpmnSubProcessKind} sub-process attributes and from flows`, () => {
+        it(`should convert as Shape with incoming/outgoing attributes calculated from ${expandedKind} ${expectedShapeBpmnSubProcessKind} sub-process attributes and from flows`, () => {
           const json = buildDefinitions({
             process: {
-              subProcess: { id: 'sub_process_id_0', triggeredByEvent: triggeredByEvent, incoming: 'flow_in_1', outgoing: ['flow_out_1', 'flow_out_2'], isExpanded },
+              [bpmnSubprocessSemanticType]: {
+                id: 'sub_process_id_0',
+                triggeredByEvent: triggeredByEvent,
+                incoming: 'flow_in_1',
+                outgoing: ['flow_out_1', 'flow_out_2'],
+                isExpanded,
+              },
               sequenceFlow: [
                 { id: 'flow_in_1', sourceRef: 'unknown', targetRef: 'sub_process_id_0' },
                 { id: 'flow_out_2', sourceRef: 'sub_process_id_0', targetRef: 'unknown' },
@@ -205,6 +220,7 @@ describe('parse bpmn as json for sub-process', () => {
 
           const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 4, 1);
 
+          verifySubProcess(model, expectedShapeBpmnSubProcessKind, 1);
           verifyShape(model.flowNodes[0], {
             shapeId: 'shape_sub_process_id_0',
             bpmnElementId: 'sub_process_id_0',
@@ -219,10 +235,10 @@ describe('parse bpmn as json for sub-process', () => {
       });
     });
 
-    it(`should convert as Shape, when a ${bpmnSubProcessKind} sub-process (with/without name & isExpanded) is an attribute (as array) of 'process'`, () => {
+    it(`should convert as Shape, when a ${expectedShapeBpmnSubProcessKind} sub-process (with/without name & isExpanded) is an attribute (as array) of 'process'`, () => {
       const json = buildDefinitions({
         process: {
-          subProcess: [
+          [bpmnSubprocessSemanticType]: [
             {
               id: 'sub_process_id_0',
               name: 'sub-process name',
@@ -257,11 +273,11 @@ describe('parse bpmn as json for sub-process', () => {
       });
     });
 
-    if (expectedShapeBpmnSubProcessKind === ShapeBpmnSubProcessKind.EMBEDDED) {
+    if (expectedShapeBpmnSubProcessKind !== ShapeBpmnSubProcessKind.EVENT) {
       it(`should convert as Shape, when a embedded sub-process (with/without triggeredByEvent) is an attribute (as object) of 'process'`, () => {
         const json = buildDefinitions({
           process: {
-            subProcess: { id: 'sub_process_id_1' },
+            [bpmnSubprocessSemanticType]: { id: 'sub_process_id_1' },
           },
         });
 
@@ -283,7 +299,7 @@ describe('parse bpmn as json for sub-process', () => {
         definitions: {
           targetNamespace: '',
           process: {
-            subProcess: {
+            [bpmnSubprocessSemanticType]: {
               id: 'sub-process_id_1',
               collapsed: false,
               triggeredByEvent: triggeredByEvent,
@@ -491,7 +507,7 @@ describe('parse bpmn as json for sub-process', () => {
           definitions: {
             targetNamespace: '',
             process: {
-              subProcess: {
+              [bpmnSubprocessSemanticType]: {
                 id: 'sub-process_id_1',
                 collapsed: false,
                 triggeredByEvent: triggeredByEvent,
