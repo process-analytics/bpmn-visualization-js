@@ -59,6 +59,13 @@ type FlowNode = TFlowNode | TActivity | TReceiveTask | TEventBasedGateway | TTex
 
 type BpmnSemanticType = keyof TProcess;
 
+const computeSubProcessKind = (processedSemanticType: BpmnSemanticType, bpmnElement: TActivity): ShapeBpmnSubProcessKind => {
+  if (processedSemanticType == 'transaction') {
+    return ShapeBpmnSubProcessKind.TRANSACTION;
+  }
+  return !(<TSubProcess>bpmnElement).triggeredByEvent ? ShapeBpmnSubProcessKind.EMBEDDED : ShapeBpmnSubProcessKind.EVENT;
+};
+
 /**
  * @internal
  */
@@ -205,14 +212,7 @@ export default class ProcessConverter {
     const markers = buildMarkers(bpmnElement);
 
     if (ShapeUtil.isSubProcess(kind)) {
-      const subProcessKind =
-        processedSemanticType == 'transaction'
-          ? ShapeBpmnSubProcessKind.TRANSACTION
-          : !(<TSubProcess>bpmnElement).triggeredByEvent
-          ? ShapeBpmnSubProcessKind.EMBEDDED
-          : ShapeBpmnSubProcessKind.EVENT;
-
-      return this.buildShapeBpmnSubProcess(subProcessKind, bpmnElement, parentId, markers);
+      return this.buildShapeBpmnSubProcess(computeSubProcessKind(processedSemanticType, bpmnElement), bpmnElement, parentId, markers);
     }
 
     if (!ShapeUtil.isCallActivity(kind)) {
