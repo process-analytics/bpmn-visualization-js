@@ -38,7 +38,7 @@ import { eventDefinitionKinds } from '../../../../model/bpmn/internal/shape/util
 import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/flows';
 import type { TProcess } from '../../../../model/bpmn/json/baseElement/rootElement/rootElement';
 import type { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../../../model/bpmn/json/baseElement/flowNode/event';
-import type { TActivity, TCallActivity, TSubProcess } from '../../../../model/bpmn/json/baseElement/flowNode/activity/activity';
+import type { TActivity, TCallActivity, TSubProcess, TTransaction } from '../../../../model/bpmn/json/baseElement/flowNode/activity/activity';
 import type { TLane, TLaneSet } from '../../../../model/bpmn/json/baseElement/baseElement';
 import type { TFlowNode, TSequenceFlow } from '../../../../model/bpmn/json/baseElement/flowElement';
 import type { TAssociation, TGroup, TTextAnnotation } from '../../../../model/bpmn/json/baseElement/artifact';
@@ -59,11 +59,11 @@ type FlowNode = TFlowNode | TActivity | TReceiveTask | TEventBasedGateway | TTex
 
 type BpmnSemanticType = keyof TProcess;
 
-const computeSubProcessKind = (processedSemanticType: BpmnSemanticType, bpmnElement: TActivity): ShapeBpmnSubProcessKind => {
+const computeSubProcessKind = (processedSemanticType: BpmnSemanticType, bpmnElement: TSubProcess | TTransaction): ShapeBpmnSubProcessKind => {
   if (processedSemanticType == 'transaction') {
     return ShapeBpmnSubProcessKind.TRANSACTION;
   }
-  return !(<TSubProcess>bpmnElement).triggeredByEvent ? ShapeBpmnSubProcessKind.EMBEDDED : ShapeBpmnSubProcessKind.EVENT;
+  return !bpmnElement.triggeredByEvent ? ShapeBpmnSubProcessKind.EMBEDDED : ShapeBpmnSubProcessKind.EVENT;
 };
 
 /**
