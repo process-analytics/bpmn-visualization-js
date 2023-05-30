@@ -20,6 +20,7 @@ import { computeBanner } from './scripts/shared/banner.mjs';
 import pkg from './package.json' assert { type: 'json' };
 
 import terser from '@rollup/plugin-terser';
+import cleanup from 'rollup-plugin-cleanup';
 import externals from 'rollup-plugin-node-externals';
 import sizes from 'rollup-plugin-sizes';
 
@@ -53,7 +54,7 @@ const outputIIFE = {
 const configIIFE = {
   input: libInput,
   output: outputIIFE,
-  plugins: pluginsBundleIIFE,
+  plugins: withCleanup(pluginsBundleIIFE),
 };
 /**
  * @type {import('rollup').RollupOptions}
@@ -72,13 +73,13 @@ const configIIFEMinified = {
  */
 const configESM = {
   input: libInput,
-  plugins: [
+  plugins: withCleanup([
     typescriptPlugin(),
     // ensure we do not bundle dependencies
     externals({ devDeps: true }),
     // to have sizes of dependencies listed at the end of build log
     sizes(),
-  ],
+  ]),
   output: {
     file: pkg.module,
     format: 'es',
@@ -106,6 +107,16 @@ function withMinification(plugins, banner) {
       format: {
         preamble: banner,
       },
+    }),
+  ];
+}
+
+function withCleanup(plugins) {
+  return [
+    ...plugins,
+    cleanup({
+      comments: 'none',
+      extensions: ['js', 'ts'],
     }),
   ];
 }
