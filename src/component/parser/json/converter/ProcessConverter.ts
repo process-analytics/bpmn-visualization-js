@@ -212,7 +212,7 @@ export default class ProcessConverter {
     const markers = buildMarkers(bpmnElement);
 
     if (ShapeUtil.isSubProcess(kind)) {
-      return this.buildShapeBpmnSubProcess(computeSubProcessKind(processedSemanticType, bpmnElement), bpmnElement, parentId, markers);
+      return this.buildShapeBpmnSubProcess(bpmnElement, parentId, computeSubProcessKind(processedSemanticType, bpmnElement), markers);
     }
 
     if (!ShapeUtil.isCallActivity(kind)) {
@@ -289,7 +289,7 @@ export default class ProcessConverter {
       .filter(eventDefinition => eventDefinition.counter > 0);
   }
 
-  private buildShapeBpmnSubProcess(subProcessKind: ShapeBpmnSubProcessKind, bpmnElement: TSubProcess, parentId: string, markers: ShapeBpmnMarkerKind[]): ShapeBpmnSubProcess {
+  private buildShapeBpmnSubProcess(bpmnElement: TSubProcess, parentId: string, subProcessKind: ShapeBpmnSubProcessKind, markers: ShapeBpmnMarkerKind[]): ShapeBpmnSubProcess {
     const convertedSubProcess = new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, subProcessKind, parentId, markers);
     this.buildProcessInnerElements(bpmnElement, bpmnElement.id);
     return convertedSubProcess;
