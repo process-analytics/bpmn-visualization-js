@@ -22,28 +22,28 @@ limitations under the License.
  * @category BPMN Theme
  * @experimental
  */
-export class BpmnStyleIdentifier {
+export const BpmnStyleIdentifier = {
   // edge
-  static readonly EDGE = 'bpmn.edge';
-  static readonly EDGE_START_FILL_COLOR = 'bpmn.edge.startFillColor';
-  static readonly EDGE_END_FILL_COLOR = 'bpmn.edge.endFillColor';
+  EDGE: 'bpmn.edge',
+  EDGE_START_FILL_COLOR: 'bpmn.edge.startFillColor',
+  EDGE_END_FILL_COLOR: 'bpmn.edge.endFillColor',
 
   // kind
-  static readonly EVENT_BASED_GATEWAY_KIND = 'bpmn.gatewayKind';
-  static readonly EVENT_DEFINITION_KIND = 'bpmn.eventDefinitionKind';
-  static readonly GLOBAL_TASK_KIND = 'bpmn.globalTaskKind';
-  static readonly SUB_PROCESS_KIND = 'bpmn.subProcessKind';
+  EVENT_BASED_GATEWAY_KIND: 'bpmn.gatewayKind',
+  EVENT_DEFINITION_KIND: 'bpmn.eventDefinitionKind',
+  GLOBAL_TASK_KIND: 'bpmn.globalTaskKind',
+  SUB_PROCESS_KIND: 'bpmn.subProcessKind',
 
   // state
-  static readonly IS_INITIATING = 'bpmn.isInitiating';
-  static readonly IS_INSTANTIATING = 'bpmn.isInstantiating';
-  static readonly IS_INTERRUPTING = 'bpmn.isInterrupting';
+  IS_INITIATING: 'bpmn.isInitiating',
+  IS_INSTANTIATING: 'bpmn.isInstantiating',
+  IS_INTERRUPTING: 'bpmn.isInterrupting',
 
   // other identifiers
-  static readonly EXTRA_CSS_CLASSES = 'bpmn.extra.css.classes';
-  static readonly MARKERS = 'bpmn.markers';
-  static readonly MESSAGE_FLOW_ICON = 'bpmn.messageFlowIcon';
-}
+  EXTRA_CSS_CLASSES: 'bpmn.extra.css.classes',
+  MARKERS: 'bpmn.markers',
+  MESSAGE_FLOW_ICON: 'bpmn.messageFlowIcon',
+};
 
 /**
  * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
@@ -51,6 +51,6 @@ export class BpmnStyleIdentifier {
  * @category BPMN Theme
  * @experimental
  */
-export class MarkerIdentifier {
-  static readonly ARROW_DASH = 'bpmn.dash';
-}
+export const MarkerIdentifier = {
+  ARROW_DASH: 'bpmn.dash',
+};
