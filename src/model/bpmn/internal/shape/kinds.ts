@@ -135,11 +135,11 @@ export enum ShapeBpmnMarkerKind {
 export enum ShapeBpmnSubProcessKind {
   EMBEDDED = 'embedded',
   EVENT = 'event',
+  TRANSACTION = 'transaction',
   // When adding support, uncomment/update tests
   //   test/unit/component/mxgraph/renderer/StyleComputer.test.ts
   //   test/unit/component/parser/json/BpmnJsonParser.marker.test.ts (adhoc requires special checks as an additional marker should be present)
   // Create a dedicated describe or a dedicated file inspired from
   //   test/unit/component/parser/json/BpmnJsonParser.sub.process.test.ts
-  // TRANSACTION = 'transaction',
   // AD_HOC = 'ad_hoc',
 }
