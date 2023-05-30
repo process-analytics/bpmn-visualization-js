@@ -282,20 +282,22 @@ describe('Style Computer', () => {
     describe.each([
       ['expanded', []],
       ['collapsed', [ShapeBpmnMarkerKind.EXPAND]],
-    ])(`compute style - %s sub-processes`, (expandKind: string, markers: ShapeBpmnMarkerKind[]) => {
-      it(`${expandKind} embedded sub-process without label bounds`, () => {
-        const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, markers), newLabel({ name: 'Arial' }));
-        const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
-        const additionalTerminalStyle = !markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';verticalAlign=top' : '';
-        expect(computeStyle(shape)).toBe(`subProcess;bpmn.subProcessKind=embedded${additionalMarkerStyle};fontFamily=Arial${additionalTerminalStyle}`);
-      });
+    ])(`%s`, (expandKind: string, markers: ShapeBpmnMarkerKind[]) => {
+      describe.each(Object.values(ShapeBpmnSubProcessKind))(`%s`, (subProcessKind: ShapeBpmnSubProcessKind) => {
+        it(`${subProcessKind} sub-process without label bounds`, () => {
+          const shape = newShape(newShapeBpmnSubProcess(subProcessKind, markers), newLabel({ name: 'Arial' }));
+          const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
+          const additionalTerminalStyle = !markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';verticalAlign=top' : '';
+          expect(computeStyle(shape)).toBe(`subProcess;bpmn.subProcessKind=${subProcessKind}${additionalMarkerStyle};fontFamily=Arial${additionalTerminalStyle}`);
+        });
 
-      it(`${expandKind} embedded sub-process with label bounds`, () => {
-        const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, markers), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
-        const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
-        expect(computeStyle(shape)).toBe(
-          `subProcess;bpmn.subProcessKind=embedded${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=ignore;verticalLabelPosition=middle`,
-        );
+        it(`${subProcessKind} sub-process with label bounds`, () => {
+          const shape = newShape(newShapeBpmnSubProcess(subProcessKind, markers), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
+          const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
+          expect(computeStyle(shape)).toBe(
+            `subProcess;bpmn.subProcessKind=${subProcessKind}${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=ignore;verticalLabelPosition=middle`,
+          );
+        });
       });
     });
   });
@@ -401,9 +403,6 @@ describe('Style Computer', () => {
   describe.each([
     [ShapeBpmnElementKind.CALL_ACTIVITY],
     [ShapeBpmnElementKind.SUB_PROCESS],
-    // To uncomment when it's supported
-    // [ShapeBpmnElementKind.SUB_PROCESS_AD_HOC], // this is a special case, as an additional marker should be added
-    // [ShapeBpmnElementKind.SUB_PROCESS_TRANSACTION],
     [ShapeBpmnElementKind.TASK],
     [ShapeBpmnElementKind.TASK_SERVICE],
     [ShapeBpmnElementKind.TASK_USER],
@@ -423,9 +422,11 @@ describe('Style Computer', () => {
         });
 
         if (bpmnKind == ShapeBpmnElementKind.SUB_PROCESS) {
-          it(`${bpmnKind} with Loop & Expand (collapsed) markers`, () => {
-            const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, [markerKind, ShapeBpmnMarkerKind.EXPAND]));
-            expect(computeStyle(shape)).toBe(`subProcess;bpmn.subProcessKind=embedded;bpmn.markers=${markerKind},expand`);
+          // To update when it's supported
+          // ShapeBpmnSubProcessKind.AD_HOC // this is a special case, as an additional marker should be added
+          it.each(Object.values(ShapeBpmnSubProcessKind))(`%s subProcess with Loop & Expand (collapsed) markers`, (subProcessKind: ShapeBpmnSubProcessKind) => {
+            const shape = newShape(newShapeBpmnSubProcess(subProcessKind, [markerKind, ShapeBpmnMarkerKind.EXPAND]));
+            expect(computeStyle(shape)).toBe(`subProcess;bpmn.subProcessKind=${subProcessKind};bpmn.markers=${markerKind},expand`);
           });
         }
 
