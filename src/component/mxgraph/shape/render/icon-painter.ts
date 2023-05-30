@@ -831,6 +831,11 @@ export class IconPainter {
     canvas.lineTo(8, 0); // extra line to ensure the path is fully closed (otherwise, there is a glitch on the latest corner)
     canvas.stroke();
   }
+
+  paintAdHocIcon(paintParameter: PaintParameter): void {
+    // TODO implementation
+    this.paintPentagon(paintParameter);
+  }
 }
 
 function drawVerticalLine(paintParameter: PaintParameter, canvas: BpmnCanvas): void {
