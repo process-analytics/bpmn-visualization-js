@@ -260,6 +260,16 @@ export class SubProcessShape extends BaseActivityShape {
 
     super.paintBackground(c, x, y, w, h);
 
+    if (subProcessKind === ShapeBpmnSubProcessKind.TRANSACTION) {
+      // inspired from https://github.com/jgraph/mxgraph/blob/81dcd5cc86d48792c194ebaa3437a7ebb7a2f9d1/javascript/src/js/shape/mxRectangleShape.js#L79-L102
+      // use a dedicated value for the arcSize. Using the value from the style generates an arc which is different from the arc of the outer rectangle
+      const innerOffset = StyleDefault.SUB_PROCESS_TRANSACTION_INNER_RECT_OFFSET;
+      const innerArcSize = StyleDefault.SUB_PROCESS_TRANSACTION_INNER_RECT_ARC_SIZE;
+      c.roundrect(x + innerOffset, y + innerOffset, w - 2 * innerOffset, h - 2 * innerOffset, innerArcSize, innerArcSize);
+      // don't fill to avoid to apply the color and its opacity twice. Fill is already done by the regular rectangle painting
+      c.stroke();
+    }
+
     // Restore original configuration to avoid side effects if the iconPainter changed the canvas configuration (colors, ....)
     c.restore();
   }

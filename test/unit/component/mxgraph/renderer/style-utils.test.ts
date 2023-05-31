@@ -62,6 +62,7 @@ describe('compute all css class names based on style input', () => {
     ${ShapeBpmnElementKind.SUB_PROCESS}                                                  | ${false} | ${['bpmn-type-activity', 'bpmn-sub-process']}
     ${'subProcess;bpmn.subProcessKind=embedded'}                                         | ${false} | ${['bpmn-type-activity', 'bpmn-sub-process', 'bpmn-sub-process-embedded']}
     ${'subProcess;bpmn.subProcessKind=event'}                                            | ${true}  | ${['bpmn-type-activity', 'bpmn-sub-process', 'bpmn-sub-process-event', 'bpmn-label']}
+    ${'subProcess;bpmn.subProcessKind=transaction'}                                      | ${true}  | ${['bpmn-type-activity', 'bpmn-sub-process', 'bpmn-sub-process-transaction', 'bpmn-label']}
     ${FlowKind.ASSOCIATION_FLOW}                                                         | ${true}  | ${['bpmn-type-flow', 'bpmn-association', 'bpmn-label']}
     ${FlowKind.MESSAGE_FLOW}                                                             | ${false} | ${['bpmn-type-flow', 'bpmn-message-flow']}
     ${'sequenceFlow;default;fontStyle=4'}                                                | ${false} | ${['bpmn-type-flow', 'bpmn-sequence-flow']}

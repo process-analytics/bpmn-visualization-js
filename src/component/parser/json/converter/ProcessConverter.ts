@@ -57,6 +57,24 @@ interface EventDefinition {
 
 type FlowNode = TFlowNode | TActivity | TReceiveTask | TEventBasedGateway | TTextAnnotation;
 
+type BpmnSemanticType = keyof TProcess;
+
+const computeSubProcessKind = (processedSemanticType: BpmnSemanticType, bpmnElement: TSubProcess): ShapeBpmnSubProcessKind => {
+  if (processedSemanticType == 'transaction') {
+    return ShapeBpmnSubProcessKind.TRANSACTION;
+  }
+  return !bpmnElement.triggeredByEvent ? ShapeBpmnSubProcessKind.EMBEDDED : ShapeBpmnSubProcessKind.EVENT;
+};
+
+const orderedFlowNodeBpmnTypes: BpmnSemanticType[] = ['transaction'] // specific management for transaction which is handled by the SUB_PROCESS ShapeBpmnElementKind and a dedicated ShapeBpmnSubProcessKind
+  // process boundary events afterward as we need its parent activity to be available when building it
+  .concat(ShapeUtil.flowNodeKinds().filter(kind => kind != ShapeBpmnElementKind.EVENT_BOUNDARY))
+  .concat([ShapeBpmnElementKind.EVENT_BOUNDARY]);
+
+function getShapeBpmnElementKind(bpmnSemanticType: BpmnSemanticType): ShapeBpmnElementKind {
+  return bpmnSemanticType == 'transaction' ? ShapeBpmnElementKind.SUB_PROCESS : (bpmnSemanticType as ShapeBpmnElementKind);
+}
+
 /**
  * @internal
  */
@@ -125,15 +143,9 @@ export default class ProcessConverter {
     this.elementsWithoutParentByProcessId.set(process.id, []);
 
     // flow nodes
-    ShapeUtil.flowNodeKinds()
-      .filter(kind => kind != ShapeBpmnElementKind.EVENT_BOUNDARY)
-      .forEach(kind => this.buildFlowNodeBpmnElements(process[kind], kind, parentId, process.id));
-    // process boundary events afterward as we need its parent activity to be available when building it
-    this.buildFlowNodeBpmnElements(process.boundaryEvent, ShapeBpmnElementKind.EVENT_BOUNDARY, parentId, process.id);
-
+    orderedFlowNodeBpmnTypes.forEach(bpmnType => this.buildFlowNodeBpmnElements(process[bpmnType], getShapeBpmnElementKind(bpmnType), parentId, process.id, bpmnType));
     // containers
     this.buildLaneBpmnElements(process[ShapeBpmnElementKind.LANE], parentId, process.id);
-
     this.buildLaneSetBpmnElements(process.laneSet, parentId, process.id);
 
     // flows
@@ -141,14 +153,20 @@ export default class ProcessConverter {
     this.buildAssociationFlows(process.association);
   }
 
-  private buildFlowNodeBpmnElements(bpmnElements: Array<FlowNode> | FlowNode, kind: ShapeBpmnElementKind, parentId: string, processId: string): void {
+  private buildFlowNodeBpmnElements(
+    bpmnElements: Array<FlowNode> | FlowNode,
+    kind: ShapeBpmnElementKind,
+    parentId: string,
+    processId: string,
+    processedSemanticType: BpmnSemanticType,
+  ): void {
     ensureIsArray(bpmnElements).forEach(bpmnElement => {
       let shapeBpmnElement;
 
       if (ShapeUtil.isEvent(kind)) {
         shapeBpmnElement = this.buildShapeBpmnEvent(bpmnElement, kind as BpmnEventKind, parentId);
       } else if (ShapeUtil.isActivity(kind)) {
-        shapeBpmnElement = this.buildShapeBpmnActivity(bpmnElement, kind, parentId);
+        shapeBpmnElement = this.buildShapeBpmnActivity(bpmnElement, kind, parentId, processedSemanticType);
       } else if (kind == ShapeBpmnElementKind.GATEWAY_EVENT_BASED) {
         const eventBasedGatewayBpmnElement = bpmnElement as TEventBasedGateway;
         shapeBpmnElement = new ShapeBpmnEventBasedGateway(
@@ -191,11 +209,11 @@ export default class ProcessConverter {
     });
   }
 
-  private buildShapeBpmnActivity(bpmnElement: TActivity, kind: ShapeBpmnElementKind, parentId: string): ShapeBpmnActivity {
+  private buildShapeBpmnActivity(bpmnElement: TActivity, kind: ShapeBpmnElementKind, parentId: string, processedSemanticType: BpmnSemanticType): ShapeBpmnActivity {
     const markers = buildMarkers(bpmnElement);
 
     if (ShapeUtil.isSubProcess(kind)) {
-      return this.buildShapeBpmnSubProcess(bpmnElement, parentId, markers);
+      return this.buildShapeBpmnSubProcess(bpmnElement, parentId, computeSubProcessKind(processedSemanticType, bpmnElement), markers);
     }
 
     if (!ShapeUtil.isCallActivity(kind)) {
@@ -256,7 +274,7 @@ export default class ProcessConverter {
     const eventDefinitions = new Map<ShapeBpmnEventDefinitionKind, number>();
 
     eventDefinitionKinds.forEach(eventDefinitionKind => {
-      // sometimes eventDefinition is simple and therefore it is parsed as empty string "", in that case eventDefinition will be converted to an empty object
+      // sometimes eventDefinition is simple, and therefore it is parsed as empty string "", in that case eventDefinition will be converted to an empty object
       const eventDefinition = bpmnElement[eventDefinitionKind + 'EventDefinition'];
       const counter = ensureIsArray(eventDefinition, true).length;
       eventDefinitions.set(eventDefinitionKind, counter);
@@ -272,8 +290,7 @@ export default class ProcessConverter {
       .filter(eventDefinition => eventDefinition.counter > 0);
   }
 
-  private buildShapeBpmnSubProcess(bpmnElement: TSubProcess, parentId: string, markers: ShapeBpmnMarkerKind[]): ShapeBpmnSubProcess {
-    const subProcessKind = !bpmnElement.triggeredByEvent ? ShapeBpmnSubProcessKind.EMBEDDED : ShapeBpmnSubProcessKind.EVENT;
+  private buildShapeBpmnSubProcess(bpmnElement: TSubProcess, parentId: string, subProcessKind: ShapeBpmnSubProcessKind, markers: ShapeBpmnMarkerKind[]): ShapeBpmnSubProcess {
     const convertedSubProcess = new ShapeBpmnSubProcess(bpmnElement.id, bpmnElement.name, subProcessKind, parentId, markers);
     this.buildProcessInnerElements(bpmnElement, bpmnElement.id);
     return convertedSubProcess;
