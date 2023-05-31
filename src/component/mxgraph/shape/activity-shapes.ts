@@ -25,19 +25,30 @@ import { getBpmnIsInstantiating } from '../style/utils';
 import { buildPaintParameter } from './render/icon-painter';
 import { orderActivityMarkers } from './render/utils';
 
-function getMarkerIconOriginFunction(allMarkers: number, markerOrder: number): (canvas: BpmnCanvas) => void {
+function getMarkerIconOriginFunction(numberOfMarkers: number, markerOrder: number): (canvas: BpmnCanvas) => void {
   let setIconOriginFunction: (canvas: BpmnCanvas) => void;
-  if (allMarkers === 1) {
+  if (numberOfMarkers === 1) {
     setIconOriginFunction = (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered();
-  }
-    // Here we suppose that we have 'allMarkers === 2'
-  // More markers will be supported when implementing adhoc subprocess or compensation marker
-  else {
+  } else if (numberOfMarkers === 2) {
     setIconOriginFunction = (canvas: BpmnCanvas) => {
       canvas.setIconOriginForIconBottomCentered();
       const xTranslation = Math.pow(-1, markerOrder) * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE / 2 + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN);
       canvas.translateIconOrigin(xTranslation, 0);
     };
+  }
+    // Here we suppose that we have 'numberOfMarkers === 3'
+  // More markers will be supported when implementing adhoc subprocess or compensation marker
+  else {
+    if (markerOrder == 2) {
+      setIconOriginFunction = (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered();
+    } else {
+      setIconOriginFunction = (canvas: BpmnCanvas) => {
+        canvas.setIconOriginForIconBottomCentered();
+        const xTranslation = Math.pow(-1, markerOrder % 3) * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN);
+        // const xTranslation = Math.pow(-1, markerOrder % 3) * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE / 2 + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN);
+        canvas.translateIconOrigin(xTranslation, 0);
+      };
+    }
   }
   return setIconOriginFunction;
 }
@@ -87,7 +98,8 @@ export abstract class BaseActivityShape extends mxRectangleShape {
             break;
           }
           case ShapeBpmnMarkerKind.ADHOC:
-            this.iconPainter.paintAdHocIcon(paintParameter);
+            // this.iconPainter.paintAdHocIcon(paintParameter);
+            this.iconPainter.paintExpandIcon(paintParameter);
             break;
         }
         // Restore original configuration to avoid side effects if the iconPainter changed the canvas configuration (colors, ....)
