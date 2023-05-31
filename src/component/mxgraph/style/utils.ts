@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { mxChildChange, mxCollapseChange, mxCurrentRootChange, mxGeometryChange, mxStyleChange, mxTerminalChange, mxValueChange, mxVisibleChange } from 'mxgraph';
 import { mxgraph } from '../initializer';
 import { BpmnStyleIdentifier } from './identifiers';
 
@@ -72,3 +73,12 @@ export enum StyleDefault {
  * @private
  */
 export const getBpmnIsInstantiating = (style: { [p: string]: unknown }): boolean => mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.IS_INSTANTIATING, 'false') == 'true';
+
+/**
+ * @param change the mxGraph change event
+ * @internal
+ * @private
+ */
+export const isMxStyleChange = (
+  change: mxGeometryChange | mxChildChange | mxStyleChange | mxVisibleChange | mxCollapseChange | mxValueChange | mxTerminalChange | mxCurrentRootChange,
+): change is mxStyleChange => change && typeof change === 'object' && change.constructor.name === 'mxStyleChange';

@@ -14,6 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { mxEventObject, mxStyleChange, mxUndoableEdit } from 'mxgraph';
+import { UndoManager } from './UndoManager';
+import { isMxStyleChange } from './style/utils';
+
 import type { BpmnGraph } from './BpmnGraph';
 import { mxgraph } from './initializer';
 import { BpmnStyleIdentifier } from './style';
@@ -36,7 +40,27 @@ export function newGraphCellUpdater(graph: BpmnGraph): GraphCellUpdater {
  * @internal
  */
 export default class GraphCellUpdater {
-  constructor(readonly graph: BpmnGraph, readonly overlayConverter: OverlayConverter) {}
+  private readonly undoManager: UndoManager;
+
+  constructor(readonly graph: BpmnGraph, readonly overlayConverter: OverlayConverter) {
+    this.undoManager = new UndoManager();
+    this.installUndoHandler();
+  }
+
+  private installUndoHandler(): void {
+    const listener = mxgraph.mxUtils.bind(this, (sender: object, evt: mxEventObject) => {
+      const edit: mxUndoableEdit = evt.getProperty('edit');
+      const filter: mxStyleChange[] = edit.changes.filter(change => isMxStyleChange(change));
+      if (filter.length >= 1) {
+        // See https://github.com/jgraph/mxgraph/blob/ff141aab158417bd866e2dfebd06c61d40773cd2/javascript/src/js/view/mxGraph.js#L2114
+        this.undoManager.registerUndoable(filter[0].cell, edit);
+      }
+    });
+
+    // Mandatory
+    this.graph.getModel().addListener(mxgraph.mxEvent.UNDO, listener);
+    this.graph.getView().addListener(mxgraph.mxEvent.UNDO, listener);
+  }
 
   updateAndRefreshCssClassesOfCell(bpmnElementId: string, cssClasses: string[]): void {
     this.updateAndRefreshCssClassesOfElement(bpmnElementId, cssClasses);
@@ -102,6 +126,25 @@ export default class GraphCellUpdater {
 
         this.graph.model.setStyle(cell, cellStyle);
       }
+    });
+  }
+
+  resetStyle(bpmnElementIds: string[]): void {
+    this.graph.batchUpdate(() => {
+      if (bpmnElementIds.length == 0) {
+        const allCells = this.graph.getModel().getChildCells(this.graph.getDefaultParent());
+        for (const cell of allCells) {
+          this.undoManager.undo(cell);
+        }
+      } else {
+        for (const bpmnElementId of bpmnElementIds) {
+          const cell = this.graph.getModel().getCell(bpmnElementId);
+          this.undoManager.undo(cell);
+        }
+      }
+
+      // Redraw the graph with the updated style
+      this.graph.refresh();
     });
   }
 }
