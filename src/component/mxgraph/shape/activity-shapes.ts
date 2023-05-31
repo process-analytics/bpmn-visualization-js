@@ -39,13 +39,16 @@ function getMarkerIconOriginFunction(numberOfMarkers: number, markerOrder: numbe
     // Here we suppose that we have 'numberOfMarkers === 3'
   // More markers will be supported when implementing adhoc subprocess or compensation marker
   else {
-    if (markerOrder == 2) {
+    // TODO in progress generalization for odd number of markers
+    const middleValue = (numberOfMarkers + 1) / 2;
+    if (markerOrder == middleValue) {
       setIconOriginFunction = (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered();
     } else {
+      const translationFactor = markerOrder < middleValue ? -1 : 1;
       setIconOriginFunction = (canvas: BpmnCanvas) => {
         canvas.setIconOriginForIconBottomCentered();
-        const xTranslation = Math.pow(-1, markerOrder % 3) * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN);
-        // const xTranslation = Math.pow(-1, markerOrder % 3) * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE / 2 + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN);
+        // TODO compute the number of translation
+        const xTranslation = translationFactor * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN);
         canvas.translateIconOrigin(xTranslation, 0);
       };
     }
