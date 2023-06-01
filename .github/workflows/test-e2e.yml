@@ -49,18 +49,15 @@ jobs:
       # we want to run the full build on all os: don't cancel running jobs even if one fails
       fail-fast: false
       matrix:
-        # TMP verify the test report generation on windows
-        os: [windows-2022]
-        browser: [chrome]
-#        os: [macos-12, ubuntu-22.04, windows-2022]
-#        browser: [chromium, firefox, chrome]
-#        include:
-#          # only test WebKit on macOS
-#          - os: macos-12
-#            browser: webkit
-#          # only test Edge on Windows
-#          - os: windows-2022
-#            browser: msedge
+        os: [macos-12, ubuntu-22.04, windows-2022]
+        browser: [chromium, firefox, chrome]
+        include:
+          # only test WebKit on macOS
+          - os: macos-12
+            browser: webkit
+          # only test Edge on Windows
+          - os: windows-2022
+            browser: msedge
     steps:
       - name: Checkout
         uses: actions/checkout@v3

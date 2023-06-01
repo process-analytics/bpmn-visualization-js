@@ -173,8 +173,7 @@ export default class StyleComputer {
 
       if (bpmnCell instanceof Shape) {
         // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
-        // TMP introduce a change to generate e2e test failures
-        styleValues.set(mxgraph.mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 10);
+        styleValues.set(mxgraph.mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
         // align settings
         // According to the documentation, "label position" can only take values in left, center, right with default=center
         // However, there is undocumented behavior when the value is not one of these and this behavior is exactly what we want.
