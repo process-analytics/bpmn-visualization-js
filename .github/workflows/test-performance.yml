@@ -12,6 +12,9 @@ on:
       - '.github/actions/build-setup/**/*'
       - '.github/actions/install-playwright-browser/**/*'
       - '.github/workflows/test-performance.yml'
+      - 'test/*' # root folder
+      - 'test/config/**/*'
+      - 'test/fixtures/**/*'
       - 'test/performance/**/*'
       - 'test/shared/**/*'
       - '.nvmrc'
