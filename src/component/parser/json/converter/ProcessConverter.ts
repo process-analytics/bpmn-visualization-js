@@ -38,7 +38,7 @@ import { eventDefinitionKinds } from '../../../../model/bpmn/internal/shape/util
 import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/flows';
 import type { TProcess } from '../../../../model/bpmn/json/baseElement/rootElement/rootElement';
 import type { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../../../model/bpmn/json/baseElement/flowNode/event';
-import type { TActivity, TCallActivity, TSubProcess, TTransaction } from '../../../../model/bpmn/json/baseElement/flowNode/activity/activity';
+import type { TActivity, TCallActivity, TSubProcess } from '../../../../model/bpmn/json/baseElement/flowNode/activity/activity';
 import type { TLane, TLaneSet } from '../../../../model/bpmn/json/baseElement/baseElement';
 import type { TFlowNode, TSequenceFlow } from '../../../../model/bpmn/json/baseElement/flowElement';
 import type { TAssociation, TGroup, TTextAnnotation } from '../../../../model/bpmn/json/baseElement/artifact';
@@ -59,12 +59,21 @@ type FlowNode = TFlowNode | TActivity | TReceiveTask | TEventBasedGateway | TTex
 
 type BpmnSemanticType = keyof TProcess;
 
-const computeSubProcessKind = (processedSemanticType: BpmnSemanticType, bpmnElement: TSubProcess | TTransaction): ShapeBpmnSubProcessKind => {
+const computeSubProcessKind = (processedSemanticType: BpmnSemanticType, bpmnElement: TSubProcess): ShapeBpmnSubProcessKind => {
   if (processedSemanticType == 'transaction') {
     return ShapeBpmnSubProcessKind.TRANSACTION;
   }
   return !bpmnElement.triggeredByEvent ? ShapeBpmnSubProcessKind.EMBEDDED : ShapeBpmnSubProcessKind.EVENT;
 };
+
+const orderedFlowNodeBpmnTypes: BpmnSemanticType[] = ['transaction'] // specific management for transaction which is handled by the SUB_PROCESS ShapeBpmnElementKind and a dedicated ShapeBpmnSubProcessKind
+  // process boundary events afterward as we need its parent activity to be available when building it
+  .concat(ShapeUtil.flowNodeKinds().filter(kind => kind != ShapeBpmnElementKind.EVENT_BOUNDARY))
+  .concat([ShapeBpmnElementKind.EVENT_BOUNDARY]);
+
+function getShapeBpmnElementKind(bpmnSemanticType: BpmnSemanticType): ShapeBpmnElementKind {
+  return bpmnSemanticType == 'transaction' ? ShapeBpmnElementKind.SUB_PROCESS : (bpmnSemanticType as ShapeBpmnElementKind);
+}
 
 /**
  * @internal
@@ -134,17 +143,9 @@ export default class ProcessConverter {
     this.elementsWithoutParentByProcessId.set(process.id, []);
 
     // flow nodes
-    ShapeUtil.flowNodeKinds()
-      .filter(kind => kind != ShapeBpmnElementKind.EVENT_BOUNDARY)
-      .forEach(kind => this.buildFlowNodeBpmnElements(process[kind], kind, parentId, process.id));
-    // specific management for transaction sub-processes which are handled by the SUB_PROCESS ShapeBpmnElementKind and a dedicated ShapeBpmnSubProcessKind
-    this.buildFlowNodeBpmnElements(process.transaction, ShapeBpmnElementKind.SUB_PROCESS, parentId, process.id, 'transaction');
-    // process boundary events afterward as we need its parent activity to be available when building it
-    this.buildFlowNodeBpmnElements(process.boundaryEvent, ShapeBpmnElementKind.EVENT_BOUNDARY, parentId, process.id);
-
+    orderedFlowNodeBpmnTypes.forEach(bpmnType => this.buildFlowNodeBpmnElements(process[bpmnType], getShapeBpmnElementKind(bpmnType), parentId, process.id, bpmnType));
     // containers
     this.buildLaneBpmnElements(process[ShapeBpmnElementKind.LANE], parentId, process.id);
-
     this.buildLaneSetBpmnElements(process.laneSet, parentId, process.id);
 
     // flows
@@ -157,7 +158,7 @@ export default class ProcessConverter {
     kind: ShapeBpmnElementKind,
     parentId: string,
     processId: string,
-    processedSemanticType?: BpmnSemanticType,
+    processedSemanticType: BpmnSemanticType,
   ): void {
     ensureIsArray(bpmnElements).forEach(bpmnElement => {
       let shapeBpmnElement;
