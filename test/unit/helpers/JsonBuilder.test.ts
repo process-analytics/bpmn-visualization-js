@@ -3015,6 +3015,36 @@ describe('build json', () => {
         },
       });
     });
+
+    it('build json of definitions containing one process with a adHoc subProcess (with id, name, incoming, outgoing & isExpanded)', () => {
+      const json = buildDefinitions({
+        process: {
+          adHocSubProcess: { id: '0', name: 'adHoc subProcess name', incoming: 'flow_in', outgoing: ['flow_out_1', 'flow_out_2'], isExpanded: true },
+        },
+      });
+
+      expect(json).toEqual({
+        definitions: {
+          targetNamespace: '',
+          collaboration: { id: 'collaboration_id_0' },
+          process: {
+            id: '0',
+            adHocSubProcess: { id: '0', name: 'adHoc subProcess name', incoming: 'flow_in', outgoing: ['flow_out_1', 'flow_out_2'] },
+          },
+          BPMNDiagram: {
+            name: 'process 0',
+            BPMNPlane: {
+              BPMNShape: {
+                id: 'shape_0',
+                bpmnElement: '0',
+                Bounds: { x: 267, y: 223, width: 456, height: 123 },
+                isExpanded: true,
+              },
+            },
+          },
+        },
+      });
+    });
   });
 
   describe('build json with textAnnotation on process', () => {
