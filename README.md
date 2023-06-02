@@ -98,13 +98,13 @@ desktop browsers are known working with `bpmn-visualization@0.32.0`:
 ## ♻️ Usage
 The library is available from [NPM](https://npmjs.org/package/bpmn-visualization). \
 We support various module formats such as:
-- [IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE): `dist/bpmn-visualization.js`
 - [ESM](https://dev.to/iggredible/what-the-heck-are-cjs-amd-umd-and-esm-ikm): `dist/bpmn-visualization.esm.js`
+- [IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE): `dist/bpmn-visualization.js` and its minified companion `dist/bpmn-visualization.min.js`
 
 
-### 📌 Project usage
+### 📌 Usage in applications and projects
 
-Install `bpmn-visualization` in the project:
+Install `bpmn-visualization`:
 ```shell script
 npm i bpmn-visualization
 ```
