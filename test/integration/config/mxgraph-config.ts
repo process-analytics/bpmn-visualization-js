@@ -17,5 +17,5 @@
 import { Client } from '@maxgraph/core';
 
 // Force usage of ForeignObject
-// By default, maxGraph detects no ForeignObject support when running tests in jsdom environment
+// By default, mxGraph detects no ForeignObject support when running tests in jsdom environment
 Client.NO_FO = false;
