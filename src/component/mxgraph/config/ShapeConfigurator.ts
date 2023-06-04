@@ -36,7 +36,7 @@ import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { BpmnStyleIdentifier, FONT } from '../style';
 import { computeAllBpmnClassNamesOfCell } from '../renderer/style-utils';
-import { MaxGraphCustomOverlay } from '../overlay/custom-overlay';
+import { MxGraphCustomOverlay } from '../overlay/custom-overlay';
 import { OverlayBadgeShape } from '../overlay/shapes';
 import { BpmnConnector } from '../shape/edges';
 import type { BPMNCellStyle } from '../renderer/StyleComputer';
@@ -212,7 +212,7 @@ export default class ShapeConfigurator {
           let overlayShape: Shape;
 
           // START bpmn-visualization CUSTOMIZATION
-          if (currentOverlay instanceof MaxGraphCustomOverlay) {
+          if (currentOverlay instanceof MxGraphCustomOverlay) {
             overlayShape = new OverlayBadgeShape(currentOverlay.label, new Rectangle(0, 0, 0, 0), currentOverlay.style);
           } else {
             overlayShape = new ImageShape(new Rectangle(0, 0, 0, 0), currentOverlay.image.src);

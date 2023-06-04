@@ -21,22 +21,22 @@ import type { OverlayStyle } from '../../registry';
 export type VerticalAlignType = 'bottom' | 'middle' | 'top';
 export type HorizontalAlignType = 'left' | 'center' | 'right';
 
-export interface MaxGraphCustomOverlayOptions {
-  position: MaxGraphCustomOverlayPosition;
-  style: MaxGraphCustomOverlayStyle;
+export interface MxGraphCustomOverlayOptions {
+  position: MxGraphCustomOverlayPosition;
+  style: MxGraphCustomOverlayStyle;
 }
 
-export interface MaxGraphCustomOverlayPosition {
+export interface MxGraphCustomOverlayPosition {
   horizontalAlign?: HorizontalAlignType;
   verticalAlign?: VerticalAlignType;
 }
 
-export type MaxGraphCustomOverlayStyle = Required<OverlayStyle>;
+export type MxGraphCustomOverlayStyle = Required<OverlayStyle>;
 
-export class MaxGraphCustomOverlay extends CellOverlay {
-  readonly style: MaxGraphCustomOverlayStyle;
+export class MxGraphCustomOverlay extends CellOverlay {
+  readonly style: MxGraphCustomOverlayStyle;
 
-  constructor(public label: string, options: MaxGraphCustomOverlayOptions) {
+  constructor(public label: string, options: MxGraphCustomOverlayOptions) {
     super(null, '', options.position.horizontalAlign, options.position.verticalAlign, new Point(), 'default');
     // FIXME maxgraph@0.1.0 constructor doesn't set some properties
     this.align = options.position.horizontalAlign;

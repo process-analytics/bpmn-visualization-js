@@ -21,7 +21,7 @@ import CustomMatcherResult = jest.CustomMatcherResult;
 import type { ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement } from '../helpers/model-expect';
 import { bpmnVisualization } from '../helpers/model-expect';
 import { FONT } from '../../../src/bpmn-visualization';
-import type { MaxGraphCustomOverlay, MaxGraphCustomOverlayStyle } from '../../../src/component/mxgraph/overlay/custom-overlay';
+import type { MxGraphCustomOverlay, MxGraphCustomOverlayStyle } from '../../../src/component/mxgraph/overlay/custom-overlay';
 import type { BPMNCellStyle } from '../../../src/component/mxgraph/renderer/StyleComputer';
 
 // TODO remove this type
@@ -46,7 +46,7 @@ export interface ExpectedOverlay {
   label?: string;
   horizontalAlign?: string;
   verticalAlign?: string;
-  style?: MaxGraphCustomOverlayStyle;
+  style?: MxGraphCustomOverlayStyle;
 }
 
 export const EXPECTED_LABEL = 'Expected in the mxGraph model';
@@ -167,7 +167,7 @@ export function buildReceivedCellWithCommonAttributes(cell: Cell): ExpectedCell 
   };
 
   // the maxGraph API returns an empty array when there is no overlays
-  const cellOverlays = bpmnVisualization.graph.getCellOverlays(cell) as MaxGraphCustomOverlay[];
+  const cellOverlays = bpmnVisualization.graph.getCellOverlays(cell) as MxGraphCustomOverlay[];
   if (cellOverlays.length > 0) {
     receivedCell.overlays = cellOverlays.map(cellOverlay => ({
       label: cellOverlay.label,

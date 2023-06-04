@@ -15,10 +15,10 @@
  */
 import type { Rectangle } from '@maxgraph/core';
 import { TextShape } from '@maxgraph/core';
-import type { MaxGraphCustomOverlayStyle } from './custom-overlay';
+import type { MxGraphCustomOverlayStyle } from './custom-overlay';
 
 export class OverlayBadgeShape extends TextShape {
-  constructor(value: string, bounds: Rectangle, style: MaxGraphCustomOverlayStyle) {
+  constructor(value: string, bounds: Rectangle, style: MxGraphCustomOverlayStyle) {
     super(
       value,
       bounds,
