@@ -32,7 +32,7 @@ describe.each`
 `('Resulting DOM after diagram load - container set with "$type"', ({ bpmnVisualization }: { bpmnVisualization: BpmnVisualization }) => {
   const htmlElementLookup = new HtmlElementLookup(bpmnVisualization);
 
-  it('DOM should contains BPMN elements when loading simple-start-task-end.bpmn', async () => {
+  it('DOM should contains BPMN elements when loading simple-start-task-end.bpmn', () => {
     bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
 
     htmlElementLookup.expectStartEvent('StartEvent_1', ShapeBpmnEventDefinitionKind.NONE);
@@ -40,7 +40,7 @@ describe.each`
     htmlElementLookup.expectEndEvent('EndEvent_1', ShapeBpmnEventDefinitionKind.NONE);
   });
 
-  it('DOM should contains BPMN elements when loading model-complete-semantic.bpmn', async () => {
+  it('DOM should contains BPMN elements when loading model-complete-semantic.bpmn', () => {
     bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-complete-semantic.bpmn'));
 
     htmlElementLookup.expectPool('participant_1_id');

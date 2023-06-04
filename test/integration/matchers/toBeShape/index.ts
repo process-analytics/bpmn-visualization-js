@@ -74,7 +74,7 @@ export function buildExpectedShapeCellStyle(expectedModel: ExpectedShapeModelEle
   style.swimlaneFillColor = [ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.LANE].includes(expectedModel.kind) && style.fillColor !== 'none' ? style.fillColor : undefined;
 
   style.fillOpacity = expectedModel.fill?.opacity;
-  'isHorizontal' in expectedModel && (style.horizontal = Number(!expectedModel.isHorizontal));
+  'isSwimLaneLabelHorizontal' in expectedModel && (style.horizontal = Number(expectedModel.isSwimLaneLabelHorizontal));
 
   return style;
 }
@@ -133,18 +133,20 @@ function buildShapeMatcher(matcherName: string, matcherContext: MatcherContext, 
   return buildCellMatcher(matcherName, matcherContext, received, expected, 'Shape', buildExpectedCell, buildReceivedCellWithCommonAttributes);
 }
 
-export function toBeShape(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  return buildShapeMatcher('toBeShape', this, received, expected);
+function buildContainerMatcher(matcherName: string, matcherContext: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
+  return buildShapeMatcher(matcherName, matcherContext, received, {
+    ...expected,
+    styleShape: mxgraph.mxConstants.SHAPE_SWIMLANE,
+    isSwimLaneLabelHorizontal: expected.isSwimLaneLabelHorizontal ?? false,
+  });
 }
 
 export function toBePool(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  const isHorizontal = 'isHorizontal' in expected ? expected.isHorizontal : true;
-  return buildShapeMatcher('toBePool', this, received, { ...expected, kind: ShapeBpmnElementKind.POOL, styleShape: mxgraph.mxConstants.SHAPE_SWIMLANE, isHorizontal });
+  return buildContainerMatcher('toBePool', this, received, { ...expected, kind: ShapeBpmnElementKind.POOL });
 }
 
 export function toBeLane(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  const isHorizontal = 'isHorizontal' in expected ? expected.isHorizontal : true;
-  return buildShapeMatcher('toBeLane', this, received, { ...expected, kind: ShapeBpmnElementKind.LANE, styleShape: mxgraph.mxConstants.SHAPE_SWIMLANE, isHorizontal });
+  return buildContainerMatcher('toBeLane', this, received, { ...expected, kind: ShapeBpmnElementKind.LANE });
 }
 
 export function toBeCallActivity(this: MatcherContext, received: string, expected: ExpectedCallActivityModelElement): CustomMatcherResult {
@@ -196,7 +198,7 @@ export function toBeStartEvent(this: MatcherContext, received: string, expected:
 }
 
 export function toBeEndEvent(this: MatcherContext, received: string, expected: ExpectedEventModelElement): CustomMatcherResult {
-  return buildEventMatcher('toBeStartEvent', this, received, { ...expected, kind: ShapeBpmnElementKind.EVENT_END });
+  return buildEventMatcher('toBeEndEvent', this, received, { ...expected, kind: ShapeBpmnElementKind.EVENT_END });
 }
 
 export function toBeIntermediateThrowEvent(this: MatcherContext, received: string, expected: ExpectedEventModelElement): CustomMatcherResult {
@@ -211,10 +213,30 @@ export function toBeBoundaryEvent(this: MatcherContext, received: string, expect
   return buildEventMatcher('toBeBoundaryEvent', this, received, { ...expected, kind: ShapeBpmnElementKind.EVENT_BOUNDARY });
 }
 
-export function toBeEventBasedGateway(this: MatcherContext, received: string, expected: ExpectedEventBasedGatewayModelElement): CustomMatcherResult {
-  return buildShapeMatcher('toBeEventBasedGateway', this, received, { ...expected, kind: ShapeBpmnElementKind.GATEWAY_EVENT_BASED });
+function buildGatewayMatcher(matcherName: string, matcherContext: MatcherContext, received: string, expected: ExpectedEventBasedGatewayModelElement): CustomMatcherResult {
+  return buildShapeMatcher(matcherName, matcherContext, received, { ...expected, verticalAlign: expected.label ? 'top' : 'middle' });
 }
 
-export function toBeExclusiveGateway(this: MatcherContext, received: string, expected: ExpectedEventBasedGatewayModelElement): CustomMatcherResult {
-  return buildShapeMatcher('toBeExclusiveGateway', this, received, { ...expected, kind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE });
+export function toBeEventBasedGateway(this: MatcherContext, received: string, expected: ExpectedEventBasedGatewayModelElement): CustomMatcherResult {
+  return buildGatewayMatcher('toBeEventBasedGateway', this, received, { ...expected, kind: ShapeBpmnElementKind.GATEWAY_EVENT_BASED });
+}
+
+export function toBeExclusiveGateway(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
+  return buildGatewayMatcher('toBeExclusiveGateway', this, received, { ...expected, kind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE });
+}
+
+export function toBeInclusiveGateway(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
+  return buildGatewayMatcher('toBeInclusiveGateway', this, received, { ...expected, kind: ShapeBpmnElementKind.GATEWAY_INCLUSIVE });
+}
+
+export function toBeParallelGateway(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
+  return buildGatewayMatcher('toBeParallelGateway', this, received, { ...expected, kind: ShapeBpmnElementKind.GATEWAY_PARALLEL });
+}
+
+export function toBeGroup(this: MatcherContext, received: string, expected: ExpectedSubProcessModelElement): CustomMatcherResult {
+  return buildShapeMatcher('toBeGroup', this, received, { ...expected, kind: ShapeBpmnElementKind.GROUP });
+}
+
+export function toBeTextAnnotation(this: MatcherContext, received: string, expected: ExpectedSubProcessModelElement): CustomMatcherResult {
+  return buildShapeMatcher('toBeTextAnnotation', this, received, { ...expected, kind: ShapeBpmnElementKind.TEXT_ANNOTATION });
 }
