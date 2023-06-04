@@ -68,7 +68,7 @@ export class BpmnVisualization {
   private readonly bpmnModelRegistry: BpmnModelRegistry;
 
   constructor(options: GlobalOptions) {
-    // maxgraph configuration
+    // mxgraph configuration
     const configurator = new GraphConfigurator(htmlElement(options?.container));
     this.graph = configurator.configure(options);
     // other configurations
