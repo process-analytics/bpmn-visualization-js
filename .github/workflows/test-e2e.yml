@@ -9,6 +9,9 @@ on:
       - '.github/actions/install-playwright-browser/**/*'
       - '.github/workflows/test-e2e.yml'
       - 'src/**/*'
+      - 'test/*' # root folder
+      - 'test/config/**/*'
+      - 'test/fixtures/**/*'
       - 'test/e2e/**/*'
       - 'test/shared/**/*'
       - '.nvmrc'
@@ -26,6 +29,9 @@ on:
       - '.github/actions/install-playwright-browser/**/*'
       - '.github/workflows/test-e2e.yml'
       - 'src/**/*'
+      - 'test/*' # root folder
+      - 'test/config/**/*'
+      - 'test/fixtures/**/*'
       - 'test/e2e/**/*'
       - 'test/shared/**/*'
       - '.nvmrc'
