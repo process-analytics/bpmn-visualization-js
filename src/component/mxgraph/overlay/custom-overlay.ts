@@ -45,7 +45,8 @@ export class MxGraphCustomOverlay extends CellOverlay {
     this.style = options.style;
   }
 
-  // Based on original method from CellOverlay (CellOverlay.prototype.getBounds)
+  // TODO maxGraph actual migration: update comment and check code migration
+  // Based on original method from mxCellOverlay (mxCellOverlay.prototype.getBounds)  override getBounds(state: CellState): Rectangle {
   override getBounds(state: CellState): Rectangle {
     const isEdge = state.cell.isEdge();
     const s = state.view.scale;
