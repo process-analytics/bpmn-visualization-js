@@ -1558,7 +1558,7 @@ describe('mxGraph model - BPMN elements', () => {
   });
 
   describe('Special cases', () => {
-    // There is no pool in the diagram so in the mxGraph model, the parent of cells is the default cell. The geometry mxGraph and BPMN coordinates are the same.
+    // There is no pool in the diagram so in the mxGraph model, the parent of cells is the default cell. The mxGraph geometry and BPMN coordinates are the same.
     const defaultParentId = getDefaultParentId();
 
     it('Parse a diagram with large numbers and large decimals', () => {
