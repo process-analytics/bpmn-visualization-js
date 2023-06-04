@@ -148,7 +148,7 @@ export default class ShapeConfigurator {
   }
 
   private initMxShapePrototype(): void {
-    // The following is copied from the mxgraph Shape implementation then converted to TypeScript and enriched for bpmn-visualization
+    // The following is copied from the mxgraph mxShape implementation then converted to TypeScript and enriched for bpmn-visualization
     // It is needed for adding the custom attributes that permits identification of the BPMN elements in the DOM
     Shape.prototype.createSvgCanvas = function () {
       const canvas = new SvgCanvas2D(this.node, false);
