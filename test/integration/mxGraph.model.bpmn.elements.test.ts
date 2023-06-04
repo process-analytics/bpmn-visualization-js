@@ -26,7 +26,7 @@ import {
 } from '@lib/bpmn-visualization';
 import { readFileSync } from '@test/shared/file-helper';
 import type { ExpectedShapeModelElement } from './helpers/model-expect';
-import { bpmnVisualization, expectEdgesInModel, expectPoolsInModel, expectTotalEdgesInModel, expectShapesInModel, expectTotalShapesInModel } from './helpers/model-expect';
+import { bpmnVisualization, expectEdgesInModel, expectPoolsInModel, expectShapesInModel, expectTotalEdgesInModel, expectTotalShapesInModel } from './helpers/model-expect';
 import { mxgraph } from '@lib/component/mxgraph/initializer';
 
 describe('mxGraph model - BPMN elements', () => {
@@ -927,6 +927,7 @@ describe('mxGraph model - BPMN elements', () => {
             expect('collapsed_call_activity_id').toBeCallActivity({
               label: 'Collapsed Call Activity',
               parentId: 'participant_1_id',
+              markers: [ShapeBpmnMarkerKind.EXPAND],
               verticalAlign: 'top',
             });
             expect('collapsed_call_activity_with_loop_id').toBeCallActivity({
