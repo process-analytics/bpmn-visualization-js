@@ -38,13 +38,14 @@ import {
   toBeEndEvent,
   toBeEventBasedGateway,
   toBeExclusiveGateway,
+  toBeGroup,
   toBeInclusiveGateway,
-  toBeParallelGateway,
   toBeIntermediateCatchEvent,
   toBeIntermediateThrowEvent,
   toBeLane,
   toBeManualTask,
   toBeMessageFlow,
+  toBeParallelGateway,
   toBePool,
   toBeReceiveTask,
   toBeScriptTask,
@@ -54,9 +55,8 @@ import {
   toBeStartEvent,
   toBeSubProcess,
   toBeTask,
-  toBeUserTask,
-  toBeGroup,
   toBeTextAnnotation,
+  toBeUserTask,
 } from '../matchers';
 import type { mxCell, mxGeometry } from 'mxgraph';
 import type { ExpectedOverlay } from '../matchers/matcher-utils';
