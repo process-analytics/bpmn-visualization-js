@@ -173,6 +173,11 @@ export interface ExpectedShapeModelElement extends ExpectedModelElement {
   styleShape?: string;
   markers?: ShapeBpmnMarkerKind[];
   isInstantiating?: boolean;
+  /**
+   * This is the value in the mxGraph model, not what is from the BPMN Shape. This applies to the labels so the value is inverted comparing to the BPMN model.
+   * - Horizontal pool/lane --> false (the label is vertical)
+   * - Vertical pool/lane --> true (the label is horizontal)
+   **/
   isSwimLaneLabelHorizontal?: boolean;
   fill?: Fill;
 }
