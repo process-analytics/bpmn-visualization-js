@@ -22,7 +22,8 @@
  * @category BPMN Theme
  * @experimental
  */
-export class BpmnShapeIdentifier {
+// TODO may be renamed into BpmnShapeIdentifier after the maxGraph migration
+export class BpmnStyleIdentifier {
   // edge
   static readonly EDGE = 'bpmn.edge';
 

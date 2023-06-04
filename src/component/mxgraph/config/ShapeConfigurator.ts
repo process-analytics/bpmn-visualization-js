@@ -34,7 +34,7 @@ import {
 } from '../shape/activity-shapes';
 import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
-import { BpmnShapeIdentifier, FONT } from '../style';
+import { BpmnStyleIdentifier, FONT } from '../style';
 import { computeAllBpmnClassNamesOfCell } from '../renderer/style-utils';
 import { MaxGraphCustomOverlay } from '../overlay/custom-overlay';
 import { OverlayBadgeShape } from '../overlay/shapes';
@@ -95,10 +95,10 @@ export default class ShapeConfigurator {
     // shapes for flows
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO fix CellRenderer.registerShape call
     // @ts-ignore
-    CellRenderer.registerShape(BpmnShapeIdentifier.EDGE, BpmnConnector);
+    CellRenderer.registerShape(BpmnStyleIdentifier.EDGE, BpmnConnector);
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO fix CellRenderer.registerShape call
     // @ts-ignore
-    CellRenderer.registerShape(BpmnShapeIdentifier.MESSAGE_FLOW_ICON, MessageFlowIconShape);
+    CellRenderer.registerShape(BpmnStyleIdentifier.MESSAGE_FLOW_ICON, MessageFlowIconShape);
   }
 
   private initMxSvgCanvasPrototype(): void {

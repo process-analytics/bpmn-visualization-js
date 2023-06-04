@@ -18,7 +18,7 @@ import type { ArrowType, ShapeValue, Stylesheet } from '@maxgraph/core';
 import { constants, Perimeter } from '@maxgraph/core';
 
 import { AssociationDirectionKind, FlowKind, SequenceFlowKind, ShapeBpmnElementKind, ShapeUtil } from '../../../model/bpmn/internal';
-import { BpmnShapeIdentifier, MarkerIdentifier, StyleDefault } from '../style';
+import { BpmnStyleIdentifier, MarkerIdentifier, StyleDefault } from '../style';
 import type { BpmnGraph } from '../BpmnGraph';
 import type { BPMNCellStyle } from '../renderer/StyleComputer';
 
@@ -259,7 +259,7 @@ export class StyleConfigurator {
   private configureDefaultEdgeStyle(): void {
     const style = this.getStylesheet().getDefaultEdgeStyle() as BPMNCellStyle;
     // TODO remove forcing type when maxGraph fixes its types
-    style.shape = <ShapeValue>BpmnShapeIdentifier.EDGE;
+    style.shape = <ShapeValue>BpmnStyleIdentifier.EDGE;
     style.endSize = 12;
     style.strokeWidth = 1.5;
     style.rounded = true;

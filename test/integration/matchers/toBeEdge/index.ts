@@ -21,7 +21,7 @@ import { buildCellMatcher, buildCommonExpectedStateStyle, buildReceivedCellWithC
 import { AssociationDirectionKind, FlowKind, MessageVisibleKind, SequenceFlowKind } from '../../../../src/model/bpmn/internal';
 import type { ExpectedAssociationFlowModelElement, ExpectedEdgeModelElement, ExpectedSequenceFlowModelElement } from '../../helpers/model-expect';
 import { getDefaultParentId } from '../../helpers/model-expect';
-import { BpmnShapeIdentifier } from '../../../../src/component/mxgraph/style';
+import { BpmnStyleIdentifier } from '../../../../src/component/mxgraph/style';
 import type { BPMNCellStyle } from '../../../../src/component/mxgraph/renderer/StyleComputer';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
@@ -80,7 +80,7 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement |
         value: null, // maxGraph now set to 'null', mxGraph set to 'undefined'
         style: {
           // TODO remove forcing type when maxGraph fixes its types
-          shape: <ShapeValue>BpmnShapeIdentifier.MESSAGE_FLOW_ICON,
+          shape: <ShapeValue>BpmnStyleIdentifier.MESSAGE_FLOW_ICON,
           // TODO duplicated logic to compute the 'isNonInitiating' property. Update the expectedModel to store a boolean instead of a string
           bpmn: { isNonInitiating: expectedModel.messageVisibleKind === MessageVisibleKind.NON_INITIATING },
         },

@@ -28,7 +28,7 @@ import {
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../model/bpmn/internal/shape/ShapeBpmnElement';
-import { BpmnShapeIdentifier, FONT } from '../style';
+import { BpmnStyleIdentifier, FONT } from '../style';
 import type {
   AssociationDirectionKind,
   FlowKind,
@@ -209,7 +209,7 @@ export default class StyleComputer {
   computeMessageFlowIconStyle(edge: Edge): BPMNCellStyle {
     return {
       // TODO remove forcing type when maxGraph fixes its types
-      shape: <ShapeValue>BpmnShapeIdentifier.MESSAGE_FLOW_ICON,
+      shape: <ShapeValue>BpmnStyleIdentifier.MESSAGE_FLOW_ICON,
       bpmn: { isNonInitiating: edge.messageVisibleKind === MessageVisibleKind.NON_INITIATING },
     };
   }
