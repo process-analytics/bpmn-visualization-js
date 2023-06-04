@@ -37,17 +37,17 @@ export default class GraphCellUpdater {
 
   updateAndRefreshCssClassesOfCell(bpmnElementId: string, cssClasses: string[]): void {
     this.updateAndRefreshCssClassesOfElement(bpmnElementId, cssClasses);
-    // special case: message flow icon is stored in a dedicated Cell, so it must be kept in sync
+    // special case: message flow icon is stored in a dedicated mxCell, so it must be kept in sync
     this.updateAndRefreshCssClassesOfElement(messageFowIconId(bpmnElementId), cssClasses);
   }
 
   private updateAndRefreshCssClassesOfElement(elementId: string, cssClasses: string[]): void {
-    const cell = this.graph.model.getCell(elementId);
-    if (!cell) {
+    const mxCell = this.graph.model.getCell(elementId);
+    if (!mxCell) {
       return;
     }
     const view = this.graph.getView();
-    const state = view.getState(cell);
+    const state = view.getState(mxCell);
     // TODO improve logic
     const style = state.style as BPMNCellStyle;
     !style.bpmn.extra && (style.bpmn.extra = { css: { classes: undefined } });
@@ -58,21 +58,21 @@ export default class GraphCellUpdater {
   }
 
   addOverlays(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
-    const cell = this.graph.model.getCell(bpmnElementId);
-    if (!cell) {
+    const mxCell = this.graph.model.getCell(bpmnElementId);
+    if (!mxCell) {
       return;
     }
     ensureIsArray(overlays).forEach(overlay => {
       const bpmnOverlay = new MxGraphCustomOverlay(overlay.label, this.overlayConverter.convert(overlay));
-      this.graph.addCellOverlay(cell, bpmnOverlay);
+      this.graph.addCellOverlay(mxCell, bpmnOverlay);
     });
   }
 
   removeAllOverlays(bpmnElementId: string): void {
-    const cell = this.graph.model.getCell(bpmnElementId);
-    if (!cell) {
+    const mxCell = this.graph.model.getCell(bpmnElementId);
+    if (!mxCell) {
       return;
     }
-    this.graph.removeCellOverlays(cell);
+    this.graph.removeCellOverlays(mxCell);
   }
 }
