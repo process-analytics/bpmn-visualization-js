@@ -36,7 +36,7 @@ export default class CoordinatesTranslator {
     return new Point(relativeX, relativeY);
   }
 
-  // Returns the translation to be applied to a cell whose Geometry x and y values are expressed with absolute coordinates
+  // Returns the translation to be applied to a cell whose mxGeometry x and y values are expressed with absolute coordinates
   // (i.e related to the graph default parent) you want to assign as parent to the cell passed as argument of this function.
   // That way, you will be able to express the cell coordinates as relative to its parent cell.
   //
@@ -58,10 +58,10 @@ export default class CoordinatesTranslator {
   }
 
   /**
-   * Compute the center of the provided `Cell` for absolute geometry: this is the center point of a segment whose edges
-   * are the terminal points of the Cell geometry points. Returns `undefined` if the 2 terminal points are not available.
+   * Compute the center of the provided `mxCell` for absolute geometry: this is the center point of a segment whose edges
+   * are the terminal points of the mxCell geometry points. Returns `undefined` if the 2 terminal points are not available.
    *
-   * The center coordinates are given in the same referential as the `Cell`, so relative to its parent.
+   * The center coordinates are given in the same referential as the `mxCell`, so relative to its parent.
    */
   computeEdgeCenter(mxEdge: Cell): Point {
     const points: Point[] = mxEdge.geometry.points;
