@@ -111,7 +111,7 @@ export default class StyleComputer {
     } else if (bpmnElement instanceof ShapeBpmnActivity) {
       this.computeActivityShapeStyle(bpmnElement, style);
     } else if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
-      // maxGraph 'style.horizontal' is for the label
+      // 'style.horizontal' is for the label
       // In BPMN, isHorizontal is for the Shape
       style.horizontal = !(shape.isHorizontal ?? true);
     } else if (bpmnElement instanceof ShapeBpmnEventBasedGateway) {
