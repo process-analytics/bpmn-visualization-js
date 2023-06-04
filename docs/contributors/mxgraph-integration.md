@@ -34,18 +34,18 @@ layer is required. See `BpmnRenderer` for more details.
 
 ## BPMN Elements rendering and style
 
-Each BPMN Element is transformed into a `mxGraph` [Cell](https://jgraph.github.io/mxgraph/docs/manual.html#3.1.3.4) and then inserted into the `mxGraph` model:
+Each BPMN Element is transformed into a `mxGraph` [mxCell](https://jgraph.github.io/mxgraph/docs/manual.html#3.1.3.4) and then inserted into the `mxGraph` model:
 - `vertex` for BPMN Shapes
 - `edge` for BPMN Edges
 
 At insertion, a style is passed to configure how the BPMN Element is rendered.
 
-The [style](https://jgraph.github.io/mxgraph/docs/js-api/files/view/Stylesheet-js.html) (see also the [mxGraph manual](https://jgraph.github.io/mxgraph/docs/manual.html#3.1.3.1))
-is defined and registered in `StyleConfigurator`. In particular, it refers to the name of a [Shape](https://jgraph.github.io/mxgraph/docs/js-api/files/shape/Shape-js.html)
+The [style](https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxStylesheet-js.html) (see also the [mxGraph manual](https://jgraph.github.io/mxgraph/docs/manual.html#3.1.3.1))
+is defined and registered in `StyleConfigurator`. In particular, it refers to the name of a [mxShape](https://jgraph.github.io/mxgraph/docs/js-api/files/shape/mxShape-js.html)
 used for the rendering.
 
-The `Shape` can be a standard `mxGraph` class or a custom BPMN `Shape` defined by the `bpmn-visualization`. The custom `Shapes` are registered by `ShapeConfigurator`
-which associates the `Shape` name (used in style definition) with the `Shape` class to be used.
+The `mxShape` can be a standard `mxGraph` class or a custom BPMN `mxShape` defined by the `bpmn-visualization`. The custom `mxShapes` are registered by `ShapeConfigurator`
+which associates the `mxShape` name (used in style definition) with the `mxShape` class to be used.
 
 For more details, see [BPMN Support - How To](./bpmn-support-how-to.md).
 
@@ -103,7 +103,7 @@ the time.
 ### Shape
 
 The `mxGraph` integration uses the following to set the label bounds
-- the `vertex Cell` geometry offset, see 
+- the `vertex mxCell` geometry offset, see 
 for more details
   - x and y position relative to the shape `vertex` itself
   - as for the  shape `vertex` position, a coordinate transformation layer is required.
@@ -113,23 +113,23 @@ for more details
 
 #### Overview
 
-The mxGraph integration uses the `edge Cell` geometry to set the label bounds
+The mxGraph integration uses the `edge mxCell` geometry to set the label bounds
 - absolute geometry
 - offset x and y: position related to the center of the edge and as for the Shape Position, a coordinate transformation layer is required.
   - the center depends on the 2 terminal waypoints
   - if the waypoints are not available, no position is set and the label is placed on the edge center
 - width and height: for word wrapping.
 
-see [Geometry](https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/model/Geometry.js#L60)
+see [mxGeometry](https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/model/mxGeometry.js#L60)
 
 #### mxGraph Details
 
-The label position is related to the 'center' of the edge, see [Geometry](https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/model/Geometry.js#L35)
-for more details. The definition of 'center' differs whether the `Geometry` is `relative` or not:
+The label position is related to the 'center' of the edge, see [mxGeometry](https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/model/mxGeometry.js#L35)
+for more details. The definition of 'center' differs whether the `mxGeometry` is `relative` or not:
 - if relative, it is the center along the line
 - if absolute, it is derived from the terminal points
 
-This is explained in [GraphView.updateEdgeLabelOffset](https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/GraphView.js#L2187)
+This is explained in [mxGraphView.updateEdgeLabelOffset](https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/mxGraphView.js#L2187)
 - center between the two endpoints if the geometry is absolute
 - the relative distance between the center along the line, and the absolute orthogonal distance if the geometry is relative.
 
@@ -139,11 +139,11 @@ to see various positioning methods in action.
 
 ## Overlays
 
-We are hacking CellOverlays which originally only supports image shape. This lets us use custom shapes.
+We are hacking mxCellOverlays which originally only supports image shape. This lets us use custom shapes.
 
 Customization main points
-- `MxGraphCustomOverlay`: add extra configuration and behavior to CellOverlay
-- customized `CellRenderer`: change the overlays rendering code to transform `MxGraphCustomOverlay` into specific shapes 
+- `MxGraphCustomOverlay`: add extra configuration and behavior to mxCellOverlay
+- customized `mxCellRenderer`: change the overlays rendering code to transform `MxGraphCustomOverlay` into specific shapes 
 according to its configuration.
 
 More details are available in [#955](https://github.com/process-analytics/bpmn-visualization-js/issues/955).
@@ -151,7 +151,7 @@ More details are available in [#955](https://github.com/process-analytics/bpmn-v
 
 ## Custom CSS classes added to svg node generated by mxGraph
 
-In `ShapeConfigurator`, we customize the Shape rendering code to add extra CSS classes depending on BPMN Element kinds.
+In `ShapeConfigurator`, we customize the mxShape rendering code to add extra CSS classes depending on BPMN Element kinds.
 It allows styling to be managed with external CSS classes and it is also used for element identification and selection.
 
 More details are available in [#942](https://github.com/process-analytics/bpmn-visualization-js/issues/942).
