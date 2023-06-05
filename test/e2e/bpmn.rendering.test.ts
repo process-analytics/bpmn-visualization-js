@@ -24,7 +24,6 @@ import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from '
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
-    // chromium: max on macOS - the local diff was 0.00516920660650344%
     // threshold for webkit is taken from macOS only
     super({ chromium: 0.009 / 100, firefox: 0.02 / 100, webkit: 0.12 / 100 });
   }
