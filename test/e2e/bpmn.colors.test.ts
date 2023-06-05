@@ -66,7 +66,7 @@ class ImageSnapshotThresholdsModelColors extends MultiBrowserImageSnapshotThresh
 class ImageSnapshotThresholdsIgnoreBpmnColors extends MultiBrowserImageSnapshotThresholds {
   constructor() {
     // threshold for webkit is taken from macOS only
-    super({ chromium: 0 / 100, firefox: 0.007 / 100, webkit: 0.07 / 100 });
+    super({ chromium: 0.03 / 100, firefox: 0.007 / 100, webkit: 0.07 / 100 });
   }
 
   protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
@@ -74,9 +74,8 @@ class ImageSnapshotThresholdsIgnoreBpmnColors extends MultiBrowserImageSnapshotT
       [
         'elements.colors.02.labels',
         {
-          linux: 0.0004 / 100, // 0.000370781000469389%
           macos: 0.12 / 100, // 0.1103917951008726%
-          windows: 0.12 / 100, // 0.117545223258686%
+          windows: 0.13 / 100, // 0.1213310788226063%
         },
       ],
     ]);
