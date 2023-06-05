@@ -41,6 +41,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'overlays.start.flow.task.gateway',
         {
+          linux: 0.0008 / 100, // max 0.0007333061246894701%
           macos: 0.1 / 100, // max 0.09371109158465839%
           windows: 0.12 / 100, // max 0.11574540756377205%
         },
@@ -48,6 +49,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'overlays.edges.associations.complex.paths',
         {
+          linux: 0.31 / 100, // max 0.30203253615374015%
           macos: 0.31 / 100, // max 0.3006830880479039%
           windows: 0.31 / 100, // max 0.3013649459581602%
         },
@@ -62,6 +64,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'overlays.edges.sequence.flows.complex.paths',
         {
+          linux: 0.24 / 100, // max 0.2311919361290271%
           macos: 0.24 / 100, // max 0.23432430740331073%
           windows: 0.24 / 100, // max 0.23406440064434042%
         },
