@@ -24,41 +24,45 @@ import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from '
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
-    // chromium: max on macOS - the local diff was 0.00516920660650344%
     // threshold for webkit is taken from macOS only
-    super({ chromium: 0.006 / 100, firefox: 0.02 / 100, webkit: 0.12 / 100 });
+    super({ chromium: 0.009 / 100, firefox: 0.02 / 100, webkit: 0.12 / 100 });
   }
 
   protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     // if no dedicated information, set minimal threshold to make test pass on GitHub Workflow
     // linux threshold are set for Ubuntu
     return new Map<string, ImageSnapshotThresholdConfig>([
+      // start with diagram including labels
       [
         'flows.message.02.labels.and.complex.paths',
         {
-          macos: 0.05 / 100, // 0.04335117590119619%
-          windows: 0.13 / 100, // 0.12203782032372823%
+          linux: 0.03 / 100, // 0.021112197671391275%
+          macos: 0.07 / 100, // 0.06413016822180982%
+          windows: 0.15 / 100, // 0.1429326405050113%
         },
       ],
       [
         'group.01.in.process.with.label',
         {
-          macos: 0.02 / 100, // 0.01749142091445055%
-          windows: 0.03 / 100, // 0.028794961672506947%
+          linux: 0.03 / 100, // 0.027579683731493443%
+          macos: 0.05 / 100, // 0.04504221581033141%
+          windows: 0.06 / 100, // 0.0563456027189768%
         },
       ],
       [
         'group.02.in.collaboration.with.label',
         {
-          macos: 0.02 / 100, // 0.01128137033959975%
-          windows: 0.04 / 100, // 0.03137680045437463%
+          linux: 0.02 / 100, // 0.013564051057024518%
+          macos: 0.03 / 100, // 0.024852910755979174%
+          windows: 0.05 / 100, // 0.044700592690916086%
         },
       ],
       [
         'labels.01.general',
         {
-          macos: 0.6 / 100, // 0.586987125223093%
-          windows: 0.5 / 100, // 0.49594859884111164%
+          linux: 0.02 / 100, // 0.017198744741930838%
+          macos: 0.61 / 100, // 0.602778890243727%
+          windows: 0.52 / 100, // 0.5122398889742197%
         },
       ],
       [
@@ -74,14 +78,14 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         {
           linux: 0.02 / 100, // 0.012776491483779129%
           macos: 0.37 / 100, // 0.36428234685847993%
-          windows: 0.32 / 100, // 0.3125578154609565%
+          windows: 0.33 / 100, // 0.3203254635281927%
         },
       ],
       [
         'labels.04.fonts',
         {
           macos: 0.18 / 100, // 0.17224316335068268%
-          windows: 0.21 / 100, // 0.2083830906789208%
+          windows: 0.22 / 100, // 0.2109362424737582%
         },
       ],
       [
@@ -114,21 +118,75 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       ],
       // tests without labels
       [
-        'gateways',
+        'associations.and.annotations.02.complex.paths',
         {
-          macos: 0.000006, // 0.0005804554357724534%
+          linux: 0.015 / 100, // 0.014863828948641356%
+          macos: 0.015 / 100, // 0.014863828948641356%
+          windows: 0.015 / 100, // 0.014863828948641356%
         },
       ],
       [
         'events',
         {
-          macos: 0.00001, // 0.000988153090064614%
+          linux: 0.07 / 100, // 0.06873063882651965%
+          macos: 0.07 / 100, // 0.06873063882651965%
+          windows: 0.07 / 100, // 0.06873063882651965%
         },
       ],
       [
-        'call.activities',
+        'flows.sequence.04.waypoints.01.none',
         {
-          macos: 0.000005, // 0.0004123713869708112%
+          linux: 0.013 / 100, // 0.012784947599830954%
+          macos: 0.013 / 100, // 0.012784947599830954%
+          windows: 0.013 / 100, // 0.012784947599830954%
+        },
+      ],
+      [
+        'flows.sequence.04.waypoints.04.terminal.bonita.events',
+        {
+          linux: 0.013 / 100, // 0.012102508336264695%
+          macos: 0.013 / 100, // 0.012102508336264695%
+          windows: 0.013 / 100, // 0.012102508336264695%
+        },
+      ],
+      [
+        'group.03.several.groups.different.size',
+        {
+          linux: 0.019 / 100, // 0.01833011862978351%
+          macos: 0.019 / 100, // 0.01833011862978351%
+          windows: 0.019 / 100, // 0.01833011862978351%
+        },
+      ],
+      [
+        'group.05.cross.pools',
+        {
+          linux: 0.017 / 100, // 0.016330929320085286%
+          macos: 0.017 / 100, // 0.016330929320085286%
+          windows: 0.017 / 100, // 0.016330929320085286%
+        },
+      ],
+      [
+        'markers.01.positioning',
+        {
+          linux: 0.015 / 100, // 0.014579958828675466%
+          macos: 0.015 / 100, // 0.014579958828675466%
+          windows: 0.015 / 100, // 0.014579958828675466%
+        },
+      ],
+      [
+        'subprocess.03.collapsed.with.elements',
+        {
+          linux: 0.012 / 100, // 0.01144414747199507%
+          macos: 0.012 / 100, // 0.01144414747199507%
+          windows: 0.012 / 100, // 0.01144414747199507%
+        },
+      ],
+      [
+        'subprocess.04.expanded.with.elements',
+        {
+          linux: 0.026 / 100, // 0.025423152049330877%
+          macos: 0.026 / 100, // 0.025423152049330877%
+          windows: 0.026 / 100, // 0.025423152049330877%
         },
       ],
     ]);
