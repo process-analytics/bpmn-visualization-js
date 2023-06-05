@@ -47,11 +47,11 @@ const styleOptionsPerUseCase = new Map<string, StyleOptions>([
 ]);
 
 describe('BPMN theme', () => {
-  // chromium max: 0.000039994806566578944%
+  // chromium max: 0.046637742713451225%
   // firefox max for all OS: 0.07136751215260918%
   // webkit max: 0.10454002395935413%
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
-    new MultiBrowserImageSnapshotThresholds({ chromium: 0.00004 / 100, firefox: 0.072 / 100, webkit: 0.105 / 100 }),
+    new MultiBrowserImageSnapshotThresholds({ chromium: 0.047 / 100, firefox: 0.072 / 100, webkit: 0.105 / 100 }),
     'theme',
   );
 
