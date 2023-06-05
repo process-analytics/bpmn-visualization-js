@@ -28,22 +28,11 @@ const log = debugLogger('bv:test:e2e:navigation:zoom-pan');
 
 class MouseNavigationImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
-    super({ chromium: 0.0005 / 100, firefox: 0.04 / 100, webkit: 0 });
+    super({ chromium: 0.003 / 100, firefox: 0.04 / 100, webkit: 0 });
   }
 
   // if no dedicated information, set minimal threshold to make test pass on GitHub Workflow
   // linux threshold are set for Ubuntu
-  protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
-    return new Map<string, ImageSnapshotThresholdConfig>([
-      [
-        'simple.2.start.events.1.task',
-        {
-          macos: 0.001 / 100, // 0.0009247488045871499%
-        },
-      ],
-    ]);
-  }
-
   protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
