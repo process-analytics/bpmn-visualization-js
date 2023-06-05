@@ -43,6 +43,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'group.01.in.process.with.label',
         {
+          linux: 0.03 / 100, // 0.027579683731493443%
           macos: 0.02 / 100, // 0.01749142091445055%
           windows: 0.06 / 100, // 0.0563456027189768%
         },
@@ -50,6 +51,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'group.02.in.collaboration.with.label',
         {
+          linux: 0.02 / 100, // 0.013564051057024518%
           macos: 0.02 / 100, // 0.01128137033959975%
           windows: 0.04 / 100, // 0.03137680045437463%
         },
@@ -57,6 +59,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'labels.01.general',
         {
+          linux: 0.02 / 100, // 0.017198744741930838%
           macos: 0.6 / 100, // 0.586987125223093%
           windows: 0.52 / 100, // 0.5122398889742197%
         },
@@ -128,12 +131,14 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'associations.and.annotations.02.complex.paths',
         {
+          linux: 0.015 / 100, // 0.014863828948641356%
           windows: 0.015 / 100, // 0.014863828948641356%
         },
       ],
       [
         'events',
         {
+          linux: 0.07 / 100, // 0.06873063882651965%
           // macos: 0.001 / 100, // 0.000988153090064614%
           windows: 0.07 / 100, // 0.06873063882651965%
         },
@@ -141,42 +146,49 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'flows.sequence.04.waypoints.01.none',
         {
+          linux: 0.013 / 100, // 0.012784947599830954%
           windows: 0.013 / 100, // 0.012784947599830954%
         },
       ],
       [
         'flows.sequence.04.waypoints.04.terminal.bonita.events',
         {
+          linux: 0.013 / 100, // 0.012102508336264695%
           windows: 0.013 / 100, // 0.012102508336264695%
         },
       ],
       [
         'group.03.several.groups.different.size',
         {
+          linux: 0.019 / 100, // 0.01833011862978351%
           windows: 0.019 / 100, // 0.01833011862978351%
         },
       ],
       [
         'group.05.cross.pools',
         {
+          linux: 0.017 / 100, // 0.016330929320085286%
           windows: 0.017 / 100, // 0.016330929320085286%
         },
       ],
       [
         'markers.01.positioning',
         {
+          linux: 0.015 / 100, // 0.014579958828675466%
           windows: 0.015 / 100, // 0.014579958828675466%
         },
       ],
       [
         'subprocess.03.collapsed.with.elements',
         {
+          linux: 0.012 / 100, // 0.01144414747199507%
           windows: 0.012 / 100, // 0.01144414747199507%
         },
       ],
       [
         'subprocess.04.expanded.with.elements',
         {
+          linux: 0.026 / 100, // 0.025423152049330877%
           windows: 0.026 / 100, // 0.025423152049330877%
         },
       ],
