@@ -87,10 +87,10 @@ Planned features:
 
 **Notes**:
 - Chromium based browsers should work (automatic tests are run with Chromium canary releases). In particular, the following
-desktop browsers are known working with `bpmn-visualization@0.32.0`:
-  - Brave 1.48.171
-  - Chromium 111.0.5563.19
-  - Opera 96.0.4693.31
+desktop browsers are known working with `bpmn-visualization@0.35.0`:
+  - Brave 1.51.118
+  - Chromium 113.0.5672.126
+  - Opera 99.0.4788.13
 - Support Chromium Edge but not Legacy Edge
 - The library may work with the other browsers. They must at least support ES2015.
 
@@ -98,13 +98,13 @@ desktop browsers are known working with `bpmn-visualization@0.32.0`:
 ## ♻️ Usage
 The library is available from [NPM](https://npmjs.org/package/bpmn-visualization). \
 We support various module formats such as:
-- [IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE): `dist/bpmn-visualization.js`
 - [ESM](https://dev.to/iggredible/what-the-heck-are-cjs-amd-umd-and-esm-ikm): `dist/bpmn-visualization.esm.js`
+- [IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE): `dist/bpmn-visualization.js` and its minified companion `dist/bpmn-visualization.min.js`
 
 
-### 📌 Project usage
+### 📌 Usage in applications and projects
 
-Install `bpmn-visualization` in the project:
+Install `bpmn-visualization`:
 ```shell script
 npm i bpmn-visualization
 ```
