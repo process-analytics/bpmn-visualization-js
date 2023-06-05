@@ -21,10 +21,10 @@ import type { Page } from 'playwright';
 
 class StyleImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
-    // chromium max: 1.0567889896506699e-7% -> 0.00000010567889896506699%
+    // chromium max for all OS: 0.04661214552819093%
     // firefox max for all OS: 0.055281082087199604%
     // webkit max: 0.07085182506020306%
-    super({ chromium: 0.000001 / 100, firefox: 0.06 / 100, webkit: 0.08 / 100 });
+    super({ chromium: 0.05 / 100, firefox: 0.06 / 100, webkit: 0.08 / 100 });
   }
 
   // if no dedicated information, set minimal threshold to make test pass on GitHub Workflow

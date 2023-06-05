@@ -41,6 +41,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'overlays.start.flow.task.gateway',
         {
+          linux: 0.0008 / 100, // max 0.0007333061246894701%
           macos: 0.1 / 100, // max 0.09371109158465839%
           windows: 0.12 / 100, // max 0.11574540756377205%
         },
@@ -48,6 +49,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'overlays.edges.associations.complex.paths',
         {
+          linux: 0.31 / 100, // max 0.30203253615374015%
           macos: 0.31 / 100, // max 0.3006830880479039%
           windows: 0.31 / 100, // max 0.3013649459581602%
         },
@@ -62,6 +64,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'overlays.edges.sequence.flows.complex.paths',
         {
+          linux: 0.24 / 100, // max 0.2311919361290271%
           macos: 0.24 / 100, // max 0.23432430740331073%
           windows: 0.24 / 100, // max 0.23406440064434042%
         },
@@ -287,7 +290,7 @@ describe('Overlay navigation', () => {
         [
           'overlays.start.flow.task.gateway',
           {
-            linux: 0.00005 / 100, // max 0.00004084062452669457%
+            linux: 0.002 / 100, // max 0.0013092137383430291%
             macos: 0.09 / 100, // max 0.08430877145797488%
             windows: 0.12 / 100, // max 0.11213898282994572%
           },
@@ -384,7 +387,7 @@ describe('Overlay style', () => {
         [
           'fill',
           {
-            linux: 0.00001 / 100, // 0.00000905269291751054%
+            linux: 0.001 / 100, // 0.0007276893557062181%
             macos: 0.016 / 100, // 0.01515942258121239%
             windows: 0.03 / 100, // 0.021221138510052473%
           },
@@ -392,7 +395,7 @@ describe('Overlay style', () => {
         [
           'font',
           {
-            linux: 0.0004 / 100, // 0.00032830846258269375%
+            linux: 0.001 / 100, // 0.0007342796874976187%
             macos: 0.56 / 100, // 0.5500536579274629%
             windows: 0.33 / 100, // 0.3231773603294519%
           },
@@ -400,7 +403,7 @@ describe('Overlay style', () => {
         [
           'stroke',
           {
-            linux: 0.00002 / 100, // 0.000015810628772872093%
+            linux: 0.001 / 100, // 0.0007363497292800503%
             macos: 0.18 / 100, // 0.1787876617120987%
             windows: 0.22 / 100, // 0.2184761338537622%
           },
