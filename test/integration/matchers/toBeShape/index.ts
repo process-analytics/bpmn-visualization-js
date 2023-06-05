@@ -158,7 +158,7 @@ export function toBeCallActivity(this: MatcherContext, received: string, expecte
 
 export function toBeSubProcess(this: MatcherContext, received: string, expected: ExpectedSubProcessModelElement): CustomMatcherResult {
   if (expected.subProcessKind == ShapeBpmnSubProcessKind.AD_HOC) {
-    !expected.markers && (expected.markers = []);
+    expected.markers ??= [];
     expected.markers.push(ShapeBpmnMarkerKind.ADHOC);
   }
   return buildShapeMatcher('toBeSubProcess', this, received, { ...expected, kind: ShapeBpmnElementKind.SUB_PROCESS });
