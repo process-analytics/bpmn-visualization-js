@@ -60,12 +60,14 @@ type FlowNode = TFlowNode | TActivity | TReceiveTask | TEventBasedGateway | TTex
 type BpmnSemanticType = keyof TProcess;
 
 const computeSubProcessKind = (processedSemanticType: BpmnSemanticType, bpmnElement: TSubProcess): ShapeBpmnSubProcessKind => {
-  if (processedSemanticType == 'adHocSubProcess') {
-    return ShapeBpmnSubProcessKind.AD_HOC;
-  } else if (processedSemanticType == 'transaction') {
-    return ShapeBpmnSubProcessKind.TRANSACTION;
+  switch (processedSemanticType) {
+    case 'adHocSubProcess':
+      return ShapeBpmnSubProcessKind.AD_HOC;
+    case 'transaction':
+      return ShapeBpmnSubProcessKind.TRANSACTION;
+    default:
+      return !bpmnElement.triggeredByEvent ? ShapeBpmnSubProcessKind.EMBEDDED : ShapeBpmnSubProcessKind.EVENT;
   }
-  return !bpmnElement.triggeredByEvent ? ShapeBpmnSubProcessKind.EMBEDDED : ShapeBpmnSubProcessKind.EVENT;
 };
 
 const orderedFlowNodeBpmnTypes: BpmnSemanticType[] = ['adHocSubProcess', 'transaction'] // specific management for adhoc and transaction sub-processes which are handled with a dedicated ShapeBpmnSubProcessKind
