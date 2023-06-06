@@ -649,7 +649,7 @@ For instance, it can be retrieved from a local file, by pulling a REST API, made
 <p>Once the integration gets the BPMN diagram input source, it just has to pass it to <code>bpmn-visualization</code> which is then in charge of rendering the diagram.</p>
 </div>
 <div class="sect4">
-<h5 id="_default_bpmn_theme"><a class="anchor" href="#_default_bpmn_theme"></a><a class="link" href="#_default_bpmn_theme">1.5.1.1. Default BPMN Theme</a></h5>
+<h5 id="default-bpmn-theme"><a class="anchor" href="#default-bpmn-theme"></a><a class="link" href="#default-bpmn-theme">1.5.1.1. Default BPMN Theme</a></h5>
 <div class="paragraph">
 <p>By default, the rendering uses the following settings:</p>
 </div>
@@ -740,7 +740,11 @@ The current extension mechanism is experimental and subject to change.
 <a href="https://github.com/bpmn-io/bpmn-moddle/blob/ea7fa6a94c55f49fe1da1f019dc9a40d62967252/resources/bpmn-io/json/bioc.json">bpmn.io specific BPMN extensions for colors</a> (a.k.a <code>bioc</code>).</p>
 </div>
 <div class="paragraph">
-<p>This support is disabled by default, and it can be enabled at the library initialization.</p>
+<p>This specification is used to define stroke and fill colors for BPMN elements when modeling the diagram. These colors can then be used when displaying the diagram.</p>
+</div>
+<div class="paragraph">
+<p>This support is disabled by default to match the <a href="#default-bpmn-theme">deliberately neutral colors</a> of the default BPMN theme.
+It can be enabled when initializing the library.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -907,11 +911,12 @@ of an activity, current error at this stage of the process, and more.</p>
 <div class="sect3">
 <h4 id="_style"><a class="anchor" href="#_style"></a><a class="link" href="#_style">1.7.2. Style</a></h4>
 <div class="paragraph">
-<p>The style of BPMN elements can be modified at runtime allowing to mark, hide, change appearance of one or several specific elements. For instance, this feature can be used to mark
-a task as in error, warn that an activity has been started for a while and seems stuck, &#8230;&#8203;</p>
+<p>The style of BPMN elements can be modified at runtime, making it possible to mark, hide or modify the appearance of one or more specific elements.<br>
+This can be done by applying CSS classes or defining style properties using a dedicated API.</p>
 </div>
 <div class="paragraph">
-<p>This example shows how to see which path in a process is the current running activity.</p>
+<p>These features can be used to mark a task as being in error, warn that an activity has been running for some time and appears to be blocked, etc.<br>
+The following example shows how to see which path in a process is the currently running activity.</p>
 </div>
 <div class="imageblock thumb">
 <div class="content">
@@ -1998,7 +2003,7 @@ We have different <em>converters</em> (in the <strong>converter</strong> folder 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-06-06 07:50:36 UTC
+Last updated 2023-06-06 15:20:29 UTC
 </div>
 </div>
 </body>
