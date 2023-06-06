@@ -25,8 +25,6 @@ import { htmlElement } from './helpers/dom-utils';
 import { Navigation } from './navigation';
 import { version, type Version } from './version';
 
-import { ensureIsArray } from './helpers/array-utils';
-
 /**
  * Let initialize `bpmn-visualization`. It requires at minimum to pass the HTMLElement in the page where the BPMN diagram is rendered.
  * ```javascript
