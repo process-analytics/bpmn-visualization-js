@@ -105,6 +105,9 @@ describe('BpmnVisualization API', () => {
     it('updateStyle', () => {
       bpmnElementsRegistry.updateStyle('fake_id', { fill: { color: 'red' } });
     });
+    it('resetStyle', () => {
+      bpmnElementsRegistry.resetStyle('fake_id');
+    });
   });
 });
 

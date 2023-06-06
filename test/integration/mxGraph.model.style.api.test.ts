@@ -25,6 +25,29 @@ import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/model/b
 import type { EdgeStyleUpdate, Fill, Font, Stroke, StyleUpdate } from '@lib/component/registry';
 import type { mxCell } from 'mxgraph';
 
+// Create a dedicated instance with a DOM container as it is required by the CSS API.
+const bv = initializeBpmnVisualizationWithContainerId('bpmn-container-style-css-cross-tests');
+const htmlElementLookup = new HtmlElementLookup(bv);
+
+const getCell = (bpmnElementId: string): mxCell => {
+  const graph = bv.graph;
+  const cell = graph.model.getCell(bpmnElementId);
+  if (!cell) {
+    throw new Error(`Unable to find cell in the model with id ${bpmnElementId}`);
+  }
+  return cell;
+};
+
+// we cannot reuse the model expect functions here. They are using the shared bpmnVisualization that we cannot use here.
+// So use the minimal expect function. We only need to check a part of the data, the rest is already checked in details in other tests.
+const checkViewStateStyle = (bpmnElementId: string, expectedModel: ExpectedShapeModelElement): void => {
+  expect(buildReceivedViewStateStyle(getCell(bpmnElementId), bv)).toEqual(buildExpectedShapeCellStyle(expectedModel));
+};
+
+const checkModelStyle = (bpmnElementId: string, expectedModel: ExpectedShapeModelElement): void => {
+  expect(buildReceivedResolvedModelCellStyle(getCell(bpmnElementId), bv)).toEqual(buildExpectedShapeCellStyle(expectedModel));
+};
+
 describe('mxGraph model - update style', () => {
   describe('Shapes', () => {
     beforeEach(() => {
@@ -576,29 +599,6 @@ describe('mxGraph model - update style', () => {
 
   // Check that there is no bad interactions between the two features
   describe('Both style API update and CSS class', () => {
-    // Create a dedicated instance with a DOM container as it is required by the CSS API.
-    const bv = initializeBpmnVisualizationWithContainerId('bpmn-container-style-css-cross-tests');
-    const htmlElementLookup = new HtmlElementLookup(bv);
-
-    const getCell = (bpmnElementId: string): mxCell => {
-      const graph = bv.graph;
-      const cell = graph.model.getCell(bpmnElementId);
-      if (!cell) {
-        throw new Error(`Unable to find cell in the model with id ${bpmnElementId}`);
-      }
-      return cell;
-    };
-
-    // we cannot reuse the model expect functions here. They are using the shared bpmnVisualization that we cannot use here.
-    // So use the minimal expect function. We only need to check a part of the data, the rest is already checked in details in other tests.
-    const checkViewStateStyle = (bpmnElementId: string, expectedModel: ExpectedShapeModelElement): void => {
-      expect(buildReceivedViewStateStyle(getCell(bpmnElementId), bv)).toEqual(buildExpectedShapeCellStyle(expectedModel));
-    };
-
-    const checkModelStyle = (bpmnElementId: string, expectedModel: ExpectedShapeModelElement): void => {
-      expect(buildReceivedResolvedModelCellStyle(getCell(bpmnElementId), bv)).toEqual(buildExpectedShapeCellStyle(expectedModel));
-    };
-
     it.each([true, false])('Apply style update first %s', (isStyleUpdateAppliedFirst: boolean) => {
       bv.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
 
@@ -618,6 +618,275 @@ describe('mxGraph model - update style', () => {
         kind: ShapeBpmnElementKind.EVENT_END,
         stroke: { color: strokeColor },
         verticalAlign: <VerticalAlign>'top', // when events have a label
+      };
+      checkModelStyle(bpmnElementId, expectedModel);
+      checkViewStateStyle(bpmnElementId, expectedModel);
+      htmlElementLookup.expectEndEvent(bpmnElementId, ShapeBpmnEventDefinitionKind.MESSAGE, { label: 'message end 2', additionalClasses: ['class-1', 'class-2'] });
+    });
+  });
+});
+
+describe('mxGraph model - reset style', () => {
+  describe('Shapes', () => {
+    beforeEach(() => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
+    });
+
+    // All properties are tested on a single element.
+    // Tests involving several elements only check one or few properties to ensure all elements are updated, considering that the rest is covered by the
+    // "single element" test.
+    it('A single element', () => {
+      const elementId = 'userTask_2_2';
+
+      // Apply custom style
+      const customStyle = {
+        stroke: { color: 'red', opacity: 72, width: 7 },
+        font: {
+          color: 'chartreuse',
+          opacity: 40,
+          size: 25,
+          family: 'Times New Roman',
+          isBold: true,
+          isItalic: true,
+          isUnderline: true,
+          isStrikeThrough: true,
+        },
+        opacity: 84,
+        fill: { color: 'gold', opacity: 55 },
+      };
+      bpmnVisualization.bpmnElementsRegistry.updateStyle(elementId, customStyle);
+
+      // Reset style
+      bpmnVisualization.bpmnElementsRegistry.resetStyle(elementId);
+
+      // Check that the style has been reset to default values
+      expect('userTask_2_2').toBeUserTask({
+        // not under test
+        parentId: 'lane_02',
+        label: 'User Task 2.2',
+      });
+    });
+
+    it('Several elements', () => {
+      const elementIds = ['task_1', 'gateway_01'];
+
+      // Apply custom style
+      const customStyle = {
+        stroke: { color: 'pink' },
+      };
+      bpmnVisualization.bpmnElementsRegistry.updateStyle(elementIds, customStyle);
+
+      // Reset style
+      bpmnVisualization.bpmnElementsRegistry.resetStyle(elementIds);
+
+      // Check that the style has been reset to default values for each element
+      expect('task_1').toBeTask({
+        // not under test
+        parentId: 'lane_01',
+        label: 'Task 1',
+      });
+      expect('gateway_01').toBeExclusiveGateway({
+        // not under test
+        parentId: 'lane_01',
+        label: 'gateway 1',
+        verticalAlign: 'top',
+      });
+    });
+
+    it('Reset the style twice', () => {
+      const elementIds = ['endEvent_terminate_1'];
+
+      // Apply custom style
+      const customStyle = {
+        stroke: { color: 'green' },
+      };
+      bpmnVisualization.bpmnElementsRegistry.updateStyle(elementIds, customStyle);
+
+      // Reset style
+      bpmnVisualization.bpmnElementsRegistry.resetStyle(elementIds);
+      bpmnVisualization.bpmnElementsRegistry.resetStyle(elementIds);
+
+      // Check that the style has been reset to default values
+      expect('endEvent_terminate_1').toBeEndEvent({
+        // not under test
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.TERMINATE,
+        parentId: 'lane_01',
+        label: 'terminate end 1',
+      });
+    });
+
+    it('Reset the fill style of a lane', () => {
+      const elementId = 'lane_02';
+
+      // Apply custom style
+      bpmnVisualization.bpmnElementsRegistry.updateStyle(elementId, { fill: { color: 'gold' } });
+
+      // Reset style
+      bpmnVisualization.bpmnElementsRegistry.resetStyle(elementId);
+
+      // Check that the style has been reset to default values
+      expect('lane_02').toBeLane({
+        // not under test
+        parentId: 'Participant_1',
+        label: 'Lane 2',
+      });
+    });
+
+    it('Reset the fill style of a pool', () => {
+      const elementId = 'Participant_1';
+
+      // Apply custom style
+      bpmnVisualization.bpmnElementsRegistry.updateStyle(elementId, { fill: { color: 'gold' } });
+
+      // Reset style
+      bpmnVisualization.bpmnElementsRegistry.resetStyle(elementId);
+
+      // Check that the style has been reset to default values
+      expect('Participant_1').toBePool({
+        // not under test
+        label: 'Pool 1',
+      });
+    });
+  });
+
+  describe('Edges', () => {
+    beforeEach(() => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
+    });
+
+    // All properties are tested on a single element.
+    // Tests involving several elements only check one or few properties to ensure all elements are updated, considering that the rest is covered by the
+    // "single element" test.
+    it('On a single element', () => {
+      const elementId = 'sequenceFlow_lane_3_elt_3';
+
+      // Apply custom style
+      const customStyle = {
+        stroke: { color: 'red', opacity: 72, width: 7 },
+        font: {
+          color: 'chartreuse',
+          opacity: 40,
+          size: 25,
+          family: 'Times New Roman',
+          isBold: true,
+          isItalic: true,
+          isUnderline: true,
+          isStrikeThrough: true,
+        },
+        opacity: 84,
+      };
+      bpmnVisualization.bpmnElementsRegistry.updateStyle(elementId, customStyle);
+
+      // Reset style
+      bpmnVisualization.bpmnElementsRegistry.resetStyle(elementId);
+
+      // Check that the style has been reset to default values
+      expect(elementId).toBeSequenceFlow({
+        // not under test
+        parentId: 'lane_03',
+        verticalAlign: 'bottom',
+      });
+    });
+
+    it('Several elements', () => {
+      const elementIds = ['sequenceFlow_lane_3_elt_3', 'sequenceFlow_lane_1_elt_1'];
+
+      // Apply custom style
+      const customStyle = {
+        stroke: { color: 'pink' },
+      };
+      bpmnVisualization.bpmnElementsRegistry.updateStyle(elementIds, customStyle);
+
+      // Reset style
+      bpmnVisualization.bpmnElementsRegistry.resetStyle(elementIds);
+
+      // Check that the style has been reset to default values for each element
+      expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
+        // not under test
+        parentId: 'lane_03',
+        verticalAlign: 'bottom',
+      });
+      expect('sequenceFlow_lane_1_elt_1').toBeSequenceFlow({
+        // not under test
+        parentId: 'lane_01',
+        verticalAlign: 'bottom',
+      });
+    });
+
+    it('Reset the style twice', () => {
+      const strokeColor = 'DarkBlue';
+      bpmnVisualization.bpmnElementsRegistry.updateStyle(['sequenceFlow_lane_1_elt_1'], { stroke: { color: strokeColor } });
+      bpmnVisualization.bpmnElementsRegistry.updateStyle(['sequenceFlow_lane_1_elt_1'], {});
+
+      expect('sequenceFlow_lane_1_elt_1').toBeSequenceFlow({
+        stroke: { color: strokeColor },
+        // not under test
+        parentId: 'lane_01',
+        verticalAlign: 'bottom',
+      });
+    });
+  });
+
+  describe('Both Edges and Shapes', () => {
+    beforeEach(() => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
+    });
+
+    it('Non existing elements', () => {
+      // Check that there is no error
+      bpmnVisualization.bpmnElementsRegistry.resetStyle(['i_do_not_exist_1', 'i_do_not_exist_2']);
+    });
+
+    it('Several elements', () => {
+      const elementIds = ['startEvent_lane_1', 'sequenceFlow_lane_1_elt_1'];
+
+      // Apply custom style
+      const customStyle = {
+        stroke: { color: 'orange' },
+      };
+      bpmnVisualization.bpmnElementsRegistry.updateStyle(elementIds, customStyle);
+
+      // Reset style
+      bpmnVisualization.bpmnElementsRegistry.resetStyle(elementIds);
+
+      // Check that the style has been reset to default values for each element
+      expect('startEvent_lane_1').toBeStartEvent({
+        // not under test
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
+        parentId: 'lane_01',
+        label: 'message start 1',
+      });
+      expect('sequenceFlow_lane_1_elt_1').toBeSequenceFlow({
+        // not under test
+        parentId: 'lane_01',
+        verticalAlign: 'bottom',
+      });
+    });
+  });
+
+  // Check that there is no bad interactions between the two features
+  describe('Style API Reset and CSS class update', () => {
+    it.each([true, false])('Reset style first %s', (isStyleResetFirst: boolean) => {
+      bv.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
+
+      const bpmnElementId = 'endEvent_message_1';
+      const cssClassName = ['class-1', 'class-2'];
+
+      bv.bpmnElementsRegistry.updateStyle(bpmnElementId, { stroke: { color: 'pink' } });
+
+      if (isStyleResetFirst) {
+        bv.bpmnElementsRegistry.resetStyle(bpmnElementId);
+        bv.bpmnElementsRegistry.addCssClasses(bpmnElementId, cssClassName);
+      } else {
+        bv.bpmnElementsRegistry.addCssClasses(bpmnElementId, cssClassName);
+        bv.bpmnElementsRegistry.resetStyle(bpmnElementId);
+      }
+
+      // Check that the style has been reset to default values for each element
+      const expectedModel = {
+        extraCssClasses: ['class-1', 'class-2'],
+        kind: ShapeBpmnElementKind.EVENT_END,
+        verticalAlign: 'top', // when events have a label
       };
       checkModelStyle(bpmnElementId, expectedModel);
       checkViewStateStyle(bpmnElementId, expectedModel);

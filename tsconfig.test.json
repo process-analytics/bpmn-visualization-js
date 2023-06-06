@@ -7,9 +7,11 @@
       // allow to import sources directly with "@lib/xx/yy" instead of using relative paths like "../../../src/xx/yy"
       "@lib/*": ["src/*"],
       "@test/shared/*": ["test/shared/*"],
-    }
+    },
+
   },
   "include": [
-    "test/**/*.ts"
+    "test/**/*.ts",
+    "src/type/*.d.ts"
   ]
 }
