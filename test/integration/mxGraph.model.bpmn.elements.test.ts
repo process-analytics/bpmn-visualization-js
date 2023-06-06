@@ -901,6 +901,116 @@ describe('mxGraph model - BPMN elements', () => {
             expect('task_in_collapsed_transaction_sub_process_id').not.toBeCell();
           });
         });
+
+        describe('AdHoc Sub Process', () => {
+          describe('Expanded', () => {
+            test('Without marker', () => {
+              expect('expanded_adHoc_sub_process_id').toBeSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.AD_HOC,
+                label: 'Expanded AdHoc Sub-Process',
+                parentId: 'participant_1_id',
+                verticalAlign: 'top',
+              });
+            });
+            test('With loop', () => {
+              expect('expanded_adHoc_sub_process_with_loop_id').toBeSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.AD_HOC,
+                label: 'Expanded AdHoc Sub-Process With Loop',
+                markers: [ShapeBpmnMarkerKind.LOOP],
+                parentId: 'participant_1_id',
+                verticalAlign: 'top',
+              });
+            });
+            test('With multi instance sequential', () => {
+              expect('expanded_adHoc_sub_process_with_sequential_multi_instance_id').toBeSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.AD_HOC,
+                label: 'Expanded AdHoc Sub-Process With Sequential Multi-instance',
+                markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
+                parentId: 'participant_1_id',
+                verticalAlign: 'top',
+              });
+            });
+            test('With multi instance parallel', () => {
+              expect('expanded_adHoc_sub_process_with_parallel_multi_instance_id').toBeSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.AD_HOC,
+                label: 'Expanded AdHoc Sub-Process With Parallel Multi-instance',
+                markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+                parentId: 'participant_1_id',
+                verticalAlign: 'top',
+              });
+            });
+          });
+
+          describe('Collapsed', () => {
+            test('Without marker', () => {
+              expect('collapsed_adHoc_sub_process_id').toBeSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.AD_HOC,
+                label: 'Collapsed AdHoc Sub-Process',
+                markers: [ShapeBpmnMarkerKind.EXPAND],
+                parentId: 'participant_1_id',
+              });
+            });
+            test('With loop', () => {
+              expect('collapsed_adHoc_sub_process_with_loop_id').toBeSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.AD_HOC,
+                label: 'Collapsed AdHoc Sub-Process With Loop',
+                markers: [ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.EXPAND],
+                parentId: 'participant_1_id',
+              });
+            });
+            test('With multi instance sequential', () => {
+              expect('collapsed_adHoc_sub_process_with_sequential_multi_instance_id').toBeSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.AD_HOC,
+                label: 'Collapsed AdHoc Sub-Process With Sequential Multi-instance',
+                markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.EXPAND],
+                parentId: 'participant_1_id',
+              });
+            });
+            test('With multi instance parallel', () => {
+              expect('collapsed_adHoc_sub_process_with_parallel_multi_instance_id').toBeSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.AD_HOC,
+                label: 'Collapsed AdHoc Sub-Process With Parallel Multi-instance',
+                markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.EXPAND],
+                parentId: 'participant_1_id',
+              });
+            });
+          });
+
+          test('Elements in expanded Sub Process', async () => {
+            expect('start_event_in_adHoc_sub_process_id').toBeStartEvent({
+              eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
+              label: 'Start Event In AdHoc Sub-Process',
+              parentId: 'expanded_adHoc_sub_process_id',
+            });
+            expect('task_in_adHoc_sub_process_id').toBeTask({
+              label: 'Task In AdHoc Sub-Process',
+              parentId: 'expanded_adHoc_sub_process_id',
+            });
+            expect('end_event_in_adHoc_sub_process_id').toBeEndEvent({
+              eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
+              label: 'End Event In AdHoc Sub-Process',
+              parentId: 'expanded_adHoc_sub_process_id',
+            });
+            expect('sequence_flow_in_adHoc_sub_process_1_id').toBeSequenceFlow({
+              parentId: 'expanded_adHoc_sub_process_id',
+              verticalAlign: 'bottom',
+            });
+            expect('sequence_flow_in_adHoc_sub_process_2_id').toBeSequenceFlow({
+              parentId: 'expanded_adHoc_sub_process_id',
+              verticalAlign: 'bottom',
+            });
+          });
+
+          test('Elements of collapsed Sub Process', async () => {
+            expect('message_boundary_event_attached_to_collapsed_adHoc_sub_process_id').toBeBoundaryEvent({
+              eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
+              label: 'Interrupting Message Boundary Event attached to collapsed AdHoc Sub-Process',
+              parentId: 'collapsed_adHoc_sub_process_id',
+              isInterrupting: true,
+            });
+            expect('task_in_collapsed_adHoc_sub_process_id').not.toBeCell();
+          });
+        });
       });
 
       describe('Call Activities', () => {

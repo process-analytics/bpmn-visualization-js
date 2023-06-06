@@ -129,17 +129,11 @@ export enum ShapeBpmnMarkerKind {
 }
 
 /**
- * Base name of the BPMN specification for sub-process kinds.
  * @category BPMN
  */
 export enum ShapeBpmnSubProcessKind {
+  AD_HOC = 'ad_hoc',
   EMBEDDED = 'embedded',
   EVENT = 'event',
   TRANSACTION = 'transaction',
-  // When adding support, uncomment/update tests
-  //   test/unit/component/mxgraph/renderer/StyleComputer.test.ts
-  //   test/unit/component/parser/json/BpmnJsonParser.marker.test.ts (adhoc requires special checks as an additional marker should be present)
-  // Create a dedicated describe or a dedicated file inspired from
-  //   test/unit/component/parser/json/BpmnJsonParser.sub.process.test.ts
-  // AD_HOC = 'ad_hoc',
 }
