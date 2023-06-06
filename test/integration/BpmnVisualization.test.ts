@@ -44,7 +44,7 @@ describe('BpmnVisualization API', () => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'), { fit: { type: <FitType>fitType } });
     });
 
-    it('Load invalid diagram (text file)', async () => {
+    it('Load invalid diagram (text file)', () => {
       expect(() => bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/text-only.txt'))).toThrow(
         `XML parsing failed. Unable to retrieve 'definitions' from the BPMN source.`,
       );

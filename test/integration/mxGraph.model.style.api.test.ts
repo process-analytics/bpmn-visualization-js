@@ -16,7 +16,7 @@ limitations under the License.
 
 import { initializeBpmnVisualizationWithContainerId } from './helpers/bpmn-visualization-initialization';
 import { HtmlElementLookup } from './helpers/html-utils';
-import type { ExpectedShapeModelElement } from './helpers/model-expect';
+import type { ExpectedShapeModelElement, VerticalAlign } from './helpers/model-expect';
 import { bpmnVisualization } from './helpers/model-expect';
 import { buildReceivedResolvedModelCellStyle, buildReceivedViewStateStyle } from './matchers/matcher-utils';
 import { buildExpectedShapeCellStyle } from './matchers/toBeShape';
@@ -76,7 +76,6 @@ describe('mxGraph model - update style', () => {
         // not under test
         parentId: 'lane_01',
         label: 'gateway 1',
-        verticalAlign: 'top',
       });
     });
 
@@ -618,7 +617,7 @@ describe('mxGraph model - update style', () => {
         extraCssClasses: ['class-1', 'class-2'],
         kind: ShapeBpmnElementKind.EVENT_END,
         stroke: { color: strokeColor },
-        verticalAlign: 'top', // when events have a label
+        verticalAlign: <VerticalAlign>'top', // when events have a label
       };
       checkModelStyle(bpmnElementId, expectedModel);
       checkViewStateStyle(bpmnElementId, expectedModel);
