@@ -332,7 +332,7 @@ export function updateStyle(bpmnElementIds: string | string[], style: StyleUpdat
 
 export function resetStyle(bpmnElementIds: string | string[]): void {
   log('Resetting styles using the style API!');
-  bpmnVisualization.resetStyle(bpmnElementIds);
+  bpmnVisualization.bpmnElementsRegistry.resetStyle(bpmnElementIds);
   log('Styles reset');
 }
 
