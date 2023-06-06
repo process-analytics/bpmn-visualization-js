@@ -43,7 +43,7 @@ describe('Bpmn Elements registry - retrieve BPMN elements', () => {
     ${initializeBpmnVisualization(undefined)}       | ${'html element with id set to undefined'}
   `('container set with "$type"', ({ bpmnVisualization }: { bpmnVisualization: BpmnVisualization }) => {
     describe('Get by ids', () => {
-      it('Pass several existing ids', async () => {
+      it('Pass several existing ids', () => {
         bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
 
         const bpmnElements = bpmnVisualization.bpmnElementsRegistry.getElementsByIds(['StartEvent_1', 'Flow_2']);
@@ -53,13 +53,13 @@ describe('Bpmn Elements registry - retrieve BPMN elements', () => {
         expectSequenceFlowBpmnElement(bpmnElements[1], { id: 'Flow_2', source: 'Activity_1', target: 'EndEvent_1' });
       });
 
-      it('Pass a single non existing id', async () => {
+      it('Pass a single non existing id', () => {
         bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
         const bpmnElements = bpmnVisualization.bpmnElementsRegistry.getElementsByIds('unknown');
         expect(bpmnElements).toHaveLength(0);
       });
 
-      it('Pass existing and non existing ids', async () => {
+      it('Pass existing and non existing ids', () => {
         bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
         const bpmnElements = bpmnVisualization.bpmnElementsRegistry.getElementsByIds(['StartEvent_1', 'unknown', 'Flow_1', 'another_unknown']);
         expect(bpmnElements).toHaveLength(2);
@@ -67,7 +67,7 @@ describe('Bpmn Elements registry - retrieve BPMN elements', () => {
     });
 
     describe('Get by kinds', () => {
-      it('Pass a single kind related to a single existing element', async () => {
+      it('Pass a single kind related to a single existing element', () => {
         bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
         const bpmnElements = bpmnVisualization.bpmnElementsRegistry.getElementsByKinds(ShapeBpmnElementKind.TASK);
         expect(bpmnElements).toHaveLength(1);
@@ -75,7 +75,7 @@ describe('Bpmn Elements registry - retrieve BPMN elements', () => {
         expectTaskBpmnElement(bpmnElements[0], { id: 'Activity_1', name: 'Task 1', incoming: ['Flow_1'], outgoing: ['Flow_2'] });
       });
 
-      it('Pass a single kind related to several existing elements', async () => {
+      it('Pass a single kind related to several existing elements', () => {
         bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
         const bpmnElements = bpmnVisualization.bpmnElementsRegistry.getElementsByKinds(FlowKind.SEQUENCE_FLOW);
         expect(bpmnElements).toHaveLength(2);
@@ -84,13 +84,13 @@ describe('Bpmn Elements registry - retrieve BPMN elements', () => {
         expectSequenceFlowBpmnElement(bpmnElements[1], { id: 'Flow_2', source: 'Activity_1', target: 'EndEvent_1' });
       });
 
-      it('No elements for this kind', async () => {
+      it('No elements for this kind', () => {
         bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
         const bpmnElements = bpmnVisualization.bpmnElementsRegistry.getElementsByKinds(ShapeBpmnElementKind.SUB_PROCESS);
         expect(bpmnElements).toHaveLength(0);
       });
 
-      it('Pass a several kinds that all match existing elements', async () => {
+      it('Pass a several kinds that all match existing elements', () => {
         bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
         const bpmnElements = bpmnVisualization.bpmnElementsRegistry.getElementsByKinds([ShapeBpmnElementKind.EVENT_END, ShapeBpmnElementKind.POOL]);
         expect(bpmnElements).toHaveLength(3);
@@ -100,7 +100,7 @@ describe('Bpmn Elements registry - retrieve BPMN elements', () => {
         expectPoolBpmnElement(bpmnElements[2], { id: 'Participant_1', name: 'Pool 1' });
       });
 
-      it('Pass a several kinds that match existing and non-existing elements', async () => {
+      it('Pass a several kinds that match existing and non-existing elements', () => {
         bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
         const bpmnElements = bpmnVisualization.bpmnElementsRegistry.getElementsByKinds([ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.TASK_SERVICE]);
         expect(bpmnElements).toHaveLength(2);

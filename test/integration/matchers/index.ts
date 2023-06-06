@@ -16,7 +16,6 @@ limitations under the License.
 
 export { toBeSequenceFlow, toBeMessageFlow, toBeAssociationFlow } from './toBeEdge';
 export {
-  toBeShape,
   toBeCallActivity,
   toBeTask,
   toBeServiceTask,
@@ -33,8 +32,12 @@ export {
   toBeBoundaryEvent,
   toBeEventBasedGateway,
   toBeExclusiveGateway,
+  toBeInclusiveGateway,
+  toBeParallelGateway,
   toBeSubProcess,
   toBePool,
   toBeLane,
+  toBeGroup,
+  toBeTextAnnotation,
 } from './toBeShape';
 export { toBeCell, toBeCellWithParentAndGeometry } from './toBeCell';
