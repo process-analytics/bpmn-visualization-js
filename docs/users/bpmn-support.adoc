@@ -129,6 +129,11 @@ the BPMN elements are rendered with their final shapes.
 ^.^|
 .^|
 
+.^|Ad-Hoc Sub-Process
+^.^|icon:flask[]
+^.^| The `ad-hoc` marker is not displayed
+.^|
+
 .^|Embedded Sub-Process
 ^.^|icon:check-circle-o[]
 ^.^|

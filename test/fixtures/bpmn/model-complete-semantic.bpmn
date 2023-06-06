@@ -403,6 +403,7 @@
     <semantic:subProcess id="collapsed_event_sub_process_with_parallel_multi_instance_id" name="Collapsed Event Sub-Process With Parallel Multi-instance" triggeredByEvent="true">
       <semantic:multiInstanceLoopCharacteristics />
     </semantic:subProcess>
+    <!-- END OF Event Sub-Process -->
 
     <!-- Transaction Sub-Process -->
     <!-- Expanded -->
@@ -447,6 +448,53 @@
     <semantic:transaction id="collapsed_transaction_sub_process_with_parallel_multi_instance_id" name="Collapsed Transaction Sub-Process With Parallel Multi-instance">
       <semantic:multiInstanceLoopCharacteristics />
     </semantic:transaction>
+    <!-- END OF Transaction Sub-Process -->
+
+    <!-- Ad-Hoc Sub-Process -->
+    <!-- Expanded -->
+    <semantic:adHocSubProcess id="expanded_adHoc_sub_process_id" name="Expanded AdHoc Sub-Process">
+      <semantic:startEvent id="start_event_in_adHoc_sub_process_id" name="Start Event In AdHoc Sub-Process">
+        <semantic:outgoing>sequence_flow_in_adHoc_sub_process_1_id</semantic:outgoing>
+      </semantic:startEvent>
+      <semantic:task id="task_in_adHoc_sub_process_id" name="Task In AdHoc Sub-Process">
+        <semantic:incoming>sequence_flow_in_adHoc_sub_process_1_id</semantic:incoming>
+        <semantic:outgoing>sequence_flow_in_adHoc_sub_process_2_id</semantic:outgoing>
+      </semantic:task>
+      <semantic:sequenceFlow id="sequence_flow_in_adHoc_sub_process_1_id" sourceRef="start_event_in_adHoc_sub_process_id" targetRef="task_in_adHoc_sub_process_id" />
+      <semantic:endEvent id="end_event_in_adHoc_sub_process_id" name="End Event In AdHoc Sub-Process">
+        <semantic:incoming>sequence_flow_in_adHoc_sub_process_2_id</semantic:incoming>
+      </semantic:endEvent>
+      <semantic:sequenceFlow id="sequence_flow_in_adHoc_sub_process_2_id" sourceRef="task_in_adHoc_sub_process_id" targetRef="end_event_in_adHoc_sub_process_id" />
+    </semantic:adHocSubProcess>
+    <semantic:adHocSubProcess id="expanded_adHoc_sub_process_with_loop_id" name="Expanded AdHoc Sub-Process With Loop">
+      <semantic:standardLoopCharacteristics />
+    </semantic:adHocSubProcess>
+    <semantic:adHocSubProcess id="expanded_adHoc_sub_process_with_sequential_multi_instance_id" name="Expanded AdHoc Sub-Process With Sequential Multi-instance">
+      <semantic:multiInstanceLoopCharacteristics isSequential="true" />
+    </semantic:adHocSubProcess>
+    <semantic:adHocSubProcess id="expanded_adHoc_sub_process_with_parallel_multi_instance_id" name="Expanded AdHoc Sub-Process With Parallel Multi-instance">
+      <semantic:multiInstanceLoopCharacteristics />
+    </semantic:adHocSubProcess>
+
+    <!-- Collapsed -->
+    <semantic:adHocSubProcess id="collapsed_adHoc_sub_process_id" name="Collapsed AdHoc Sub-Process">
+      <semantic:task id="task_in_collapsed_adHoc_sub_process_id" name="Task In Collapsed Sub-Process" />
+    </semantic:adHocSubProcess>
+    <semantic:boundaryEvent id="message_boundary_event_attached_to_collapsed_adHoc_sub_process_id" name="Interrupting Message Boundary Event attached to collapsed AdHoc Sub-Process"
+                            attachedToRef="collapsed_adHoc_sub_process_id">
+      <semantic:messageEventDefinition />
+    </semantic:boundaryEvent>
+    <semantic:adHocSubProcess id="collapsed_adHoc_sub_process_with_loop_id" name="Collapsed AdHoc Sub-Process With Loop">
+      <semantic:standardLoopCharacteristics />
+    </semantic:adHocSubProcess>
+    <semantic:adHocSubProcess id="collapsed_adHoc_sub_process_with_sequential_multi_instance_id" name="Collapsed AdHoc Sub-Process With Sequential Multi-instance">
+      <semantic:multiInstanceLoopCharacteristics isSequential="true" />
+    </semantic:adHocSubProcess>
+    <semantic:adHocSubProcess id="collapsed_adHoc_sub_process_with_parallel_multi_instance_id" name="Collapsed AdHoc Sub-Process With Parallel Multi-instance">
+      <semantic:multiInstanceLoopCharacteristics />
+    </semantic:adHocSubProcess>
+    <!-- END OF Ad-Hoc Sub-Process -->
+
 
     <!-- Event -->
     <!-- Start Event -->
@@ -1322,6 +1370,75 @@
         <dc:Bounds x="4530" y="2115" width="140" height="90" />
       </bpmndi:BPMNShape>
       <!-- END OF Transaction Sub-Process -->
+
+      <!-- Ad-Hoc Sub-Process -->
+      <!-- Expanded -->
+      <!-- Expanded with elements -->
+      <bpmndi:BPMNShape id="shape_expanded_adHoc_sub_process_id" bpmnElement="expanded_adHoc_sub_process_id" isExpanded="true">
+        <dc:Bounds x="3955" y="2360" width="370" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="edge_sequence_flow_in_adHoc_sub_process_1_id" bpmnElement="sequence_flow_in_adHoc_sub_process_1_id">
+        <di:waypoint x="4031" y="2460" />
+        <di:waypoint x="4085" y="2460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_sequence_flow_in_adHoc_sub_process_2_id" bpmnElement="sequence_flow_in_adHoc_sub_process_2_id">
+        <di:waypoint x="4185" y="2460" />
+        <di:waypoint x="4247" y="2460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="shape_start_event_in_adHoc_sub_process_id" bpmnElement="start_event_in_adHoc_sub_process_id">
+        <dc:Bounds x="3995" y="2442" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3980" y="2485" width="67" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_task_in_adHoc_sub_process_id" bpmnElement="task_in_adHoc_sub_process_id">
+        <dc:Bounds x="4085" y="2420" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_end_event_in_adHoc_sub_process_id" bpmnElement="end_event_in_adHoc_sub_process_id">
+        <dc:Bounds x="4247" y="2442" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="4234" y="2485" width="63" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <!-- END OF "Expanded with elements" -->
+
+      <bpmndi:BPMNShape id="shape_expanded_adHoc_sub_process_with_loop_id" bpmnElement="expanded_adHoc_sub_process_with_loop_id" isExpanded="true">
+        <dc:Bounds x="3565" y="2360" width="370" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_expanded_adHoc_sub_process_with_sequential_multi_instance_id" bpmnElement="expanded_adHoc_sub_process_with_sequential_multi_instance_id" isExpanded="true">
+        <dc:Bounds x="3170" y="2360" width="370" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_expanded_adHoc_sub_process_with_parallel_multi_instance_id" bpmnElement="expanded_adHoc_sub_process_with_parallel_multi_instance_id" isExpanded="true">
+        <dc:Bounds x="2775" y="2360" width="370" height="200" />
+      </bpmndi:BPMNShape>
+
+      <!-- Collapsed -->
+      <!-- Collapsed with elements -->
+      <bpmndi:BPMNShape id="shape_collapsed_adHoc_sub_process_id" bpmnElement="collapsed_adHoc_sub_process_id" isExpanded="false">
+        <dc:Bounds x="5220" y="2415" width="140" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_task_in_collapsed_adHoc_sub_process_id" bpmnElement="task_in_collapsed_adHoc_sub_process_id">
+        <dc:Bounds x="5240" y="2420" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_message_boundary_event_attached_to_collapsed_adHoc_sub_process_id" bpmnElement="message_boundary_event_attached_to_collapsed_adHoc_sub_process_id">
+        <dc:Bounds x="5344" y="2470" width="32" height="32" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="5396" y="2440" width="79" height="80" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <!-- END OF "Collapsed with elements" -->
+
+      <bpmndi:BPMNShape id="shape_collapsed_adHoc_sub_process_with_loop_id" bpmnElement="collapsed_adHoc_sub_process_with_loop_id" isExpanded="false">
+        <dc:Bounds x="4970" y="2415" width="140" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_collapsed_adHoc_sub_process_with_sequential_multi_instance_id" bpmnElement="collapsed_adHoc_sub_process_with_sequential_multi_instance_id" isExpanded="false">
+        <dc:Bounds x="4730" y="2415" width="140" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_collapsed_adHoc_sub_process_with_parallel_multi_instance_id" bpmnElement="collapsed_adHoc_sub_process_with_parallel_multi_instance_id" isExpanded="false">
+        <dc:Bounds x="4530" y="2415" width="140" height="90" />
+      </bpmndi:BPMNShape>
+      <!-- END OF Ad-Hoc Sub-Process -->
+
 
       <!-- Event -->
       <!-- Start Event -->

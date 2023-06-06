@@ -48,6 +48,7 @@ export interface BpmnCellStyle extends StyleMap {
   horizontal?: number;
   // custom bpmn-visualization
   extraCssClasses?: string[];
+  markers?: string[];
 }
 
 export interface ExpectedCell {
@@ -192,6 +193,8 @@ function toBpmnStyle(rawStyle: StyleMap, isEdge: boolean): BpmnCellStyle {
     fontOpacity: rawStyle.textOpacity,
     // custom bpmn-visualization
     extraCssClasses: rawStyle[BpmnStyleIdentifier.EXTRA_CSS_CLASSES]?.split(','),
+    // ignore marker order, which is only relevant when rendering the shape (it has its own order algorithm)
+    markers: rawStyle[BpmnStyleIdentifier.MARKERS]?.split(',').sort(),
   };
 
   if (isEdge) {

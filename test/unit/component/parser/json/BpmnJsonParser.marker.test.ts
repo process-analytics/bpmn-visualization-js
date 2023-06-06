@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtils';
-import { verifyShape } from '../../../helpers/bpmn-model-expect';
+import { getExpectedMarkers, verifyShape } from '../../../helpers/bpmn-model-expect';
 
 import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
 import type { TMultiInstanceLoopCharacteristics, TStandardLoopCharacteristics } from '@lib/model/bpmn/json/baseElement/loopCharacteristics';
@@ -24,8 +24,7 @@ import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind } 
 describe.each([
   ['callActivity', ShapeBpmnElementKind.CALL_ACTIVITY],
   ['subProcess', ShapeBpmnElementKind.SUB_PROCESS],
-  // Uncomment when it's supported
-  // ['adHocSubProcess', ShapeBpmnElementKind.SUB_PROCESS],
+  ['adHocSubProcess', ShapeBpmnElementKind.SUB_PROCESS],
   ['transaction', ShapeBpmnElementKind.SUB_PROCESS],
   ['task', ShapeBpmnElementKind.TASK],
   ['serviceTask', ShapeBpmnElementKind.TASK_SERVICE],
@@ -85,14 +84,9 @@ describe.each([
           bpmnElementId: `${bpmnSemanticType}_id_0`,
           bpmnElementName: `${bpmnSemanticType} name`,
           bpmnElementKind: expectedShapeBpmnElementKind,
-          bpmnElementMarkers: [expectedMarkerKind],
+          bpmnElementMarkers: getExpectedMarkers([expectedMarkerKind], bpmnSemanticType),
           bpmnElementCallActivityKind: expectedShapeBpmnElementKind === ShapeBpmnElementKind.CALL_ACTIVITY ? ShapeBpmnCallActivityKind.CALLING_PROCESS : undefined,
-          bounds: {
-            x: 362,
-            y: 232,
-            width: 36,
-            height: 45,
-          },
+          bounds: { x: 362, y: 232, width: 36, height: 45 },
         });
       },
     );
@@ -129,13 +123,8 @@ describe.each([
           bpmnElementId: `${bpmnSemanticType}_id_0`,
           bpmnElementName: `${bpmnSemanticType} name`,
           bpmnElementKind: expectedShapeBpmnElementKind,
-          bpmnElementMarkers: [expectedMarkerKind, ShapeBpmnMarkerKind.EXPAND],
-          bounds: {
-            x: 362,
-            y: 232,
-            width: 36,
-            height: 45,
-          },
+          bpmnElementMarkers: getExpectedMarkers([expectedMarkerKind, ShapeBpmnMarkerKind.EXPAND], bpmnSemanticType),
+          bounds: { x: 362, y: 232, width: 36, height: 45 },
         });
       });
     }
@@ -181,14 +170,9 @@ describe.each([
           bpmnElementId: `${bpmnSemanticType}_id_0`,
           bpmnElementName: `${bpmnSemanticType} name`,
           bpmnElementKind: expectedShapeBpmnElementKind,
-          bpmnElementMarkers: [expectedMarkerKind],
+          bpmnElementMarkers: getExpectedMarkers([expectedMarkerKind], bpmnSemanticType),
           bpmnElementCallActivityKind: expectedShapeBpmnElementKind === ShapeBpmnElementKind.CALL_ACTIVITY ? ShapeBpmnCallActivityKind.CALLING_PROCESS : undefined,
-          bounds: {
-            x: 362,
-            y: 232,
-            width: 36,
-            height: 45,
-          },
+          bounds: { x: 362, y: 232, width: 36, height: 45 },
         });
       },
     );
@@ -226,14 +210,9 @@ describe.each([
           bpmnElementId: `${bpmnSemanticType}_id_0`,
           bpmnElementName: `${bpmnSemanticType} name`,
           bpmnElementKind: expectedShapeBpmnElementKind,
-          bpmnElementMarkers: [expectedMarkerKind, ShapeBpmnMarkerKind.EXPAND],
+          bpmnElementMarkers: getExpectedMarkers([expectedMarkerKind, ShapeBpmnMarkerKind.EXPAND], bpmnSemanticType),
           bpmnElementCallActivityKind: expectedShapeBpmnElementKind === ShapeBpmnElementKind.CALL_ACTIVITY ? ShapeBpmnCallActivityKind.CALLING_PROCESS : undefined,
-          bounds: {
-            x: 362,
-            y: 232,
-            width: 36,
-            height: 45,
-          },
+          bounds: { x: 362, y: 232, width: 36, height: 45 },
         });
       });
     }

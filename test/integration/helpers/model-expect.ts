@@ -17,6 +17,7 @@ limitations under the License.
 import type {
   Fill,
   FlowKind,
+  GlobalTaskKind,
   MessageVisibleKind,
   Opacity,
   SequenceFlowKind,
@@ -37,21 +38,24 @@ import {
   toBeEndEvent,
   toBeEventBasedGateway,
   toBeExclusiveGateway,
+  toBeGroup,
+  toBeInclusiveGateway,
   toBeIntermediateCatchEvent,
   toBeIntermediateThrowEvent,
   toBeLane,
   toBeManualTask,
   toBeMessageFlow,
+  toBeParallelGateway,
   toBePool,
   toBeReceiveTask,
   toBeScriptTask,
   toBeSendTask,
   toBeSequenceFlow,
   toBeServiceTask,
-  toBeShape,
   toBeStartEvent,
   toBeSubProcess,
   toBeTask,
+  toBeTextAnnotation,
   toBeUserTask,
 } from '../matchers';
 import type { mxCell, mxGeometry } from 'mxgraph';
@@ -67,8 +71,6 @@ declare global {
       toBeSequenceFlow(modelElement: ExpectedSequenceFlowModelElement): R;
       toBeMessageFlow(modelElement: ExpectedEdgeModelElement): R;
       toBeAssociationFlow(modelElement: ExpectedEdgeModelElement): R;
-      toBeShape(modelElement: ExpectedShapeModelElement): R;
-      toBeCallActivity(modelElement: ExpectedCallActivityModelElement): R;
       toBeTask(modelElement: ExpectedShapeModelElement): R;
       toBeServiceTask(modelElement: ExpectedShapeModelElement): R;
       toBeUserTask(modelElement: ExpectedShapeModelElement): R;
@@ -83,10 +85,15 @@ declare global {
       toBeIntermediateCatchEvent(modelElement: ExpectedEventModelElement): R;
       toBeBoundaryEvent(modelElement: ExpectedBoundaryEventModelElement): R;
       toBeEventBasedGateway(modelElement: ExpectedEventBasedGatewayModelElement): R;
-      toBeExclusiveGateway(modelElement: ExpectedEventBasedGatewayModelElement): R;
+      toBeExclusiveGateway(modelElement: ExpectedShapeModelElement): R;
+      toBeInclusiveGateway(modelElement: ExpectedShapeModelElement): R;
+      toBeParallelGateway(modelElement: ExpectedShapeModelElement): R;
+      toBeCallActivity(modelElement: ExpectedCallActivityModelElement): R;
       toBeSubProcess(modelElement: ExpectedSubProcessModelElement): R;
       toBePool(modelElement: ExpectedShapeModelElement): R;
       toBeLane(modelElement: ExpectedShapeModelElement): R;
+      toBeGroup(modelElement: ExpectedShapeModelElement): R;
+      toBeTextAnnotation(modelElement: ExpectedShapeModelElement): R;
     }
   }
 }
@@ -97,8 +104,7 @@ expect.extend({
   toBeSequenceFlow,
   toBeMessageFlow,
   toBeAssociationFlow,
-  toBeShape,
-  toBeCallActivity,
+  // tasks
   toBeTask,
   toBeServiceTask,
   toBeUserTask,
@@ -107,16 +113,26 @@ expect.extend({
   toBeManualTask,
   toBeScriptTask,
   toBeBusinessRuleTask,
+  // other activities
+  toBeCallActivity,
+  toBeSubProcess,
+  // events
   toBeStartEvent,
   toBeEndEvent,
   toBeIntermediateThrowEvent,
   toBeIntermediateCatchEvent,
   toBeBoundaryEvent,
+  // gateways
   toBeEventBasedGateway,
   toBeExclusiveGateway,
-  toBeSubProcess,
+  toBeInclusiveGateway,
+  toBeParallelGateway,
+  // containers
   toBePool,
   toBeLane,
+  // artifacts
+  toBeGroup,
+  toBeTextAnnotation,
 });
 
 export interface ExpectedCellWithGeometry {
@@ -135,14 +151,17 @@ export interface ExpectedFont {
   opacity?: Opacity;
 }
 
+export type HorizontalAlign = 'center' | 'left' | 'right';
+export type VerticalAlign = 'bottom' | 'middle' | 'top';
+
 type ExpectedModelElement = {
-  align?: string;
+  align?: HorizontalAlign;
   font?: ExpectedFont;
   label?: string;
   overlays?: ExpectedOverlay[];
   parentId?: string;
   stroke?: Stroke;
-  verticalAlign?: string;
+  verticalAlign?: VerticalAlign;
   opacity?: number;
   // custom bpmn-visualization
   extraCssClasses?: string[];
@@ -154,7 +173,12 @@ export interface ExpectedShapeModelElement extends ExpectedModelElement {
   styleShape?: string;
   markers?: ShapeBpmnMarkerKind[];
   isInstantiating?: boolean;
-  isHorizontal?: boolean;
+  /**
+   * This is the value in the mxGraph model, not what is from the BPMN Shape. This applies to the labels so the value is inverted comparing to the BPMN model.
+   * - Horizontal pool/lane --> false (the label is vertical)
+   * - Vertical pool/lane --> true (the label is horizontal)
+   **/
+  isSwimLaneLabelHorizontal?: boolean;
   fill?: Fill;
 }
 
@@ -167,7 +191,7 @@ export interface ExpectedSubProcessModelElement extends ExpectedShapeModelElemen
 }
 
 export interface ExpectedCallActivityModelElement extends ExpectedShapeModelElement {
-  globalTaskKind?: ShapeBpmnElementKind;
+  globalTaskKind?: GlobalTaskKind;
 }
 
 export interface ExpectedEdgeModelElement extends ExpectedModelElement {
