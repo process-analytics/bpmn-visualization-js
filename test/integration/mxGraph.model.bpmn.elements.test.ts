@@ -977,23 +977,19 @@ describe('mxGraph model - BPMN elements', () => {
           });
 
           test('Elements in expanded Sub Process', async () => {
-            expect('start_event_in_adHoc_sub_process_id').toBeShape({
-              kind: ShapeBpmnElementKind.EVENT_START,
+            expect('start_event_in_adHoc_sub_process_id').toBeStartEvent({
+              eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
               label: 'Start Event In AdHoc Sub-Process',
               parentId: 'expanded_adHoc_sub_process_id',
-              verticalAlign: 'top',
             });
-            expect('task_in_adHoc_sub_process_id').toBeShape({
-              kind: ShapeBpmnElementKind.TASK,
+            expect('task_in_adHoc_sub_process_id').toBeTask({
               label: 'Task In AdHoc Sub-Process',
               parentId: 'expanded_adHoc_sub_process_id',
-              verticalAlign: 'middle',
             });
-            expect('end_event_in_adHoc_sub_process_id').toBeShape({
-              kind: ShapeBpmnElementKind.EVENT_END,
+            expect('end_event_in_adHoc_sub_process_id').toBeEndEvent({
+              eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
               label: 'End Event In AdHoc Sub-Process',
               parentId: 'expanded_adHoc_sub_process_id',
-              verticalAlign: 'top',
             });
             expect('sequence_flow_in_adHoc_sub_process_1_id').toBeSequenceFlow({
               parentId: 'expanded_adHoc_sub_process_id',
