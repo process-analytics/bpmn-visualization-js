@@ -14,7 +14,7 @@ on:
       - '.github/workflows/test-performance.yml'
       - 'test/*' # root folder
       - 'test/config/**/*'
-      - 'test/fixtures/**/*'
+      - 'test/fixtures/performance/**/*'
       - 'test/performance/**/*'
       - 'test/shared/**/*'
       - '.nvmrc'
