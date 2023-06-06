@@ -244,7 +244,7 @@ export type StyleWithOpacity = {
    * - If the set value is less than 0, the used value is 0.
    * - If the set value is greater than 100, the used value is 100.
    *
-   * The special `default` value is to use the color defined in the BPMN element default style
+   * The special `default` value is to use the opacity defined in the BPMN element default style.
    */
   opacity?: Opacity;
 };
