@@ -93,7 +93,7 @@
     "utils:test:model": "node ./scripts/utils/dist/utils.mjs test/fixtures/bpmn/simple-start-task-end.bpmn --output model"
   },
   "dependencies": {
-    "@typed-mxgraph/typed-mxgraph": "~1.0.7",
+    "@typed-mxgraph/typed-mxgraph": "~1.0.8",
     "fast-xml-parser": "4.2.4",
     "lodash-es": "~4.17.21",
     "mxgraph": "4.2.2",
