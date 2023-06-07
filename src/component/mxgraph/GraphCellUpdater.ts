@@ -122,9 +122,6 @@ export default class GraphCellUpdater {
       for (const cell of cells) {
         this.styleManager.resetStyle(cell);
       }
-      /*
-      // Redraw the graph with the updated style
-      this.graph.refresh();*/
     });
   }
 }
