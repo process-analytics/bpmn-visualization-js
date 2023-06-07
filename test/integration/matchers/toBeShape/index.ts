@@ -26,7 +26,7 @@ import type {
   ExpectedSubProcessModelElement,
 } from '../../helpers/model-expect';
 import { getDefaultParentId } from '../../helpers/model-expect';
-import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
+import { ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';
 import { mxgraph } from '@lib/component/mxgraph/initializer';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
@@ -76,6 +76,9 @@ export function buildExpectedShapeCellStyle(expectedModel: ExpectedShapeModelEle
   style.fillOpacity = expectedModel.fill?.opacity;
   'isSwimLaneLabelHorizontal' in expectedModel && (style.horizontal = Number(expectedModel.isSwimLaneLabelHorizontal));
 
+  // ignore marker order, which is only relevant when rendering the shape (it has its own order algorithm)
+  'markers' in expectedModel && (style.markers = expectedModel.markers.sort());
+
   return style;
 }
 
@@ -103,7 +106,9 @@ function buildExpectedShapeStylePropertyRegexp(
     expectedStyle = expectedStyle + `.*bpmn.isInstantiating=${expectedModel.isInstantiating}`;
   }
   if (expectedModel.markers?.length > 0) {
-    expectedStyle = expectedStyle + `.*bpmn.markers=${expectedModel.markers.join(',')}`;
+    // There is no guaranteed order, so testing the list of markers with a string is not practical. Markers are therefore checked with BpmnStyle.markers.
+    // Here, we check only that the markers are placed in the style.
+    expectedStyle = expectedStyle + `.*bpmn.markers=*`;
   }
   if ('isInterrupting' in expectedModel) {
     expectedStyle = expectedStyle + `.*bpmn.isInterrupting=${expectedModel.isInterrupting}`;
@@ -154,6 +159,10 @@ export function toBeCallActivity(this: MatcherContext, received: string, expecte
 }
 
 export function toBeSubProcess(this: MatcherContext, received: string, expected: ExpectedSubProcessModelElement): CustomMatcherResult {
+  if (expected.subProcessKind == ShapeBpmnSubProcessKind.AD_HOC) {
+    expected.markers ??= [];
+    expected.markers.push(ShapeBpmnMarkerKind.ADHOC);
+  }
   return buildShapeMatcher('toBeSubProcess', this, received, { ...expected, kind: ShapeBpmnElementKind.SUB_PROCESS });
 }
 

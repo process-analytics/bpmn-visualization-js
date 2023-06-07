@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BpmnEventKind, GlobalTaskKind, ShapeBpmnCallActivityKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from './kinds';
-import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind } from './kinds';
+import type { BpmnEventKind, GlobalTaskKind, ShapeBpmnCallActivityKind, ShapeBpmnEventDefinitionKind } from './kinds';
+import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind, ShapeBpmnSubProcessKind, ShapeBpmnMarkerKind } from './kinds';
 
 /**
  * @internal
@@ -57,6 +57,7 @@ export class ShapeBpmnCallActivity extends ShapeBpmnActivity {
  */
 export class ShapeBpmnSubProcess extends ShapeBpmnActivity {
   constructor(id: string, name: string, readonly subProcessKind: ShapeBpmnSubProcessKind, parentId: string, markers?: ShapeBpmnMarkerKind[]) {
+    subProcessKind == ShapeBpmnSubProcessKind.AD_HOC && !markers.includes(ShapeBpmnMarkerKind.ADHOC) && markers.push(ShapeBpmnMarkerKind.ADHOC);
     super(id, name, ShapeBpmnElementKind.SUB_PROCESS, parentId, undefined, markers);
   }
 }

@@ -24,8 +24,8 @@ import {
   verifySubProcess,
 } from '../../../helpers/JsonTestUtils';
 import { getEventShapes } from '../../../helpers/TestUtils';
-import type { ExpectedBounds, ExpectedShape } from '../../../helpers/bpmn-model-expect';
-import { verifyEdge, verifyShape } from '../../../helpers/bpmn-model-expect';
+import type { ExpectedActivityShape, ExpectedBounds, ExpectedShape } from '../../../helpers/bpmn-model-expect';
+import { getExpectedMarkers, verifyEdge, verifyShape } from '../../../helpers/bpmn-model-expect';
 
 import type BpmnModel from '@lib/model/bpmn/internal/BpmnModel';
 import { Waypoint } from '@lib/model/bpmn/internal/edge/edge';
@@ -48,23 +48,33 @@ function verifyEventShape(shape: Shape, expectedShape: ExpectedShape, expectedEv
   expect((shape.bpmnElement as ShapeBpmnEvent).eventDefinitionKind).toEqual(expectedEventDefinitionKind);
 }
 
-type BpmnSubprocessSemanticType = 'subProcess' | 'transaction';
+type BpmnSubprocessSemanticType = 'adHocSubProcess' | 'subProcess' | 'transaction';
 
 describe('parse bpmn as json for sub-process', () => {
   describe.each([
+    [ShapeBpmnSubProcessKind.AD_HOC, false],
     [ShapeBpmnSubProcessKind.EMBEDDED, false],
     [ShapeBpmnSubProcessKind.EVENT, true],
     [ShapeBpmnSubProcessKind.TRANSACTION, false],
   ])('ShapeBpmnSubProcessKind: %s', (expectedShapeBpmnSubProcessKind: ShapeBpmnSubProcessKind, triggeredByEvent: boolean) => {
-    const expectedBounds: ExpectedBounds =
-      expectedShapeBpmnSubProcessKind === ShapeBpmnSubProcessKind.TRANSACTION ? { x: 167, y: 123, width: 456, height: 123 } : { x: 67, y: 23, width: 456, height: 123 };
+    const shapeBounds = new Map<ShapeBpmnSubProcessKind, ExpectedBounds>([
+      [ShapeBpmnSubProcessKind.AD_HOC, { x: 267, y: 223, width: 456, height: 123 }],
+      [ShapeBpmnSubProcessKind.TRANSACTION, { x: 167, y: 123, width: 456, height: 123 }],
+    ]);
+    const expectedBounds: ExpectedBounds = shapeBounds.get(expectedShapeBpmnSubProcessKind) ?? { x: 67, y: 23, width: 456, height: 123 };
 
-    const bpmnSubprocessSemanticType: BpmnSubprocessSemanticType = expectedShapeBpmnSubProcessKind === ShapeBpmnSubProcessKind.TRANSACTION ? 'transaction' : 'subProcess';
+    const bpmnSubprocessSemanticMapping = new Map<ShapeBpmnSubProcessKind, BpmnSubprocessSemanticType>([
+      [ShapeBpmnSubProcessKind.AD_HOC, 'adHocSubProcess'],
+      [ShapeBpmnSubProcessKind.TRANSACTION, 'transaction'],
+    ]);
+    const bpmnSubprocessSemanticType: BpmnSubprocessSemanticType = bpmnSubprocessSemanticMapping.get(expectedShapeBpmnSubProcessKind) ?? 'subProcess';
 
     describe.each([
       ['expanded', true, []],
       ['collapsed', false, [ShapeBpmnMarkerKind.EXPAND]],
     ])(`'Expansion kind: %s'`, (expandedKind: string, isExpanded: boolean, expectedBpmnElementMarkers: ShapeBpmnMarkerKind[]) => {
+      expectedBpmnElementMarkers = getExpectedMarkers(expectedBpmnElementMarkers, expectedShapeBpmnSubProcessKind);
+
       const processWithSubProcessAsObject = {
         [bpmnSubprocessSemanticType]: {
           id: 'sub_process_id_0',
@@ -236,6 +246,8 @@ describe('parse bpmn as json for sub-process', () => {
     });
 
     it(`should convert as Shape, when a ${expectedShapeBpmnSubProcessKind} sub-process (with/without name & isExpanded) is an attribute (as array) of 'process'`, () => {
+      const expectedBpmnElementMarkers = getExpectedMarkers([ShapeBpmnMarkerKind.EXPAND], expectedShapeBpmnSubProcessKind);
+
       const json = buildDefinitions({
         process: {
           [bpmnSubprocessSemanticType]: [
@@ -260,16 +272,16 @@ describe('parse bpmn as json for sub-process', () => {
         bpmnElementId: 'sub_process_id_0',
         bpmnElementName: 'sub-process name',
         bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
+        bpmnElementMarkers: expectedBpmnElementMarkers,
         bounds: expectedBounds,
-        bpmnElementMarkers: [ShapeBpmnMarkerKind.EXPAND],
       });
       verifyShape(model.flowNodes[1], {
         shapeId: 'shape_sub_process_id_1',
         bpmnElementId: 'sub_process_id_1',
         bpmnElementName: undefined,
         bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
+        bpmnElementMarkers: expectedBpmnElementMarkers,
         bounds: expectedBounds,
-        bpmnElementMarkers: [ShapeBpmnMarkerKind.EXPAND],
       });
     });
 
@@ -283,13 +295,13 @@ describe('parse bpmn as json for sub-process', () => {
 
         const model = parseJsonAndExpectOnlySubProcess(json, expectedShapeBpmnSubProcessKind, 1);
 
-        verifyShape(model.flowNodes[0], {
+        verifyShape(model.flowNodes[0], <ExpectedActivityShape>{
           shapeId: 'shape_sub_process_id_1',
           bpmnElementId: 'sub_process_id_1',
           bpmnElementName: undefined,
           bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
+          bpmnElementMarkers: getExpectedMarkers([ShapeBpmnMarkerKind.EXPAND], expectedShapeBpmnSubProcessKind),
           bounds: expectedBounds,
-          bpmnElementMarkers: [ShapeBpmnMarkerKind.EXPAND],
         });
       });
     }
@@ -409,17 +421,13 @@ describe('parse bpmn as json for sub-process', () => {
       expectNoPoolLane(model);
 
       verifySubProcess(model, expectedShapeBpmnSubProcessKind, 1);
-      verifyShape(model.flowNodes[0], {
+      verifyShape(model.flowNodes[0], <ExpectedActivityShape>{
         shapeId: 'shape_sub-process_id_1',
         bpmnElementId: 'sub-process_id_1',
         bpmnElementName: undefined,
         bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
-        bounds: {
-          x: 365,
-          y: 235,
-          width: 300,
-          height: 200,
-        },
+        bpmnElementMarkers: getExpectedMarkers([], expectedShapeBpmnSubProcessKind),
+        bounds: { x: 365, y: 235, width: 300, height: 200 },
       });
 
       const eventShapes = getEventShapes(model);
