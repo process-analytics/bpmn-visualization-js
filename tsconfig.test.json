@@ -8,10 +8,8 @@
       "@lib/*": ["src/*"],
       "@test/shared/*": ["test/shared/*"],
     },
-
   },
   "include": [
     "test/**/*.ts",
-    "src/type/*.d.ts"
   ]
 }

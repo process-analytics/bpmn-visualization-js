@@ -3,7 +3,6 @@
   "compilerOptions": {
     "declaration": false,
     "sourceMap": false,
-    "typeRoots": ["node_modules","src/type/*"]
   },
   "include": [
     // Ensure we only bundle production sources
