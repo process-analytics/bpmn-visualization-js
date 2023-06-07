@@ -886,7 +886,7 @@ describe('mxGraph model - reset style', () => {
       const expectedModel = {
         extraCssClasses: ['class-1', 'class-2'],
         kind: ShapeBpmnElementKind.EVENT_END,
-        verticalAlign: 'top', // when events have a label
+        verticalAlign: 'top' as VerticalAlign, // when events have a label
       };
       checkModelStyle(bpmnElementId, expectedModel);
       checkViewStateStyle(bpmnElementId, expectedModel);
