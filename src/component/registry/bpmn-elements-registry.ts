@@ -62,7 +62,10 @@ export class BpmnElementsRegistry {
     private cssRegistry: CssRegistry,
     private graphCellUpdater: GraphCellUpdater,
   ) {
-    this.bpmnModelRegistry.registerOnLoadCallback(this.cssRegistry.clear);
+    this.bpmnModelRegistry.registerOnLoadCallback(() => {
+      this.cssRegistry.clear();
+      this.graphCellUpdater.styleManager.clear();
+    });
   }
 
   /**

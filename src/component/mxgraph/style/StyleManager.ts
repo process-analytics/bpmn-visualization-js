@@ -20,32 +20,36 @@ import type { CssRegistry } from '../../registry/css-registry';
 
 export class StyleManager {
   /**
-   * Array that contains the steps of the command history.
+   * Array that contains the steps of the command stylesByCell.
    */
-  private history: Map<mxCell, string> = new Map();
+  private stylesByCell: Map<mxCell, string> = new Map();
 
   constructor(readonly cssRegistry: CssRegistry, readonly model: mxGraphModel) {}
+
+  clear(): void {
+    this.stylesByCell.clear();
+  }
 
   /**
    * Reset the style in applying the CSS classes
    */
   resetStyle(cell: mxCell): void {
-    if (this.history.get(cell)) {
+    if (this.stylesByCell.get(cell)) {
       const cssClasses = this.cssRegistry.getClassNames(cell.getId());
 
-      const style = setStyle(this.history.get(cell), BpmnStyleIdentifier.EXTRA_CSS_CLASSES, cssClasses.join(','));
+      const style = setStyle(this.stylesByCell.get(cell), BpmnStyleIdentifier.EXTRA_CSS_CLASSES, cssClasses.join(','));
       this.model.setStyle(cell, style);
 
-      this.history.delete(cell);
+      this.stylesByCell.delete(cell);
     }
   }
 
   /**
-   * Method to be called to add new undoable edits to the <history>.
+   * Method to be called to add new undoable edits to the <stylesByCell>.
    */
   storeStyleIfIsNotStored(cell: mxCell, style: string): void {
-    if (!this.history.get(cell)) {
-      this.history.set(cell, style);
+    if (!this.stylesByCell.get(cell)) {
+      this.stylesByCell.set(cell, style);
     }
   }
 }
