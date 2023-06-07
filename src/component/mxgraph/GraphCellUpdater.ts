@@ -15,14 +15,13 @@ limitations under the License.
 */
 
 import { isShapeStyleUpdate, setStyle, updateFill, updateFont, updateStroke } from './style/utils';
-import type { mxEventObject, mxStyleChange, mxUndoableEdit } from 'mxgraph';
-import { UndoManager } from './UndoManager';
-import { isMxStyleChange } from './style/utils';
+import { StyleManager } from './style/StyleManager';
 
 import type { BpmnGraph } from './BpmnGraph';
 import { mxgraph } from './initializer';
 import { BpmnStyleIdentifier } from './style';
 import type { Overlay, StyleUpdate } from '../registry';
+import type { CssRegistry } from '../registry/css-registry';
 import { MxGraphCustomOverlay } from './overlay/custom-overlay';
 import { ensureIsArray } from '../helpers/array-utils';
 import { OverlayConverter } from './overlay/OverlayConverter';
@@ -32,35 +31,15 @@ import { ensureOpacityValue } from '../helpers/validators';
 /**
  * @internal
  */
-export function newGraphCellUpdater(graph: BpmnGraph): GraphCellUpdater {
-  return new GraphCellUpdater(graph, new OverlayConverter());
+export function newGraphCellUpdater(graph: BpmnGraph, cssRegistry: CssRegistry): GraphCellUpdater {
+  return new GraphCellUpdater(graph, new OverlayConverter(), new StyleManager(cssRegistry, graph.getModel()));
 }
 
 /**
  * @internal
  */
 export default class GraphCellUpdater {
-  private readonly undoManager: UndoManager;
-
-  constructor(readonly graph: BpmnGraph, readonly overlayConverter: OverlayConverter) {
-    this.undoManager = new UndoManager();
-    this.installUndoHandler();
-  }
-
-  private installUndoHandler(): void {
-    const listener = mxgraph.mxUtils.bind(this, (sender: object, evt: mxEventObject) => {
-      const edit: mxUndoableEdit = evt.getProperty('edit');
-      const filter: mxStyleChange[] = edit.changes.filter(change => isMxStyleChange(change));
-      if (filter.length >= 1) {
-        // See https://github.com/jgraph/mxgraph/blob/ff141aab158417bd866e2dfebd06c61d40773cd2/javascript/src/js/view/mxGraph.js#L2114
-        this.undoManager.registerUndoable(filter[0].cell, edit);
-      }
-    });
-
-    // Mandatory
-    this.graph.getModel().addListener(mxgraph.mxEvent.UNDO, listener);
-    this.graph.getView().addListener(mxgraph.mxEvent.UNDO, listener);
-  }
+  constructor(readonly graph: BpmnGraph, readonly overlayConverter: OverlayConverter, readonly styleManager: StyleManager) {}
 
   updateAndRefreshCssClassesOfCell(bpmnElementId: string, cssClasses: string[]): void {
     this.updateAndRefreshCssClassesOfElement(bpmnElementId, cssClasses);
@@ -69,14 +48,17 @@ export default class GraphCellUpdater {
   }
 
   private updateAndRefreshCssClassesOfElement(elementId: string, cssClasses: string[]): void {
-    const cell = this.graph.getModel().getCell(elementId);
+    const model = this.graph.getModel();
+    const cell = model.getCell(elementId);
     if (!cell) {
       return;
     }
 
     let cellStyle = cell.getStyle();
+    this.styleManager.storeStyleIfIsNotStored(cell, cellStyle);
+
     cellStyle = setStyle(cellStyle, BpmnStyleIdentifier.EXTRA_CSS_CLASSES, cssClasses.join(','));
-    this.graph.model.setStyle(cell, cellStyle);
+    model.setStyle(cell, cellStyle);
   }
 
   addOverlays(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
@@ -105,8 +87,9 @@ export default class GraphCellUpdater {
     }
 
     // In the future, this method can be optimized by not processing if styleUpdate has no relevant properties defined.
+    const model = this.graph.getModel();
     const cells = ensureIsArray<string>(bpmnElementIds)
-      .map(id => this.graph.getModel().getCell(id))
+      .map(id => model.getCell(id))
       .filter(Boolean);
     if (cells.length == 0) {
       // We don't want to create an empty transaction
@@ -116,6 +99,8 @@ export default class GraphCellUpdater {
     this.graph.batchUpdate(() => {
       for (const cell of cells) {
         let cellStyle = cell.getStyle();
+        this.styleManager.storeStyleIfIsNotStored(cell, cellStyle);
+
         cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_OPACITY, styleUpdate.opacity, ensureOpacityValue);
         cellStyle = updateStroke(cellStyle, styleUpdate.stroke);
         cellStyle = updateFont(cellStyle, styleUpdate.font);
@@ -131,15 +116,16 @@ export default class GraphCellUpdater {
 
   resetStyle(bpmnElementIds: string[]): void {
     this.graph.batchUpdate(() => {
+      const model = this.graph.getModel();
       if (bpmnElementIds.length == 0) {
-        const allCells = this.graph.getModel().getChildCells(this.graph.getDefaultParent());
+        const allCells = model.getChildCells(this.graph.getDefaultParent());
         for (const cell of allCells) {
-          this.undoManager.undo(cell);
+          this.styleManager.resetStyle(cell);
         }
       } else {
         for (const bpmnElementId of bpmnElementIds) {
-          const cell = this.graph.getModel().getCell(bpmnElementId);
-          this.undoManager.undo(cell);
+          const cell = model.getCell(bpmnElementId);
+          this.styleManager.resetStyle(cell);
         }
       }
 

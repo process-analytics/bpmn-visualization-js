@@ -13,47 +13,39 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import type { mxCell, mxUndoableEdit } from 'mxgraph';
-import { mxgraph } from './initializer';
+import type { mxCell, mxGraphModel } from 'mxgraph';
+import { BpmnStyleIdentifier } from '.';
+import { setStyle } from './utils';
+import type { CssRegistry } from '../../registry/css-registry';
 
-export class UndoManager extends mxgraph.mxEventSource {
+export class StyleManager {
   /**
-   * Variable: history
-   *
    * Array that contains the steps of the command history.
    */
-  private history: Map<mxCell, mxUndoableEdit> = new Map();
+  private history: Map<mxCell, string> = new Map();
 
-  constructor() {
-    super();
-  }
+  constructor(readonly cssRegistry: CssRegistry, readonly model: mxGraphModel) {}
 
   /**
-   * Function: undo
-   *
-   * Undoes the last change.
+   * Reset the style in applying the CSS classes
    */
-  undo(cell: mxCell): void {
+  resetStyle(cell: mxCell): void {
     if (this.history.get(cell)) {
-      const undoableEdit = this.history.get(cell);
-      undoableEdit.undo();
+      const cssClasses = this.cssRegistry.getClassNames(cell.getId());
 
-      if (undoableEdit.isSignificant()) {
-        this.fireEvent(new mxgraph.mxEventObject(mxgraph.mxEvent.UNDO, 'edit', undoableEdit), this);
-      }
+      const style = setStyle(this.history.get(cell), BpmnStyleIdentifier.EXTRA_CSS_CLASSES, cssClasses.join(','));
+      this.model.setStyle(cell, style);
+
       this.history.delete(cell);
     }
   }
 
   /**
-   * Function: undoableEditHappened
-   *
    * Method to be called to add new undoable edits to the <history>.
    */
-  registerUndoable(cell: mxCell, undoableEdit: mxUndoableEdit): void {
+  storeStyleIfIsNotStored(cell: mxCell, style: string): void {
     if (!this.history.get(cell)) {
-      this.history.set(cell, undoableEdit);
-      this.fireEvent(new mxgraph.mxEventObject(mxgraph.mxEvent.ADD, 'edit', undoableEdit), this);
+      this.history.set(cell, style);
     }
   }
 }

@@ -29,7 +29,8 @@ import type { BpmnElementKind } from '../../model/bpmn/internal';
  * @internal
  */
 export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, graph: BpmnGraph): BpmnElementsRegistry {
-  return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(graph.container, new BpmnQuerySelectors()), new CssRegistry(), newGraphCellUpdater(graph));
+  const cssRegistry = new CssRegistry();
+  return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(graph.container, new BpmnQuerySelectors()), cssRegistry, newGraphCellUpdater(graph, cssRegistry));
 }
 
 /**
