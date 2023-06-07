@@ -20,18 +20,29 @@ import type { CssRegistry } from '../../registry/css-registry';
 
 export class StyleManager {
   /**
-   * Array that contains the steps of the command stylesByCell.
+   * Contains the style of each cell.
    */
   private stylesByCell: Map<mxCell, string> = new Map();
 
+  /**
+   * Creates a new instance of the StyleManager.
+   *
+   * @param cssRegistry The CSS registry to get class names from.
+   * @param model The mxGraphModel instance.
+   */
   constructor(readonly cssRegistry: CssRegistry, readonly model: mxGraphModel) {}
 
+  /**
+   * Deletes all saved styles.
+   */
   clear(): void {
     this.stylesByCell.clear();
   }
 
   /**
-   * Reset the style in applying the CSS classes
+   * Resets the style of a cell and applies the CSS classes.
+   *
+   * @param cell The mxCell whose style is to be reset.
    */
   resetStyle(cell: mxCell): void {
     if (this.stylesByCell.get(cell)) {
@@ -45,7 +56,10 @@ export class StyleManager {
   }
 
   /**
-   * Method to be called to add new undoable edits to the <stylesByCell>.
+   * Stores the style for a cell if it is not already stored.
+   *
+   * @param cell The mxCell for which the style is to be stored.
+   * @param style The style to store.
    */
   storeStyleIfIsNotStored(cell: mxCell, style: string): void {
     if (!this.stylesByCell.get(cell)) {
