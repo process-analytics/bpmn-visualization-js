@@ -862,6 +862,30 @@ describe('mxGraph model - reset style', () => {
         verticalAlign: 'bottom',
       });
     });
+
+    it('All elements', () => {
+      // Apply custom style
+      const customStyle = {
+        stroke: { color: 'orange' },
+      };
+      bpmnVisualization.bpmnElementsRegistry.updateStyle(['startEvent_lane_1', 'sequenceFlow_lane_1_elt_1'], customStyle);
+
+      // Reset style
+      bpmnVisualization.bpmnElementsRegistry.resetStyle();
+
+      // Check that the style has been reset to default values for each element
+      expect('startEvent_lane_1').toBeStartEvent({
+        // not under test
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
+        parentId: 'lane_01',
+        label: 'message start 1',
+      });
+      expect('sequenceFlow_lane_1_elt_1').toBeSequenceFlow({
+        // not under test
+        parentId: 'lane_01',
+        verticalAlign: 'bottom',
+      });
+    });
   });
 
   // Check that there is no bad interactions between the two features

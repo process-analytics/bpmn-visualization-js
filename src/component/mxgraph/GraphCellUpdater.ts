@@ -115,22 +115,16 @@ export default class GraphCellUpdater {
   }
 
   resetStyle(bpmnElementIds: string[]): void {
-    this.graph.batchUpdate(() => {
-      const model = this.graph.getModel();
-      if (bpmnElementIds.length == 0) {
-        const allCells = model.getChildCells(this.graph.getDefaultParent());
-        for (const cell of allCells) {
-          this.styleManager.resetStyle(cell);
-        }
-      } else {
-        for (const bpmnElementId of bpmnElementIds) {
-          const cell = model.getCell(bpmnElementId);
-          this.styleManager.resetStyle(cell);
-        }
-      }
+    const model = this.graph.getModel();
 
+    this.graph.batchUpdate(() => {
+      const cells = bpmnElementIds.length == 0 ? model.getDescendants(this.graph.getDefaultParent()) : bpmnElementIds.map(id => model.getCell(id));
+      for (const cell of cells) {
+        this.styleManager.resetStyle(cell);
+      }
+      /*
       // Redraw the graph with the updated style
-      this.graph.refresh();
+      this.graph.refresh();*/
     });
   }
 }

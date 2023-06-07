@@ -379,7 +379,7 @@ export class BpmnElementsRegistry {
    * @see {@link toggleCssClasses} to toggle CSS classes on a BPMN element.
    * @since 0.36.0
    */
-  resetStyle(bpmnElementIds: string | string[]): void {
+  resetStyle(bpmnElementIds?: string | string[]): void {
     this.graphCellUpdater.resetStyle(ensureIsArray<string>(bpmnElementIds));
   }
 }
