@@ -19,6 +19,7 @@ import { SvgCanvas2D, ConnectorShape } from '@maxgraph/core';
 
 import type { BPMNCellStyle } from '../renderer/StyleComputer';
 
+// TODO maxGraph migration - use out of the box support provided by https://github.com/maxGraph/maxGraph/issues/201
 export class BpmnConnector extends ConnectorShape {
   constructor(points: Point[], stroke: string, strokewidth?: number) {
     super(points, stroke, strokewidth);
