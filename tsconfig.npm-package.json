@@ -2,7 +2,7 @@
   "extends": "./tsconfig",
   "compilerOptions": {
     "declaration": false,
-    "sourceMap": false,
+    "sourceMap": false
   },
   "include": [
     // Ensure we only bundle production sources
