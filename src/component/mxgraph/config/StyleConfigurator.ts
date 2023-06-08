@@ -24,11 +24,7 @@ const arrowDefaultSize = 12;
 
 /**
  * Configure the styles used for BPMN rendering.
- *
- * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
- *
- * @category BPMN Theme
- * @experimental
+ * @internal
  */
 export class StyleConfigurator {
   private specificFlowStyles = new MapWithDefault<FlowKind>([
