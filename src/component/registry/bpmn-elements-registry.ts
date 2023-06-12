@@ -377,7 +377,7 @@ export class BpmnElementsRegistry {
    * @see {@link removeCssClasses} to remove specific classes from a BPMN element.
    * @see {@link removeAllCssClasses} to remove all CSS classes from a BPMN element.
    * @see {@link toggleCssClasses} to toggle CSS classes on a BPMN element.
-   * @since 0.36.0
+   * @since 0.37.0
    */
   resetStyle(bpmnElementIds?: string | string[]): void {
     this.graphCellUpdater.resetStyle(ensureIsArray<string>(bpmnElementIds));
