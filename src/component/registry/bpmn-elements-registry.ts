@@ -29,7 +29,8 @@ import type { BpmnElementKind } from '../../model/bpmn/internal';
  * @internal
  */
 export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, graph: BpmnGraph): BpmnElementsRegistry {
-  return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(graph.container, new BpmnQuerySelectors()), new CssRegistry(), newGraphCellUpdater(graph));
+  const cssRegistry = new CssRegistry();
+  return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(graph.container, new BpmnQuerySelectors()), cssRegistry, newGraphCellUpdater(graph, cssRegistry));
 }
 
 /**
@@ -61,7 +62,10 @@ export class BpmnElementsRegistry {
     private cssRegistry: CssRegistry,
     private graphCellUpdater: GraphCellUpdater,
   ) {
-    this.bpmnModelRegistry.registerOnLoadCallback(this.cssRegistry.clear);
+    this.bpmnModelRegistry.registerOnLoadCallback(() => {
+      this.cssRegistry.clear();
+      this.graphCellUpdater.clear();
+    });
   }
 
   /**
@@ -316,7 +320,7 @@ export class BpmnElementsRegistry {
   }
 
   /**
-   * Update the style of one or several BPMN element(s).
+   * Update the style of one or several BPMN elements.
    *
    * @example
    * ```javascript
@@ -329,20 +333,54 @@ export class BpmnElementsRegistry {
    *
    * **Notes**:
    *
-   * - This method is intended to update the style of specific elements, for instance to update their colors. During BPMN diagram rendering, `bpmn-visualization` applies style properties
-   * to all elements regarding their types.
-   * So, if you want to style all elements of a given type, change the default configuration of the styles instead of updating the element afterward. See the repository providing the
+   * - This method is intended to update the style of specific elements, e.g. to update their colors. When rendering a BPMN diagram, `bpmn-visualization` applies style properties
+   * to all elements according to their types.
+   * So if you want to style all elements of a certain type, change the default configuration of the styles instead of updating the element afterwards. See the repository providing the
    * [examples of the `bpmn-visualization` TypeScript library](https://github.com/process-analytics/bpmn-visualization-examples/) for more details.
-   * - It is also possible to update the style of BPMN elements by adding CSS classes, see {@link addCssClasses}.
-   * - If you pass ids that are not related to existing BPMN elements, they are ignored and nothing happens on the rendering side.
+   * - If you pass IDs that are not related to existing BPMN elements, they will be ignored and no changes will be made to the rendering.
    *
-   * @param bpmnElementIds The BPMN id of the element(s) where to remove the CSS classes
+   * @param bpmnElementIds The BPMN ID of the element(s) whose style must be updated.
    * @param styleUpdate The style properties to update.
    *
+   * @see {@link resetStyle} to reset the style of one or several BPMN elements.
+   * @see {@link addCssClasses} to add CSS classes to a BPMN element.
+   * @see {@link removeCssClasses} to remove specific classes from a BPMN element.
+   * @see {@link removeAllCssClasses} to remove all CSS classes from a BPMN element.
+   * @see {@link toggleCssClasses} to toggle CSS classes on a BPMN element.
    * @since 0.33.0
    */
   updateStyle(bpmnElementIds: string | string[], styleUpdate: StyleUpdate): void {
     this.graphCellUpdater.updateStyle(bpmnElementIds, styleUpdate);
+  }
+
+  /**
+   * Reset the style that were previously updated to one or more BPMN elements using the {@link updateStyle} method.
+   *
+   * @example
+   * ```javascript
+   * bpmnVisualization.bpmnElementsRegistry.resetStyle('activity_1');
+   * ```
+   *
+   * **Notes**:
+   *
+   * - This method is intended to update the style of specific elements, e.g. to update their colors. When rendering a BPMN diagram, `bpmn-visualization` applies style properties
+   * to all elements according to their types.
+   * So if you want to style all elements of a certain type, change the default configuration of the styles instead of updating the element afterwards. See the repository providing the
+   * [examples of the `bpmn-visualization` TypeScript library](https://github.com/process-analytics/bpmn-visualization-examples/) for more details.
+   * - If you pass IDs that are not related to existing BPMN elements, they will be ignored and no changes will be made to the rendering.
+   *
+   * @param bpmnElementIds The BPMN ID of the element(s) whose style must be reset.
+   * If no IDs are specified, the style of all BPMN elements will be reset.
+   *
+   * @see {@link updateStyle} to update the style of one or several BPMN elements.
+   * @see {@link addCssClasses} to add CSS classes to a BPMN element.
+   * @see {@link removeCssClasses} to remove specific classes from a BPMN element.
+   * @see {@link removeAllCssClasses} to remove all CSS classes from a BPMN element.
+   * @see {@link toggleCssClasses} to toggle CSS classes on a BPMN element.
+   * @since 0.37.0
+   */
+  resetStyle(bpmnElementIds?: string | string[]): void {
+    this.graphCellUpdater.resetStyle(ensureIsArray<string>(bpmnElementIds));
   }
 }
 

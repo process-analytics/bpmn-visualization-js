@@ -29,6 +29,7 @@ import {
   startBpmnVisualization,
   updateLoadOptions,
   updateStyle,
+  resetStyle,
   windowAlertStatusKoNotifier,
 } from '../../../ts/dev-bundle-index';
 
@@ -101,34 +102,8 @@ function updateStyleByAPI(bpmnIds, bpmnKind) {
   updateStyle(bpmnIds, style);
 }
 
-/**
-Temporary implementation until we have https://github.com/process-analytics/bpmn-visualization-js/issues/2458.
-Note that this implementation has limitations, such as resetting font styles without considering what is originally defined in the BPMN model.
-*/
 function resetStyleByAPI() {
-  const style = {
-    font: {
-      color: 'default',
-      size: 10,
-      family: 'Arial',
-      isBold: false,
-      isItalic: false,
-      isUnderline: false,
-      isStrikeThrough: false,
-      opacity: 'default',
-    },
-    fill: {
-      color: 'default',
-      opacity: 'default',
-    },
-    stroke: {
-      color: 'default',
-      opacity: 'default',
-      width: 'default',
-    },
-    opacity: 'default',
-  };
-  updateStyle(lastIdentifiedBpmnIds, style);
+  resetStyle(lastIdentifiedBpmnIds);
 }
 
 function updateSelectedBPMNElements(textArea, bpmnKind) {

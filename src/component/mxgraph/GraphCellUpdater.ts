@@ -14,29 +14,36 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import { isShapeStyleUpdate, setStyle, updateFill, updateFont, updateStroke } from './style/utils';
+import { StyleManager } from './style/StyleManager';
+
 import type { BpmnGraph } from './BpmnGraph';
 import { mxgraph } from './initializer';
 import { BpmnStyleIdentifier } from './style';
-import type { Fill, Font, Overlay, ShapeStyleUpdate, Stroke, StyleUpdate } from '../registry';
+import type { Overlay, StyleUpdate } from '../registry';
+import type { CssRegistry } from '../registry/css-registry';
 import { MxGraphCustomOverlay } from './overlay/custom-overlay';
 import { ensureIsArray } from '../helpers/array-utils';
 import { OverlayConverter } from './overlay/OverlayConverter';
 import { messageFowIconId } from './BpmnRenderer';
-import { ShapeBpmnElementKind } from '../../model/bpmn/internal';
-import { ensureOpacityValue, ensureStrokeWidthValue } from '../helpers/validators';
+import { ensureOpacityValue } from '../helpers/validators';
 
 /**
  * @internal
  */
-export function newGraphCellUpdater(graph: BpmnGraph): GraphCellUpdater {
-  return new GraphCellUpdater(graph, new OverlayConverter());
+export function newGraphCellUpdater(graph: BpmnGraph, cssRegistry: CssRegistry): GraphCellUpdater {
+  return new GraphCellUpdater(graph, new OverlayConverter(), new StyleManager(cssRegistry, graph.getModel()));
 }
 
 /**
  * @internal
  */
 export default class GraphCellUpdater {
-  constructor(readonly graph: BpmnGraph, readonly overlayConverter: OverlayConverter) {}
+  constructor(readonly graph: BpmnGraph, readonly overlayConverter: OverlayConverter, private readonly styleManager: StyleManager) {}
+
+  clear(): void {
+    this.styleManager.clear();
+  }
 
   updateAndRefreshCssClassesOfCell(bpmnElementId: string, cssClasses: string[]): void {
     this.updateAndRefreshCssClassesOfElement(bpmnElementId, cssClasses);
@@ -45,14 +52,17 @@ export default class GraphCellUpdater {
   }
 
   private updateAndRefreshCssClassesOfElement(elementId: string, cssClasses: string[]): void {
-    const cell = this.graph.getModel().getCell(elementId);
+    const model = this.graph.getModel();
+    const cell = model.getCell(elementId);
     if (!cell) {
       return;
     }
 
+    this.styleManager.ensureStyleIsStored(cell);
+
     let cellStyle = cell.getStyle();
     cellStyle = setStyle(cellStyle, BpmnStyleIdentifier.EXTRA_CSS_CLASSES, cssClasses.join(','));
-    this.graph.model.setStyle(cell, cellStyle);
+    model.setStyle(cell, cellStyle);
   }
 
   addOverlays(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
@@ -81,8 +91,9 @@ export default class GraphCellUpdater {
     }
 
     // In the future, this method can be optimized by not processing if styleUpdate has no relevant properties defined.
+    const model = this.graph.getModel();
     const cells = ensureIsArray<string>(bpmnElementIds)
-      .map(id => this.graph.getModel().getCell(id))
+      .map(id => model.getCell(id))
       .filter(Boolean);
     if (cells.length == 0) {
       // We don't want to create an empty transaction
@@ -91,6 +102,8 @@ export default class GraphCellUpdater {
 
     this.graph.batchUpdate(() => {
       for (const cell of cells) {
+        this.styleManager.ensureStyleIsStored(cell);
+
         let cellStyle = cell.getStyle();
         cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_OPACITY, styleUpdate.opacity, ensureOpacityValue);
         cellStyle = updateStroke(cellStyle, styleUpdate.stroke);
@@ -104,56 +117,16 @@ export default class GraphCellUpdater {
       }
     });
   }
+
+  resetStyle(bpmnElementIds: string[]): void {
+    this.graph.batchUpdate(() => {
+      if (bpmnElementIds.length == 0) {
+        this.styleManager.resetAllStyles();
+      } else {
+        for (const id of bpmnElementIds) {
+          this.styleManager.resetStyleIfIsStored(id);
+        }
+      }
+    });
+  }
 }
-
-const convertDefaultValue = (value: string): string | undefined => (value == 'default' ? undefined : value);
-
-const updateStroke = (cellStyle: string, stroke: Stroke): string => {
-  if (stroke) {
-    cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKECOLOR, stroke.color, convertDefaultValue);
-    cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKE_OPACITY, stroke.opacity, ensureOpacityValue);
-    cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKEWIDTH, stroke.width, ensureStrokeWidthValue);
-  }
-  return cellStyle;
-};
-
-const setStyle = <T extends string | number>(cellStyle: string, key: string, value: T | undefined, converter: (value: T) => T | undefined = (value: T) => value): string => {
-  return value == undefined ? cellStyle : mxgraph.mxUtils.setStyle(cellStyle, key, converter(value));
-};
-
-const setStyleFlag = (cellStyle: string, key: string, flag: number, value: boolean | undefined): string =>
-  value == undefined ? cellStyle : mxgraph.mxUtils.setStyleFlag(cellStyle, key, flag, value);
-
-const updateFont = (cellStyle: string, font: Font): string => {
-  if (font) {
-    cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTCOLOR, font.color, convertDefaultValue);
-    cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTSIZE, font.size);
-    cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTFAMILY, font.family);
-
-    cellStyle = setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_BOLD, font.isBold);
-    cellStyle = setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_ITALIC, font.isItalic);
-    cellStyle = setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_UNDERLINE, font.isUnderline);
-    cellStyle = setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_STRIKETHROUGH, font.isStrikeThrough);
-
-    cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_TEXT_OPACITY, font.opacity, ensureOpacityValue);
-  }
-  return cellStyle;
-};
-
-const updateFill = (cellStyle: string, fill: Fill): string => {
-  if (fill.color) {
-    cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILLCOLOR, fill.color, convertDefaultValue);
-
-    if (cellStyle.includes(ShapeBpmnElementKind.POOL) || cellStyle.includes(ShapeBpmnElementKind.LANE)) {
-      cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_SWIMLANE_FILLCOLOR, fill.color, convertDefaultValue);
-    }
-  }
-
-  cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILL_OPACITY, fill.opacity, ensureOpacityValue);
-
-  return cellStyle;
-};
-
-const isShapeStyleUpdate = (style: StyleUpdate): style is ShapeStyleUpdate => {
-  return style && typeof style === 'object' && 'fill' in style;
-};

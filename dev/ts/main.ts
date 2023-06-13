@@ -330,6 +330,12 @@ export function updateStyle(bpmnElementIds: string | string[], style: StyleUpdat
   log('New style applied');
 }
 
+export function resetStyle(bpmnElementIds: string | string[]): void {
+  log('Resetting styles using the style API!');
+  bpmnVisualization.bpmnElementsRegistry.resetStyle(bpmnElementIds);
+  log('Styles reset');
+}
+
 function updateStyleOfElementsIfRequested(): void {
   if (style) {
     const bpmnElementIds = retrieveAllBpmnElementIds();
