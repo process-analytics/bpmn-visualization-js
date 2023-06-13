@@ -1,6 +1,6 @@
 {
   "name": "bpmn-visualization",
-  "version": "0.35.0-post",
+  "version": "0.36.0-post",
   "description": "A TypeScript library for visualizing process execution data on BPMN diagrams",
   "keywords": [
     "typescript",
@@ -100,7 +100,7 @@
     "strnum": "1.0.5"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "~7.35.0",
+    "@microsoft/api-extractor": "~7.35.2",
     "@rollup/plugin-commonjs": "~25.0.0",
     "@rollup/plugin-node-resolve": "~15.0.2",
     "@rollup/plugin-terser": "~0.4.3",
@@ -109,7 +109,7 @@
     "@types/lodash-es": "~4.17.7",
     "@types/minimist": "~1.2.2",
     "@typescript-eslint/eslint-plugin": "~5.59.6",
-    "@typescript-eslint/parser": "~5.59.6",
+    "@typescript-eslint/parser": "~5.59.9",
     "asciidoctor": "~2.2.6",
     "autoprefixer": "~10.4.14",
     "clipboardy": "~3.0.0",
