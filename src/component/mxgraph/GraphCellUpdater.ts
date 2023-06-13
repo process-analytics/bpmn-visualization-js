@@ -47,7 +47,7 @@ export default class GraphCellUpdater {
 
   updateAndRefreshCssClassesOfCell(bpmnElementId: string, cssClasses: string[]): void {
     this.updateAndRefreshCssClassesOfElement(bpmnElementId, cssClasses);
-    // special case: message flow icon is stored in a dedicated mxCell, so it must be kept in sync
+    // special case: message flow icon is stored in a dedicated Cell, so it must be kept in sync
     this.updateAndRefreshCssClassesOfElement(messageFlowIconId(bpmnElementId), cssClasses);
   }
 
@@ -66,22 +66,22 @@ export default class GraphCellUpdater {
   }
 
   addOverlays(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
-    const mxCell = this.graph.getModel().getCell(bpmnElementId);
-    if (!mxCell) {
+    const cell = this.graph.getModel().getCell(bpmnElementId);
+    if (!cell) {
       return;
     }
     ensureIsArray(overlays).forEach(overlay => {
       const bpmnOverlay = new MxGraphCustomOverlay(overlay.label, this.overlayConverter.convert(overlay));
-      this.graph.addCellOverlay(mxCell, bpmnOverlay);
+      this.graph.addCellOverlay(cell, bpmnOverlay);
     });
   }
 
   removeAllOverlays(bpmnElementId: string): void {
-    const mxCell = this.graph.getModel().getCell(bpmnElementId);
-    if (!mxCell) {
+    const cell = this.graph.getModel().getCell(bpmnElementId);
+    if (!cell) {
       return;
     }
-    this.graph.removeCellOverlays(mxCell);
+    this.graph.removeCellOverlays(cell);
   }
 
   updateStyle(bpmnElementIds: string | string[], styleUpdate: StyleUpdate): void {
