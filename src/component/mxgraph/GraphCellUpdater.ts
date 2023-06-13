@@ -25,7 +25,7 @@ import type { CssRegistry } from '../registry/css-registry';
 import { MxGraphCustomOverlay } from './overlay/custom-overlay';
 import { ensureIsArray } from '../helpers/array-utils';
 import { OverlayConverter } from './overlay/OverlayConverter';
-import { messageFowIconId } from './BpmnRenderer';
+import { messageFlowIconId } from './BpmnRenderer';
 import { ensureOpacityValue } from '../helpers/validators';
 
 /**
@@ -48,7 +48,7 @@ export default class GraphCellUpdater {
   updateAndRefreshCssClassesOfCell(bpmnElementId: string, cssClasses: string[]): void {
     this.updateAndRefreshCssClassesOfElement(bpmnElementId, cssClasses);
     // special case: message flow icon is stored in a dedicated mxCell, so it must be kept in sync
-    this.updateAndRefreshCssClassesOfElement(messageFowIconId(bpmnElementId), cssClasses);
+    this.updateAndRefreshCssClassesOfElement(messageFlowIconId(bpmnElementId), cssClasses);
   }
 
   private updateAndRefreshCssClassesOfElement(elementId: string, cssClasses: string[]): void {
@@ -133,5 +133,5 @@ export default class GraphCellUpdater {
 
 function addCellIdsOfMessageFlowIcons(cellIds: string[]): string[] {
   // The message flow icon is stored in a dedicated Cell, so it must be kept in sync
-  return cellIds.concat(...cellIds.map(id => messageFowIconId(id)));
+  return cellIds.concat(...cellIds.map(id => messageFlowIconId(id)));
 }
