@@ -39,7 +39,11 @@ export function newGraphCellUpdater(graph: BpmnGraph, cssRegistry: CssRegistry):
  * @internal
  */
 export default class GraphCellUpdater {
-  constructor(readonly graph: BpmnGraph, readonly overlayConverter: OverlayConverter, readonly styleManager: StyleManager) {}
+  constructor(readonly graph: BpmnGraph, readonly overlayConverter: OverlayConverter, private readonly styleManager: StyleManager) {}
+
+  clear(): void {
+    this.styleManager.clear();
+  }
 
   updateAndRefreshCssClassesOfCell(bpmnElementId: string, cssClasses: string[]): void {
     this.updateAndRefreshCssClassesOfElement(bpmnElementId, cssClasses);
@@ -54,9 +58,9 @@ export default class GraphCellUpdater {
       return;
     }
 
-    let cellStyle = cell.getStyle();
-    this.styleManager.storeStyleIfIsNotStored(cell, cellStyle);
+    this.styleManager.ensureStyleIsStored(cell);
 
+    let cellStyle = cell.getStyle();
     cellStyle = setStyle(cellStyle, BpmnStyleIdentifier.EXTRA_CSS_CLASSES, cssClasses.join(','));
     model.setStyle(cell, cellStyle);
   }
@@ -98,9 +102,9 @@ export default class GraphCellUpdater {
 
     this.graph.batchUpdate(() => {
       for (const cell of cells) {
-        let cellStyle = cell.getStyle();
-        this.styleManager.storeStyleIfIsNotStored(cell, cellStyle);
+        this.styleManager.ensureStyleIsStored(cell);
 
+        let cellStyle = cell.getStyle();
         cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_OPACITY, styleUpdate.opacity, ensureOpacityValue);
         cellStyle = updateStroke(cellStyle, styleUpdate.stroke);
         cellStyle = updateFont(cellStyle, styleUpdate.font);
@@ -115,12 +119,13 @@ export default class GraphCellUpdater {
   }
 
   resetStyle(bpmnElementIds: string[]): void {
-    const model = this.graph.getModel();
-
     this.graph.batchUpdate(() => {
-      const cells = bpmnElementIds.length == 0 ? model.getDescendants(this.graph.getDefaultParent()) : bpmnElementIds.map(id => model.getCell(id));
-      for (const cell of cells) {
-        this.styleManager.resetStyle(cell);
+      if (bpmnElementIds.length == 0) {
+        this.styleManager.resetAllStyles();
+      } else {
+        for (const id of bpmnElementIds) {
+          this.styleManager.resetStyleIfIsStored(id);
+        }
       }
     });
   }

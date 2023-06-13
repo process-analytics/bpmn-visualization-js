@@ -64,7 +64,7 @@ export class BpmnElementsRegistry {
   ) {
     this.bpmnModelRegistry.registerOnLoadCallback(() => {
       this.cssRegistry.clear();
-      this.graphCellUpdater.styleManager.clear();
+      this.graphCellUpdater.clear();
     });
   }
 

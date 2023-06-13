@@ -19,51 +19,47 @@ import { setStyle } from './utils';
 import type { CssRegistry } from '../../registry/css-registry';
 
 export class StyleManager {
-  /**
-   * Contains the style of each cell.
-   */
-  private stylesByCell: Map<mxCell, string> = new Map();
+  private stylesCache: Map<string, string> = new Map();
 
-  /**
-   * Creates a new instance of the StyleManager.
-   *
-   * @param cssRegistry The CSS registry to get class names from.
-   * @param model The mxGraphModel instance.
-   */
   constructor(readonly cssRegistry: CssRegistry, readonly model: mxGraphModel) {}
 
-  /**
-   * Deletes all saved styles.
-   */
   clear(): void {
-    this.stylesByCell.clear();
+    this.stylesCache.clear();
   }
 
-  /**
-   * Resets the style of a cell and applies the CSS classes.
-   *
-   * @param cell The mxCell whose style is to be reset.
-   */
-  resetStyle(cell: mxCell): void {
-    if (this.stylesByCell.get(cell)) {
-      const cssClasses = this.cssRegistry.getClassNames(cell.getId());
-
-      const style = setStyle(this.stylesByCell.get(cell), BpmnStyleIdentifier.EXTRA_CSS_CLASSES, cssClasses.join(','));
-      this.model.setStyle(cell, style);
-
-      this.stylesByCell.delete(cell);
+  resetAllStyles(): void {
+    for (const cellId of this.stylesCache.keys()) {
+      const style = this.stylesCache.get(cellId);
+      this.resetStyle(cellId, style);
     }
   }
 
   /**
-   * Stores the style for a cell if it is not already stored.
+   * Resets the style of a cell and applies its CSS classes.
    *
-   * @param cell The mxCell for which the style is to be stored.
-   * @param style The style to store.
+   * @param cellId The ID of the mxCell whose style is to be reset.
    */
-  storeStyleIfIsNotStored(cell: mxCell, style: string): void {
-    if (!this.stylesByCell.get(cell)) {
-      this.stylesByCell.set(cell, style);
+  resetStyleIfIsStored(cellId: string): void {
+    const style = this.stylesCache.get(cellId);
+    if (style) {
+      this.resetStyle(cellId, style);
+    }
+  }
+
+  private resetStyle(cellId: string, style: string): void {
+    const cell = this.model.getCell(cellId);
+    const cssClasses = this.cssRegistry.getClassNames(cellId);
+
+    const styleWithCssClasses = setStyle(style, BpmnStyleIdentifier.EXTRA_CSS_CLASSES, cssClasses.join(','));
+    this.model.setStyle(cell, styleWithCssClasses);
+
+    this.stylesCache.delete(cellId);
+  }
+
+  ensureStyleIsStored(cell: mxCell): void {
+    const cellId = cell.getId();
+    if (!this.stylesCache.get(cellId)) {
+      this.stylesCache.set(cellId, cell.getStyle());
     }
   }
 }
