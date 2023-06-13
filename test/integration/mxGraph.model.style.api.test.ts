@@ -595,6 +595,61 @@ describe('mxGraph model - update style', () => {
         verticalAlign: 'bottom',
       });
     });
+
+    it('style is cleaned between 2 diagram loads', () => {
+      // First load
+      // Check that the style has the default values for each element
+      expect('startEvent_lane_1').toBeStartEvent({
+        // not under test
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
+        parentId: 'lane_01',
+        label: 'message start 1',
+      });
+      expect('sequenceFlow_lane_1_elt_1').toBeSequenceFlow({
+        // not under test
+        parentId: 'lane_01',
+        verticalAlign: 'bottom',
+      });
+
+      // Apply custom style
+      const customStyle = {
+        stroke: { color: 'orange' },
+      };
+      bpmnVisualization.bpmnElementsRegistry.updateStyle(['startEvent_lane_1', 'sequenceFlow_lane_1_elt_1'], customStyle);
+
+      // Check that the style has the updated values for each element
+      expect('startEvent_lane_1').toBeStartEvent({
+        stroke: { color: 'orange' },
+        // not under test
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
+        parentId: 'lane_01',
+        label: 'message start 1',
+      });
+      expect('sequenceFlow_lane_1_elt_1').toBeSequenceFlow({
+        stroke: { color: 'orange' },
+        // not under test
+        parentId: 'lane_01',
+        verticalAlign: 'bottom',
+      });
+
+      // Second load
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events-with-different_ids.bpmn'));
+      bpmnVisualization.bpmnElementsRegistry.resetStyle();
+
+      // Check that the style has the default values for each element
+      expect('startEvent_lane_1').toBeStartEvent({
+        // not under test
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
+        parentId: 'lane_03',
+        label: 'start 2',
+      });
+      expect('sequenceFlow_lane_1_elt_1').toBeSequenceFlow({
+        // not under test
+        parentId: 'lane_03',
+        label: 'link',
+        verticalAlign: 'bottom',
+      });
+    });
   });
 
   // Check that there is no bad interactions between the two features
