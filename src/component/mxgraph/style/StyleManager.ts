@@ -58,7 +58,7 @@ export class StyleManager {
 
   ensureStyleIsStored(cell: mxCell): void {
     const cellId = cell.getId();
-    if (!this.stylesCache.get(cellId)) {
+    if (!this.stylesCache.has(cellId)) {
       this.stylesCache.set(cellId, cell.getStyle());
     }
   }
