@@ -25,7 +25,7 @@ import StyleComputer from './renderer/StyleComputer';
 import type { BpmnGraph } from './BpmnGraph';
 import type { FitOptions, RendererOptions } from '../options';
 import type { RenderedModel } from '../registry/bpmn-model-registry';
-import { mxgraph } from './initializer';
+import { mxPoint } from './initializer';
 import type { mxCell } from 'mxgraph';
 
 /**
@@ -93,10 +93,10 @@ export class BpmnRenderer {
         if (edgeCenterCoordinate) {
           mxEdge.geometry.relative = false;
 
-          const labelBoundsRelativeCoordinateFromParent = this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new mxgraph.mxPoint(labelBounds.x, labelBounds.y));
+          const labelBoundsRelativeCoordinateFromParent = this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new mxPoint(labelBounds.x, labelBounds.y));
           const relativeLabelX = labelBoundsRelativeCoordinateFromParent.x + labelBounds.width / 2 - edgeCenterCoordinate.x;
           const relativeLabelY = labelBoundsRelativeCoordinateFromParent.y - edgeCenterCoordinate.y;
-          mxEdge.geometry.offset = new mxgraph.mxPoint(relativeLabelX, relativeLabelY);
+          mxEdge.geometry.offset = new mxPoint(relativeLabelX, relativeLabelY);
         }
       }
 
@@ -108,13 +108,13 @@ export class BpmnRenderer {
     if (edge.bpmnElement instanceof MessageFlow && edge.messageVisibleKind !== MessageVisibleKind.NONE) {
       const cell = this.graph.insertVertex(mxEdge, messageFowIconId(mxEdge.id), undefined, 0, 0, 20, 14, this.styleComputer.computeMessageFlowIconStyle(edge));
       cell.geometry.relative = true;
-      cell.geometry.offset = new mxgraph.mxPoint(-10, -7);
+      cell.geometry.offset = new mxPoint(-10, -7);
     }
   }
 
   private insertWaypoints(waypoints: Waypoint[], mxEdge: mxCell): void {
     if (waypoints) {
-      mxEdge.geometry.points = waypoints.map(waypoint => this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new mxgraph.mxPoint(waypoint.x, waypoint.y)));
+      mxEdge.geometry.points = waypoints.map(waypoint => this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new mxPoint(waypoint.x, waypoint.y)));
     }
   }
 
@@ -123,14 +123,14 @@ export class BpmnRenderer {
   }
 
   private insertVertex(parent: mxCell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: string): mxCell {
-    const vertexCoordinates = this.coordinatesTranslator.computeRelativeCoordinates(parent, new mxgraph.mxPoint(bounds.x, bounds.y));
+    const vertexCoordinates = this.coordinatesTranslator.computeRelativeCoordinates(parent, new mxPoint(bounds.x, bounds.y));
     const cell = this.graph.insertVertex(parent, id, value, vertexCoordinates.x, vertexCoordinates.y, bounds.width, bounds.height, style);
 
     if (labelBounds) {
       // label coordinates are relative in the cell referential coordinates
       const relativeLabelX = labelBounds.x - bounds.x;
       const relativeLabelY = labelBounds.y - bounds.y;
-      cell.geometry.offset = new mxgraph.mxPoint(relativeLabelX, relativeLabelY);
+      cell.geometry.offset = new mxPoint(relativeLabelX, relativeLabelY);
     }
     return cell;
   }

@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import type { mxAbstractCanvas2D } from 'mxgraph';
-import { mxgraph } from '../initializer';
+import { mxRectangleShape, mxUtils } from '../initializer';
 import { BpmnStyleIdentifier, StyleDefault } from '../style';
 import { getBpmnIsInstantiating } from '../style/utils';
 import type { BpmnCanvas, PaintParameter, ShapeConfiguration } from './render';
@@ -36,7 +36,7 @@ function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): v
 /**
  * @internal
  */
-export abstract class BaseActivityShape extends mxgraph.mxRectangleShape {
+export abstract class BaseActivityShape extends mxRectangleShape {
   protected iconPainter = IconPainterProvider.get();
 
   constructor() {
@@ -50,7 +50,7 @@ export abstract class BaseActivityShape extends mxgraph.mxRectangleShape {
   }
 
   protected paintMarkerIcons(paintParameter: PaintParameter): void {
-    const markers = mxgraph.mxUtils.getValue(this.style, BpmnStyleIdentifier.MARKERS, undefined);
+    const markers = mxUtils.getValue(this.style, BpmnStyleIdentifier.MARKERS, undefined);
     if (markers) {
       orderActivityMarkers(markers.split(',')).forEach((marker, idx, allMarkers) => {
         paintParameter = {
@@ -211,7 +211,7 @@ export class CallActivityShape extends BaseActivityShape {
 
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this });
 
-    switch (mxgraph.mxUtils.getValue(this.style, BpmnStyleIdentifier.GLOBAL_TASK_KIND, undefined)) {
+    switch (mxUtils.getValue(this.style, BpmnStyleIdentifier.GLOBAL_TASK_KIND, undefined)) {
       case ShapeBpmnElementKind.GLOBAL_TASK_MANUAL:
         this.iconPainter.paintHandIcon({
           ...paintParameter,
@@ -251,7 +251,7 @@ export class CallActivityShape extends BaseActivityShape {
  */
 export class SubProcessShape extends BaseActivityShape {
   override paintBackground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
-    const subProcessKind = mxgraph.mxUtils.getValue(this.style, BpmnStyleIdentifier.SUB_PROCESS_KIND, undefined);
+    const subProcessKind = mxUtils.getValue(this.style, BpmnStyleIdentifier.SUB_PROCESS_KIND, undefined);
     c.save(); // ensure we can later restore the configuration
     if (subProcessKind === ShapeBpmnSubProcessKind.EVENT) {
       c.setDashed(true, false);

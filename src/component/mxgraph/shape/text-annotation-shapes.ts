@@ -15,13 +15,13 @@ limitations under the License.
 */
 
 import { StyleDefault } from '../style';
-import { mxgraph } from '../initializer';
+import { mxRectangleShape } from '../initializer';
 import type { mxAbstractCanvas2D } from 'mxgraph';
 
 /**
  * @internal
  */
-export class TextAnnotationShape extends mxgraph.mxRectangleShape {
+export class TextAnnotationShape extends mxRectangleShape {
   override paintForeground(c: mxAbstractCanvas2D, x: number, y: number, _w: number, h: number): void {
     // paint sort of left square bracket shape - for text annotation
     c.begin();

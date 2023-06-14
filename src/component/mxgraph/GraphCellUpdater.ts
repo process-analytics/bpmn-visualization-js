@@ -18,7 +18,7 @@ import { isShapeStyleUpdate, setStyle, updateFill, updateFont, updateStroke } fr
 import { StyleManager } from './style/StyleManager';
 
 import type { BpmnGraph } from './BpmnGraph';
-import { mxgraph } from './initializer';
+import { mxConstants } from './initializer';
 import { BpmnStyleIdentifier } from './style';
 import type { Overlay, StyleUpdate } from '../registry';
 import type { CssRegistry } from '../registry/css-registry';
@@ -105,7 +105,7 @@ export default class GraphCellUpdater {
         this.styleManager.ensureStyleIsStored(cell);
 
         let cellStyle = cell.getStyle();
-        cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_OPACITY, styleUpdate.opacity, ensureOpacityValue);
+        cellStyle = setStyle(cellStyle, mxConstants.STYLE_OPACITY, styleUpdate.opacity, ensureOpacityValue);
         cellStyle = updateStroke(cellStyle, styleUpdate.stroke);
         cellStyle = updateFont(cellStyle, styleUpdate.font);
 

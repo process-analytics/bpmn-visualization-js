@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import type { mxAbstractCanvas2D } from 'mxgraph';
-import { mxgraph } from '../initializer';
+import { mxgraph, mxUtils } from '../initializer';
 import { BpmnStyleIdentifier, StyleDefault } from '../style';
 import { getBpmnIsInstantiating } from '../style/utils';
 import { ShapeBpmnEventBasedGatewayKind } from '../../../model/bpmn/internal';
@@ -115,7 +115,7 @@ export class EventBasedGatewayShape extends GatewayShape {
       ...paintParameter,
       ratioFromParent: 0.3,
     };
-    if (mxgraph.mxUtils.getValue(this.style, BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND, ShapeBpmnEventBasedGatewayKind.Exclusive) == ShapeBpmnEventBasedGatewayKind.Parallel) {
+    if (mxUtils.getValue(this.style, BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND, ShapeBpmnEventBasedGatewayKind.Exclusive) == ShapeBpmnEventBasedGatewayKind.Parallel) {
       this.iconPainter.paintPlusCrossIcon(innerIconPaintParameter);
     } else {
       this.iconPainter.paintPentagon(innerIconPaintParameter);

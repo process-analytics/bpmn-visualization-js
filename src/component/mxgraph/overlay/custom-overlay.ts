@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { mxgraph } from '../initializer';
-import type { mxCellState, mxPoint, mxRectangle } from 'mxgraph';
+import { mxgraph, mxConstants, mxPoint, mxRectangle } from '../initializer';
+import type { mxCellState, mxPoint as mxPointType, mxRectangle as mxRectangleType } from 'mxgraph';
 import type { OverlayStyle } from '../../registry';
 
 export type VerticalAlignType = 'bottom' | 'middle' | 'top';
@@ -42,7 +42,7 @@ export class MxGraphCustomOverlay extends mxgraph.mxCellOverlay {
   }
 
   // Based on original method from mxCellOverlay (mxCellOverlay.prototype.getBounds)
-  override getBounds(state: mxCellState): mxRectangle {
+  override getBounds(state: mxCellState): mxRectangleType {
     const isEdge = state.view.graph.getModel().isEdge(state.cell);
     const s = state.view.scale;
     let pt;
@@ -56,48 +56,43 @@ export class MxGraphCustomOverlay extends mxgraph.mxCellOverlay {
     if (isEdge) {
       pt = this.computeEdgeBounds(state);
     } else {
-      pt = new mxgraph.mxPoint();
+      pt = new mxPoint();
 
-      if (this.align == mxgraph.mxConstants.ALIGN_LEFT) {
+      if (this.align == mxConstants.ALIGN_LEFT) {
         pt.x = state.x;
-      } else if (this.align == mxgraph.mxConstants.ALIGN_CENTER) {
+      } else if (this.align == mxConstants.ALIGN_CENTER) {
         pt.x = state.x + state.width / 2;
       } else {
         pt.x = state.x + state.width;
       }
 
-      if (this.verticalAlign == mxgraph.mxConstants.ALIGN_TOP) {
+      if (this.verticalAlign == mxConstants.ALIGN_TOP) {
         pt.y = state.y;
-      } else if (this.verticalAlign == mxgraph.mxConstants.ALIGN_MIDDLE) {
+      } else if (this.verticalAlign == mxConstants.ALIGN_MIDDLE) {
         pt.y = state.y + state.height / 2;
       } else {
         pt.y = state.y + state.height;
       }
     }
 
-    return new mxgraph.mxRectangle(
-      Math.round(pt.x - (w * this.defaultOverlap - this.offset.x) * s),
-      Math.round(pt.y - (h * this.defaultOverlap - this.offset.y) * s),
-      w * s,
-      h * s,
-    );
+    return new mxRectangle(Math.round(pt.x - (w * this.defaultOverlap - this.offset.x) * s), Math.round(pt.y - (h * this.defaultOverlap - this.offset.y) * s), w * s, h * s);
   }
 
-  private computeEdgeBounds(state: mxCellState): mxPoint {
+  private computeEdgeBounds(state: mxCellState): mxPointType {
     const pts = state.absolutePoints;
     // 1st point for start position
-    if (this.align == mxgraph.mxConstants.ALIGN_LEFT) {
+    if (this.align == mxConstants.ALIGN_LEFT) {
       return pts[0];
     }
     // middle point for middle position
-    else if (this.align == mxgraph.mxConstants.ALIGN_CENTER) {
+    else if (this.align == mxConstants.ALIGN_CENTER) {
       if (pts.length % 2 == 1) {
         return pts[Math.floor(pts.length / 2)];
       } else {
         const idx = pts.length / 2;
         const p0 = pts[idx - 1];
         const p1 = pts[idx];
-        return new mxgraph.mxPoint(p0.x + (p1.x - p0.x) / 2, p0.y + (p1.y - p0.y) / 2);
+        return new mxPoint(p0.x + (p1.x - p0.x) / 2, p0.y + (p1.y - p0.y) / 2);
       }
     }
     // last point for end position

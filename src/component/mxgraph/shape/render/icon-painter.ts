@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import type { mxAbstractCanvas2D, mxShape } from 'mxgraph';
-import { mxgraph } from '../../initializer';
+import { mxConstants, mxUtils } from '../../initializer';
 import { StyleDefault } from '../../style';
 import { BpmnCanvas } from './BpmnCanvas';
 import type { IconStyleConfiguration, ShapeConfiguration, Size } from './render-types';
@@ -58,10 +58,10 @@ export function buildPaintParameter({
   isFilled?: boolean;
   iconStrokeWidth?: number;
 }): PaintParameter {
-  const shapeStrokeWidth = shape.strokewidth || mxgraph.mxUtils.getValue(shape.style, mxgraph.mxConstants.STYLE_STROKEWIDTH, StyleDefault.STROKE_WIDTH_THIN);
-  const fillColor = shape.fill || mxgraph.mxUtils.getValue(shape.style, mxgraph.mxConstants.STYLE_FILLCOLOR, StyleDefault.DEFAULT_FILL_COLOR);
-  const strokeColor = shape.stroke || mxgraph.mxUtils.getValue(shape.style, mxgraph.mxConstants.STYLE_STROKECOLOR, StyleDefault.DEFAULT_STROKE_COLOR);
-  const margin = mxgraph.mxUtils.getValue(shape.style, mxgraph.mxConstants.STYLE_MARGIN, StyleDefault.DEFAULT_MARGIN);
+  const shapeStrokeWidth = shape.strokewidth || mxUtils.getValue(shape.style, mxConstants.STYLE_STROKEWIDTH, StyleDefault.STROKE_WIDTH_THIN);
+  const fillColor = shape.fill || mxUtils.getValue(shape.style, mxConstants.STYLE_FILLCOLOR, StyleDefault.DEFAULT_FILL_COLOR);
+  const strokeColor = shape.stroke || mxUtils.getValue(shape.style, mxConstants.STYLE_STROKECOLOR, StyleDefault.DEFAULT_STROKE_COLOR);
+  const margin = mxUtils.getValue(shape.style, mxConstants.STYLE_MARGIN, StyleDefault.DEFAULT_MARGIN);
   ratioFromParent ??= 0.25;
   isFilled ??= false;
   iconStrokeWidth ??= 0;

@@ -17,7 +17,7 @@ limitations under the License.
 import { ensureOpacityValue, ensureStrokeWidthValue } from '../../helpers/validators';
 import type { Fill, Font, ShapeStyleUpdate, Stroke, StyleUpdate } from '../../registry';
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
-import { mxgraph } from '../initializer';
+import { mxConstants, mxUtils } from '../initializer';
 import { BpmnStyleIdentifier } from './identifiers';
 
 /**
@@ -74,52 +74,52 @@ export const StyleDefault = {
  * @internal
  * @private
  */
-export const getBpmnIsInstantiating = (style: { [p: string]: unknown }): boolean => mxgraph.mxUtils.getValue(style, BpmnStyleIdentifier.IS_INSTANTIATING, 'false') == 'true';
+export const getBpmnIsInstantiating = (style: { [p: string]: unknown }): boolean => mxUtils.getValue(style, BpmnStyleIdentifier.IS_INSTANTIATING, 'false') == 'true';
 
 const convertDefaultValue = (value: string): string | undefined => (value == 'default' ? undefined : value);
 
 export const updateStroke = (cellStyle: string, stroke: Stroke): string => {
   if (stroke) {
-    cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKECOLOR, stroke.color, convertDefaultValue);
-    cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKE_OPACITY, stroke.opacity, ensureOpacityValue);
-    cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_STROKEWIDTH, stroke.width, ensureStrokeWidthValue);
+    cellStyle = setStyle(cellStyle, mxConstants.STYLE_STROKECOLOR, stroke.color, convertDefaultValue);
+    cellStyle = setStyle(cellStyle, mxConstants.STYLE_STROKE_OPACITY, stroke.opacity, ensureOpacityValue);
+    cellStyle = setStyle(cellStyle, mxConstants.STYLE_STROKEWIDTH, stroke.width, ensureStrokeWidthValue);
   }
   return cellStyle;
 };
 
 export const setStyle = <T extends string | number>(cellStyle: string, key: string, value: T | undefined, converter: (value: T) => T | undefined = (value: T) => value): string => {
-  return value == undefined ? cellStyle : mxgraph.mxUtils.setStyle(cellStyle, key, converter(value));
+  return value == undefined ? cellStyle : mxUtils.setStyle(cellStyle, key, converter(value));
 };
 
 export const setStyleFlag = (cellStyle: string, key: string, flag: number, value: boolean | undefined): string =>
-  value == undefined ? cellStyle : mxgraph.mxUtils.setStyleFlag(cellStyle, key, flag, value);
+  value == undefined ? cellStyle : mxUtils.setStyleFlag(cellStyle, key, flag, value);
 
 export const updateFont = (cellStyle: string, font: Font): string => {
   if (font) {
-    cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTCOLOR, font.color, convertDefaultValue);
-    cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTSIZE, font.size);
-    cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_FONTFAMILY, font.family);
+    cellStyle = setStyle(cellStyle, mxConstants.STYLE_FONTCOLOR, font.color, convertDefaultValue);
+    cellStyle = setStyle(cellStyle, mxConstants.STYLE_FONTSIZE, font.size);
+    cellStyle = setStyle(cellStyle, mxConstants.STYLE_FONTFAMILY, font.family);
 
-    cellStyle = setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_BOLD, font.isBold);
-    cellStyle = setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_ITALIC, font.isItalic);
-    cellStyle = setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_UNDERLINE, font.isUnderline);
-    cellStyle = setStyleFlag(cellStyle, mxgraph.mxConstants.STYLE_FONTSTYLE, mxgraph.mxConstants.FONT_STRIKETHROUGH, font.isStrikeThrough);
+    cellStyle = setStyleFlag(cellStyle, mxConstants.STYLE_FONTSTYLE, mxConstants.FONT_BOLD, font.isBold);
+    cellStyle = setStyleFlag(cellStyle, mxConstants.STYLE_FONTSTYLE, mxConstants.FONT_ITALIC, font.isItalic);
+    cellStyle = setStyleFlag(cellStyle, mxConstants.STYLE_FONTSTYLE, mxConstants.FONT_UNDERLINE, font.isUnderline);
+    cellStyle = setStyleFlag(cellStyle, mxConstants.STYLE_FONTSTYLE, mxConstants.FONT_STRIKETHROUGH, font.isStrikeThrough);
 
-    cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_TEXT_OPACITY, font.opacity, ensureOpacityValue);
+    cellStyle = setStyle(cellStyle, mxConstants.STYLE_TEXT_OPACITY, font.opacity, ensureOpacityValue);
   }
   return cellStyle;
 };
 
 export const updateFill = (cellStyle: string, fill: Fill): string => {
   if (fill.color) {
-    cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILLCOLOR, fill.color, convertDefaultValue);
+    cellStyle = setStyle(cellStyle, mxConstants.STYLE_FILLCOLOR, fill.color, convertDefaultValue);
 
     if (cellStyle.includes(ShapeBpmnElementKind.POOL) || cellStyle.includes(ShapeBpmnElementKind.LANE)) {
-      cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_SWIMLANE_FILLCOLOR, fill.color, convertDefaultValue);
+      cellStyle = setStyle(cellStyle, mxConstants.STYLE_SWIMLANE_FILLCOLOR, fill.color, convertDefaultValue);
     }
   }
 
-  cellStyle = setStyle(cellStyle, mxgraph.mxConstants.STYLE_FILL_OPACITY, fill.opacity, ensureOpacityValue);
+  cellStyle = setStyle(cellStyle, mxConstants.STYLE_FILL_OPACITY, fill.opacity, ensureOpacityValue);
 
   return cellStyle;
 };
