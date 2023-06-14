@@ -576,6 +576,11 @@ describe('mxGraph model - update style', () => {
     });
 
     test('Update the properties of a message flow with icon (non initiating) and restore its default values', () => {
+      // Other font properties may be set in BPMN diagram LabelStyle, so only some properties can be reset to default
+      const font: Font = {
+        color: 'Yellow',
+        opacity: 90,
+      };
       // Check that the element uses default values
       expect('MessageFlow_3_msgVisibilityKind_non_initiating').toBeMessageFlow({
         messageVisibleKind: MessageVisibleKind.NON_INITIATING,
@@ -584,6 +589,7 @@ describe('mxGraph model - update style', () => {
       });
 
       bpmnVisualization.bpmnElementsRegistry.updateStyle('MessageFlow_3_msgVisibilityKind_non_initiating', {
+        font,
         opacity,
         stroke,
       });
@@ -591,6 +597,7 @@ describe('mxGraph model - update style', () => {
       // Check that the style has been updated
       expect('MessageFlow_3_msgVisibilityKind_non_initiating').toBeMessageFlow({
         messageVisibleKind: MessageVisibleKind.NON_INITIATING,
+        font,
         opacity,
         stroke,
         // not under test
