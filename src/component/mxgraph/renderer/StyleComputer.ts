@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { mxgraph } from '../initializer';
+import { mxConstants } from '../initializer';
 import Shape from '../../../model/bpmn/internal/shape/Shape';
 import type { Edge } from '../../../model/bpmn/internal/edge/edge';
 import type Bounds from '../../../model/bpmn/internal/Bounds';
@@ -71,10 +71,10 @@ export default class StyleComputer {
     } else if (bpmnElement instanceof ShapeBpmnActivity) {
       StyleComputer.computeActivityShapeStyle(bpmnElement, styleValues);
     } else if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
-      // mxgraph.mxConstants.STYLE_HORIZONTAL is for the label
+      // mxConstants.STYLE_HORIZONTAL is for the label
       // In BPMN, isHorizontal is for the Shape
       // So we invert the value when we switch from the BPMN value to the mxGraph value.
-      styleValues.set(mxgraph.mxConstants.STYLE_HORIZONTAL, shape.isHorizontal ? '0' : '1');
+      styleValues.set(mxConstants.STYLE_HORIZONTAL, shape.isHorizontal ? '0' : '1');
     } else if (bpmnElement instanceof ShapeBpmnEventBasedGateway) {
       styleValues.set(BpmnStyleIdentifier.IS_INSTANTIATING, String(bpmnElement.instantiate));
       styleValues.set(BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND, String(bpmnElement.gatewayKind));
@@ -84,12 +84,12 @@ export default class StyleComputer {
       const extensions = shape.extensions;
       const fillColor = extensions.fillColor;
       if (fillColor) {
-        styleValues.set(mxgraph.mxConstants.STYLE_FILLCOLOR, fillColor);
+        styleValues.set(mxConstants.STYLE_FILLCOLOR, fillColor);
         if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
-          styleValues.set(mxgraph.mxConstants.STYLE_SWIMLANE_FILLCOLOR, fillColor);
+          styleValues.set(mxConstants.STYLE_SWIMLANE_FILLCOLOR, fillColor);
         }
       }
-      extensions.strokeColor && styleValues.set(mxgraph.mxConstants.STYLE_STROKECOLOR, extensions.strokeColor);
+      extensions.strokeColor && styleValues.set(mxConstants.STYLE_STROKECOLOR, extensions.strokeColor);
     }
 
     return styleValues;
@@ -137,7 +137,7 @@ export default class StyleComputer {
 
     if (!this.ignoreBpmnColors) {
       const extensions = edge.extensions;
-      extensions.strokeColor && styleValues.set(mxgraph.mxConstants.STYLE_STROKECOLOR, extensions.strokeColor);
+      extensions.strokeColor && styleValues.set(mxConstants.STYLE_STROKECOLOR, extensions.strokeColor);
     }
 
     return styleValues;
@@ -148,14 +148,14 @@ export default class StyleComputer {
 
     const font = bpmnCell.label?.font;
     if (font) {
-      styleValues.set(mxgraph.mxConstants.STYLE_FONTFAMILY, font.name);
-      styleValues.set(mxgraph.mxConstants.STYLE_FONTSIZE, font.size);
-      styleValues.set(mxgraph.mxConstants.STYLE_FONTSTYLE, getFontStyleValue(font));
+      styleValues.set(mxConstants.STYLE_FONTFAMILY, font.name);
+      styleValues.set(mxConstants.STYLE_FONTSIZE, font.size);
+      styleValues.set(mxConstants.STYLE_FONTSTYLE, getFontStyleValue(font));
     }
 
     if (!this.ignoreBpmnColors) {
       const extensions = bpmnCell.label?.extensions;
-      extensions?.color && styleValues.set(mxgraph.mxConstants.STYLE_FONTCOLOR, extensions.color);
+      extensions?.color && styleValues.set(mxConstants.STYLE_FONTCOLOR, extensions.color);
     }
 
     return styleValues;
@@ -166,20 +166,20 @@ export default class StyleComputer {
 
     const bpmnElement = bpmnCell.bpmnElement;
     if (labelBounds) {
-      styleValues.set(mxgraph.mxConstants.STYLE_VERTICAL_ALIGN, mxgraph.mxConstants.ALIGN_TOP);
+      styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
       if (bpmnCell.bpmnElement.kind != ShapeBpmnElementKind.TEXT_ANNOTATION) {
-        styleValues.set(mxgraph.mxConstants.STYLE_ALIGN, mxgraph.mxConstants.ALIGN_CENTER);
+        styleValues.set(mxConstants.STYLE_ALIGN, mxConstants.ALIGN_CENTER);
       }
 
       if (bpmnCell instanceof Shape) {
         // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
-        styleValues.set(mxgraph.mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
+        styleValues.set(mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
         // align settings
         // According to the documentation, "label position" can only take values in left, center, right with default=center
         // However, there is undocumented behavior when the value is not one of these and this behavior is exactly what we want.
         // See https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/mxGraphView.js#L1183-L1252
-        styleValues.set(mxgraph.mxConstants.STYLE_LABEL_POSITION, 'ignore');
-        styleValues.set(mxgraph.mxConstants.STYLE_VERTICAL_LABEL_POSITION, mxgraph.mxConstants.ALIGN_MIDDLE);
+        styleValues.set(mxConstants.STYLE_LABEL_POSITION, 'ignore');
+        styleValues.set(mxConstants.STYLE_VERTICAL_LABEL_POSITION, mxConstants.ALIGN_MIDDLE);
       }
     }
     // when no label bounds, adjust the default style dynamically
@@ -189,7 +189,7 @@ export default class StyleComputer {
         (bpmnElement instanceof ShapeBpmnCallActivity && bpmnElement.callActivityKind === ShapeBpmnCallActivityKind.CALLING_PROCESS)) &&
       !bpmnElement.markers.includes(ShapeBpmnMarkerKind.EXPAND)
     ) {
-      styleValues.set(mxgraph.mxConstants.STYLE_VERTICAL_ALIGN, mxgraph.mxConstants.ALIGN_TOP);
+      styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
     }
 
     return styleValues;
@@ -200,7 +200,7 @@ export default class StyleComputer {
     styleValues.push(['shape', BpmnStyleIdentifier.MESSAGE_FLOW_ICON]);
     styleValues.push([BpmnStyleIdentifier.IS_INITIATING, String(edge.messageVisibleKind === MessageVisibleKind.INITIATING)]);
     if (!this.ignoreBpmnColors) {
-      edge.extensions.strokeColor && styleValues.push([mxgraph.mxConstants.STYLE_STROKECOLOR, edge.extensions.strokeColor]);
+      edge.extensions.strokeColor && styleValues.push([mxConstants.STYLE_STROKECOLOR, edge.extensions.strokeColor]);
     }
 
     return toArrayOfMxGraphStyleEntries(styleValues).join(';');
@@ -214,16 +214,16 @@ export default class StyleComputer {
 export function getFontStyleValue(font: Font): number {
   let value = 0;
   if (font.isBold) {
-    value += mxgraph.mxConstants.FONT_BOLD;
+    value += mxConstants.FONT_BOLD;
   }
   if (font.isItalic) {
-    value += mxgraph.mxConstants.FONT_ITALIC;
+    value += mxConstants.FONT_ITALIC;
   }
   if (font.isStrikeThrough) {
-    value += mxgraph.mxConstants.FONT_STRIKETHROUGH;
+    value += mxConstants.FONT_STRIKETHROUGH;
   }
   if (font.isUnderline) {
-    value += mxgraph.mxConstants.FONT_UNDERLINE;
+    value += mxConstants.FONT_UNDERLINE;
   }
   return value;
 }

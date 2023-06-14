@@ -20,7 +20,7 @@ import { FlowKind, MessageVisibleKind } from '@lib/model/bpmn/internal';
 import type { ExpectedEdgeModelElement, ExpectedSequenceFlowModelElement } from '../../helpers/model-expect';
 import { getDefaultParentId } from '../../helpers/model-expect';
 import { BpmnStyleIdentifier } from '@lib/component/mxgraph/style';
-import { mxgraph } from '@lib/component/mxgraph/initializer';
+import { mxConstants } from '@lib/component/mxgraph/initializer';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 
@@ -96,7 +96,7 @@ export function toBeSequenceFlow(this: MatcherContext, received: string, expecte
 }
 
 export function toBeMessageFlow(this: MatcherContext, received: string, expected: ExpectedEdgeModelElement): CustomMatcherResult {
-  return buildEdgeMatcher('toBeMessageFlow', this, received, { ...expected, kind: FlowKind.MESSAGE_FLOW, startArrow: mxgraph.mxConstants.ARROW_OVAL, endArrow: 'blockThin' });
+  return buildEdgeMatcher('toBeMessageFlow', this, received, { ...expected, kind: FlowKind.MESSAGE_FLOW, startArrow: mxConstants.ARROW_OVAL, endArrow: 'blockThin' });
 }
 
 export function toBeAssociationFlow(this: MatcherContext, received: string, expected: ExpectedEdgeModelElement): CustomMatcherResult {

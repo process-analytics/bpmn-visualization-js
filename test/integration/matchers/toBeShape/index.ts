@@ -27,7 +27,7 @@ import type {
 } from '../../helpers/model-expect';
 import { getDefaultParentId } from '../../helpers/model-expect';
 import { ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';
-import { mxgraph } from '@lib/component/mxgraph/initializer';
+import { mxConstants } from '@lib/component/mxgraph/initializer';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 
@@ -141,7 +141,7 @@ function buildShapeMatcher(matcherName: string, matcherContext: MatcherContext, 
 function buildContainerMatcher(matcherName: string, matcherContext: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
   return buildShapeMatcher(matcherName, matcherContext, received, {
     ...expected,
-    styleShape: mxgraph.mxConstants.SHAPE_SWIMLANE,
+    styleShape: mxConstants.SHAPE_SWIMLANE,
     isSwimLaneLabelHorizontal: expected.isSwimLaneLabelHorizontal ?? false,
   });
 }

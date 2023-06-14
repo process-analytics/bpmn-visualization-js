@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { mxgraph } from '@lib/component/mxgraph/initializer';
+import { mxClient } from '@lib/component/mxgraph/initializer';
 
 // Force usage of ForeignObject
 // By default, mxGraph detects no ForeignObject support when running tests in jsdom environment
-mxgraph.mxClient.NO_FO = false;
+mxClient.NO_FO = false;
