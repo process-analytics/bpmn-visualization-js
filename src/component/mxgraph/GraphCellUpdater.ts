@@ -86,13 +86,13 @@ export default class GraphCellUpdater {
 
   updateStyle(bpmnElementIds: string | string[], styleUpdate: StyleUpdate): void {
     if (!styleUpdate) {
-      // We don't want to create an empty transaction and verify if there are cells with id include in bpmnElementIds
+      // We don't want to create an empty transaction and verify if there are cells with id include in bpmnElementIds.
+      // This could be improved by also stopping processing if styleUpdate has no relevant properties.
       return;
     }
 
-    // In the future, this method can be optimized by not processing if styleUpdate has no relevant properties defined.
     const model = this.graph.getModel();
-    const cells = ensureIsArray<string>(bpmnElementIds)
+    const cells = addCellIdsOfMessageFlowIcons(ensureIsArray<string>(bpmnElementIds))
       .map(id => model.getCell(id))
       .filter(Boolean);
     if (cells.length == 0) {
@@ -123,10 +123,15 @@ export default class GraphCellUpdater {
       if (bpmnElementIds.length == 0) {
         this.styleManager.resetAllStyles();
       } else {
-        for (const id of bpmnElementIds) {
+        for (const id of addCellIdsOfMessageFlowIcons(bpmnElementIds)) {
           this.styleManager.resetStyleIfIsStored(id);
         }
       }
     });
   }
+}
+
+function addCellIdsOfMessageFlowIcons(cellIds: string[]): string[] {
+  // The message flow icon is stored in a dedicated Cell, so it must be kept in sync
+  return cellIds.concat(...cellIds.map(id => messageFowIconId(id)));
 }
