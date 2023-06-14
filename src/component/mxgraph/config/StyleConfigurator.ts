@@ -17,7 +17,7 @@ limitations under the License.
 import { AssociationDirectionKind, FlowKind, SequenceFlowKind, ShapeBpmnElementKind, ShapeUtil } from '../../../model/bpmn/internal';
 import { BpmnStyleIdentifier, MarkerIdentifier, StyleDefault } from '../style';
 import type { BpmnGraph } from '../BpmnGraph';
-import { mxgraph } from '../initializer';
+import { mxConstants, mxPerimeter } from '../initializer';
 import type { mxStylesheet, StyleMap } from 'mxgraph';
 
 const arrowDefaultSize = 12;
@@ -35,30 +35,30 @@ export class StyleConfigurator {
     [
       FlowKind.SEQUENCE_FLOW,
       (style: StyleMap) => {
-        style[mxgraph.mxConstants.STYLE_ENDARROW] = mxgraph.mxConstants.ARROW_BLOCK_THIN;
+        style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_BLOCK_THIN;
       },
     ],
     [
       FlowKind.MESSAGE_FLOW,
       (style: StyleMap) => {
-        style[mxgraph.mxConstants.STYLE_DASHED] = true;
-        style[mxgraph.mxConstants.STYLE_DASH_PATTERN] = '8 5';
-        style[mxgraph.mxConstants.STYLE_STARTARROW] = mxgraph.mxConstants.ARROW_OVAL;
-        style[mxgraph.mxConstants.STYLE_STARTSIZE] = 8;
-        style[mxgraph.mxConstants.STYLE_STARTFILL] = true;
+        style[mxConstants.STYLE_DASHED] = true;
+        style[mxConstants.STYLE_DASH_PATTERN] = '8 5';
+        style[mxConstants.STYLE_STARTARROW] = mxConstants.ARROW_OVAL;
+        style[mxConstants.STYLE_STARTSIZE] = 8;
+        style[mxConstants.STYLE_STARTFILL] = true;
         style[BpmnStyleIdentifier.EDGE_START_FILL_COLOR] = StyleDefault.MESSAGE_FLOW_MARKER_START_FILL_COLOR;
-        style[mxgraph.mxConstants.STYLE_ENDARROW] = mxgraph.mxConstants.ARROW_BLOCK_THIN;
-        style[mxgraph.mxConstants.STYLE_ENDFILL] = true;
+        style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_BLOCK_THIN;
+        style[mxConstants.STYLE_ENDFILL] = true;
         style[BpmnStyleIdentifier.EDGE_END_FILL_COLOR] = StyleDefault.MESSAGE_FLOW_MARKER_END_FILL_COLOR;
       },
     ],
     [
       FlowKind.ASSOCIATION_FLOW,
       (style: StyleMap) => {
-        style[mxgraph.mxConstants.STYLE_DASHED] = true;
-        style[mxgraph.mxConstants.STYLE_DASH_PATTERN] = '1 2';
+        style[mxConstants.STYLE_DASHED] = true;
+        style[mxConstants.STYLE_DASH_PATTERN] = '1 2';
         // STYLE_ENDARROW and STYLE_STARTARROW are defined in specific AssociationDirectionKind styles when needed
-        style[mxgraph.mxConstants.STYLE_STARTSIZE] = arrowDefaultSize;
+        style[mxConstants.STYLE_STARTSIZE] = arrowDefaultSize;
       },
     ],
   ]);
@@ -66,15 +66,15 @@ export class StyleConfigurator {
     [
       SequenceFlowKind.DEFAULT,
       (style: StyleMap) => {
-        style[mxgraph.mxConstants.STYLE_STARTARROW] = MarkerIdentifier.ARROW_DASH;
+        style[mxConstants.STYLE_STARTARROW] = MarkerIdentifier.ARROW_DASH;
       },
     ],
     [
       SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY,
       (style: StyleMap) => {
-        style[mxgraph.mxConstants.STYLE_STARTARROW] = mxgraph.mxConstants.ARROW_DIAMOND_THIN;
-        style[mxgraph.mxConstants.STYLE_STARTSIZE] = 18;
-        style[mxgraph.mxConstants.STYLE_STARTFILL] = true;
+        style[mxConstants.STYLE_STARTARROW] = mxConstants.ARROW_DIAMOND_THIN;
+        style[mxConstants.STYLE_STARTSIZE] = 18;
+        style[mxConstants.STYLE_STARTFILL] = true;
         style[BpmnStyleIdentifier.EDGE_START_FILL_COLOR] = StyleDefault.SEQUENCE_FLOW_CONDITIONAL_FROM_ACTIVITY_MARKER_FILL_COLOR;
       },
     ],
@@ -90,14 +90,14 @@ export class StyleConfigurator {
     [
       AssociationDirectionKind.ONE,
       (style: StyleMap) => {
-        style[mxgraph.mxConstants.STYLE_ENDARROW] = mxgraph.mxConstants.ARROW_OPEN_THIN;
+        style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_OPEN_THIN;
       },
     ],
     [
       AssociationDirectionKind.BOTH,
       (style: StyleMap) => {
-        style[mxgraph.mxConstants.STYLE_STARTARROW] = mxgraph.mxConstants.ARROW_OPEN_THIN;
-        style[mxgraph.mxConstants.STYLE_ENDARROW] = mxgraph.mxConstants.ARROW_OPEN_THIN;
+        style[mxConstants.STYLE_STARTARROW] = mxConstants.ARROW_OPEN_THIN;
+        style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_OPEN_THIN;
       },
     ],
   ]);
@@ -133,33 +133,33 @@ export class StyleConfigurator {
     const style = this.getStylesheet().getDefaultVertexStyle();
     configureCommonDefaultStyle(style);
 
-    style[mxgraph.mxConstants.STYLE_ABSOLUTE_ARCSIZE] = true;
-    style[mxgraph.mxConstants.STYLE_ARCSIZE] = StyleDefault.SHAPE_ARC_SIZE;
+    style[mxConstants.STYLE_ABSOLUTE_ARCSIZE] = true;
+    style[mxConstants.STYLE_ARCSIZE] = StyleDefault.SHAPE_ARC_SIZE;
   }
 
   private configurePoolStyle(): void {
     const style: StyleMap = {};
-    style[mxgraph.mxConstants.STYLE_SHAPE] = mxgraph.mxConstants.SHAPE_SWIMLANE;
+    style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_SWIMLANE;
 
     // label style
-    style[mxgraph.mxConstants.STYLE_VERTICAL_ALIGN] = mxgraph.mxConstants.ALIGN_MIDDLE;
-    style[mxgraph.mxConstants.STYLE_ALIGN] = mxgraph.mxConstants.ALIGN_CENTER;
-    style[mxgraph.mxConstants.STYLE_STARTSIZE] = StyleDefault.POOL_LABEL_SIZE;
-    style[mxgraph.mxConstants.STYLE_FILLCOLOR] = StyleDefault.POOL_LABEL_FILL_COLOR;
+    style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
+    style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_CENTER;
+    style[mxConstants.STYLE_STARTSIZE] = StyleDefault.POOL_LABEL_SIZE;
+    style[mxConstants.STYLE_FILLCOLOR] = StyleDefault.POOL_LABEL_FILL_COLOR;
 
     this.graph.getStylesheet().putCellStyle(ShapeBpmnElementKind.POOL, style);
   }
 
   private configureLaneStyle(): void {
     const style: StyleMap = {};
-    style[mxgraph.mxConstants.STYLE_SHAPE] = mxgraph.mxConstants.SHAPE_SWIMLANE;
+    style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_SWIMLANE;
 
     // label style
-    style[mxgraph.mxConstants.STYLE_VERTICAL_ALIGN] = mxgraph.mxConstants.ALIGN_MIDDLE;
-    style[mxgraph.mxConstants.STYLE_ALIGN] = mxgraph.mxConstants.ALIGN_CENTER;
-    style[mxgraph.mxConstants.STYLE_SWIMLANE_LINE] = 0; // hide the line between the title region and the content area
-    style[mxgraph.mxConstants.STYLE_STARTSIZE] = StyleDefault.LANE_LABEL_SIZE;
-    style[mxgraph.mxConstants.STYLE_FILLCOLOR] = StyleDefault.LANE_LABEL_FILL_COLOR;
+    style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
+    style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_CENTER;
+    style[mxConstants.STYLE_SWIMLANE_LINE] = 0; // hide the line between the title region and the content area
+    style[mxConstants.STYLE_STARTSIZE] = StyleDefault.LANE_LABEL_SIZE;
+    style[mxConstants.STYLE_FILLCOLOR] = StyleDefault.LANE_LABEL_FILL_COLOR;
 
     this.graph.getStylesheet().putCellStyle(ShapeBpmnElementKind.LANE, style);
   }
@@ -167,35 +167,35 @@ export class StyleConfigurator {
   private configureEventStyles(): void {
     ShapeUtil.eventKinds().forEach(kind => {
       const style: StyleMap = {};
-      style[mxgraph.mxConstants.STYLE_SHAPE] = kind;
-      style[mxgraph.mxConstants.STYLE_PERIMETER] = mxgraph.mxPerimeter.EllipsePerimeter;
-      style[mxgraph.mxConstants.STYLE_STROKEWIDTH] = kind == ShapeBpmnElementKind.EVENT_END ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN;
-      style[mxgraph.mxConstants.STYLE_VERTICAL_LABEL_POSITION] = mxgraph.mxConstants.ALIGN_BOTTOM;
+      style[mxConstants.STYLE_SHAPE] = kind;
+      style[mxConstants.STYLE_PERIMETER] = mxPerimeter.EllipsePerimeter;
+      style[mxConstants.STYLE_STROKEWIDTH] = kind == ShapeBpmnElementKind.EVENT_END ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN;
+      style[mxConstants.STYLE_VERTICAL_LABEL_POSITION] = mxConstants.ALIGN_BOTTOM;
       this.putCellStyle(kind, style);
     });
   }
 
   private configureTextAnnotationStyle(): void {
     const style: StyleMap = {};
-    style[mxgraph.mxConstants.STYLE_SHAPE] = ShapeBpmnElementKind.TEXT_ANNOTATION;
-    style[mxgraph.mxConstants.STYLE_VERTICAL_ALIGN] = mxgraph.mxConstants.ALIGN_MIDDLE;
-    style[mxgraph.mxConstants.STYLE_ALIGN] = mxgraph.mxConstants.ALIGN_LEFT;
-    style[mxgraph.mxConstants.STYLE_SPACING_LEFT] = 5;
-    style[mxgraph.mxConstants.STYLE_FILLCOLOR] = StyleDefault.TEXT_ANNOTATION_FILL_COLOR;
-    style[mxgraph.mxConstants.STYLE_STROKEWIDTH] = StyleDefault.STROKE_WIDTH_THIN;
+    style[mxConstants.STYLE_SHAPE] = ShapeBpmnElementKind.TEXT_ANNOTATION;
+    style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
+    style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_LEFT;
+    style[mxConstants.STYLE_SPACING_LEFT] = 5;
+    style[mxConstants.STYLE_FILLCOLOR] = StyleDefault.TEXT_ANNOTATION_FILL_COLOR;
+    style[mxConstants.STYLE_STROKEWIDTH] = StyleDefault.STROKE_WIDTH_THIN;
     this.putCellStyle(ShapeBpmnElementKind.TEXT_ANNOTATION, style);
   }
 
   private configureGroupStyle(): void {
     const style: StyleMap = {};
-    style[mxgraph.mxConstants.STYLE_ROUNDED] = true;
-    style[mxgraph.mxConstants.STYLE_DASHED] = true;
-    style[mxgraph.mxConstants.STYLE_DASH_PATTERN] = '7 4 1 4';
-    style[mxgraph.mxConstants.STYLE_STROKEWIDTH] = StyleDefault.STROKE_WIDTH_THIN;
-    style[mxgraph.mxConstants.STYLE_FILLCOLOR] = StyleDefault.GROUP_FILL_COLOR;
+    style[mxConstants.STYLE_ROUNDED] = true;
+    style[mxConstants.STYLE_DASHED] = true;
+    style[mxConstants.STYLE_DASH_PATTERN] = '7 4 1 4';
+    style[mxConstants.STYLE_STROKEWIDTH] = StyleDefault.STROKE_WIDTH_THIN;
+    style[mxConstants.STYLE_FILLCOLOR] = StyleDefault.GROUP_FILL_COLOR;
     // Default label positioning
-    style[mxgraph.mxConstants.STYLE_ALIGN] = mxgraph.mxConstants.ALIGN_CENTER;
-    style[mxgraph.mxConstants.STYLE_VERTICAL_ALIGN] = mxgraph.mxConstants.ALIGN_TOP;
+    style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_CENTER;
+    style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_TOP;
 
     this.putCellStyle(ShapeBpmnElementKind.GROUP, style);
   }
@@ -203,10 +203,10 @@ export class StyleConfigurator {
   private configureActivityStyles(): void {
     ShapeUtil.activityKinds().forEach(kind => {
       const style: StyleMap = {};
-      style[mxgraph.mxConstants.STYLE_SHAPE] = kind;
-      style[mxgraph.mxConstants.STYLE_ROUNDED] = true; // required by the BPMN specification
-      style[mxgraph.mxConstants.STYLE_VERTICAL_ALIGN] = mxgraph.mxConstants.ALIGN_MIDDLE;
-      style[mxgraph.mxConstants.STYLE_STROKEWIDTH] = kind == ShapeBpmnElementKind.CALL_ACTIVITY ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN;
+      style[mxConstants.STYLE_SHAPE] = kind;
+      style[mxConstants.STYLE_ROUNDED] = true; // required by the BPMN specification
+      style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
+      style[mxConstants.STYLE_STROKEWIDTH] = kind == ShapeBpmnElementKind.CALL_ACTIVITY ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN;
       this.putCellStyle(kind, style);
     });
   }
@@ -214,14 +214,14 @@ export class StyleConfigurator {
   private configureGatewayStyles(): void {
     ShapeUtil.gatewayKinds().forEach(kind => {
       const style: StyleMap = {};
-      style[mxgraph.mxConstants.STYLE_SHAPE] = kind;
-      style[mxgraph.mxConstants.STYLE_PERIMETER] = mxgraph.mxPerimeter.RhombusPerimeter;
-      style[mxgraph.mxConstants.STYLE_STROKEWIDTH] = StyleDefault.STROKE_WIDTH_THIN;
-      style[mxgraph.mxConstants.STYLE_VERTICAL_ALIGN] = mxgraph.mxConstants.ALIGN_TOP;
+      style[mxConstants.STYLE_SHAPE] = kind;
+      style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RhombusPerimeter;
+      style[mxConstants.STYLE_STROKEWIDTH] = StyleDefault.STROKE_WIDTH_THIN;
+      style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_TOP;
 
       // Default label positioning
-      style[mxgraph.mxConstants.STYLE_LABEL_POSITION] = mxgraph.mxConstants.ALIGN_LEFT;
-      style[mxgraph.mxConstants.STYLE_VERTICAL_LABEL_POSITION] = mxgraph.mxConstants.ALIGN_TOP;
+      style[mxConstants.STYLE_LABEL_POSITION] = mxConstants.ALIGN_LEFT;
+      style[mxConstants.STYLE_VERTICAL_LABEL_POSITION] = mxConstants.ALIGN_TOP;
 
       this.putCellStyle(kind, style);
     });
@@ -231,15 +231,15 @@ export class StyleConfigurator {
     const style = this.getStylesheet().getDefaultEdgeStyle();
     configureCommonDefaultStyle(style);
 
-    style[mxgraph.mxConstants.STYLE_SHAPE] = BpmnStyleIdentifier.EDGE;
-    style[mxgraph.mxConstants.STYLE_ENDSIZE] = arrowDefaultSize;
-    style[mxgraph.mxConstants.STYLE_STROKEWIDTH] = 1.5;
-    style[mxgraph.mxConstants.STYLE_ROUNDED] = true;
-    style[mxgraph.mxConstants.STYLE_ARCSIZE] = 5;
-    style[mxgraph.mxConstants.STYLE_VERTICAL_ALIGN] = mxgraph.mxConstants.ALIGN_BOTTOM;
+    style[mxConstants.STYLE_SHAPE] = BpmnStyleIdentifier.EDGE;
+    style[mxConstants.STYLE_ENDSIZE] = arrowDefaultSize;
+    style[mxConstants.STYLE_STROKEWIDTH] = 1.5;
+    style[mxConstants.STYLE_ROUNDED] = true;
+    style[mxConstants.STYLE_ARCSIZE] = 5;
+    style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_BOTTOM;
 
     // The end arrow must be redefined in specific style
-    delete style[mxgraph.mxConstants.STYLE_ENDARROW];
+    delete style[mxConstants.STYLE_ENDARROW];
   }
 
   private configureEdgeStyles<T>(styleKinds: T[], specificStyles: Map<T, (style: StyleMap) => void>): void {
@@ -258,15 +258,15 @@ export class StyleConfigurator {
 }
 
 function configureCommonDefaultStyle(style: StyleMap): void {
-  style[mxgraph.mxConstants.STYLE_FONTFAMILY] = StyleDefault.DEFAULT_FONT_FAMILY;
-  style[mxgraph.mxConstants.STYLE_FONTSIZE] = StyleDefault.DEFAULT_FONT_SIZE;
-  style[mxgraph.mxConstants.STYLE_FONTCOLOR] = StyleDefault.DEFAULT_FONT_COLOR;
-  style[mxgraph.mxConstants.STYLE_FILLCOLOR] = StyleDefault.DEFAULT_FILL_COLOR;
-  style[mxgraph.mxConstants.STYLE_STROKECOLOR] = StyleDefault.DEFAULT_STROKE_COLOR;
-  style[mxgraph.mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = mxgraph.mxConstants.NONE;
+  style[mxConstants.STYLE_FONTFAMILY] = StyleDefault.DEFAULT_FONT_FAMILY;
+  style[mxConstants.STYLE_FONTSIZE] = StyleDefault.DEFAULT_FONT_SIZE;
+  style[mxConstants.STYLE_FONTCOLOR] = StyleDefault.DEFAULT_FONT_COLOR;
+  style[mxConstants.STYLE_FILLCOLOR] = StyleDefault.DEFAULT_FILL_COLOR;
+  style[mxConstants.STYLE_STROKECOLOR] = StyleDefault.DEFAULT_STROKE_COLOR;
+  style[mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = mxConstants.NONE;
 
   // only works with html labels (enabled by GraphConfigurator)
-  style[mxgraph.mxConstants.STYLE_WHITE_SPACE] = 'wrap';
+  style[mxConstants.STYLE_WHITE_SPACE] = 'wrap';
 }
 
 class MapWithDefault<T> extends Map<T, (style: StyleMap) => void> {

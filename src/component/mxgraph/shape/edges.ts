@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { mxgraph } from '../initializer';
+import { mxgraph, mxSvgCanvas2D, mxUtils } from '../initializer';
 import type { mxAbstractCanvas2D, mxPoint } from 'mxgraph';
 import { BpmnStyleIdentifier } from '../style';
 
@@ -37,12 +37,12 @@ export class BpmnConnector extends mxgraph.mxConnector {
     c.setDashed(false, false);
 
     if (sourceMarker != null) {
-      c.setFillColor(mxgraph.mxUtils.getValue(this.style, BpmnStyleIdentifier.EDGE_START_FILL_COLOR, this.stroke));
+      c.setFillColor(mxUtils.getValue(this.style, BpmnStyleIdentifier.EDGE_START_FILL_COLOR, this.stroke));
       sourceMarker();
     }
 
     if (targetMarker != null) {
-      c.setFillColor(mxgraph.mxUtils.getValue(this.style, BpmnStyleIdentifier.EDGE_END_FILL_COLOR, this.stroke));
+      c.setFillColor(mxUtils.getValue(this.style, BpmnStyleIdentifier.EDGE_END_FILL_COLOR, this.stroke));
       targetMarker();
     }
   }
@@ -58,11 +58,11 @@ export class BpmnConnector extends mxgraph.mxConnector {
 }
 
 function getPointerEventsValue(c: mxAbstractCanvas2D): string {
-  return c instanceof mxgraph.mxSvgCanvas2D ? c.pointerEventsValue : null;
+  return c instanceof mxSvgCanvas2D ? c.pointerEventsValue : null;
 }
 
 function setPointerEventsValue(c: mxAbstractCanvas2D, value: string): void {
-  if (c instanceof mxgraph.mxSvgCanvas2D) {
+  if (c instanceof mxSvgCanvas2D) {
     c.pointerEventsValue = value;
   }
 }

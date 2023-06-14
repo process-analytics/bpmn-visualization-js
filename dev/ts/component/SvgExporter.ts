@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { mxgraph } from '../../../src/component/mxgraph/initializer';
-import type { mxGraph, mxSvgCanvas2D } from 'mxgraph';
+import { mxgraph, mxClient, mxConstants, mxSvgCanvas2D, mxUtils } from '../../../src/component/mxgraph/initializer';
+import type { mxGraph, mxSvgCanvas2D as mxSvgCanvas2DType } from 'mxgraph';
 
 interface SvgExportOptions {
   scale: number;
@@ -40,13 +40,13 @@ export class SvgExporter {
     // chrome and webkit: tainted canvas when svg contains foreignObject
     // also on brave --> probably fail on chromium based browsers
     // so disable foreign objects for such browsers
-    const isFirefox = mxgraph.mxClient.IS_FF;
+    const isFirefox = mxClient.IS_FF;
     return this.doSvgExport(isFirefox);
   }
 
   private doSvgExport(enableForeignObjectForLabel: boolean): string {
     const svgDocument = this.computeSvg({ scale: 1, border: 25, enableForeignObjectForLabel: enableForeignObjectForLabel });
-    const svgAsString = mxgraph.mxUtils.getXml(svgDocument);
+    const svgAsString = mxUtils.getXml(svgDocument);
     return `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 ${svgAsString}
@@ -63,8 +63,8 @@ ${svgAsString}
     const viewScale = this.graph.view.scale;
 
     // Prepares SVG document that holds the output
-    const svgDoc = mxgraph.mxUtils.createXmlDocument();
-    const root = svgDoc.createElementNS(mxgraph.mxConstants.NS_SVG, 'svg');
+    const svgDoc = mxUtils.createXmlDocument();
+    const root = svgDoc.createElementNS(mxConstants.NS_SVG, 'svg');
 
     const s = scale / viewScale;
     const w = Math.max(1, Math.ceil(bounds.width * s) + 2 * border);
@@ -76,7 +76,7 @@ ${svgAsString}
     root.setAttribute('viewBox', (crisp ? '-0.5 -0.5' : '0 0') + ' ' + w + ' ' + h);
     svgDoc.appendChild(root);
 
-    const group = svgDoc.createElementNS(mxgraph.mxConstants.NS_SVG, 'g');
+    const group = svgDoc.createElementNS(mxConstants.NS_SVG, 'g');
     root.appendChild(group);
 
     const svgCanvas = this.createSvgCanvas(group);
@@ -100,7 +100,7 @@ ${svgAsString}
     return svgDoc;
   }
 
-  createSvgCanvas(node: Element): mxSvgCanvas2D {
+  createSvgCanvas(node: Element): mxSvgCanvas2DType {
     const canvas = new CanvasForExport(node);
     // from the draw.io code, may not be needed here
     canvas.pointerEvents = true;
@@ -108,7 +108,7 @@ ${svgAsString}
   }
 }
 
-class CanvasForExport extends mxgraph.mxSvgCanvas2D {
+class CanvasForExport extends mxSvgCanvas2D {
   // Convert HTML entities
   private htmlConverter = document.createElement('div');
 
@@ -167,7 +167,7 @@ class CanvasForExport extends mxgraph.mxSvgCanvas2D {
 
     try {
       this.htmlConverter.innerHTML = str;
-      str = mxgraph.mxUtils.extractTextWithWhitespace(this.htmlConverter.childNodes);
+      str = mxUtils.extractTextWithWhitespace(this.htmlConverter.childNodes);
 
       // Workaround for substring breaking double byte UTF
       const exp = Math.ceil((2 * w) / this.state.fontSize);
@@ -192,7 +192,7 @@ class CanvasForExport extends mxgraph.mxSvgCanvas2D {
 
       // Uses result and adds ellipsis if more than 1 char remains
       if (result.length < str.length && str.length - result.length > 1) {
-        str = mxgraph.mxUtils.trim(result.join('')) + '...';
+        str = mxUtils.trim(result.join('')) + '...';
       }
     } catch (e) {
       console.warn('Error while computing txt label', e);
