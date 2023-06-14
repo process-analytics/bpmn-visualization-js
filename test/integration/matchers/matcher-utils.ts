@@ -240,7 +240,7 @@ export function buildReceivedCellWithCommonAttributes(cell: mxCell): ExpectedCel
     receivedCell.overlays = undefined;
   }
 
-  // The cell of the "message flow icon" are defined as children of the "message flow" cell
+  // The cell of the "message flow icon" is defined as a child of the "message flow" cell
   if (cell.edge) {
     const children = cell.children;
     if (children?.length > 0) {
