@@ -92,7 +92,7 @@ export default class GraphCellUpdater {
     }
 
     const model = this.graph.getModel();
-    const cells = addCellIdsOfMessageFlowIcons(ensureIsArray<string>(bpmnElementIds))
+    const cells = withCellIdsOfMessageFlowIcons(bpmnElementIds)
       .map(id => model.getCell(id))
       .filter(Boolean);
     if (cells.length == 0) {
@@ -123,7 +123,7 @@ export default class GraphCellUpdater {
       if (bpmnElementIds.length == 0) {
         this.styleManager.resetAllStyles();
       } else {
-        for (const id of addCellIdsOfMessageFlowIcons(bpmnElementIds)) {
+        for (const id of withCellIdsOfMessageFlowIcons(bpmnElementIds)) {
           this.styleManager.resetStyleIfIsStored(id);
         }
       }
@@ -131,7 +131,8 @@ export default class GraphCellUpdater {
   }
 }
 
-function addCellIdsOfMessageFlowIcons(cellIds: string[]): string[] {
-  // The message flow icon is stored in a dedicated Cell, so it must be kept in sync
-  return cellIds.concat(...cellIds.map(id => messageFlowIconId(id)));
+// The message flow icon is stored in a dedicated Cell, so it must be kept in sync
+function withCellIdsOfMessageFlowIcons(bpmnElementIds: string | string[]): string[] {
+  const cellIds = ensureIsArray<string>(bpmnElementIds);
+  return cellIds.concat(cellIds.map(id => messageFlowIconId(id)));
 }
