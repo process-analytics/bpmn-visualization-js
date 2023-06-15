@@ -169,7 +169,7 @@ export type Stroke = StyleWithOpacity & {
    *
    * Notes about the `default` special keyword:
    * - It can be used when the style is first updated and then needs to be reset to its initial value.
-   * - It doesn't use the color set in the BPMN source when the "BPMN in Color" support is enabled.
+   * - It doesn't use the color set in the BPMN source when the "BPMN in Color" support is enabled. It uses the color defined in the BPMN element default style.
    */
   color?: 'default' | 'none' | string;
 
@@ -203,7 +203,7 @@ export type Font = StyleWithOpacity & {
    *
    * Notes about the `default` special keyword:
    * - It can be used when the style is first updated and then needs to be reset to its initial value.
-   * - It doesn't use the color set in the BPMN source when the "BPMN in Color" support is enabled.
+   * - It doesn't use the color set in the BPMN source when the "BPMN in Color" support is enabled. It uses the color defined in the BPMN element default style.
    */
   color?: 'default' | string;
 
@@ -246,7 +246,7 @@ export type Fill = StyleWithOpacity & {
    *
    * Notes about the `default` special keyword:
    * - It can be used when the style is first updated and then needs to be reset to its initial value.
-   * - It doesn't use the color set in the BPMN source when the "BPMN in Color" support is enabled.
+   * - It doesn't use the color set in the BPMN source when the "BPMN in Color" support is enabled. It uses the color defined in the BPMN element default style.
    */
   color?: 'default' | 'none' | string;
 };
