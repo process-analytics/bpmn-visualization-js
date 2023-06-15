@@ -25,7 +25,7 @@ import type { CssRegistry } from '../registry/css-registry';
 import { MxGraphCustomOverlay } from './overlay/custom-overlay';
 import { ensureIsArray } from '../helpers/array-utils';
 import { OverlayConverter } from './overlay/OverlayConverter';
-import { messageFowIconId } from './BpmnRenderer';
+import { messageFlowIconId } from './BpmnRenderer';
 import { ensureOpacityValue } from '../helpers/validators';
 
 /**
@@ -47,8 +47,8 @@ export default class GraphCellUpdater {
 
   updateAndRefreshCssClassesOfCell(bpmnElementId: string, cssClasses: string[]): void {
     this.updateAndRefreshCssClassesOfElement(bpmnElementId, cssClasses);
-    // special case: message flow icon is stored in a dedicated mxCell, so it must be kept in sync
-    this.updateAndRefreshCssClassesOfElement(messageFowIconId(bpmnElementId), cssClasses);
+    // special case: message flow icon is stored in a dedicated Cell, so it must be kept in sync
+    this.updateAndRefreshCssClassesOfElement(messageFlowIconId(bpmnElementId), cssClasses);
   }
 
   private updateAndRefreshCssClassesOfElement(elementId: string, cssClasses: string[]): void {
@@ -66,33 +66,33 @@ export default class GraphCellUpdater {
   }
 
   addOverlays(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
-    const mxCell = this.graph.getModel().getCell(bpmnElementId);
-    if (!mxCell) {
+    const cell = this.graph.getModel().getCell(bpmnElementId);
+    if (!cell) {
       return;
     }
     ensureIsArray(overlays).forEach(overlay => {
       const bpmnOverlay = new MxGraphCustomOverlay(overlay.label, this.overlayConverter.convert(overlay));
-      this.graph.addCellOverlay(mxCell, bpmnOverlay);
+      this.graph.addCellOverlay(cell, bpmnOverlay);
     });
   }
 
   removeAllOverlays(bpmnElementId: string): void {
-    const mxCell = this.graph.getModel().getCell(bpmnElementId);
-    if (!mxCell) {
+    const cell = this.graph.getModel().getCell(bpmnElementId);
+    if (!cell) {
       return;
     }
-    this.graph.removeCellOverlays(mxCell);
+    this.graph.removeCellOverlays(cell);
   }
 
   updateStyle(bpmnElementIds: string | string[], styleUpdate: StyleUpdate): void {
     if (!styleUpdate) {
-      // We don't want to create an empty transaction and verify if there are cells with id include in bpmnElementIds
+      // We don't want to create an empty transaction and verify if there are cells with id include in bpmnElementIds.
+      // This could be improved by also stopping processing if styleUpdate has no relevant properties.
       return;
     }
 
-    // In the future, this method can be optimized by not processing if styleUpdate has no relevant properties defined.
     const model = this.graph.getModel();
-    const cells = ensureIsArray<string>(bpmnElementIds)
+    const cells = withCellIdsOfMessageFlowIcons(bpmnElementIds)
       .map(id => model.getCell(id))
       .filter(Boolean);
     if (cells.length == 0) {
@@ -123,10 +123,16 @@ export default class GraphCellUpdater {
       if (bpmnElementIds.length == 0) {
         this.styleManager.resetAllStyles();
       } else {
-        for (const id of bpmnElementIds) {
+        for (const id of withCellIdsOfMessageFlowIcons(bpmnElementIds)) {
           this.styleManager.resetStyleIfIsStored(id);
         }
       }
     });
   }
+}
+
+// The message flow icon is stored in a dedicated Cell, so it must be kept in sync
+function withCellIdsOfMessageFlowIcons(bpmnElementIds: string | string[]): string[] {
+  const cellIds = ensureIsArray<string>(bpmnElementIds);
+  return cellIds.concat(cellIds.map(id => messageFlowIconId(id)));
 }

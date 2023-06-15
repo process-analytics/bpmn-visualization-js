@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement } from '../helpers/model-expect';
+import type { ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement, HorizontalAlign, VerticalAlign } from '../helpers/model-expect';
 import { bpmnVisualization } from '../helpers/model-expect';
 import type { mxCell, mxGeometry, StyleMap } from 'mxgraph';
 import type { Opacity } from '@lib/component/registry';
@@ -28,8 +28,8 @@ import CustomMatcherResult = jest.CustomMatcherResult;
 // Used for received view state, computed resolved style and expected style.
 export interface BpmnCellStyle extends StyleMap {
   opacity: Opacity;
-  verticalAlign?: string;
-  align?: string;
+  verticalAlign?: VerticalAlign;
+  align?: HorizontalAlign;
   strokeWidth?: 'default' | number;
   strokeColor: string;
   strokeOpacity: Opacity;
@@ -195,6 +195,8 @@ function toBpmnStyle(rawStyle: StyleMap, isEdge: boolean): BpmnCellStyle {
     extraCssClasses: rawStyle[BpmnStyleIdentifier.EXTRA_CSS_CLASSES]?.split(','),
     // ignore marker order, which is only relevant when rendering the shape (it has its own order algorithm)
     markers: rawStyle[BpmnStyleIdentifier.MARKERS]?.split(',').sort(),
+    // for message flow icon (value in rawStyle are string)
+    'bpmn.isInitiating': rawStyle[BpmnStyleIdentifier.IS_INITIATING] ? rawStyle[BpmnStyleIdentifier.IS_INITIATING] == 'true' : undefined,
   };
 
   if (isEdge) {
@@ -210,8 +212,8 @@ function toBpmnStyle(rawStyle: StyleMap, isEdge: boolean): BpmnCellStyle {
   return style;
 }
 
-export function buildReceivedCellWithCommonAttributes(cell: mxCell): ExpectedCell {
-  const receivedCell: ExpectedCell = {
+function buildBaseReceivedExpectedCell(cell: mxCell): ExpectedCell {
+  return {
     value: cell.value,
     styleRawFromModelOrJestExpect: cell.style,
     styleResolvedFromModel: buildReceivedResolvedModelCellStyle(cell),
@@ -221,6 +223,10 @@ export function buildReceivedCellWithCommonAttributes(cell: mxCell): ExpectedCel
     vertex: cell.vertex,
     parent: { id: cell.parent.id },
   };
+}
+
+export function buildReceivedCellWithCommonAttributes(cell: mxCell): ExpectedCell {
+  const receivedCell = buildBaseReceivedExpectedCell(cell);
 
   const cellOverlays = bpmnVisualization.graph.getCellOverlays(cell) as MxGraphCustomOverlay[];
   if (cellOverlays) {
@@ -234,18 +240,11 @@ export function buildReceivedCellWithCommonAttributes(cell: mxCell): ExpectedCel
     receivedCell.overlays = undefined;
   }
 
+  // The cell of the "message flow icon" is defined as a child of the "message flow" cell
   if (cell.edge) {
     const children = cell.children;
     if (children?.length > 0) {
-      receivedCell.children = children.map(
-        child =>
-          <ExpectedCell>{
-            value: child.value,
-            styleRawFromModelOrJestExpect: child.style,
-            id: child.id,
-            vertex: child.vertex,
-          },
-      );
+      receivedCell.children = children.map(child => buildBaseReceivedExpectedCell(child));
     }
   }
 

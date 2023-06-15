@@ -51,11 +51,27 @@ class StyleImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         },
       ],
       [
+        'fill.color',
+        {
+          linux: 0.09 / 100, // 0.08216175057789155%
+          macos: 0.09 / 100, // 0.08216175057789155%
+          windows: 0.09 / 100, // 0.08216175057789155%
+        },
+      ],
+      [
         'fill.color.opacity.group',
         {
-          linux: 0.08 / 100, // 0.07372082349720312%
-          macos: 0.08 / 100, // 0.07372082349720312%
-          windows: 0.08 / 100, // 0.07372082349720312%
+          linux: 0.12 / 100, // 0.11206537171222217%
+          macos: 0.12 / 100, // 0.11206537171222217%
+          windows: 0.12 / 100, // 0.11206537171222217%
+        },
+      ],
+      [
+        'stroke.color',
+        {
+          linux: 0.08 / 100, // 0.0780124780372815%
+          macos: 0.08 / 100, // 0.0780124780372815%
+          windows: 0.08 / 100, // 0.0780124780372815%
         },
       ],
     ]);
@@ -72,7 +88,7 @@ class StyleImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'fill.color.opacity.group',
         {
-          macos: 0.11 / 100, // 0.1064668020213877%
+          macos: 0.09 / 100, // 0.08353290699089076%
         },
       ],
     ]);

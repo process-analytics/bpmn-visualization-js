@@ -21,7 +21,7 @@ import { bpmnVisualization } from './helpers/model-expect';
 import { buildReceivedResolvedModelCellStyle, buildReceivedViewStateStyle } from './matchers/matcher-utils';
 import { buildExpectedShapeCellStyle } from './matchers/toBeShape';
 import { readFileSync } from '@test/shared/file-helper';
-import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
+import { MessageVisibleKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
 import type { EdgeStyleUpdate, Fill, Font, Stroke, StyleUpdate } from '@lib/component/registry';
 import type { mxCell } from 'mxgraph';
 
@@ -545,6 +545,88 @@ describe('mxGraph model - update style', () => {
     });
   });
 
+  describe('Message flow icons', () => {
+    beforeEach(() => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/message-flows-with-and-without-icon.bpmn'));
+    });
+
+    const stroke: Stroke = { color: 'pink', opacity: 72, width: 7 };
+    const opacity = 84;
+
+    test('Update the style of a message flow without icon', () => {
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('MessageFlow_1', { opacity, stroke });
+      expect('MessageFlow_1').toBeMessageFlow({
+        messageVisibleKind: MessageVisibleKind.NONE,
+        opacity,
+        stroke,
+        // not under test
+        verticalAlign: 'bottom',
+      });
+    });
+
+    test('Update the style of a message flow with icon (initiating)', () => {
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('MessageFlow_2_msgVisibilityKind_initiating', { opacity, stroke });
+      expect('MessageFlow_2_msgVisibilityKind_initiating').toBeMessageFlow({
+        messageVisibleKind: MessageVisibleKind.INITIATING,
+        stroke,
+        opacity,
+        // not under test
+        verticalAlign: 'bottom',
+      });
+    });
+
+    test('Update the properties of a message flow with icon (non initiating) and restore its default values', () => {
+      // Other font properties may be set in BPMN diagram LabelStyle, so only some properties can be reset to default
+      const font: Font = {
+        color: 'Yellow',
+        opacity: 90,
+      };
+      // Check that the element uses default values
+      expect('MessageFlow_3_msgVisibilityKind_non_initiating').toBeMessageFlow({
+        messageVisibleKind: MessageVisibleKind.NON_INITIATING,
+        // not under test
+        verticalAlign: 'bottom',
+      });
+
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('MessageFlow_3_msgVisibilityKind_non_initiating', {
+        font,
+        opacity,
+        stroke,
+      });
+
+      // Check that the style has been updated
+      expect('MessageFlow_3_msgVisibilityKind_non_initiating').toBeMessageFlow({
+        messageVisibleKind: MessageVisibleKind.NON_INITIATING,
+        font,
+        opacity,
+        stroke,
+        // not under test
+        verticalAlign: 'bottom',
+      });
+
+      // Reset the style by passing special values
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('MessageFlow_3_msgVisibilityKind_non_initiating', <EdgeStyleUpdate>{
+        font: {
+          color: 'default',
+          opacity: 'default',
+        },
+        opacity: 'default',
+        stroke: {
+          color: 'default',
+          opacity: 'default',
+          width: 'default',
+        },
+      });
+
+      // The properties should have been reset to use the default values
+      expect('MessageFlow_3_msgVisibilityKind_non_initiating').toBeMessageFlow({
+        messageVisibleKind: MessageVisibleKind.NON_INITIATING,
+        // not under test
+        verticalAlign: 'bottom',
+      });
+    });
+  });
+
   describe('Both Edges and Shapes', () => {
     beforeEach(() => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
@@ -877,6 +959,30 @@ describe('mxGraph model - reset style', () => {
         stroke: { color: strokeColor },
         // not under test
         parentId: 'lane_01',
+        verticalAlign: 'bottom',
+      });
+    });
+  });
+
+  describe('Message flow icons', () => {
+    test('Update the style of a message flow with icon (initiating) and the reset the style', () => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/message-flows-with-and-without-icon.bpmn'));
+      const stroke: Stroke = { color: 'green', opacity: 99, width: 4 };
+      const opacity = 45;
+
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('MessageFlow_2_msgVisibilityKind_initiating', { opacity, stroke });
+      expect('MessageFlow_2_msgVisibilityKind_initiating').toBeMessageFlow({
+        messageVisibleKind: MessageVisibleKind.INITIATING,
+        stroke,
+        opacity,
+        // not under test
+        verticalAlign: 'bottom',
+      });
+
+      bpmnVisualization.bpmnElementsRegistry.resetStyle('MessageFlow_2_msgVisibilityKind_initiating');
+      expect('MessageFlow_2_msgVisibilityKind_initiating').toBeMessageFlow({
+        messageVisibleKind: MessageVisibleKind.INITIATING,
+        // not under test
         verticalAlign: 'bottom',
       });
     });

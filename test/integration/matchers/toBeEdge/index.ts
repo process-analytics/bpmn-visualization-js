@@ -35,6 +35,15 @@ function buildExpectedEdgeCellStyle(expectedModel: ExpectedEdgeModelElement): Bp
   return style;
 }
 
+function buildExpectedMsgFlowIconCellStyle(expectedModel: ExpectedEdgeModelElement): BpmnCellStyle {
+  const style = buildExpectedCellStyleWithCommonAttributes(expectedModel);
+  style.align = 'center';
+  style.verticalAlign = 'middle';
+  style.shape = BpmnStyleIdentifier.MESSAGE_FLOW_ICON;
+  style[BpmnStyleIdentifier.IS_INITIATING] = expectedModel.messageVisibleKind == MessageVisibleKind.INITIATING;
+  return style;
+}
+
 function buildExpectedEdgeStylePropertyRegexp(expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement): string {
   let expectedStyle: string = expectedModel.kind;
   if ('sequenceFlowKind' in expectedModel) {
@@ -61,12 +70,16 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement |
   if (expectedModel.messageVisibleKind && expectedModel.messageVisibleKind !== MessageVisibleKind.NONE) {
     expectedCell.children = [
       {
-        value: undefined,
-        styleRawFromModelOrJestExpect: `shape=${BpmnStyleIdentifier.MESSAGE_FLOW_ICON};${BpmnStyleIdentifier.IS_INITIATING}=${
-          expectedModel.messageVisibleKind == MessageVisibleKind.INITIATING
-        }`,
         id: `messageFlowIcon_of_${id}`,
+        value: undefined,
+        styleRawFromModelOrJestExpect: expect.stringMatching(
+          `shape=${BpmnStyleIdentifier.MESSAGE_FLOW_ICON};${BpmnStyleIdentifier.IS_INITIATING}=${expectedModel.messageVisibleKind == MessageVisibleKind.INITIATING}`,
+        ),
+        styleResolvedFromModel: buildExpectedMsgFlowIconCellStyle(expectedModel),
+        styleViewState: buildExpectedMsgFlowIconCellStyle(expectedModel),
+        edge: false,
         vertex: true,
+        parent: { id: expectedCell.id },
       },
     ];
   }
