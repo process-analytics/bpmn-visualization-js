@@ -100,7 +100,9 @@ export type OverlayFill = {
   /**
    * A number between `0` (transparent) and `100` (opaque).
    *
-   * **IMPORTANT**: this property is currently not taken into account by the default Overlay. See https://github.com/process-analytics/bpmn-visualization-js/issues/1234
+   * **IMPORTANT**: this property is currently not taken into account by the default Overlay. See https://github.com/process-analytics/bpmn-visualization-js/issues/1234.
+   *
+   * To solve this problem, define a color that contains opacity information. For example: `color: `rgba(0, 0, 255, 0.8)`.
    * @default {@link StyleDefault.DEFAULT_OVERLAY_FILL_OPACITY}
    */
   opacity?: number;
