@@ -176,6 +176,8 @@ export type Stroke = StyleWithOpacity & {
    * If the set value is greater than 50, the used value is 50.
    *
    * To hide the stroke, set the `color` property to `'none'`.
+   *
+   * The 'default' value resets the width to the value defined in the default style of the BPMN element.
    */
   width?: 'default' | number;
 };
