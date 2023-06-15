@@ -48,7 +48,6 @@ on:
 
 jobs:
   build:
-    if: runner.os == 'NOT_SUPPORTED' # TEMP disable e2e until the code compile and the JS doesn't generate runtime errors that block the dev server
     runs-on: ${{ matrix.os.name }}
     strategy:
       # we want to run the full build on all os: don't cancel running jobs even if one fails
