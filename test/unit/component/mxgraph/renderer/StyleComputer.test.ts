@@ -754,11 +754,11 @@ describe('Style Computer', () => {
       const styleComputer = new StyleComputer(ignoreBpmnColors === undefined ? {} : { ignoreBpmnColors: ignoreBpmnColors });
       const expectAdditionalColorsStyle = !(ignoreBpmnColors ?? true);
 
-      function computeStyleWithRendererOptions(element: Shape | Edge): string {
+      function computeStyleWithRendererOptions(element: Shape | Edge): BPMNCellStyle {
         return styleComputer.computeStyle(element, element.label?.bounds);
       }
 
-      function computeMessageFlowIconStyleWithRendererOptions(edge: Edge): string {
+      function computeMessageFlowIconStyleWithRendererOptions(edge: Edge): BPMNCellStyle {
         return styleComputer.computeMessageFlowIconStyle(edge);
       }
 
