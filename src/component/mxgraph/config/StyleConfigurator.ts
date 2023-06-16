@@ -135,6 +135,13 @@ export class StyleConfigurator {
   }
 
   private configureDefaultVertexStyle(): void {
+    // TODO rebase arc style configuration missing in configureDefaultVertexStyle?
+    // It was previously in configureActivityStyles --> move it from here
+    //     const style = this.getStylesheet().getDefaultVertexStyle();
+    //     configureCommonDefaultStyle(style);
+    //
+    //     style[mxConstants.STYLE_ABSOLUTE_ARCSIZE] = true;
+    //     style[mxConstants.STYLE_ARCSIZE] = StyleDefault.SHAPE_ARC_SIZE;
     configureCommonDefaultStyle(this.getStylesheet().getDefaultVertexStyle() as BPMNCellStyle);
   }
 
