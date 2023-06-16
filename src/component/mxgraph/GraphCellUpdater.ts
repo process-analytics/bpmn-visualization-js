@@ -31,7 +31,7 @@ import type { BPMNCellStyle } from './renderer/StyleComputer';
  * @internal
  */
 export function newGraphCellUpdater(graph: BpmnGraph, cssRegistry: CssRegistry): GraphCellUpdater {
-  return new GraphCellUpdater(graph, new OverlayConverter(), new StyleManager(cssRegistry, graph.getModel()));
+  return new GraphCellUpdater(graph, new OverlayConverter(), new StyleManager(cssRegistry, graph.model));
 }
 
 /**
@@ -95,7 +95,7 @@ export default class GraphCellUpdater {
       return;
     }
 
-    const model = this.graph.getModel();
+    const model = this.graph.model;
     const cells = withCellIdsOfMessageFlowIcons(bpmnElementIds)
       .map(id => model.getCell(id))
       .filter(Boolean);
