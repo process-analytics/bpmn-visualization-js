@@ -34,7 +34,8 @@ import {
 } from '../shape/activity-shapes';
 import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
-import { BpmnStyleIdentifier, FONT } from '../style';
+import { BpmnStyleIdentifier } from '../style';
+import { FONT } from '../style/utils';
 import { computeAllBpmnClassNamesOfCell } from '../renderer/style-utils';
 import { MxGraphCustomOverlay } from '../overlay/custom-overlay';
 import { OverlayBadgeShape } from '../overlay/shapes';

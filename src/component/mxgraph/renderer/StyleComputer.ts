@@ -28,7 +28,8 @@ import {
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../model/bpmn/internal/shape/ShapeBpmnElement';
-import { BpmnStyleIdentifier, FONT } from '../style';
+import { BpmnStyleIdentifier } from '../style';
+import { FONT } from '../style/utils';
 import type {
   AssociationDirectionKind,
   FlowKind,
