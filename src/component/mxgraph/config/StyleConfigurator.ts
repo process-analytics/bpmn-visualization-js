@@ -135,7 +135,7 @@ export class StyleConfigurator {
   }
 
   private configureDefaultVertexStyle(): void {
-    StyleConfigurator.configureCommonDefaultStyle(this.getStylesheet().getDefaultVertexStyle() as BPMNCellStyle);
+    configureCommonDefaultStyle(this.getStylesheet().getDefaultVertexStyle() as BPMNCellStyle);
   }
 
   private configurePoolStyle(): void {
