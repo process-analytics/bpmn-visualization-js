@@ -40,7 +40,7 @@ export function computeAllBpmnClassNamesOfCell(cell: Cell, isLabel: boolean): st
 export function computeAllBpmnClassNames(style: BPMNCellStyle, isLabel: boolean): string[] {
   const classes: string[] = [];
 
-  // TODO magraph@0.1.0 style.bpmn.kind could be omit by considering the first element of style.baseStyleNames (this would restore the previous behavior)
+  // TODO maxgraph@0.1.0 style.bpmn.kind could be omit by considering the first element of style.baseStyleNames (this would restore the previous behavior)
   // if kind is not set, check shape: bpmn.message-flow-icon --> message-flow-icon
   const bpmnElementKind = style.bpmn?.kind ?? style.shape?.replace(/bpmn./g, '');
 
@@ -61,13 +61,8 @@ export function computeAllBpmnClassNames(style: BPMNCellStyle, isLabel: boolean)
   if (style.bpmn?.gatewayKind) {
     classes.push(`bpmn-gateway-kind-${style.bpmn.gatewayKind.toLowerCase()}`);
   }
-  // TODO rebase use "initiating" and not "isNonInitiating" to restore the implementation of the master branch
-  // message flow icon
-  //         case BpmnStyleIdentifier.IS_INITIATING: // message flow icon
-  //           classes.push(value == 'true' ? 'bpmn-icon-initiating' : 'bpmn-icon-non-initiating');
-  //           break;
-  if (style.bpmn?.isNonInitiating !== undefined) {
-    classes.push(style.bpmn.isNonInitiating ? 'bpmn-icon-non-initiating' : 'bpmn-icon-initiating');
+  if (style.bpmn?.isInitiating !== undefined) {
+    classes.push(style.bpmn.isInitiating ? 'bpmn-icon-initiating' : 'bpmn-icon-non-initiating');
   }
   if (style.bpmn?.subProcessKind) {
     classes.push(`bpmn-sub-process-${style.bpmn.subProcessKind.toLowerCase()}`);

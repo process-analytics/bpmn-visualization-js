@@ -16,9 +16,9 @@ limitations under the License.
 
 import type { ShapeValue } from '@maxgraph/core';
 
-import type { ExpectedCell, ExpectedStateStyle } from '../matcher-utils';
-import { buildCellMatcher, buildCommonExpectedStateStyle, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
-import { AssociationDirectionKind, FlowKind, MessageVisibleKind, SequenceFlowKind } from '../../../../src/model/bpmn/internal';
+import type { BpmnCellStyle, ExpectedCell } from '../matcher-utils';
+import { buildCellMatcher, buildExpectedCellStyleWithCommonAttributes, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
+import { AssociationDirectionKind, FlowKind, MessageVisibleKind, SequenceFlowKind } from '@lib/model/bpmn/internal';
 import type { ExpectedAssociationFlowModelElement, ExpectedEdgeModelElement, ExpectedSequenceFlowModelElement } from '../../helpers/model-expect';
 import { getDefaultParentId } from '../../helpers/model-expect';
 import { BpmnStyleIdentifier } from '@lib/component/mxgraph/style';
@@ -42,13 +42,13 @@ function buildExpectedMsgFlowIconCellStyle(expectedModel: ExpectedEdgeModelEleme
   style.align = 'center';
   style.verticalAlign = 'middle';
   style.shape = BpmnStyleIdentifier.MESSAGE_FLOW_ICON;
-  style[BpmnStyleIdentifier.IS_INITIATING] = expectedModel.messageVisibleKind == MessageVisibleKind.INITIATING;
+  style.isInitiating = expectedModel.messageVisibleKind == MessageVisibleKind.INITIATING;
   return style;
 }
 
 function buildExpectedEdgeStylePropertyRegexp(expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement | ExpectedAssociationFlowModelElement): BPMNCellStyle {
   const style: BPMNCellStyle = { bpmn: {} };
-  // TODO magraph@0.1.0 share with edge
+  // TODO maxgraph@0.1.0 share with shape or remove
   style.baseStyleNames = [expectedModel.kind];
   style.bpmn.kind = expectedModel.kind;
   if ('sequenceFlowKind' in expectedModel) {
@@ -57,27 +57,25 @@ function buildExpectedEdgeStylePropertyRegexp(expectedModel: ExpectedEdgeModelEl
   if ('associationDirectionKind' in expectedModel) {
     style.baseStyleNames.push((expectedModel as ExpectedAssociationFlowModelElement).associationDirectionKind);
   }
+  if ('extraCssClasses' in expectedModel) {
+    style.bpmn.extraCssClasses = expectedModel.extraCssClasses;
+  }
 
   return style;
 }
 
 function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement): ExpectedCell {
-  // TODO magraph@0.1.0 refactor, duplication with buildExpectedCell in shape matchers
+  // TODO maxgraph@0.1.0 refactor, duplication with buildExpectedCell in shape matchers
   const parentId = expectedModel.parentId;
   const expectedCell: ExpectedCell = {
     id,
     value: expectedModel.label ?? null, // maxGraph now set to 'null', mxGraph set to 'undefined'
-    style: expect.objectContaining(buildExpectedStyle(expectedModel)),
-    // TODO rebase make style work
-    styleRawFromModelOrJestExpect: expect.stringMatching(buildExpectedEdgeStylePropertyRegexp(expectedModel)),
+    styleRawFromModelOrJestExpect: expect.objectContaining(buildExpectedEdgeStylePropertyRegexp(expectedModel)),
     styleResolvedFromModel: buildExpectedEdgeCellStyle(expectedModel),
     styleViewState: buildExpectedEdgeCellStyle(expectedModel),
     edge: true,
     vertex: false,
-    parent: { id: parentId ? parentId : getDefaultParentId() }, // TODO magraph@0.1.0 use ?? instead (in master branch)
-    state: {
-      style: buildExpectedStateStyle(expectedModel),
-    },
+    parent: { id: parentId ? parentId : getDefaultParentId() }, // TODO maxgraph@0.1.0 use ?? instead (in master branch)
     overlays: expectedModel.overlays,
   };
 
@@ -87,16 +85,13 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement |
       {
         id: `messageFlowIcon_of_${id}`,
         value: null, // maxGraph now set to 'null', mxGraph set to 'undefined'
-        // TODO rebase make the style check work
-        style: {
-          // TODO magraph@0.1.0 remove forcing type when maxGraph fixes its types
+        styleRawFromModelOrJestExpect: expect.objectContaining(<BPMNCellStyle>{
+          // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
           shape: <ShapeValue>BpmnStyleIdentifier.MESSAGE_FLOW_ICON,
-          // TODO magraph@0.1.0 duplicated logic to compute the 'isNonInitiating' property. Update the expectedModel to store a boolean instead of a string
-          bpmn: { isNonInitiating: expectedModel.messageVisibleKind === MessageVisibleKind.NON_INITIATING },
-        },
-        styleRawFromModelOrJestExpect: expect.stringMatching(
-          `shape=${BpmnStyleIdentifier.MESSAGE_FLOW_ICON};${BpmnStyleIdentifier.IS_INITIATING}=${expectedModel.messageVisibleKind == MessageVisibleKind.INITIATING}`,
-        ),
+          // TODO maxgraph@0.1.0 duplicated logic to compute the 'isInitiating' property. Update the expectedModel to store a boolean instead of a string
+          // duplication exists in the master branch (it is fixed in bpmn-visualization 0.43.0)
+          bpmn: { isInitiating: expectedModel.messageVisibleKind == MessageVisibleKind.INITIATING },
+        }),
         styleResolvedFromModel: buildExpectedMsgFlowIconCellStyle(expectedModel),
         styleViewState: buildExpectedMsgFlowIconCellStyle(expectedModel),
         edge: false,

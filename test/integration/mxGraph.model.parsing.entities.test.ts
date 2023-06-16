@@ -33,7 +33,7 @@ describe('From BPMN diagram with entities in attributes', () => {
     bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/start-tasks-end_entities_in_attributes.bpmn'));
 
     const expectElementLabel = (id: string): jest.JestMatchers<string> => {
-      const model = bpmnVisualization.graph.getModel();
+      const model = bpmnVisualization.graph.getDataModel();
       const cell = model.getCell(id);
       expect(cell).toBeDefined();
       // eslint-disable-next-line jest/valid-expect -- util function

@@ -17,7 +17,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BPMNCellStyle } from '../../../../../src/component/mxgraph/renderer/StyleComputer';
+import type { AlignValue, ShapeValue } from '@maxgraph/core';
+import type { BPMNCellStyle } from '@lib/component/mxgraph/renderer/StyleComputer';
 import StyleComputer from '@lib/component/mxgraph/renderer/StyleComputer';
 import Shape from '@lib/model/bpmn/internal/shape/Shape';
 import ShapeBpmnElement, {
@@ -127,7 +128,7 @@ function newAssociationFlow(kind: AssociationDirectionKind): AssociationFlow {
   return new AssociationFlow('id', 'name', undefined, undefined, kind);
 }
 
-// TODO magraph@0.1.0 order properties alphabetically in expected style
+// TODO maxgraph@0.1.0 order properties alphabetically in expected style
 
 describe('Style Computer', () => {
   // use a shared instance to check that there is no state stored in the implementation
@@ -189,7 +190,6 @@ describe('Style Computer', () => {
       expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
         baseStyleNames: ['scriptTask'],
         fontFamily: 'Roboto',
-        fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
         bpmn: { kind: ShapeBpmnElementKind.TASK_SCRIPT },
       });
     });
@@ -201,11 +201,9 @@ describe('Style Computer', () => {
         align: 'center',
         verticalAlign: 'top',
         labelWidth: 81,
-        // FIXME magraph@0.1.0 values were inverted in the master branch implementation, this was probably wrong as they were set like this in StyleConfigurator
-        // expect(computeStyle(shape)).toBe('callActivity;verticalAlign=top;align=center;labelWidth=81;labelPosition=ignore;verticalLabelPosition=middle');
-        labelPosition: 'left',
-        verticalLabelPosition: 'top',
-        // end of fixme
+        // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
+        labelPosition: <AlignValue>'ignore',
+        verticalLabelPosition: 'middle',
         bpmn: { kind: ShapeBpmnElementKind.CALL_ACTIVITY },
       });
     });
@@ -268,7 +266,6 @@ describe('Style Computer', () => {
         fontFamily: 'Helvetica',
         align: 'center',
         verticalAlign: 'top',
-        fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
         bpmn: { kind: FlowKind.SEQUENCE_FLOW },
       });
     });
@@ -300,15 +297,14 @@ describe('Style Computer', () => {
   });
 
   it.each([
-    [MessageVisibleKind.NON_INITIATING, 'false'],
-    [MessageVisibleKind.INITIATING, 'true'],
-  ])('compute style - message flow icon: %s', (messageVisibleKind: MessageVisibleKind, expected: string) => {
+    [MessageVisibleKind.NON_INITIATING, false],
+    [MessageVisibleKind.INITIATING, true],
+  ])('compute style - message flow icon: %s', (messageVisibleKind: MessageVisibleKind, expected: boolean) => {
     const edge = new Edge('id', newMessageFlow(), undefined, undefined, messageVisibleKind);
-    // TODO magraph@0.1.0 cast to <BPMNCellStyle> (waiting for "maxGraph fixes its types")
-    expect(styleComputer.computeMessageFlowIconStyle(edge)).toStrictEqual({
-      shape: 'bpmn.messageFlowIcon',
-      // TODO rebase rename isNonInitiating --> isNonInitiating
-      bpmn: { isNonInitiating: expected },
+    expect(styleComputer.computeMessageFlowIconStyle(edge)).toStrictEqual(<BPMNCellStyle>{
+      bpmn: { isInitiating: expected },
+      // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
+      shape: <ShapeValue>'bpmn.messageFlowIcon',
     });
   });
 
@@ -318,7 +314,6 @@ describe('Style Computer', () => {
       expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
         baseStyleNames: ['intermediateCatchEvent'],
         fontFamily: 'Ubuntu',
-        fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
         bpmn: { kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, eventDefinitionKind: ShapeBpmnEventDefinitionKind.CONDITIONAL },
       });
     });
@@ -339,7 +334,6 @@ describe('Style Computer', () => {
       expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
         baseStyleNames: ['boundaryEvent'],
         fontFamily: 'Arial',
-        fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
         bpmn: { kind: ShapeBpmnElementKind.EVENT_BOUNDARY, eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE, isInterrupting: true },
       });
     });
@@ -369,7 +363,6 @@ describe('Style Computer', () => {
       expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
         baseStyleNames: ['startEvent'],
         fontFamily: 'Arial',
-        fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
         bpmn: { kind: ShapeBpmnElementKind.EVENT_START, eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE, isInterrupting: true },
       });
     });
@@ -400,48 +393,34 @@ describe('Style Computer', () => {
     ])(`%s`, (expandKind: string, markers: ShapeBpmnMarkerKind[]) => {
       describe.each(Object.values(ShapeBpmnSubProcessKind))(`%s`, (subProcessKind: ShapeBpmnSubProcessKind) => {
         markers = getExpectedMarkers(markers, subProcessKind);
-        const additionalMarkerStyle = markers.length > 0 ? `;bpmn.markers=${markers.join(',')}` : '';
 
         it(`${subProcessKind} sub-process without label bounds`, () => {
           const shape = newShape(newShapeBpmnSubProcess(subProcessKind, markers), newLabel({ name: 'Arial' }));
-          const additionalTerminalStyle = !markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';verticalAlign=top' : '';
-          expect(computeStyle(shape)).toBe(`subProcess;bpmn.subProcessKind=${subProcessKind}${additionalMarkerStyle};fontFamily=Arial${additionalTerminalStyle}`);
+          const expectedStyle = <BPMNCellStyle>{
+            baseStyleNames: ['subProcess'],
+            bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind, markers },
+            fontFamily: 'Arial',
+          };
+          !markers.includes(ShapeBpmnMarkerKind.EXPAND) && (expectedStyle.verticalAlign = 'top');
+
+          expect(computeStyle(shape)).toStrictEqual(expectedStyle);
         });
 
         it(`${subProcessKind} sub-process with label bounds`, () => {
           const shape = newShape(newShapeBpmnSubProcess(subProcessKind, markers), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
-          expect(computeStyle(shape)).toBe(
-            `subProcess;bpmn.subProcessKind=${subProcessKind}${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=ignore;verticalLabelPosition=middle`,
-          );
+          expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+            align: 'center',
+            baseStyleNames: ['subProcess'],
+            bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind, markers },
+            fontFamily: 'sans-serif',
+            labelWidth: 301,
+            verticalAlign: 'top',
+            // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
+            labelPosition: <AlignValue>'ignore',
+            verticalLabelPosition: 'middle',
+          });
         });
       });
-      // TODO rebase adapt test
-      //        const expectedStyle = <BPMNCellStyle>{
-      //           baseStyleNames: ['subProcess'],
-      //           bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED, markers },
-      //           fontFamily: 'Arial',
-      //           fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
-      //         };
-      //         !markers.includes(ShapeBpmnMarkerKind.EXPAND) && (expectedStyle.verticalAlign = 'top');
-      //         expect(computeStyle(shape)).toStrictEqual(expectedStyle);
-      //       });
-      //
-      //       it(`${expandKind} embedded sub-process with label bounds`, () => {
-      //         const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, markers), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
-      //         expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
-      //           align: 'center',
-      //           baseStyleNames: ['subProcess'],
-      //           bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED, markers },
-      //           fontFamily: 'sans-serif',
-      //           fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
-      //           labelWidth: 301,
-      //           verticalAlign: 'top',
-      //           // FIXME magraph@0.1.0 values were inverted in the master branch implementation, this was probably wrong as they were set like this in StyleConfigurator
-      //           //  `subProcess;bpmn.subProcessKind=embedded${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=top;verticalLabelPosition=left`,
-      //           labelPosition: 'left',
-      //           verticalLabelPosition: 'top',
-      //           // end of fixme
-      //         });
     });
   });
 
@@ -457,11 +436,10 @@ describe('Style Computer', () => {
             baseStyleNames: ['callActivity'],
             bpmn: {
               kind: ShapeBpmnElementKind.CALL_ACTIVITY,
-              globalTaskKind: undefined, // TODO magraph@0.1.0 decide if we set globalTaskKind to undefined or if we omit the property
+              globalTaskKind: undefined, // TODO maxgraph@0.1.0 decide if we set globalTaskKind to undefined or if we omit the property
               markers,
             },
             fontFamily: 'Arial',
-            fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
           };
           !markers.includes(ShapeBpmnMarkerKind.EXPAND) && (expectedStyle.verticalAlign = 'top');
           expect(computeStyle(shape)).toStrictEqual(expectedStyle);
@@ -474,18 +452,15 @@ describe('Style Computer', () => {
             baseStyleNames: ['callActivity'],
             bpmn: {
               kind: ShapeBpmnElementKind.CALL_ACTIVITY,
-              globalTaskKind: undefined, // TODO magraph@0.1.0 decide if we set globalTaskKind to undefined or if we omit the property
+              globalTaskKind: undefined, // TODO maxgraph@0.1.0 decide if we set globalTaskKind to undefined or if we omit the property
               markers,
             },
             fontFamily: 'sans-serif',
-            fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
             labelWidth: 301,
             verticalAlign: 'top',
-            // FIXME magraph@0.1.0 values were inverted in the master branch implementation, this was probably wrong as they were set like this in StyleConfigurator
-            // `callActivity${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=ignore;verticalLabelPosition=middle`,
-            labelPosition: 'left',
-            verticalLabelPosition: 'top',
-            // end of fixme
+            // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
+            labelPosition: <AlignValue>'ignore',
+            verticalLabelPosition: 'middle',
           });
         });
       });
@@ -505,7 +480,6 @@ describe('Style Computer', () => {
             baseStyleNames: ['callActivity'],
             bpmn: { kind: ShapeBpmnElementKind.CALL_ACTIVITY, globalTaskKind: globalTaskKind, markers: [] },
             fontFamily: 'Arial',
-            fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
           };
           expect(computeStyle(shape)).toStrictEqual(expectedStyle);
         });
@@ -521,14 +495,11 @@ describe('Style Computer', () => {
               markers: [],
             },
             fontFamily: 'sans-serif',
-            fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
             labelWidth: 301,
             verticalAlign: 'top',
-            // FIXME magraph@0.1.0 values were inverted in the master branch implementation, this was probably wrong as they were set like this in StyleConfigurator
-            // `callActivity;bpmn.globalTaskKind=${globalTaskKind};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=ignore;verticalLabelPosition=middle`,
-            labelPosition: 'left',
-            verticalLabelPosition: 'top',
-            // end of fixme
+            // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
+            labelPosition: <AlignValue>'ignore',
+            verticalLabelPosition: 'middle',
           });
         });
       });
@@ -545,7 +516,6 @@ describe('Style Computer', () => {
         baseStyleNames: ['receiveTask'],
         bpmn: { kind: ShapeBpmnElementKind.TASK_RECEIVE, isInstantiating: instantiate, markers: [] },
         fontFamily: 'Arial',
-        fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
       });
     });
   });
@@ -566,14 +536,11 @@ describe('Style Computer', () => {
           kind: ShapeBpmnElementKind.TEXT_ANNOTATION,
         },
         fontFamily: 'Segoe UI',
-        fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
         labelWidth: 101,
         verticalAlign: 'top',
-        // FIXME magraph@0.1.0 values were inverted in the master branch implementation, this was probably wrong as they were set like this in StyleConfigurator
-        // 'textAnnotation;fontFamily=Segoe UI;verticalAlign=top;labelWidth=101;labelPosition=ignore;verticalLabelPosition=middle'
-        labelPosition: 'left',
-        verticalLabelPosition: 'top',
-        // end of fixme
+        // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
+        labelPosition: <AlignValue>'ignore',
+        verticalLabelPosition: 'middle',
       });
     });
   });
@@ -595,14 +562,11 @@ describe('Style Computer', () => {
           kind: ShapeBpmnElementKind.GROUP,
         },
         fontFamily: 'Roboto',
-        fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+        // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
+        labelPosition: <AlignValue>'ignore',
         labelWidth: 101,
         verticalAlign: 'top',
-        // FIXME magraph@0.1.0 values were inverted in the master branch implementation, this was probably wrong as they were set like this in StyleConfigurator
-        // 'group;fontFamily=Roboto;verticalAlign=top;align=center;labelWidth=101;labelPosition=ignore;verticalLabelPosition=middle'
-        labelPosition: 'left',
-        verticalLabelPosition: 'top',
-        // end of fixme
+        verticalLabelPosition: 'middle',
       });
     });
   });
@@ -611,7 +575,7 @@ describe('Style Computer', () => {
     it.each([
       ['vertical', false, true],
       ['horizontal', true, false],
-      ['undefined', undefined, false],
+      ['undefined', undefined, true], // the parser set a default value in the shape, so this shouldn't be used
     ])('%s pool references a Process', (title: string, isHorizontal: boolean, expectedStyleIsHorizontal: boolean) => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.POOL), undefined, isHorizontal);
       expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
@@ -626,7 +590,7 @@ describe('Style Computer', () => {
     it.each([
       ['vertical', false, true],
       ['horizontal', true, false],
-      ['undefined', undefined, false],
+      ['undefined', undefined, true], // the parser set a default value in the shape, so this shouldn't be used
     ])('%s lane', (title: string, isHorizontal: boolean, expectedStyleIsHorizontal: boolean) => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.LANE), undefined, isHorizontal);
       expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
@@ -658,7 +622,6 @@ describe('Style Computer', () => {
             baseStyleNames: [bpmnKind],
             bpmn: { kind: bpmnKind, markers: [markerKind] },
             fontFamily: 'Arial',
-            fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
           };
           bpmnKind === ShapeBpmnElementKind.TASK_RECEIVE && (expectedStyle.bpmn.isInstantiating = false);
           expect(computeStyle(shape)).toStrictEqual(expectedStyle);
@@ -668,16 +631,11 @@ describe('Style Computer', () => {
           it.each(Object.values(ShapeBpmnSubProcessKind))(`%s subProcess with Loop & Expand (collapsed) markers`, (subProcessKind: ShapeBpmnSubProcessKind) => {
             const markers = [markerKind, ShapeBpmnMarkerKind.EXPAND];
             const shape = newShape(newShapeBpmnSubProcess(subProcessKind, markers));
-            expect(computeStyle(shape)).toBe(`subProcess;bpmn.subProcessKind=${subProcessKind};bpmn.markers=${getExpectedMarkers(markers, subProcessKind).join(',')}`);
+            expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+              baseStyleNames: ['subProcess'],
+              bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, markers: getExpectedMarkers(markers, subProcessKind), subProcessKind },
+            });
           });
-          // TODO rebase adapt test for maxgraph
-          //           it(`${bpmnKind} with Loop & Expand (collapsed) markers`, () => {
-          //             const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, [markerKind, ShapeBpmnMarkerKind.EXPAND]));
-          //             expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
-          //               baseStyleNames: ['subProcess'],
-          //               bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, markers: [markerKind, ShapeBpmnMarkerKind.EXPAND], subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED },
-          //             });
-          //           });
         }
 
         if (bpmnKind == ShapeBpmnElementKind.CALL_ACTIVITY) {
@@ -687,7 +645,7 @@ describe('Style Computer', () => {
               baseStyleNames: ['callActivity'],
               bpmn: {
                 kind: ShapeBpmnElementKind.CALL_ACTIVITY,
-                globalTaskKind: undefined, // TODO magraph@0.1.0 decide if we omit the globalTaskKind property when not set
+                globalTaskKind: undefined, // TODO maxgraph@0.1.0 decide if we omit the globalTaskKind property when not set
                 markers: [markerKind, ShapeBpmnMarkerKind.EXPAND],
               },
             });
@@ -728,37 +686,26 @@ describe('Style Computer', () => {
       ({ instantiate, gatewayKind }: { instantiate: boolean; gatewayKind: ShapeBpmnEventBasedGatewayKind }) => {
         const shape = newShape(newShapeBpmnEventBasedGateway(instantiate, gatewayKind), newLabel({ name: 'Arial' }));
         gatewayKind ??= ShapeBpmnEventBasedGatewayKind.None;
-        expect(computeStyle(shape)).toBe(`eventBasedGateway;bpmn.isInstantiating=${!!instantiate};bpmn.gatewayKind=${gatewayKind};fontFamily=Arial`);
+        expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+          baseStyleNames: ['eventBasedGateway'],
+          bpmn: { kind: ShapeBpmnElementKind.GATEWAY_EVENT_BASED, gatewayKind, isInstantiating: !!instantiate },
+          fontFamily: 'Arial',
+        });
       },
     );
-    // TODO rebase adapt test for maxGraph
-    //     `(
-    //       'event-based gateway when instantiate: $instantiate for gatewayKind: $gatewayKind',
-    //       ({ instantiate, gatewayKind }: { instantiate: boolean; gatewayKind: ShapeBpmnEventBasedGatewayKind }) => {
-    //         const shape = newShape(newShapeBpmnEventBasedGateway(instantiate, gatewayKind), newLabel({ name: 'Arial' }));
-    //         gatewayKind ??= ShapeBpmnEventBasedGatewayKind.None;
-    //         expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
-    //           baseStyleNames: ['eventBasedGateway'],
-    //           bpmn: { kind: ShapeBpmnElementKind.GATEWAY_EVENT_BASED, gatewayKind, isInstantiating: !!instantiate },
-    //           fontFamily: 'Arial',
-    //           fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
-    //         });
-    //       },
-    //     );
   });
 
-  // TODO rebase adapt tests for maxGraph
   describe('compute style - colors', () => {
     describe.each([[undefined], [false], [true]])(`Ignore BPMN colors: %s`, (ignoreBpmnColors: boolean) => {
       // 'undefined' RendererOptions tested in other tests in this file
       const styleComputer = new StyleComputer(ignoreBpmnColors === undefined ? {} : { ignoreBpmnColors: ignoreBpmnColors });
       const expectAdditionalColorsStyle = !(ignoreBpmnColors ?? true);
 
-      function computeStyleWithRendererOptions(element: Shape | Edge): string {
+      function computeStyleWithRendererOptions(element: Shape | Edge): BPMNCellStyle {
         return styleComputer.computeStyle(element, element.label?.bounds);
       }
 
-      function computeMessageFlowIconStyleWithRendererOptions(edge: Edge): string {
+      function computeMessageFlowIconStyleWithRendererOptions(edge: Edge): BPMNCellStyle {
         return styleComputer.computeMessageFlowIconStyle(edge);
       }
 
@@ -767,19 +714,40 @@ describe('Style Computer', () => {
           const shape = newShape(newShapeBpmnElement(kind), newLabelExtension('#010101'));
           shape.extensions.fillColor = '#000003';
           shape.extensions.strokeColor = '#FF0203';
-          const additionalColorsStyle = expectAdditionalColorsStyle ? ';fillColor=#000003;strokeColor=#FF0203;fontColor=#010101' : '';
-          expect(computeStyleWithRendererOptions(shape)).toBe(`${kind}${additionalColorsStyle}`);
+          const expectedStyle = <BPMNCellStyle>{
+            baseStyleNames: [kind],
+            bpmn: { kind: kind },
+          };
+          if (expectAdditionalColorsStyle) {
+            expectedStyle.fillColor = '#000003';
+            expectedStyle.fontColor = '#010101';
+            expectedStyle.strokeColor = '#FF0203';
+          }
+          expect(computeStyleWithRendererOptions(shape)).toStrictEqual(expectedStyle);
         });
         it.each([ShapeBpmnElementKind.LANE, ShapeBpmnElementKind.POOL])('%s', (kind: ShapeBpmnElementKind) => {
-          const shape = newShape(newShapeBpmnElement(kind), newLabelExtension('#aa0101'));
+          const shape = newShape(newShapeBpmnElement(kind), newLabelExtension('#aa0101'), true);
           shape.extensions.fillColor = '#AA0003';
           shape.extensions.strokeColor = '#FF02AA';
-          const additionalColorsStyle = expectAdditionalColorsStyle ? ';fillColor=#AA0003;swimlaneFillColor=#AA0003;strokeColor=#FF02AA;fontColor=#aa0101' : '';
-          expect(computeStyleWithRendererOptions(shape)).toBe(`${kind};horizontal=1${additionalColorsStyle}`);
+          const expectedStyle = <BPMNCellStyle>{
+            baseStyleNames: [kind],
+            bpmn: { kind: kind },
+            horizontal: false,
+          };
+          if (expectAdditionalColorsStyle) {
+            expectedStyle.fillColor = '#AA0003';
+            expectedStyle.fontColor = '#aa0101';
+            expectedStyle.strokeColor = '#FF02AA';
+            expectedStyle.swimlaneFillColor = '#AA0003';
+          }
+          expect(computeStyleWithRendererOptions(shape)).toStrictEqual(expectedStyle);
         });
         it('no extension', () => {
           const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.TASK));
-          expect(computeStyleWithRendererOptions(shape)).toBe(`task`);
+          expect(computeStyleWithRendererOptions(shape)).toStrictEqual(<BPMNCellStyle>{
+            baseStyleNames: ['task'],
+            bpmn: { kind: ShapeBpmnElementKind.TASK },
+          });
         });
       });
 
@@ -787,26 +755,55 @@ describe('Style Computer', () => {
         it('sequence flow', () => {
           const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.DEFAULT), undefined, newLabelExtension('#aaaaaa'));
           edge.extensions.strokeColor = '#111111';
-          const additionalColorsStyle = expectAdditionalColorsStyle ? ';strokeColor=#111111;fontColor=#aaaaaa' : '';
-          expect(computeStyleWithRendererOptions(edge)).toBe(`sequenceFlow;default${additionalColorsStyle}`);
+          const expectedStyle = <BPMNCellStyle>{
+            baseStyleNames: ['sequenceFlow', 'default'],
+            bpmn: { kind: FlowKind.SEQUENCE_FLOW },
+          };
+          if (expectAdditionalColorsStyle) {
+            expectedStyle.fontColor = '#aaaaaa';
+            expectedStyle.strokeColor = '#111111';
+          }
+
+          expect(computeStyleWithRendererOptions(edge)).toStrictEqual(expectedStyle);
         });
         it('message flow', () => {
           const edge = new Edge('id', newMessageFlow(), undefined, newLabelExtension('#aaaabb'));
           edge.extensions.strokeColor = '#1111bb';
-          const additionalColorsStyle = expectAdditionalColorsStyle ? ';strokeColor=#1111bb;fontColor=#aaaabb' : '';
-          expect(computeStyleWithRendererOptions(edge)).toBe(`messageFlow${additionalColorsStyle}`);
+          const expectedStyle = <BPMNCellStyle>{
+            baseStyleNames: ['messageFlow'],
+            bpmn: { kind: FlowKind.MESSAGE_FLOW },
+          };
+          if (expectAdditionalColorsStyle) {
+            expectedStyle.fontColor = '#aaaabb';
+            expectedStyle.strokeColor = '#1111bb';
+          }
+          expect(computeStyleWithRendererOptions(edge)).toStrictEqual(expectedStyle);
         });
         it('message flow icon', () => {
           const edge = new Edge('id', newMessageFlow());
           edge.extensions.strokeColor = '#11aabb';
-          const additionalColorsStyle = expectAdditionalColorsStyle ? ';strokeColor=#11aabb' : '';
-          expect(computeMessageFlowIconStyleWithRendererOptions(edge)).toBe(`shape=bpmn.messageFlowIcon;bpmn.isInitiating=false${additionalColorsStyle}`);
+          const expectedStyle = <BPMNCellStyle>{
+            bpmn: { isInitiating: false },
+            // TODO maxGraph@0.1.0 force conversion to ShapeValue + decide if we use BpmnStyleIdentifier const instead
+            shape: <ShapeValue>'bpmn.messageFlowIcon',
+          };
+          if (expectAdditionalColorsStyle) {
+            expectedStyle.strokeColor = '#11aabb';
+          }
+          expect(computeMessageFlowIconStyleWithRendererOptions(edge)).toStrictEqual(expectedStyle);
         });
         it('association flow', () => {
           const edge = new Edge('id', newAssociationFlow(AssociationDirectionKind.ONE), undefined, newLabelExtension('#aaaacc'));
           edge.extensions.strokeColor = '#1111cc';
-          const additionalColorsStyle = expectAdditionalColorsStyle ? ';strokeColor=#1111cc;fontColor=#aaaacc' : '';
-          expect(computeStyleWithRendererOptions(edge)).toBe(`association;One${additionalColorsStyle}`);
+          const expectedStyle = <BPMNCellStyle>{
+            baseStyleNames: ['association', 'One'],
+            bpmn: { kind: FlowKind.ASSOCIATION_FLOW },
+          };
+          if (expectAdditionalColorsStyle) {
+            expectedStyle.fontColor = '#aaaacc';
+            expectedStyle.strokeColor = '#1111cc';
+          }
+          expect(computeStyleWithRendererOptions(edge)).toStrictEqual(expectedStyle);
         });
       });
     });

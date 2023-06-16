@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { Graph, AlignValue, VAlignValue, OverflowValue, TextDirectionValue } from '@maxgraph/core';
 import { Client, SvgCanvas2D, ImageExport, constants, xmlUtils, domUtils, stringUtils } from '@maxgraph/core';
+import type { Graph, AlignValue, VAlignValue, OverflowValue, TextDirectionValue } from '@maxgraph/core';
 
 interface SvgExportOptions {
   scale: number;

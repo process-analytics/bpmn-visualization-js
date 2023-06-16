@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { CellStyle, ShapeValue } from '@maxgraph/core';
+import type { AlignValue, CellStyle, ShapeValue } from '@maxgraph/core';
 
 import Shape from '../../../model/bpmn/internal/shape/Shape';
 import type { Edge } from '../../../model/bpmn/internal/edge/edge';
@@ -28,7 +28,8 @@ import {
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../model/bpmn/internal/shape/ShapeBpmnElement';
-import { BpmnStyleIdentifier, FONT } from '../style';
+import { BpmnStyleIdentifier } from '../style';
+import { FONT } from '../style/utils';
 import type {
   AssociationDirectionKind,
   FlowKind,
@@ -43,15 +44,22 @@ import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge
 import type { Font } from '../../../model/bpmn/internal/Label';
 import type { RendererOptions } from '../../options';
 
-// TODO magraph@0.1.0 this type should probably be part of the API (so it should be exported)
+// TODO maxgraph@0.1.0 this type should probably be part of the API (so it should be exported)
+// TODO maxgraph@0.1.0 move somewhere else
+// TODO maxgraph@0.1.0 rename for consistent naming BPMNCellStyle --> BpmnCellStyle (apply to other places)
+//  a BpmnCellStyle exists in tests. Try to use this one instead
 export interface BPMNCellStyle extends CellStyle {
-  // TODO magraph@0.1.0 the shape property is defined as 'ShapeValue'. It should be 'ShapeValue | string'
+  // TODO maxgraph@0.1.0 fill markers properties to remove when https://github.com/maxGraph/maxGraph/issues/201 is available
+  endFillColor?: string;
+  // TODO maxgraph@0.1.0 fill markers properties to remove when https://github.com/maxGraph/maxGraph/issues/201 is available
+  startFillColor?: string;
+  // TODO maxgraph@0.1.0 the shape property is defined as 'ShapeValue'. It should be 'ShapeValue | string'
   // Omit<CellStyle, 'shape'> {
   // shape?: ShapeValue | string;
-  // TODO magraph@0.1.0 make bpmn mandatory?
+  // TODO maxgraph@0.1.0 make bpmn mandatory?
   bpmn?: {
-    // TODO magraph@0.1.0 sort properties in alphabetical order for clarity (and as done in maxGraph CellStyle) and provide documentation about each property
-    // TODO magraph@0.1.0 make kind mandatory?
+    // TODO maxgraph@0.1.0 sort properties in alphabetical order for clarity (and as done in maxGraph CellStyle) and provide documentation about each property
+    // TODO maxgraph@0.1.0 make kind mandatory?
     kind?: ShapeBpmnElementKind | FlowKind;
     isInstantiating?: boolean;
     gatewayKind?: ShapeBpmnEventBasedGatewayKind;
@@ -62,17 +70,8 @@ export interface BPMNCellStyle extends CellStyle {
     markers?: ShapeBpmnMarkerKind[];
     sequenceFlowKind?: SequenceFlowKind;
     associationDirectionKind?: AssociationDirectionKind;
-    // TODO magraph@0.1.0 isNonInitiating: previously we add a string, this introduces extra changes. If we want to keep this, do it in the master branch
-    isNonInitiating?: boolean; // TODO magraph@0.1.0 why not 'isInitiating' for consistency with other boolean value? Negate doesn't make things easier to understand
-    extra?: {
-      css: {
-        classes: string[];
-      };
-    };
-    edge?: {
-      endFillColor?: string;
-      startFillColor?: string;
-    };
+    isInitiating?: boolean;
+    extraCssClasses?: string[];
   };
 }
 
@@ -94,19 +93,21 @@ export default class StyleComputer {
     const baseStyleNames: string[] = [bpmnCell.bpmnElement.kind as string];
 
     if (bpmnCell instanceof Shape) {
-      // TODO magraph@0.1.0 find a better way for the merge
-      StyleComputer.enrichStyleWithShapeInfo(style, bpmnCell);
+      // TODO maxgraph@0.1.0 find a better way for the merge - computeShapeBaseStylesValues and returns a CellStyle for consistency with other methods
+      this.enrichStyleWithShapeInfo(style, bpmnCell);
     } else {
       baseStyleNames.push(...StyleComputer.computeEdgeBaseStyleNames(bpmnCell));
+      // TODO maxgraph@0.1.0 find a better way for the merge - computeEdgeBaseStylesValues and returns a CellStyle for consistency with other methods
+      this.enrichStyleWithEdgeInfo(style, bpmnCell);
     }
 
     const fontStyleValues = this.computeFontStyleValues(bpmnCell);
     const labelStyleValues = StyleComputer.computeLabelStyleValues(bpmnCell, labelBounds);
 
-    return { baseStyleNames: baseStyleNames, ...style, ...fontStyleValues, ...labelStyleValues };
+    return { baseStyleNames, ...style, ...fontStyleValues, ...labelStyleValues };
   }
 
-  private static enrichStyleWithShapeInfo(style: BPMNCellStyle, shape: Shape): void {
+  private enrichStyleWithShapeInfo(style: BPMNCellStyle, shape: Shape): void {
     const bpmnElement = shape.bpmnElement;
 
     if (bpmnElement instanceof ShapeBpmnEvent) {
@@ -116,30 +117,24 @@ export default class StyleComputer {
     } else if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
       // 'style.horizontal' is for the label
       // In BPMN, isHorizontal is for the Shape
-      // TODO rebase adapt comment
-      // mxConstants.STYLE_HORIZONTAL is for the label
-      // In BPMN, isHorizontal is for the Shape
       // So we invert the value when we switch from the BPMN value to the mxGraph value.
-      style.horizontal = !(shape.isHorizontal ?? true);
+      style.horizontal = !shape.isHorizontal;
     } else if (bpmnElement instanceof ShapeBpmnEventBasedGateway) {
       style.bpmn.isInstantiating = bpmnElement.instantiate;
       style.bpmn.gatewayKind = bpmnElement.gatewayKind;
     }
 
-    // TODO rebase adapt for maxGraph
     if (!this.ignoreBpmnColors) {
       const extensions = shape.extensions;
       const fillColor = extensions.fillColor;
       if (fillColor) {
-        styleValues.set(mxConstants.STYLE_FILLCOLOR, fillColor);
+        style.fillColor = fillColor;
         if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
-          styleValues.set(mxConstants.STYLE_SWIMLANE_FILLCOLOR, fillColor);
+          style.swimlaneFillColor = fillColor;
         }
       }
-      extensions.strokeColor && styleValues.set(mxConstants.STYLE_STROKECOLOR, extensions.strokeColor);
+      extensions.strokeColor && (style.strokeColor = extensions.strokeColor);
     }
-
-    return styleValues;
   }
 
   private static computeEventShapeStyle(bpmnElement: ShapeBpmnEvent, style: BPMNCellStyle): void {
@@ -162,7 +157,7 @@ export default class StyleComputer {
     style.bpmn.markers = bpmnElement.markers;
   }
 
-  // TODO magraph@0.1.0 switch from static method to function (same in other places of this class) --> TODO in master branch
+  // TODO maxgraph@0.1.0 switch from static method to function (same in other places of this class) --> TODO in master branch
   // This applies to the current implementation and to all static methods of this class
   private static computeEdgeBaseStyleNames(edge: Edge): string[] {
     const styles: string[] = [];
@@ -178,15 +173,11 @@ export default class StyleComputer {
     return styles;
   }
 
-  private computeEdgeStyleValues(edge: Edge): Map<string, string | number> {
-    const styleValues = new Map<string, string | number>();
-
+  private enrichStyleWithEdgeInfo(style: BPMNCellStyle, edge: Edge): void {
     if (!this.ignoreBpmnColors) {
       const extensions = edge.extensions;
-      extensions.strokeColor && styleValues.set(mxConstants.STYLE_STROKECOLOR, extensions.strokeColor);
+      extensions.strokeColor && (style.strokeColor = extensions.strokeColor);
     }
-
-    return styleValues;
   }
 
   private computeFontStyleValues(bpmnCell: Shape | Edge): CellStyle {
@@ -196,13 +187,13 @@ export default class StyleComputer {
     if (font) {
       font.name && (style.fontFamily = font.name);
       font.size && (style.fontSize = font.size);
-      style.fontStyle = StyleComputer.getFontStyleValue(font);
+      const fontStyleValue = getFontStyleValue(font);
+      fontStyleValue && (style.fontStyle = fontStyleValue);
     }
 
-    // TODO rebase adapt for maxGraph
     if (!this.ignoreBpmnColors) {
       const extensions = bpmnCell.label?.extensions;
-      extensions?.color && styleValues.set(mxConstants.STYLE_FONTCOLOR, extensions.color);
+      extensions?.color && (style.fontColor = extensions.color);
     }
 
     return style;
@@ -225,12 +216,9 @@ export default class StyleComputer {
         // According to the documentation, "label position" can only take values in left, center, right with default=center
         // However, there is undocumented behavior when the value is not one of these and this behavior is exactly what we want.
         // See https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/mxGraphView.js#L1183-L1252
-        // FIXME magraph@0.1.0 values were inverted in the mxGraph implementation, this was probably wrong as they were set like this in StyleConfigurator (fixed in master branch)
-        // styleValues.set(mxConstants.STYLE_LABEL_POSITION, 'ignore');
-        // styleValues.set(mxConstants.STYLE_VERTICAL_LABEL_POSITION, mxConstants.ALIGN_MIDDLE);
-        // TODO rebase adapt label position for maxGraph
-        style.labelPosition = 'left';
-        style.verticalLabelPosition = 'top';
+        // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
+        style.labelPosition = <AlignValue>'ignore';
+        style.verticalLabelPosition = 'middle';
         // end of fixme
       }
     }
@@ -248,17 +236,15 @@ export default class StyleComputer {
   }
 
   computeMessageFlowIconStyle(edge: Edge): BPMNCellStyle {
-    return {
-      // TODO magraph@0.1.0 remove forcing type when maxGraph fixes its types
+    const style: BPMNCellStyle = {
+      // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
       shape: <ShapeValue>BpmnStyleIdentifier.MESSAGE_FLOW_ICON,
-      // TODO rebase, isNonInitiating --> isInitiating
-      //     styleValues.push([BpmnStyleIdentifier.IS_INITIATING, String(edge.messageVisibleKind === MessageVisibleKind.INITIATING)]);
-      bpmn: { isNonInitiating: edge.messageVisibleKind === MessageVisibleKind.NON_INITIATING },
+      bpmn: { isInitiating: edge.messageVisibleKind === MessageVisibleKind.INITIATING },
     };
-    // TODO rebase for maxGraph, handle bpmn in color
-    //     if (!this.ignoreBpmnColors) {
-    //       edge.extensions.strokeColor && styleValues.push([mxConstants.STYLE_STROKECOLOR, edge.extensions.strokeColor]);
-    //     }
+    if (!this.ignoreBpmnColors) {
+      edge.extensions.strokeColor && (style.strokeColor = edge.extensions.strokeColor);
+    }
+    return style;
   }
 }
 

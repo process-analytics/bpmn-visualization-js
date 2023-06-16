@@ -14,10 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { Cell, CellStyle, NumericCellStateStyleKeys } from '@maxgraph/core';
+import { cloneUtils, styleUtils } from '@maxgraph/core';
+
+import type { BPMNCellStyle } from '../renderer/StyleComputer';
 import { ensureOpacityValue, ensureStrokeWidthValue } from '../../helpers/validators';
 import type { Fill, Font, ShapeStyleUpdate, Stroke, StyleUpdate } from '../../registry';
-import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
-import { BpmnStyleIdentifier } from './identifiers';
+import { ShapeUtil } from '../../../model/bpmn/internal';
 
 /**
  * Store all rendering defaults used by `bpmn-visualization`.
@@ -67,8 +70,8 @@ export const StyleDefault = {
   MESSAGE_FLOW_MARKER_END_FILL_COLOR: 'White',
 };
 
-// TODO magraph@0.1.0 maxGraph "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided." constants.FONT
-// TODO magraph@0.1.0 remove duplicated from maxGraph
+// TODO maxgraph@0.1.0 maxGraph "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided." constants.FONT
+// to remove when https://github.com/maxGraph/maxGraph/issues/205 is fixed
 export enum FONT {
   BOLD = 1,
   ITALIC = 2,
@@ -78,53 +81,98 @@ export enum FONT {
 
 const convertDefaultValue = (value: string): string | undefined => (value == 'default' ? undefined : value);
 
-// TODO rebase fix update style functions
-export const updateStroke = (cellStyle: string, stroke: Stroke): string => {
+export const updateStroke = (cellStyle: CellStyle, stroke: Stroke): void => {
   if (stroke) {
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_STROKECOLOR, stroke.color, convertDefaultValue);
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_STROKE_OPACITY, stroke.opacity, ensureOpacityValue);
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_STROKEWIDTH, stroke.width, ensureStrokeWidthValue);
+    setStyle(cellStyle, 'strokeColor', stroke.color, convertDefaultValue);
+    setStyle(cellStyle, 'strokeOpacity', stroke.opacity, ensureOpacityValue);
+    setStyle(cellStyle, 'strokeWidth', stroke.width, ensureStrokeWidthValue);
   }
-  return cellStyle;
 };
 
-export const setStyle = <T extends string | number>(cellStyle: string, key: string, value: T | undefined, converter: (value: T) => T | undefined = (value: T) => value): string => {
-  return value == undefined ? cellStyle : mxUtils.setStyle(cellStyle, key, converter(value));
+export const setStyle = <T extends string | number>(
+  cellStyle: CellStyle,
+  key: keyof CellStyle,
+  value: T | undefined,
+  converter: (value: T) => T | undefined = (value: T) => value,
+): void => {
+  if (value != undefined) {
+    const convertedValue = converter(value);
+    if (convertedValue == null) {
+      // TODO maxgraph@0.1.0 - this is required for the effective cell style computation with the fix temporary used in bpmn-visualization
+      // if the value is undefined/or null, the value from the default style is not used!
+      // remove the property to use the value from the "base styles" which provides the default value
+      delete cellStyle[key];
+    } else {
+      // TODO maxgraph@0.1.0 - fix type - can we really ignore ts error?
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      cellStyle[key] = convertedValue;
+    }
+  }
 };
 
-export const setStyleFlag = (cellStyle: string, key: string, flag: number, value: boolean | undefined): string =>
-  value == undefined ? cellStyle : mxUtils.setStyleFlag(cellStyle, key, flag, value);
+export const setStyleFlag = (cellStyle: CellStyle, key: NumericCellStateStyleKeys, flag: number, value?: boolean): void => {
+  // TODO maxGraph@0.1.0 - move this comment to the master branch
+  // the mxGraph setStyleFlag function toggle the flag if the value if undefined is passed. In bpmn-visualization, we want to keep the value as it is instead in this case (there is no toggle feature)
+  if (value == undefined) return;
 
-export const updateFont = (cellStyle: string, font: Font): string => {
+  // FIXME maxGraph@0.1.0 - bug in maxGraph setStyleFlag seems to fail when the fontStyle is undefined
+  // when the property is undefined, setting the flag set the value to 0. So initialize the value when undefined as a workaround.
+  // to remove when https://github.com/maxGraph/maxGraph/pull/377 is fixed
+  if (cellStyle[key] == undefined) {
+    cellStyle[key] = 0;
+  }
+
+  styleUtils.setStyleFlag(cellStyle, key, flag, value);
+};
+
+export const updateFont = (cellStyle: CellStyle, font: Font): void => {
   if (font) {
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_FONTCOLOR, font.color, convertDefaultValue);
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_FONTSIZE, font.size);
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_FONTFAMILY, font.family);
+    setStyle(cellStyle, 'fontColor', font.color, convertDefaultValue);
+    setStyle(cellStyle, 'fontSize', font.size);
+    setStyle(cellStyle, 'fontFamily', font.family);
 
-    cellStyle = setStyleFlag(cellStyle, mxConstants.STYLE_FONTSTYLE, mxConstants.FONT_BOLD, font.isBold);
-    cellStyle = setStyleFlag(cellStyle, mxConstants.STYLE_FONTSTYLE, mxConstants.FONT_ITALIC, font.isItalic);
-    cellStyle = setStyleFlag(cellStyle, mxConstants.STYLE_FONTSTYLE, mxConstants.FONT_UNDERLINE, font.isUnderline);
-    cellStyle = setStyleFlag(cellStyle, mxConstants.STYLE_FONTSTYLE, mxConstants.FONT_STRIKETHROUGH, font.isStrikeThrough);
+    setStyleFlag(cellStyle, 'fontStyle', FONT.BOLD, font.isBold);
+    setStyleFlag(cellStyle, 'fontStyle', FONT.ITALIC, font.isItalic);
+    setStyleFlag(cellStyle, 'fontStyle', FONT.UNDERLINE, font.isUnderline);
+    setStyleFlag(cellStyle, 'fontStyle', FONT.STRIKETHROUGH, font.isStrikeThrough);
 
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_TEXT_OPACITY, font.opacity, ensureOpacityValue);
+    setStyle(cellStyle, 'textOpacity', font.opacity, ensureOpacityValue);
   }
-  return cellStyle;
 };
 
-export const updateFill = (cellStyle: string, fill: Fill): string => {
+export const updateFill = (cellStyle: BPMNCellStyle, fill: Fill): void => {
   if (fill.color) {
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_FILLCOLOR, fill.color, convertDefaultValue);
+    setStyle(cellStyle, 'fillColor', fill.color, convertDefaultValue);
 
-    if (cellStyle.includes(ShapeBpmnElementKind.POOL) || cellStyle.includes(ShapeBpmnElementKind.LANE)) {
-      cellStyle = setStyle(cellStyle, mxConstants.STYLE_SWIMLANE_FILLCOLOR, fill.color, convertDefaultValue);
+    const kind = cellStyle.bpmn.kind;
+    if (ShapeUtil.isPoolOrLane(kind)) {
+      setStyle(cellStyle, 'swimlaneFillColor', fill.color, convertDefaultValue);
     }
   }
 
-  cellStyle = setStyle(cellStyle, mxConstants.STYLE_FILL_OPACITY, fill.opacity, ensureOpacityValue);
-
-  return cellStyle;
+  setStyle(cellStyle, 'fillOpacity', fill.opacity, ensureOpacityValue);
 };
 
 export const isShapeStyleUpdate = (style: StyleUpdate): style is ShapeStyleUpdate => {
   return style && typeof style === 'object' && 'fill' in style;
 };
+
+export function setCssClasses(cellStyle: BPMNCellStyle, cssClasses: string[]): void {
+  // TODO maxgraph@0.1.0 do we need to check if the parameter is not undefined - test pass without checking undefined
+  if (cssClasses.length > 0) {
+    cellStyle.bpmn.extraCssClasses = cssClasses;
+  } else {
+    // TODO maxgraph@0.1.0 - this is needed to make the integration tests pass - do we really do to it for a real usage?
+    cellStyle.bpmn.extraCssClasses = undefined;
+    // delete cellStyle.bpmn.extraCssClasses;
+  }
+}
+
+// FIXME maxGraph 0.1.0 - in model.setStyle, the processing is done only if the style parameter is not equal to the style of the cell
+// If the style has been get from the cell, then modified, this is the same instance as in the cell, so the 2 objects are equal, so no processing is done
+// in mxGraph, the style was a string, now it is an object. Modifying the returned style didn't modified the string of the style cell, so the 2 objects weren't equal and so processing was done.
+//
+// See https://github.com/maxGraph/maxGraph/issues/326 (the method modified the style of the cell, so the 2 objects are equal, no processing is done)
+// https://github.com/maxGraph/maxGraph/pull/380 provides an dedicated method in Cell
+export const getCellStyleClone = (cell: Cell): CellStyle => cloneUtils.clone(cell.getStyle());

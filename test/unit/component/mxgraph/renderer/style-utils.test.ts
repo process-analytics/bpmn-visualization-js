@@ -44,7 +44,6 @@ describe('compute base css class names of BPMN elements', () => {
 });
 
 describe('compute all css class names based on style input', () => {
-  // TODO rebase adapt test entries
   it.each`
     style                                                                                                                                                 | isLabel  | expectedClassNames
     ${{ bpmn: { kind: ShapeBpmnElementKind.LANE } }}                                                                                                      | ${true}  | ${['bpmn-type-container', 'bpmn-lane', 'bpmn-label']}
@@ -62,21 +61,17 @@ describe('compute all css class names based on style input', () => {
     ${{ bpmn: { kind: ShapeBpmnElementKind.TASK } }}                                                                                                      | ${true}  | ${['bpmn-type-activity', 'bpmn-type-task', 'bpmn-task', 'bpmn-label']}
     ${{ bpmn: { kind: ShapeBpmnElementKind.TASK_BUSINESS_RULE } }}                                                                                        | ${false} | ${['bpmn-type-activity', 'bpmn-type-task', 'bpmn-business-rule-task']}
     ${{ bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS } }}                                                                                               | ${false} | ${['bpmn-type-activity', 'bpmn-sub-process']}
-    ${'subProcess;bpmn.subProcessKind=adHoc'}                                                                                                             | ${true}  | ${['bpmn-type-activity', 'bpmn-sub-process', 'bpmn-sub-process-adhoc', 'bpmn-label']}
+    ${{ bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind: ShapeBpmnSubProcessKind.AD_HOC } }}                                               | ${true}  | ${['bpmn-type-activity', 'bpmn-sub-process', 'bpmn-sub-process-ad_hoc', 'bpmn-label']}
     ${{ bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED } }}                                             | ${false} | ${['bpmn-type-activity', 'bpmn-sub-process', 'bpmn-sub-process-embedded']}
     ${{ bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind: ShapeBpmnSubProcessKind.EVENT } }}                                                | ${true}  | ${['bpmn-type-activity', 'bpmn-sub-process', 'bpmn-sub-process-event', 'bpmn-label']}
-    ${'subProcess;bpmn.subProcessKind=transaction'}                                                                                                       | ${true}  | ${['bpmn-type-activity', 'bpmn-sub-process', 'bpmn-sub-process-transaction', 'bpmn-label']}
+    ${{ bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind: ShapeBpmnSubProcessKind.TRANSACTION } }}                                          | ${true}  | ${['bpmn-type-activity', 'bpmn-sub-process', 'bpmn-sub-process-transaction', 'bpmn-label']}
     ${{ bpmn: { kind: FlowKind.ASSOCIATION_FLOW } }}                                                                                                      | ${true}  | ${['bpmn-type-flow', 'bpmn-association', 'bpmn-label']}
     ${{ bpmn: { kind: FlowKind.MESSAGE_FLOW } }}                                                                                                          | ${false} | ${['bpmn-type-flow', 'bpmn-message-flow']}
-    ${'shape=bpmn.message-flow-icon'}                                                                                                                     | ${false} | ${['bpmn-message-flow-icon']}
-    ${'shape=bpmn.message-flow-icon;bpmn.isInitiating=false'}                                                                                             | ${false} | ${['bpmn-message-flow-icon', 'bpmn-icon-non-initiating']}
-    ${'shape=bpmn.message-flow-icon;bpmn.isInitiating=true'}                                                                                              | ${true}  | ${['bpmn-message-flow-icon', 'bpmn-icon-initiating', 'bpmn-label']}
     ${{ bpmn: { kind: FlowKind.SEQUENCE_FLOW } }}                                                                                                         | ${false} | ${['bpmn-type-flow', 'bpmn-sequence-flow']}
-    ${{ shape: 'bpmn.message-flow-icon' }}                                                                                                                | ${false} | ${['bpmn-message-flow-icon']}
-    ${{ bpmn: { isNonInitiating: true }, shape: 'bpmn.message-flow-icon' }}                                                                               | ${false} | ${['bpmn-message-flow-icon', 'bpmn-icon-non-initiating']}
-    ${{ bpmn: { isNonInitiating: false }, shape: 'bpmn.message-flow-icon' }}                                                                              | ${true}  | ${['bpmn-message-flow-icon', 'bpmn-icon-initiating', 'bpmn-label']}
+    ${{ bpmn: { isInitiating: false }, shape: 'bpmn.message-flow-icon' }}                                                                                 | ${false} | ${['bpmn-message-flow-icon', 'bpmn-icon-non-initiating']}
+    ${{ bpmn: { isInitiating: true }, shape: 'bpmn.message-flow-icon' }}                                                                                  | ${true}  | ${['bpmn-message-flow-icon', 'bpmn-icon-initiating', 'bpmn-label']}
   `(
-    // TODO magraph@0.1.0 find a way to correctly display the style object
+    // TODO maxgraph@0.1.0 find a way to correctly display the style object
     'style="$style" / isLabel=$isLabel',
     ({ style, isLabel, expectedClassNames }: { style: BPMNCellStyle; isLabel: boolean; expectedClassNames: string[] }) => {
       expect(computeAllBpmnClassNames(style, isLabel)).toEqual(expectedClassNames);

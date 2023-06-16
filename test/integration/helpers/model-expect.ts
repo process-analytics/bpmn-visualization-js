@@ -59,10 +59,10 @@ import {
   toBeTextAnnotation,
   toBeUserTask,
 } from '../matchers';
-import type { AlignValue, ArrowType, Cell, FilterFunction, Geometry, ShapeValue, VAlignValue } from '@maxgraph/core';
+import type { ArrowType, Cell, FilterFunction, Geometry, ShapeValue } from '@maxgraph/core';
 import type { ExpectedOverlay } from '../matchers/matcher-utils';
 import { getCell } from '../matchers/matcher-utils';
-import type { BPMNCellStyle } from '../../../src/component/mxgraph/renderer/StyleComputer';
+import type { BPMNCellStyle } from '@lib/component/mxgraph/renderer/StyleComputer';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -153,9 +153,9 @@ export interface ExpectedFont {
   opacity?: Opacity;
 }
 
-// TODO rebase do we keep HorizontalAlign, we could use AlignValue instead
+// TODO maxGraph@0.1.0 do we keep HorizontalAlign, we could use AlignValue instead
 export type HorizontalAlign = 'center' | 'left' | 'right';
-// TODO rebase do we keep VerticalAlign, we could use VAlignValue instead
+// TODO maxGraph@0.1.0 do we keep VerticalAlign, we could use VAlignValue instead
 export type VerticalAlign = 'bottom' | 'middle' | 'top';
 
 type ExpectedModelElement = {

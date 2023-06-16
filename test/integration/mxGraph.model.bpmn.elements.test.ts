@@ -14,9 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { ArrowType } from '@maxgraph/core';
-import { Point, Geometry } from '@maxgraph/core';
-
 import {
   MarkerIdentifier,
   MessageVisibleKind,
@@ -33,11 +30,13 @@ import {
   bpmnVisualization,
   expectEdgesInModel,
   expectPoolsInModel,
-  expectTotalEdgesInModel,
   expectShapesInModel,
+  expectTotalEdgesInModel,
   expectTotalShapesInModel,
   getDefaultParentId,
 } from './helpers/model-expect';
+import type { ArrowType } from '@maxgraph/core';
+import { Point, Geometry } from '@maxgraph/core';
 
 describe('mxGraph model - BPMN elements', () => {
   describe('BPMN elements should be available in the mxGraph model', () => {
@@ -56,11 +55,6 @@ describe('mxGraph model - BPMN elements', () => {
 
       describe('BPMN containers', () => {
         const baseShapeModelElement: ExpectedShapeModelElement = { isSwimLaneLabelHorizontal: false };
-        // TODO rebase update test for maxGraph
-        // TODO magraph@0.1.0 change isHorizontal value for maxGraph, but the logic is probably wrong in 'master' (convert integer into boolean)
-        // const minimalPoolModelElement: ExpectedShapeModelElement = {
-        //   parentId: getDefaultParentId(),
-        // };
         it('pool', () => {
           expect('participant_1_id').toBePool({ ...baseShapeModelElement, label: 'Pool 1' });
           expect('participant_2_id').toBePool(baseShapeModelElement);
@@ -1051,7 +1045,6 @@ describe('mxGraph model - BPMN elements', () => {
           it('Collapsed', () => {
             expect('collapsed_call_activity_id').toBeCallActivity({
               label: 'Collapsed Call Activity',
-              markers: [ShapeBpmnMarkerKind.EXPAND],
               parentId: 'participant_1_id',
               markers: [ShapeBpmnMarkerKind.EXPAND],
               verticalAlign: 'top',
@@ -1477,7 +1470,7 @@ describe('mxGraph model - BPMN elements', () => {
       it('sequence flows', () => {
         expect('default_sequence_flow_id').toBeSequenceFlow({
           sequenceFlowKind: SequenceFlowKind.DEFAULT,
-          // TODO magraph@0.1.0 remove forcing type when maxGraph fixes its types
+          // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
           startArrow: <ArrowType>(<unknown>MarkerIdentifier.ARROW_DASH),
           parentId: 'participant_1_id',
           font: expectedBoldFont,
@@ -1583,8 +1576,8 @@ describe('mxGraph model - BPMN elements', () => {
       ),
     });
 
-    const sequenceFlowMxGeometry = new Geometry(0, 0, 0, 0);
-    sequenceFlowMxGeometry.points = [
+    const sequenceFlowGeometry = new Geometry(0, 0, 0, 0);
+    sequenceFlowGeometry.points = [
       new Point(190, 100), // absolute coordinates: parent x="160" y="80", cell x="350" y="180"
       new Point(350, 100), // absolute coordinates: parent x="160" y="80", cell x="510" y="180"
     ];
@@ -1593,8 +1586,8 @@ describe('mxGraph model - BPMN elements', () => {
       geometry: sequenceFlowGeometry,
     });
 
-    const messageFlowMxGeometry = new Geometry(0, 0, 0, 0);
-    messageFlowMxGeometry.points = [
+    const messageFlowGeometry = new Geometry(0, 0, 0, 0);
+    messageFlowGeometry.points = [
       new Point(334, 260), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="260"
       new Point(334, 342), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="342"
     ];
@@ -1641,23 +1634,23 @@ describe('mxGraph model - BPMN elements', () => {
       ),
     });
 
-    const sequenceFlowMxGeometry = new Geometry(0, 0, 0, 0);
-    sequenceFlowMxGeometry.points = [
+    const sequenceFlowGeometry = new Geometry(0, 0, 0, 0);
+    sequenceFlowGeometry.points = [
       new Point(160, 100), // absolute coordinates: parent x="190" y="80", cell x="350" y="180"
       new Point(320, 100), // absolute coordinates: parent x="190" y="80", cell x="510" y="180"
     ];
     expect('SequenceFlow_id').toBeCellWithParentAndGeometry({
       parentId: 'Lane_1_1',
-      geometry: sequenceFlowMxGeometry,
+      geometry: sequenceFlowGeometry,
     });
 
-    const messageFlowMxGeometry = new Geometry(0, 0, 0, 0);
-    messageFlowMxGeometry.points = [
+    const messageFlowGeometry = new Geometry(0, 0, 0, 0);
+    messageFlowGeometry.points = [
       new Point(334, 480), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="480"
       new Point(334, 632), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="632"
     ];
     expect('MessageFlow_1').toBeCellWithParentAndGeometry({
-      geometry: messageFlowMxGeometry,
+      geometry: messageFlowGeometry,
     });
   });
 
@@ -1666,8 +1659,6 @@ describe('mxGraph model - BPMN elements', () => {
 
     // pool
     const baseShapeModelElement: ExpectedShapeModelElement = { isSwimLaneLabelHorizontal: true };
-    // TODO rebase update test for maxGraph
-    // const minimalPoolModelElement: ExpectedShapeModelElement = { isHorizontal: true, parentId: getDefaultParentId() };
     expect('Participant_Vertical_With_Lanes').toBePool({ ...baseShapeModelElement, label: 'Vertical Pool With Lanes' });
 
     // lane
@@ -1711,8 +1702,8 @@ describe('mxGraph model - BPMN elements', () => {
     });
 
     it('Parse a diagram with numbers not parsable as number', () => {
-      // TODO magraph@0.1.0 change in maxGraph, throw 'Error: Invalid x supplied'. bpmn-visualization should handle it
-      //  capture the error and rethrow it with a convenient
+      // TODO maxgraph@0.1.0 change in maxGraph, throw 'Error: Invalid x supplied'. bpmn-visualization should handle it
+      // capture the error and rethrow it with a convenient
       // OR validate the values during parsing
 
       expect(() => bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/simple-start-task-end_numbers_not_parsable_as_number.bpmn'))).toThrow(

@@ -31,6 +31,8 @@ export class BpmnGraph extends Graph {
    * @internal
    */
   constructor(container: HTMLElement) {
+    // TODO maxGraph@0.1.0 - only set the plugins we need
+    // require a version that doesn't generate errors when plugins are not found (is ok in v0.8.0)
     super(container);
     this.zoomFactor = zoomFactorIn;
     if (this.container) {
@@ -44,25 +46,6 @@ export class BpmnGraph extends Graph {
    */
   override createGraphView(): GraphView {
     return new BpmnGraphView(this);
-  }
-
-  /**
-   * Shortcut for an update of the model within a transaction.
-   *
-   * This method is inspired from {@link https://github.com/maxGraph/maxGraph/blob/v0.1.0/packages/core/src/view/Graph.ts#L487-L494 maxGraph}.
-   *
-   * @param fn the update to be made in the transaction.
-   *
-   * @experimental subject to change, may move to a subclass of `mxGraphModel`
-   * @alpha
-   */
-  batchUpdate(fn: () => void): void {
-    this.model.beginUpdate();
-    try {
-      fn();
-    } finally {
-      this.model.endUpdate();
-    }
   }
 
   /**
@@ -145,7 +128,7 @@ export class BpmnGraph extends Graph {
       let scale = Math.min(maxScale, Math.min(clientWidth / width, clientHeight / height));
       this.setCurrentZoomLevel(scale);
 
-      // TODO magraph@0.1.0 improve implementation (the following is to make integration tests pass)
+      // TODO maxgraph@0.1.0 improve implementation (the following is to make integration tests pass)
       scale == 0 && (scale = 1);
       this.view.scaleAndTranslate(
         scale,
@@ -155,7 +138,7 @@ export class BpmnGraph extends Graph {
     }
   }
 
-  // TODO magraph@0.1.0 move somewhere else + find a better name + should be a util function
+  // TODO maxgraph@0.1.0 move somewhere else + find a better name + should be a util function
   private NaNToZero(value: number): number {
     return Number.isNaN(value) ? 0 : value;
   }
@@ -230,7 +213,7 @@ export class BpmnGraph extends Graph {
     return [factor, scale];
   }
 
-  // TODO magraph@0.1.0 temp to fix maxGraph style merge issue (should be fixed in maxGraph@0.2.0)
+  // TODO maxgraph@0.1.0 temp to fix maxGraph style merge issue (should be fixed in maxGraph@0.2.0)
   override createStylesheet(): Stylesheet {
     return new BpmnStylesheet();
   }
@@ -250,7 +233,7 @@ class BpmnGraphView extends GraphView {
   }
 }
 
-// TODO magraph@0.1.0 temp to fix maxGraph style merge issue (should be fixed in maxGraph@0.2.0)
+// TODO maxgraph@0.1.0 temp to fix maxGraph style merge issue (should be fixed in maxGraph@0.2.0)
 class BpmnStylesheet extends Stylesheet {
   override getCellStyle(cellStyle: CellStyle, defaultStyle: CellStateStyle): CellStateStyle {
     let style: CellStateStyle;

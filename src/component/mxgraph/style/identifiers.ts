@@ -22,7 +22,7 @@ limitations under the License.
  * @category BPMN Theme
  * @experimental
  */
-// TODO real maxGraph migration - may be renamed into BpmnShapeIdentifier after the maxGraph migration
+// TODO maxGraph@0.1.0 - real migration - may be renamed into BpmnShapeIdentifier after the maxGraph migration
 export const BpmnStyleIdentifier = {
   // edge
   EDGE: 'bpmn.edge',

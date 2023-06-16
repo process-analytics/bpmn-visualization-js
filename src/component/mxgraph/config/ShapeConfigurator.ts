@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { CellState, CellOverlay } from '@maxgraph/core';
-import { CellRenderer, Shape, Rectangle, ImageShape, Dictionary, SvgCanvas2D, constants } from '@maxgraph/core';
+import { CellRenderer, constants, Dictionary, ImageShape, Rectangle, Shape, SvgCanvas2D } from '@maxgraph/core';
+import type { CellOverlay, CellState } from '@maxgraph/core';
 
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
 import { EndEventShape, EventShape, IntermediateEventShape, ThrowIntermediateEventShape } from '../shape/event-shapes';
@@ -34,12 +34,13 @@ import {
 } from '../shape/activity-shapes';
 import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
-import { BpmnStyleIdentifier, FONT } from '../style';
+import { BpmnStyleIdentifier } from '../style';
+import { FONT } from '../style/utils';
 import { computeAllBpmnClassNamesOfCell } from '../renderer/style-utils';
+import type { BPMNCellStyle } from '../renderer/StyleComputer';
 import { MxGraphCustomOverlay } from '../overlay/custom-overlay';
 import { OverlayBadgeShape } from '../overlay/shapes';
 import { BpmnConnector } from '../shape/edges';
-import type { BPMNCellStyle } from '../renderer/StyleComputer';
 
 /**
  * @internal
@@ -60,19 +61,19 @@ export default class ShapeConfigurator {
     CellRenderer.registerShape(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, IntermediateEventShape);
     CellRenderer.registerShape(ShapeBpmnElementKind.EVENT_BOUNDARY, IntermediateEventShape);
     // gateways
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO magraph@0.1.0 fix CellRenderer.registerShape call
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.1.0 fix CellRenderer.registerShape call
     // @ts-ignore
     CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_COMPLEX, ComplexGatewayShape);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO magraph@0.1.0 fix CellRenderer.registerShape call
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.1.0 fix CellRenderer.registerShape call
     // @ts-ignore
     CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_EVENT_BASED, EventBasedGatewayShape);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO magraph@0.1.0 fix CellRenderer.registerShape call
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.1.0 fix CellRenderer.registerShape call
     // @ts-ignore
     CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, ExclusiveGatewayShape);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO magraph@0.1.0 fix CellRenderer.registerShape call
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.1.0 fix CellRenderer.registerShape call
     // @ts-ignore
     CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_INCLUSIVE, InclusiveGatewayShape);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO magraph@0.1.0 fix CellRenderer.registerShape call
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.1.0 fix CellRenderer.registerShape call
     // @ts-ignore
     CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_PARALLEL, ParallelGatewayShape);
     // activities
@@ -88,15 +89,15 @@ export default class ShapeConfigurator {
     CellRenderer.registerShape(ShapeBpmnElementKind.TASK_SCRIPT, ScriptTaskShape);
     CellRenderer.registerShape(ShapeBpmnElementKind.TASK_BUSINESS_RULE, BusinessRuleTaskShape);
     // artifacts
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO magraph@0.1.0 fix CellRenderer.registerShape call
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.1.0 fix CellRenderer.registerShape call
     // @ts-ignore
     CellRenderer.registerShape(ShapeBpmnElementKind.TEXT_ANNOTATION, TextAnnotationShape);
 
     // shapes for flows
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO magraph@0.1.0 fix CellRenderer.registerShape call
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.1.0 fix CellRenderer.registerShape call
     // @ts-ignore
     CellRenderer.registerShape(BpmnStyleIdentifier.EDGE, BpmnConnector);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO magraph@0.1.0 fix CellRenderer.registerShape call
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.1.0 fix CellRenderer.registerShape call
     // @ts-ignore
     CellRenderer.registerShape(BpmnStyleIdentifier.MESSAGE_FLOW_ICON, MessageFlowIconShape);
   }
@@ -168,13 +169,13 @@ export default class ShapeConfigurator {
         // 'this.state.style' = the style definition associated with the cell
         // 'this.state.cell.style' = the style applied to the cell: 1st element: style name = bpmn shape name
         const cell = this.state.cell;
-        // dialect = strictHtml is set means that current node holds an html label
-        // TODO magraph@0.1.0 "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided."constants.DIALECT.STRICTHTML
+        // dialect = strictHtml is set means that current node holds an HTML label
+        // TODO maxgraph@0.1.0 "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided."constants.DIALECT.STRICTHTML
         let allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === 'strictHtml');
-        const extraCssClasses = (this.state.style as BPMNCellStyle).bpmn?.extra?.css?.classes;
-        // TODO rebase verify the cssClasses property type in BPMNCellStyle
-        if (typeof extraCssClasses == 'string') {
-          allBpmnClassNames = allBpmnClassNames.concat(extraCssClasses.split(','));
+        // TODO maxgraph@0.1.0 - do we need to introduce a BpmnCellStateStyle type (to not have the baseStyleName property)?
+        const extraCssClasses = (this.state.style as BPMNCellStyle).bpmn?.extraCssClasses;
+        if (extraCssClasses) {
+          allBpmnClassNames = allBpmnClassNames.concat(extraCssClasses);
         }
 
         this.node.setAttribute('class', allBpmnClassNames.join(' '));

@@ -14,12 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { ShapeValue } from '@maxgraph/core';
-
-import type { ExpectedCell, ExpectedStateStyle } from '../matcher-utils';
-import { buildCellMatcher, buildCommonExpectedStateStyle, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
-
-import type { BpmnCellStyle, ExpectedCell } from '../matcher-utils';
+import type { ExpectedCell, BpmnCellStyle } from '../matcher-utils';
 import { buildCellMatcher, buildExpectedCellStyleWithCommonAttributes, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
 import type {
   ExpectedBoundaryEventModelElement,
@@ -66,18 +61,12 @@ function expectedStrokeWidth(kind: ShapeBpmnElementKind): number {
 
 export function buildExpectedShapeCellStyle(expectedModel: ExpectedShapeModelElement): BpmnCellStyle {
   const style = buildExpectedCellStyleWithCommonAttributes(expectedModel);
+  // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
+  // expectedStateStyle.shape = <ShapeValue>(<unknown>(!expectedModel.styleShape ? expectedModel.kind : expectedModel.styleShape));
   style.shape = expectedModel.styleShape ?? expectedModel.kind;
   style.verticalAlign = expectedModel.verticalAlign ?? 'middle';
   style.align = expectedModel.align ?? 'center';
   style.strokeWidth = style.strokeWidth ?? expectedStrokeWidth(expectedModel.kind);
-
-  // TODO rebase - adapt
-  const expectedStateStyle = buildCommonExpectedStateStyle(expectedModel);
-  // TODO magraph@0.1.0 remove forcing type when maxGraph fixes its types
-  expectedStateStyle.shape = <ShapeValue>(<unknown>(!expectedModel.styleShape ? expectedModel.kind : expectedModel.styleShape));
-  expectedStateStyle.verticalAlign = expectedModel.verticalAlign ? expectedModel.verticalAlign : 'middle';
-  expectedStateStyle.align = expectedModel.align ? expectedModel.align : 'center';
-  expectedStateStyle.strokeWidth = expectedStrokeWidth(expectedModel.kind);
 
   style.fillColor =
     expectedModel.fill?.color ??
@@ -87,20 +76,15 @@ export function buildExpectedShapeCellStyle(expectedModel: ExpectedShapeModelEle
   style.swimlaneFillColor = [ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.LANE].includes(expectedModel.kind) && style.fillColor !== 'none' ? style.fillColor : undefined;
 
   style.fillOpacity = expectedModel.fill?.opacity;
-  'isSwimLaneLabelHorizontal' in expectedModel && (style.horizontal = Number(expectedModel.isSwimLaneLabelHorizontal));
+  'isSwimLaneLabelHorizontal' in expectedModel && (style.horizontal = expectedModel.isSwimLaneLabelHorizontal);
 
   // ignore marker order, which is only relevant when rendering the shape (it has its own order algorithm)
   'markers' in expectedModel && (style.markers = expectedModel.markers.sort());
 
-  // TODO rebase - adapt
-  // TODO magraph@0.1.0 explain why this is needed. Can we move this addition to the master branch
-  if ('isHorizontal' in expectedModel) {
-    expectedStateStyle.horizontal = expectedModel.isHorizontal;
-  }
   return style;
 }
 
-// TODO magraph@0.1.0 Here we don't check all properties. Why?
+// TODO maxgraph@0.1.0 Here we don't check all properties. This duplicates the other style check functions
 function buildExpectedShapeStylePropertyRegexp(
   expectedModel:
     | ExpectedShapeModelElement
@@ -112,7 +96,7 @@ function buildExpectedShapeStylePropertyRegexp(
     | ExpectedCallActivityModelElement,
 ): BPMNCellStyle {
   const style: BPMNCellStyle = { bpmn: {} };
-  // TODO magraph@0.1.0 share with edge
+  // TODO maxgraph@0.1.0 share with edge
   style.baseStyleNames = [expectedModel.kind];
   style.bpmn.kind = expectedModel.kind;
 
@@ -128,12 +112,6 @@ function buildExpectedShapeStylePropertyRegexp(
   if (expectedModel.isInstantiating !== undefined) {
     style.bpmn.isInstantiating = expectedModel.isInstantiating;
   }
-  // if (expectedModel.markers?.length > 0) {
-  //   // There is no guaranteed order, so testing the list of markers with a string is not practical. Markers are therefore checked with BpmnStyle.markers.
-  //   // Here, we check only that the markers are placed in the style.
-  //   expectedStyle = expectedStyle + `.*bpmn.markers=*`;
-  // }
-  // TODO rebase ignore markers order
   if (expectedModel.markers) {
     style.bpmn.markers = expectedModel.markers;
   }
@@ -143,19 +121,20 @@ function buildExpectedShapeStylePropertyRegexp(
   if ('gatewayKind' in expectedModel) {
     style.bpmn.gatewayKind = expectedModel.gatewayKind;
   }
+  if ('extraCssClasses' in expectedModel) {
+    style.bpmn.extraCssClasses = expectedModel.extraCssClasses;
+  }
 
   return style;
 }
 
 function buildExpectedCell(id: string, expectedModel: ExpectedShapeModelElement): ExpectedCell {
-  // TODO magraph@0.1.0 refactor, duplication with buildExpectedCell in edge matchers
+  // TODO maxgraph@0.1.0 refactor, duplication with buildExpectedCell in edge matchers
   const parentId = expectedModel.parentId;
   return {
     id,
     value: expectedModel.label ?? null, // maxGraph now set to 'null', mxGraph set to 'undefined'
-    style: expect.objectContaining(buildExpectedStyle(expectedModel)),
-    // TODO rebase make it work
-    styleRawFromModelOrJestExpect: expect.stringMatching(buildExpectedShapeStylePropertyRegexp(expectedModel)),
+    styleRawFromModelOrJestExpect: expect.objectContaining(buildExpectedShapeStylePropertyRegexp(expectedModel)),
     styleResolvedFromModel: buildExpectedShapeCellStyle(expectedModel),
     styleViewState: buildExpectedShapeCellStyle(expectedModel),
     edge: false,
@@ -172,16 +151,10 @@ function buildShapeMatcher(matcherName: string, matcherContext: MatcherContext, 
 function buildContainerMatcher(matcherName: string, matcherContext: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
   return buildShapeMatcher(matcherName, matcherContext, received, {
     ...expected,
-    styleShape: mxConstants.SHAPE_SWIMLANE,
+    // TODO maxgraph@0.1.0 maxGraph "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided." constants.SHAPE.SWIMLANE
+    styleShape: 'swimlane',
     isSwimLaneLabelHorizontal: expected.isSwimLaneLabelHorizontal ?? false,
   });
-}
-
-function buildContainerMatcher(matcherName: string, matcherContext: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  'isHorizontal' in expected && (expected.isHorizontal = expected.isHorizontal);
-
-  // TODO magraph@0.1.0 maxGraph "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided." constants.SHAPE.SWIMLANE
-  return buildShapeMatcher(matcherName, matcherContext, received, { ...expected, styleShape: 'swimlane' });
 }
 
 export function toBePool(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
@@ -192,69 +165,54 @@ export function toBeLane(this: MatcherContext, received: string, expected: Expec
   return buildContainerMatcher('toBeLane', this, received, { ...expected, kind: ShapeBpmnElementKind.LANE });
 }
 
-export function toBeCallActivity(this: MatcherContext, received: string, expected: ExpectedCallActivityModelElement): CustomMatcherResult {
-  // TODO magraph@0.1.0 introduce common code for activity kinds
+function buildActivityMatcher(matcherName: string, matcherContext: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
+  // TODO maxgraph@0.1.0 - review the markers management (sometimes it is undefined by default, sometimes it is an empty array)
   expected.markers ??= [];
-  return buildShapeMatcher('toBeCallActivity', this, received, { ...expected, kind: ShapeBpmnElementKind.CALL_ACTIVITY });
+  return buildShapeMatcher(matcherName, matcherContext, received, expected);
+}
+
+export function toBeCallActivity(this: MatcherContext, received: string, expected: ExpectedCallActivityModelElement): CustomMatcherResult {
+  return buildActivityMatcher('toBeCallActivity', this, received, { ...expected, kind: ShapeBpmnElementKind.CALL_ACTIVITY });
 }
 
 export function toBeSubProcess(this: MatcherContext, received: string, expected: ExpectedSubProcessModelElement): CustomMatcherResult {
-  // TODO rebase review markers management
-  // TODO magraph@0.1.0 introduce common code for activity kinds
-  // expected.markers ??= [];
   if (expected.subProcessKind == ShapeBpmnSubProcessKind.AD_HOC) {
     expected.markers ??= [];
     expected.markers.push(ShapeBpmnMarkerKind.ADHOC);
   }
-  return buildShapeMatcher('toBeSubProcess', this, received, { ...expected, kind: ShapeBpmnElementKind.SUB_PROCESS });
+  return buildActivityMatcher('toBeSubProcess', this, received, { ...expected, kind: ShapeBpmnElementKind.SUB_PROCESS });
 }
 
 export function toBeTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  // TODO magraph@0.1.0 introduce common code for activity kinds
-  expected.markers ??= [];
-  return buildShapeMatcher('toBeTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK });
+  return buildActivityMatcher('toBeTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK });
 }
 
 export function toBeServiceTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  // TODO magraph@0.1.0 introduce common code for activity kinds
-  expected.markers ??= [];
-  return buildShapeMatcher('toBeServiceTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_SERVICE });
+  return buildActivityMatcher('toBeServiceTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_SERVICE });
 }
 
 export function toBeUserTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  // TODO magraph@0.1.0 introduce common code for activity kinds
-  expected.markers ??= [];
-  return buildShapeMatcher('toBeUserTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_USER });
+  return buildActivityMatcher('toBeUserTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_USER });
 }
 
 export function toBeReceiveTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  // TODO magraph@0.1.0 introduce common code for activity kinds
-  expected.markers ??= [];
-  return buildShapeMatcher('toBeReceiveTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_RECEIVE });
+  return buildActivityMatcher('toBeReceiveTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_RECEIVE });
 }
 
 export function toBeSendTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  // TODO magraph@0.1.0 introduce common code for activity kinds
-  expected.markers ??= [];
-  return buildShapeMatcher('toBeSendTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_SEND });
+  return buildActivityMatcher('toBeSendTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_SEND });
 }
 
 export function toBeManualTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  // TODO magraph@0.1.0 introduce common code for activity kinds
-  expected.markers ??= [];
-  return buildShapeMatcher('toBeManualTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_MANUAL });
+  return buildActivityMatcher('toBeManualTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_MANUAL });
 }
 
 export function toBeScriptTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  // TODO magraph@0.1.0 introduce common code for activity kinds
-  expected.markers ??= [];
-  return buildShapeMatcher('toBeScriptTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_SCRIPT });
+  return buildActivityMatcher('toBeScriptTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_SCRIPT });
 }
 
 export function toBeBusinessRuleTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  // TODO magraph@0.1.0 introduce common code for activity kinds
-  expected.markers ??= [];
-  return buildShapeMatcher('toBeBusinessRuleTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_BUSINESS_RULE });
+  return buildActivityMatcher('toBeBusinessRuleTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_BUSINESS_RULE });
 }
 
 function buildEventMatcher(matcherName: string, matcherContext: MatcherContext, received: string, expected: ExpectedStartEventModelElement): CustomMatcherResult {

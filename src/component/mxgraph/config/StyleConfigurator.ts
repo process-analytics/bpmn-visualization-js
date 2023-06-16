@@ -14,13 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { ArrowType, ShapeValue, Stylesheet } from '@maxgraph/core';
-import { constants, Perimeter } from '@maxgraph/core';
-
 import { AssociationDirectionKind, FlowKind, SequenceFlowKind, ShapeBpmnElementKind, ShapeUtil } from '../../../model/bpmn/internal';
 import { BpmnStyleIdentifier, MarkerIdentifier, StyleDefault } from '../style';
 import type { BpmnGraph } from '../BpmnGraph';
 import type { BPMNCellStyle } from '../renderer/StyleComputer';
+import { constants, Perimeter } from '@maxgraph/core';
+import type { ArrowType, ShapeValue, Stylesheet } from '@maxgraph/core';
 
 const arrowDefaultSize = 12;
 
@@ -33,7 +32,7 @@ const arrowDefaultSize = 12;
  * @experimental
  */
 export class StyleConfigurator {
-  // TODO magraph@0.1.0 in StyleConfigurator, we don't need to use BPMNCellStyle, CellStyle is enough
+  // TODO maxgraph@0.1.0 in StyleConfigurator, we don't need to use BPMNCellStyle, CellStyle is enough
 
   private specificFlowStyles = new MapWithDefault<FlowKind>([
     [
@@ -49,11 +48,11 @@ export class StyleConfigurator {
         style.dashPattern = '8 5';
         style.startArrow = 'oval';
         style.startSize = 8;
-        style.startFill = true;
-        style.bpmn.edge.startFillColor = StyleDefault.MESSAGE_FLOW_MARKER_START_FILL_COLOR;
+        style.startFill = true; // TODO maxgraph@0.1.0 could be removed when maxGraph fixes https://github.com/maxGraph/maxGraph/pull/157
+        style.startFillColor = StyleDefault.MESSAGE_FLOW_MARKER_START_FILL_COLOR;
         style.endArrow = 'blockThin';
-        style.endFill = true;
-        style.bpmn.edge.endFillColor = StyleDefault.MESSAGE_FLOW_MARKER_END_FILL_COLOR;
+        style.endFill = true; // TODO maxgraph@0.1.0 could be removed when maxGraph fixes https://github.com/maxGraph/maxGraph/pull/157
+        style.endFillColor = StyleDefault.MESSAGE_FLOW_MARKER_END_FILL_COLOR;
       },
     ],
     [
@@ -61,10 +60,8 @@ export class StyleConfigurator {
       (style: BPMNCellStyle) => {
         style.dashed = true;
         style.dashPattern = '1 2';
-        // TODO maxgraph@0.1.0 migration - update comment        // STYLE_ENDARROW and STYLE_STARTARROW are defined in specific AssociationDirectionKind styles when needed
-        // style.endArrow = 'openThin';
-        // style.startArrow = 'openThin';
-        style.startSize = 12;
+        // endArrow  and startArrow are defined in specific AssociationDirectionKind styles when needed
+        style.startSize = arrowDefaultSize;
       },
     ],
   ]);
@@ -72,7 +69,7 @@ export class StyleConfigurator {
     [
       SequenceFlowKind.DEFAULT,
       (style: BPMNCellStyle) => {
-        // TODO magraph@0.1.0 remove forcing type when maxGraph fixes its types
+        // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
         style.startArrow = <ArrowType>MarkerIdentifier.ARROW_DASH;
       },
     ],
@@ -81,27 +78,14 @@ export class StyleConfigurator {
       (style: BPMNCellStyle) => {
         style.startArrow = 'diamondThin';
         style.startSize = 18;
-        style.startFill = true;
-        style.bpmn.edge.startFillColor = StyleDefault.SEQUENCE_FLOW_CONDITIONAL_FROM_ACTIVITY_MARKER_FILL_COLOR;
+        style.startFill = true; // TODO maxgraph@0.1.0 could be removed when maxGraph fixes https://github.com/maxGraph/maxGraph/pull/157
+        style.startFillColor = StyleDefault.SEQUENCE_FLOW_CONDITIONAL_FROM_ACTIVITY_MARKER_FILL_COLOR;
       },
     ],
   ]);
   private specificAssociationFlowStyles = new MapWithDefault<AssociationDirectionKind>([
     [
       AssociationDirectionKind.NONE,
-      (style: BPMNCellStyle) => {
-        style.startArrow = undefined;
-        style.endArrow = undefined;
-      },
-    ],
-    [
-      AssociationDirectionKind.ONE,
-      (style: BPMNCellStyle) => {
-        style.startArrow = undefined;
-      },
-    ],
-    [
-      AssociationDirectionKind.BOTH,
       // eslint-disable-next-line @typescript-eslint/no-unused-vars -- prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
       (_style: BPMNCellStyle) => {
         // the style is fully managed by the FlowKind.ASSOCIATION_FLOW style
@@ -109,15 +93,15 @@ export class StyleConfigurator {
     ],
     [
       AssociationDirectionKind.ONE,
-      (style: StyleMap) => {
-        style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_OPEN_THIN;
+      (style: BPMNCellStyle) => {
+        style.endArrow = 'openThin';
       },
     ],
     [
       AssociationDirectionKind.BOTH,
-      (style: StyleMap) => {
-        style[mxConstants.STYLE_STARTARROW] = mxConstants.ARROW_OPEN_THIN;
-        style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_OPEN_THIN;
+      (style: BPMNCellStyle) => {
+        style.endArrow = 'openThin';
+        style.startArrow = 'openThin';
       },
     ],
   ]);
@@ -150,19 +134,24 @@ export class StyleConfigurator {
   }
 
   private configureDefaultVertexStyle(): void {
-    StyleConfigurator.configureCommonDefaultStyle(this.getStylesheet().getDefaultVertexStyle() as BPMNCellStyle);
+    const style = this.getStylesheet().getDefaultVertexStyle();
+    configureCommonDefaultStyle(style);
+
+    // TODO maxgraph@0.1.0 arcSize should be a boolean (probably fixed in next versions of maxGraph)
+    style.absoluteArcSize = 1;
+    style.arcSize = <number>StyleDefault.SHAPE_ARC_SIZE;
   }
 
   private configurePoolStyle(): void {
     const style: BPMNCellStyle = {
-      // TODO magraph@0.1.0  "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided." constants.SHAPE.SWIMLANE
+      // TODO maxgraph@0.1.0  "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided." constants.SHAPE.SWIMLANE
       shape: 'swimlane',
       // label style
       verticalAlign: 'middle',
       align: 'center',
-      // TODO magraph@0.1.0 find a way to not force cast
+      // TODO maxgraph@0.1.0 find a way to not force cast
       startSize: <number>StyleDefault.POOL_LABEL_SIZE,
-      // TODO magraph@0.1.0 find a way to not force cast
+      // TODO maxgraph@0.1.0 find a way to not force cast
       fillColor: <string>StyleDefault.POOL_LABEL_FILL_COLOR,
     };
 
@@ -171,15 +160,15 @@ export class StyleConfigurator {
 
   private configureLaneStyle(): void {
     const style: BPMNCellStyle = {
-      // TODO magraph@0.1.0  "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided." constants.SHAPE.SWIMLANE
+      // TODO maxgraph@0.1.0  "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided." constants.SHAPE.SWIMLANE
       shape: 'swimlane',
       // label style
       verticalAlign: 'middle',
       align: 'center',
       swimlaneLine: false, // hide the line between the title region and the content area
-      // TODO magraph@0.1.0 find a way to not force cast
+      // TODO maxgraph@0.1.0 find a way to not force cast
       startSize: <number>StyleDefault.LANE_LABEL_SIZE,
-      // TODO magraph@0.1.0 find a way to not force cast
+      // TODO maxgraph@0.1.0 find a way to not force cast
       fillColor: <string>StyleDefault.LANE_LABEL_FILL_COLOR,
     };
 
@@ -189,10 +178,10 @@ export class StyleConfigurator {
   private configureEventStyles(): void {
     ShapeUtil.eventKinds().forEach(kind => {
       const style: BPMNCellStyle = {
-        // TODO magraph@0.1.0 remove forcing type when maxGraph fixes its types
+        // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
         shape: <ShapeValue>(<unknown>kind),
         perimeter: Perimeter.EllipsePerimeter,
-        // TODO magraph@0.1.0 find a way to not force cast
+        // TODO maxgraph@0.1.0 find a way to not force cast
         strokeWidth: <number>(kind == ShapeBpmnElementKind.EVENT_END ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN),
         verticalLabelPosition: 'bottom',
       };
@@ -202,15 +191,15 @@ export class StyleConfigurator {
 
   private configureTextAnnotationStyle(): void {
     const style: BPMNCellStyle = {
-      // TODO magraph@0.1.0 remove forcing type when maxGraph fixes its types
+      // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
       shape: <ShapeValue>(<unknown>ShapeBpmnElementKind.TEXT_ANNOTATION),
       // label style
       verticalAlign: 'middle',
       align: 'left',
       spacingLeft: 5,
-      // TODO magraph@0.1.0 find a way to not force cast
+      // TODO maxgraph@0.1.0 find a way to not force cast
       fillColor: <string>StyleDefault.TEXT_ANNOTATION_FILL_COLOR,
-      // TODO magraph@0.1.0 find a way to not force cast
+      // TODO maxgraph@0.1.0 find a way to not force cast
       strokeWidth: <number>StyleDefault.STROKE_WIDTH_THIN,
     };
     this.putCellStyle(ShapeBpmnElementKind.TEXT_ANNOTATION, style);
@@ -219,16 +208,12 @@ export class StyleConfigurator {
   private configureGroupStyle(): void {
     const style: BPMNCellStyle = {
       rounded: true,
-      absoluteArcSize: 1,
-      // TODO magraph@0.1.0 find a way to not force cast
-      arcSize: <number>StyleDefault.SHAPE_ARC_SIZE,
       dashed: true,
       dashPattern: '7 4 1 4',
-      // TODO magraph@0.1.0 find a way to not force cast
+      // TODO maxgraph@0.1.0 find a way to not force cast
       strokeWidth: <number>StyleDefault.STROKE_WIDTH_THIN,
-      // TODO magraph@0.1.0 find a way to not force cast
+      // TODO maxgraph@0.1.0 find a way to not force cast
       fillColor: <string>StyleDefault.GROUP_FILL_COLOR,
-
       // Default label positioning
       align: 'center',
       verticalAlign: 'top',
@@ -239,18 +224,11 @@ export class StyleConfigurator {
   private configureActivityStyles(): void {
     ShapeUtil.activityKinds().forEach(kind => {
       const style: BPMNCellStyle = {
-        // TODO magraph@0.1.0 remove forcing type when maxGraph fixes its types
+        // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
         shape: <ShapeValue>(<unknown>kind),
         rounded: true, // required by the BPMN specification
-
-        // TODO rebase arcSize seems to have been moved in another configuration
-        //absoluteArcSize: 1,
-        // TODO magraph@0.1.0 find a way to not force cast
-        //arcSize: <number>StyleDefault.SHAPE_ARC_SIZE,
-
-        // label style
-        verticalAlign: 'middle',
-        // TODO magraph@0.1.0 find a way to not force cast
+        verticalAlign: 'middle', // label style
+        // TODO maxgraph@0.1.0 find a way to not force cast
         strokeWidth: <number>(kind == ShapeBpmnElementKind.CALL_ACTIVITY ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN),
       };
       this.putCellStyle(kind, style);
@@ -260,11 +238,11 @@ export class StyleConfigurator {
   private configureGatewayStyles(): void {
     ShapeUtil.gatewayKinds().forEach(kind => {
       const style: BPMNCellStyle = {
-        // TODO magraph@0.1.0 remove forcing type when maxGraph fixes its types
+        // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
         shape: <ShapeValue>(<unknown>kind),
         perimeter: Perimeter.RhombusPerimeter,
         verticalAlign: 'top',
-        // TODO magraph@0.1.0 find a way to not force cast
+        // TODO maxgraph@0.1.0 find a way to not force cast
         strokeWidth: <number>StyleDefault.STROKE_WIDTH_THIN,
 
         // Default label positioning
@@ -279,34 +257,20 @@ export class StyleConfigurator {
     const style = this.getStylesheet().getDefaultEdgeStyle() as BPMNCellStyle;
     configureCommonDefaultStyle(style);
 
-    // TODO magraph@0.1.0 remove forcing type when maxGraph fixes its types
+    // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
     style.shape = <ShapeValue>BpmnStyleIdentifier.EDGE;
-    style.endSize = 12;
+    style.endSize = arrowDefaultSize;
     style.strokeWidth = 1.5;
     style.rounded = true;
     style.arcSize = 5;
     style.verticalAlign = 'bottom';
     // The end arrow must be redefined in specific style
-    style.endArrow = undefined;
-  }
-
-  // TODO rebase move to a function out of the class
-  private static configureCommonDefaultStyle(style: BPMNCellStyle): void {
-    style.fontFamily = StyleDefault.DEFAULT_FONT_FAMILY;
-    style.fontSize = StyleDefault.DEFAULT_FONT_SIZE;
-    style.fontColor = StyleDefault.DEFAULT_FONT_COLOR;
-    style.fillColor = StyleDefault.DEFAULT_FILL_COLOR;
-    style.strokeColor = StyleDefault.DEFAULT_STROKE_COLOR;
-    style.labelBackgroundColor = constants.NONE;
-
-    // only works with html labels (enabled by GraphConfigurator)
-    style.whiteSpace = 'wrap';
+    delete style.endArrow;
   }
 
   private configureEdgeStyles<T>(styleKinds: T[], specificStyles: Map<T, (style: BPMNCellStyle) => void>): void {
     styleKinds.forEach(kind => {
-      // TODO magraph@0.1.0 review if we need to set bpmn.edge (this is not enough for edge.ts)
-      const style: BPMNCellStyle = { bpmn: { edge: {} } };
+      const style: BPMNCellStyle = {};
       specificStyles.get(kind)(style);
       this.graph.getStylesheet().putCellStyle(kind.toString(), style);
     });
@@ -319,17 +283,16 @@ export class StyleConfigurator {
   }
 }
 
-// TODO rebase fix
-function configureCommonDefaultStyle(style: StyleMap): void {
-  style[mxConstants.STYLE_FONTFAMILY] = StyleDefault.DEFAULT_FONT_FAMILY;
-  style[mxConstants.STYLE_FONTSIZE] = StyleDefault.DEFAULT_FONT_SIZE;
-  style[mxConstants.STYLE_FONTCOLOR] = StyleDefault.DEFAULT_FONT_COLOR;
-  style[mxConstants.STYLE_FILLCOLOR] = StyleDefault.DEFAULT_FILL_COLOR;
-  style[mxConstants.STYLE_STROKECOLOR] = StyleDefault.DEFAULT_STROKE_COLOR;
-  style[mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = mxConstants.NONE;
+function configureCommonDefaultStyle(style: BPMNCellStyle): void {
+  style.fontFamily = StyleDefault.DEFAULT_FONT_FAMILY;
+  style.fontSize = StyleDefault.DEFAULT_FONT_SIZE;
+  style.fontColor = StyleDefault.DEFAULT_FONT_COLOR;
+  style.fillColor = StyleDefault.DEFAULT_FILL_COLOR;
+  style.strokeColor = StyleDefault.DEFAULT_STROKE_COLOR;
+  style.labelBackgroundColor = constants.NONE;
 
   // only works with html labels (enabled by GraphConfigurator)
-  style[mxConstants.STYLE_WHITE_SPACE] = 'wrap';
+  style.whiteSpace = 'wrap';
 }
 
 class MapWithDefault<T> extends Map<T, (style: BPMNCellStyle) => void> {

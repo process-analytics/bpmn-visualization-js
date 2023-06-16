@@ -13,15 +13,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import type { mxCell, mxGraphModel } from 'mxgraph';
-import { BpmnStyleIdentifier } from '.';
-import { setStyle } from './utils';
+import type { Cell, CellStyle, GraphDataModel } from '@maxgraph/core';
+import { getCellStyleClone, setCssClasses } from './utils';
 import type { CssRegistry } from '../../registry/css-registry';
+import type { BPMNCellStyle } from '../renderer/StyleComputer';
 
 export class StyleManager {
-  private stylesCache: Map<string, string> = new Map();
+  private stylesCache: Map<string, CellStyle> = new Map();
 
-  constructor(readonly cssRegistry: CssRegistry, readonly model: mxGraphModel) {}
+  constructor(readonly cssRegistry: CssRegistry, readonly model: GraphDataModel) {}
 
   clear(): void {
     this.stylesCache.clear();
@@ -29,6 +29,7 @@ export class StyleManager {
 
   resetAllStyles(): void {
     for (const cellId of this.stylesCache.keys()) {
+      // TODO inline in master branch
       const style = this.stylesCache.get(cellId);
       this.resetStyle(cellId, style);
     }
@@ -46,20 +47,22 @@ export class StyleManager {
     }
   }
 
-  private resetStyle(cellId: string, style: string): void {
+  private resetStyle(cellId: string, style: BPMNCellStyle): void {
     const cell = this.model.getCell(cellId);
+    // TODO maxGraph 0.1.0 - inline (can be done in the master branch as well)
     const cssClasses = this.cssRegistry.getClassNames(cellId);
 
-    const styleWithCssClasses = setStyle(style, BpmnStyleIdentifier.EXTRA_CSS_CLASSES, cssClasses.join(','));
-    this.model.setStyle(cell, styleWithCssClasses);
+    // no need to copy the style, it is coming from the cache only and is later deleted from the cache
+    setCssClasses(style, cssClasses);
+    this.model.setStyle(cell, style);
 
     this.stylesCache.delete(cellId);
   }
 
-  ensureStyleIsStored(cell: mxCell): void {
+  ensureStyleIsStored(cell: Cell): void {
     const cellId = cell.getId();
     if (!this.stylesCache.has(cellId)) {
-      this.stylesCache.set(cellId, cell.getStyle());
+      this.stylesCache.set(cellId, getCellStyleClone(cell));
     }
   }
 }

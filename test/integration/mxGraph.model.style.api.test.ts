@@ -23,15 +23,15 @@ import { buildExpectedShapeCellStyle } from './matchers/toBeShape';
 import { readFileSync } from '@test/shared/file-helper';
 import { MessageVisibleKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
 import type { EdgeStyleUpdate, Fill, Font, Stroke, StyleUpdate } from '@lib/component/registry';
-import type { mxCell } from 'mxgraph';
+import type { Cell } from '@maxgraph/core';
 
 // Create a dedicated instance with a DOM container as it is required by the CSS API.
 const bv = initializeBpmnVisualizationWithContainerId('bpmn-container-style-css-cross-tests');
 const htmlElementLookup = new HtmlElementLookup(bv);
 
-const getCell = (bpmnElementId: string): mxCell => {
+const getCell = (bpmnElementId: string): Cell => {
   const graph = bv.graph;
-  const cell = graph.model.getCell(bpmnElementId);
+  const cell = graph.getDataModel().getCell(bpmnElementId);
   if (!cell) {
     throw new Error(`Unable to find cell in the model with id ${bpmnElementId}`);
   }
@@ -131,13 +131,21 @@ describe('mxGraph model - update style', () => {
     });
 
     it('Font style already set and no font style as api parameter', () => {
-      const font = {
+      const font: Font = {
         isBold: true,
         isItalic: true,
         isUnderline: true,
         isStrikeThrough: true,
       };
       bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { font });
+      // TODO maxGraph@0.1.0 - add such additional check in the master branch and do it when several style update actions are done
+      expect('userTask_2_2').toBeUserTask({
+        font,
+        // not under test
+        parentId: 'lane_02',
+        label: 'User Task 2.2',
+      });
+
       // this doesn't change the style as the font property is empty
       bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { font: {} });
 
@@ -157,6 +165,17 @@ describe('mxGraph model - update style', () => {
           isUnderline: true,
           isStrikeThrough: true,
         },
+      });
+      expect('userTask_2_2').toBeUserTask({
+        font: {
+          isBold: true,
+          isItalic: true,
+          isUnderline: true,
+          isStrikeThrough: true,
+        },
+        // not under test
+        parentId: 'lane_02',
+        label: 'User Task 2.2',
       });
       bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { font: { isItalic: false, isUnderline: false } });
 
