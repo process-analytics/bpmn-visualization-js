@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { CellState, CellOverlay } from '@maxgraph/core';
-import { CellRenderer, Shape, Rectangle, ImageShape, Dictionary, SvgCanvas2D, constants } from '@maxgraph/core';
+import type { CellOverlay, CellState } from '@maxgraph/core';
+import { CellRenderer, constants, Dictionary, ImageShape, Rectangle, Shape, SvgCanvas2D } from '@maxgraph/core';
 
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
 import { EndEventShape, EventShape, IntermediateEventShape, ThrowIntermediateEventShape } from '../shape/event-shapes';
@@ -170,12 +170,8 @@ export default class ShapeConfigurator {
         const cell = this.state.cell;
         // dialect = strictHtml is set means that current node holds an html label
         // TODO magraph@0.1.0 "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided."constants.DIALECT.STRICTHTML
-        let allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === 'strictHtml');
-        const extraCssClasses = (this.state.style as BPMNCellStyle).bpmn?.extra?.css?.classes;
-        // TODO rebase verify the cssClasses property type in BPMNCellStyle
-        if (typeof extraCssClasses == 'string') {
-          allBpmnClassNames = allBpmnClassNames.concat(extraCssClasses.split(','));
-        }
+        const allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === 'strictHtml');
+        allBpmnClassNames.push(...(this.state.style as BPMNCellStyle).bpmn?.extra?.css?.classes);
 
         this.node.setAttribute('class', allBpmnClassNames.join(' '));
         this.node.setAttribute('data-bpmn-id', this.state.cell.id);
