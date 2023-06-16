@@ -94,7 +94,7 @@ export default class StyleComputer {
     const baseStyleNames: string[] = [bpmnCell.bpmnElement.kind as string];
 
     if (bpmnCell instanceof Shape) {
-      // TODO magraph@0.1.0 find a better way for the merge
+      // TODO magraph@0.1.0 find a better way for the merge - computeShapeBaseStylesValues and returns a CellStyle for consistency with other methods
       this.enrichStyleWithShapeInfo(style, bpmnCell);
     } else {
       baseStyleNames.push(...StyleComputer.computeEdgeBaseStyleNames(bpmnCell));
