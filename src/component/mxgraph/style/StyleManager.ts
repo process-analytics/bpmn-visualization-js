@@ -15,7 +15,7 @@ limitations under the License.
 */
 import type { Cell, CellStyle, GraphDataModel } from '@maxgraph/core';
 import { BpmnStyleIdentifier } from '.';
-import { setStyle } from './utils';
+import { setCssClasses, setStyle } from './utils';
 import type { CssRegistry } from '../../registry/css-registry';
 import type { BPMNCellStyle } from '../renderer/StyleComputer';
 
@@ -50,13 +50,11 @@ export class StyleManager {
 
   private resetStyle(cellId: string, style: BPMNCellStyle): void {
     const cell = this.model.getCell(cellId);
-    // TODO rebase refactor
+    // TODO rebase refactor - inline (can be done in the master branch as well)
     const cssClasses = this.cssRegistry.getClassNames(cellId);
 
     // no need to copy the style, it is coming from the cache only and is later deleted from the cache
-    // TODO rebase possible undefined values
-    style.bpmn.extra.css.classes = cssClasses;
-    // const styleWithCssClasses: BPMNCellStyle = { ...style, bpmn: { extra: { css: { classes: cssClasses } } } };
+    setCssClasses(style, cssClasses);
     this.model.setStyle(cell, style);
 
     this.stylesCache.delete(cellId);

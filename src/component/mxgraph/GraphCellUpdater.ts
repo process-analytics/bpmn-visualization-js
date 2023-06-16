@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { isShapeStyleUpdate, setStyle, updateFill, updateFont, updateStroke } from './style/utils';
+import { isShapeStyleUpdate, setCssClasses, setStyle, updateFill, updateFont, updateStroke } from './style/utils';
 import { StyleManager } from './style/StyleManager';
 
 import type { BpmnGraph } from './BpmnGraph';
@@ -59,14 +59,9 @@ export default class GraphCellUpdater {
 
     this.styleManager.ensureStyleIsStored(cell);
 
-    let cellStyle = cell.getStyle();
-    // TODO rebase adapt code for maxgraph
-    cellStyle = setStyle(cellStyle, BpmnStyleIdentifier.EXTRA_CSS_CLASSES, cssClasses.join(','));
+    const cellStyle: BPMNCellStyle = cell.getStyle();
+    setCssClasses(cellStyle, cssClasses);
     model.setStyle(cell, cellStyle);
-    // TODO magraph@0.1.0 improve logic
-    // const style = state.style as BPMNCellStyle;
-    // !style.bpmn.extra && (style.bpmn.extra = { css: { classes: undefined } });
-    // style.bpmn.extra.css.classes = cssClasses;
   }
 
   addOverlays(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
@@ -109,7 +104,7 @@ export default class GraphCellUpdater {
         this.styleManager.ensureStyleIsStored(cell);
 
         let cellStyle = cell.getStyle();
-        cellStyle = setStyle(cellStyle, mxConstants.STYLE_OPACITY, styleUpdate.opacity, ensureOpacityValue);
+        cellStyle = setStyle(cellStyle, 'opacity', styleUpdate.opacity, ensureOpacityValue);
         cellStyle = updateStroke(cellStyle, styleUpdate.stroke);
         cellStyle = updateFont(cellStyle, styleUpdate.font);
 

@@ -143,3 +143,9 @@ export const updateFill = (cellStyle: BPMNCellStyle, fill: Fill): CellStyle => {
 export const isShapeStyleUpdate = (style: StyleUpdate): style is ShapeStyleUpdate => {
   return style && typeof style === 'object' && 'fill' in style;
 };
+
+export function setCssClasses(cellStyle: BPMNCellStyle, cssClasses: string[]): void {
+  // TODO magraph@0.1.0 improve logic
+  !cellStyle.bpmn.extra && (cellStyle.bpmn.extra = { css: { classes: undefined } });
+  cellStyle.bpmn.extra.css.classes = cssClasses;
+}
