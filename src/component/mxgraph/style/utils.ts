@@ -14,10 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { CellStyle, NumericCellStateStyleKeys } from '@maxgraph/core';
+import { styleUtils } from '@maxgraph/core';
+
+import type { BPMNCellStyle } from '../renderer/StyleComputer';
 import { ensureOpacityValue, ensureStrokeWidthValue } from '../../helpers/validators';
 import type { Fill, Font, ShapeStyleUpdate, Stroke, StyleUpdate } from '../../registry';
-import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
-import { BpmnStyleIdentifier } from './identifiers';
+import { ShapeUtil } from '../../../model/bpmn/internal';
 
 /**
  * Store all rendering defaults used by `bpmn-visualization`.
@@ -78,49 +81,61 @@ export enum FONT {
 
 const convertDefaultValue = (value: string): string | undefined => (value == 'default' ? undefined : value);
 
-// TODO rebase fix update style functions
-export const updateStroke = (cellStyle: string, stroke: Stroke): string => {
+// TODO rebase fix update style functions - no need to return the CellStyle
+export const updateStroke = (cellStyle: CellStyle, stroke: Stroke): CellStyle => {
   if (stroke) {
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_STROKECOLOR, stroke.color, convertDefaultValue);
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_STROKE_OPACITY, stroke.opacity, ensureOpacityValue);
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_STROKEWIDTH, stroke.width, ensureStrokeWidthValue);
+    cellStyle = setStyle(cellStyle, 'strokeColor', stroke.color, convertDefaultValue);
+    cellStyle = setStyle(cellStyle, 'strokeOpacity', stroke.opacity, ensureOpacityValue);
+    cellStyle = setStyle(cellStyle, 'strokeWidth', stroke.width, ensureStrokeWidthValue);
   }
   return cellStyle;
 };
 
-export const setStyle = <T extends string | number>(cellStyle: string, key: string, value: T | undefined, converter: (value: T) => T | undefined = (value: T) => value): string => {
-  return value == undefined ? cellStyle : mxUtils.setStyle(cellStyle, key, converter(value));
+export const setStyle = <T extends string | number>(
+  cellStyle: CellStyle,
+  key: keyof CellStyle,
+  value: T | undefined,
+  converter: (value: T) => T | undefined = (value: T) => value,
+): CellStyle => {
+  if (value != undefined) {
+    // TODO rebase fix type - can we really ignore ts error?
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    cellStyle[key] = converter(value);
+  }
+  return cellStyle;
 };
 
-export const setStyleFlag = (cellStyle: string, key: string, flag: number, value: boolean | undefined): string =>
-  value == undefined ? cellStyle : mxUtils.setStyleFlag(cellStyle, key, flag, value);
+export const setStyleFlag = (cellStyle: CellStyle, key: NumericCellStateStyleKeys, flag: number, value?: boolean): CellStyle =>
+  value == undefined ? cellStyle : styleUtils.setStyleFlag(cellStyle, key, flag, value);
 
-export const updateFont = (cellStyle: string, font: Font): string => {
+export const updateFont = (cellStyle: CellStyle, font: Font): CellStyle => {
   if (font) {
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_FONTCOLOR, font.color, convertDefaultValue);
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_FONTSIZE, font.size);
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_FONTFAMILY, font.family);
+    cellStyle = setStyle(cellStyle, 'fontColor', font.color, convertDefaultValue);
+    cellStyle = setStyle(cellStyle, 'fontSize', font.size);
+    cellStyle = setStyle(cellStyle, 'fontFamily', font.family);
 
-    cellStyle = setStyleFlag(cellStyle, mxConstants.STYLE_FONTSTYLE, mxConstants.FONT_BOLD, font.isBold);
-    cellStyle = setStyleFlag(cellStyle, mxConstants.STYLE_FONTSTYLE, mxConstants.FONT_ITALIC, font.isItalic);
-    cellStyle = setStyleFlag(cellStyle, mxConstants.STYLE_FONTSTYLE, mxConstants.FONT_UNDERLINE, font.isUnderline);
-    cellStyle = setStyleFlag(cellStyle, mxConstants.STYLE_FONTSTYLE, mxConstants.FONT_STRIKETHROUGH, font.isStrikeThrough);
+    cellStyle = setStyleFlag(cellStyle, 'fontStyle', FONT.BOLD, font.isBold);
+    cellStyle = setStyleFlag(cellStyle, 'fontStyle', FONT.ITALIC, font.isItalic);
+    cellStyle = setStyleFlag(cellStyle, 'fontStyle', FONT.UNDERLINE, font.isUnderline);
+    cellStyle = setStyleFlag(cellStyle, 'fontStyle', FONT.STRIKETHROUGH, font.isStrikeThrough);
 
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_TEXT_OPACITY, font.opacity, ensureOpacityValue);
+    cellStyle = setStyle(cellStyle, 'textOpacity', font.opacity, ensureOpacityValue);
   }
   return cellStyle;
 };
 
-export const updateFill = (cellStyle: string, fill: Fill): string => {
+export const updateFill = (cellStyle: BPMNCellStyle, fill: Fill): CellStyle => {
   if (fill.color) {
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_FILLCOLOR, fill.color, convertDefaultValue);
+    cellStyle = setStyle(cellStyle, 'fillColor', fill.color, convertDefaultValue);
 
-    if (cellStyle.includes(ShapeBpmnElementKind.POOL) || cellStyle.includes(ShapeBpmnElementKind.LANE)) {
-      cellStyle = setStyle(cellStyle, mxConstants.STYLE_SWIMLANE_FILLCOLOR, fill.color, convertDefaultValue);
+    const kind = cellStyle.bpmn.kind;
+    if (ShapeUtil.isPoolOrLane(kind)) {
+      cellStyle = setStyle(cellStyle, 'swimlaneFillColor', fill.color, convertDefaultValue);
     }
   }
 
-  cellStyle = setStyle(cellStyle, mxConstants.STYLE_FILL_OPACITY, fill.opacity, ensureOpacityValue);
+  cellStyle = setStyle(cellStyle, 'fillOpacity', fill.opacity, ensureOpacityValue);
 
   return cellStyle;
 };
