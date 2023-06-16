@@ -131,15 +131,13 @@ export default class StyleComputer {
       const extensions = shape.extensions;
       const fillColor = extensions.fillColor;
       if (fillColor) {
-        styleValues.set(mxConstants.STYLE_FILLCOLOR, fillColor);
+        style.fillColor = fillColor;
         if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
-          styleValues.set(mxConstants.STYLE_SWIMLANE_FILLCOLOR, fillColor);
+          style.swimlaneFillColor = fillColor;
         }
       }
-      extensions.strokeColor && styleValues.set(mxConstants.STYLE_STROKECOLOR, extensions.strokeColor);
+      extensions.strokeColor && (style.strokeColor = extensions.strokeColor);
     }
-
-    return styleValues;
   }
 
   private static computeEventShapeStyle(bpmnElement: ShapeBpmnEvent, style: BPMNCellStyle): void {
@@ -196,7 +194,7 @@ export default class StyleComputer {
     if (font) {
       font.name && (style.fontFamily = font.name);
       font.size && (style.fontSize = font.size);
-      style.fontStyle = StyleComputer.getFontStyleValue(font);
+      style.fontStyle = getFontStyleValue(font);
     }
 
     // TODO rebase adapt for maxGraph
