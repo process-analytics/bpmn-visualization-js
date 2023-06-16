@@ -45,6 +45,8 @@ import type { Font } from '../../../model/bpmn/internal/Label';
 import type { RendererOptions } from '../../options';
 
 // TODO magraph@0.1.0 this type should probably be part of the API (so it should be exported)
+// TODO move somewhere else
+// TODO rename for consistent naming BPMNCellStyle --> BpmnCellStyle (apply to other places)
 export interface BPMNCellStyle extends CellStyle {
   // TODO magraph@0.1.0 the shape property is defined as 'ShapeValue'. It should be 'ShapeValue | string'
   // Omit<CellStyle, 'shape'> {
@@ -65,6 +67,7 @@ export interface BPMNCellStyle extends CellStyle {
     associationDirectionKind?: AssociationDirectionKind;
     // TODO magraph@0.1.0 isNonInitiating: previously we add a string, this introduces extra changes. If we want to keep this, do it in the master branch
     isNonInitiating?: boolean; // TODO magraph@0.1.0 why not 'isInitiating' for consistency with other boolean value? Negate doesn't make things easier to understand
+    // TODO maxgraph@0.1.0 simplify structure a single extraCssClasses
     extra?: {
       css: {
         classes: string[];
