@@ -171,8 +171,12 @@ export default class ShapeConfigurator {
         const cell = this.state.cell;
         // dialect = strictHtml is set means that current node holds an html label
         // TODO magraph@0.1.0 "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided."constants.DIALECT.STRICTHTML
-        const allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === 'strictHtml');
-        allBpmnClassNames.push(...(this.state.style as BPMNCellStyle).bpmn?.extra?.css?.classes);
+        let allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === 'strictHtml');
+        // TODO rebase BpmnCellStateStyle?
+        const extraCssClasses = (this.state.style as BPMNCellStyle).bpmn?.extra?.css?.classes;
+        if (extraCssClasses) {
+          allBpmnClassNames = allBpmnClassNames.concat(extraCssClasses);
+        }
 
         this.node.setAttribute('class', allBpmnClassNames.join(' '));
         this.node.setAttribute('data-bpmn-id', this.state.cell.id);
