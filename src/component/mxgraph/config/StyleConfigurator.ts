@@ -61,10 +61,8 @@ export class StyleConfigurator {
       (style: BPMNCellStyle) => {
         style.dashed = true;
         style.dashPattern = '1 2';
-        // TODO maxgraph@0.1.0 migration - update comment        // STYLE_ENDARROW and STYLE_STARTARROW are defined in specific AssociationDirectionKind styles when needed
-        // style.endArrow = 'openThin';
-        // style.startArrow = 'openThin';
-        style.startSize = 12;
+        // endArrow  and startArrow are defined in specific AssociationDirectionKind styles when needed
+        style.startSize = arrowDefaultSize;
       },
     ],
   ]);
@@ -89,19 +87,6 @@ export class StyleConfigurator {
   private specificAssociationFlowStyles = new MapWithDefault<AssociationDirectionKind>([
     [
       AssociationDirectionKind.NONE,
-      (style: BPMNCellStyle) => {
-        style.startArrow = undefined;
-        style.endArrow = undefined;
-      },
-    ],
-    [
-      AssociationDirectionKind.ONE,
-      (style: BPMNCellStyle) => {
-        style.startArrow = undefined;
-      },
-    ],
-    [
-      AssociationDirectionKind.BOTH,
       // eslint-disable-next-line @typescript-eslint/no-unused-vars -- prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
       (_style: BPMNCellStyle) => {
         // the style is fully managed by the FlowKind.ASSOCIATION_FLOW style
@@ -109,15 +94,15 @@ export class StyleConfigurator {
     ],
     [
       AssociationDirectionKind.ONE,
-      (style: StyleMap) => {
-        style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_OPEN_THIN;
+      (style: BPMNCellStyle) => {
+        style.endArrow = 'openThin';
       },
     ],
     [
       AssociationDirectionKind.BOTH,
-      (style: StyleMap) => {
-        style[mxConstants.STYLE_STARTARROW] = mxConstants.ARROW_OPEN_THIN;
-        style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_OPEN_THIN;
+      (style: BPMNCellStyle) => {
+        style.endArrow = 'openThin';
+        style.startArrow = 'openThin';
       },
     ],
   ]);
