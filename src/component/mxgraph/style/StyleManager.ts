@@ -14,8 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 import type { Cell, CellStyle, GraphDataModel } from '@maxgraph/core';
-import { BpmnStyleIdentifier } from '.';
-import { setCssClasses, setStyle } from './utils';
+import { setCssClasses } from './utils';
 import type { CssRegistry } from '../../registry/css-registry';
 import type { BPMNCellStyle } from '../renderer/StyleComputer';
 
