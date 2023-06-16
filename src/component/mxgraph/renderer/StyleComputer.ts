@@ -95,7 +95,7 @@ export default class StyleComputer {
 
     if (bpmnCell instanceof Shape) {
       // TODO magraph@0.1.0 find a better way for the merge
-      StyleComputer.enrichStyleWithShapeInfo(style, bpmnCell);
+      this.enrichStyleWithShapeInfo(style, bpmnCell);
     } else {
       baseStyleNames.push(...StyleComputer.computeEdgeBaseStyleNames(bpmnCell));
     }
@@ -106,7 +106,7 @@ export default class StyleComputer {
     return { baseStyleNames: baseStyleNames, ...style, ...fontStyleValues, ...labelStyleValues };
   }
 
-  private static enrichStyleWithShapeInfo(style: BPMNCellStyle, shape: Shape): void {
+  private enrichStyleWithShapeInfo(style: BPMNCellStyle, shape: Shape): void {
     const bpmnElement = shape.bpmnElement;
 
     if (bpmnElement instanceof ShapeBpmnEvent) {
@@ -176,15 +176,16 @@ export default class StyleComputer {
     return styles;
   }
 
-  private computeEdgeStyleValues(edge: Edge): Map<string, string | number> {
-    const styleValues = new Map<string, string | number>();
+  // TODO rebase call this method
+  private computeEdgeStyleValues(edge: Edge): BPMNCellStyle {
+    const style: BPMNCellStyle = {};
 
     if (!this.ignoreBpmnColors) {
       const extensions = edge.extensions;
-      extensions.strokeColor && styleValues.set(mxConstants.STYLE_STROKECOLOR, extensions.strokeColor);
+      extensions.strokeColor && (style.strokeColor = extensions.strokeColor);
     }
 
-    return styleValues;
+    return style;
   }
 
   private computeFontStyleValues(bpmnCell: Shape | Edge): CellStyle {
@@ -197,10 +198,9 @@ export default class StyleComputer {
       style.fontStyle = getFontStyleValue(font);
     }
 
-    // TODO rebase adapt for maxGraph
     if (!this.ignoreBpmnColors) {
       const extensions = bpmnCell.label?.extensions;
-      extensions?.color && styleValues.set(mxConstants.STYLE_FONTCOLOR, extensions.color);
+      extensions?.color && (style.fontColor = extensions.color);
     }
 
     return style;
