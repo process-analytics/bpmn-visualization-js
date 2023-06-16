@@ -41,7 +41,8 @@ export class BpmnRenderer {
   }
 
   private insertShapesAndEdges({ pools, lanes, subprocesses, otherFlowNodes, boundaryEvents, edges }: RenderedModel): void {
-    // TODO rebase use this.graph.batchUpdate
+    // TODO rebase use this.graph.batchUpdate --> check master, this should be done here instead
+    // TODO maxGraph migration  everywhere graph.model -->graph.getDataModel();
     const model = this.graph.model;
     model.clear(); // ensure to remove manual changes or already loaded graphs
     model.beginUpdate();
@@ -130,6 +131,7 @@ export class BpmnRenderer {
 
   private insertVertex(parent: Cell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: BPMNCellStyle): Cell {
     const vertexCoordinates = this.coordinatesTranslator.computeRelativeCoordinates(parent, new Point(bounds.x, bounds.y));
+    // TODO maxGraph@0.1.0 check insertVertex with single parameter
     const cell = this.graph.insertVertex(parent, id, value, vertexCoordinates.x, vertexCoordinates.y, bounds.width, bounds.height, style);
 
     if (labelBounds) {
