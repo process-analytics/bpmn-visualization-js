@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import type { mxCell, mxGraphModel } from 'mxgraph';
+import type { Cell, GraphDataModel } from '@maxgraph/core';
 import { BpmnStyleIdentifier } from '.';
 import { setStyle } from './utils';
 import type { CssRegistry } from '../../registry/css-registry';
@@ -21,7 +21,7 @@ import type { CssRegistry } from '../../registry/css-registry';
 export class StyleManager {
   private stylesCache: Map<string, string> = new Map();
 
-  constructor(readonly cssRegistry: CssRegistry, readonly model: mxGraphModel) {}
+  constructor(readonly cssRegistry: CssRegistry, readonly model: GraphDataModel) {}
 
   clear(): void {
     this.stylesCache.clear();
@@ -56,7 +56,7 @@ export class StyleManager {
     this.stylesCache.delete(cellId);
   }
 
-  ensureStyleIsStored(cell: mxCell): void {
+  ensureStyleIsStored(cell: Cell): void {
     const cellId = cell.getId();
     if (!this.stylesCache.has(cellId)) {
       this.stylesCache.set(cellId, cell.getStyle());
