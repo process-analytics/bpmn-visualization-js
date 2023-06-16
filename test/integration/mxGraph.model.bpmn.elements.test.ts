@@ -1583,23 +1583,23 @@ describe('mxGraph model - BPMN elements', () => {
       ),
     });
 
-    const sequenceFlowMxGeometry = new Geometry(0, 0, 0, 0);
-    sequenceFlowMxGeometry.points = [
+    const sequenceFlowGeometry = new Geometry(0, 0, 0, 0);
+    sequenceFlowGeometry.points = [
       new Point(190, 100), // absolute coordinates: parent x="160" y="80", cell x="350" y="180"
       new Point(350, 100), // absolute coordinates: parent x="160" y="80", cell x="510" y="180"
     ];
     expect('SequenceFlow_id').toBeCellWithParentAndGeometry({
       parentId: 'Participant_1',
-      geometry: sequenceFlowMxGeometry,
+      geometry: sequenceFlowGeometry,
     });
 
-    const messageFlowMxGeometry = new Geometry(0, 0, 0, 0);
-    messageFlowMxGeometry.points = [
+    const messageFlowGeometry = new Geometry(0, 0, 0, 0);
+    messageFlowGeometry.points = [
       new Point(334, 260), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="260"
       new Point(334, 342), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="342"
     ];
     expect('MessageFlow_1').toBeCellWithParentAndGeometry({
-      geometry: messageFlowMxGeometry,
+      geometry: messageFlowGeometry,
     });
   });
 
@@ -1641,23 +1641,23 @@ describe('mxGraph model - BPMN elements', () => {
       ),
     });
 
-    const sequenceFlowMxGeometry = new Geometry(0, 0, 0, 0);
-    sequenceFlowMxGeometry.points = [
+    const sequenceFlowGeometry = new Geometry(0, 0, 0, 0);
+    sequenceFlowGeometry.points = [
       new Point(160, 100), // absolute coordinates: parent x="190" y="80", cell x="350" y="180"
       new Point(320, 100), // absolute coordinates: parent x="190" y="80", cell x="510" y="180"
     ];
     expect('SequenceFlow_id').toBeCellWithParentAndGeometry({
       parentId: 'Lane_1_1',
-      geometry: sequenceFlowMxGeometry,
+      geometry: sequenceFlowGeometry,
     });
 
-    const messageFlowMxGeometry = new Geometry(0, 0, 0, 0);
-    messageFlowMxGeometry.points = [
+    const messageFlowGeometry = new Geometry(0, 0, 0, 0);
+    messageFlowGeometry.points = [
       new Point(334, 480), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="480"
       new Point(334, 632), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="632"
     ];
     expect('MessageFlow_1').toBeCellWithParentAndGeometry({
-      geometry: messageFlowMxGeometry,
+      geometry: messageFlowGeometry,
     });
   });
 
