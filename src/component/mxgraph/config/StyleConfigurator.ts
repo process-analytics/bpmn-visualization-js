@@ -275,19 +275,6 @@ export class StyleConfigurator {
     style.endArrow = undefined;
   }
 
-  // TODO rebase move to a function out of the class
-  private static configureCommonDefaultStyle(style: BPMNCellStyle): void {
-    style.fontFamily = StyleDefault.DEFAULT_FONT_FAMILY;
-    style.fontSize = StyleDefault.DEFAULT_FONT_SIZE;
-    style.fontColor = StyleDefault.DEFAULT_FONT_COLOR;
-    style.fillColor = StyleDefault.DEFAULT_FILL_COLOR;
-    style.strokeColor = StyleDefault.DEFAULT_STROKE_COLOR;
-    style.labelBackgroundColor = constants.NONE;
-
-    // only works with html labels (enabled by GraphConfigurator)
-    style.whiteSpace = 'wrap';
-  }
-
   private configureEdgeStyles<T>(styleKinds: T[], specificStyles: Map<T, (style: BPMNCellStyle) => void>): void {
     styleKinds.forEach(kind => {
       // TODO magraph@0.1.0 review if we need to set bpmn.edge (this is not enough for edge.ts)
@@ -304,17 +291,16 @@ export class StyleConfigurator {
   }
 }
 
-// TODO rebase fix
-function configureCommonDefaultStyle(style: StyleMap): void {
-  style[mxConstants.STYLE_FONTFAMILY] = StyleDefault.DEFAULT_FONT_FAMILY;
-  style[mxConstants.STYLE_FONTSIZE] = StyleDefault.DEFAULT_FONT_SIZE;
-  style[mxConstants.STYLE_FONTCOLOR] = StyleDefault.DEFAULT_FONT_COLOR;
-  style[mxConstants.STYLE_FILLCOLOR] = StyleDefault.DEFAULT_FILL_COLOR;
-  style[mxConstants.STYLE_STROKECOLOR] = StyleDefault.DEFAULT_STROKE_COLOR;
-  style[mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = mxConstants.NONE;
+function configureCommonDefaultStyle(style: BPMNCellStyle): void {
+  style.fontFamily = StyleDefault.DEFAULT_FONT_FAMILY;
+  style.fontSize = StyleDefault.DEFAULT_FONT_SIZE;
+  style.fontColor = StyleDefault.DEFAULT_FONT_COLOR;
+  style.fillColor = StyleDefault.DEFAULT_FILL_COLOR;
+  style.strokeColor = StyleDefault.DEFAULT_STROKE_COLOR;
+  style.labelBackgroundColor = constants.NONE;
 
   // only works with html labels (enabled by GraphConfigurator)
-  style[mxConstants.STYLE_WHITE_SPACE] = 'wrap';
+  style.whiteSpace = 'wrap';
 }
 
 class MapWithDefault<T> extends Map<T, (style: BPMNCellStyle) => void> {
