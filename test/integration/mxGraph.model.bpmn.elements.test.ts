@@ -1590,7 +1590,7 @@ describe('mxGraph model - BPMN elements', () => {
     ];
     expect('SequenceFlow_id').toBeCellWithParentAndGeometry({
       parentId: 'Participant_1',
-      geometry: sequenceFlowGeometry,
+      geometry: sequenceFlowMxGeometry,
     });
 
     const messageFlowMxGeometry = new Geometry(0, 0, 0, 0);
@@ -1599,7 +1599,7 @@ describe('mxGraph model - BPMN elements', () => {
       new Point(334, 342), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="342"
     ];
     expect('MessageFlow_1').toBeCellWithParentAndGeometry({
-      geometry: messageFlowGeometry,
+      geometry: messageFlowMxGeometry,
     });
   });
 

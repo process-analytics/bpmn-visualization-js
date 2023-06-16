@@ -23,15 +23,15 @@ import { buildExpectedShapeCellStyle } from './matchers/toBeShape';
 import { readFileSync } from '@test/shared/file-helper';
 import { MessageVisibleKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
 import type { EdgeStyleUpdate, Fill, Font, Stroke, StyleUpdate } from '@lib/component/registry';
-import type { mxCell } from 'mxgraph';
+import type { Cell } from '@maxgraph/core';
 
 // Create a dedicated instance with a DOM container as it is required by the CSS API.
 const bv = initializeBpmnVisualizationWithContainerId('bpmn-container-style-css-cross-tests');
 const htmlElementLookup = new HtmlElementLookup(bv);
 
-const getCell = (bpmnElementId: string): mxCell => {
+const getCell = (bpmnElementId: string): Cell => {
   const graph = bv.graph;
-  const cell = graph.model.getCell(bpmnElementId);
+  const cell = graph.getDataModel().getCell(bpmnElementId);
   if (!cell) {
     throw new Error(`Unable to find cell in the model with id ${bpmnElementId}`);
   }
