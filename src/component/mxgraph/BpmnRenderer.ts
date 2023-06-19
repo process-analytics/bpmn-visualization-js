@@ -13,8 +13,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import type { Cell } from '@maxgraph/core';
-import { Point } from '@maxgraph/core';
 
 import type { Edge, Waypoint } from '../../model/bpmn/internal/edge/edge';
 import { MessageFlow } from '../../model/bpmn/internal/edge/flows';
@@ -28,6 +26,8 @@ import StyleComputer from './renderer/StyleComputer';
 import type { BpmnGraph } from './BpmnGraph';
 import type { FitOptions, RendererOptions } from '../options';
 import type { RenderedModel } from '../registry/bpmn-model-registry';
+import type { Cell } from '@maxgraph/core';
+import { Point } from '@maxgraph/core';
 
 /**
  * @internal
@@ -41,12 +41,8 @@ export class BpmnRenderer {
   }
 
   private insertShapesAndEdges({ pools, lanes, subprocesses, otherFlowNodes, boundaryEvents, edges }: RenderedModel): void {
-    // TODO rebase use this.graph.batchUpdate --> check master, this should be done here instead
-    // TODO maxGraph migration  everywhere graph.model -->graph.getDataModel();
-    const model = this.graph.model;
-    model.clear(); // ensure to remove manual changes or already loaded graphs
-    model.beginUpdate();
-    try {
+    this.graph.batchUpdate(() => {
+      this.graph.getDataModel().clear(); // ensure to remove manual changes or already loaded graphs
       this.insertShapes(pools);
       this.insertShapes(lanes);
       this.insertShapes(subprocesses);
@@ -55,9 +51,7 @@ export class BpmnRenderer {
       this.insertShapes(boundaryEvents);
       // at last as edge source and target must be present in the model prior insertion, otherwise they are not rendered
       this.insertEdges(edges);
-    } finally {
-      model.endUpdate();
-    }
+    });
   }
 
   private insertShapes(shapes: Shape[]): void {
@@ -126,7 +120,7 @@ export class BpmnRenderer {
   }
 
   private getCell(id: string): Cell {
-    return this.graph.model.getCell(id);
+    return this.graph.getDataModel().getCell(id);
   }
 
   private insertVertex(parent: Cell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: BPMNCellStyle): Cell {
