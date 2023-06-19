@@ -434,33 +434,6 @@ describe('Style Computer', () => {
           });
         });
       });
-      // TODO rebase adapt test
-      //        const expectedStyle = <BPMNCellStyle>{
-      //           baseStyleNames: ['subProcess'],
-      //           bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED, markers },
-      //           fontFamily: 'Arial',
-      //           fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
-      //         };
-      //         !markers.includes(ShapeBpmnMarkerKind.EXPAND) && (expectedStyle.verticalAlign = 'top');
-      //         expect(computeStyle(shape)).toStrictEqual(expectedStyle);
-      //       });
-      //
-      //       it(`${expandKind} embedded sub-process with label bounds`, () => {
-      //         const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, markers), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
-      //         expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
-      //           align: 'center',
-      //           baseStyleNames: ['subProcess'],
-      //           bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED, markers },
-      //           fontFamily: 'sans-serif',
-      //           fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
-      //           labelWidth: 301,
-      //           verticalAlign: 'top',
-      //           // FIXME maxgraph@0.1.0 values were inverted in the master branch implementation, this was probably wrong as they were set like this in StyleConfigurator
-      //           //  `subProcess;bpmn.subProcessKind=embedded${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=top;verticalLabelPosition=left`,
-      //           labelPosition: 'left',
-      //           verticalLabelPosition: 'top',
-      //           // end of fixme
-      //         });
     });
   });
 
