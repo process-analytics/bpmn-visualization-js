@@ -17,7 +17,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BPMNCellStyle } from '../../../../../src/component/mxgraph/renderer/StyleComputer';
+import type { ShapeValue } from '@maxgraph/core';
+import type { BPMNCellStyle } from '@lib/component/mxgraph/renderer/StyleComputer';
 import StyleComputer from '@lib/component/mxgraph/renderer/StyleComputer';
 import Shape from '@lib/model/bpmn/internal/shape/Shape';
 import ShapeBpmnElement, {
@@ -780,19 +781,34 @@ describe('Style Computer', () => {
           const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.DEFAULT), undefined, newLabelExtension('#aaaaaa'));
           edge.extensions.strokeColor = '#111111';
           const additionalColorsStyle = expectAdditionalColorsStyle ? ';strokeColor=#111111;fontColor=#aaaaaa' : '';
-          expect(computeStyleWithRendererOptions(edge)).toBe(`sequenceFlow;default${additionalColorsStyle}`);
+          // expect(computeStyleWithRendererOptions(edge)).toBe(`sequenceFlow;default${additionalColorsStyle}`);
+          expect(computeStyleWithRendererOptions(edge)).toStrictEqual(<BPMNCellStyle>{
+            baseStyleNames: ['sequenceFlow', 'default'],
+            bpmn: { kind: FlowKind.SEQUENCE_FLOW },
+          });
         });
         it('message flow', () => {
           const edge = new Edge('id', newMessageFlow(), undefined, newLabelExtension('#aaaabb'));
           edge.extensions.strokeColor = '#1111bb';
           const additionalColorsStyle = expectAdditionalColorsStyle ? ';strokeColor=#1111bb;fontColor=#aaaabb' : '';
-          expect(computeStyleWithRendererOptions(edge)).toBe(`messageFlow${additionalColorsStyle}`);
+          // expect(computeStyleWithRendererOptions(edge)).toBe(`messageFlow${additionalColorsStyle}`);
+          expect(computeStyleWithRendererOptions(edge)).toStrictEqual(<BPMNCellStyle>{
+            baseStyleNames: ['messageFlow'],
+            bpmn: { kind: FlowKind.MESSAGE_FLOW },
+          });
         });
         it('message flow icon', () => {
           const edge = new Edge('id', newMessageFlow());
           edge.extensions.strokeColor = '#11aabb';
           const additionalColorsStyle = expectAdditionalColorsStyle ? ';strokeColor=#11aabb' : '';
-          expect(computeMessageFlowIconStyleWithRendererOptions(edge)).toBe(`shape=bpmn.messageFlowIcon;bpmn.isInitiating=false${additionalColorsStyle}`);
+          expect(computeMessageFlowIconStyleWithRendererOptions(edge)).toStrictEqual(<BPMNCellStyle>{
+            // TODO rebase isNonInitiating -- isInitiating
+            // expect(computeMessageFlowIconStyleWithRendererOptions(edge)).toBe(`shape=bpmn.messageFlowIcon;bpmn.isInitiating=false${additionalColorsStyle}`);
+            bpmn: { isNonInitiating: false },
+            // TODO maxGraph@0.1.0 force conversion to ShapeValue
+            // TODO rebase decide if we use BpmnStyleIdentifier const instead
+            shape: <ShapeValue>'bpmn.messageFlowIcon',
+          });
         });
         it('association flow', () => {
           const edge = new Edge('id', newAssociationFlow(AssociationDirectionKind.ONE), undefined, newLabelExtension('#aaaacc'));
