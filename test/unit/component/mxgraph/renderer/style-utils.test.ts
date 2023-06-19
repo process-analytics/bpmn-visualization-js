@@ -68,13 +68,9 @@ describe('compute all css class names based on style input', () => {
     ${{ bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind: ShapeBpmnSubProcessKind.TRANSACTION } }}                                          | ${true}  | ${['bpmn-type-activity', 'bpmn-sub-process', 'bpmn-sub-process-transaction', 'bpmn-label']}
     ${{ bpmn: { kind: FlowKind.ASSOCIATION_FLOW } }}                                                                                                      | ${true}  | ${['bpmn-type-flow', 'bpmn-association', 'bpmn-label']}
     ${{ bpmn: { kind: FlowKind.MESSAGE_FLOW } }}                                                                                                          | ${false} | ${['bpmn-type-flow', 'bpmn-message-flow']}
-    ${'shape=bpmn.message-flow-icon'}                                                                                                                     | ${false} | ${['bpmn-message-flow-icon']}
-    ${'shape=bpmn.message-flow-icon;bpmn.isInitiating=false'}                                                                                             | ${false} | ${['bpmn-message-flow-icon', 'bpmn-icon-non-initiating']}
-    ${'shape=bpmn.message-flow-icon;bpmn.isInitiating=true'}                                                                                              | ${true}  | ${['bpmn-message-flow-icon', 'bpmn-icon-initiating', 'bpmn-label']}
-    ${{ bpmn: { kind: FlowKind.SEQUENCE_FLOW } }}                                                                                                         | ${false} | ${['bpmn-type-flow', 'bpmn-sequence-flow']}
-    ${{ shape: 'bpmn.message-flow-icon' }}                                                                                                                | ${false} | ${['bpmn-message-flow-icon']}
     ${{ bpmn: { isNonInitiating: true }, shape: 'bpmn.message-flow-icon' }}                                                                               | ${false} | ${['bpmn-message-flow-icon', 'bpmn-icon-non-initiating']}
     ${{ bpmn: { isNonInitiating: false }, shape: 'bpmn.message-flow-icon' }}                                                                              | ${true}  | ${['bpmn-message-flow-icon', 'bpmn-icon-initiating', 'bpmn-label']}
+    ${{ bpmn: { kind: FlowKind.SEQUENCE_FLOW } }}                                                                                                         | ${false} | ${['bpmn-type-flow', 'bpmn-sequence-flow']}
   `(
     // TODO maxgraph@0.1.0 find a way to correctly display the style object
     // TODO rebase ShapeBpmnSubProcessKind.AD_HOC --> class should be bpmn-subprocess-adhoc, it is ad_hoc!!!
