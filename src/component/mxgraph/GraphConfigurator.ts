@@ -63,7 +63,7 @@ export default class GraphConfigurator {
   }
 
   private configureNavigationSupport(options: GlobalOptions): void {
-    // TODO magraph@0.1.0 decide if we hide this maxGraph implementation details in BpmnGraph
+    // TODO maxgraph@0.1.0 decide if we hide this maxGraph implementation details in BpmnGraph
     // In theory, the panningHandler may not be available if its plugin is not registered. The maxGraph code sometimes check for availability. For now, the check is not needed as we know that we load it
     const panningHandler = <PanningHandler>this.graph.getPlugin('PanningHandler');
 

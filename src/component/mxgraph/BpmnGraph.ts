@@ -126,7 +126,7 @@ export class BpmnGraph extends Graph {
       let scale = Math.min(maxScale, Math.min(clientWidth / width, clientHeight / height));
       this.setCurrentZoomLevel(scale);
 
-      // TODO magraph@0.1.0 improve implementation (the following is to make integration tests pass)
+      // TODO maxgraph@0.1.0 improve implementation (the following is to make integration tests pass)
       scale == 0 && (scale = 1);
       this.view.scaleAndTranslate(
         scale,
@@ -136,7 +136,7 @@ export class BpmnGraph extends Graph {
     }
   }
 
-  // TODO magraph@0.1.0 move somewhere else + find a better name + should be a util function
+  // TODO maxgraph@0.1.0 move somewhere else + find a better name + should be a util function
   private NaNToZero(value: number): number {
     return Number.isNaN(value) ? 0 : value;
   }
@@ -211,7 +211,7 @@ export class BpmnGraph extends Graph {
     return [factor, scale];
   }
 
-  // TODO magraph@0.1.0 temp to fix maxGraph style merge issue (should be fixed in maxGraph@0.2.0)
+  // TODO maxgraph@0.1.0 temp to fix maxGraph style merge issue (should be fixed in maxGraph@0.2.0)
   override createStylesheet(): Stylesheet {
     return new BpmnStylesheet();
   }
@@ -231,7 +231,7 @@ class BpmnGraphView extends GraphView {
   }
 }
 
-// TODO magraph@0.1.0 temp to fix maxGraph style merge issue (should be fixed in maxGraph@0.2.0)
+// TODO maxgraph@0.1.0 temp to fix maxGraph style merge issue (should be fixed in maxGraph@0.2.0)
 class BpmnStylesheet extends Stylesheet {
   override getCellStyle(cellStyle: CellStyle, defaultStyle: CellStateStyle): CellStateStyle {
     let style: CellStateStyle;

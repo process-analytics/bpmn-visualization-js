@@ -70,8 +70,8 @@ export const StyleDefault = {
   MESSAGE_FLOW_MARKER_END_FILL_COLOR: 'White',
 };
 
-// TODO magraph@0.1.0 maxGraph "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided." constants.FONT
-// TODO magraph@0.1.0 remove duplicated from maxGraph
+// TODO maxgraph@0.1.0 maxGraph "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided." constants.FONT
+// TODO maxgraph@0.1.0 remove duplicated from maxGraph
 export enum FONT {
   BOLD = 1,
   ITALIC = 2,
@@ -145,7 +145,7 @@ export const isShapeStyleUpdate = (style: StyleUpdate): style is ShapeStyleUpdat
 };
 
 export function setCssClasses(cellStyle: BPMNCellStyle, cssClasses: string[]): void {
-  // TODO magraph@0.1.0 improve logic
+  // TODO maxgraph@0.1.0 improve logic
   !cellStyle.bpmn.extra && (cellStyle.bpmn.extra = { css: { classes: undefined } });
   cellStyle.bpmn.extra.css.classes = cssClasses;
 }

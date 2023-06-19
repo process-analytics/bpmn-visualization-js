@@ -108,7 +108,7 @@ export class EventShape extends EllipseShape {
 
   private static setDashedOuterShapePattern(paintParameter: PaintParameter, isInterrupting: boolean): void {
     paintParameter.canvas.save(); // ensure we can later restore the configuration
-    // TODO magraph@0.1.0 'isInterrupting' can be undefined in maxGraph whereas it wasn't with mxGraph
+    // TODO maxgraph@0.1.0 'isInterrupting' can be undefined in maxGraph whereas it wasn't with mxGraph
     if (isInterrupting === false) {
       paintParameter.canvas.setDashed(true, false);
       paintParameter.canvas.setDashPattern('3 2');

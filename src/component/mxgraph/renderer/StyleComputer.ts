@@ -44,17 +44,17 @@ import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge
 import type { Font } from '../../../model/bpmn/internal/Label';
 import type { RendererOptions } from '../../options';
 
-// TODO magraph@0.1.0 this type should probably be part of the API (so it should be exported)
+// TODO maxgraph@0.1.0 this type should probably be part of the API (so it should be exported)
 // TODO move somewhere else
 // TODO rename for consistent naming BPMNCellStyle --> BpmnCellStyle (apply to other places)
 export interface BPMNCellStyle extends CellStyle {
-  // TODO magraph@0.1.0 the shape property is defined as 'ShapeValue'. It should be 'ShapeValue | string'
+  // TODO maxgraph@0.1.0 the shape property is defined as 'ShapeValue'. It should be 'ShapeValue | string'
   // Omit<CellStyle, 'shape'> {
   // shape?: ShapeValue | string;
-  // TODO magraph@0.1.0 make bpmn mandatory?
+  // TODO maxgraph@0.1.0 make bpmn mandatory?
   bpmn?: {
-    // TODO magraph@0.1.0 sort properties in alphabetical order for clarity (and as done in maxGraph CellStyle) and provide documentation about each property
-    // TODO magraph@0.1.0 make kind mandatory?
+    // TODO maxgraph@0.1.0 sort properties in alphabetical order for clarity (and as done in maxGraph CellStyle) and provide documentation about each property
+    // TODO maxgraph@0.1.0 make kind mandatory?
     kind?: ShapeBpmnElementKind | FlowKind;
     isInstantiating?: boolean;
     gatewayKind?: ShapeBpmnEventBasedGatewayKind;
@@ -65,8 +65,8 @@ export interface BPMNCellStyle extends CellStyle {
     markers?: ShapeBpmnMarkerKind[];
     sequenceFlowKind?: SequenceFlowKind;
     associationDirectionKind?: AssociationDirectionKind;
-    // TODO magraph@0.1.0 isNonInitiating: previously we add a string, this introduces extra changes. If we want to keep this, do it in the master branch
-    isNonInitiating?: boolean; // TODO magraph@0.1.0 why not 'isInitiating' for consistency with other boolean value? Negate doesn't make things easier to understand
+    // TODO maxgraph@0.1.0 isNonInitiating: previously we add a string, this introduces extra changes. If we want to keep this, do it in the master branch
+    isNonInitiating?: boolean; // TODO maxgraph@0.1.0 why not 'isInitiating' for consistency with other boolean value? Negate doesn't make things easier to understand
     // TODO maxgraph@0.1.0 simplify structure a single extraCssClasses
     extra?: {
       css: {
@@ -98,7 +98,7 @@ export default class StyleComputer {
     const baseStyleNames: string[] = [bpmnCell.bpmnElement.kind as string];
 
     if (bpmnCell instanceof Shape) {
-      // TODO magraph@0.1.0 find a better way for the merge - computeShapeBaseStylesValues and returns a CellStyle for consistency with other methods
+      // TODO maxgraph@0.1.0 find a better way for the merge - computeShapeBaseStylesValues and returns a CellStyle for consistency with other methods
       this.enrichStyleWithShapeInfo(style, bpmnCell);
     } else {
       baseStyleNames.push(...StyleComputer.computeEdgeBaseStyleNames(bpmnCell));
@@ -164,7 +164,7 @@ export default class StyleComputer {
     style.bpmn.markers = bpmnElement.markers;
   }
 
-  // TODO magraph@0.1.0 switch from static method to function (same in other places of this class) --> TODO in master branch
+  // TODO maxgraph@0.1.0 switch from static method to function (same in other places of this class) --> TODO in master branch
   // This applies to the current implementation and to all static methods of this class
   private static computeEdgeBaseStyleNames(edge: Edge): string[] {
     const styles: string[] = [];
@@ -227,7 +227,7 @@ export default class StyleComputer {
         // According to the documentation, "label position" can only take values in left, center, right with default=center
         // However, there is undocumented behavior when the value is not one of these and this behavior is exactly what we want.
         // See https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/mxGraphView.js#L1183-L1252
-        // FIXME magraph@0.1.0 values were inverted in the mxGraph implementation, this was probably wrong as they were set like this in StyleConfigurator (fixed in master branch)
+        // FIXME maxgraph@0.1.0 values were inverted in the mxGraph implementation, this was probably wrong as they were set like this in StyleConfigurator (fixed in master branch)
         // styleValues.set(mxConstants.STYLE_LABEL_POSITION, 'ignore');
         // styleValues.set(mxConstants.STYLE_VERTICAL_LABEL_POSITION, mxConstants.ALIGN_MIDDLE);
         // TODO rebase adapt label position for maxGraph
@@ -251,7 +251,7 @@ export default class StyleComputer {
 
   computeMessageFlowIconStyle(edge: Edge): BPMNCellStyle {
     return {
-      // TODO magraph@0.1.0 remove forcing type when maxGraph fixes its types
+      // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
       shape: <ShapeValue>BpmnStyleIdentifier.MESSAGE_FLOW_ICON,
       // TODO rebase, isNonInitiating --> isInitiating
       //     styleValues.push([BpmnStyleIdentifier.IS_INITIATING, String(edge.messageVisibleKind === MessageVisibleKind.INITIATING)]);

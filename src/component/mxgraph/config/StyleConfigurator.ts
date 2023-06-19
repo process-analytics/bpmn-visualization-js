@@ -33,7 +33,7 @@ const arrowDefaultSize = 12;
  * @experimental
  */
 export class StyleConfigurator {
-  // TODO magraph@0.1.0 in StyleConfigurator, we don't need to use BPMNCellStyle, CellStyle is enough
+  // TODO maxgraph@0.1.0 in StyleConfigurator, we don't need to use BPMNCellStyle, CellStyle is enough
 
   private specificFlowStyles = new MapWithDefault<FlowKind>([
     [
@@ -70,7 +70,7 @@ export class StyleConfigurator {
     [
       SequenceFlowKind.DEFAULT,
       (style: BPMNCellStyle) => {
-        // TODO magraph@0.1.0 remove forcing type when maxGraph fixes its types
+        // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
         style.startArrow = <ArrowType>MarkerIdentifier.ARROW_DASH;
       },
     ],
@@ -147,14 +147,14 @@ export class StyleConfigurator {
 
   private configurePoolStyle(): void {
     const style: BPMNCellStyle = {
-      // TODO magraph@0.1.0  "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided." constants.SHAPE.SWIMLANE
+      // TODO maxgraph@0.1.0  "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided." constants.SHAPE.SWIMLANE
       shape: 'swimlane',
       // label style
       verticalAlign: 'middle',
       align: 'center',
-      // TODO magraph@0.1.0 find a way to not force cast
+      // TODO maxgraph@0.1.0 find a way to not force cast
       startSize: <number>StyleDefault.POOL_LABEL_SIZE,
-      // TODO magraph@0.1.0 find a way to not force cast
+      // TODO maxgraph@0.1.0 find a way to not force cast
       fillColor: <string>StyleDefault.POOL_LABEL_FILL_COLOR,
     };
 
@@ -163,15 +163,15 @@ export class StyleConfigurator {
 
   private configureLaneStyle(): void {
     const style: BPMNCellStyle = {
-      // TODO magraph@0.1.0  "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided." constants.SHAPE.SWIMLANE
+      // TODO maxgraph@0.1.0  "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided." constants.SHAPE.SWIMLANE
       shape: 'swimlane',
       // label style
       verticalAlign: 'middle',
       align: 'center',
       swimlaneLine: false, // hide the line between the title region and the content area
-      // TODO magraph@0.1.0 find a way to not force cast
+      // TODO maxgraph@0.1.0 find a way to not force cast
       startSize: <number>StyleDefault.LANE_LABEL_SIZE,
-      // TODO magraph@0.1.0 find a way to not force cast
+      // TODO maxgraph@0.1.0 find a way to not force cast
       fillColor: <string>StyleDefault.LANE_LABEL_FILL_COLOR,
     };
 
@@ -181,10 +181,10 @@ export class StyleConfigurator {
   private configureEventStyles(): void {
     ShapeUtil.eventKinds().forEach(kind => {
       const style: BPMNCellStyle = {
-        // TODO magraph@0.1.0 remove forcing type when maxGraph fixes its types
+        // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
         shape: <ShapeValue>(<unknown>kind),
         perimeter: Perimeter.EllipsePerimeter,
-        // TODO magraph@0.1.0 find a way to not force cast
+        // TODO maxgraph@0.1.0 find a way to not force cast
         strokeWidth: <number>(kind == ShapeBpmnElementKind.EVENT_END ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN),
         verticalLabelPosition: 'bottom',
       };
@@ -194,15 +194,15 @@ export class StyleConfigurator {
 
   private configureTextAnnotationStyle(): void {
     const style: BPMNCellStyle = {
-      // TODO magraph@0.1.0 remove forcing type when maxGraph fixes its types
+      // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
       shape: <ShapeValue>(<unknown>ShapeBpmnElementKind.TEXT_ANNOTATION),
       // label style
       verticalAlign: 'middle',
       align: 'left',
       spacingLeft: 5,
-      // TODO magraph@0.1.0 find a way to not force cast
+      // TODO maxgraph@0.1.0 find a way to not force cast
       fillColor: <string>StyleDefault.TEXT_ANNOTATION_FILL_COLOR,
-      // TODO magraph@0.1.0 find a way to not force cast
+      // TODO maxgraph@0.1.0 find a way to not force cast
       strokeWidth: <number>StyleDefault.STROKE_WIDTH_THIN,
     };
     this.putCellStyle(ShapeBpmnElementKind.TEXT_ANNOTATION, style);
@@ -212,13 +212,13 @@ export class StyleConfigurator {
     const style: BPMNCellStyle = {
       rounded: true,
       absoluteArcSize: 1,
-      // TODO magraph@0.1.0 find a way to not force cast
+      // TODO maxgraph@0.1.0 find a way to not force cast
       arcSize: <number>StyleDefault.SHAPE_ARC_SIZE,
       dashed: true,
       dashPattern: '7 4 1 4',
-      // TODO magraph@0.1.0 find a way to not force cast
+      // TODO maxgraph@0.1.0 find a way to not force cast
       strokeWidth: <number>StyleDefault.STROKE_WIDTH_THIN,
-      // TODO magraph@0.1.0 find a way to not force cast
+      // TODO maxgraph@0.1.0 find a way to not force cast
       fillColor: <string>StyleDefault.GROUP_FILL_COLOR,
 
       // Default label positioning
@@ -231,18 +231,18 @@ export class StyleConfigurator {
   private configureActivityStyles(): void {
     ShapeUtil.activityKinds().forEach(kind => {
       const style: BPMNCellStyle = {
-        // TODO magraph@0.1.0 remove forcing type when maxGraph fixes its types
+        // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
         shape: <ShapeValue>(<unknown>kind),
         rounded: true, // required by the BPMN specification
 
         // TODO rebase arcSize seems to have been moved in another configuration
         //absoluteArcSize: 1,
-        // TODO magraph@0.1.0 find a way to not force cast
+        // TODO maxgraph@0.1.0 find a way to not force cast
         //arcSize: <number>StyleDefault.SHAPE_ARC_SIZE,
 
         // label style
         verticalAlign: 'middle',
-        // TODO magraph@0.1.0 find a way to not force cast
+        // TODO maxgraph@0.1.0 find a way to not force cast
         strokeWidth: <number>(kind == ShapeBpmnElementKind.CALL_ACTIVITY ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN),
       };
       this.putCellStyle(kind, style);
@@ -252,11 +252,11 @@ export class StyleConfigurator {
   private configureGatewayStyles(): void {
     ShapeUtil.gatewayKinds().forEach(kind => {
       const style: BPMNCellStyle = {
-        // TODO magraph@0.1.0 remove forcing type when maxGraph fixes its types
+        // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
         shape: <ShapeValue>(<unknown>kind),
         perimeter: Perimeter.RhombusPerimeter,
         verticalAlign: 'top',
-        // TODO magraph@0.1.0 find a way to not force cast
+        // TODO maxgraph@0.1.0 find a way to not force cast
         strokeWidth: <number>StyleDefault.STROKE_WIDTH_THIN,
 
         // Default label positioning
@@ -271,7 +271,7 @@ export class StyleConfigurator {
     const style = this.getStylesheet().getDefaultEdgeStyle() as BPMNCellStyle;
     configureCommonDefaultStyle(style);
 
-    // TODO magraph@0.1.0 remove forcing type when maxGraph fixes its types
+    // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
     style.shape = <ShapeValue>BpmnStyleIdentifier.EDGE;
     style.endSize = 12;
     style.strokeWidth = 1.5;
@@ -284,7 +284,7 @@ export class StyleConfigurator {
 
   private configureEdgeStyles<T>(styleKinds: T[], specificStyles: Map<T, (style: BPMNCellStyle) => void>): void {
     styleKinds.forEach(kind => {
-      // TODO magraph@0.1.0 review if we need to set bpmn.edge (this is not enough for edge.ts)
+      // TODO maxgraph@0.1.0 review if we need to set bpmn.edge (this is not enough for edge.ts)
       const style: BPMNCellStyle = { bpmn: { edge: {} } };
       specificStyles.get(kind)(style);
       this.graph.getStylesheet().putCellStyle(kind.toString(), style);
