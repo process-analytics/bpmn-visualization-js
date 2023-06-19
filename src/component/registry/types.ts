@@ -144,9 +144,21 @@ export type StyleUpdate = EdgeStyleUpdate | ShapeStyleUpdate;
 /**
  * @category Element Style
  */
-export type EdgeStyleUpdate = StyleWithOpacity & {
-  stroke?: Stroke;
+export type EdgeStyleUpdate = {
   font?: Font;
+  /**
+   * The value must be between 0 and 100:
+   * - If the set value is less than 0, the used value is 0.
+   * - If the set value is greater than 100, the used value is 100.
+   *
+   * **NOTE**: `opacity` does not apply to the font style.
+   *
+   * **Notes about the `default` special keyword**:
+   * - It is used to apply the opacity defined in the default style of the BPMN element.
+   * - It can be used when the style is first updated and then needs to be reset to its initial value.
+   */
+  opacity?: Opacity;
+  stroke?: Stroke;
 };
 
 /**
@@ -259,8 +271,6 @@ export type StyleWithOpacity = {
    * The value must be between 0 and 100:
    * - If the set value is less than 0, the used value is 0.
    * - If the set value is greater than 100, the used value is 100.
-   *
-   * **NOTE**: `opacity` does not apply to the font style.
    *
    * **Notes about the `default` special keyword**:
    * - It is used to apply the opacity defined in the default style of the BPMN element.
