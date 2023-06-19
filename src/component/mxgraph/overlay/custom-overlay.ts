@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { CellState } from '@maxgraph/core';
 import { CellOverlay, Point, Rectangle } from '@maxgraph/core';
+import type { CellState } from '@maxgraph/core';
 
 import type { OverlayStyle } from '../../registry';
 
