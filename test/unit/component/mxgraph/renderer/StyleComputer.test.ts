@@ -715,23 +715,14 @@ describe('Style Computer', () => {
       ({ instantiate, gatewayKind }: { instantiate: boolean; gatewayKind: ShapeBpmnEventBasedGatewayKind }) => {
         const shape = newShape(newShapeBpmnEventBasedGateway(instantiate, gatewayKind), newLabel({ name: 'Arial' }));
         gatewayKind ??= ShapeBpmnEventBasedGatewayKind.None;
-        expect(computeStyle(shape)).toBe(`eventBasedGateway;bpmn.isInstantiating=${!!instantiate};bpmn.gatewayKind=${gatewayKind};fontFamily=Arial`);
+        expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+          baseStyleNames: ['eventBasedGateway'],
+          bpmn: { kind: ShapeBpmnElementKind.GATEWAY_EVENT_BASED, gatewayKind, isInstantiating: !!instantiate },
+          fontFamily: 'Arial',
+          fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+        });
       },
     );
-    // TODO rebase adapt test for maxGraph
-    //     `(
-    //       'event-based gateway when instantiate: $instantiate for gatewayKind: $gatewayKind',
-    //       ({ instantiate, gatewayKind }: { instantiate: boolean; gatewayKind: ShapeBpmnEventBasedGatewayKind }) => {
-    //         const shape = newShape(newShapeBpmnEventBasedGateway(instantiate, gatewayKind), newLabel({ name: 'Arial' }));
-    //         gatewayKind ??= ShapeBpmnEventBasedGatewayKind.None;
-    //         expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
-    //           baseStyleNames: ['eventBasedGateway'],
-    //           bpmn: { kind: ShapeBpmnElementKind.GATEWAY_EVENT_BASED, gatewayKind, isInstantiating: !!instantiate },
-    //           fontFamily: 'Arial',
-    //           fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
-    //         });
-    //       },
-    //     );
   });
 
   // TODO rebase adapt tests for maxGraph
