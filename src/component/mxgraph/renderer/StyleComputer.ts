@@ -250,17 +250,17 @@ export default class StyleComputer {
   }
 
   computeMessageFlowIconStyle(edge: Edge): BPMNCellStyle {
-    return {
+    const style: BPMNCellStyle = {
       // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
       shape: <ShapeValue>BpmnStyleIdentifier.MESSAGE_FLOW_ICON,
       // TODO rebase, isNonInitiating --> isInitiating
       //     styleValues.push([BpmnStyleIdentifier.IS_INITIATING, String(edge.messageVisibleKind === MessageVisibleKind.INITIATING)]);
       bpmn: { isNonInitiating: edge.messageVisibleKind === MessageVisibleKind.NON_INITIATING },
     };
-    // TODO rebase for maxGraph, handle bpmn in color
-    //     if (!this.ignoreBpmnColors) {
-    //       edge.extensions.strokeColor && styleValues.push([mxConstants.STYLE_STROKECOLOR, edge.extensions.strokeColor]);
-    //     }
+    if (!this.ignoreBpmnColors) {
+      edge.extensions.strokeColor && (style.strokeColor = edge.extensions.strokeColor);
+    }
+    return style;
   }
 }
 

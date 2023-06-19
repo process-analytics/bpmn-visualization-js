@@ -827,7 +827,6 @@ describe('Style Computer', () => {
             shape: <ShapeValue>'bpmn.messageFlowIcon',
           };
           if (expectAdditionalColorsStyle) {
-            const additionalColorsStyle = expectAdditionalColorsStyle ? ';strokeColor=#11aabb' : '';
             expectedStyle.strokeColor = '#11aabb';
           }
           expect(computeMessageFlowIconStyleWithRendererOptions(edge)).toStrictEqual(expectedStyle);
