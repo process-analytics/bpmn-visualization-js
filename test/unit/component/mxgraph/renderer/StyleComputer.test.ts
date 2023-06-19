@@ -814,7 +814,11 @@ describe('Style Computer', () => {
           const edge = new Edge('id', newAssociationFlow(AssociationDirectionKind.ONE), undefined, newLabelExtension('#aaaacc'));
           edge.extensions.strokeColor = '#1111cc';
           const additionalColorsStyle = expectAdditionalColorsStyle ? ';strokeColor=#1111cc;fontColor=#aaaacc' : '';
-          expect(computeStyleWithRendererOptions(edge)).toBe(`association;One${additionalColorsStyle}`);
+          // expect(computeStyleWithRendererOptions(edge)).toBe(`association;One${additionalColorsStyle}`);
+          expect(computeStyleWithRendererOptions(edge)).toStrictEqual(<BPMNCellStyle>{
+            baseStyleNames: ['association', 'One'],
+            bpmn: { kind: FlowKind.ASSOCIATION_FLOW },
+          });
         });
       });
     });
