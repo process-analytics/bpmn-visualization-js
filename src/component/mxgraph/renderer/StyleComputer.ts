@@ -120,10 +120,8 @@ export default class StyleComputer {
     } else if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
       // 'style.horizontal' is for the label
       // In BPMN, isHorizontal is for the Shape
-      // TODO rebase adapt comment
-      // mxConstants.STYLE_HORIZONTAL is for the label
-      // In BPMN, isHorizontal is for the Shape
       // So we invert the value when we switch from the BPMN value to the mxGraph value.
+      // TODO rebase verify style horizontal conversion from mxGraph to maxgraph
       style.horizontal = !(shape.isHorizontal ?? true);
     } else if (bpmnElement instanceof ShapeBpmnEventBasedGateway) {
       style.bpmn.isInstantiating = bpmnElement.instantiate;
