@@ -112,7 +112,8 @@ export default class GraphCellUpdater {
           cellStyle = updateFill(cellStyle, styleUpdate.fill);
         }
 
-        this.graph.model.setStyle(cell, cellStyle);
+        // TODO maxgraph@0.1.0 migration --> apply this to the master branch
+        model.setStyle(cell, cellStyle);
       }
     });
   }
