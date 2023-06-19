@@ -102,12 +102,14 @@ export default class StyleComputer {
       this.enrichStyleWithShapeInfo(style, bpmnCell);
     } else {
       baseStyleNames.push(...StyleComputer.computeEdgeBaseStyleNames(bpmnCell));
+      // TODO maxgraph@0.1.0 find a better way for the merge - computeEdgeBaseStylesValues and returns a CellStyle for consistency with other methods
+      this.enrichStyleWithEdgeInfo(style, bpmnCell);
     }
 
     const fontStyleValues = this.computeFontStyleValues(bpmnCell);
     const labelStyleValues = StyleComputer.computeLabelStyleValues(bpmnCell, labelBounds);
 
-    return { baseStyleNames: baseStyleNames, ...style, ...fontStyleValues, ...labelStyleValues };
+    return { baseStyleNames, ...style, ...fontStyleValues, ...labelStyleValues };
   }
 
   private enrichStyleWithShapeInfo(style: BPMNCellStyle, shape: Shape): void {
@@ -128,7 +130,6 @@ export default class StyleComputer {
       style.bpmn.gatewayKind = bpmnElement.gatewayKind;
     }
 
-    // TODO rebase adapt for maxGraph
     if (!this.ignoreBpmnColors) {
       const extensions = shape.extensions;
       const fillColor = extensions.fillColor;
@@ -178,16 +179,11 @@ export default class StyleComputer {
     return styles;
   }
 
-  // TODO rebase call this method
-  private computeEdgeStyleValues(edge: Edge): BPMNCellStyle {
-    const style: BPMNCellStyle = {};
-
+  private enrichStyleWithEdgeInfo(style: BPMNCellStyle, edge: Edge): void {
     if (!this.ignoreBpmnColors) {
       const extensions = edge.extensions;
       extensions.strokeColor && (style.strokeColor = extensions.strokeColor);
     }
-
-    return style;
   }
 
   private computeFontStyleValues(bpmnCell: Shape | Edge): CellStyle {

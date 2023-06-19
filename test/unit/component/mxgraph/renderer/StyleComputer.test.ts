@@ -794,7 +794,6 @@ describe('Style Computer', () => {
             bpmn: { kind: FlowKind.SEQUENCE_FLOW },
           };
           if (expectAdditionalColorsStyle) {
-            const additionalColorsStyle = expectAdditionalColorsStyle ? ';strokeColor=#111111;fontColor=#aaaaaa' : '';
             expectedStyle.fontColor = '#aaaaaa';
             expectedStyle.strokeColor = '#111111';
           }
@@ -809,7 +808,6 @@ describe('Style Computer', () => {
             bpmn: { kind: FlowKind.MESSAGE_FLOW },
           };
           if (expectAdditionalColorsStyle) {
-            const additionalColorsStyle = expectAdditionalColorsStyle ? ';strokeColor=#1111bb;fontColor=#aaaabb' : '';
             expectedStyle.fontColor = '#aaaabb';
             expectedStyle.strokeColor = '#1111bb';
           }
@@ -839,7 +837,6 @@ describe('Style Computer', () => {
             bpmn: { kind: FlowKind.ASSOCIATION_FLOW },
           };
           if (expectAdditionalColorsStyle) {
-            const additionalColorsStyle = expectAdditionalColorsStyle ? ';strokeColor=#1111cc;fontColor=#aaaacc' : '';
             expectedStyle.fontColor = '#aaaacc';
             expectedStyle.strokeColor = '#1111cc';
           }
