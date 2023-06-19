@@ -307,8 +307,9 @@ describe('Style Computer', () => {
     // TODO maxgraph@0.1.0 cast to <BPMNCellStyle> (waiting for "maxGraph fixes its types")
     expect(styleComputer.computeMessageFlowIconStyle(edge)).toStrictEqual({
       shape: 'bpmn.messageFlowIcon',
-      // TODO rebase rename isNonInitiating --> isNonInitiating
-      bpmn: { isNonInitiating: expected },
+      // TODO rebase rename isNonInitiating --> isInitiating and invert condition in test
+      // in bpmn-visualization@0.36.0, style property is 'bpmn.isInitiating'
+      bpmn: { isNonInitiating: !expected },
     });
   });
 
