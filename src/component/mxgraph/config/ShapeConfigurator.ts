@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { CellOverlay, CellState } from '@maxgraph/core';
 import { CellRenderer, constants, Dictionary, ImageShape, Rectangle, Shape, SvgCanvas2D } from '@maxgraph/core';
+import type { CellOverlay, CellState } from '@maxgraph/core';
 
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
 import { EndEventShape, EventShape, IntermediateEventShape, ThrowIntermediateEventShape } from '../shape/event-shapes';
@@ -37,10 +37,10 @@ import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { BpmnStyleIdentifier } from '../style';
 import { FONT } from '../style/utils';
 import { computeAllBpmnClassNamesOfCell } from '../renderer/style-utils';
+import type { BPMNCellStyle } from '../renderer/StyleComputer';
 import { MxGraphCustomOverlay } from '../overlay/custom-overlay';
 import { OverlayBadgeShape } from '../overlay/shapes';
 import { BpmnConnector } from '../shape/edges';
-import type { BPMNCellStyle } from '../renderer/StyleComputer';
 
 /**
  * @internal
