@@ -60,7 +60,10 @@ export default class GraphCellUpdater {
     this.styleManager.ensureStyleIsStored(cell);
 
     const cellStyle: BPMNCellStyle = cell.getStyle();
+    cell.id == 'serviceTask_1_2' && console.warn('prior calling setCssClasses', cellStyle);
     setCssClasses(cellStyle, cssClasses);
+
+    cell.id == 'serviceTask_1_2' && console.warn('prior calling model.setStyle', cssClasses, cellStyle);
     model.setStyle(cell, cellStyle);
   }
 

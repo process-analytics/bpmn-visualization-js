@@ -174,6 +174,12 @@ export default class ShapeConfigurator {
         let allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === 'strictHtml');
         // TODO rebase BpmnCellStateStyle?
         const extraCssClasses = (this.state.style as BPMNCellStyle).bpmn?.extra?.css?.classes;
+        const cellId = this.state.cell.id;
+        if (cellId == 'serviceTask_1_2') {
+          console.warn('@@@cell id', cellId);
+          console.warn('@@@cell style', cell.style);
+          console.warn('@@@state style', this.state.style);
+        }
         if (extraCssClasses) {
           allBpmnClassNames = allBpmnClassNames.concat(extraCssClasses);
         }
