@@ -1053,7 +1053,6 @@ describe('mxGraph model - BPMN elements', () => {
               label: 'Collapsed Call Activity',
               markers: [ShapeBpmnMarkerKind.EXPAND],
               parentId: 'participant_1_id',
-              markers: [ShapeBpmnMarkerKind.EXPAND],
               verticalAlign: 'top',
             });
             expect('collapsed_call_activity_with_loop_id').toBeCallActivity({
