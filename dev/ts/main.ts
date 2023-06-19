@@ -105,6 +105,15 @@ export function getElementsByIds(bpmnId: string | string[]): BpmnElement[] {
   return bpmnVisualization.bpmnElementsRegistry.getElementsByIds(bpmnId);
 }
 
+export function getParentElementIds(bpmnIds: string[]): string[] {
+  return bpmnIds
+    .map(id => {
+      const cell = bpmnVisualization.graph.model.getCell(id);
+      return bpmnVisualization.graph.getModel().getParent(cell).getId();
+    })
+    .filter((value, index, self) => self.indexOf(value) === index);
+}
+
 export function addCssClasses(bpmnElementId: string | string[], classNames: string | string[]): void {
   return bpmnVisualization.bpmnElementsRegistry.addCssClasses(bpmnElementId, classNames);
 }

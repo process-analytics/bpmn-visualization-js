@@ -31,15 +31,17 @@ import {
   updateStyle,
   resetStyle,
   windowAlertStatusKoNotifier,
+  getParentElementIds,
 } from '../../../ts/dev-bundle-index';
 
 let lastIdentifiedBpmnIds = [];
+let lastIdentifiedParentBpmnIds = [];
 const cssClassName = 'detection';
 let isOverlaysDisplayed = true;
 let useCSS = true;
 
 function updateStyleByAPI(bpmnIds, bpmnKind) {
-  const style = { font: { spacing: {} }, fill: {}, stroke: {}, gradient: {}, label: {} };
+  const style = { font: {}, fill: {}, stroke: {} };
 
   if (ShapeUtil.isTask(bpmnKind)) {
     style.font.color = 'Indigo';
@@ -47,8 +49,14 @@ function updateStyleByAPI(bpmnIds, bpmnKind) {
     style.font.size = 14;
     style.fill.opacity = 20;
   } else if (ShapeUtil.isEvent(bpmnKind)) {
-    style.font.color = 'MediumTurquoise';
-    style.stroke.color = 'MediumTurquoise';
+    if (ShapeUtil.isBoundaryEvent(bpmnKind)) {
+      style.font.color = 'inherit';
+      style.fill.color = 'inherit';
+      style.stroke.color = 'inherit';
+    } else {
+      style.font.color = 'MediumTurquoise';
+      style.stroke.color = 'MediumTurquoise';
+    }
   } else if (ShapeUtil.isGateway(bpmnKind)) {
     style.font.color = 'CadetBlue';
     style.font.opacity = 85;
@@ -102,8 +110,16 @@ function updateStyleByAPI(bpmnIds, bpmnKind) {
   updateStyle(bpmnIds, style);
 }
 
-function resetStyleByAPI() {
-  resetStyle(lastIdentifiedBpmnIds);
+function resetStyleByAPI(id) {
+  resetStyle(id);
+}
+
+function updateParentStyleByAPI(ids, bpmnKind) {
+  lastIdentifiedParentBpmnIds = [];
+  if (ShapeUtil.isBoundaryEvent(bpmnKind)) {
+    lastIdentifiedParentBpmnIds = getParentElementIds(ids);
+    updateStyle(lastIdentifiedParentBpmnIds, { opacity: 10, font: { color: 'green', opacity: 10 }, fill: { color: 'gold' }, stroke: { color: 'red' } });
+  }
 }
 
 function updateSelectedBPMNElements(textArea, bpmnKind) {
@@ -127,6 +143,8 @@ function updateSelectedBPMNElements(textArea, bpmnKind) {
     addCssClasses(newlyIdentifiedBpmnIds, cssClassName);
   } else {
     resetStyleByAPI(lastIdentifiedBpmnIds);
+    resetStyleByAPI(lastIdentifiedParentBpmnIds);
+    updateParentStyleByAPI(newlyIdentifiedBpmnIds, bpmnKind);
     updateStyleByAPI(newlyIdentifiedBpmnIds, bpmnKind);
   }
 
@@ -156,6 +174,7 @@ function configureControls() {
 
     // reset identified elements and values
     lastIdentifiedBpmnIds = [];
+    lastIdentifiedParentBpmnIds = [];
   };
 
   // display overlay option
@@ -175,9 +194,12 @@ function configureControls() {
 
     if (useCSS) {
       resetStyleByAPI(lastIdentifiedBpmnIds);
+      resetStyleByAPI(lastIdentifiedParentBpmnIds);
+      lastIdentifiedParentBpmnIds = [];
       addCssClasses(lastIdentifiedBpmnIds, cssClassName);
     } else {
       removeCssClasses(lastIdentifiedBpmnIds, cssClassName);
+      updateParentStyleByAPI(lastIdentifiedBpmnIds, selectedKindElt.value);
       updateStyleByAPI(lastIdentifiedBpmnIds, selectedKindElt.value);
     }
   });
