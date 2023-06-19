@@ -48,7 +48,7 @@ function buildExpectedMsgFlowIconCellStyle(expectedModel: ExpectedEdgeModelEleme
 
 function buildExpectedEdgeStylePropertyRegexp(expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement | ExpectedAssociationFlowModelElement): BPMNCellStyle {
   const style: BPMNCellStyle = { bpmn: {} };
-  // TODO maxgraph@0.1.0 share with edge
+  // TODO maxgraph@0.1.0 share with shape or remove
   style.baseStyleNames = [expectedModel.kind];
   style.bpmn.kind = expectedModel.kind;
   if ('sequenceFlowKind' in expectedModel) {
@@ -56,6 +56,10 @@ function buildExpectedEdgeStylePropertyRegexp(expectedModel: ExpectedEdgeModelEl
   }
   if ('associationDirectionKind' in expectedModel) {
     style.baseStyleNames.push((expectedModel as ExpectedAssociationFlowModelElement).associationDirectionKind);
+  }
+  if ('extraCssClasses' in expectedModel) {
+    style.bpmn.extra ??= { css: { classes: [] } };
+    style.bpmn.extra.css.classes = expectedModel.extraCssClasses;
   }
 
   return style;

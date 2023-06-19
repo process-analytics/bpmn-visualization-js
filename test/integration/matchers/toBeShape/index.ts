@@ -128,6 +128,10 @@ function buildExpectedShapeStylePropertyRegexp(
   if ('gatewayKind' in expectedModel) {
     style.bpmn.gatewayKind = expectedModel.gatewayKind;
   }
+  if ('extraCssClasses' in expectedModel) {
+    style.bpmn.extra ??= { css: { classes: [] } };
+    style.bpmn.extra.css.classes = expectedModel.extraCssClasses;
+  }
 
   return style;
 }
