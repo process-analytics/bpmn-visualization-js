@@ -31,7 +31,7 @@ import type { BPMNCellStyle } from './renderer/StyleComputer';
  * @internal
  */
 export function newGraphCellUpdater(graph: BpmnGraph, cssRegistry: CssRegistry): GraphCellUpdater {
-  return new GraphCellUpdater(graph, new OverlayConverter(), new StyleManager(cssRegistry, graph.model));
+  return new GraphCellUpdater(graph, new OverlayConverter(), new StyleManager(cssRegistry, graph.getDataModel()));
 }
 
 /**
@@ -51,7 +51,7 @@ export default class GraphCellUpdater {
   }
 
   private updateAndRefreshCssClassesOfElement(elementId: string, cssClasses: string[]): void {
-    const model = this.graph.model;
+    const model = this.graph.getDataModel();
     const cell = model.getCell(elementId);
     if (!cell) {
       return;
@@ -65,7 +65,7 @@ export default class GraphCellUpdater {
   }
 
   addOverlays(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
-    const cell = this.graph.model.getCell(bpmnElementId);
+    const cell = this.graph.getDataModel().getCell(bpmnElementId);
     if (!cell) {
       return;
     }
@@ -76,7 +76,7 @@ export default class GraphCellUpdater {
   }
 
   removeAllOverlays(bpmnElementId: string): void {
-    const cell = this.graph.model.getCell(bpmnElementId);
+    const cell = this.graph.getDataModel().getCell(bpmnElementId);
     if (!cell) {
       return;
     }
@@ -90,7 +90,7 @@ export default class GraphCellUpdater {
       return;
     }
 
-    const model = this.graph.model;
+    const model = this.graph.getDataModel();
     const cells = withCellIdsOfMessageFlowIcons(bpmnElementIds)
       .map(id => model.getCell(id))
       .filter(Boolean);
