@@ -74,6 +74,7 @@ describe('compute all css class names based on style input', () => {
   `(
     // TODO maxgraph@0.1.0 find a way to correctly display the style object
     // TODO rebase ShapeBpmnSubProcessKind.AD_HOC --> class should be bpmn-subprocess-adhoc, it is ad_hoc!!!
+    // FIXME in master branch ShapeBpmnSubProcessKind.AD_HOC value should be adHoc for consistency with other values (the input value in the mxGraph implementation was hard coded to adHoc so it didn't detect the wrong values)
     'style="$style" / isLabel=$isLabel',
     ({ style, isLabel, expectedClassNames }: { style: BPMNCellStyle; isLabel: boolean; expectedClassNames: string[] }) => {
       expect(computeAllBpmnClassNames(style, isLabel)).toEqual(expectedClassNames);
