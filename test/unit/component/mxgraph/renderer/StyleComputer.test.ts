@@ -660,16 +660,11 @@ describe('Style Computer', () => {
           it.each(Object.values(ShapeBpmnSubProcessKind))(`%s subProcess with Loop & Expand (collapsed) markers`, (subProcessKind: ShapeBpmnSubProcessKind) => {
             const markers = [markerKind, ShapeBpmnMarkerKind.EXPAND];
             const shape = newShape(newShapeBpmnSubProcess(subProcessKind, markers));
-            expect(computeStyle(shape)).toBe(`subProcess;bpmn.subProcessKind=${subProcessKind};bpmn.markers=${getExpectedMarkers(markers, subProcessKind).join(',')}`);
+            expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+              baseStyleNames: ['subProcess'],
+              bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, markers: getExpectedMarkers(markers, subProcessKind), subProcessKind },
+            });
           });
-          // TODO rebase adapt test for maxgraph
-          //           it(`${bpmnKind} with Loop & Expand (collapsed) markers`, () => {
-          //             const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, [markerKind, ShapeBpmnMarkerKind.EXPAND]));
-          //             expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
-          //               baseStyleNames: ['subProcess'],
-          //               bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, markers: [markerKind, ShapeBpmnMarkerKind.EXPAND], subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED },
-          //             });
-          //           });
         }
 
         if (bpmnKind == ShapeBpmnElementKind.CALL_ACTIVITY) {
