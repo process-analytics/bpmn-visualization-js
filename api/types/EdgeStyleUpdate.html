@@ -15,17 +15,32 @@
 <li><a href="../index.html">bpmn-visualization API Documentation</a></li>
 <li><a href="EdgeStyleUpdate.html">EdgeStyleUpdate</a></li></ul>
 <h1>Type alias EdgeStyleUpdate</h1></div>
-<div class="tsd-signature"><span class="tsd-kind-type-alias">Edge<wbr/>Style<wbr/>Update</span><span class="tsd-signature-symbol">:</span> <a href="StyleWithOpacity.html" class="tsd-signature-type tsd-kind-type-alias">StyleWithOpacity</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span><br/><span>    </span><span class="tsd-kind-property">font</span><span class="tsd-signature-symbol">?: </span><a href="Font.html" class="tsd-signature-type tsd-kind-type-alias">Font</a><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">stroke</span><span class="tsd-signature-symbol">?: </span><a href="Stroke.html" class="tsd-signature-type tsd-kind-type-alias">Stroke</a><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span></div>
+<div class="tsd-signature"><span class="tsd-kind-type-alias">Edge<wbr/>Style<wbr/>Update</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span><br/><span>    </span><span class="tsd-kind-property">font</span><span class="tsd-signature-symbol">?: </span><a href="Font.html" class="tsd-signature-type tsd-kind-type-alias">Font</a><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">opacity</span><span class="tsd-signature-symbol">?: </span><a href="Opacity.html" class="tsd-signature-type tsd-kind-type-alias">Opacity</a><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">stroke</span><span class="tsd-signature-symbol">?: </span><a href="Stroke.html" class="tsd-signature-type tsd-kind-type-alias">Stroke</a><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span></div>
 <div class="tsd-type-declaration">
 <h4>Type declaration</h4>
 <ul class="tsd-parameters">
 <li class="tsd-parameter">
 <h5><code class="tsd-tag ts-flagOptional">Optional</code> <span class="tsd-kind-property">font</span><span class="tsd-signature-symbol">?: </span><a href="Font.html" class="tsd-signature-type tsd-kind-type-alias">Font</a></h5></li>
 <li class="tsd-parameter">
+<h5><code class="tsd-tag ts-flagOptional">Optional</code> <span class="tsd-kind-property">opacity</span><span class="tsd-signature-symbol">?: </span><a href="Opacity.html" class="tsd-signature-type tsd-kind-type-alias">Opacity</a></h5>
+<div class="tsd-comment tsd-typography"><p>The value must be between 0 and 100:</p>
+<ul>
+<li>If the set value is less than 0, the used value is 0.</li>
+<li>If the set value is greater than 100, the used value is 100.</li>
+</ul>
+<p><strong>NOTE</strong>: <code>opacity</code> does not apply to the font style.</p>
+<p><strong>Notes about the <code>default</code> special keyword</strong>:</p>
+<ul>
+<li>It is used to apply the opacity defined in the default style of the BPMN element.</li>
+<li>It can be used when the style is first updated and then needs to be reset to its initial value.</li>
+</ul>
+</div>
+<div class="tsd-comment tsd-typography"></div></li>
+<li class="tsd-parameter">
 <h5><code class="tsd-tag ts-flagOptional">Optional</code> <span class="tsd-kind-property">stroke</span><span class="tsd-signature-symbol">?: </span><a href="Stroke.html" class="tsd-signature-type tsd-kind-type-alias">Stroke</a></h5></li></ul></div>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/7752001/src/component/registry/types.ts#L145">component/registry/types.ts:145</a></li></ul></aside></div>
+<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/3bdd122/src/component/registry/types.ts#L147">component/registry/types.ts:147</a></li></ul></aside></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">

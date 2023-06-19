@@ -27,7 +27,12 @@ Currently, there is no way to know if they are overridden. So it is not possible
 <h5><code class="tsd-tag ts-flagOptional">Optional</code> <span class="tsd-kind-property">color</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">&quot;default&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
 <div class="tsd-comment tsd-typography"><p>Possible values are all HTML color names or HEX codes, as well as special keywords such as:</p>
 <ul>
-<li><code>default</code> to use the color defined in the BPMN element default style. <strong>WARN</strong>: this doesn&#39;t use the color set in the BPMN source when the &quot;BPMN in Color&quot; support is enabled.</li>
+<li><code>default</code> to use the color defined in the BPMN element default style.</li>
+</ul>
+<p><strong>Notes about the <code>default</code> special keyword</strong>:</p>
+<ul>
+<li>It can be used when the style is first updated and then needs to be reset to its initial value.</li>
+<li>It doesn&#39;t use the color set in the BPMN source when the &quot;BPMN in Color&quot; support is enabled. It uses the color defined in the BPMN element default style.</li>
 </ul>
 </div>
 <div class="tsd-comment tsd-typography"></div></li>
@@ -64,7 +69,7 @@ Currently, there is no way to know if they are overridden. So it is not possible
 <div class="tsd-comment tsd-typography"></div></li></ul></div>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/7752001/src/component/registry/types.ts#L191">component/registry/types.ts:191</a></li></ul></aside></div>
+<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/3bdd122/src/component/registry/types.ts#L210">component/registry/types.ts:210</a></li></ul></aside></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">

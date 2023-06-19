@@ -23,8 +23,13 @@
 <h5><code class="tsd-tag ts-flagOptional">Optional</code> <span class="tsd-kind-property">color</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">&quot;default&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;none&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
 <div class="tsd-comment tsd-typography"><p>Possible values are all HTML color names or HEX codes, as well as special keywords such as:</p>
 <ul>
-<li><code>default</code> to use the color defined in the BPMN element default style. <strong>WARN</strong>: this doesn&#39;t use the color set in the BPMN source when the &quot;BPMN in Color&quot; support is enabled.</li>
+<li><code>default</code> to use the color defined in the BPMN element default style.</li>
 <li><code>none</code> for no color</li>
+</ul>
+<p><strong>Notes about the <code>default</code> special keyword</strong>:</p>
+<ul>
+<li>It can be used when the style is first updated and then needs to be reset to its initial value.</li>
+<li>It doesn&#39;t use the color set in the BPMN source when the &quot;BPMN in Color&quot; support is enabled. It uses the color defined in the BPMN element default style.</li>
 </ul>
 </div>
 <div class="tsd-comment tsd-typography"></div></li>
@@ -34,15 +39,15 @@
 <p>The value must be between 1 and 50.</p>
 <p>If the set value is less than 1, the used value is 1.
 If the set value is greater than 50, the used value is 50.</p>
-<p>To hide the stroke, set the <code>color</code> property to <code>&#39;none&#39;</code>.</p>
+<p>To hide the stroke, set the <code>color</code> property to <code>none</code>.</p>
+<p>The <code>default</code> value resets the width to the value defined in the default style of the BPMN element. It can be used when the style is first updated and then needs to be reset to its initial value.</p>
+<p><strong>WARNING</strong>: Changing the stroke width of Activities may be misleading as the default stroke widths have a meaning according to the BPMN Specification.
+For example, updating the stroke width of a task using the same value as the default stroke width of a Call Activity can be confusing. In this case, you should also change another property such as the stroke color to allow the user to differentiate between them.</p>
 </div>
 <div class="tsd-comment tsd-typography"></div></li></ul></div>
-<div class="tsd-comment tsd-typography">
-<h4>Warning</h4><p>Changing the stroke width of Activities may be misleading as the default stroke widths have a meaning according to the BPMN Specification.</p>
-<p>For example, updating the stroke width of a task using the same value as the default stroke width of a Call Activity can be confusing. In this case, you should also change another property such as the stroke color to allow the user to differentiate between them.</p>
-</div><aside class="tsd-sources">
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/7752001/src/component/registry/types.ts#L162">component/registry/types.ts:162</a></li></ul></aside></div>
+<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/3bdd122/src/component/registry/types.ts#L172">component/registry/types.ts:172</a></li></ul></aside></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
