@@ -58,7 +58,8 @@ function buildExpectedEdgeStylePropertyRegexp(expectedModel: ExpectedEdgeModelEl
     style.baseStyleNames.push((expectedModel as ExpectedAssociationFlowModelElement).associationDirectionKind);
   }
   if ('extraCssClasses' in expectedModel) {
-    style.bpmn.extra ??= { css: { classes: [] } };
+    // TODO rebase duplicated with style/utils.ts setCssClasses
+    style.bpmn.extra ??= { css: { classes: undefined } };
     style.bpmn.extra.css.classes = expectedModel.extraCssClasses;
   }
 
