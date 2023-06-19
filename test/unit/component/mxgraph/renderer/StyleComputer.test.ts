@@ -127,7 +127,7 @@ function newAssociationFlow(kind: AssociationDirectionKind): AssociationFlow {
   return new AssociationFlow('id', 'name', undefined, undefined, kind);
 }
 
-// TODO magraph@0.1.0 order properties alphabetically in expected style
+// TODO maxgraph@0.1.0 order properties alphabetically in expected style
 
 describe('Style Computer', () => {
   // use a shared instance to check that there is no state stored in the implementation
@@ -189,7 +189,7 @@ describe('Style Computer', () => {
       expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
         baseStyleNames: ['scriptTask'],
         fontFamily: 'Roboto',
-        fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+        fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
         bpmn: { kind: ShapeBpmnElementKind.TASK_SCRIPT },
       });
     });
@@ -201,7 +201,7 @@ describe('Style Computer', () => {
         align: 'center',
         verticalAlign: 'top',
         labelWidth: 81,
-        // FIXME magraph@0.1.0 values were inverted in the master branch implementation, this was probably wrong as they were set like this in StyleConfigurator
+        // FIXME maxgraph@0.1.0 values were inverted in the master branch implementation, this was probably wrong as they were set like this in StyleConfigurator
         // expect(computeStyle(shape)).toBe('callActivity;verticalAlign=top;align=center;labelWidth=81;labelPosition=ignore;verticalLabelPosition=middle');
         labelPosition: 'left',
         verticalLabelPosition: 'top',
@@ -268,7 +268,7 @@ describe('Style Computer', () => {
         fontFamily: 'Helvetica',
         align: 'center',
         verticalAlign: 'top',
-        fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+        fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
         bpmn: { kind: FlowKind.SEQUENCE_FLOW },
       });
     });
@@ -304,7 +304,7 @@ describe('Style Computer', () => {
     [MessageVisibleKind.INITIATING, 'true'],
   ])('compute style - message flow icon: %s', (messageVisibleKind: MessageVisibleKind, expected: string) => {
     const edge = new Edge('id', newMessageFlow(), undefined, undefined, messageVisibleKind);
-    // TODO magraph@0.1.0 cast to <BPMNCellStyle> (waiting for "maxGraph fixes its types")
+    // TODO maxgraph@0.1.0 cast to <BPMNCellStyle> (waiting for "maxGraph fixes its types")
     expect(styleComputer.computeMessageFlowIconStyle(edge)).toStrictEqual({
       shape: 'bpmn.messageFlowIcon',
       // TODO rebase rename isNonInitiating --> isNonInitiating
@@ -318,7 +318,7 @@ describe('Style Computer', () => {
       expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
         baseStyleNames: ['intermediateCatchEvent'],
         fontFamily: 'Ubuntu',
-        fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+        fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
         bpmn: { kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, eventDefinitionKind: ShapeBpmnEventDefinitionKind.CONDITIONAL },
       });
     });
@@ -339,7 +339,7 @@ describe('Style Computer', () => {
       expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
         baseStyleNames: ['boundaryEvent'],
         fontFamily: 'Arial',
-        fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+        fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
         bpmn: { kind: ShapeBpmnElementKind.EVENT_BOUNDARY, eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE, isInterrupting: true },
       });
     });
@@ -369,7 +369,7 @@ describe('Style Computer', () => {
       expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
         baseStyleNames: ['startEvent'],
         fontFamily: 'Arial',
-        fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+        fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
         bpmn: { kind: ShapeBpmnElementKind.EVENT_START, eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE, isInterrupting: true },
       });
     });
@@ -420,7 +420,7 @@ describe('Style Computer', () => {
       //           baseStyleNames: ['subProcess'],
       //           bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED, markers },
       //           fontFamily: 'Arial',
-      //           fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+      //           fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
       //         };
       //         !markers.includes(ShapeBpmnMarkerKind.EXPAND) && (expectedStyle.verticalAlign = 'top');
       //         expect(computeStyle(shape)).toStrictEqual(expectedStyle);
@@ -433,10 +433,10 @@ describe('Style Computer', () => {
       //           baseStyleNames: ['subProcess'],
       //           bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED, markers },
       //           fontFamily: 'sans-serif',
-      //           fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+      //           fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
       //           labelWidth: 301,
       //           verticalAlign: 'top',
-      //           // FIXME magraph@0.1.0 values were inverted in the master branch implementation, this was probably wrong as they were set like this in StyleConfigurator
+      //           // FIXME maxgraph@0.1.0 values were inverted in the master branch implementation, this was probably wrong as they were set like this in StyleConfigurator
       //           //  `subProcess;bpmn.subProcessKind=embedded${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=top;verticalLabelPosition=left`,
       //           labelPosition: 'left',
       //           verticalLabelPosition: 'top',
@@ -457,11 +457,11 @@ describe('Style Computer', () => {
             baseStyleNames: ['callActivity'],
             bpmn: {
               kind: ShapeBpmnElementKind.CALL_ACTIVITY,
-              globalTaskKind: undefined, // TODO magraph@0.1.0 decide if we set globalTaskKind to undefined or if we omit the property
+              globalTaskKind: undefined, // TODO maxgraph@0.1.0 decide if we set globalTaskKind to undefined or if we omit the property
               markers,
             },
             fontFamily: 'Arial',
-            fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+            fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
           };
           !markers.includes(ShapeBpmnMarkerKind.EXPAND) && (expectedStyle.verticalAlign = 'top');
           expect(computeStyle(shape)).toStrictEqual(expectedStyle);
@@ -474,14 +474,14 @@ describe('Style Computer', () => {
             baseStyleNames: ['callActivity'],
             bpmn: {
               kind: ShapeBpmnElementKind.CALL_ACTIVITY,
-              globalTaskKind: undefined, // TODO magraph@0.1.0 decide if we set globalTaskKind to undefined or if we omit the property
+              globalTaskKind: undefined, // TODO maxgraph@0.1.0 decide if we set globalTaskKind to undefined or if we omit the property
               markers,
             },
             fontFamily: 'sans-serif',
-            fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+            fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
             labelWidth: 301,
             verticalAlign: 'top',
-            // FIXME magraph@0.1.0 values were inverted in the master branch implementation, this was probably wrong as they were set like this in StyleConfigurator
+            // FIXME maxgraph@0.1.0 values were inverted in the master branch implementation, this was probably wrong as they were set like this in StyleConfigurator
             // `callActivity${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=ignore;verticalLabelPosition=middle`,
             labelPosition: 'left',
             verticalLabelPosition: 'top',
@@ -505,7 +505,7 @@ describe('Style Computer', () => {
             baseStyleNames: ['callActivity'],
             bpmn: { kind: ShapeBpmnElementKind.CALL_ACTIVITY, globalTaskKind: globalTaskKind, markers: [] },
             fontFamily: 'Arial',
-            fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+            fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
           };
           expect(computeStyle(shape)).toStrictEqual(expectedStyle);
         });
@@ -521,10 +521,10 @@ describe('Style Computer', () => {
               markers: [],
             },
             fontFamily: 'sans-serif',
-            fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+            fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
             labelWidth: 301,
             verticalAlign: 'top',
-            // FIXME magraph@0.1.0 values were inverted in the master branch implementation, this was probably wrong as they were set like this in StyleConfigurator
+            // FIXME maxgraph@0.1.0 values were inverted in the master branch implementation, this was probably wrong as they were set like this in StyleConfigurator
             // `callActivity;bpmn.globalTaskKind=${globalTaskKind};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=ignore;verticalLabelPosition=middle`,
             labelPosition: 'left',
             verticalLabelPosition: 'top',
@@ -545,7 +545,7 @@ describe('Style Computer', () => {
         baseStyleNames: ['receiveTask'],
         bpmn: { kind: ShapeBpmnElementKind.TASK_RECEIVE, isInstantiating: instantiate, markers: [] },
         fontFamily: 'Arial',
-        fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+        fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
       });
     });
   });
@@ -566,10 +566,10 @@ describe('Style Computer', () => {
           kind: ShapeBpmnElementKind.TEXT_ANNOTATION,
         },
         fontFamily: 'Segoe UI',
-        fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+        fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
         labelWidth: 101,
         verticalAlign: 'top',
-        // FIXME magraph@0.1.0 values were inverted in the master branch implementation, this was probably wrong as they were set like this in StyleConfigurator
+        // FIXME maxgraph@0.1.0 values were inverted in the master branch implementation, this was probably wrong as they were set like this in StyleConfigurator
         // 'textAnnotation;fontFamily=Segoe UI;verticalAlign=top;labelWidth=101;labelPosition=ignore;verticalLabelPosition=middle'
         labelPosition: 'left',
         verticalLabelPosition: 'top',
@@ -595,10 +595,10 @@ describe('Style Computer', () => {
           kind: ShapeBpmnElementKind.GROUP,
         },
         fontFamily: 'Roboto',
-        fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+        fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
         labelWidth: 101,
         verticalAlign: 'top',
-        // FIXME magraph@0.1.0 values were inverted in the master branch implementation, this was probably wrong as they were set like this in StyleConfigurator
+        // FIXME maxgraph@0.1.0 values were inverted in the master branch implementation, this was probably wrong as they were set like this in StyleConfigurator
         // 'group;fontFamily=Roboto;verticalAlign=top;align=center;labelWidth=101;labelPosition=ignore;verticalLabelPosition=middle'
         labelPosition: 'left',
         verticalLabelPosition: 'top',
@@ -658,7 +658,7 @@ describe('Style Computer', () => {
             baseStyleNames: [bpmnKind],
             bpmn: { kind: bpmnKind, markers: [markerKind] },
             fontFamily: 'Arial',
-            fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+            fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
           };
           bpmnKind === ShapeBpmnElementKind.TASK_RECEIVE && (expectedStyle.bpmn.isInstantiating = false);
           expect(computeStyle(shape)).toStrictEqual(expectedStyle);
@@ -687,7 +687,7 @@ describe('Style Computer', () => {
               baseStyleNames: ['callActivity'],
               bpmn: {
                 kind: ShapeBpmnElementKind.CALL_ACTIVITY,
-                globalTaskKind: undefined, // TODO magraph@0.1.0 decide if we omit the globalTaskKind property when not set
+                globalTaskKind: undefined, // TODO maxgraph@0.1.0 decide if we omit the globalTaskKind property when not set
                 markers: [markerKind, ShapeBpmnMarkerKind.EXPAND],
               },
             });
@@ -741,7 +741,7 @@ describe('Style Computer', () => {
     //           baseStyleNames: ['eventBasedGateway'],
     //           bpmn: { kind: ShapeBpmnElementKind.GATEWAY_EVENT_BASED, gatewayKind, isInstantiating: !!instantiate },
     //           fontFamily: 'Arial',
-    //           fontStyle: 0, // TODO magraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+    //           fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
     //         });
     //       },
     //     );

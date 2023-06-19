@@ -57,7 +57,7 @@ describe('mxGraph model - BPMN elements', () => {
       describe('BPMN containers', () => {
         const baseShapeModelElement: ExpectedShapeModelElement = { isSwimLaneLabelHorizontal: false };
         // TODO rebase update test for maxGraph
-        // TODO magraph@0.1.0 change isHorizontal value for maxGraph, but the logic is probably wrong in 'master' (convert integer into boolean)
+        // TODO maxgraph@0.1.0 change isHorizontal value for maxGraph, but the logic is probably wrong in 'master' (convert integer into boolean)
         // const minimalPoolModelElement: ExpectedShapeModelElement = {
         //   parentId: getDefaultParentId(),
         // };
@@ -1477,7 +1477,7 @@ describe('mxGraph model - BPMN elements', () => {
       it('sequence flows', () => {
         expect('default_sequence_flow_id').toBeSequenceFlow({
           sequenceFlowKind: SequenceFlowKind.DEFAULT,
-          // TODO magraph@0.1.0 remove forcing type when maxGraph fixes its types
+          // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
           startArrow: <ArrowType>(<unknown>MarkerIdentifier.ARROW_DASH),
           parentId: 'participant_1_id',
           font: expectedBoldFont,
@@ -1711,7 +1711,7 @@ describe('mxGraph model - BPMN elements', () => {
     });
 
     it('Parse a diagram with numbers not parsable as number', () => {
-      // TODO magraph@0.1.0 change in maxGraph, throw 'Error: Invalid x supplied'. bpmn-visualization should handle it
+      // TODO maxgraph@0.1.0 change in maxGraph, throw 'Error: Invalid x supplied'. bpmn-visualization should handle it
       //  capture the error and rethrow it with a convenient
       // OR validate the values during parsing
 

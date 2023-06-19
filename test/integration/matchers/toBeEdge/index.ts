@@ -48,7 +48,7 @@ function buildExpectedMsgFlowIconCellStyle(expectedModel: ExpectedEdgeModelEleme
 
 function buildExpectedEdgeStylePropertyRegexp(expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement | ExpectedAssociationFlowModelElement): BPMNCellStyle {
   const style: BPMNCellStyle = { bpmn: {} };
-  // TODO magraph@0.1.0 share with edge
+  // TODO maxgraph@0.1.0 share with edge
   style.baseStyleNames = [expectedModel.kind];
   style.bpmn.kind = expectedModel.kind;
   if ('sequenceFlowKind' in expectedModel) {
@@ -62,7 +62,7 @@ function buildExpectedEdgeStylePropertyRegexp(expectedModel: ExpectedEdgeModelEl
 }
 
 function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement): ExpectedCell {
-  // TODO magraph@0.1.0 refactor, duplication with buildExpectedCell in shape matchers
+  // TODO maxgraph@0.1.0 refactor, duplication with buildExpectedCell in shape matchers
   const parentId = expectedModel.parentId;
   const expectedCell: ExpectedCell = {
     id,
@@ -74,7 +74,7 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement |
     styleViewState: buildExpectedEdgeCellStyle(expectedModel),
     edge: true,
     vertex: false,
-    parent: { id: parentId ? parentId : getDefaultParentId() }, // TODO magraph@0.1.0 use ?? instead (in master branch)
+    parent: { id: parentId ? parentId : getDefaultParentId() }, // TODO maxgraph@0.1.0 use ?? instead (in master branch)
     state: {
       style: buildExpectedStateStyle(expectedModel),
     },
@@ -89,9 +89,9 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement |
         value: null, // maxGraph now set to 'null', mxGraph set to 'undefined'
         // TODO rebase make the style check work
         style: {
-          // TODO magraph@0.1.0 remove forcing type when maxGraph fixes its types
+          // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
           shape: <ShapeValue>BpmnStyleIdentifier.MESSAGE_FLOW_ICON,
-          // TODO magraph@0.1.0 duplicated logic to compute the 'isNonInitiating' property. Update the expectedModel to store a boolean instead of a string
+          // TODO maxgraph@0.1.0 duplicated logic to compute the 'isNonInitiating' property. Update the expectedModel to store a boolean instead of a string
           bpmn: { isNonInitiating: expectedModel.messageVisibleKind === MessageVisibleKind.NON_INITIATING },
         },
         styleRawFromModelOrJestExpect: expect.stringMatching(

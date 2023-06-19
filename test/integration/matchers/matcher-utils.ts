@@ -27,7 +27,7 @@ import { getFontStyleValue as computeFontStyleValue } from '@lib/component/mxgra
 import { Font } from '@lib/model/bpmn/internal/Label';
 import type { BPMNCellStyle } from '../../../src/component/mxgraph/renderer/StyleComputer';
 
-// TODO magraph@0.1.0 remove this type
+// TODO maxgraph@0.1.0 remove this type
 export type ExpectedStateStyle = BPMNCellStyle;
 
 // TODO rebase make it work
@@ -154,13 +154,13 @@ export function buildExpectedCellStyleWithCommonAttributes(expectedModelElt: Exp
     fontOpacity: expectedModelElt.font?.opacity,
     // custom bpmn-visualization
     extraCssClasses: expectedModelElt.extraCssClasses,
-    // TODO magraph@0.1.0 set basic information when removing the custom processing in buildReceivedStateStyle
+    // TODO maxgraph@0.1.0 set basic information when removing the custom processing in buildReceivedStateStyle
     // bpmn: { xxxx },
   };
 }
 
-// TODO magraph@0.1.0 why building ExpectedStateStyle now maxGraph manage style in object. We should use 'stateStyle' directly (and remove this function)
-// TODO magraph@0.1.0 rename into 'receivedStateStyle' (in master branch)
+// TODO maxgraph@0.1.0 why building ExpectedStateStyle now maxGraph manage style in object. We should use 'stateStyle' directly (and remove this function)
+// TODO maxgraph@0.1.0 rename into 'receivedStateStyle' (in master branch)
 /**
  * This function really gets style from the state of the cell in the graph view.
  * The functions that return BpmnCellStyle objects are in fact, returning a computed style by using the style properties from the model augmented with the properties resolved

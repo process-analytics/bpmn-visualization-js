@@ -76,7 +76,7 @@ describe('compute all css class names based on style input', () => {
     ${{ bpmn: { isNonInitiating: true }, shape: 'bpmn.message-flow-icon' }}                                                                               | ${false} | ${['bpmn-message-flow-icon', 'bpmn-icon-non-initiating']}
     ${{ bpmn: { isNonInitiating: false }, shape: 'bpmn.message-flow-icon' }}                                                                              | ${true}  | ${['bpmn-message-flow-icon', 'bpmn-icon-initiating', 'bpmn-label']}
   `(
-    // TODO magraph@0.1.0 find a way to correctly display the style object
+    // TODO maxgraph@0.1.0 find a way to correctly display the style object
     'style="$style" / isLabel=$isLabel',
     ({ style, isLabel, expectedClassNames }: { style: BPMNCellStyle; isLabel: boolean; expectedClassNames: string[] }) => {
       expect(computeAllBpmnClassNames(style, isLabel)).toEqual(expectedClassNames);
