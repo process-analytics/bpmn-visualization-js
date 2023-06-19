@@ -167,7 +167,7 @@ export type Stroke = StyleWithOpacity & {
    * - `default` to use the color defined in the BPMN element default style.
    * - `none` for no color
    *
-   * Notes about the `default` special keyword:
+   * **Notes about the `default` special keyword**:
    * - It can be used when the style is first updated and then needs to be reset to its initial value.
    * - It doesn't use the color set in the BPMN source when the "BPMN in Color" support is enabled. It uses the color defined in the BPMN element default style.
    */
@@ -201,7 +201,7 @@ export type Font = StyleWithOpacity & {
    * Possible values are all HTML color names or HEX codes, as well as special keywords such as:
    * - `default` to use the color defined in the BPMN element default style.
    *
-   * Notes about the `default` special keyword:
+   * **Notes about the `default` special keyword**:
    * - It can be used when the style is first updated and then needs to be reset to its initial value.
    * - It doesn't use the color set in the BPMN source when the "BPMN in Color" support is enabled. It uses the color defined in the BPMN element default style.
    */
@@ -244,7 +244,7 @@ export type Fill = StyleWithOpacity & {
    * - `default` to use the color defined in the BPMN element default style.
    * - `none` for no color
    *
-   * Notes about the `default` special keyword:
+   * **Notes about the `default` special keyword**:
    * - It can be used when the style is first updated and then needs to be reset to its initial value.
    * - It doesn't use the color set in the BPMN source when the "BPMN in Color" support is enabled. It uses the color defined in the BPMN element default style.
    */
@@ -262,8 +262,8 @@ export type StyleWithOpacity = {
    *
    * **NOTE**: `opacity` does not apply to the font style.
    *
-   * Notes about the `default` special keyword:
-   * - It is to use the opacity defined in the BPMN element default style.
+   * **Notes about the `default` special keyword**:
+   * - It is used to apply the opacity defined in the default style of the BPMN element.
    * - It can be used when the style is first updated and then needs to be reset to its initial value.
    */
   opacity?: Opacity;
