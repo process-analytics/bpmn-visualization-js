@@ -210,6 +210,7 @@ export class StyleConfigurator {
   private configureGroupStyle(): void {
     const style: BPMNCellStyle = {
       rounded: true,
+      // TODO rebase arc configuration no more in dedicated style
       absoluteArcSize: 1,
       // TODO maxgraph@0.1.0 find a way to not force cast
       arcSize: <number>StyleDefault.SHAPE_ARC_SIZE,
