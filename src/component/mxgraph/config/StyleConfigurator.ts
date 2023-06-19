@@ -14,13 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { ArrowType, ShapeValue, Stylesheet } from '@maxgraph/core';
-import { constants, Perimeter } from '@maxgraph/core';
-
 import { AssociationDirectionKind, FlowKind, SequenceFlowKind, ShapeBpmnElementKind, ShapeUtil } from '../../../model/bpmn/internal';
 import { BpmnStyleIdentifier, MarkerIdentifier, StyleDefault } from '../style';
 import type { BpmnGraph } from '../BpmnGraph';
 import type { BPMNCellStyle } from '../renderer/StyleComputer';
+import { constants, Perimeter } from '@maxgraph/core';
+import type { ArrowType, ShapeValue, Stylesheet } from '@maxgraph/core';
 
 const arrowDefaultSize = 12;
 
