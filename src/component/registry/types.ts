@@ -100,7 +100,9 @@ export type OverlayFill = {
   /**
    * A number between `0` (transparent) and `100` (opaque).
    *
-   * **IMPORTANT**: this property is currently not taken into account by the default Overlay. See https://github.com/process-analytics/bpmn-visualization-js/issues/1234
+   * **IMPORTANT**: this property is currently not taken into account by the default Overlay. See https://github.com/process-analytics/bpmn-visualization-js/issues/1234.
+   *
+   * To solve this problem, define a color that contains opacity information. For example: `color: `rgba(0, 0, 255, 0.8)`.
    * @default {@link StyleDefault.DEFAULT_OVERLAY_FILL_OPACITY}
    */
   opacity?: number;
@@ -142,9 +144,21 @@ export type StyleUpdate = EdgeStyleUpdate | ShapeStyleUpdate;
 /**
  * @category Element Style
  */
-export type EdgeStyleUpdate = StyleWithOpacity & {
-  stroke?: Stroke;
+export type EdgeStyleUpdate = {
   font?: Font;
+  /**
+   * The value must be between 0 and 100:
+   * - If the set value is less than 0, the used value is 0.
+   * - If the set value is greater than 100, the used value is 100.
+   *
+   * **NOTE**: `opacity` does not apply to the font style.
+   *
+   * **Notes about the `default` special keyword**:
+   * - It is used to apply the opacity defined in the default style of the BPMN element.
+   * - It can be used when the style is first updated and then needs to be reset to its initial value.
+   */
+  opacity?: Opacity;
+  stroke?: Stroke;
 };
 
 /**
@@ -154,16 +168,16 @@ export type ShapeStyleUpdate = EdgeStyleUpdate & { fill?: Fill };
 
 /**
  * @category Element Style
- *
- * @warning Changing the stroke width of Activities may be misleading as the default stroke widths have a meaning according to the BPMN Specification.
- *
- * For example, updating the stroke width of a task using the same value as the default stroke width of a Call Activity can be confusing. In this case, you should also change another property such as the stroke color to allow the user to differentiate between them.
  */
 export type Stroke = StyleWithOpacity & {
   /**
    * Possible values are all HTML color names or HEX codes, as well as special keywords such as:
-   * - `default` to use the color defined in the BPMN element default style. **WARN**: this doesn't use the color set in the BPMN source when the "BPMN in Color" support is enabled.
+   * - `default` to use the color defined in the BPMN element default style.
    * - `none` for no color
+   *
+   * **Notes about the `default` special keyword**:
+   * - It can be used when the style is first updated and then needs to be reset to its initial value.
+   * - It doesn't use the color set in the BPMN source when the "BPMN in Color" support is enabled. It uses the color defined in the BPMN element default style.
    */
   color?: 'default' | 'none' | string;
 
@@ -175,7 +189,12 @@ export type Stroke = StyleWithOpacity & {
    * If the set value is less than 1, the used value is 1.
    * If the set value is greater than 50, the used value is 50.
    *
-   * To hide the stroke, set the `color` property to `'none'`.
+   * To hide the stroke, set the `color` property to `none`.
+   *
+   * The `default` value resets the width to the value defined in the default style of the BPMN element. It can be used when the style is first updated and then needs to be reset to its initial value.
+   *
+   * **WARNING**: Changing the stroke width of Activities may be misleading as the default stroke widths have a meaning according to the BPMN Specification.
+   * For example, updating the stroke width of a task using the same value as the default stroke width of a Call Activity can be confusing. In this case, you should also change another property such as the stroke color to allow the user to differentiate between them.
    */
   width?: 'default' | number;
 };
@@ -191,7 +210,11 @@ export type Stroke = StyleWithOpacity & {
 export type Font = StyleWithOpacity & {
   /**
    * Possible values are all HTML color names or HEX codes, as well as special keywords such as:
-   * - `default` to use the color defined in the BPMN element default style. **WARN**: this doesn't use the color set in the BPMN source when the "BPMN in Color" support is enabled.
+   * - `default` to use the color defined in the BPMN element default style.
+   *
+   * **Notes about the `default` special keyword**:
+   * - It can be used when the style is first updated and then needs to be reset to its initial value.
+   * - It doesn't use the color set in the BPMN source when the "BPMN in Color" support is enabled. It uses the color defined in the BPMN element default style.
    */
   color?: 'default' | string;
 
@@ -229,8 +252,12 @@ export type Font = StyleWithOpacity & {
 export type Fill = StyleWithOpacity & {
   /**
    * Possible values are all HTML color names or HEX codes, as well as special keywords such as:
-   * - `default` to use the color defined in the BPMN element default style. **WARN**: this doesn't use the color set in the BPMN source when the "BPMN in Color" support is enabled.
+   * - `default` to use the color defined in the BPMN element default style.
    * - `none` for no color
+   *
+   * **Notes about the `default` special keyword**:
+   * - It can be used when the style is first updated and then needs to be reset to its initial value.
+   * - It doesn't use the color set in the BPMN source when the "BPMN in Color" support is enabled. It uses the color defined in the BPMN element default style.
    */
   color?: 'default' | 'none' | string;
 };
@@ -244,7 +271,9 @@ export type StyleWithOpacity = {
    * - If the set value is less than 0, the used value is 0.
    * - If the set value is greater than 100, the used value is 100.
    *
-   * The special `default` value is to use the color defined in the BPMN element default style
+   * **Notes about the `default` special keyword**:
+   * - It is used to apply the opacity defined in the default style of the BPMN element.
+   * - It can be used when the style is first updated and then needs to be reset to its initial value.
    */
   opacity?: Opacity;
 };
