@@ -118,7 +118,7 @@ function updateParentStyleByAPI(ids, bpmnKind) {
   lastIdentifiedParentBpmnIds = [];
   if (ShapeUtil.isBoundaryEvent(bpmnKind)) {
     lastIdentifiedParentBpmnIds = getParentElementIds(ids);
-    updateStyle(lastIdentifiedParentBpmnIds, { opacity: 10, font: { color: 'green', opacity: 10 }, fill: { color: 'gold' }, stroke: { color: 'red' } });
+    updateStyle(lastIdentifiedParentBpmnIds, { opacity: 5, font: { color: 'green', opacity: 5 }, fill: { color: 'gold' }, stroke: { color: 'red' } });
   }
 }
 
