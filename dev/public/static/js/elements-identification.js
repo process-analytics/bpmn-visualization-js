@@ -42,6 +42,7 @@ let useCSS = true;
 
 function updateStyleByAPI(bpmnIds, bpmnKind) {
   const style = { font: {}, fill: {}, stroke: {} };
+  lastIdentifiedParentBpmnIds = [];
 
   if (ShapeUtil.isTask(bpmnKind)) {
     style.font.color = 'Indigo';
@@ -50,6 +51,9 @@ function updateStyleByAPI(bpmnIds, bpmnKind) {
     style.fill.opacity = 20;
   } else if (ShapeUtil.isEvent(bpmnKind)) {
     if (ShapeUtil.isBoundaryEvent(bpmnKind)) {
+      lastIdentifiedParentBpmnIds = getParentElementIds(bpmnIds);
+      updateStyle(lastIdentifiedParentBpmnIds, { opacity: 5, font: { color: 'green', opacity: 5 }, fill: { color: 'gold' }, stroke: { color: 'red' } });
+
       style.font.color = 'inherit';
       style.fill.color = 'inherit';
       style.stroke.color = 'inherit';
@@ -110,66 +114,66 @@ function updateStyleByAPI(bpmnIds, bpmnKind) {
   updateStyle(bpmnIds, style);
 }
 
-function resetStyleByAPI(id) {
-  resetStyle(id);
+function styleByCSS(idsToStyle) {
+  removeCssClasses(lastIdentifiedBpmnIds, cssClassName);
+  addCssClasses(idsToStyle, cssClassName);
 }
 
-function updateParentStyleByAPI(ids, bpmnKind) {
-  lastIdentifiedParentBpmnIds = [];
-  if (ShapeUtil.isBoundaryEvent(bpmnKind)) {
-    lastIdentifiedParentBpmnIds = getParentElementIds(ids);
-    updateStyle(lastIdentifiedParentBpmnIds, { opacity: 5, font: { color: 'green', opacity: 5 }, fill: { color: 'gold' }, stroke: { color: 'red' } });
+function styleByAPI(idsToStyle, bpmnKind) {
+  resetStyle(lastIdentifiedBpmnIds);
+  resetStyle(lastIdentifiedParentBpmnIds);
+  updateStyleByAPI(idsToStyle, bpmnKind);
+}
+
+function manageOverlays(idsToAddOverlay, bpmnKind) {
+  lastIdentifiedBpmnIds.forEach(id => removeAllOverlays(id));
+  if (isOverlaysDisplayed) {
+    idsToAddOverlay.forEach(id => addOverlays(id, getOverlay(bpmnKind)));
+  } else {
+    log('Do not display overlays');
   }
 }
 
-function updateSelectedBPMNElements(textArea, bpmnKind) {
+function updateSelectedBPMNElements(bpmnKind) {
   log(`Searching for Bpmn elements of '${bpmnKind}' kind`);
   const elementsByKinds = getElementsByKinds(bpmnKind);
 
-  // Update text area
+  updateTextArea(elementsByKinds, bpmnKind);
+
+  // newly identified elements and values
+  const newlyIdentifiedBpmnIds = elementsByKinds.map(elt => elt.bpmnSemantic.id);
+  useCSS ? styleByCSS(newlyIdentifiedBpmnIds) : styleByAPI(newlyIdentifiedBpmnIds, bpmnKind);
+  manageOverlays(newlyIdentifiedBpmnIds, bpmnKind);
+
+  // keep track of newly identified elements and values
+  lastIdentifiedBpmnIds = newlyIdentifiedBpmnIds;
+}
+
+function updateTextArea(elementsByKinds, bpmnKind) {
+  const textArea = document.getElementById('elements-result');
+
   const textHeader = `Found ${elementsByKinds.length} ${bpmnKind}(s)`;
   log(textHeader);
   const lines = elementsByKinds.map(elt => `  - ${elt.bpmnSemantic.id}: '${elt.bpmnSemantic.name}'`).join('\n');
 
   textArea.value += [textHeader, lines].join('\n') + '\n';
   textArea.scrollTop = textArea.scrollHeight;
+}
 
-  // newly identified elements and values
-  const newlyIdentifiedBpmnIds = elementsByKinds.map(elt => elt.bpmnSemantic.id);
-
-  // style update
-  if (useCSS) {
-    removeCssClasses(lastIdentifiedBpmnIds, cssClassName);
-    addCssClasses(newlyIdentifiedBpmnIds, cssClassName);
-  } else {
-    resetStyleByAPI(lastIdentifiedBpmnIds);
-    resetStyleByAPI(lastIdentifiedParentBpmnIds);
-    updateParentStyleByAPI(newlyIdentifiedBpmnIds, bpmnKind);
-    updateStyleByAPI(newlyIdentifiedBpmnIds, bpmnKind);
-  }
-
-  // Overlays update
-  lastIdentifiedBpmnIds.forEach(id => removeAllOverlays(id));
-  if (isOverlaysDisplayed) {
-    newlyIdentifiedBpmnIds.forEach(id => addOverlays(id, getOverlay(bpmnKind)));
-  } else {
-    log('Do not display overlays');
-  }
-
-  // keep track of newly identified elements and values
-  lastIdentifiedBpmnIds = newlyIdentifiedBpmnIds;
+function resetTextArea() {
+  const textArea = document.getElementById('elements-result');
+  textArea.value = '';
 }
 
 function configureControls() {
-  const textArea = document.getElementById('elements-result');
-
   const selectedKindElt = document.getElementById('bpmn-kinds-select');
-  selectedKindElt.onchange = event => updateSelectedBPMNElements(textArea, event.target.value);
-  document.addEventListener('diagramLoaded', () => updateSelectedBPMNElements(textArea, selectedKindElt.value), false);
+  selectedKindElt.onchange = event => updateSelectedBPMNElements(event.target.value);
+  document.addEventListener('diagramLoaded', () => updateSelectedBPMNElements(selectedKindElt.value), false);
 
   document.getElementById('clear-btn').onclick = function () {
-    textArea.value = '';
-    useCSS ? removeCssClasses(lastIdentifiedBpmnIds, cssClassName) : resetStyleByAPI(lastIdentifiedBpmnIds);
+    resetTextArea();
+
+    useCSS ? removeCssClasses(lastIdentifiedBpmnIds, cssClassName) : resetStyle(lastIdentifiedBpmnIds);
     lastIdentifiedBpmnIds.forEach(id => removeAllOverlays(id));
 
     // reset identified elements and values
@@ -182,7 +186,7 @@ function configureControls() {
   checkboxDisplayOverlaysElt.addEventListener('change', function () {
     isOverlaysDisplayed = this.checked;
     log('Request overlays display:', isOverlaysDisplayed);
-    updateSelectedBPMNElements(textArea, selectedKindElt.value);
+    updateSelectedBPMNElements(selectedKindElt.value);
   });
   checkboxDisplayOverlaysElt.checked = isOverlaysDisplayed;
 
@@ -193,13 +197,12 @@ function configureControls() {
     log('Request CSS style feature:', useCSS);
 
     if (useCSS) {
-      resetStyleByAPI(lastIdentifiedBpmnIds);
-      resetStyleByAPI(lastIdentifiedParentBpmnIds);
+      resetStyle(lastIdentifiedBpmnIds);
+      resetStyle(lastIdentifiedParentBpmnIds);
       lastIdentifiedParentBpmnIds = [];
       addCssClasses(lastIdentifiedBpmnIds, cssClassName);
     } else {
       removeCssClasses(lastIdentifiedBpmnIds, cssClassName);
-      updateParentStyleByAPI(lastIdentifiedBpmnIds, selectedKindElt.value);
       updateStyleByAPI(lastIdentifiedBpmnIds, selectedKindElt.value);
     }
   });
