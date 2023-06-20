@@ -32,18 +32,19 @@ import {
   resetStyle,
   windowAlertStatusKoNotifier,
   getParentElementIds,
+  ShapeBpmnElementKind,
+  isChildOfSubProcess,
 } from '../../../ts/dev-bundle-index';
 
 let lastIdentifiedBpmnIds = [];
 let lastIdentifiedParentBpmnIds = [];
+let styledPoolAndLaneIds = [];
 const cssClassName = 'detection';
 let isOverlaysDisplayed = true;
 let useCSS = true;
 
-function updateStyleByAPI(bpmnIds, bpmnKind) {
+function computeDefaultStyleByKind(bpmnKind) {
   const style = { font: {}, fill: {}, stroke: {} };
-  lastIdentifiedParentBpmnIds = [];
-
   if (ShapeUtil.isTask(bpmnKind)) {
     style.font.color = 'Indigo';
     style.fill.color = 'gold';
@@ -51,9 +52,6 @@ function updateStyleByAPI(bpmnIds, bpmnKind) {
     style.fill.opacity = 20;
   } else if (ShapeUtil.isEvent(bpmnKind)) {
     if (ShapeUtil.isBoundaryEvent(bpmnKind)) {
-      lastIdentifiedParentBpmnIds = getParentElementIds(bpmnIds);
-      updateStyle(lastIdentifiedParentBpmnIds, { opacity: 5, font: { color: 'green', opacity: 5 }, fill: { color: 'gold' }, stroke: { color: 'red' } });
-
       style.font.color = 'inherit';
       style.fill.color = 'inherit';
       style.stroke.color = 'inherit';
@@ -110,8 +108,26 @@ function updateStyleByAPI(bpmnIds, bpmnKind) {
         break;
     }
   }
+  return style;
+}
 
-  updateStyle(bpmnIds, style);
+function updateStyleByAPI(bpmnIds, bpmnKind) {
+  const subProcessChildrenIds = bpmnIds.filter(isChildOfSubProcess);
+  const otherIds = bpmnIds.filter(bpmnId => !subProcessChildrenIds.includes(bpmnId));
+
+  if (subProcessChildrenIds.length > 0) {
+    styledPoolAndLaneIds = getElementsByKinds([ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.LANE]).map(element => element.bpmnSemantic.id);
+    updateStyle(styledPoolAndLaneIds, { opacity: 5, font: { color: 'blue', opacity: 5 }, fill: { color: 'pink' }, stroke: { color: 'green' } });
+  }
+  updateStyle(subProcessChildrenIds, { fill: { color: 'swimlane' }, stroke: { color: 'swimlane' }, font: { color: 'swimlane' } });
+
+  if (ShapeUtil.isBoundaryEvent(bpmnKind)) {
+    lastIdentifiedParentBpmnIds = getParentElementIds(otherIds);
+    updateStyle(lastIdentifiedParentBpmnIds, { opacity: 5, font: { color: 'green', opacity: 5 }, fill: { color: 'gold' }, stroke: { color: 'red' } });
+  }
+
+  const style = computeDefaultStyleByKind(bpmnKind);
+  updateStyle(otherIds, style);
 }
 
 function styleByCSS(idsToStyle) {
@@ -120,9 +136,16 @@ function styleByCSS(idsToStyle) {
 }
 
 function styleByAPI(idsToStyle, bpmnKind) {
+  resetStyleByAPI();
+  updateStyleByAPI(idsToStyle, bpmnKind);
+}
+
+function resetStyleByAPI() {
   resetStyle(lastIdentifiedBpmnIds);
   resetStyle(lastIdentifiedParentBpmnIds);
-  updateStyleByAPI(idsToStyle, bpmnKind);
+  lastIdentifiedParentBpmnIds = [];
+  resetStyle(styledPoolAndLaneIds);
+  styledPoolAndLaneIds = [];
 }
 
 function manageOverlays(idsToAddOverlay, bpmnKind) {
@@ -173,12 +196,11 @@ function configureControls() {
   document.getElementById('clear-btn').onclick = function () {
     resetTextArea();
 
-    useCSS ? removeCssClasses(lastIdentifiedBpmnIds, cssClassName) : resetStyle(lastIdentifiedBpmnIds);
+    useCSS ? removeCssClasses(lastIdentifiedBpmnIds, cssClassName) : resetStyleByAPI();
     lastIdentifiedBpmnIds.forEach(id => removeAllOverlays(id));
 
     // reset identified elements and values
     lastIdentifiedBpmnIds = [];
-    lastIdentifiedParentBpmnIds = [];
   };
 
   // display overlay option
@@ -197,9 +219,7 @@ function configureControls() {
     log('Request CSS style feature:', useCSS);
 
     if (useCSS) {
-      resetStyle(lastIdentifiedBpmnIds);
-      resetStyle(lastIdentifiedParentBpmnIds);
-      lastIdentifiedParentBpmnIds = [];
+      resetStyleByAPI();
       addCssClasses(lastIdentifiedBpmnIds, cssClassName);
     } else {
       removeCssClasses(lastIdentifiedBpmnIds, cssClassName);

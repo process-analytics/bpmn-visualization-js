@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { mxCell } from 'mxgraph';
 import type {
   BpmnElement,
   BpmnElementKind,
@@ -29,12 +30,12 @@ import type {
   ZoomType,
 } from '../../src/bpmn-visualization';
 import { FlowKind, ShapeBpmnElementKind } from '../../src/bpmn-visualization';
-import { fetchBpmnContent, logDownload, logError, logErrorAndOpenAlert, logStartup } from './utils/internal-helpers';
-import { log } from './utils/shared-helpers';
+import { downloadAsPng, downloadAsSvg } from './component/download';
 import { DropFileUserInterface } from './component/DropFileUserInterface';
 import { SvgExporter } from './component/SvgExporter';
-import { downloadAsPng, downloadAsSvg } from './component/download';
 import { ThemedBpmnVisualization } from './component/ThemedBpmnVisualization';
+import { fetchBpmnContent, logDownload, logError, logErrorAndOpenAlert, logStartup } from './utils/internal-helpers';
+import { log } from './utils/shared-helpers';
 
 let bpmnVisualization: ThemedBpmnVisualization;
 let loadOptions: LoadOptions = {};
@@ -105,13 +106,19 @@ export function getElementsByIds(bpmnId: string | string[]): BpmnElement[] {
   return bpmnVisualization.bpmnElementsRegistry.getElementsByIds(bpmnId);
 }
 
+function getParentElement(id: string): mxCell {
+  const cell = bpmnVisualization.graph.model.getCell(id);
+  return bpmnVisualization.graph.getModel().getParent(cell);
+}
+
 export function getParentElementIds(bpmnIds: string[]): string[] {
-  return bpmnIds
-    .map(id => {
-      const cell = bpmnVisualization.graph.model.getCell(id);
-      return bpmnVisualization.graph.getModel().getParent(cell).getId();
-    })
-    .filter((value, index, self) => self.indexOf(value) === index);
+  return bpmnIds.map(id => getParentElement(id).getId()).filter((value, index, self) => self.indexOf(value) === index);
+}
+
+export function isChildOfSubProcess(bpmnId: string): boolean {
+  const parent = getParentElement(bpmnId);
+  const bpmnElement = getElementsByIds(parent.getId());
+  return bpmnElement && bpmnElement[0]?.bpmnSemantic.kind === ShapeBpmnElementKind.SUB_PROCESS;
 }
 
 export function addCssClasses(bpmnElementId: string | string[], classNames: string | string[]): void {
@@ -336,7 +343,7 @@ export function getVersion(): Version {
 export function updateStyle(bpmnElementIds: string | string[], style: StyleUpdate): void {
   log('Applying style using the style API: %O', style);
   bpmnVisualization.bpmnElementsRegistry.updateStyle(bpmnElementIds, style);
-  log('New style applied');
+  log('New style applied on: %O', bpmnElementIds);
 }
 
 export function resetStyle(bpmnElementIds: string | string[]): void {
