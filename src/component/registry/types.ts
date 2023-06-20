@@ -173,13 +173,15 @@ export type Stroke = StyleWithOpacity & {
   /**
    * Possible values are all HTML color names or HEX codes, as well as special keywords such as:
    * - `default` to use the color defined in the BPMN element default style.
-   * - `none` for no color
+   * - `none` for no color.
+   * - `swimlane` to apply the stroke color of the nearest parent element with the type {@link ShapeBpmnElementKind.LANE} or {@link ShapeBpmnElementKind.POOL}.
+   * - `inherit` to apply the stroke color of the direct parent element.
    *
    * **Notes about the `default` special keyword**:
    * - It can be used when the style is first updated and then needs to be reset to its initial value.
    * - It doesn't use the color set in the BPMN source when the "BPMN in Color" support is enabled. It uses the color defined in the BPMN element default style.
    */
-  color?: 'default' | 'none' | string;
+  color?: 'default' | 'none' | 'swimlane' | 'inherit' | string;
 
   /**
    * Defines the stroke width in pixels.
@@ -211,12 +213,14 @@ export type Font = StyleWithOpacity & {
   /**
    * Possible values are all HTML color names or HEX codes, as well as special keywords such as:
    * - `default` to use the color defined in the BPMN element default style.
+   * - `swimlane` to apply the font color of the nearest parent element with the type {@link ShapeBpmnElementKind.LANE} or {@link ShapeBpmnElementKind.POOL}.
+   * - `inherit` to apply the font color of the direct parent element.
    *
    * **Notes about the `default` special keyword**:
    * - It can be used when the style is first updated and then needs to be reset to its initial value.
    * - It doesn't use the color set in the BPMN source when the "BPMN in Color" support is enabled. It uses the color defined in the BPMN element default style.
    */
-  color?: 'default' | string;
+  color?: 'default' | 'swimlane' | 'inherit' | string;
 
   /**
    *  The type of the value is int (in px).
@@ -253,13 +257,15 @@ export type Fill = StyleWithOpacity & {
   /**
    * Possible values are all HTML color names or HEX codes, as well as special keywords such as:
    * - `default` to use the color defined in the BPMN element default style.
-   * - `none` for no color
+   * - `none` for no color.
+   * - `swimlane` to apply the fill color of the nearest parent element with the type {@link ShapeBpmnElementKind.LANE} or {@link ShapeBpmnElementKind.POOL}.
+   * - `inherit` to apply the fill color of the direct parent element.
    *
    * **Notes about the `default` special keyword**:
    * - It can be used when the style is first updated and then needs to be reset to its initial value.
    * - It doesn't use the color set in the BPMN source when the "BPMN in Color" support is enabled. It uses the color defined in the BPMN element default style.
    */
-  color?: 'default' | 'none' | string;
+  color?: 'default' | 'none' | 'swimlane' | 'inherit' | string;
 };
 
 /**
