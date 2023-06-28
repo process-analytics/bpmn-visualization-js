@@ -301,16 +301,13 @@ describe('Style Computer', () => {
   });
 
   it.each([
-    [MessageVisibleKind.NON_INITIATING, 'false'],
-    [MessageVisibleKind.INITIATING, 'true'],
-  ])('compute style - message flow icon: %s', (messageVisibleKind: MessageVisibleKind, expected: string) => {
+    [MessageVisibleKind.NON_INITIATING, false],
+    [MessageVisibleKind.INITIATING, true],
+  ])('compute style - message flow icon: %s', (messageVisibleKind: MessageVisibleKind, expected: boolean) => {
     const edge = new Edge('id', newMessageFlow(), undefined, undefined, messageVisibleKind);
-    // TODO maxgraph@0.1.0 cast to <BPMNCellStyle> (waiting for "maxGraph fixes its types")
     expect(styleComputer.computeMessageFlowIconStyle(edge)).toStrictEqual({
       shape: 'bpmn.messageFlowIcon',
-      // TODO rebase rename isNonInitiating --> isInitiating and invert condition in test
-      // in bpmn-visualization@0.36.0, style property is 'bpmn.isInitiating'
-      bpmn: { isNonInitiating: !expected },
+      bpmn: { isNonInitiating: expected },
     });
   });
 

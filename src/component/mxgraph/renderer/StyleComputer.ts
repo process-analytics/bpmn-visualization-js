@@ -249,7 +249,8 @@ export default class StyleComputer {
       shape: <ShapeValue>BpmnStyleIdentifier.MESSAGE_FLOW_ICON,
       // TODO rebase, isNonInitiating --> isInitiating
       //     styleValues.push([BpmnStyleIdentifier.IS_INITIATING, String(edge.messageVisibleKind === MessageVisibleKind.INITIATING)]);
-      bpmn: { isNonInitiating: edge.messageVisibleKind === MessageVisibleKind.NON_INITIATING },
+      // in bpmn-visualization@0.36.0, style property is 'bpmn.isInitiating'
+      bpmn: { isNonInitiating: edge.messageVisibleKind === MessageVisibleKind.INITIATING },
     };
     if (!this.ignoreBpmnColors) {
       edge.extensions.strokeColor && (style.strokeColor = edge.extensions.strokeColor);
