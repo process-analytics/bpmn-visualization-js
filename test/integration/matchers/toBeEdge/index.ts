@@ -97,11 +97,9 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement |
           // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
           shape: <ShapeValue>BpmnStyleIdentifier.MESSAGE_FLOW_ICON,
           // TODO maxgraph@0.1.0 duplicated logic to compute the 'isInitiating' property. Update the expectedModel to store a boolean instead of a string
+          // duplication exists in the master branch
           bpmn: { isInitiating: expectedModel.messageVisibleKind == MessageVisibleKind.INITIATING },
         }),
-        // styleRawFromModelOrJestExpect: expect.stringMatching(
-        //   `shape=${BpmnStyleIdentifier.MESSAGE_FLOW_ICON};${BpmnStyleIdentifier.IS_INITIATING}=${expectedModel.messageVisibleKind == MessageVisibleKind.INITIATING}`,
-        // ),
         styleResolvedFromModel: buildExpectedMsgFlowIconCellStyle(expectedModel),
         styleViewState: buildExpectedMsgFlowIconCellStyle(expectedModel),
         edge: false,
