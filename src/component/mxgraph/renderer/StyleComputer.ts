@@ -247,9 +247,6 @@ export default class StyleComputer {
     const style: BPMNCellStyle = {
       // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
       shape: <ShapeValue>BpmnStyleIdentifier.MESSAGE_FLOW_ICON,
-      // TODO rebase, isNonInitiating --> isInitiating
-      //     styleValues.push([BpmnStyleIdentifier.IS_INITIATING, String(edge.messageVisibleKind === MessageVisibleKind.INITIATING)]);
-      // in bpmn-visualization@0.36.0, style property is 'bpmn.isInitiating'
       bpmn: { isInitiating: edge.messageVisibleKind === MessageVisibleKind.INITIATING },
     };
     if (!this.ignoreBpmnColors) {
