@@ -130,11 +130,11 @@ export function buildCellMatcher<R>(
 }
 
 export function getFontStyleValue(expectedFont: ExpectedFont): number {
-  return (
-    (expectedFont
-      ? computeFontStyleValue(new Font(expectedFont.family, expectedFont.size, expectedFont.isBold, expectedFont.isItalic, expectedFont.isUnderline, expectedFont.isStrikeThrough))
-      : 0) || undefined
-  );
+  return expectedFont
+    ? computeFontStyleValue(new Font(expectedFont.family, expectedFont.size, expectedFont.isBold, expectedFont.isItalic, expectedFont.isUnderline, expectedFont.isStrikeThrough))
+    : // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+      // : 0) || undefined
+      undefined;
 }
 
 export function buildExpectedCellStyleWithCommonAttributes(expectedModelElt: ExpectedEdgeModelElement | ExpectedShapeModelElement): BpmnCellStyle {
