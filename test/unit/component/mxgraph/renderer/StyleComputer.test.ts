@@ -589,7 +589,7 @@ describe('Style Computer', () => {
     it.each([
       ['vertical', false, true],
       ['horizontal', true, false],
-      ['undefined', undefined, false],
+      ['undefined', undefined, true], // the parser set a default value in the shape, so this shouldn't be used
     ])('%s pool references a Process', (title: string, isHorizontal: boolean, expectedStyleIsHorizontal: boolean) => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.POOL), undefined, isHorizontal);
       expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
@@ -604,7 +604,7 @@ describe('Style Computer', () => {
     it.each([
       ['vertical', false, true],
       ['horizontal', true, false],
-      ['undefined', undefined, false],
+      ['undefined', undefined, true], // the parser set a default value in the shape, so this shouldn't be used
     ])('%s lane', (title: string, isHorizontal: boolean, expectedStyleIsHorizontal: boolean) => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.LANE), undefined, isHorizontal);
       expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
@@ -743,14 +743,12 @@ describe('Style Computer', () => {
           expect(computeStyleWithRendererOptions(shape)).toStrictEqual(expectedStyle);
         });
         it.each([ShapeBpmnElementKind.LANE, ShapeBpmnElementKind.POOL])('%s', (kind: ShapeBpmnElementKind) => {
-          const shape = newShape(newShapeBpmnElement(kind), newLabelExtension('#aa0101'));
+          const shape = newShape(newShapeBpmnElement(kind), newLabelExtension('#aa0101'), true);
           shape.extensions.fillColor = '#AA0003';
           shape.extensions.strokeColor = '#FF02AA';
           const expectedStyle = <BPMNCellStyle>{
             baseStyleNames: [kind],
             bpmn: { kind: kind },
-            // TODO rebase horizontal may not be correctly computed
-            // style with mxgraph: `${kind};horizontal=1${additionalColorsStyle}`
             horizontal: false,
           };
           if (expectAdditionalColorsStyle) {
