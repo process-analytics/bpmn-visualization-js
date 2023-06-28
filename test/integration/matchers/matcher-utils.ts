@@ -207,9 +207,7 @@ function toBpmnStyle(rawStyle: BPMNCellStyle, isEdge: boolean): BpmnCellStyle {
     // ignore marker order, which is only relevant when rendering the shape (it has its own order algorithm)
     markers: rawStyle.bpmn?.markers?.sort(),
     // for message flow icon (value in rawStyle are string)
-    isInitiating: rawStyle.bpmn?.isNonInitiating == undefined ? undefined : !rawStyle.bpmn.isNonInitiating,
-    // 'bpmn.isInitiating': rawStyle[BpmnStyleIdentifier.IS_INITIATING] ? rawStyle[BpmnStyleIdentifier.IS_INITIATING] == 'true' : undefined,
-    // isInitiating
+    isInitiating: rawStyle.bpmn.isInitiating,
   };
 
   if (isEdge) {

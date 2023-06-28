@@ -93,12 +93,11 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement |
         id: `messageFlowIcon_of_${id}`,
         value: null, // maxGraph now set to 'null', mxGraph set to 'undefined'
         // TODO rebase make the style check work
-        styleRawFromModelOrJestExpect: expect.objectContaining({
+        styleRawFromModelOrJestExpect: expect.objectContaining(<BPMNCellStyle>{
           // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
           shape: <ShapeValue>BpmnStyleIdentifier.MESSAGE_FLOW_ICON,
-          // TODO maxgraph@0.1.0 duplicated logic to compute the 'isNonInitiating' property. Update the expectedModel to store a boolean instead of a string
-          // should be expectedModel.messageVisibleKind == MessageVisibleKind.INITIATING
-          bpmn: { isNonInitiating: expectedModel.messageVisibleKind === MessageVisibleKind.NON_INITIATING },
+          // TODO maxgraph@0.1.0 duplicated logic to compute the 'isInitiating' property. Update the expectedModel to store a boolean instead of a string
+          bpmn: { isInitiating: expectedModel.messageVisibleKind == MessageVisibleKind.INITIATING },
         }),
         // styleRawFromModelOrJestExpect: expect.stringMatching(
         //   `shape=${BpmnStyleIdentifier.MESSAGE_FLOW_ICON};${BpmnStyleIdentifier.IS_INITIATING}=${expectedModel.messageVisibleKind == MessageVisibleKind.INITIATING}`,

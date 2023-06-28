@@ -47,6 +47,7 @@ import type { RendererOptions } from '../../options';
 // TODO maxgraph@0.1.0 this type should probably be part of the API (so it should be exported)
 // TODO move somewhere else
 // TODO rename for consistent naming BPMNCellStyle --> BpmnCellStyle (apply to other places)
+//  a BpmnCellStyle exists in tests. Try to use this one instead
 export interface BPMNCellStyle extends CellStyle {
   // TODO maxgraph@0.1.0 the shape property is defined as 'ShapeValue'. It should be 'ShapeValue | string'
   // Omit<CellStyle, 'shape'> {
@@ -65,8 +66,7 @@ export interface BPMNCellStyle extends CellStyle {
     markers?: ShapeBpmnMarkerKind[];
     sequenceFlowKind?: SequenceFlowKind;
     associationDirectionKind?: AssociationDirectionKind;
-    // TODO maxgraph@0.1.0 isNonInitiating: previously we add a string, this introduces extra changes. If we want to keep this, do it in the master branch
-    isNonInitiating?: boolean; // TODO maxgraph@0.1.0 why not 'isInitiating' for consistency with other boolean value? Negate doesn't make things easier to understand
+    isInitiating?: boolean;
     // TODO maxgraph@0.1.0 simplify structure a single extraCssClasses
     extra?: {
       css: {
@@ -250,7 +250,7 @@ export default class StyleComputer {
       // TODO rebase, isNonInitiating --> isInitiating
       //     styleValues.push([BpmnStyleIdentifier.IS_INITIATING, String(edge.messageVisibleKind === MessageVisibleKind.INITIATING)]);
       // in bpmn-visualization@0.36.0, style property is 'bpmn.isInitiating'
-      bpmn: { isNonInitiating: edge.messageVisibleKind === MessageVisibleKind.INITIATING },
+      bpmn: { isInitiating: edge.messageVisibleKind === MessageVisibleKind.INITIATING },
     };
     if (!this.ignoreBpmnColors) {
       edge.extensions.strokeColor && (style.strokeColor = edge.extensions.strokeColor);

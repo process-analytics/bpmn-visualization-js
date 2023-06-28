@@ -62,15 +62,15 @@ describe('compute all css class names based on style input', () => {
     ${{ bpmn: { kind: ShapeBpmnElementKind.TASK } }}                                                                                                      | ${true}  | ${['bpmn-type-activity', 'bpmn-type-task', 'bpmn-task', 'bpmn-label']}
     ${{ bpmn: { kind: ShapeBpmnElementKind.TASK_BUSINESS_RULE } }}                                                                                        | ${false} | ${['bpmn-type-activity', 'bpmn-type-task', 'bpmn-business-rule-task']}
     ${{ bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS } }}                                                                                               | ${false} | ${['bpmn-type-activity', 'bpmn-sub-process']}
-    ${{ bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind: ShapeBpmnSubProcessKind.AD_HOC } }}                                               | ${false} | ${['bpmn-type-activity', 'bpmn-sub-process', 'bpmn-sub-process-ad_hoc']}
+    ${{ bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind: ShapeBpmnSubProcessKind.AD_HOC } }}                                               | ${true}  | ${['bpmn-type-activity', 'bpmn-sub-process', 'bpmn-sub-process-ad_hoc', 'bpmn-label']}
     ${{ bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED } }}                                             | ${false} | ${['bpmn-type-activity', 'bpmn-sub-process', 'bpmn-sub-process-embedded']}
     ${{ bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind: ShapeBpmnSubProcessKind.EVENT } }}                                                | ${true}  | ${['bpmn-type-activity', 'bpmn-sub-process', 'bpmn-sub-process-event', 'bpmn-label']}
     ${{ bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind: ShapeBpmnSubProcessKind.TRANSACTION } }}                                          | ${true}  | ${['bpmn-type-activity', 'bpmn-sub-process', 'bpmn-sub-process-transaction', 'bpmn-label']}
     ${{ bpmn: { kind: FlowKind.ASSOCIATION_FLOW } }}                                                                                                      | ${true}  | ${['bpmn-type-flow', 'bpmn-association', 'bpmn-label']}
     ${{ bpmn: { kind: FlowKind.MESSAGE_FLOW } }}                                                                                                          | ${false} | ${['bpmn-type-flow', 'bpmn-message-flow']}
-    ${{ bpmn: { isNonInitiating: true }, shape: 'bpmn.message-flow-icon' }}                                                                               | ${false} | ${['bpmn-message-flow-icon', 'bpmn-icon-non-initiating']}
-    ${{ bpmn: { isNonInitiating: false }, shape: 'bpmn.message-flow-icon' }}                                                                              | ${true}  | ${['bpmn-message-flow-icon', 'bpmn-icon-initiating', 'bpmn-label']}
     ${{ bpmn: { kind: FlowKind.SEQUENCE_FLOW } }}                                                                                                         | ${false} | ${['bpmn-type-flow', 'bpmn-sequence-flow']}
+    ${{ bpmn: { isInitiating: false }, shape: 'bpmn.message-flow-icon' }}                                                                                 | ${false} | ${['bpmn-message-flow-icon', 'bpmn-icon-non-initiating']}
+    ${{ bpmn: { isInitiating: true }, shape: 'bpmn.message-flow-icon' }}                                                                                  | ${true}  | ${['bpmn-message-flow-icon', 'bpmn-icon-initiating', 'bpmn-label']}
   `(
     // TODO maxgraph@0.1.0 find a way to correctly display the style object
     // TODO rebase ShapeBpmnSubProcessKind.AD_HOC --> class should be bpmn-subprocess-adhoc, it is ad_hoc!!!

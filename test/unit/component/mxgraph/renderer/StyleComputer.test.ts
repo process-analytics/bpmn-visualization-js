@@ -305,9 +305,10 @@ describe('Style Computer', () => {
     [MessageVisibleKind.INITIATING, true],
   ])('compute style - message flow icon: %s', (messageVisibleKind: MessageVisibleKind, expected: boolean) => {
     const edge = new Edge('id', newMessageFlow(), undefined, undefined, messageVisibleKind);
-    expect(styleComputer.computeMessageFlowIconStyle(edge)).toStrictEqual({
-      shape: 'bpmn.messageFlowIcon',
-      bpmn: { isNonInitiating: expected },
+    expect(styleComputer.computeMessageFlowIconStyle(edge)).toStrictEqual(<BPMNCellStyle>{
+      bpmn: { isInitiating: expected },
+      // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
+      shape: <ShapeValue>'bpmn.messageFlowIcon',
     });
   });
 
@@ -814,9 +815,7 @@ describe('Style Computer', () => {
           const edge = new Edge('id', newMessageFlow());
           edge.extensions.strokeColor = '#11aabb';
           const expectedStyle = <BPMNCellStyle>{
-            // TODO rebase isNonInitiating -- isInitiating
-            // expect(computeMessageFlowIconStyleWithRendererOptions(edge)).toBe(`shape=bpmn.messageFlowIcon;bpmn.isInitiating=false${additionalColorsStyle}`);
-            bpmn: { isNonInitiating: false },
+            bpmn: { isInitiating: false },
             // TODO maxGraph@0.1.0 force conversion to ShapeValue
             // TODO rebase decide if we use BpmnStyleIdentifier const instead
             shape: <ShapeValue>'bpmn.messageFlowIcon',

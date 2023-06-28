@@ -14,12 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { AbstractCanvas2D, Rectangle } from '@maxgraph/core';
-import { RectangleShape } from '@maxgraph/core';
-
 import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
 import type { BPMNCellStyle } from '../renderer/StyleComputer';
+import { RectangleShape } from '@maxgraph/core';
+import type { AbstractCanvas2D, Rectangle } from '@maxgraph/core';
 
 /**
  * @internal
@@ -32,8 +31,16 @@ export class MessageFlowIconShape extends RectangleShape {
   }
 
   override paintVertexShape(c: AbstractCanvas2D, x: number, y: number, w: number, h: number): void {
-    const withFilledIcon = (this.style as BPMNCellStyle).bpmn.isNonInitiating;
-    const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, ratioFromParent: 1, isFilled: withFilledIcon });
+    const paintParameter = buildPaintParameter({
+      canvas: c,
+      x,
+      y,
+      width: w,
+      height: h,
+      shape: this,
+      ratioFromParent: 1,
+      isFilled: !((this.style as BPMNCellStyle).bpmn.isInitiating ?? true),
+    });
 
     this.iconPainter.paintEnvelopeIcon(paintParameter);
   }
