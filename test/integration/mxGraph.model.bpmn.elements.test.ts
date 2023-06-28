@@ -14,9 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { ArrowType } from '@maxgraph/core';
-import { Point, Geometry } from '@maxgraph/core';
-
 import {
   MarkerIdentifier,
   MessageVisibleKind,
@@ -33,11 +30,13 @@ import {
   bpmnVisualization,
   expectEdgesInModel,
   expectPoolsInModel,
-  expectTotalEdgesInModel,
   expectShapesInModel,
+  expectTotalEdgesInModel,
   expectTotalShapesInModel,
   getDefaultParentId,
 } from './helpers/model-expect';
+import type { ArrowType } from '@maxgraph/core';
+import { Point, Geometry } from '@maxgraph/core';
 
 describe('mxGraph model - BPMN elements', () => {
   describe('BPMN elements should be available in the mxGraph model', () => {
@@ -56,11 +55,6 @@ describe('mxGraph model - BPMN elements', () => {
 
       describe('BPMN containers', () => {
         const baseShapeModelElement: ExpectedShapeModelElement = { isSwimLaneLabelHorizontal: false };
-        // TODO rebase update test for maxGraph
-        // TODO maxgraph@0.1.0 change isHorizontal value for maxGraph, but the logic is probably wrong in 'master' (convert integer into boolean)
-        // const minimalPoolModelElement: ExpectedShapeModelElement = {
-        //   parentId: getDefaultParentId(),
-        // };
         it('pool', () => {
           expect('participant_1_id').toBePool({ ...baseShapeModelElement, label: 'Pool 1' });
           expect('participant_2_id').toBePool(baseShapeModelElement);
@@ -1051,8 +1045,8 @@ describe('mxGraph model - BPMN elements', () => {
           it('Collapsed', () => {
             expect('collapsed_call_activity_id').toBeCallActivity({
               label: 'Collapsed Call Activity',
-              markers: [ShapeBpmnMarkerKind.EXPAND],
               parentId: 'participant_1_id',
+              markers: [ShapeBpmnMarkerKind.EXPAND],
               verticalAlign: 'top',
             });
             expect('collapsed_call_activity_with_loop_id').toBeCallActivity({
@@ -1665,8 +1659,6 @@ describe('mxGraph model - BPMN elements', () => {
 
     // pool
     const baseShapeModelElement: ExpectedShapeModelElement = { isSwimLaneLabelHorizontal: true };
-    // TODO rebase update test for maxGraph
-    // const minimalPoolModelElement: ExpectedShapeModelElement = { isHorizontal: true, parentId: getDefaultParentId() };
     expect('Participant_Vertical_With_Lanes').toBePool({ ...baseShapeModelElement, label: 'Vertical Pool With Lanes' });
 
     // lane
