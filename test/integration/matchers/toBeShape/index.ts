@@ -77,7 +77,7 @@ export function buildExpectedShapeCellStyle(expectedModel: ExpectedShapeModelEle
 
   style.fillOpacity = expectedModel.fill?.opacity;
   // TODO rebase horizontal from number to boolean
-  'isSwimLaneLabelHorizontal' in expectedModel && (style.horizontal = Number(expectedModel.isSwimLaneLabelHorizontal));
+  'isSwimLaneLabelHorizontal' in expectedModel && (style.horizontal = expectedModel.isSwimLaneLabelHorizontal);
 
   // ignore marker order, which is only relevant when rendering the shape (it has its own order algorithm)
   'markers' in expectedModel && (style.markers = expectedModel.markers.sort());

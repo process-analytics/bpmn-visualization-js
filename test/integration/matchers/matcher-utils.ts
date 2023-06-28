@@ -49,7 +49,7 @@ export interface BpmnCellStyle {
   endArrow?: string;
   endSize?: number;
   shape?: string;
-  horizontal?: number;
+  horizontal?: boolean;
   // custom bpmn-visualization
   extraCssClasses?: string[];
   isInitiating?: boolean;
@@ -219,7 +219,7 @@ function toBpmnStyle(rawStyle: BPMNCellStyle, isEdge: boolean): BpmnCellStyle {
     // TODO rebase horizontal check
     // why is it needed in maxgraph , explain why
     // stateStyle.horizontal && (expectedStateStyle.horizontal = stateStyle.horizontal);
-    style.horizontal = rawStyle.horizontal == true ? 1 : 0;
+    style.horizontal = rawStyle.horizontal;
     style.swimlaneFillColor = rawStyle.swimlaneFillColor;
     style.fillOpacity = rawStyle.fillOpacity;
   }
