@@ -17,7 +17,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { ShapeValue } from '@maxgraph/core';
+import type { AlignValue, ShapeValue } from '@maxgraph/core';
 import type { BPMNCellStyle } from '@lib/component/mxgraph/renderer/StyleComputer';
 import StyleComputer from '@lib/component/mxgraph/renderer/StyleComputer';
 import Shape from '@lib/model/bpmn/internal/shape/Shape';
@@ -202,11 +202,9 @@ describe('Style Computer', () => {
         align: 'center',
         verticalAlign: 'top',
         labelWidth: 81,
-        // FIXME maxgraph@0.1.0 values were inverted in the master branch implementation, this was probably wrong as they were set like this in StyleConfigurator
-        // expect(computeStyle(shape)).toBe('callActivity;verticalAlign=top;align=center;labelWidth=81;labelPosition=ignore;verticalLabelPosition=middle');
-        labelPosition: 'left',
-        verticalLabelPosition: 'top',
-        // end of fixme
+        // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
+        labelPosition: <AlignValue>'ignore',
+        verticalLabelPosition: 'middle',
         bpmn: { kind: ShapeBpmnElementKind.CALL_ACTIVITY },
       });
     });
@@ -424,12 +422,9 @@ describe('Style Computer', () => {
             fontStyle: 0, // TODO decide if we set the fontStyle property to 0 or if we omit it
             labelWidth: 301,
             verticalAlign: 'top',
-            // FIXME rebase labelPosition and verticalLabelPosition values have not been correctly migrated in maxgraph
-            // master branch in previous poc: `subProcess;bpmn.subProcessKind=embedded${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=top;verticalLabelPosition=left`,
-            // master branch in new poc: `subProcess;bpmn.subProcessKind=${subProcessKind}${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=ignore;verticalLabelPosition=middle`,
-            labelPosition: 'left',
-            verticalLabelPosition: 'top',
-            // end of fixme
+            // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
+            labelPosition: <AlignValue>'ignore',
+            verticalLabelPosition: 'middle',
           });
         });
       });
@@ -472,11 +467,9 @@ describe('Style Computer', () => {
             fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
             labelWidth: 301,
             verticalAlign: 'top',
-            // FIXME maxgraph@0.1.0 values were inverted in the master branch implementation, this was probably wrong as they were set like this in StyleConfigurator
-            // `callActivity${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=ignore;verticalLabelPosition=middle`,
-            labelPosition: 'left',
-            verticalLabelPosition: 'top',
-            // end of fixme
+            // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
+            labelPosition: <AlignValue>'ignore',
+            verticalLabelPosition: 'middle',
           });
         });
       });
@@ -515,11 +508,9 @@ describe('Style Computer', () => {
             fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
             labelWidth: 301,
             verticalAlign: 'top',
-            // FIXME maxgraph@0.1.0 values were inverted in the master branch implementation, this was probably wrong as they were set like this in StyleConfigurator
-            // `callActivity;bpmn.globalTaskKind=${globalTaskKind};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=ignore;verticalLabelPosition=middle`,
-            labelPosition: 'left',
-            verticalLabelPosition: 'top',
-            // end of fixme
+            // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
+            labelPosition: <AlignValue>'ignore',
+            verticalLabelPosition: 'middle',
           });
         });
       });
@@ -560,11 +551,9 @@ describe('Style Computer', () => {
         fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
         labelWidth: 101,
         verticalAlign: 'top',
-        // FIXME maxgraph@0.1.0 values were inverted in the master branch implementation, this was probably wrong as they were set like this in StyleConfigurator
-        // 'textAnnotation;fontFamily=Segoe UI;verticalAlign=top;labelWidth=101;labelPosition=ignore;verticalLabelPosition=middle'
-        labelPosition: 'left',
-        verticalLabelPosition: 'top',
-        // end of fixme
+        // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
+        labelPosition: <AlignValue>'ignore',
+        verticalLabelPosition: 'middle',
       });
     });
   });
@@ -587,13 +576,11 @@ describe('Style Computer', () => {
         },
         fontFamily: 'Roboto',
         fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+        // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
+        labelPosition: <AlignValue>'ignore',
         labelWidth: 101,
         verticalAlign: 'top',
-        // FIXME maxgraph@0.1.0 values were inverted in the master branch implementation, this was probably wrong as they were set like this in StyleConfigurator
-        // 'group;fontFamily=Roboto;verticalAlign=top;align=center;labelWidth=101;labelPosition=ignore;verticalLabelPosition=middle'
-        labelPosition: 'left',
-        verticalLabelPosition: 'top',
-        // end of fixme
+        verticalLabelPosition: 'middle',
       });
     });
   });

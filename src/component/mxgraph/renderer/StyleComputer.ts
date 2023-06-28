@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { CellStyle, ShapeValue } from '@maxgraph/core';
+import type { AlignValue, CellStyle, ShapeValue } from '@maxgraph/core';
 
 import Shape from '../../../model/bpmn/internal/shape/Shape';
 import type { Edge } from '../../../model/bpmn/internal/edge/edge';
@@ -220,12 +220,9 @@ export default class StyleComputer {
         // According to the documentation, "label position" can only take values in left, center, right with default=center
         // However, there is undocumented behavior when the value is not one of these and this behavior is exactly what we want.
         // See https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/mxGraphView.js#L1183-L1252
-        // FIXME maxgraph@0.1.0 values were inverted in the mxGraph implementation, this was probably wrong as they were set like this in StyleConfigurator (fixed in master branch)
-        // styleValues.set(mxConstants.STYLE_LABEL_POSITION, 'ignore');
-        // styleValues.set(mxConstants.STYLE_VERTICAL_LABEL_POSITION, mxConstants.ALIGN_MIDDLE);
-        // TODO rebase adapt label position for maxGraph
-        style.labelPosition = 'left';
-        style.verticalLabelPosition = 'top';
+        // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
+        style.labelPosition = <AlignValue>'ignore';
+        style.verticalLabelPosition = 'middle';
         // end of fixme
       }
     }
