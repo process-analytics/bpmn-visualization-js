@@ -79,7 +79,7 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement |
     edge: true,
     vertex: false,
     parent: { id: parentId ? parentId : getDefaultParentId() }, // TODO maxgraph@0.1.0 use ?? instead (in master branch)
-    // TODO rebase
+    // TODO rebase clean commented code
     // state: {
     //   style: buildExpectedStateStyle(expectedModel),
     // },
