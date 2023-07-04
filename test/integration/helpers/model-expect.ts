@@ -59,7 +59,7 @@ import {
   toBeTextAnnotation,
   toBeUserTask,
 } from '../matchers';
-import type { AlignValue, ArrowType, Cell, FilterFunction, Geometry, ShapeValue, VAlignValue } from '@maxgraph/core';
+import type { ArrowType, Cell, FilterFunction, Geometry, ShapeValue } from '@maxgraph/core';
 import type { ExpectedOverlay } from '../matchers/matcher-utils';
 import { getCell } from '../matchers/matcher-utils';
 import type { BPMNCellStyle } from '../../../src/component/mxgraph/renderer/StyleComputer';
