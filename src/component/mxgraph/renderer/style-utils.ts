@@ -14,9 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { mxCell } from 'mxgraph';
+import type { Cell } from '@maxgraph/core';
+
 import { FlowKind, ShapeUtil } from '../../../model/bpmn/internal';
-import { BpmnStyleIdentifier } from '../style/identifiers';
+import type { BPMNCellStyle } from './StyleComputer';
 
 /**
  * Compute the all class names associated to a cell in a hyphen case form.
@@ -25,8 +26,8 @@ import { BpmnStyleIdentifier } from '../style/identifiers';
  * @param isLabel the boolean that indicates if class must be computed for label.
  * @internal
  */
-export function computeAllBpmnClassNamesOfCell(cell: mxCell, isLabel: boolean): string[] {
-  return computeAllBpmnClassNames(cell.style, isLabel);
+export function computeAllBpmnClassNamesOfCell(cell: Cell, isLabel: boolean): string[] {
+  return computeAllBpmnClassNames(cell.style as BPMNCellStyle, isLabel);
 }
 
 /**
@@ -36,13 +37,12 @@ export function computeAllBpmnClassNamesOfCell(cell: mxCell, isLabel: boolean): 
  * @param isLabel the boolean that indicates if class must be computed for label.
  * @internal exported for testing purpose
  */
-export function computeAllBpmnClassNames(style: string, isLabel: boolean): string[] {
+export function computeAllBpmnClassNames(style: BPMNCellStyle, isLabel: boolean): string[] {
   const classes: string[] = [];
 
-  const styleElements = style.split(';');
-  const pseudoBpmnElementKind = styleElements[0];
-  // shape=bpmn.message-flow-icon --> message-flow-icon
-  const bpmnElementKind = pseudoBpmnElementKind.replace(/shape=bpmn./g, '');
+  // TODO magraph@0.1.0 style.bpmn.kind could be omit by considering the first element of style.baseStyleNames (this would restore the previous behavior)
+  // if kind is not set, check shape: bpmn.message-flow-icon --> message-flow-icon
+  const bpmnElementKind = style.bpmn?.kind ?? style.shape?.replace(/bpmn./g, '');
 
   const typeClasses = new Map<string, boolean>();
   typeClasses.set('bpmn-type-activity', ShapeUtil.isActivity(bpmnElementKind));
@@ -55,31 +55,26 @@ export function computeAllBpmnClassNames(style: string, isLabel: boolean): strin
 
   classes.push(computeBpmnBaseClassName(bpmnElementKind));
 
-  styleElements
-    .map(entry => {
-      const elements = entry.split('=');
-      return [elements[0], elements[1]];
-    })
-    .forEach(([key, value]) => {
-      switch (key) {
-        case BpmnStyleIdentifier.EVENT_DEFINITION_KIND:
-          classes.push(`bpmn-event-def-${value}`);
-          break;
-        case BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND:
-          classes.push(`bpmn-gateway-kind-${value.toLowerCase()}`);
-          break;
-        case BpmnStyleIdentifier.IS_INITIATING: // message flow icon
-          classes.push(value == 'true' ? 'bpmn-icon-initiating' : 'bpmn-icon-non-initiating');
-          break;
-        case BpmnStyleIdentifier.SUB_PROCESS_KIND:
-          classes.push(`bpmn-sub-process-${value.toLowerCase()}`);
-          break;
-        case BpmnStyleIdentifier.GLOBAL_TASK_KIND:
-          classes.push(computeBpmnBaseClassName(value));
-          break;
-      }
-    });
-
+  if (style.bpmn?.eventDefinitionKind) {
+    classes.push(`bpmn-event-def-${style.bpmn.eventDefinitionKind}`);
+  }
+  if (style.bpmn?.gatewayKind) {
+    classes.push(`bpmn-gateway-kind-${style.bpmn.gatewayKind.toLowerCase()}`);
+  }
+  // TODO rebase use "initiating" and not "isNonInitiating" to restore the implementation of the master branch
+  // message flow icon
+  //         case BpmnStyleIdentifier.IS_INITIATING: // message flow icon
+  //           classes.push(value == 'true' ? 'bpmn-icon-initiating' : 'bpmn-icon-non-initiating');
+  //           break;
+  if (style.bpmn?.isNonInitiating !== undefined) {
+    classes.push(style.bpmn.isNonInitiating ? 'bpmn-icon-non-initiating' : 'bpmn-icon-initiating');
+  }
+  if (style.bpmn?.subProcessKind) {
+    classes.push(`bpmn-sub-process-${style.bpmn.subProcessKind.toLowerCase()}`);
+  }
+  if (style.bpmn?.globalTaskKind) {
+    classes.push(computeBpmnBaseClassName(style.bpmn.globalTaskKind));
+  }
   if (isLabel) {
     classes.push('bpmn-label');
   }

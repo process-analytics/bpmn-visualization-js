@@ -14,10 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { mxAbstractCanvas2D } from 'mxgraph';
-import { mxRectangleShape, mxUtils } from '../initializer';
-import { BpmnStyleIdentifier, StyleDefault } from '../style';
-import { getBpmnIsInstantiating } from '../style/utils';
+import type { AbstractCanvas2D } from '@maxgraph/core';
+import { RectangleShape } from '@maxgraph/core';
+
+import type { BPMNCellStyle } from '../renderer/StyleComputer';
+import { StyleDefault } from '../style';
 import type { BpmnCanvas, PaintParameter, ShapeConfiguration } from './render';
 import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
@@ -36,23 +37,23 @@ function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): v
 /**
  * @internal
  */
-export abstract class BaseActivityShape extends mxRectangleShape {
+export abstract class BaseActivityShape extends RectangleShape {
   protected iconPainter = IconPainterProvider.get();
 
   constructor() {
     super(undefined, undefined, undefined); // the configuration is passed with the styles at runtime
   }
 
-  override paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+  override paintForeground(c: AbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     super.paintForeground(c, x, y, w, h);
     // 0 is used for ratioParent as if we pass undefined to builder function the default 0.25 value will be used instead
     this.paintMarkerIcons(buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, ratioFromParent: 0, iconStrokeWidth: 1.5 }));
   }
 
   protected paintMarkerIcons(paintParameter: PaintParameter): void {
-    const markers = mxUtils.getValue(this.style, BpmnStyleIdentifier.MARKERS, undefined);
+    const markers = (this.style as BPMNCellStyle).bpmn.markers;
     if (markers) {
-      orderActivityMarkers(markers.split(',')).forEach((marker, idx, allMarkers) => {
+      orderActivityMarkers(markers).forEach((marker, idx, allMarkers) => {
         paintParameter = {
           ...paintParameter,
           setIconOriginFunct: this.getMarkerIconOriginFunction(allMarkers.length, idx + 1),
@@ -97,7 +98,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
 }
 
 abstract class BaseTaskShape extends BaseActivityShape {
-  override paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+  override paintForeground(c: AbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     super.paintForeground(c, x, y, w, h);
     this.paintTaskIcon(buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this }));
   }
@@ -139,7 +140,7 @@ export class UserTaskShape extends BaseTaskShape {
  */
 export class ReceiveTaskShape extends BaseTaskShape {
   protected paintTaskIcon(paintParameter: PaintParameter): void {
-    if (!getBpmnIsInstantiating(this.style)) {
+    if (!(this.style as BPMNCellStyle).bpmn.isInstantiating) {
       paintEnvelopeIcon(paintParameter, false);
       return;
     }
@@ -206,12 +207,12 @@ export class ScriptTaskShape extends BaseTaskShape {
  * @internal
  */
 export class CallActivityShape extends BaseActivityShape {
-  override paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+  override paintForeground(c: AbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     super.paintForeground(c, x, y, w, h);
 
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this });
 
-    switch (mxUtils.getValue(this.style, BpmnStyleIdentifier.GLOBAL_TASK_KIND, undefined)) {
+    switch ((this.style as BPMNCellStyle).bpmn.globalTaskKind) {
       case ShapeBpmnElementKind.GLOBAL_TASK_MANUAL:
         this.iconPainter.paintHandIcon({
           ...paintParameter,
@@ -250,8 +251,8 @@ export class CallActivityShape extends BaseActivityShape {
  * @internal
  */
 export class SubProcessShape extends BaseActivityShape {
-  override paintBackground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
-    const subProcessKind = mxUtils.getValue(this.style, BpmnStyleIdentifier.SUB_PROCESS_KIND, undefined);
+  override paintBackground(c: AbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+    const subProcessKind = (this.style as BPMNCellStyle).bpmn.subProcessKind;
     c.save(); // ensure we can later restore the configuration
     if (subProcessKind === ShapeBpmnSubProcessKind.EVENT) {
       c.setDashed(true, false);

@@ -13,6 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+import type { Cell } from '@maxgraph/core';
+import { Point } from '@maxgraph/core';
 
 import type { Edge, Waypoint } from '../../model/bpmn/internal/edge/edge';
 import { MessageFlow } from '../../model/bpmn/internal/edge/flows';
@@ -21,12 +23,11 @@ import type ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElem
 import type Bounds from '../../model/bpmn/internal/Bounds';
 import { MessageVisibleKind, ShapeUtil } from '../../model/bpmn/internal';
 import CoordinatesTranslator from './renderer/CoordinatesTranslator';
+import type { BPMNCellStyle } from './renderer/StyleComputer';
 import StyleComputer from './renderer/StyleComputer';
 import type { BpmnGraph } from './BpmnGraph';
 import type { FitOptions, RendererOptions } from '../options';
 import type { RenderedModel } from '../registry/bpmn-model-registry';
-import { mxPoint } from './initializer';
-import type { mxCell } from 'mxgraph';
 
 /**
  * @internal
@@ -40,8 +41,11 @@ export class BpmnRenderer {
   }
 
   private insertShapesAndEdges({ pools, lanes, subprocesses, otherFlowNodes, boundaryEvents, edges }: RenderedModel): void {
-    this.graph.batchUpdate(() => {
-      this.graph.getModel().clear(); // ensure to remove manual changes or already loaded graphs
+    // TODO rebase use this.graph.batchUpdate
+    const model = this.graph.model;
+    model.clear(); // ensure to remove manual changes or already loaded graphs
+    model.beginUpdate();
+    try {
       this.insertShapes(pools);
       this.insertShapes(lanes);
       this.insertShapes(subprocesses);
@@ -50,14 +54,16 @@ export class BpmnRenderer {
       this.insertShapes(boundaryEvents);
       // at last as edge source and target must be present in the model prior insertion, otherwise they are not rendered
       this.insertEdges(edges);
-    });
+    } finally {
+      model.endUpdate();
+    }
   }
 
   private insertShapes(shapes: Shape[]): void {
     shapes.forEach(shape => this.insertShape(shape));
   }
 
-  private getParent(bpmnElement: ShapeBpmnElement): mxCell {
+  private getParent(bpmnElement: ShapeBpmnElement): Cell {
     const bpmnElementParent = this.getCell(bpmnElement.parentId);
     return bpmnElementParent ?? this.graph.getDefaultParent();
   }
@@ -93,10 +99,10 @@ export class BpmnRenderer {
         if (edgeCenterCoordinate) {
           mxEdge.geometry.relative = false;
 
-          const labelBoundsRelativeCoordinateFromParent = this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new mxPoint(labelBounds.x, labelBounds.y));
+          const labelBoundsRelativeCoordinateFromParent = this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new Point(labelBounds.x, labelBounds.y));
           const relativeLabelX = labelBoundsRelativeCoordinateFromParent.x + labelBounds.width / 2 - edgeCenterCoordinate.x;
           const relativeLabelY = labelBoundsRelativeCoordinateFromParent.y - edgeCenterCoordinate.y;
-          mxEdge.geometry.offset = new mxPoint(relativeLabelX, relativeLabelY);
+          mxEdge.geometry.offset = new Point(relativeLabelX, relativeLabelY);
         }
       }
 
@@ -104,33 +110,33 @@ export class BpmnRenderer {
     });
   }
 
-  private insertMessageFlowIconIfNeeded(edge: Edge, mxEdge: mxCell): void {
+  private insertMessageFlowIconIfNeeded(edge: Edge, mxEdge: Cell): void {
     if (edge.bpmnElement instanceof MessageFlow && edge.messageVisibleKind !== MessageVisibleKind.NONE) {
       const cell = this.graph.insertVertex(mxEdge, messageFlowIconId(mxEdge.id), undefined, 0, 0, 20, 14, this.styleComputer.computeMessageFlowIconStyle(edge));
       cell.geometry.relative = true;
-      cell.geometry.offset = new mxPoint(-10, -7);
+      cell.geometry.offset = new Point(-10, -7);
     }
   }
 
-  private insertWaypoints(waypoints: Waypoint[], mxEdge: mxCell): void {
+  private insertWaypoints(waypoints: Waypoint[], mxEdge: Cell): void {
     if (waypoints) {
-      mxEdge.geometry.points = waypoints.map(waypoint => this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new mxPoint(waypoint.x, waypoint.y)));
+      mxEdge.geometry.points = waypoints.map(waypoint => this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new Point(waypoint.x, waypoint.y)));
     }
   }
 
-  private getCell(id: string): mxCell {
-    return this.graph.getModel().getCell(id);
+  private getCell(id: string): Cell {
+    return this.graph.model.getCell(id);
   }
 
-  private insertVertex(parent: mxCell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: string): mxCell {
-    const vertexCoordinates = this.coordinatesTranslator.computeRelativeCoordinates(parent, new mxPoint(bounds.x, bounds.y));
+  private insertVertex(parent: Cell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: BPMNCellStyle): Cell {
+    const vertexCoordinates = this.coordinatesTranslator.computeRelativeCoordinates(parent, new Point(bounds.x, bounds.y));
     const cell = this.graph.insertVertex(parent, id, value, vertexCoordinates.x, vertexCoordinates.y, bounds.width, bounds.height, style);
 
     if (labelBounds) {
       // label coordinates are relative in the cell referential coordinates
       const relativeLabelX = labelBounds.x - bounds.x;
       const relativeLabelY = labelBounds.y - bounds.y;
-      cell.geometry.offset = new mxPoint(relativeLabelX, relativeLabelY);
+      cell.geometry.offset = new Point(relativeLabelX, relativeLabelY);
     }
     return cell;
   }

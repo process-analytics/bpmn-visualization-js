@@ -14,18 +14,23 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement, HorizontalAlign, VerticalAlign } from '../helpers/model-expect';
-import { bpmnVisualization } from '../helpers/model-expect';
-import type { mxCell, mxGeometry, StyleMap } from 'mxgraph';
-import type { Opacity } from '@lib/component/registry';
-import type { MxGraphCustomOverlay, MxGraphCustomOverlayStyle } from '@lib/component/mxgraph/overlay/custom-overlay';
-import { getFontStyleValue as computeFontStyleValue } from '@lib/component/mxgraph/renderer/StyleComputer';
-import { BpmnStyleIdentifier } from '@lib/component/mxgraph/style';
-import { Font } from '@lib/model/bpmn/internal/Label';
+import type { Cell, Geometry } from '@maxgraph/core';
+
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 
-// Used for received view state, computed resolved style and expected style.
+import type { ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement, HorizontalAlign, VerticalAlign } from '../helpers/model-expect';
+import { bpmnVisualization } from '../helpers/model-expect';
+import type { Opacity } from '@lib/component/registry';
+import type { MxGraphCustomOverlay, MxGraphCustomOverlayStyle } from '../../../src/component/mxgraph/overlay/custom-overlay';
+import { getFontStyleValue as computeFontStyleValue } from '@lib/component/mxgraph/renderer/StyleComputer';
+import { Font } from '@lib/model/bpmn/internal/Label';
+import type { BPMNCellStyle } from '../../../src/component/mxgraph/renderer/StyleComputer';
+
+// TODO magraph@0.1.0 remove this type
+export type ExpectedStateStyle = BPMNCellStyle;
+
+// TODO rebase make it work
 export interface BpmnCellStyle extends StyleMap {
   opacity: Opacity;
   verticalAlign?: VerticalAlign;
@@ -53,9 +58,9 @@ export interface BpmnCellStyle extends StyleMap {
 
 export interface ExpectedCell {
   value?: string;
-  geometry?: mxGeometry;
+  geometry?: Geometry;
   /** the Cell style property or a jest expect using a regexp. */
-  styleRawFromModelOrJestExpect?: string;
+  styleRawFromModelOrJestExpect?: BPMNCellStyle;
   /**
    * The style of the Cell in the model where all properties have been resolved by also applying properties coming from the referenced styles.
    *
@@ -91,7 +96,7 @@ export function buildCellMatcher<R>(
   expected: R,
   cellKind: string,
   buildExpectedCell: (received: string, expected: R) => ExpectedCell,
-  buildReceivedCell: (cell: mxCell) => ExpectedCell,
+  buildReceivedCell: (cell: Cell) => ExpectedCell,
 ): CustomMatcherResult {
   const options = {
     isNot: matcherContext.isNot,
@@ -135,6 +140,7 @@ export function getFontStyleValue(expectedFont: ExpectedFont): number {
 export function buildExpectedCellStyleWithCommonAttributes(expectedModelElt: ExpectedEdgeModelElement | ExpectedShapeModelElement): BpmnCellStyle {
   const font = expectedModelElt.font;
 
+  // Here are the default values as defined in StyleDefault
   return {
     opacity: expectedModelElt.opacity,
     strokeColor: expectedModelElt.stroke?.color ?? 'Black',
@@ -148,9 +154,13 @@ export function buildExpectedCellStyleWithCommonAttributes(expectedModelElt: Exp
     fontOpacity: expectedModelElt.font?.opacity,
     // custom bpmn-visualization
     extraCssClasses: expectedModelElt.extraCssClasses,
+    // TODO magraph@0.1.0 set basic information when removing the custom processing in buildReceivedStateStyle
+    // bpmn: { xxxx },
   };
 }
 
+// TODO magraph@0.1.0 why building ExpectedStateStyle now maxGraph manage style in object. We should use 'stateStyle' directly (and remove this function)
+// TODO magraph@0.1.0 rename into 'receivedStateStyle' (in master branch)
 /**
  * This function really gets style from the state of the cell in the graph view.
  * The functions that return BpmnCellStyle objects are in fact, returning a computed style by using the style properties from the model augmented with the properties resolved
@@ -159,7 +169,7 @@ export function buildExpectedCellStyleWithCommonAttributes(expectedModelElt: Exp
  * @param cell The Cell to consider to get the style in the state view
  * @param bv The instance of BpmnVisualization under test
  */
-export function buildReceivedViewStateStyle(cell: mxCell, bv = bpmnVisualization): BpmnCellStyle {
+export function buildReceivedViewStateStyle(cell: Cell, bv = bpmnVisualization): BpmnCellStyle {
   return toBpmnStyle(bv.graph.getView().getState(cell).style, cell.edge);
 }
 
@@ -173,7 +183,7 @@ export function buildReceivedViewStateStyle(cell: mxCell, bv = bpmnVisualization
  * @param cell The Cell to consider for the computation of the resolved style.
  * @param bv The instance of BpmnVisualization under test
  */
-export function buildReceivedResolvedModelCellStyle(cell: mxCell, bv = bpmnVisualization): BpmnCellStyle {
+export function buildReceivedResolvedModelCellStyle(cell: Cell, bv = bpmnVisualization): BpmnCellStyle {
   return toBpmnStyle(bv.graph.getCellStyle(cell), cell.edge);
 }
 
@@ -205,6 +215,9 @@ function toBpmnStyle(rawStyle: StyleMap, isEdge: boolean): BpmnCellStyle {
     style.endSize = rawStyle.endSize;
   } else {
     style.shape = rawStyle.shape;
+    // TODO rebase horizontal check
+    // why is it needed in maxgraph , explain why
+    // stateStyle.horizontal && (expectedStateStyle.horizontal = stateStyle.horizontal);
     style.horizontal = rawStyle.horizontal;
     style.swimlaneFillColor = rawStyle.swimlaneFillColor;
     style.fillOpacity = rawStyle.fillOpacity;
@@ -212,9 +225,11 @@ function toBpmnStyle(rawStyle: StyleMap, isEdge: boolean): BpmnCellStyle {
   return style;
 }
 
-function buildBaseReceivedExpectedCell(cell: mxCell): ExpectedCell {
+function buildBaseReceivedExpectedCell(cell: Cell): ExpectedCell {
   return {
     value: cell.value,
+    // TODO rebase make the style work
+    style: cell.style as BPMNCellStyle,
     styleRawFromModelOrJestExpect: cell.style,
     styleResolvedFromModel: buildReceivedResolvedModelCellStyle(cell),
     styleViewState: buildReceivedViewStateStyle(cell),
@@ -228,8 +243,9 @@ function buildBaseReceivedExpectedCell(cell: mxCell): ExpectedCell {
 export function buildReceivedCellWithCommonAttributes(cell: mxCell): ExpectedCell {
   const receivedCell = buildBaseReceivedExpectedCell(cell);
 
+  // the maxGraph API returns an empty array when there is no overlays
   const cellOverlays = bpmnVisualization.graph.getCellOverlays(cell) as MxGraphCustomOverlay[];
-  if (cellOverlays) {
+  if (cellOverlays.length > 0) {
     receivedCell.overlays = cellOverlays.map(cellOverlay => ({
       label: cellOverlay.label,
       horizontalAlign: cellOverlay.align,
@@ -251,6 +267,6 @@ export function buildReceivedCellWithCommonAttributes(cell: mxCell): ExpectedCel
   return receivedCell;
 }
 
-export function getCell(received: string): mxCell {
+export function getCell(received: string): Cell {
   return bpmnVisualization.graph.model.getCell(received);
 }

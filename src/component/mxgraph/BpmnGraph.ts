@@ -18,13 +18,13 @@ import type { FitOptions, ZoomConfiguration } from '../options';
 import { FitType } from '../options';
 import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/validators';
 import { debounce, throttle } from 'lodash-es';
-import { mxgraph, mxEvent } from './initializer';
-import type { mxCellState, mxGraphView, mxPoint } from 'mxgraph';
+import type { CellState, CellStateStyle, CellStyle, Point } from '@maxgraph/core';
+import { eventUtils, Graph, GraphView, InternalEvent, Stylesheet } from '@maxgraph/core';
 
 const zoomFactorIn = 1.25;
 const zoomFactorOut = 1 / zoomFactorIn;
 
-export class BpmnGraph extends mxgraph.mxGraph {
+export class BpmnGraph extends Graph {
   private currentZoomLevel = 1;
 
   /**
@@ -42,7 +42,7 @@ export class BpmnGraph extends mxgraph.mxGraph {
   /**
    * @internal
    */
-  override createGraphView(): mxGraphView {
+  override createGraphView(): GraphView {
     return new BpmnGraphView(this);
   }
 
@@ -83,28 +83,28 @@ export class BpmnGraph extends mxgraph.mxGraph {
    * Overridden to manage `currentZoomLevel`
    * @internal
    */
-  override zoomActual(): void {
+  override zoomActual = (): void => {
     super.zoomActual();
     this.setCurrentZoomLevel();
-  }
+  };
 
   /**
    * Overridden to manage `currentZoomLevel`
    * @internal
    */
-  override zoomIn(): void {
+  override zoomIn = (): void => {
     super.zoomIn();
     this.setCurrentZoomLevel();
-  }
+  };
 
   /**
    * Overridden to manage `currentZoomLevel`
    * @internal
    */
-  override zoomOut(): void {
+  override zoomOut = (): void => {
     super.zoomOut();
     this.setCurrentZoomLevel();
-  }
+  };
 
   /**
    * @internal
@@ -142,15 +142,22 @@ export class BpmnGraph extends mxgraph.mxGraph {
       const clientHeight = this.container.clientHeight - margin;
       const width = bounds.width / this.view.scale;
       const height = bounds.height / this.view.scale;
-      const scale = Math.min(maxScale, Math.min(clientWidth / width, clientHeight / height));
+      let scale = Math.min(maxScale, Math.min(clientWidth / width, clientHeight / height));
       this.setCurrentZoomLevel(scale);
 
+      // TODO magraph@0.1.0 improve implementation (the following is to make integration tests pass)
+      scale == 0 && (scale = 1);
       this.view.scaleAndTranslate(
         scale,
-        (margin + clientWidth - width * scale) / (2 * scale) - bounds.x / this.view.scale,
-        (margin + clientHeight - height * scale) / (2 * scale) - bounds.y / this.view.scale,
+        this.NaNToZero((margin + clientWidth - width * scale) / (2 * scale) - bounds.x / this.view.scale),
+        this.NaNToZero((margin + clientHeight - height * scale) / (2 * scale) - bounds.y / this.view.scale),
       );
     }
+  }
+
+  // TODO magraph@0.1.0 move somewhere else + find a better name + should be a util function
+  private NaNToZero(value: number): number {
+    return Number.isNaN(value) ? 0 : value;
   }
 
   /**
@@ -158,8 +165,8 @@ export class BpmnGraph extends mxgraph.mxGraph {
    */
   registerMouseWheelZoomListeners(config: ZoomConfiguration): void {
     config = ensureValidZoomConfiguration(config);
-    mxEvent.addMouseWheelListener(debounce(this.createMouseWheelZoomListener(true), config.debounceDelay), this.container);
-    mxEvent.addMouseWheelListener(throttle(this.createMouseWheelZoomListener(false), config.throttleDelay), this.container);
+    InternalEvent.addMouseWheelListener(debounce(this.createMouseWheelZoomListener(true), config.debounceDelay), this.container);
+    InternalEvent.addMouseWheelListener(throttle(this.createMouseWheelZoomListener(false), config.throttleDelay), this.container);
   }
 
   // Update the currentZoomLevel when performScaling is false, use the currentZoomLevel to set the scale otherwise
@@ -171,20 +178,20 @@ export class BpmnGraph extends mxgraph.mxGraph {
       const [offsetX, offsetY] = this.getEventRelativeCoordinates(evt);
       const [newScale, dx, dy] = this.getScaleAndTranslationDeltas(offsetX, offsetY);
       this.view.scaleAndTranslate(newScale, this.view.translate.x + dx, this.view.translate.y + dy);
-      mxEvent.consume(evt);
+      InternalEvent.consume(evt);
     }
   }
 
   private createMouseWheelZoomListener(performScaling: boolean) {
     return (event: Event, up: boolean) => {
-      if (mxEvent.isConsumed(event)) {
+      if (!(event instanceof MouseEvent) || eventUtils.isConsumed(event)) {
         return;
       }
-      const evt = event as MouseEvent;
+
       // only the ctrl key
-      const isZoomWheelEvent = evt.ctrlKey && !evt.altKey && !evt.shiftKey && !evt.metaKey;
+      const isZoomWheelEvent = event.ctrlKey && !event.altKey && !event.shiftKey && !event.metaKey;
       if (isZoomWheelEvent) {
-        this.manageMouseWheelZoomEvent(up, evt, performScaling);
+        this.manageMouseWheelZoomEvent(up, event, performScaling);
       }
     };
   }
@@ -222,10 +229,15 @@ export class BpmnGraph extends mxgraph.mxGraph {
     const factor = scale / this.view.scale;
     return [factor, scale];
   }
+
+  // TODO magraph@0.1.0 temp to fix maxGraph style merge issue (should be fixed in maxGraph@0.2.0)
+  override createStylesheet(): Stylesheet {
+    return new BpmnStylesheet();
+  }
 }
 
-class BpmnGraphView extends mxgraph.mxGraphView {
-  override getFloatingTerminalPoint(edge: mxCellState, start: mxCellState, end: mxCellState, source: boolean): mxPoint {
+class BpmnGraphView extends GraphView {
+  override getFloatingTerminalPoint(edge: CellState, start: CellState, end: CellState, source: boolean): Point {
     // some values may be null: the first and the last values are null prior computing floating terminal points
     const edgePoints = edge.absolutePoints.filter(Boolean);
     // when there is no BPMN waypoint, all values are null
@@ -235,5 +247,41 @@ class BpmnGraphView extends mxgraph.mxGraphView {
     }
     const pts = edge.absolutePoints;
     return source ? pts[1] : pts[pts.length - 2];
+  }
+}
+
+// TODO magraph@0.1.0 temp to fix maxGraph style merge issue (should be fixed in maxGraph@0.2.0)
+class BpmnStylesheet extends Stylesheet {
+  override getCellStyle(cellStyle: CellStyle, defaultStyle: CellStateStyle): CellStateStyle {
+    let style: CellStateStyle;
+
+    if (cellStyle.baseStyleNames && cellStyle.baseStyleNames.length > 0) {
+      // creates style with the given baseStyleNames. (merges from left to right)
+      style = cellStyle.baseStyleNames.reduce(
+        (acc, styleName) => {
+          return (acc = {
+            ...acc,
+            ...this.styles.get(styleName),
+          });
+        },
+        // here is the change
+        // {},
+        { ...defaultStyle },
+        // END of here is the change
+      );
+    } else if (cellStyle.baseStyleNames && cellStyle.baseStyleNames.length === 0) {
+      // baseStyleNames is explicitly an empty array, so don't use any default styles.
+      style = {};
+    } else {
+      style = { ...defaultStyle };
+    }
+
+    // Merges cellStyle into style
+    style = {
+      ...style,
+      ...cellStyle,
+    };
+
+    return style;
   }
 }

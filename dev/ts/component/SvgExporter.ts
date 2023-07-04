@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { mxgraph, mxClient, mxConstants, mxSvgCanvas2D, mxUtils } from '../../../src/component/mxgraph/initializer';
-import type { mxGraph, mxSvgCanvas2D as mxSvgCanvas2DType } from 'mxgraph';
+import type { Graph, AlignValue, VAlignValue, OverflowValue, TextDirectionValue } from '@maxgraph/core';
+import { Client, SvgCanvas2D, ImageExport, constants, xmlUtils, domUtils, stringUtils } from '@maxgraph/core';
 
 interface SvgExportOptions {
   scale: number;
@@ -30,7 +30,7 @@ interface SvgExportOptions {
 // https://github.com/jgraph/drawio/blob/v14.7.7/src/main/webapp/js/diagramly/Editor.js#L5932
 // https://github.com/jgraph/drawio/blob/v14.8.0/src/main/webapp/js/grapheditor/Graph.js#L9007
 export class SvgExporter {
-  constructor(private graph: mxGraph) {}
+  constructor(private graph: Graph) {}
 
   exportSvg(): string {
     return this.doSvgExport(true);
@@ -40,13 +40,16 @@ export class SvgExporter {
     // chrome and webkit: tainted canvas when svg contains foreignObject
     // also on brave --> probably fail on chromium based browsers
     // so disable foreign objects for such browsers
-    const isFirefox = mxClient.IS_FF;
+    const isFirefox = Client.IS_FF;
     return this.doSvgExport(isFirefox);
   }
 
   private doSvgExport(enableForeignObjectForLabel: boolean): string {
     const svgDocument = this.computeSvg({ scale: 1, border: 25, enableForeignObjectForLabel: enableForeignObjectForLabel });
-    const svgAsString = mxUtils.getXml(svgDocument);
+    // TODO maxgraph@0.1.0 migration - fix type
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const svgAsString = xmlUtils.getXml(svgDocument);
     return `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 ${svgAsString}
@@ -63,8 +66,8 @@ ${svgAsString}
     const viewScale = this.graph.view.scale;
 
     // Prepares SVG document that holds the output
-    const svgDoc = mxUtils.createXmlDocument();
-    const root = svgDoc.createElementNS(mxConstants.NS_SVG, 'svg');
+    const svgDoc = xmlUtils.createXmlDocument();
+    const root = svgDoc.createElementNS(constants.NS_SVG, 'svg');
 
     const s = scale / viewScale;
     const w = Math.max(1, Math.ceil(bounds.width * s) + 2 * border);
@@ -76,7 +79,7 @@ ${svgAsString}
     root.setAttribute('viewBox', (crisp ? '-0.5 -0.5' : '0 0') + ' ' + w + ' ' + h);
     svgDoc.appendChild(root);
 
-    const group = svgDoc.createElementNS(mxConstants.NS_SVG, 'g');
+    const group = svgDoc.createElementNS(constants.NS_SVG, 'g');
     root.appendChild(group);
 
     const svgCanvas = this.createSvgCanvas(group);
@@ -91,7 +94,7 @@ ${svgAsString}
 
     svgCanvas.scale(s);
 
-    const imgExport = new mxgraph.mxImageExport();
+    const imgExport = new ImageExport();
     // FIXME only the first overlay is placed at the right position
     // overlays put on element of subprocess/call-activity are not placed correctly in svg export
     imgExport.includeOverlays = true;
@@ -100,41 +103,37 @@ ${svgAsString}
     return svgDoc;
   }
 
-  createSvgCanvas(node: Element): mxSvgCanvas2DType {
-    const canvas = new CanvasForExport(node);
+  createSvgCanvas(node: SVGElement): SvgCanvas2D {
+    const canvas = new CanvasForExport(node, true);
     // from the draw.io code, may not be needed here
     canvas.pointerEvents = true;
     return canvas;
   }
 }
 
-class CanvasForExport extends mxSvgCanvas2D {
+class CanvasForExport extends SvgCanvas2D {
   // Convert HTML entities
   private htmlConverter = document.createElement('div');
 
-  constructor(node: Element) {
-    super(node);
-  }
-
   override getAlternateText(
-    fo: Element,
+    fo: SVGForeignObjectElement,
     x: number,
     y: number,
     w: number,
     h: number,
-    str: string,
+    str: Element | string,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    align: string,
+    align: AlignValue,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    valign: string,
+    valign: VAlignValue,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    wrap: string,
+    wrap: boolean,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     format: string,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    overflow: string,
+    overflow: OverflowValue,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    clip: string,
+    clip: boolean,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     rotation: number,
   ): string {
@@ -147,27 +146,34 @@ class CanvasForExport extends mxSvgCanvas2D {
     w: number,
     h: number,
     str: string,
-    align: string,
-    valign: string,
-    wrap: string,
-    overflow: string,
-    clip: string,
+    align: AlignValue,
+    valign: VAlignValue,
+    wrap: boolean,
+    overflow: OverflowValue,
+    clip: boolean,
     rotation: number,
-    dir: string,
+    dir: TextDirectionValue,
   ): void {
     str = this.computeTruncatedText(str, w);
     super.plainText(x, y, w, h, str, align, valign, wrap, overflow, clip, rotation, dir);
   }
 
-  private computeTruncatedText(str: string, w: number): string {
+  private computeTruncatedText(str: Element | string, w: number): string {
     // Assumes a max character width of 0.5em
     if (str == null || this.state.fontSize <= 0) {
       return '';
     }
+    // TODO maxgraph@0.1.0 migration - manage str when it is an Element (see maxGraph code)
+    if (str instanceof Element) {
+      str = str.innerHTML;
+    }
 
     try {
       this.htmlConverter.innerHTML = str;
-      str = mxUtils.extractTextWithWhitespace(this.htmlConverter.childNodes);
+      // TODO maxgraph@0.1.0 migration - fix type
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      str = domUtils.extractTextWithWhitespace(this.htmlConverter.childNodes);
 
       // Workaround for substring breaking double byte UTF
       const exp = Math.ceil((2 * w) / this.state.fontSize);
@@ -192,7 +198,7 @@ class CanvasForExport extends mxSvgCanvas2D {
 
       // Uses result and adds ellipsis if more than 1 char remains
       if (result.length < str.length && str.length - result.length > 1) {
-        str = mxUtils.trim(result.join('')) + '...';
+        str = stringUtils.trim(result.join('')) + '...';
       }
     } catch (e) {
       console.warn('Error while computing txt label', e);

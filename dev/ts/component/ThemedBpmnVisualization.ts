@@ -16,7 +16,6 @@ limitations under the License.
 
 import { BpmnVisualization, FlowKind, ShapeBpmnElementKind, ShapeUtil, StyleConfigurator, StyleDefault } from '../../../src/bpmn-visualization';
 import { logStartup } from '../utils/internal-helpers';
-import { mxConstants } from '../../../src/component/mxgraph/initializer';
 
 interface Theme {
   defaultFillColor: string;
@@ -139,44 +138,44 @@ export class ThemedBpmnVisualization extends BpmnVisualization {
           strokeColor = theme.defaultStrokeColor;
           break;
       }
-      const style = styleSheet.styles[kind];
-      style['fillColor'] = fillColor;
-      style['strokeColor'] = strokeColor;
+      const style = styleSheet.styles.get(kind);
+      style.fillColor = fillColor;
+      style.strokeColor = strokeColor;
     });
 
     // TASK
     ShapeUtil.taskKinds().forEach(kind => {
-      const style = styleSheet.styles[kind];
-      style['fillColor'] = theme.taskAndCallActivityFillColor;
+      const style = styleSheet.styles.get(kind);
+      style.fillColor = theme.taskAndCallActivityFillColor;
     });
 
     // CALL ACTIVITY
-    const callActivityStyle = styleSheet.styles[ShapeBpmnElementKind.CALL_ACTIVITY];
-    callActivityStyle['fillColor'] = theme.taskAndCallActivityFillColor;
+    const callActivityStyle = styleSheet.styles.get(ShapeBpmnElementKind.CALL_ACTIVITY);
+    callActivityStyle.fillColor = theme.taskAndCallActivityFillColor;
 
     // TEXT ANNOTATION
-    const textAnnotationStyle = styleSheet.styles[ShapeBpmnElementKind.TEXT_ANNOTATION];
-    textAnnotationStyle['fillColor'] = theme.textAnnotationFillColor ?? StyleDefault.TEXT_ANNOTATION_FILL_COLOR;
+    const textAnnotationStyle = styleSheet.styles.get(ShapeBpmnElementKind.TEXT_ANNOTATION);
+    textAnnotationStyle.fillColor = theme.textAnnotationFillColor ?? StyleDefault.TEXT_ANNOTATION_FILL_COLOR;
 
     // POOL
-    const poolStyle = styleSheet.styles[ShapeBpmnElementKind.POOL];
-    poolStyle['fillColor'] = theme.poolFillColor;
-    poolStyle['swimlaneFillColor'] = theme.defaultFillColor;
+    const poolStyle = styleSheet.styles.get(ShapeBpmnElementKind.POOL);
+    poolStyle.fillColor = theme.poolFillColor;
+    poolStyle.swimlaneFillColor = theme.defaultFillColor;
 
     // LANE
-    const laneStyle = styleSheet.styles[ShapeBpmnElementKind.LANE];
-    laneStyle['fillColor'] = theme.laneFillColor;
+    const laneStyle = styleSheet.styles.get(ShapeBpmnElementKind.LANE);
+    laneStyle.fillColor = theme.laneFillColor;
 
     // DEFAULTS
     const defaultVertexStyle = styleSheet.getDefaultVertexStyle();
-    defaultVertexStyle['fontColor'] = theme.defaultFontColor;
-    defaultVertexStyle['fillColor'] = theme.defaultFillColor;
-    defaultVertexStyle['strokeColor'] = theme.defaultStrokeColor;
+    defaultVertexStyle.fontColor = theme.defaultFontColor;
+    defaultVertexStyle.fillColor = theme.defaultFillColor;
+    defaultVertexStyle.strokeColor = theme.defaultStrokeColor;
 
     const defaultEdgeStyle = styleSheet.getDefaultEdgeStyle();
-    defaultEdgeStyle['fontColor'] = theme.defaultFontColor;
-    defaultEdgeStyle['fillColor'] = theme.defaultFillColor;
-    defaultEdgeStyle['strokeColor'] = theme.flowColor ?? theme.defaultStrokeColor;
+    defaultEdgeStyle.fontColor = theme.defaultFontColor;
+    defaultEdgeStyle.fillColor = theme.defaultFillColor;
+    defaultEdgeStyle.strokeColor = theme.flowColor ?? theme.defaultStrokeColor;
 
     // theme configuration completed
     return true;
@@ -187,10 +186,10 @@ export class ThemedBpmnVisualization extends BpmnVisualization {
 
     const stylesheet = this.graph.getStylesheet();
 
-    // directly access the 'styles' map to update values. Using stylesheet.getCellStyle returns a copy of the style
-    const seqFlowStyle = stylesheet.styles[FlowKind.SEQUENCE_FLOW];
-    seqFlowStyle[mxConstants.STYLE_STROKECOLOR] = color;
-    seqFlowStyle[mxConstants.STYLE_FILLCOLOR] = color;
+    // directly access the 'styles' map to update values. Using stylesheet.getBPMNCellStyle returns a copy of the style
+    const seqFlowStyle = stylesheet.styles.get(FlowKind.SEQUENCE_FLOW);
+    seqFlowStyle.strokeColor = color;
+    seqFlowStyle.fillColor = color;
 
     logStartup('Sequence flows style updated');
   }

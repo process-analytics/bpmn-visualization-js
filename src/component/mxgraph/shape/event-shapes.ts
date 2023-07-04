@@ -14,18 +14,20 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { mxAbstractCanvas2D } from 'mxgraph';
-import { mxgraph, mxUtils } from '../initializer';
-import { BpmnStyleIdentifier, StyleDefault } from '../style';
+import type { AbstractCanvas2D } from '@maxgraph/core';
+import { EllipseShape } from '@maxgraph/core';
+
 import { ShapeBpmnEventDefinitionKind } from '../../../model/bpmn/internal';
 import type { BpmnCanvas, PaintParameter } from './render';
 import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
+import type { BPMNCellStyle } from '../renderer/StyleComputer';
+import { StyleDefault } from '../style';
 
 /**
  * @internal
  */
-export class EventShape extends mxgraph.mxEllipse {
+export class EventShape extends EllipseShape {
   protected iconPainter = IconPainterProvider.get();
 
   // refactor: when all/more event types will be supported, we could move to a Record/MappedType
@@ -85,10 +87,10 @@ export class EventShape extends mxgraph.mxEllipse {
     super(undefined, undefined, undefined); // the configuration is passed with the styles at runtime
   }
 
-  override paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+  override paintVertexShape(c: AbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, isFilled: this.withFilledIcon });
 
-    EventShape.setDashedOuterShapePattern(paintParameter, mxUtils.getValue(this.style, BpmnStyleIdentifier.IS_INTERRUPTING, undefined));
+    EventShape.setDashedOuterShapePattern(paintParameter, (this.style as BPMNCellStyle).bpmn.isInterrupting);
     this.paintOuterShape(paintParameter);
     EventShape.restoreOriginalOuterShapePattern(paintParameter);
 
@@ -100,15 +102,14 @@ export class EventShape extends mxgraph.mxEllipse {
   }
 
   private paintInnerShape(paintParameter: PaintParameter): void {
-    const paintIcon =
-      this.iconPainters.get(mxUtils.getValue(this.style, BpmnStyleIdentifier.EVENT_DEFINITION_KIND, ShapeBpmnEventDefinitionKind.NONE)) ??
-      (() => this.iconPainter.paintEmptyIcon());
+    const paintIcon = this.iconPainters.get((this.style as BPMNCellStyle).bpmn.eventDefinitionKind) || (() => this.iconPainter.paintEmptyIcon());
     paintIcon(paintParameter);
   }
 
-  private static setDashedOuterShapePattern(paintParameter: PaintParameter, isInterrupting: string): void {
+  private static setDashedOuterShapePattern(paintParameter: PaintParameter, isInterrupting: boolean): void {
     paintParameter.canvas.save(); // ensure we can later restore the configuration
-    if (isInterrupting === 'false') {
+    // TODO magraph@0.1.0 'isInterrupting' can be undefined in maxGraph whereas it wasn't with mxGraph
+    if (isInterrupting === false) {
       paintParameter.canvas.setDashed(true, false);
       paintParameter.canvas.setDashPattern('3 2');
     }

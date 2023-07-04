@@ -14,33 +14,26 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { AbstractCanvas2D, Rectangle } from '@maxgraph/core';
+import { RectangleShape } from '@maxgraph/core';
+
 import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
-import { BpmnStyleIdentifier } from '../style';
-import { mxRectangleShape, mxUtils } from '../initializer';
-import type { mxAbstractCanvas2D, mxRectangle } from 'mxgraph';
+import type { BPMNCellStyle } from '../renderer/StyleComputer';
 
 /**
  * @internal
  */
-export class MessageFlowIconShape extends mxRectangleShape {
+export class MessageFlowIconShape extends RectangleShape {
   protected iconPainter = IconPainterProvider.get();
 
-  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
+  constructor(bounds: Rectangle, fill: string, stroke: string, strokewidth: number) {
     super(bounds, fill, stroke, strokewidth);
   }
 
-  override paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
-    const paintParameter = buildPaintParameter({
-      canvas: c,
-      x,
-      y,
-      width: w,
-      height: h,
-      shape: this,
-      ratioFromParent: 1,
-      isFilled: mxUtils.getValue(this.style, BpmnStyleIdentifier.IS_INITIATING, 'true') == 'false',
-    });
+  override paintVertexShape(c: AbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+    const withFilledIcon = (this.style as BPMNCellStyle).bpmn.isNonInitiating;
+    const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, ratioFromParent: 1, isFilled: withFilledIcon });
 
     this.iconPainter.paintEnvelopeIcon(paintParameter);
   }

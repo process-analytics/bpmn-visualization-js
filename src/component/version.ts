@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { mxClient } from './mxgraph/initializer';
+import { Client } from '@maxgraph/core';
 
 // WARN: this constant is automatically updated at release time by the 'manage-version-in-files.mjs' script.
 // So, if you modify the name of this file or this constant, please update the script accordingly.
@@ -24,7 +24,7 @@ const libVersion = '0.37.0-post';
  * @internal
  */
 export const version = (): Version => {
-  return { lib: libVersion, dependencies: new Map([['mxGraph', mxClient.VERSION]]) };
+  return { lib: libVersion, dependencies: new Map([['maxGraph', Client.VERSION]]) };
 };
 
 /**

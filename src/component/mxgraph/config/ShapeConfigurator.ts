@@ -14,8 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { mxgraph, mxCellRenderer, mxConstants, mxRectangle, mxSvgCanvas2D } from '../initializer';
-import type { mxCellState, mxImageShape, mxShape } from 'mxgraph';
+import type { CellState, CellOverlay } from '@maxgraph/core';
+import { CellRenderer, Shape, Rectangle, ImageShape, Dictionary, SvgCanvas2D, constants } from '@maxgraph/core';
+
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
 import { EndEventShape, EventShape, IntermediateEventShape, ThrowIntermediateEventShape } from '../shape/event-shapes';
 import { ComplexGatewayShape, EventBasedGatewayShape, ExclusiveGatewayShape, InclusiveGatewayShape, ParallelGatewayShape } from '../shape/gateway-shapes';
@@ -33,11 +34,12 @@ import {
 } from '../shape/activity-shapes';
 import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
-import { BpmnStyleIdentifier } from '../style';
+import { BpmnStyleIdentifier, FONT } from '../style';
 import { computeAllBpmnClassNamesOfCell } from '../renderer/style-utils';
 import { MxGraphCustomOverlay } from '../overlay/custom-overlay';
 import { OverlayBadgeShape } from '../overlay/shapes';
 import { BpmnConnector } from '../shape/edges';
+import type { BPMNCellStyle } from '../renderer/StyleComputer';
 
 /**
  * @internal
@@ -52,43 +54,59 @@ export default class ShapeConfigurator {
 
   private registerShapes(): void {
     // events
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_END, EndEventShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_START, EventShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ThrowIntermediateEventShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, IntermediateEventShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_BOUNDARY, IntermediateEventShape);
+    CellRenderer.registerShape(ShapeBpmnElementKind.EVENT_END, EndEventShape);
+    CellRenderer.registerShape(ShapeBpmnElementKind.EVENT_START, EventShape);
+    CellRenderer.registerShape(ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ThrowIntermediateEventShape);
+    CellRenderer.registerShape(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, IntermediateEventShape);
+    CellRenderer.registerShape(ShapeBpmnElementKind.EVENT_BOUNDARY, IntermediateEventShape);
     // gateways
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_COMPLEX, ComplexGatewayShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_EVENT_BASED, EventBasedGatewayShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, ExclusiveGatewayShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_INCLUSIVE, InclusiveGatewayShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_PARALLEL, ParallelGatewayShape);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO magraph@0.1.0 fix CellRenderer.registerShape call
+    // @ts-ignore
+    CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_COMPLEX, ComplexGatewayShape);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO magraph@0.1.0 fix CellRenderer.registerShape call
+    // @ts-ignore
+    CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_EVENT_BASED, EventBasedGatewayShape);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO magraph@0.1.0 fix CellRenderer.registerShape call
+    // @ts-ignore
+    CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, ExclusiveGatewayShape);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO magraph@0.1.0 fix CellRenderer.registerShape call
+    // @ts-ignore
+    CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_INCLUSIVE, InclusiveGatewayShape);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO magraph@0.1.0 fix CellRenderer.registerShape call
+    // @ts-ignore
+    CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_PARALLEL, ParallelGatewayShape);
     // activities
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.SUB_PROCESS, SubProcessShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.CALL_ACTIVITY, CallActivityShape);
+    CellRenderer.registerShape(ShapeBpmnElementKind.SUB_PROCESS, SubProcessShape);
+    CellRenderer.registerShape(ShapeBpmnElementKind.CALL_ACTIVITY, CallActivityShape);
     // tasks
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK, TaskShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_SERVICE, ServiceTaskShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_USER, UserTaskShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_RECEIVE, ReceiveTaskShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_SEND, SendTaskShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_MANUAL, ManualTaskShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_SCRIPT, ScriptTaskShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_BUSINESS_RULE, BusinessRuleTaskShape);
+    CellRenderer.registerShape(ShapeBpmnElementKind.TASK, TaskShape);
+    CellRenderer.registerShape(ShapeBpmnElementKind.TASK_SERVICE, ServiceTaskShape);
+    CellRenderer.registerShape(ShapeBpmnElementKind.TASK_USER, UserTaskShape);
+    CellRenderer.registerShape(ShapeBpmnElementKind.TASK_RECEIVE, ReceiveTaskShape);
+    CellRenderer.registerShape(ShapeBpmnElementKind.TASK_SEND, SendTaskShape);
+    CellRenderer.registerShape(ShapeBpmnElementKind.TASK_MANUAL, ManualTaskShape);
+    CellRenderer.registerShape(ShapeBpmnElementKind.TASK_SCRIPT, ScriptTaskShape);
+    CellRenderer.registerShape(ShapeBpmnElementKind.TASK_BUSINESS_RULE, BusinessRuleTaskShape);
     // artifacts
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.TEXT_ANNOTATION, TextAnnotationShape);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO magraph@0.1.0 fix CellRenderer.registerShape call
+    // @ts-ignore
+    CellRenderer.registerShape(ShapeBpmnElementKind.TEXT_ANNOTATION, TextAnnotationShape);
 
     // shapes for flows
-    mxCellRenderer.registerShape(BpmnStyleIdentifier.EDGE, BpmnConnector);
-    mxCellRenderer.registerShape(BpmnStyleIdentifier.MESSAGE_FLOW_ICON, MessageFlowIconShape);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO magraph@0.1.0 fix CellRenderer.registerShape call
+    // @ts-ignore
+    CellRenderer.registerShape(BpmnStyleIdentifier.EDGE, BpmnConnector);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO magraph@0.1.0 fix CellRenderer.registerShape call
+    // @ts-ignore
+    CellRenderer.registerShape(BpmnStyleIdentifier.MESSAGE_FLOW_ICON, MessageFlowIconShape);
   }
 
   private initMxSvgCanvasPrototype(): void {
     // getTextCss is only used when creating foreignObject for label, so there is no impact on svg text that we use for Overlays.
     // Analysis done for mxgraph@4.1.1, still apply to mxgraph@4.2.2
-    mxSvgCanvas2D.prototype.getTextCss = function () {
+    SvgCanvas2D.prototype.getTextCss = function () {
       const s = this.state;
-      const lh = mxConstants.ABSOLUTE_LINE_HEIGHT ? s.fontSize * mxConstants.LINE_HEIGHT + 'px' : mxConstants.LINE_HEIGHT * this.lineHeightCorrection;
+      const lh = constants.ABSOLUTE_LINE_HEIGHT ? s.fontSize * constants.LINE_HEIGHT + 'px' : constants.LINE_HEIGHT * this.lineHeightCorrection;
       let css =
         'display: inline-block; font-size: ' +
         s.fontSize +
@@ -107,18 +125,18 @@ export default class ShapeConfigurator {
         // END OF Fix for issue #920
         '; ';
 
-      if ((s.fontStyle & mxConstants.FONT_BOLD) == mxConstants.FONT_BOLD) {
+      if ((s.fontStyle & FONT.BOLD) == FONT.BOLD) {
         css += 'font-weight: bold; ';
       }
-      if ((s.fontStyle & mxConstants.FONT_ITALIC) == mxConstants.FONT_ITALIC) {
+      if ((s.fontStyle & FONT.ITALIC) == FONT.ITALIC) {
         css += 'font-style: italic; ';
       }
 
       const deco = [];
-      if ((s.fontStyle & mxConstants.FONT_UNDERLINE) == mxConstants.FONT_UNDERLINE) {
+      if ((s.fontStyle & FONT.UNDERLINE) == FONT.UNDERLINE) {
         deco.push('underline');
       }
-      if ((s.fontStyle & mxConstants.FONT_STRIKETHROUGH) == mxConstants.FONT_STRIKETHROUGH) {
+      if ((s.fontStyle & FONT.STRIKETHROUGH) == FONT.STRIKETHROUGH) {
         deco.push('line-through');
       }
       if (deco.length > 0) {
@@ -132,8 +150,8 @@ export default class ShapeConfigurator {
   private initMxShapePrototype(): void {
     // The following is copied from the mxgraph mxShape implementation then converted to TypeScript and enriched for bpmn-visualization
     // It is needed for adding the custom attributes that permits identification of the BPMN elements in the DOM
-    mxgraph.mxShape.prototype.createSvgCanvas = function () {
-      const canvas = new mxSvgCanvas2D(this.node, false);
+    Shape.prototype.createSvgCanvas = function () {
+      const canvas = new SvgCanvas2D(this.node, false);
       canvas.strokeTolerance = this.pointerEvents ? this.svgStrokeTolerance : 0;
       canvas.pointerEventsValue = this.svgPointerEvents;
       const off = this.getSvgScreenOffset();
@@ -150,9 +168,11 @@ export default class ShapeConfigurator {
         // 'this.state.style' = the style definition associated with the cell
         // 'this.state.cell.style' = the style applied to the cell: 1st element: style name = bpmn shape name
         const cell = this.state.cell;
-        // dialect = strictHtml is set means that current node holds an HTML label
-        let allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === mxConstants.DIALECT_STRICTHTML);
-        const extraCssClasses = this.state.style[BpmnStyleIdentifier.EXTRA_CSS_CLASSES];
+        // dialect = strictHtml is set means that current node holds an html label
+        // TODO magraph@0.1.0 "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided."constants.DIALECT.STRICTHTML
+        let allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === 'strictHtml');
+        const extraCssClasses = (this.state.style as BPMNCellStyle).bpmn?.extra?.css?.classes;
+        // TODO rebase verify the cssClasses property type in BPMNCellStyle
         if (typeof extraCssClasses == 'string') {
           allBpmnClassNames = allBpmnClassNames.concat(extraCssClasses.split(','));
         }
@@ -165,8 +185,8 @@ export default class ShapeConfigurator {
 
       if (!this.antiAlias) {
         // Rounds all numbers in the SVG output to integers
-        canvas.format = function (value: string) {
-          return Math.round(parseFloat(value));
+        canvas.format = (value: number): number => {
+          return Math.round(value);
         };
       }
 
@@ -175,13 +195,13 @@ export default class ShapeConfigurator {
   }
 
   initMxCellRendererCreateCellOverlays(): void {
-    mxCellRenderer.prototype.createCellOverlays = function (state: mxCellState) {
+    CellRenderer.prototype.createCellOverlays = function (state: CellState) {
       const graph = state.view.graph;
       const overlays = graph.getCellOverlays(state.cell);
       let dict = null;
 
       if (overlays != null) {
-        dict = new mxgraph.mxDictionary<mxShape>();
+        dict = new Dictionary<CellOverlay, Shape>();
 
         for (const currentOverlay of overlays) {
           const shape = state.overlays != null ? state.overlays.remove(currentOverlay) : null;
@@ -190,14 +210,14 @@ export default class ShapeConfigurator {
             continue;
           }
 
-          let overlayShape: mxShape;
+          let overlayShape: Shape;
 
           // START bpmn-visualization CUSTOMIZATION
           if (currentOverlay instanceof MxGraphCustomOverlay) {
-            overlayShape = new OverlayBadgeShape(currentOverlay.label, new mxRectangle(0, 0, 0, 0), currentOverlay.style);
+            overlayShape = new OverlayBadgeShape(currentOverlay.label, new Rectangle(0, 0, 0, 0), currentOverlay.style);
           } else {
-            overlayShape = new mxgraph.mxImageShape(new mxRectangle(0, 0, 0, 0), currentOverlay.image.src);
-            (<mxImageShape>overlayShape).preserveImageAspect = false;
+            overlayShape = new ImageShape(new Rectangle(0, 0, 0, 0), currentOverlay.image.src);
+            (<ImageShape>overlayShape).preserveImageAspect = false;
           }
           // END bpmn-visualization CUSTOMIZATION
 
@@ -205,7 +225,7 @@ export default class ShapeConfigurator {
           overlayShape.overlay = currentOverlay;
 
           // The 'initializeOverlay' signature forces us to hardly cast the overlayShape
-          this.initializeOverlay(state, <mxImageShape>overlayShape);
+          this.initializeOverlay(state, <ImageShape>overlayShape);
           this.installCellOverlayListeners(state, currentOverlay, overlayShape);
 
           if (currentOverlay.cursor != null) {
@@ -226,7 +246,7 @@ export default class ShapeConfigurator {
       // Removes unused
       if (state.overlays != null) {
         // prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
-        state.overlays.visit(function (_id: string, shape: mxShape) {
+        state.overlays.visit(function (_id: string, shape: Shape) {
           shape.destroy();
         });
       }

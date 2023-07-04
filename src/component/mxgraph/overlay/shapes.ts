@@ -14,12 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { mxgraph } from '../initializer';
-import type { mxRectangle } from 'mxgraph';
+import type { Rectangle } from '@maxgraph/core';
+import { TextShape } from '@maxgraph/core';
 import type { MxGraphCustomOverlayStyle } from './custom-overlay';
 
-export class OverlayBadgeShape extends mxgraph.mxText {
-  constructor(value: string, bounds: mxRectangle, style: MxGraphCustomOverlayStyle) {
+export class OverlayBadgeShape extends TextShape {
+  constructor(value: string, bounds: Rectangle, style: MxGraphCustomOverlayStyle) {
     super(
       value,
       bounds,
@@ -39,6 +39,6 @@ export class OverlayBadgeShape extends mxgraph.mxText {
       style.stroke.color,
     );
     this.fillOpacity = style.fill.opacity;
-    this.strokewidth = style.stroke.width;
+    this.strokeWidth = style.stroke.width;
   }
 }

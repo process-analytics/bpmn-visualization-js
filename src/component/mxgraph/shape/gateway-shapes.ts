@@ -14,21 +14,22 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { mxAbstractCanvas2D } from 'mxgraph';
-import { mxgraph, mxUtils } from '../initializer';
-import { BpmnStyleIdentifier, StyleDefault } from '../style';
-import { getBpmnIsInstantiating } from '../style/utils';
+import type { AbstractCanvas2D } from '@maxgraph/core';
+import { RhombusShape } from '@maxgraph/core';
+
 import { ShapeBpmnEventBasedGatewayKind } from '../../../model/bpmn/internal';
+import { StyleDefault } from '../style';
 import type { PaintParameter } from './render';
 import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
+import type { BPMNCellStyle } from '../renderer/StyleComputer';
 
-abstract class GatewayShape extends mxgraph.mxRhombus {
+abstract class GatewayShape extends RhombusShape {
   protected iconPainter = IconPainterProvider.get();
 
   protected abstract paintInnerShape(paintParameter: PaintParameter): void;
 
-  override paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+  override paintVertexShape(c: AbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this });
     this.paintOuterShape(paintParameter);
     this.paintInnerShape(paintParameter);
@@ -103,7 +104,7 @@ export class EventBasedGatewayShape extends GatewayShape {
       ...paintParameter,
       ratioFromParent: 0.55,
     });
-    if (!getBpmnIsInstantiating(this.style)) {
+    if (!(this.style as BPMNCellStyle).bpmn.isInstantiating) {
       this.iconPainter.paintCircleIcon({
         ...paintParameter,
         ratioFromParent: 0.45,
@@ -115,7 +116,7 @@ export class EventBasedGatewayShape extends GatewayShape {
       ...paintParameter,
       ratioFromParent: 0.3,
     };
-    if (mxUtils.getValue(this.style, BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND, ShapeBpmnEventBasedGatewayKind.Exclusive) == ShapeBpmnEventBasedGatewayKind.Parallel) {
+    if ((this.style as BPMNCellStyle).bpmn.gatewayKind == ShapeBpmnEventBasedGatewayKind.Parallel) {
       this.iconPainter.paintPlusCrossIcon(innerIconPaintParameter);
     } else {
       this.iconPainter.paintPentagon(innerIconPaintParameter);

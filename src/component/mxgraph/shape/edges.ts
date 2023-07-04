@@ -14,16 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { mxgraph, mxSvgCanvas2D, mxUtils } from '../initializer';
-import type { mxAbstractCanvas2D, mxPoint } from 'mxgraph';
-import { BpmnStyleIdentifier } from '../style';
+import type { Point, AbstractCanvas2D } from '@maxgraph/core';
+import { SvgCanvas2D, ConnectorShape } from '@maxgraph/core';
 
-export class BpmnConnector extends mxgraph.mxConnector {
-  constructor(points: mxPoint[], stroke: string, strokewidth?: number) {
+import type { BPMNCellStyle } from '../renderer/StyleComputer';
+
+// TODO magraph@0.1.0 remove to use the new support of endFillColor and starFillColor provided by https://github.com/maxGraph/maxGraph/issues/201
+export class BpmnConnector extends ConnectorShape {
+  constructor(points: Point[], stroke: string, strokewidth?: number) {
     super(points, stroke, strokewidth);
   }
 
-  override paintEdgeShape(c: mxAbstractCanvas2D, pts: mxPoint[]): void {
+  override paintEdgeShape(c: AbstractCanvas2D, pts: Point[]): void {
     // The indirection via functions for markers is needed in
     // order to apply the offsets before painting the line and
     // paint the markers after painting the line.
@@ -37,19 +39,19 @@ export class BpmnConnector extends mxgraph.mxConnector {
     c.setDashed(false, false);
 
     if (sourceMarker != null) {
-      c.setFillColor(mxUtils.getValue(this.style, BpmnStyleIdentifier.EDGE_START_FILL_COLOR, this.stroke));
+      c.setFillColor((this.style as BPMNCellStyle).bpmn?.edge?.startFillColor ?? this.stroke);
       sourceMarker();
     }
 
     if (targetMarker != null) {
-      c.setFillColor(mxUtils.getValue(this.style, BpmnStyleIdentifier.EDGE_END_FILL_COLOR, this.stroke));
+      c.setFillColor((this.style as BPMNCellStyle).bpmn?.edge?.endFillColor ?? this.stroke);
       targetMarker();
     }
   }
 
   // taken from mxPolyline, required as we cannot call mxPolyline method here (parent of the parent)
   // we only support non STYLE_CURVED here (is possible with parent class)
-  private paintEdgeLine(c: mxAbstractCanvas2D, pts: mxPoint[]): void {
+  private paintEdgeLine(c: AbstractCanvas2D, pts: Point[]): void {
     const prev = getPointerEventsValue(c);
     setPointerEventsValue(c, 'stroke');
     this.paintLine(c, pts, this.isRounded);
@@ -57,12 +59,12 @@ export class BpmnConnector extends mxgraph.mxConnector {
   }
 }
 
-function getPointerEventsValue(c: mxAbstractCanvas2D): string {
-  return c instanceof mxSvgCanvas2D ? c.pointerEventsValue : null;
+function getPointerEventsValue(c: AbstractCanvas2D): string {
+  return c instanceof SvgCanvas2D ? c.pointerEventsValue : null;
 }
 
-function setPointerEventsValue(c: mxAbstractCanvas2D, value: string): void {
-  if (c instanceof mxSvgCanvas2D) {
+function setPointerEventsValue(c: AbstractCanvas2D, value: string): void {
+  if (c instanceof SvgCanvas2D) {
     c.pointerEventsValue = value;
   }
 }

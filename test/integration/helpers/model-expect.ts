@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import type {
+  AssociationDirectionKind,
   Fill,
   FlowKind,
   GlobalTaskKind,
@@ -58,9 +59,10 @@ import {
   toBeTextAnnotation,
   toBeUserTask,
 } from '../matchers';
-import type { mxCell, mxGeometry } from 'mxgraph';
+import type { AlignValue, ArrowType, Cell, FilterFunction, Geometry, ShapeValue, VAlignValue } from '@maxgraph/core';
 import type { ExpectedOverlay } from '../matchers/matcher-utils';
 import { getCell } from '../matchers/matcher-utils';
+import type { BPMNCellStyle } from '../../../src/component/mxgraph/renderer/StyleComputer';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -137,7 +139,7 @@ expect.extend({
 
 export interface ExpectedCellWithGeometry {
   parentId?: string;
-  geometry: mxGeometry;
+  geometry: Geometry;
 }
 
 export interface ExpectedFont {
@@ -151,7 +153,9 @@ export interface ExpectedFont {
   opacity?: Opacity;
 }
 
+// TODO rebase do we keep HorizontalAlign, we could use AlignValue instead
 export type HorizontalAlign = 'center' | 'left' | 'right';
+// TODO rebase do we keep VerticalAlign, we could use VAlignValue instead
 export type VerticalAlign = 'bottom' | 'middle' | 'top';
 
 type ExpectedModelElement = {
@@ -170,7 +174,7 @@ type ExpectedModelElement = {
 export interface ExpectedShapeModelElement extends ExpectedModelElement {
   kind?: ShapeBpmnElementKind;
   /** Generally needed when the BPMN shape doesn't exist yet (use an arbitrary shape until the final render is implemented) */
-  styleShape?: string;
+  styleShape?: ShapeValue | string;
   markers?: ShapeBpmnMarkerKind[];
   isInstantiating?: boolean;
   /**
@@ -196,13 +200,17 @@ export interface ExpectedCallActivityModelElement extends ExpectedShapeModelElem
 
 export interface ExpectedEdgeModelElement extends ExpectedModelElement {
   kind?: FlowKind;
-  startArrow?: string;
-  endArrow?: string;
+  startArrow?: ArrowType;
+  endArrow?: ArrowType;
   messageVisibleKind?: MessageVisibleKind;
 }
 
 export interface ExpectedSequenceFlowModelElement extends ExpectedEdgeModelElement {
   sequenceFlowKind?: SequenceFlowKind;
+}
+
+export interface ExpectedAssociationFlowModelElement extends ExpectedEdgeModelElement {
+  associationDirectionKind?: AssociationDirectionKind;
 }
 
 export interface ExpectedBoundaryEventModelElement extends ExpectedEventModelElement {
@@ -217,24 +225,24 @@ export interface ExpectedEventBasedGatewayModelElement extends ExpectedShapeMode
 }
 
 export const bpmnVisualization = new BpmnVisualization(null);
-const defaultParent = bpmnVisualization.graph.getDefaultParent();
+const getDefaultParent = (): Cell => bpmnVisualization.graph.getDefaultParent();
 
-export const getDefaultParentId = (): string => defaultParent.id;
+export const getDefaultParentId = (): string => getDefaultParent().id;
 
-const expectElementsInModel = (parentId: string, elementsNumber: number, filter: (cell: mxCell) => boolean): void => {
-  const model = bpmnVisualization.graph.model;
-  const descendants = model.filterDescendants(filter, getCell(parentId));
+const expectElementsInModel = (parentId: string, elementsNumber: number, filter: FilterFunction): void => {
+  const parentCell = parentId ? getCell(parentId) : getDefaultParent();
+  const descendants = parentCell.filterDescendants(filter);
   expect(descendants).toHaveLength(elementsNumber);
 };
 
 export const expectPoolsInModel = (pools: number): void => {
-  expectElementsInModel(undefined, pools, (cell: mxCell): boolean => {
-    return cell.style?.startsWith(ShapeBpmnElementKind.POOL);
+  expectElementsInModel(undefined, pools, (cell: Cell): boolean => {
+    return cell != getDefaultParent() && (cell.style as BPMNCellStyle).bpmn.kind == ShapeBpmnElementKind.POOL;
   });
 };
 
 export const expectShapesInModel = (parentId: string, shapesNumber: number): void => {
-  expectElementsInModel(parentId, shapesNumber, (cell: mxCell): boolean => {
+  expectElementsInModel(parentId, shapesNumber, (cell: Cell): boolean => {
     return cell.getId() != parentId && cell.isVertex();
   });
 };
@@ -244,7 +252,7 @@ export const expectTotalShapesInModel = (shapesNumber: number): void => {
 };
 
 export const expectEdgesInModel = (parentId: string, edgesNumber: number): void => {
-  expectElementsInModel(parentId, edgesNumber, (cell: mxCell): boolean => {
+  expectElementsInModel(parentId, edgesNumber, (cell: Cell): boolean => {
     return cell.isEdge();
   });
 };

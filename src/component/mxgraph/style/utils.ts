@@ -17,7 +17,6 @@ limitations under the License.
 import { ensureOpacityValue, ensureStrokeWidthValue } from '../../helpers/validators';
 import type { Fill, Font, ShapeStyleUpdate, Stroke, StyleUpdate } from '../../registry';
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
-import { mxConstants, mxUtils } from '../initializer';
 import { BpmnStyleIdentifier } from './identifiers';
 
 /**
@@ -68,16 +67,18 @@ export const StyleDefault = {
   MESSAGE_FLOW_MARKER_END_FILL_COLOR: 'White',
 };
 
-/**
- * Get the BPMN 'instantiate' information from the style.
- * @param style the mxGraph style
- * @internal
- * @private
- */
-export const getBpmnIsInstantiating = (style: { [p: string]: unknown }): boolean => mxUtils.getValue(style, BpmnStyleIdentifier.IS_INSTANTIATING, 'false') == 'true';
+// TODO magraph@0.1.0 maxGraph "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided." constants.FONT
+// TODO magraph@0.1.0 remove duplicated from maxGraph
+export enum FONT {
+  BOLD = 1,
+  ITALIC = 2,
+  UNDERLINE = 4,
+  STRIKETHROUGH = 8,
+}
 
 const convertDefaultValue = (value: string): string | undefined => (value == 'default' ? undefined : value);
 
+// TODO rebase fix update style functions
 export const updateStroke = (cellStyle: string, stroke: Stroke): string => {
   if (stroke) {
     cellStyle = setStyle(cellStyle, mxConstants.STYLE_STROKECOLOR, stroke.color, convertDefaultValue);
