@@ -43,7 +43,7 @@ const cssClassName = 'detection';
 let isOverlaysDisplayed = true;
 let useCSS = true;
 
-function computeDefaultStyleByKind(bpmnKind) {
+function computeStyleUpdateByKind(bpmnKind) {
   const style = { font: {}, fill: {}, stroke: {} };
   if (ShapeUtil.isTask(bpmnKind)) {
     style.font.color = 'Indigo';
@@ -126,7 +126,7 @@ function updateStyleByAPI(bpmnIds, bpmnKind) {
     updateStyle(lastIdentifiedParentBpmnIds, { opacity: 5, font: { color: 'green', opacity: 5 }, fill: { color: 'gold' }, stroke: { color: 'red' } });
   }
 
-  const style = computeDefaultStyleByKind(bpmnKind);
+  const style = computeStyleUpdateByKind(bpmnKind);
   updateStyle(otherIds, style);
 }
 

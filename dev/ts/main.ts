@@ -30,12 +30,12 @@ import type {
   ZoomType,
 } from '../../src/bpmn-visualization';
 import { FlowKind, ShapeBpmnElementKind } from '../../src/bpmn-visualization';
-import { downloadAsPng, downloadAsSvg } from './component/download';
-import { DropFileUserInterface } from './component/DropFileUserInterface';
-import { SvgExporter } from './component/SvgExporter';
-import { ThemedBpmnVisualization } from './component/ThemedBpmnVisualization';
 import { fetchBpmnContent, logDownload, logError, logErrorAndOpenAlert, logStartup } from './utils/internal-helpers';
 import { log } from './utils/shared-helpers';
+import { DropFileUserInterface } from './component/DropFileUserInterface';
+import { SvgExporter } from './component/SvgExporter';
+import { downloadAsPng, downloadAsSvg } from './component/download';
+import { ThemedBpmnVisualization } from './component/ThemedBpmnVisualization';
 
 let bpmnVisualization: ThemedBpmnVisualization;
 let loadOptions: LoadOptions = {};
@@ -107,8 +107,9 @@ export function getElementsByIds(bpmnId: string | string[]): BpmnElement[] {
 }
 
 function getParentElement(id: string): mxCell {
-  const cell = bpmnVisualization.graph.model.getCell(id);
-  return bpmnVisualization.graph.getModel().getParent(cell);
+  const model = bpmnVisualization.graph.model;
+  const cell = model.getCell(id);
+  return model.getParent(cell);
 }
 
 export function getParentElementIds(bpmnIds: string[]): string[] {
