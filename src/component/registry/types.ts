@@ -265,8 +265,16 @@ export type Fill = StyleWithOpacity & {
    * - It can be used when the style is first updated and then needs to be reset to its initial value.
    * - It doesn't use the color set in the BPMN source when the "BPMN in Color" support is enabled. It uses the color defined in the BPMN element default style.
    */
-  color?: 'default' | 'inherit' | 'none' | 'swimlane' | string;
+  color?: FillColorGradient | 'default' | 'inherit' | 'none' | 'swimlane' | string;
 };
+
+type FillColorGradient = {
+  startColor: string;
+  endColor: string;
+  direction: Direction;
+};
+
+type Direction = 'left-to-right' | 'right-to-left' | 'bottom-to-top' | 'top-to-bottom';
 
 /**
  * @category Element Style
