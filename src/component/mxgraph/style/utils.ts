@@ -111,11 +111,20 @@ export const updateFont = (cellStyle: string, font: Font): string => {
 };
 
 export const updateFill = (cellStyle: string, fill: Fill): string => {
-  if (fill.color) {
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_FILLCOLOR, fill.color, convertDefaultValue);
+  const color = fill.color;
+  if (color) {
+    const isGradient = typeof color !== 'string';
+
+    const fillColor = isGradient ? color.startColor : color;
+    cellStyle = setStyle(cellStyle, mxConstants.STYLE_FILLCOLOR, fillColor, convertDefaultValue);
+
+    if (isGradient) {
+      cellStyle = setStyle(cellStyle, mxConstants.STYLE_GRADIENTCOLOR, color.endColor, convertDefaultValue);
+      cellStyle = setStyle(cellStyle, mxConstants.STYLE_GRADIENT_DIRECTION, color.direction, convertDefaultValue);
+    }
 
     if (cellStyle.includes(ShapeBpmnElementKind.POOL) || cellStyle.includes(ShapeBpmnElementKind.LANE)) {
-      cellStyle = setStyle(cellStyle, mxConstants.STYLE_SWIMLANE_FILLCOLOR, fill.color, convertDefaultValue);
+      cellStyle = setStyle(cellStyle, mxConstants.STYLE_SWIMLANE_FILLCOLOR, fillColor, convertDefaultValue);
     }
   }
 
