@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BpmnCellStyle, ExpectedCell } from '../matcher-utils';
+import type { ExpectedCell, BpmnCellStyle } from '../matcher-utils';
 import { buildCellMatcher, buildExpectedCellStyleWithCommonAttributes, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
 import type {
   ExpectedBoundaryEventModelElement,
@@ -26,10 +26,10 @@ import type {
   ExpectedSubProcessModelElement,
 } from '../../helpers/model-expect';
 import { getDefaultParentId } from '../../helpers/model-expect';
-import { ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';
-import { mxConstants } from '@lib/component/mxgraph/initializer';
+import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
+import type { BPMNCellStyle } from '@lib/component/mxgraph/renderer/StyleComputer';
 
 function expectedStrokeWidth(kind: ShapeBpmnElementKind): number {
   return [
@@ -61,6 +61,8 @@ function expectedStrokeWidth(kind: ShapeBpmnElementKind): number {
 
 export function buildExpectedShapeCellStyle(expectedModel: ExpectedShapeModelElement): BpmnCellStyle {
   const style = buildExpectedCellStyleWithCommonAttributes(expectedModel);
+  // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
+  // expectedStateStyle.shape = <ShapeValue>(<unknown>(!expectedModel.styleShape ? expectedModel.kind : expectedModel.styleShape));
   style.shape = expectedModel.styleShape ?? expectedModel.kind;
   style.verticalAlign = expectedModel.verticalAlign ?? 'middle';
   style.align = expectedModel.align ?? 'center';
@@ -74,7 +76,8 @@ export function buildExpectedShapeCellStyle(expectedModel: ExpectedShapeModelEle
   style.swimlaneFillColor = [ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.LANE].includes(expectedModel.kind) && style.fillColor !== 'none' ? style.fillColor : undefined;
 
   style.fillOpacity = expectedModel.fill?.opacity;
-  'isSwimLaneLabelHorizontal' in expectedModel && (style.horizontal = Number(expectedModel.isSwimLaneLabelHorizontal));
+  // TODO rebase horizontal from number to boolean
+  'isSwimLaneLabelHorizontal' in expectedModel && (style.horizontal = expectedModel.isSwimLaneLabelHorizontal);
 
   // ignore marker order, which is only relevant when rendering the shape (it has its own order algorithm)
   'markers' in expectedModel && (style.markers = expectedModel.markers.sort());
@@ -82,6 +85,7 @@ export function buildExpectedShapeCellStyle(expectedModel: ExpectedShapeModelEle
   return style;
 }
 
+// TODO maxgraph@0.1.0 Here we don't check all properties. This duplicates the other style check functions
 function buildExpectedShapeStylePropertyRegexp(
   expectedModel:
     | ExpectedShapeModelElement
@@ -91,40 +95,56 @@ function buildExpectedShapeStylePropertyRegexp(
     | ExpectedBoundaryEventModelElement
     | ExpectedEventBasedGatewayModelElement
     | ExpectedCallActivityModelElement,
-): string {
-  let expectedStyle: string = expectedModel.kind;
+): BPMNCellStyle {
+  const style: BPMNCellStyle = { bpmn: {} };
+  // TODO maxgraph@0.1.0 share with edge
+  style.baseStyleNames = [expectedModel.kind];
+  style.bpmn.kind = expectedModel.kind;
+
   if ('eventDefinitionKind' in expectedModel) {
-    expectedStyle = expectedStyle + `.*bpmn.eventDefinitionKind=${expectedModel.eventDefinitionKind}`;
+    style.bpmn.eventDefinitionKind = expectedModel.eventDefinitionKind;
   }
   if ('subProcessKind' in expectedModel) {
-    expectedStyle = expectedStyle + `.*bpmn.subProcessKind=${expectedModel.subProcessKind}`;
+    style.bpmn.subProcessKind = expectedModel.subProcessKind;
   }
   if ('globalTaskKind' in expectedModel) {
-    expectedStyle = expectedStyle + `.*bpmn.globalTaskKind=${expectedModel.globalTaskKind}`;
+    style.bpmn.globalTaskKind = expectedModel.globalTaskKind;
   }
   if (expectedModel.isInstantiating !== undefined) {
-    expectedStyle = expectedStyle + `.*bpmn.isInstantiating=${expectedModel.isInstantiating}`;
+    style.bpmn.isInstantiating = expectedModel.isInstantiating;
   }
-  if (expectedModel.markers?.length > 0) {
-    // There is no guaranteed order, so testing the list of markers with a string is not practical. Markers are therefore checked with BpmnStyle.markers.
-    // Here, we check only that the markers are placed in the style.
-    expectedStyle = expectedStyle + `.*bpmn.markers=*`;
+  // if (expectedModel.markers?.length > 0) {
+  //   // There is no guaranteed order, so testing the list of markers with a string is not practical. Markers are therefore checked with BpmnStyle.markers.
+  //   // Here, we check only that the markers are placed in the style.
+  //   expectedStyle = expectedStyle + `.*bpmn.markers=*`;
+  // }
+  // TODO rebase ignore markers order
+  if (expectedModel.markers) {
+    style.bpmn.markers = expectedModel.markers;
   }
   if ('isInterrupting' in expectedModel) {
-    expectedStyle = expectedStyle + `.*bpmn.isInterrupting=${expectedModel.isInterrupting}`;
+    style.bpmn.isInterrupting = expectedModel.isInterrupting;
   }
   if ('gatewayKind' in expectedModel) {
-    expectedStyle = expectedStyle + `.*bpmn.gatewayKind=${expectedModel.gatewayKind}`;
+    style.bpmn.gatewayKind = expectedModel.gatewayKind;
   }
-  return expectedStyle + '.*';
+  if ('extraCssClasses' in expectedModel) {
+    // TODO rebase duplicated with style/utils.ts setCssClasses
+    style.bpmn.extra ??= { css: { classes: undefined } };
+    style.bpmn.extra.css.classes = expectedModel.extraCssClasses;
+  }
+
+  return style;
 }
 
 function buildExpectedCell(id: string, expectedModel: ExpectedShapeModelElement): ExpectedCell {
+  // TODO maxgraph@0.1.0 refactor, duplication with buildExpectedCell in edge matchers
   const parentId = expectedModel.parentId;
   return {
     id,
-    value: expectedModel.label,
-    styleRawFromModelOrJestExpect: expect.stringMatching(buildExpectedShapeStylePropertyRegexp(expectedModel)),
+    value: expectedModel.label ?? null, // maxGraph now set to 'null', mxGraph set to 'undefined'
+    // TODO rebase make it work
+    styleRawFromModelOrJestExpect: expect.objectContaining(buildExpectedShapeStylePropertyRegexp(expectedModel)),
     styleResolvedFromModel: buildExpectedShapeCellStyle(expectedModel),
     styleViewState: buildExpectedShapeCellStyle(expectedModel),
     edge: false,
@@ -139,9 +159,12 @@ function buildShapeMatcher(matcherName: string, matcherContext: MatcherContext, 
 }
 
 function buildContainerMatcher(matcherName: string, matcherContext: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
+  // TODO rebase why do we need this, this seems useles
+  // 'isHorizontal' in expected && (expected.isHorizontal = expected.isHorizontal);
   return buildShapeMatcher(matcherName, matcherContext, received, {
     ...expected,
-    styleShape: mxConstants.SHAPE_SWIMLANE,
+    // TODO maxgraph@0.1.0 maxGraph "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided." constants.SHAPE.SWIMLANE
+    styleShape: 'swimlane',
     isSwimLaneLabelHorizontal: expected.isSwimLaneLabelHorizontal ?? false,
   });
 }
@@ -155,10 +178,15 @@ export function toBeLane(this: MatcherContext, received: string, expected: Expec
 }
 
 export function toBeCallActivity(this: MatcherContext, received: string, expected: ExpectedCallActivityModelElement): CustomMatcherResult {
+  // TODO maxgraph@0.1.0 introduce common code for activity kinds
+  expected.markers ??= [];
   return buildShapeMatcher('toBeCallActivity', this, received, { ...expected, kind: ShapeBpmnElementKind.CALL_ACTIVITY });
 }
 
 export function toBeSubProcess(this: MatcherContext, received: string, expected: ExpectedSubProcessModelElement): CustomMatcherResult {
+  // TODO rebase review markers management
+  // TODO maxgraph@0.1.0 introduce common code for activity kinds
+  // expected.markers ??= [];
   if (expected.subProcessKind == ShapeBpmnSubProcessKind.AD_HOC) {
     expected.markers ??= [];
     expected.markers.push(ShapeBpmnMarkerKind.ADHOC);
@@ -167,34 +195,50 @@ export function toBeSubProcess(this: MatcherContext, received: string, expected:
 }
 
 export function toBeTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
+  // TODO maxgraph@0.1.0 introduce common code for activity kinds
+  expected.markers ??= [];
   return buildShapeMatcher('toBeTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK });
 }
 
 export function toBeServiceTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
+  // TODO maxgraph@0.1.0 introduce common code for activity kinds
+  expected.markers ??= [];
   return buildShapeMatcher('toBeServiceTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_SERVICE });
 }
 
 export function toBeUserTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
+  // TODO maxgraph@0.1.0 introduce common code for activity kinds
+  expected.markers ??= [];
   return buildShapeMatcher('toBeUserTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_USER });
 }
 
 export function toBeReceiveTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
+  // TODO maxgraph@0.1.0 introduce common code for activity kinds
+  expected.markers ??= [];
   return buildShapeMatcher('toBeReceiveTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_RECEIVE });
 }
 
 export function toBeSendTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
+  // TODO maxgraph@0.1.0 introduce common code for activity kinds
+  expected.markers ??= [];
   return buildShapeMatcher('toBeSendTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_SEND });
 }
 
 export function toBeManualTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
+  // TODO maxgraph@0.1.0 introduce common code for activity kinds
+  expected.markers ??= [];
   return buildShapeMatcher('toBeManualTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_MANUAL });
 }
 
 export function toBeScriptTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
+  // TODO maxgraph@0.1.0 introduce common code for activity kinds
+  expected.markers ??= [];
   return buildShapeMatcher('toBeScriptTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_SCRIPT });
 }
 
 export function toBeBusinessRuleTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
+  // TODO maxgraph@0.1.0 introduce common code for activity kinds
+  expected.markers ??= [];
   return buildShapeMatcher('toBeBusinessRuleTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_BUSINESS_RULE });
 }
 
@@ -227,6 +271,7 @@ function buildGatewayMatcher(matcherName: string, matcherContext: MatcherContext
 }
 
 export function toBeEventBasedGateway(this: MatcherContext, received: string, expected: ExpectedEventBasedGatewayModelElement): CustomMatcherResult {
+  expected.gatewayKind ??= ShapeBpmnEventBasedGatewayKind.None;
   return buildGatewayMatcher('toBeEventBasedGateway', this, received, { ...expected, kind: ShapeBpmnElementKind.GATEWAY_EVENT_BASED });
 }
 

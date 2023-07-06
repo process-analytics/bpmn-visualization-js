@@ -14,12 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { isShapeStyleUpdate, setStyle, updateFill, updateFont, updateStroke } from './style/utils';
+import { isShapeStyleUpdate, setCssClasses, setStyle, updateFill, updateFont, updateStroke } from './style/utils';
 import { StyleManager } from './style/StyleManager';
 
 import type { BpmnGraph } from './BpmnGraph';
-import { mxConstants } from './initializer';
-import { BpmnStyleIdentifier } from './style';
 import type { Overlay, StyleUpdate } from '../registry';
 import type { CssRegistry } from '../registry/css-registry';
 import { MxGraphCustomOverlay } from './overlay/custom-overlay';
@@ -27,12 +25,13 @@ import { ensureIsArray } from '../helpers/array-utils';
 import { OverlayConverter } from './overlay/OverlayConverter';
 import { messageFlowIconId } from './BpmnRenderer';
 import { ensureOpacityValue } from '../helpers/validators';
+import type { BPMNCellStyle } from './renderer/StyleComputer';
 
 /**
  * @internal
  */
 export function newGraphCellUpdater(graph: BpmnGraph, cssRegistry: CssRegistry): GraphCellUpdater {
-  return new GraphCellUpdater(graph, new OverlayConverter(), new StyleManager(cssRegistry, graph.getModel()));
+  return new GraphCellUpdater(graph, new OverlayConverter(), new StyleManager(cssRegistry, graph.getDataModel()));
 }
 
 /**
@@ -52,7 +51,7 @@ export default class GraphCellUpdater {
   }
 
   private updateAndRefreshCssClassesOfElement(elementId: string, cssClasses: string[]): void {
-    const model = this.graph.getModel();
+    const model = this.graph.getDataModel();
     const cell = model.getCell(elementId);
     if (!cell) {
       return;
@@ -60,13 +59,16 @@ export default class GraphCellUpdater {
 
     this.styleManager.ensureStyleIsStored(cell);
 
-    let cellStyle = cell.getStyle();
-    cellStyle = setStyle(cellStyle, BpmnStyleIdentifier.EXTRA_CSS_CLASSES, cssClasses.join(','));
+    const cellStyle: BPMNCellStyle = cell.getStyle();
+    cell.id == 'serviceTask_1_2' && console.warn('prior calling setCssClasses', cellStyle);
+    setCssClasses(cellStyle, cssClasses);
+
+    cell.id == 'serviceTask_1_2' && console.warn('prior calling model.setStyle', cssClasses, cellStyle);
     model.setStyle(cell, cellStyle);
   }
 
   addOverlays(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
-    const cell = this.graph.getModel().getCell(bpmnElementId);
+    const cell = this.graph.getDataModel().getCell(bpmnElementId);
     if (!cell) {
       return;
     }
@@ -77,7 +79,7 @@ export default class GraphCellUpdater {
   }
 
   removeAllOverlays(bpmnElementId: string): void {
-    const cell = this.graph.getModel().getCell(bpmnElementId);
+    const cell = this.graph.getDataModel().getCell(bpmnElementId);
     if (!cell) {
       return;
     }
@@ -91,7 +93,7 @@ export default class GraphCellUpdater {
       return;
     }
 
-    const model = this.graph.getModel();
+    const model = this.graph.getDataModel();
     const cells = withCellIdsOfMessageFlowIcons(bpmnElementIds)
       .map(id => model.getCell(id))
       .filter(Boolean);
@@ -105,7 +107,7 @@ export default class GraphCellUpdater {
         this.styleManager.ensureStyleIsStored(cell);
 
         let cellStyle = cell.getStyle();
-        cellStyle = setStyle(cellStyle, mxConstants.STYLE_OPACITY, styleUpdate.opacity, ensureOpacityValue);
+        cellStyle = setStyle(cellStyle, 'opacity', styleUpdate.opacity, ensureOpacityValue);
         cellStyle = updateStroke(cellStyle, styleUpdate.stroke);
         cellStyle = updateFont(cellStyle, styleUpdate.font);
 
@@ -113,7 +115,8 @@ export default class GraphCellUpdater {
           cellStyle = updateFill(cellStyle, styleUpdate.fill);
         }
 
-        this.graph.model.setStyle(cell, cellStyle);
+        // TODO maxgraph@0.1.0 migration --> apply this to the master branch
+        model.setStyle(cell, cellStyle);
       }
     });
   }

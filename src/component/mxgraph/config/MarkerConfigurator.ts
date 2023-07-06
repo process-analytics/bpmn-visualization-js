@@ -15,8 +15,8 @@ limitations under the License.
 */
 
 import { MarkerIdentifier } from '../style';
-import { mxgraph } from '../initializer';
-import type { mxAbstractCanvas2D, mxCell, mxPoint, mxShape } from 'mxgraph';
+import type { Cell, Point, Shape, AbstractCanvas2D } from '@maxgraph/core';
+import { MarkerShape } from '@maxgraph/core';
 
 /**
  * @internal
@@ -32,14 +32,14 @@ export default class MarkerConfigurator {
 
     // prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
     const createMarker = (
-      c: mxAbstractCanvas2D,
-      _shape: mxShape,
+      c: AbstractCanvas2D,
+      _shape: Shape,
       _type: string,
-      pe: mxPoint,
+      pe: Point,
       unitX: number,
       unitY: number,
       size: number,
-      _source: mxCell,
+      _source: Cell,
       strokewidth: number,
     ): (() => void) => {
       const nx = unitX * (size + strokewidth + 4);
@@ -52,6 +52,6 @@ export default class MarkerConfigurator {
         c.stroke();
       };
     };
-    mxgraph.mxMarker.addMarker(MarkerIdentifier.ARROW_DASH, createMarker);
+    MarkerShape.addMarker(MarkerIdentifier.ARROW_DASH, createMarker);
   }
 }

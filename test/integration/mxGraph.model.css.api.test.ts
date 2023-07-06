@@ -25,6 +25,11 @@ describe('mxGraph model - CSS API', () => {
   });
 
   test('Add CSS classes on Shape', () => {
+    expect('userTask_2_2').toBeUserTask({
+      // not under test
+      parentId: 'lane_02',
+      label: 'User Task 2.2',
+    });
     bpmnVisualization.bpmnElementsRegistry.addCssClasses('userTask_2_2', ['class#1', 'class#2']);
     expect('userTask_2_2').toBeUserTask({
       extraCssClasses: ['class#1', 'class#2'],
@@ -35,6 +40,11 @@ describe('mxGraph model - CSS API', () => {
   });
 
   test('Add CSS classes on Edge', () => {
+    expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
+      // not under test
+      parentId: 'lane_03',
+      verticalAlign: 'bottom',
+    });
     bpmnVisualization.bpmnElementsRegistry.addCssClasses('sequenceFlow_lane_3_elt_3', ['class-1', 'class-2', 'class-3']);
     expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
       extraCssClasses: ['class-1', 'class-2', 'class-3'],

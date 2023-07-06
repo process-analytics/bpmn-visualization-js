@@ -14,9 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-// Use mxgraph types
-/// <reference types="@typed-mxgraph/typed-mxgraph" />
-
 // Public API
 export * from './component/options';
 export { BpmnVisualization } from './component/BpmnVisualization';
@@ -30,6 +27,3 @@ export { IconPainter } from './component/mxgraph/shape/render/icon-painter';
 export { StyleConfigurator } from './component/mxgraph/config/StyleConfigurator';
 export * from './component/mxgraph/style';
 export * from './component/mxgraph/shape/render';
-
-// the mxGraph context
-export { mxgraph } from './component/mxgraph/initializer';

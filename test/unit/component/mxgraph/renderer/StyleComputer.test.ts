@@ -17,6 +17,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { AlignValue, ShapeValue } from '@maxgraph/core';
+import type { BPMNCellStyle } from '@lib/component/mxgraph/renderer/StyleComputer';
 import StyleComputer from '@lib/component/mxgraph/renderer/StyleComputer';
 import Shape from '@lib/model/bpmn/internal/shape/Shape';
 import ShapeBpmnElement, {
@@ -31,6 +33,7 @@ import ShapeBpmnElement, {
 import type { BpmnEventKind, GlobalTaskKind } from '@lib/model/bpmn/internal';
 import {
   AssociationDirectionKind,
+  FlowKind,
   MessageVisibleKind,
   SequenceFlowKind,
   ShapeBpmnCallActivityKind,
@@ -125,25 +128,28 @@ function newAssociationFlow(kind: AssociationDirectionKind): AssociationFlow {
   return new AssociationFlow('id', 'name', undefined, undefined, kind);
 }
 
+// TODO maxgraph@0.1.0 order properties alphabetically in expected style
+
 describe('Style Computer', () => {
   // use a shared instance to check that there is no state stored in the implementation
   const styleComputer = new StyleComputer();
 
   // shortcut as the current computeStyle implementation requires to pass the BPMN label bounds as extra argument
-  function computeStyle(bpmnCell: Shape | Edge): string {
+  function computeStyle(bpmnCell: Shape | Edge): BPMNCellStyle {
     return styleComputer.computeStyle(bpmnCell, bpmnCell.label?.bounds);
   }
 
   describe('compute style - shape label', () => {
     it('compute style of shape with no label', () => {
       const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.TASK_USER));
-      expect(computeStyle(shape)).toBe('userTask');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{ baseStyleNames: ['userTask'], bpmn: { kind: ShapeBpmnElementKind.TASK_USER } });
     });
 
     it('compute style of shape with a no font label', () => {
       const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_END), undefined, new Label(undefined, undefined));
-      expect(computeStyle(shape)).toBe('endEvent');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{ baseStyleNames: ['endEvent'], bpmn: { kind: ShapeBpmnElementKind.EVENT_END } });
     });
+
     it('compute style of shape with label including bold font', () => {
       const shape = new Shape(
         'id',
@@ -151,44 +157,93 @@ describe('Style Computer', () => {
         undefined,
         new Label(toFont({ name: 'Courier', size: 9, isBold: true }), undefined),
       );
-      expect(computeStyle(shape)).toBe('exclusiveGateway;fontFamily=Courier;fontSize=9;fontStyle=1');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['exclusiveGateway'],
+        fontFamily: 'Courier',
+        fontSize: 9,
+        fontStyle: 1,
+        bpmn: { kind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE },
+      });
     });
 
     it('compute style of shape with label including italic font', () => {
       const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH), undefined, new Label(toFont({ name: 'Arial', isItalic: true }), undefined));
-      expect(computeStyle(shape)).toBe('intermediateCatchEvent;fontFamily=Arial;fontStyle=2');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['intermediateCatchEvent'],
+        fontFamily: 'Arial',
+        fontStyle: 2,
+        bpmn: { kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH },
+      });
     });
 
     it('compute style of shape with label including bold/italic font', () => {
       const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW), undefined, new Label(toFont({ isBold: true, isItalic: true }), undefined));
-      expect(computeStyle(shape)).toBe('intermediateThrowEvent;fontStyle=3');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['intermediateThrowEvent'],
+        fontStyle: 3,
+        bpmn: { kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW },
+      });
+    });
+
+    it('compute style of shape with label including font family only', () => {
+      const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.TASK_SCRIPT), undefined, new Label(toFont({ name: 'Roboto' }), undefined));
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['scriptTask'],
+        fontFamily: 'Roboto',
+        fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+        bpmn: { kind: ShapeBpmnElementKind.TASK_SCRIPT },
+      });
     });
 
     it('compute style of shape with label bounds', () => {
       const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.CALL_ACTIVITY), undefined, new Label(undefined, new Bounds(40, 200, 80, 140)));
-      expect(computeStyle(shape)).toBe('callActivity;verticalAlign=top;align=center;labelWidth=81;labelPosition=ignore;verticalLabelPosition=middle');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['callActivity'],
+        align: 'center',
+        verticalAlign: 'top',
+        labelWidth: 81,
+        // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
+        labelPosition: <AlignValue>'ignore',
+        verticalLabelPosition: 'middle',
+        bpmn: { kind: ShapeBpmnElementKind.CALL_ACTIVITY },
+      });
     });
   });
 
   describe('compute style - edge label', () => {
     it('compute style of edge with no label', () => {
       const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.CONDITIONAL_FROM_GATEWAY));
-      expect(computeStyle(edge)).toBe('sequenceFlow;conditional_from_gateway');
+      expect(computeStyle(edge)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['sequenceFlow', 'conditional_from_gateway'],
+        bpmn: { kind: FlowKind.SEQUENCE_FLOW },
+      });
     });
 
     it('compute style of edge with a no font label', () => {
       const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.NORMAL), undefined, new Label(undefined, undefined));
-      expect(computeStyle(edge)).toBe('sequenceFlow;normal');
+      expect(computeStyle(edge)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['sequenceFlow', 'normal'],
+        bpmn: { kind: FlowKind.SEQUENCE_FLOW },
+      });
     });
 
     it('compute style of edge with label including strike-through font', () => {
       const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY), undefined, new Label(toFont({ size: 14.2, isStrikeThrough: true }), undefined));
-      expect(computeStyle(edge)).toBe('sequenceFlow;conditional_from_activity;fontSize=14.2;fontStyle=8');
+      expect(computeStyle(edge)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['sequenceFlow', 'conditional_from_activity'],
+        fontSize: 14.2,
+        fontStyle: 8,
+        bpmn: { kind: FlowKind.SEQUENCE_FLOW },
+      });
     });
 
     it('compute style of edge with label including underline font', () => {
       const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.DEFAULT), undefined, new Label(toFont({ isUnderline: true }), undefined));
-      expect(computeStyle(edge)).toBe('sequenceFlow;default;fontStyle=4');
+      expect(computeStyle(edge)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['sequenceFlow', 'default'],
+        fontStyle: 4,
+        bpmn: { kind: FlowKind.SEQUENCE_FLOW },
+      });
     });
 
     it('compute style of edge with label including bold/italic/strike-through/underline font', () => {
@@ -198,12 +253,23 @@ describe('Style Computer', () => {
         undefined,
         new Label(toFont({ isBold: true, isItalic: true, isStrikeThrough: true, isUnderline: true }), undefined),
       );
-      expect(computeStyle(edge)).toBe('sequenceFlow;normal;fontStyle=15');
+      expect(computeStyle(edge)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['sequenceFlow', 'normal'],
+        fontStyle: 15,
+        bpmn: { kind: FlowKind.SEQUENCE_FLOW },
+      });
     });
 
     it('compute style of edge with label bounds', () => {
       const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.NORMAL), undefined, new Label(toFont({ name: 'Helvetica' }), new Bounds(20, 20, 30, 120)));
-      expect(computeStyle(edge)).toBe('sequenceFlow;normal;fontFamily=Helvetica;verticalAlign=top;align=center');
+      expect(computeStyle(edge)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['sequenceFlow', 'normal'],
+        fontFamily: 'Helvetica',
+        align: 'center',
+        verticalAlign: 'top',
+        fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+        bpmn: { kind: FlowKind.SEQUENCE_FLOW },
+      });
     });
   });
 
@@ -214,7 +280,10 @@ describe('Style Computer', () => {
     [SequenceFlowKind.NORMAL, 'normal'],
   ])('compute style - sequence flows: %s', (kind: SequenceFlowKind, expected: string) => {
     const edge = new Edge('id', newSequenceFlow(kind));
-    expect(computeStyle(edge)).toBe(`sequenceFlow;${expected}`);
+    expect(computeStyle(edge)).toStrictEqual(<BPMNCellStyle>{
+      baseStyleNames: ['sequenceFlow', expected],
+      bpmn: { kind: FlowKind.SEQUENCE_FLOW },
+    });
   });
 
   it.each([
@@ -223,59 +292,102 @@ describe('Style Computer', () => {
     [AssociationDirectionKind.BOTH, 'Both'],
   ])('compute style - association flows: %s', (kind: AssociationDirectionKind, expected: string) => {
     const edge = new Edge('id', newAssociationFlow(kind));
-    expect(computeStyle(edge)).toBe(`association;${expected}`);
+    expect(computeStyle(edge)).toStrictEqual(<BPMNCellStyle>{
+      baseStyleNames: ['association', expected],
+      bpmn: { kind: FlowKind.ASSOCIATION_FLOW },
+    });
   });
 
   it.each([
-    [MessageVisibleKind.NON_INITIATING, 'false'],
-    [MessageVisibleKind.INITIATING, 'true'],
-  ])('compute style - message flow icon: %s', (messageVisibleKind: MessageVisibleKind, expected: string) => {
+    [MessageVisibleKind.NON_INITIATING, false],
+    [MessageVisibleKind.INITIATING, true],
+  ])('compute style - message flow icon: %s', (messageVisibleKind: MessageVisibleKind, expected: boolean) => {
     const edge = new Edge('id', newMessageFlow(), undefined, undefined, messageVisibleKind);
-    expect(styleComputer.computeMessageFlowIconStyle(edge)).toBe(`shape=bpmn.messageFlowIcon;bpmn.isInitiating=${expected}`);
+    expect(styleComputer.computeMessageFlowIconStyle(edge)).toStrictEqual(<BPMNCellStyle>{
+      bpmn: { isInitiating: expected },
+      // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
+      shape: <ShapeValue>'bpmn.messageFlowIcon',
+    });
   });
 
   describe('compute style - events kind', () => {
     it('intermediate catch conditional', () => {
       const shape = newShape(newShapeBpmnEvent(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, ShapeBpmnEventDefinitionKind.CONDITIONAL), newLabel({ name: 'Ubuntu' }));
-      expect(computeStyle(shape)).toBe('intermediateCatchEvent;bpmn.eventDefinitionKind=conditional;fontFamily=Ubuntu');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['intermediateCatchEvent'],
+        fontFamily: 'Ubuntu',
+        fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+        bpmn: { kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, eventDefinitionKind: ShapeBpmnEventDefinitionKind.CONDITIONAL },
+      });
     });
 
     it('start signal', () => {
       const shape = newShape(newShapeBpmnEvent(ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventDefinitionKind.SIGNAL), newLabel({ isBold: true }));
-      expect(computeStyle(shape)).toBe('startEvent;bpmn.eventDefinitionKind=signal;fontStyle=1');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['startEvent'],
+        fontStyle: 1,
+        bpmn: { kind: ShapeBpmnElementKind.EVENT_START, eventDefinitionKind: ShapeBpmnEventDefinitionKind.SIGNAL },
+      });
     });
   });
+
   describe('compute style - boundary events', () => {
     it('interrupting message', () => {
       const shape = newShape(newShapeBpmnBoundaryEvent(ShapeBpmnEventDefinitionKind.MESSAGE, true), newLabel({ name: 'Arial' }));
-      expect(computeStyle(shape)).toBe('boundaryEvent;bpmn.eventDefinitionKind=message;bpmn.isInterrupting=true;fontFamily=Arial');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['boundaryEvent'],
+        fontFamily: 'Arial',
+        fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+        bpmn: { kind: ShapeBpmnElementKind.EVENT_BOUNDARY, eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE, isInterrupting: true },
+      });
     });
 
     it('non interrupting timer', () => {
       const shape = newShape(newShapeBpmnBoundaryEvent(ShapeBpmnEventDefinitionKind.TIMER, false), newLabel({ isItalic: true }));
-      expect(computeStyle(shape)).toBe('boundaryEvent;bpmn.eventDefinitionKind=timer;bpmn.isInterrupting=false;fontStyle=2');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['boundaryEvent'],
+        fontStyle: 2,
+        bpmn: { kind: ShapeBpmnElementKind.EVENT_BOUNDARY, eventDefinitionKind: ShapeBpmnEventDefinitionKind.TIMER, isInterrupting: false },
+      });
     });
 
     it('cancel with undefined interrupting value', () => {
       const shape = newShape(newShapeBpmnBoundaryEvent(ShapeBpmnEventDefinitionKind.CANCEL, undefined), newLabel({ isStrikeThrough: true }));
-      expect(computeStyle(shape)).toBe('boundaryEvent;bpmn.eventDefinitionKind=cancel;bpmn.isInterrupting=true;fontStyle=8');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['boundaryEvent'],
+        fontStyle: 8,
+        bpmn: { kind: ShapeBpmnElementKind.EVENT_BOUNDARY, eventDefinitionKind: ShapeBpmnEventDefinitionKind.CANCEL, isInterrupting: true },
+      });
     });
   });
 
   describe('compute style - event sub-process start event', () => {
     it('interrupting message', () => {
       const shape = newShape(newShapeBpmnStartEvent(ShapeBpmnEventDefinitionKind.MESSAGE, true), newLabel({ name: 'Arial' }));
-      expect(computeStyle(shape)).toBe('startEvent;bpmn.eventDefinitionKind=message;bpmn.isInterrupting=true;fontFamily=Arial');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['startEvent'],
+        fontFamily: 'Arial',
+        fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+        bpmn: { kind: ShapeBpmnElementKind.EVENT_START, eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE, isInterrupting: true },
+      });
     });
 
     it('non interrupting timer', () => {
       const shape = newShape(newShapeBpmnStartEvent(ShapeBpmnEventDefinitionKind.TIMER, false), newLabel({ isItalic: true }));
-      expect(computeStyle(shape)).toBe('startEvent;bpmn.eventDefinitionKind=timer;bpmn.isInterrupting=false;fontStyle=2');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['startEvent'],
+        fontStyle: 2,
+        bpmn: { kind: ShapeBpmnElementKind.EVENT_START, eventDefinitionKind: ShapeBpmnEventDefinitionKind.TIMER, isInterrupting: false },
+      });
     });
 
     it('cancel with undefined interrupting value', () => {
       const shape = newShape(newShapeBpmnStartEvent(ShapeBpmnEventDefinitionKind.CANCEL, undefined), newLabel({ isStrikeThrough: true }));
-      expect(computeStyle(shape)).toBe('startEvent;bpmn.eventDefinitionKind=cancel;fontStyle=8');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['startEvent'],
+        fontStyle: 8,
+        bpmn: { kind: ShapeBpmnElementKind.EVENT_START, eventDefinitionKind: ShapeBpmnEventDefinitionKind.CANCEL },
+      });
     });
   });
 
@@ -286,19 +398,34 @@ describe('Style Computer', () => {
     ])(`%s`, (expandKind: string, markers: ShapeBpmnMarkerKind[]) => {
       describe.each(Object.values(ShapeBpmnSubProcessKind))(`%s`, (subProcessKind: ShapeBpmnSubProcessKind) => {
         markers = getExpectedMarkers(markers, subProcessKind);
-        const additionalMarkerStyle = markers.length > 0 ? `;bpmn.markers=${markers.join(',')}` : '';
 
         it(`${subProcessKind} sub-process without label bounds`, () => {
           const shape = newShape(newShapeBpmnSubProcess(subProcessKind, markers), newLabel({ name: 'Arial' }));
-          const additionalTerminalStyle = !markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';verticalAlign=top' : '';
-          expect(computeStyle(shape)).toBe(`subProcess;bpmn.subProcessKind=${subProcessKind}${additionalMarkerStyle};fontFamily=Arial${additionalTerminalStyle}`);
+          const expectedStyle = <BPMNCellStyle>{
+            baseStyleNames: ['subProcess'],
+            bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind, markers },
+            fontFamily: 'Arial',
+            fontStyle: 0, // TODO decide if we set the fontStyle property to 0 or if we omit it
+          };
+          !markers.includes(ShapeBpmnMarkerKind.EXPAND) && (expectedStyle.verticalAlign = 'top');
+
+          expect(computeStyle(shape)).toStrictEqual(expectedStyle);
         });
 
         it(`${subProcessKind} sub-process with label bounds`, () => {
           const shape = newShape(newShapeBpmnSubProcess(subProcessKind, markers), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
-          expect(computeStyle(shape)).toBe(
-            `subProcess;bpmn.subProcessKind=${subProcessKind}${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=ignore;verticalLabelPosition=middle`,
-          );
+          expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+            align: 'center',
+            baseStyleNames: ['subProcess'],
+            bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind, markers },
+            fontFamily: 'sans-serif',
+            fontStyle: 0, // TODO decide if we set the fontStyle property to 0 or if we omit it
+            labelWidth: 301,
+            verticalAlign: 'top',
+            // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
+            labelPosition: <AlignValue>'ignore',
+            verticalLabelPosition: 'middle',
+          });
         });
       });
     });
@@ -312,17 +439,38 @@ describe('Style Computer', () => {
       ])(`compute style - %s call activities`, (expandKind: string, markers: ShapeBpmnMarkerKind[]) => {
         it(`${expandKind} call activity without label bounds`, () => {
           const shape = newShape(newShapeBpmnCallActivityCallingProcess(markers), newLabel({ name: 'Arial' }));
-          const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
-          const additionalTerminalStyle = !markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';verticalAlign=top' : '';
-          expect(computeStyle(shape)).toBe(`callActivity${additionalMarkerStyle};fontFamily=Arial${additionalTerminalStyle}`);
+          const expectedStyle = <BPMNCellStyle>{
+            baseStyleNames: ['callActivity'],
+            bpmn: {
+              kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+              globalTaskKind: undefined, // TODO maxgraph@0.1.0 decide if we set globalTaskKind to undefined or if we omit the property
+              markers,
+            },
+            fontFamily: 'Arial',
+            fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+          };
+          !markers.includes(ShapeBpmnMarkerKind.EXPAND) && (expectedStyle.verticalAlign = 'top');
+          expect(computeStyle(shape)).toStrictEqual(expectedStyle);
         });
 
         it(`${expandKind} call activity with label bounds`, () => {
           const shape = newShape(newShapeBpmnCallActivityCallingProcess(markers), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
-          const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
-          expect(computeStyle(shape)).toBe(
-            `callActivity${additionalMarkerStyle};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=ignore;verticalLabelPosition=middle`,
-          );
+          expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+            align: 'center',
+            baseStyleNames: ['callActivity'],
+            bpmn: {
+              kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+              globalTaskKind: undefined, // TODO maxgraph@0.1.0 decide if we set globalTaskKind to undefined or if we omit the property
+              markers,
+            },
+            fontFamily: 'sans-serif',
+            fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+            labelWidth: 301,
+            verticalAlign: 'top',
+            // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
+            labelPosition: <AlignValue>'ignore',
+            verticalLabelPosition: 'middle',
+          });
         });
       });
     });
@@ -337,14 +485,33 @@ describe('Style Computer', () => {
       ])(`compute style - call activities calling %s`, (globalTaskKind: GlobalTaskKind) => {
         it(`call activity calling ${globalTaskKind} without label bounds`, () => {
           const shape = newShape(newShapeBpmnCallActivityCallingGlobalTask(globalTaskKind), newLabel({ name: 'Arial' }));
-          expect(computeStyle(shape)).toBe(`callActivity;bpmn.globalTaskKind=${globalTaskKind};fontFamily=Arial`);
+          const expectedStyle = <BPMNCellStyle>{
+            baseStyleNames: ['callActivity'],
+            bpmn: { kind: ShapeBpmnElementKind.CALL_ACTIVITY, globalTaskKind: globalTaskKind, markers: [] },
+            fontFamily: 'Arial',
+            fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+          };
+          expect(computeStyle(shape)).toStrictEqual(expectedStyle);
         });
 
         it(`call activity calling ${globalTaskKind} with label bounds`, () => {
           const shape = newShape(newShapeBpmnCallActivityCallingGlobalTask(globalTaskKind), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
-          expect(computeStyle(shape)).toBe(
-            `callActivity;bpmn.globalTaskKind=${globalTaskKind};fontFamily=sans-serif;verticalAlign=top;align=center;labelWidth=301;labelPosition=ignore;verticalLabelPosition=middle`,
-          );
+          expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+            align: 'center',
+            baseStyleNames: ['callActivity'],
+            bpmn: {
+              globalTaskKind: globalTaskKind,
+              kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+              markers: [],
+            },
+            fontFamily: 'sans-serif',
+            fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+            labelWidth: 301,
+            verticalAlign: 'top',
+            // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
+            labelPosition: <AlignValue>'ignore',
+            verticalLabelPosition: 'middle',
+          });
         });
       });
     });
@@ -356,49 +523,95 @@ describe('Style Computer', () => {
       ['instantiating', true],
     ])('%s receive task', (instantiatingKind: string, instantiate: boolean) => {
       const shape = newShape(newShapeBpmnActivity(ShapeBpmnElementKind.TASK_RECEIVE, undefined, instantiate), newLabel({ name: 'Arial' }));
-      expect(computeStyle(shape)).toBe(`receiveTask;bpmn.isInstantiating=${instantiate};fontFamily=Arial`);
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['receiveTask'],
+        bpmn: { kind: ShapeBpmnElementKind.TASK_RECEIVE, isInstantiating: instantiate, markers: [] },
+        fontFamily: 'Arial',
+        fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+      });
     });
   });
 
   describe('compute style - text annotation', () => {
     it('without label', () => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.TEXT_ANNOTATION));
-      expect(computeStyle(shape)).toBe('textAnnotation');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['textAnnotation'],
+        bpmn: { kind: ShapeBpmnElementKind.TEXT_ANNOTATION },
+      });
     });
     it('with label bounds', () => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.TEXT_ANNOTATION), newLabel({ name: 'Segoe UI' }, new Bounds(50, 50, 100, 100)));
-      expect(computeStyle(shape)).toBe('textAnnotation;fontFamily=Segoe UI;verticalAlign=top;labelWidth=101;labelPosition=ignore;verticalLabelPosition=middle');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['textAnnotation'],
+        bpmn: {
+          kind: ShapeBpmnElementKind.TEXT_ANNOTATION,
+        },
+        fontFamily: 'Segoe UI',
+        fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+        labelWidth: 101,
+        verticalAlign: 'top',
+        // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
+        labelPosition: <AlignValue>'ignore',
+        verticalLabelPosition: 'middle',
+      });
     });
   });
 
   describe('compute style - group', () => {
     it('without label', () => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.GROUP));
-      expect(computeStyle(shape)).toBe('group');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['group'],
+        bpmn: { kind: ShapeBpmnElementKind.GROUP },
+      });
     });
     it('with label bounds', () => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.GROUP), newLabel({ name: 'Roboto' }, new Bounds(50, 50, 100, 100)));
-      expect(computeStyle(shape)).toBe('group;fontFamily=Roboto;verticalAlign=top;align=center;labelWidth=101;labelPosition=ignore;verticalLabelPosition=middle');
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        align: 'center',
+        baseStyleNames: ['group'],
+        bpmn: {
+          kind: ShapeBpmnElementKind.GROUP,
+        },
+        fontFamily: 'Roboto',
+        fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+        // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
+        labelPosition: <AlignValue>'ignore',
+        labelWidth: 101,
+        verticalAlign: 'top',
+        verticalLabelPosition: 'middle',
+      });
     });
   });
 
   describe('compute style - pool references a Process', () => {
     it.each([
-      ['vertical', false, '1'],
-      ['horizontal', true, '0'],
-    ])('%s pool references a Process', (title: string, isHorizontal: boolean, expected: string) => {
+      ['vertical', false, true],
+      ['horizontal', true, false],
+      ['undefined', undefined, true], // the parser set a default value in the shape, so this shouldn't be used
+    ])('%s pool references a Process', (title: string, isHorizontal: boolean, expectedStyleIsHorizontal: boolean) => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.POOL), undefined, isHorizontal);
-      expect(computeStyle(shape)).toBe(`pool;horizontal=${expected}`);
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['pool'],
+        horizontal: expectedStyleIsHorizontal,
+        bpmn: { kind: ShapeBpmnElementKind.POOL },
+      });
     });
   });
 
   describe('compute style - lane', () => {
     it.each([
-      ['vertical', false, '1'],
-      ['horizontal', true, '0'],
-    ])('%s lane', (title: string, isHorizontal: boolean, expected: string) => {
+      ['vertical', false, true],
+      ['horizontal', true, false],
+      ['undefined', undefined, true], // the parser set a default value in the shape, so this shouldn't be used
+    ])('%s lane', (title: string, isHorizontal: boolean, expectedStyleIsHorizontal: boolean) => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.LANE), undefined, isHorizontal);
-      expect(computeStyle(shape)).toBe(`lane;horizontal=${expected}`);
+      expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+        baseStyleNames: ['lane'],
+        horizontal: expectedStyleIsHorizontal,
+        bpmn: { kind: ShapeBpmnElementKind.LANE },
+      });
     });
   });
 
@@ -419,22 +632,38 @@ describe('Style Computer', () => {
       (markerKind: ShapeBpmnMarkerKind) => {
         it(`${bpmnKind} with ${markerKind} marker`, () => {
           const shape = newShape(newShapeBpmnActivity(bpmnKind, [markerKind]), newLabel({ name: 'Arial' }));
-          const additionalReceiveTaskStyle = bpmnKind === ShapeBpmnElementKind.TASK_RECEIVE ? ';bpmn.isInstantiating=false' : '';
-          expect(computeStyle(shape)).toBe(`${bpmnKind}${additionalReceiveTaskStyle};bpmn.markers=${markerKind};fontFamily=Arial`);
+          const expectedStyle = <BPMNCellStyle>{
+            baseStyleNames: [bpmnKind],
+            bpmn: { kind: bpmnKind, markers: [markerKind] },
+            fontFamily: 'Arial',
+            fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+          };
+          bpmnKind === ShapeBpmnElementKind.TASK_RECEIVE && (expectedStyle.bpmn.isInstantiating = false);
+          expect(computeStyle(shape)).toStrictEqual(expectedStyle);
         });
 
         if (bpmnKind == ShapeBpmnElementKind.SUB_PROCESS) {
           it.each(Object.values(ShapeBpmnSubProcessKind))(`%s subProcess with Loop & Expand (collapsed) markers`, (subProcessKind: ShapeBpmnSubProcessKind) => {
             const markers = [markerKind, ShapeBpmnMarkerKind.EXPAND];
             const shape = newShape(newShapeBpmnSubProcess(subProcessKind, markers));
-            expect(computeStyle(shape)).toBe(`subProcess;bpmn.subProcessKind=${subProcessKind};bpmn.markers=${getExpectedMarkers(markers, subProcessKind).join(',')}`);
+            expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+              baseStyleNames: ['subProcess'],
+              bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, markers: getExpectedMarkers(markers, subProcessKind), subProcessKind },
+            });
           });
         }
 
         if (bpmnKind == ShapeBpmnElementKind.CALL_ACTIVITY) {
           it(`${bpmnKind} calling process with ${markerKind} & Expand (collapsed) markers`, () => {
             const shape = newShape(newShapeBpmnCallActivityCallingProcess([markerKind, ShapeBpmnMarkerKind.EXPAND]));
-            expect(computeStyle(shape)).toBe(`callActivity;bpmn.markers=${markerKind},expand`);
+            expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+              baseStyleNames: ['callActivity'],
+              bpmn: {
+                kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+                globalTaskKind: undefined, // TODO maxgraph@0.1.0 decide if we omit the globalTaskKind property when not set
+                markers: [markerKind, ShapeBpmnMarkerKind.EXPAND],
+              },
+            });
           });
 
           it.each([
@@ -445,7 +674,14 @@ describe('Style Computer', () => {
             [ShapeBpmnElementKind.GLOBAL_TASK_BUSINESS_RULE as GlobalTaskKind],
           ])(`${bpmnKind} calling global task with ${markerKind} marker`, (globalTaskKind: GlobalTaskKind) => {
             const shape = newShape(newShapeBpmnCallActivityCallingGlobalTask(globalTaskKind, [markerKind]));
-            expect(computeStyle(shape)).toBe(`callActivity;bpmn.globalTaskKind=${globalTaskKind};bpmn.markers=${markerKind}`);
+            expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+              baseStyleNames: ['callActivity'],
+              bpmn: {
+                kind: ShapeBpmnElementKind.CALL_ACTIVITY,
+                globalTaskKind,
+                markers: [markerKind],
+              },
+            });
           });
         }
       },
@@ -465,22 +701,28 @@ describe('Style Computer', () => {
       ({ instantiate, gatewayKind }: { instantiate: boolean; gatewayKind: ShapeBpmnEventBasedGatewayKind }) => {
         const shape = newShape(newShapeBpmnEventBasedGateway(instantiate, gatewayKind), newLabel({ name: 'Arial' }));
         gatewayKind ??= ShapeBpmnEventBasedGatewayKind.None;
-        expect(computeStyle(shape)).toBe(`eventBasedGateway;bpmn.isInstantiating=${!!instantiate};bpmn.gatewayKind=${gatewayKind};fontFamily=Arial`);
+        expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
+          baseStyleNames: ['eventBasedGateway'],
+          bpmn: { kind: ShapeBpmnElementKind.GATEWAY_EVENT_BASED, gatewayKind, isInstantiating: !!instantiate },
+          fontFamily: 'Arial',
+          fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
+        });
       },
     );
   });
 
+  // TODO rebase adapt tests for maxGraph
   describe('compute style - colors', () => {
     describe.each([[undefined], [false], [true]])(`Ignore BPMN colors: %s`, (ignoreBpmnColors: boolean) => {
       // 'undefined' RendererOptions tested in other tests in this file
       const styleComputer = new StyleComputer(ignoreBpmnColors === undefined ? {} : { ignoreBpmnColors: ignoreBpmnColors });
       const expectAdditionalColorsStyle = !(ignoreBpmnColors ?? true);
 
-      function computeStyleWithRendererOptions(element: Shape | Edge): string {
+      function computeStyleWithRendererOptions(element: Shape | Edge): BPMNCellStyle {
         return styleComputer.computeStyle(element, element.label?.bounds);
       }
 
-      function computeMessageFlowIconStyleWithRendererOptions(edge: Edge): string {
+      function computeMessageFlowIconStyleWithRendererOptions(edge: Edge): BPMNCellStyle {
         return styleComputer.computeMessageFlowIconStyle(edge);
       }
 
@@ -489,19 +731,40 @@ describe('Style Computer', () => {
           const shape = newShape(newShapeBpmnElement(kind), newLabelExtension('#010101'));
           shape.extensions.fillColor = '#000003';
           shape.extensions.strokeColor = '#FF0203';
-          const additionalColorsStyle = expectAdditionalColorsStyle ? ';fillColor=#000003;strokeColor=#FF0203;fontColor=#010101' : '';
-          expect(computeStyleWithRendererOptions(shape)).toBe(`${kind}${additionalColorsStyle}`);
+          const expectedStyle = <BPMNCellStyle>{
+            baseStyleNames: [kind],
+            bpmn: { kind: kind },
+          };
+          if (expectAdditionalColorsStyle) {
+            expectedStyle.fillColor = '#000003';
+            expectedStyle.fontColor = '#010101';
+            expectedStyle.strokeColor = '#FF0203';
+          }
+          expect(computeStyleWithRendererOptions(shape)).toStrictEqual(expectedStyle);
         });
         it.each([ShapeBpmnElementKind.LANE, ShapeBpmnElementKind.POOL])('%s', (kind: ShapeBpmnElementKind) => {
-          const shape = newShape(newShapeBpmnElement(kind), newLabelExtension('#aa0101'));
+          const shape = newShape(newShapeBpmnElement(kind), newLabelExtension('#aa0101'), true);
           shape.extensions.fillColor = '#AA0003';
           shape.extensions.strokeColor = '#FF02AA';
-          const additionalColorsStyle = expectAdditionalColorsStyle ? ';fillColor=#AA0003;swimlaneFillColor=#AA0003;strokeColor=#FF02AA;fontColor=#aa0101' : '';
-          expect(computeStyleWithRendererOptions(shape)).toBe(`${kind};horizontal=1${additionalColorsStyle}`);
+          const expectedStyle = <BPMNCellStyle>{
+            baseStyleNames: [kind],
+            bpmn: { kind: kind },
+            horizontal: false,
+          };
+          if (expectAdditionalColorsStyle) {
+            expectedStyle.fillColor = '#AA0003';
+            expectedStyle.fontColor = '#aa0101';
+            expectedStyle.strokeColor = '#FF02AA';
+            expectedStyle.swimlaneFillColor = '#AA0003';
+          }
+          expect(computeStyleWithRendererOptions(shape)).toStrictEqual(expectedStyle);
         });
         it('no extension', () => {
           const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.TASK));
-          expect(computeStyleWithRendererOptions(shape)).toBe(`task`);
+          expect(computeStyleWithRendererOptions(shape)).toStrictEqual(<BPMNCellStyle>{
+            baseStyleNames: ['task'],
+            bpmn: { kind: ShapeBpmnElementKind.TASK },
+          });
         });
       });
 
@@ -509,26 +772,56 @@ describe('Style Computer', () => {
         it('sequence flow', () => {
           const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.DEFAULT), undefined, newLabelExtension('#aaaaaa'));
           edge.extensions.strokeColor = '#111111';
-          const additionalColorsStyle = expectAdditionalColorsStyle ? ';strokeColor=#111111;fontColor=#aaaaaa' : '';
-          expect(computeStyleWithRendererOptions(edge)).toBe(`sequenceFlow;default${additionalColorsStyle}`);
+          const expectedStyle = <BPMNCellStyle>{
+            baseStyleNames: ['sequenceFlow', 'default'],
+            bpmn: { kind: FlowKind.SEQUENCE_FLOW },
+          };
+          if (expectAdditionalColorsStyle) {
+            expectedStyle.fontColor = '#aaaaaa';
+            expectedStyle.strokeColor = '#111111';
+          }
+
+          expect(computeStyleWithRendererOptions(edge)).toStrictEqual(expectedStyle);
         });
         it('message flow', () => {
           const edge = new Edge('id', newMessageFlow(), undefined, newLabelExtension('#aaaabb'));
           edge.extensions.strokeColor = '#1111bb';
-          const additionalColorsStyle = expectAdditionalColorsStyle ? ';strokeColor=#1111bb;fontColor=#aaaabb' : '';
-          expect(computeStyleWithRendererOptions(edge)).toBe(`messageFlow${additionalColorsStyle}`);
+          const expectedStyle = <BPMNCellStyle>{
+            baseStyleNames: ['messageFlow'],
+            bpmn: { kind: FlowKind.MESSAGE_FLOW },
+          };
+          if (expectAdditionalColorsStyle) {
+            expectedStyle.fontColor = '#aaaabb';
+            expectedStyle.strokeColor = '#1111bb';
+          }
+          expect(computeStyleWithRendererOptions(edge)).toStrictEqual(expectedStyle);
         });
         it('message flow icon', () => {
           const edge = new Edge('id', newMessageFlow());
           edge.extensions.strokeColor = '#11aabb';
-          const additionalColorsStyle = expectAdditionalColorsStyle ? ';strokeColor=#11aabb' : '';
-          expect(computeMessageFlowIconStyleWithRendererOptions(edge)).toBe(`shape=bpmn.messageFlowIcon;bpmn.isInitiating=false${additionalColorsStyle}`);
+          const expectedStyle = <BPMNCellStyle>{
+            bpmn: { isInitiating: false },
+            // TODO maxGraph@0.1.0 force conversion to ShapeValue
+            // TODO rebase decide if we use BpmnStyleIdentifier const instead
+            shape: <ShapeValue>'bpmn.messageFlowIcon',
+          };
+          if (expectAdditionalColorsStyle) {
+            expectedStyle.strokeColor = '#11aabb';
+          }
+          expect(computeMessageFlowIconStyleWithRendererOptions(edge)).toStrictEqual(expectedStyle);
         });
         it('association flow', () => {
           const edge = new Edge('id', newAssociationFlow(AssociationDirectionKind.ONE), undefined, newLabelExtension('#aaaacc'));
           edge.extensions.strokeColor = '#1111cc';
-          const additionalColorsStyle = expectAdditionalColorsStyle ? ';strokeColor=#1111cc;fontColor=#aaaacc' : '';
-          expect(computeStyleWithRendererOptions(edge)).toBe(`association;One${additionalColorsStyle}`);
+          const expectedStyle = <BPMNCellStyle>{
+            baseStyleNames: ['association', 'One'],
+            bpmn: { kind: FlowKind.ASSOCIATION_FLOW },
+          };
+          if (expectAdditionalColorsStyle) {
+            expectedStyle.fontColor = '#aaaacc';
+            expectedStyle.strokeColor = '#1111cc';
+          }
+          expect(computeStyleWithRendererOptions(edge)).toStrictEqual(expectedStyle);
         });
       });
     });

@@ -22,26 +22,12 @@ limitations under the License.
  * @category BPMN Theme
  * @experimental
  */
+// TODO real maxGraph migration - may be renamed into BpmnShapeIdentifier after the maxGraph migration
 export const BpmnStyleIdentifier = {
   // edge
   EDGE: 'bpmn.edge',
-  EDGE_START_FILL_COLOR: 'bpmn.edge.startFillColor',
-  EDGE_END_FILL_COLOR: 'bpmn.edge.endFillColor',
-
-  // kind
-  EVENT_BASED_GATEWAY_KIND: 'bpmn.gatewayKind',
-  EVENT_DEFINITION_KIND: 'bpmn.eventDefinitionKind',
-  GLOBAL_TASK_KIND: 'bpmn.globalTaskKind',
-  SUB_PROCESS_KIND: 'bpmn.subProcessKind',
-
-  // state
-  IS_INITIATING: 'bpmn.isInitiating',
-  IS_INSTANTIATING: 'bpmn.isInstantiating',
-  IS_INTERRUPTING: 'bpmn.isInterrupting',
 
   // other identifiers
-  EXTRA_CSS_CLASSES: 'bpmn.extra.css.classes',
-  MARKERS: 'bpmn.markers',
   MESSAGE_FLOW_ICON: 'bpmn.messageFlowIcon',
 };
 
