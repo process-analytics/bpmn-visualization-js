@@ -15,7 +15,6 @@ limitations under the License.
 */
 
 import type {
-  Fill,
   FlowKind,
   GlobalTaskKind,
   MessageVisibleKind,
@@ -28,7 +27,6 @@ import type {
   Stroke,
 } from '@lib/bpmn-visualization';
 import { BpmnVisualization, ShapeBpmnElementKind } from '@lib/bpmn-visualization';
-import { mxConstants } from '@lib/component/mxgraph/initializer';
 import {
   toBeAssociationFlow,
   toBeBoundaryEvent,

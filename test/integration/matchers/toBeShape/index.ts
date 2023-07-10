@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { isFillColorGradient } from '@lib/component/mxgraph/style/utils';
 import type { BpmnCellStyle, ExpectedCell } from '../matcher-utils';
 import { buildCellMatcher, buildExpectedCellStyleWithCommonAttributes, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
 import type {
