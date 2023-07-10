@@ -112,7 +112,7 @@ describe('Style API', () => {
     expect(image).toMatchImageSnapshot(config);
   });
 
-  it(`Update 'fill.color'`, async () => {
+  it(`Update 'fill.color' as string`, async () => {
     await pageTester.gotoPageAndLoadBpmnDiagram('01.most.bpmn.types.without.label', {
       styleOptions: {
         styleUpdate: { fill: { color: 'chartreuse' } },
@@ -120,7 +120,27 @@ describe('Style API', () => {
     });
 
     const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig('fill.color');
+    const config = imageSnapshotConfigurator.getConfig('fill.color.string');
+    expect(image).toMatchImageSnapshot(config);
+  });
+
+  it(`Update 'fill.color' as gradient`, async () => {
+    await pageTester.gotoPageAndLoadBpmnDiagram('01.most.bpmn.types.without.label', {
+      styleOptions: {
+        styleUpdate: {
+          fill: {
+            color: {
+              startColor: 'pink',
+              endColor: 'lime',
+              direction: 'top-to-bottom',
+            },
+          },
+        },
+      },
+    });
+
+    const image = await page.screenshot({ fullPage: true });
+    const config = imageSnapshotConfigurator.getConfig('fill.color.gradient');
     expect(image).toMatchImageSnapshot(config);
   });
 
