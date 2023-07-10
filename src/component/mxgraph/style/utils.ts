@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import { ensureOpacityValue, ensureStrokeWidthValue } from '../../helpers/validators';
+import type { GradientDirection } from '../../registry';
 import type { FillColorGradient } from '../../registry';
 import type { Fill, Font, ShapeStyleUpdate, Stroke, StyleUpdate } from '../../registry';
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
@@ -111,6 +112,19 @@ export const updateFont = (cellStyle: string, font: Font): string => {
   return cellStyle;
 };
 
+const convertDirection = (direction: GradientDirection): string => {
+  switch (direction) {
+    case 'left-to-right':
+      return mxConstants.DIRECTION_WEST;
+    case 'right-to-left':
+      return mxConstants.DIRECTION_EAST;
+    case 'bottom-to-top':
+      return mxConstants.DIRECTION_NORTH;
+    case 'top-to-bottom':
+      return mxConstants.DIRECTION_SOUTH;
+  }
+};
+
 export const updateFill = (cellStyle: string, fill: Fill): string => {
   const color = fill.color;
   if (color) {
@@ -122,7 +136,7 @@ export const updateFill = (cellStyle: string, fill: Fill): string => {
     if (isGradient) {
       // The values of the color are mandatory. So, no need to check if it's undefined.
       cellStyle = mxUtils.setStyle(cellStyle, mxConstants.STYLE_GRADIENTCOLOR, color.endColor);
-      cellStyle = mxUtils.setStyle(cellStyle, mxConstants.STYLE_GRADIENT_DIRECTION, color.direction);
+      cellStyle = mxUtils.setStyle(cellStyle, mxConstants.STYLE_GRADIENT_DIRECTION, convertDirection(color.direction));
     } else if (color === 'default') {
       cellStyle = mxUtils.setStyle(cellStyle, mxConstants.STYLE_GRADIENTCOLOR, undefined);
       cellStyle = mxUtils.setStyle(cellStyle, mxConstants.STYLE_GRADIENT_DIRECTION, undefined);
