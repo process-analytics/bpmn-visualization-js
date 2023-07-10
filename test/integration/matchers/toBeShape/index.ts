@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import { isFillColorGradient } from '@lib/component/mxgraph/style/utils';
 import type { BpmnCellStyle, ExpectedCell } from '../matcher-utils';
 import { buildCellMatcher, buildExpectedCellStyleWithCommonAttributes, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
 import type {
@@ -66,18 +67,31 @@ export function buildExpectedShapeCellStyle(expectedModel: ExpectedShapeModelEle
   style.align = expectedModel.align ?? 'center';
   style.strokeWidth = style.strokeWidth ?? expectedStrokeWidth(expectedModel.kind);
 
-  style.fillColor =
-    expectedModel.fill?.color ??
-    ([ShapeBpmnElementKind.LANE, ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.TEXT_ANNOTATION, ShapeBpmnElementKind.GROUP].includes(expectedModel.kind)
-      ? 'none'
-      : style.fillColor);
+  const fill = expectedModel.fill;
+  if (fill) {
+    if (fill.color) {
+      if (isFillColorGradient(fill.color)) {
+        style.fillColor = fill.color.startColor;
+        style.gradientColor = fill.color.endColor;
+        style.gradientDirection = fill.color.direction;
+      } else {
+        style.fillColor = fill.color;
+      }
+    }
+
+    style.fillOpacity = fill.opacity;
+  }
+
+  if (!fill?.color && [ShapeBpmnElementKind.LANE, ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.TEXT_ANNOTATION, ShapeBpmnElementKind.GROUP].includes(expectedModel.kind)) {
+    style.fillColor = 'none';
+  }
+
   style.swimlaneFillColor = [ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.LANE].includes(expectedModel.kind) && style.fillColor !== 'none' ? style.fillColor : undefined;
 
-  style.fillOpacity = expectedModel.fill?.opacity;
-  'isSwimLaneLabelHorizontal' in expectedModel && (style.horizontal = Number(expectedModel.isSwimLaneLabelHorizontal));
+  expectedModel.isSwimLaneLabelHorizontal && (style.horizontal = Number(expectedModel.isSwimLaneLabelHorizontal));
 
   // ignore marker order, which is only relevant when rendering the shape (it has its own order algorithm)
-  'markers' in expectedModel && (style.markers = expectedModel.markers.sort());
+  style.markers = expectedModel.markers?.sort();
 
   return style;
 }

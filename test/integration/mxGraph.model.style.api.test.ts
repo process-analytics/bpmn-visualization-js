@@ -22,7 +22,7 @@ import { buildReceivedResolvedModelCellStyle, buildReceivedViewStateStyle } from
 import { buildExpectedShapeCellStyle } from './matchers/toBeShape';
 import { readFileSync } from '@test/shared/file-helper';
 import { MessageVisibleKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
-import type { EdgeStyleUpdate, Fill, Font, Stroke, StyleUpdate } from '@lib/component/registry';
+import type { EdgeStyleUpdate, Fill, Font, GradientDirection, Stroke, StyleUpdate } from '@lib/component/registry';
 import type { mxCell } from 'mxgraph';
 
 // Create a dedicated instance with a DOM container as it is required by the CSS API.
@@ -193,6 +193,18 @@ describe('mxGraph model - update style', () => {
         fill,
         // not under test
         label: 'Pool 1',
+      });
+    });
+
+    it('Update the fill color as gradient', () => {
+      const fill = { color: { startColor: 'gold', endColor: 'pink', direction: <GradientDirection>'top-to-bottom' } };
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { fill });
+
+      expect('userTask_2_2').toBeUserTask({
+        fill,
+        // not under test
+        parentId: 'lane_02',
+        label: 'User Task 2.2',
       });
     });
 
@@ -882,6 +894,24 @@ describe('mxGraph model - reset style', () => {
       expect('Participant_1').toBePool({
         // not under test
         label: 'Pool 1',
+      });
+    });
+
+    it('Reset the fill color as gradient', () => {
+      const elementId = 'userTask_2_2';
+
+      // Apply custom style
+      const fill = { color: { startColor: 'gold', endColor: 'pink', direction: <GradientDirection>'top-to-bottom' } };
+      bpmnVisualization.bpmnElementsRegistry.updateStyle(elementId, { fill });
+
+      // Reset style
+      bpmnVisualization.bpmnElementsRegistry.resetStyle(elementId);
+
+      // Check that the style has been reset to default values
+      expect(elementId).toBeUserTask({
+        // not under test
+        parentId: 'lane_02',
+        label: 'User Task 2.2',
       });
     });
   });
