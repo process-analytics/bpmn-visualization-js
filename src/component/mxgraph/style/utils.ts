@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import { ensureOpacityValue, ensureStrokeWidthValue } from '../../helpers/validators';
+import type { FillColorGradient } from '../../registry';
 import type { Fill, Font, ShapeStyleUpdate, Stroke, StyleUpdate } from '../../registry';
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
 import { mxConstants, mxUtils } from '../initializer';
@@ -113,14 +114,18 @@ export const updateFont = (cellStyle: string, font: Font): string => {
 export const updateFill = (cellStyle: string, fill: Fill): string => {
   const color = fill.color;
   if (color) {
-    const isGradient = typeof color !== 'string';
+    const isGradient = isFillColorGradient(color);
 
     const fillColor = isGradient ? color.startColor : color;
     cellStyle = setStyle(cellStyle, mxConstants.STYLE_FILLCOLOR, fillColor, convertDefaultValue);
 
     if (isGradient) {
-      cellStyle = setStyle(cellStyle, mxConstants.STYLE_GRADIENTCOLOR, color.endColor, convertDefaultValue);
-      cellStyle = setStyle(cellStyle, mxConstants.STYLE_GRADIENT_DIRECTION, color.direction, convertDefaultValue);
+      // The values of the color are mandatory. So, no need to check if it's undefined.
+      cellStyle = mxUtils.setStyle(cellStyle, mxConstants.STYLE_GRADIENTCOLOR, color.endColor);
+      cellStyle = mxUtils.setStyle(cellStyle, mxConstants.STYLE_GRADIENT_DIRECTION, color.direction);
+    } else if (color === 'default') {
+      cellStyle = mxUtils.setStyle(cellStyle, mxConstants.STYLE_GRADIENTCOLOR, undefined);
+      cellStyle = mxUtils.setStyle(cellStyle, mxConstants.STYLE_GRADIENT_DIRECTION, undefined);
     }
 
     if (cellStyle.includes(ShapeBpmnElementKind.POOL) || cellStyle.includes(ShapeBpmnElementKind.LANE)) {
@@ -135,4 +140,8 @@ export const updateFill = (cellStyle: string, fill: Fill): string => {
 
 export const isShapeStyleUpdate = (style: StyleUpdate): style is ShapeStyleUpdate => {
   return style && typeof style === 'object' && 'fill' in style;
+};
+
+export const isFillColorGradient = (color: string | FillColorGradient): color is FillColorGradient => {
+  return color && typeof color !== 'string';
 };
