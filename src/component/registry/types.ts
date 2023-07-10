@@ -281,21 +281,19 @@ export type Fill = StyleWithOpacity & {
 export type FillColorGradient = {
   /**
    * It can be any HTML color name or HEX code, as well as special keywords such as:
-   * - `default` to use the color defined in the BPMN element default style.
    * - `inherit` to apply the fill color of the direct parent element.
    * - `none` for no color.
    * - `swimlane` to apply the fill color of the nearest parent element with the type {@link ShapeBpmnElementKind.LANE} or {@link ShapeBpmnElementKind.POOL}.
    */
-  startColor: 'default' | 'inherit' | 'none' | 'swimlane' | string;
+  startColor: 'inherit' | 'none' | 'swimlane' | string;
 
   /**
    * It can be any HTML color name or HEX code, as well as special keywords such as:
-   * - `default` to use the color defined in the BPMN element default style.
    * - `inherit` to apply the fill color of the direct parent element.
    * - `none` for no color.
    * - `swimlane` to apply the fill color of the nearest parent element with the type {@link ShapeBpmnElementKind.LANE} or {@link ShapeBpmnElementKind.POOL}.
    */
-  endColor: string;
+  endColor: 'inherit' | 'none' | 'swimlane' | string;
 
   /**
    * Specifies how the colors transition within the gradient.
