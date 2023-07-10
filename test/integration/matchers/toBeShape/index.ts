@@ -69,21 +69,16 @@ export function buildExpectedShapeCellStyle(expectedModel: ExpectedShapeModelEle
 
   const fill = expectedModel.fill;
   if (fill) {
-    if (fill.color) {
-      if (isFillColorGradient(fill.color)) {
-        style.fillColor = fill.color.startColor;
-        style.gradientColor = fill.color.endColor;
-        style.gradientDirection = fill.color.direction;
-      } else {
-        style.fillColor = fill.color;
-      }
-    }
-
+    style.fillColor = fill.color ?? style.fillColor;
     style.fillOpacity = fill.opacity;
   }
-
   if (!fill?.color && [ShapeBpmnElementKind.LANE, ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.TEXT_ANNOTATION, ShapeBpmnElementKind.GROUP].includes(expectedModel.kind)) {
     style.fillColor = 'none';
+  }
+
+  if (expectedModel.gradient) {
+    style.gradientColor = expectedModel.gradient.color;
+    style.gradientDirection = expectedModel.gradient.direction;
   }
 
   style.swimlaneFillColor = [ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.LANE].includes(expectedModel.kind) && style.fillColor !== 'none' ? style.fillColor : undefined;

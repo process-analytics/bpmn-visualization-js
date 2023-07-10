@@ -28,6 +28,7 @@ import type {
   Stroke,
 } from '@lib/bpmn-visualization';
 import { BpmnVisualization, ShapeBpmnElementKind } from '@lib/bpmn-visualization';
+import { mxConstants } from '@lib/component/mxgraph/initializer';
 import {
   toBeAssociationFlow,
   toBeBoundaryEvent,
@@ -167,6 +168,16 @@ type ExpectedModelElement = {
   extraCssClasses?: string[];
 };
 
+export interface ExpectedFill {
+  color?: string;
+  opacity?: Opacity;
+}
+
+export interface ExpectedGradient {
+  color: string;
+  direction?: 'west' | 'east' | 'north' | 'south';
+}
+
 export interface ExpectedShapeModelElement extends ExpectedModelElement {
   kind?: ShapeBpmnElementKind;
   /** Generally needed when the BPMN shape doesn't exist yet (use an arbitrary shape until the final render is implemented) */
@@ -179,7 +190,8 @@ export interface ExpectedShapeModelElement extends ExpectedModelElement {
    * - Vertical pool/lane --> true (the label is horizontal)
    **/
   isSwimLaneLabelHorizontal?: boolean;
-  fill?: Fill;
+  fill?: ExpectedFill;
+  gradient?: ExpectedGradient;
 }
 
 export interface ExpectedEventModelElement extends ExpectedShapeModelElement {
