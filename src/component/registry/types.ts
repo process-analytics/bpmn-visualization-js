@@ -256,7 +256,7 @@ export type Font = StyleWithOpacity & {
 export type Fill = StyleWithOpacity & {
   /**
    * Possible values are all HTML color names, HEX codes, {@link FillColorGradient}, as well as special keywords such as:
-   * - `default` to use the color defined in the BPMN element default style.
+   * - `default` to use the color defined in the BPMN element default style. If a gradient was set, it will be completely reverted.
    * - `inherit` to apply the fill color of the direct parent element.
    * - `none` for no color.
    * - `swimlane` to apply the fill color of the nearest parent element with the type {@link ShapeBpmnElementKind.LANE} or {@link ShapeBpmnElementKind.POOL}.
