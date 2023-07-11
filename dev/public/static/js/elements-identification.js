@@ -74,7 +74,7 @@ function computeStyleUpdateByKind(bpmnKind) {
     style.font.isItalic = true;
     style.font.isStrikeThrough = true;
 
-    style.fill.color = 'LimeGreen';
+    style.fill.color = { startColor: 'LightYellow', endColor: 'LimeGreen', direction: 'left-to-right' };
   } else if (ShapeUtil.isSubProcess(bpmnKind)) {
     style.font.color = 'white';
     style.font.size = 14;
