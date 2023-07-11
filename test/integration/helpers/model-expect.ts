@@ -171,9 +171,11 @@ export interface ExpectedFill {
   opacity?: Opacity;
 }
 
+export type ExpectedDirection = 'west' | 'east' | 'north' | 'south';
+
 export interface ExpectedGradient {
   color: string;
-  direction?: 'west' | 'east' | 'north' | 'south';
+  direction?: ExpectedDirection;
 }
 
 export interface ExpectedShapeModelElement extends ExpectedModelElement {

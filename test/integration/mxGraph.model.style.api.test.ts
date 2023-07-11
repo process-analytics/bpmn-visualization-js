@@ -16,7 +16,7 @@ limitations under the License.
 
 import { initializeBpmnVisualizationWithContainerId } from './helpers/bpmn-visualization-initialization';
 import { HtmlElementLookup } from './helpers/html-utils';
-import type { ExpectedFill, ExpectedShapeModelElement, VerticalAlign } from './helpers/model-expect';
+import type { ExpectedDirection, ExpectedFill, ExpectedShapeModelElement, VerticalAlign } from './helpers/model-expect';
 import { bpmnVisualization } from './helpers/model-expect';
 import { buildReceivedResolvedModelCellStyle, buildReceivedViewStateStyle } from './matchers/matcher-utils';
 import { buildExpectedShapeCellStyle } from './matchers/toBeShape';
@@ -196,13 +196,18 @@ describe('mxGraph model - update style', () => {
       });
     });
 
-    it('Update the fill color as gradient', () => {
-      const fill = { color: { startColor: 'gold', endColor: 'pink', direction: <GradientDirection>'top-to-bottom' } };
+    it.each([
+      [<GradientDirection>'top-to-bottom', <ExpectedDirection>'south'],
+      [<GradientDirection>'bottom-to-top', <ExpectedDirection>'north'],
+      [<GradientDirection>'left-to-right', <ExpectedDirection>'east'],
+      [<GradientDirection>'right-to-left', <ExpectedDirection>'west'],
+    ])('Update the fill color as gradient with direction %s', (direction: GradientDirection, expectedDirection: ExpectedDirection) => {
+      const fill = { color: { startColor: 'gold', endColor: 'pink', direction } };
       bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { fill });
 
       expect('userTask_2_2').toBeUserTask({
         fill: { color: 'gold' },
-        gradient: { color: 'pink', direction: 'south' },
+        gradient: { color: 'pink', direction: expectedDirection },
         // not under test
         parentId: 'lane_02',
         label: 'User Task 2.2',
