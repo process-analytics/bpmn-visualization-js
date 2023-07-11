@@ -14,6 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { OverlayStyle } from 'src/component/registry';
+import type { Fill, Font, Stroke } from 'src/component/registry';
+
 /**
  * Options to configure the `bpmn-visualization` initialization.
  * @category Initialization & Configuration
@@ -198,5 +201,96 @@ export type RendererOptions = {
    *
    * @default true
    */
-  ignoreBpmnColors?: boolean;
+  // ignoreBpmnColors?: boolean;
+
+  default?: {
+    general?: {
+      margin?: number; // DEFAULT_MARGIN = 0
+      fill?: Fill;
+      font?: Font;
+      stroke?: Stroke;
+    };
+    bpmn?: {
+      activity?: {
+        margin?: {
+          bottom?: number; // SHAPE_ACTIVITY_BOTTOM_MARGIN = 7
+          top?: number; // SHAPE_ACTIVITY_TOP_MARGIN = 7
+          left?: number; // SHAPE_ACTIVITY_LEFT_MARGIN = 7
+          fromCenter?: number; // SHAPE_ACTIVITY_FROM_CENTER_MARGIN = 7
+        };
+        markerIcon?: {
+          margin?: number; // SHAPE_ACTIVITY_MARKER_ICON_MARGIN = 5
+          size?: number; // SHAPE_ACTIVITY_MARKER_ICON_SIZE = 20
+        };
+      };
+      group?: {
+        fillColor?: string; // GROUP_FILL_COLOR = 'none'
+        // or:
+        fill?: {
+          color?: string;
+        };
+      };
+      lane?: {
+        label?: LabelOptions; // LANE_LABEL_FILL_COLOR = 'none'; LANE_LABEL_SIZE = 30
+      };
+      pool?: {
+        label?: LabelOptions; // POOL_LABEL_FILL_COLOR = 'none'; POOL_LABEL_SIZE = 30
+      };
+      subProcess?: {
+        transaction?: {
+          innerRectangle?: {
+            arcSize?: number; // SUB_PROCESS_TRANSACTION_INNER_RECT_ARC_SIZE = 6
+            offset?: number; // SUB_PROCESS_TRANSACTION_INNER_RECT_OFFSET = 4
+          };
+        };
+      };
+      textAnnotation?: {
+        borderLength?: number; // TEXT_ANNOTATION_BORDER_LENGTH = 10
+        fill?: {
+          color?: string;
+        }; // TEXT_ANNOTATION_FILL_COLOR = 'none'
+      };
+      messageFlow?: {
+        fillColor?: {
+          endMarker?: string; // MESSAGE_FLOW_MARKER_END_FILL_COLOR = 'White'
+          startMarker?: string; // MESSAGE_FLOW_MARKER_START_FILL_COLOR = 'White'
+        };
+      };
+      sequenceFlow?: {
+        fillColor?: {
+          conditionalMarker?: string; // SEQUENCE_FLOW_CONDITIONAL_FROM_ACTIVITY_MARKER_FILL_COLOR = 'White'
+        };
+      };
+
+      shape?: {
+        arcSize?: number; // SHAPE_ARC_SIZE = 20
+        strokeWidth?: {
+          thick?: number; // STROKE_WIDTH_THICK = 5
+          thin?: number; // STROKE_WIDTH_THIN = 2
+        };
+      };
+      edge?: {
+        // Or flow?: {
+        arcSize?: number; // currently not configurable
+      };
+    };
+    overlay?: OverlayStyle;
+    /*      {
+      fill?: Fill; // DEFAULT_OVERLAY_FILL_COLOR = DEFAULT_FILL_COLOR; DEFAULT_OVERLAY_FILL_OPACITY = 100
+      font?: Pick<Font, 'color' | 'size'>; // DEFAULT_OVERLAY_FONT_COLOR = DEFAULT_FONT_COLOR; DEFAULT_OVERLAY_FONT_SIZE = DEFAULT_FONT_SIZE
+      stroke?: Pick<Stroke, 'color' | 'width'>; // DEFAULT_OVERLAY_STROKE_COLOR = DEFAULT_STROKE_COLOR; DEFAULT_OVERLAY_STROKE_WIDTH = 1
+    };*/
+  };
+  bpmnIgnore?: {
+    activityLabelBounds?: boolean; // For #2469, default: false
+    colors?: boolean; // For #2614, default: false
+    labelStyles?: boolean; // For #2468, default: false
+  };
 };
+
+interface LabelOptions {
+  fill?: {
+    color?: string;
+  };
+  size?: number;
+}
