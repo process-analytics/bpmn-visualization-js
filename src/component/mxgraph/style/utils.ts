@@ -15,9 +15,7 @@ limitations under the License.
 */
 
 import { ensureOpacityValue, ensureStrokeWidthValue } from '../../helpers/validators';
-import type { GradientDirection } from '../../registry';
-import type { FillColorGradient } from '../../registry';
-import type { Fill, Font, ShapeStyleUpdate, Stroke, StyleUpdate } from '../../registry';
+import type { Fill, Font, ShapeStyleUpdate, Stroke, StyleUpdate, GradientDirection, FillColorGradient } from '../../registry';
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
 import { mxConstants, mxUtils } from '../initializer';
 import { BpmnStyleIdentifier } from './identifiers';
