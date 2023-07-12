@@ -112,8 +112,6 @@ export const updateFont = (cellStyle: string, font: Font): string => {
 
 const convertDirection = (direction: GradientDirection): string => {
   switch (direction) {
-    case 'left-to-right':
-      return mxConstants.DIRECTION_EAST;
     case 'right-to-left':
       return mxConstants.DIRECTION_WEST;
     case 'bottom-to-top':
