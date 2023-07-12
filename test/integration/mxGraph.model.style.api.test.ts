@@ -953,8 +953,7 @@ describe('mxGraph model - reset style', () => {
       const elementId = 'userTask_2_2';
 
       // Apply custom style
-      const fill = { color: { startColor: 'gold', endColor: 'pink', direction: 'top-to-bottom' } };
-      bpmnVisualization.bpmnElementsRegistry.updateStyle(elementId, { fill });
+      bpmnVisualization.bpmnElementsRegistry.updateStyle(elementId, { fill: { color: { startColor: 'gold', endColor: 'pink', direction: 'top-to-bottom' } } });
 
       // Reset style
       bpmnVisualization.bpmnElementsRegistry.resetStyle(elementId);
