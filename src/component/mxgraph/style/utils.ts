@@ -120,6 +120,8 @@ const convertDirection = (direction: GradientDirection): string => {
       return mxConstants.DIRECTION_NORTH;
     case 'top-to-bottom':
       return mxConstants.DIRECTION_SOUTH;
+    default:
+      return mxConstants.DIRECTION_EAST;
   }
 };
 
@@ -154,6 +156,6 @@ export const isShapeStyleUpdate = (style: StyleUpdate): style is ShapeStyleUpdat
   return style && typeof style === 'object' && 'fill' in style;
 };
 
-export const isFillColorGradient = (color: string | FillColorGradient): color is FillColorGradient => {
-  return color && typeof color !== 'string';
+const isFillColorGradient = (color: string | FillColorGradient): color is FillColorGradient => {
+  return color && typeof color === 'object';
 };

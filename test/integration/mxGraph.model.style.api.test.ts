@@ -310,7 +310,7 @@ describe('mxGraph model - update style', () => {
           label: 'Service Task 1.2',
         });
 
-        const fill: Fill = { color: { startColor: 'gold', endColor: 'pink', direction: <GradientDirection>'right-to-left' } };
+        const fill: Fill = { color: { startColor: 'gold', endColor: 'pink', direction: 'right-to-left' } };
         bpmnVisualization.bpmnElementsRegistry.updateStyle('serviceTask_1_2', { fill });
 
         // Check that the style has been updated
@@ -953,7 +953,7 @@ describe('mxGraph model - reset style', () => {
       const elementId = 'userTask_2_2';
 
       // Apply custom style
-      const fill = { color: { startColor: 'gold', endColor: 'pink', direction: <GradientDirection>'top-to-bottom' } };
+      const fill = { color: { startColor: 'gold', endColor: 'pink', direction: 'top-to-bottom' } };
       bpmnVisualization.bpmnElementsRegistry.updateStyle(elementId, { fill });
 
       // Reset style

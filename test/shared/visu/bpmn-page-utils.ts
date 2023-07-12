@@ -224,7 +224,7 @@ export class PageTester {
       if ('fill' in styleUpdate) {
         const fill = (<ShapeStyleUpdate>styleUpdate).fill;
 
-        if (typeof fill.color !== 'string') {
+        if (typeof fill.color === 'object') {
           fill.color.startColor && (url += `&style.api.fill.color.startColor=${fill.color.startColor}`);
           fill.color.endColor && (url += `&style.api.fill.color.endColor=${fill.color.endColor}`);
           fill.color.direction && (url += `&style.api.fill.color.direction=${fill.color.direction}`);
