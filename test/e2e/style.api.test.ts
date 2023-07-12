@@ -37,6 +37,14 @@ class StyleImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           windows: 0.12 / 100, // 0.11000117996341485%
         },
       ],
+      [
+        'fill.color.gradient',
+        {
+          linux: 0.11 / 100, // 0.10872082550010823%
+          macos: 0.11 / 100, // 0.10872082550010823%
+          windows: 0.11 / 100, // 0.10872082550010823%
+        },
+      ],
     ]);
   }
 
@@ -51,11 +59,19 @@ class StyleImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         },
       ],
       [
-        'fill.color',
+        'fill.color.string',
         {
           linux: 0.09 / 100, // 0.08216175057789155%
           macos: 0.09 / 100, // 0.08216175057789155%
           windows: 0.09 / 100, // 0.08216175057789155%
+        },
+      ],
+      [
+        'fill.color.gradient',
+        {
+          linux: 0.15 / 100, // 0.1477596574325335%
+          macos: 0.15 / 100, // 0.1477596574325335%
+          windows: 0.15 / 100, // 0.1477596574325335%
         },
       ],
       [
@@ -112,7 +128,7 @@ describe('Style API', () => {
     expect(image).toMatchImageSnapshot(config);
   });
 
-  it(`Update 'fill.color'`, async () => {
+  it(`Update 'fill.color' as string`, async () => {
     await pageTester.gotoPageAndLoadBpmnDiagram('01.most.bpmn.types.without.label', {
       styleOptions: {
         styleUpdate: { fill: { color: 'chartreuse' } },
@@ -120,7 +136,27 @@ describe('Style API', () => {
     });
 
     const image = await page.screenshot({ fullPage: true });
-    const config = imageSnapshotConfigurator.getConfig('fill.color');
+    const config = imageSnapshotConfigurator.getConfig('fill.color.string');
+    expect(image).toMatchImageSnapshot(config);
+  });
+
+  it(`Update 'fill.color' as gradient`, async () => {
+    await pageTester.gotoPageAndLoadBpmnDiagram('01.most.bpmn.types.without.label', {
+      styleOptions: {
+        styleUpdate: {
+          fill: {
+            color: {
+              startColor: 'pink',
+              endColor: 'lime',
+              direction: 'top-to-bottom',
+            },
+          },
+        },
+      },
+    });
+
+    const image = await page.screenshot({ fullPage: true });
+    const config = imageSnapshotConfigurator.getConfig('fill.color.gradient');
     expect(image).toMatchImageSnapshot(config);
   });
 

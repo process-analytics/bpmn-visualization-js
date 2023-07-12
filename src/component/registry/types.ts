@@ -255,7 +255,7 @@ export type Font = StyleWithOpacity & {
  */
 export type Fill = StyleWithOpacity & {
   /**
-   * Possible values are all HTML color names or HEX codes, as well as special keywords such as:
+   * Possible values are all HTML color names, HEX codes, {@link FillColorGradient}, as well as special keywords such as:
    * - `default` to use the color defined in the BPMN element default style.
    * - `inherit` to apply the fill color of the direct parent element.
    * - `none` for no color.
@@ -264,9 +264,52 @@ export type Fill = StyleWithOpacity & {
    * **Notes about the `default` special keyword**:
    * - It can be used when the style is first updated and then needs to be reset to its initial value.
    * - It doesn't use the color set in the BPMN source when the "BPMN in Color" support is enabled. It uses the color defined in the BPMN element default style.
+   * - If a gradient was set, it will be completely reverted.
    */
-  color?: 'default' | 'inherit' | 'none' | 'swimlane' | string;
+  color?: FillColorGradient | 'default' | 'inherit' | 'none' | 'swimlane' | string;
 };
+
+/**
+ * It is a linear gradient managed by `mxGraph`.
+ * For more information about mxGraph, refer to the documentation at:
+ * {@link https://jgraph.github.io/mxgraph/docs/js-api/files/util/mxConstants-js.html#mxConstants.STYLE_GRADIENTCOLOR}
+ *
+ * **Notes**:
+ * Using the same color for the start color and end color will have the same effect as setting only the fill color with an HTML color name, HEX code or special keyword.
+ *
+ * @category Element Style
+ */
+export type FillColorGradient = {
+  /**
+   * It can be any HTML color name or HEX code, as well as special keywords such as:
+   * - `inherit` to apply the fill color of the direct parent element.
+   * - `none` for no color.
+   * - `swimlane` to apply the fill color of the nearest parent element with the type {@link ShapeBpmnElementKind.LANE} or {@link ShapeBpmnElementKind.POOL}.
+   */
+  startColor: 'inherit' | 'none' | 'swimlane' | string;
+
+  /**
+   * It can be any HTML color name or HEX code, as well as special keywords such as:
+   * - `inherit` to apply the fill color of the direct parent element.
+   * - `none` for no color.
+   * - `swimlane` to apply the fill color of the nearest parent element with the type {@link ShapeBpmnElementKind.LANE} or {@link ShapeBpmnElementKind.POOL}.
+   */
+  endColor: 'inherit' | 'none' | 'swimlane' | string;
+
+  /**
+   * Specifies how the colors transition within the gradient.
+   *
+   * Taking the example of `bottom-to-top`, this means that the start color is at the bottom of the paint pattern and the end color is at the top, with a gradient between them.
+   *
+   * @see {@link GradientDirection}
+   */
+  direction: GradientDirection;
+};
+
+/**
+ * @category Element Style
+ */
+export type GradientDirection = 'left-to-right' | 'right-to-left' | 'bottom-to-top' | 'top-to-bottom';
 
 /**
  * @category Element Style

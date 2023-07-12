@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { ensureOpacityValue, ensureStrokeWidthValue } from '../../helpers/validators';
-import type { Fill, Font, ShapeStyleUpdate, Stroke, StyleUpdate } from '../../registry';
+import type { Fill, Font, ShapeStyleUpdate, Stroke, StyleUpdate, GradientDirection, FillColorGradient } from '../../registry';
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
 import { mxConstants, mxUtils } from '../initializer';
 import { BpmnStyleIdentifier } from './identifiers';
@@ -110,12 +110,38 @@ export const updateFont = (cellStyle: string, font: Font): string => {
   return cellStyle;
 };
 
+const convertDirection = (direction: GradientDirection): string => {
+  switch (direction) {
+    case 'right-to-left':
+      return mxConstants.DIRECTION_WEST;
+    case 'bottom-to-top':
+      return mxConstants.DIRECTION_NORTH;
+    case 'top-to-bottom':
+      return mxConstants.DIRECTION_SOUTH;
+    default:
+      return mxConstants.DIRECTION_EAST;
+  }
+};
+
 export const updateFill = (cellStyle: string, fill: Fill): string => {
-  if (fill.color) {
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_FILLCOLOR, fill.color, convertDefaultValue);
+  const color = fill.color;
+  if (color) {
+    const isGradient = isFillColorGradient(color);
+
+    const fillColor = isGradient ? color.startColor : color;
+    cellStyle = setStyle(cellStyle, mxConstants.STYLE_FILLCOLOR, fillColor, convertDefaultValue);
+
+    if (isGradient) {
+      // The values of the color are mandatory. So, no need to check if it's undefined.
+      cellStyle = mxUtils.setStyle(cellStyle, mxConstants.STYLE_GRADIENTCOLOR, color.endColor);
+      cellStyle = mxUtils.setStyle(cellStyle, mxConstants.STYLE_GRADIENT_DIRECTION, convertDirection(color.direction));
+    } else if (color === 'default') {
+      cellStyle = mxUtils.setStyle(cellStyle, mxConstants.STYLE_GRADIENTCOLOR, undefined);
+      cellStyle = mxUtils.setStyle(cellStyle, mxConstants.STYLE_GRADIENT_DIRECTION, undefined);
+    }
 
     if (cellStyle.includes(ShapeBpmnElementKind.POOL) || cellStyle.includes(ShapeBpmnElementKind.LANE)) {
-      cellStyle = setStyle(cellStyle, mxConstants.STYLE_SWIMLANE_FILLCOLOR, fill.color, convertDefaultValue);
+      cellStyle = setStyle(cellStyle, mxConstants.STYLE_SWIMLANE_FILLCOLOR, fillColor, convertDefaultValue);
     }
   }
 
@@ -126,4 +152,8 @@ export const updateFill = (cellStyle: string, fill: Fill): string => {
 
 export const isShapeStyleUpdate = (style: StyleUpdate): style is ShapeStyleUpdate => {
   return style && typeof style === 'object' && 'fill' in style;
+};
+
+const isFillColorGradient = (color: string | FillColorGradient): color is FillColorGradient => {
+  return color && typeof color === 'object';
 };

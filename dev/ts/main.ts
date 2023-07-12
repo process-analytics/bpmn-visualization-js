@@ -28,6 +28,8 @@ import type {
   StyleUpdate,
   Version,
   ZoomType,
+  FillColorGradient,
+  GradientDirection,
 } from '../../src/bpmn-visualization';
 import { FlowKind, ShapeBpmnElementKind } from '../../src/bpmn-visualization';
 import { fetchBpmnContent, logDownload, logError, logErrorAndOpenAlert, logStartup } from './utils/internal-helpers';
@@ -262,9 +264,19 @@ function configureStyleFromParameters(parameters: URLSearchParams): void {
     style = { stroke: {}, font: {}, fill: {} };
 
     parameters.get('style.api.stroke.color') && (style.stroke.color = parameters.get('style.api.stroke.color'));
+
     parameters.get('style.api.font.color') && (style.font.color = parameters.get('style.api.font.color'));
     parameters.get('style.api.font.opacity') && (style.font.opacity = Number(parameters.get('style.api.font.opacity')));
-    parameters.get('style.api.fill.color') && (style.fill.color = parameters.get('style.api.fill.color'));
+
+    if (parameters.get('style.api.fill.color')) {
+      style.fill.color = parameters.get('style.api.fill.color');
+    } else if (parameters.get('style.api.fill.color.startColor') && parameters.get('style.api.fill.color.endColor') && parameters.get('style.api.fill.color.direction')) {
+      style.fill.color = {
+        startColor: parameters.get('style.api.fill.color.startColor'),
+        endColor: parameters.get('style.api.fill.color.endColor'),
+        direction: parameters.get('style.api.fill.color.direction') as GradientDirection,
+      } as FillColorGradient;
+    }
     parameters.get('style.api.fill.opacity') && (style.fill.opacity = Number(parameters.get('style.api.fill.opacity')));
 
     logStartup(`Prepared "Update Style" API object`, style);

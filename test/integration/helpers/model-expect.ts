@@ -15,7 +15,6 @@ limitations under the License.
 */
 
 import type {
-  Fill,
   FlowKind,
   GlobalTaskKind,
   MessageVisibleKind,
@@ -167,6 +166,18 @@ type ExpectedModelElement = {
   extraCssClasses?: string[];
 };
 
+export interface ExpectedFill {
+  color?: string;
+  opacity?: Opacity;
+}
+
+export type ExpectedDirection = 'west' | 'east' | 'north' | 'south';
+
+export interface ExpectedGradient {
+  color: string;
+  direction?: ExpectedDirection;
+}
+
 export interface ExpectedShapeModelElement extends ExpectedModelElement {
   kind?: ShapeBpmnElementKind;
   /** Generally needed when the BPMN shape doesn't exist yet (use an arbitrary shape until the final render is implemented) */
@@ -179,7 +190,8 @@ export interface ExpectedShapeModelElement extends ExpectedModelElement {
    * - Vertical pool/lane --> true (the label is horizontal)
    **/
   isSwimLaneLabelHorizontal?: boolean;
-  fill?: Fill;
+  fill?: ExpectedFill;
+  gradient?: ExpectedGradient;
 }
 
 export interface ExpectedEventModelElement extends ExpectedShapeModelElement {

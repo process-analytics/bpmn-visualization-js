@@ -36,6 +36,8 @@ export interface BpmnCellStyle extends StyleMap {
   fillColor: string;
   fillOpacity?: Opacity;
   swimlaneFillColor?: string;
+  gradientColor?: string;
+  gradientDirection?: string;
   fontColor: string;
   fontFamily: string;
   fontSize: number;
@@ -208,6 +210,8 @@ function toBpmnStyle(rawStyle: StyleMap, isEdge: boolean): BpmnCellStyle {
     style.horizontal = rawStyle.horizontal;
     style.swimlaneFillColor = rawStyle.swimlaneFillColor;
     style.fillOpacity = rawStyle.fillOpacity;
+    style.gradientColor = rawStyle.gradientColor;
+    style.gradientDirection = rawStyle.gradientDirection;
   }
   return style;
 }

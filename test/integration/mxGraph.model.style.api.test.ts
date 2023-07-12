@@ -16,13 +16,13 @@ limitations under the License.
 
 import { initializeBpmnVisualizationWithContainerId } from './helpers/bpmn-visualization-initialization';
 import { HtmlElementLookup } from './helpers/html-utils';
-import type { ExpectedShapeModelElement, VerticalAlign } from './helpers/model-expect';
+import type { ExpectedDirection, ExpectedFill, ExpectedShapeModelElement, VerticalAlign } from './helpers/model-expect';
 import { bpmnVisualization } from './helpers/model-expect';
 import { buildReceivedResolvedModelCellStyle, buildReceivedViewStateStyle } from './matchers/matcher-utils';
 import { buildExpectedShapeCellStyle } from './matchers/toBeShape';
 import { readFileSync } from '@test/shared/file-helper';
 import { MessageVisibleKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
-import type { EdgeStyleUpdate, Fill, Font, Stroke, StyleUpdate } from '@lib/component/registry';
+import type { EdgeStyleUpdate, Fill, Font, GradientDirection, Stroke, StyleUpdate } from '@lib/component/registry';
 import type { mxCell } from 'mxgraph';
 
 // Create a dedicated instance with a DOM container as it is required by the CSS API.
@@ -77,7 +77,7 @@ describe('mxGraph model - update style', () => {
         stroke,
         font,
         opacity,
-        fill,
+        fill: fill as ExpectedFill,
         // not under test
         parentId: 'lane_02',
         label: 'User Task 2.2',
@@ -196,6 +196,24 @@ describe('mxGraph model - update style', () => {
       });
     });
 
+    it.each([
+      [<GradientDirection>'top-to-bottom', <ExpectedDirection>'south'],
+      [<GradientDirection>'bottom-to-top', <ExpectedDirection>'north'],
+      [<GradientDirection>'left-to-right', <ExpectedDirection>'east'],
+      [<GradientDirection>'right-to-left', <ExpectedDirection>'west'],
+    ])('Update the fill color as gradient with direction %s', (direction: GradientDirection, expectedDirection: ExpectedDirection) => {
+      const fill = { color: { startColor: 'gold', endColor: 'pink', direction } };
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { fill });
+
+      expect('userTask_2_2').toBeUserTask({
+        fill: { color: 'gold' },
+        gradient: { color: 'pink', direction: expectedDirection },
+        // not under test
+        parentId: 'lane_02',
+        label: 'User Task 2.2',
+      });
+    });
+
     it('Update all opacity properties with wrong value', () => {
       bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', {
         stroke: { opacity: -72 },
@@ -249,10 +267,56 @@ describe('mxGraph model - update style', () => {
 
         // Check that the style has been updated
         expect('serviceTask_1_2').toBeServiceTask({
-          fill,
+          fill: fill as ExpectedFill,
           font,
           opacity,
           stroke,
+          // not under test
+          parentId: 'lane_01',
+          label: 'Service Task 1.2',
+        });
+
+        // Reset the style by passing special values
+        bpmnVisualization.bpmnElementsRegistry.updateStyle('serviceTask_1_2', {
+          fill: {
+            color: 'default',
+            opacity: 'default',
+          },
+          font: {
+            color: 'default',
+            opacity: 'default',
+          },
+          opacity: 'default',
+          stroke: {
+            color: 'default',
+            opacity: 'default',
+            width: 'default',
+          },
+        });
+
+        // The properties should have been reset to use the default values
+        expect('serviceTask_1_2').toBeServiceTask({
+          // not under test
+          parentId: 'lane_01',
+          label: 'Service Task 1.2',
+        });
+      });
+
+      it('Fill color as gradient', () => {
+        // Check that the element uses default values
+        expect('serviceTask_1_2').toBeServiceTask({
+          // not under test
+          parentId: 'lane_01',
+          label: 'Service Task 1.2',
+        });
+
+        const fill: Fill = { color: { startColor: 'gold', endColor: 'pink', direction: 'right-to-left' } };
+        bpmnVisualization.bpmnElementsRegistry.updateStyle('serviceTask_1_2', { fill });
+
+        // Check that the style has been updated
+        expect('serviceTask_1_2').toBeServiceTask({
+          fill: { color: 'gold' },
+          gradient: { color: 'pink', direction: 'west' },
           // not under test
           parentId: 'lane_01',
           label: 'Service Task 1.2',
@@ -297,7 +361,7 @@ describe('mxGraph model - update style', () => {
         bpmnVisualization.bpmnElementsRegistry.updateStyle('lane_03', { fill });
         // Check that the style has been updated
         expect('lane_03').toBeLane({
-          fill,
+          fill: fill as ExpectedFill,
           // not under test
           parentId: 'Participant_1',
           label: 'Lane 3',
@@ -329,7 +393,7 @@ describe('mxGraph model - update style', () => {
         bpmnVisualization.bpmnElementsRegistry.updateStyle('Participant_1', { fill });
         // Check that the style has been updated
         expect('Participant_1').toBePool({
-          fill,
+          fill: fill as ExpectedFill,
           // not under test
           label: 'Pool 1',
         });
@@ -882,6 +946,23 @@ describe('mxGraph model - reset style', () => {
       expect('Participant_1').toBePool({
         // not under test
         label: 'Pool 1',
+      });
+    });
+
+    it('Reset the fill color as gradient', () => {
+      const elementId = 'userTask_2_2';
+
+      // Apply custom style
+      bpmnVisualization.bpmnElementsRegistry.updateStyle(elementId, { fill: { color: { startColor: 'gold', endColor: 'pink', direction: 'top-to-bottom' } } });
+
+      // Reset style
+      bpmnVisualization.bpmnElementsRegistry.resetStyle(elementId);
+
+      // Check that the style has been reset to default values
+      expect(elementId).toBeUserTask({
+        // not under test
+        parentId: 'lane_02',
+        label: 'User Task 2.2',
       });
     });
   });
