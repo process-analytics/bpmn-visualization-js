@@ -224,12 +224,13 @@ export class PageTester {
       if ('fill' in styleUpdate) {
         const fill = (<ShapeStyleUpdate>styleUpdate).fill;
 
-        if (typeof fill.color === 'object') {
-          fill.color.startColor && (url += `&style.api.fill.color.startColor=${fill.color.startColor}`);
-          fill.color.endColor && (url += `&style.api.fill.color.endColor=${fill.color.endColor}`);
-          fill.color.direction && (url += `&style.api.fill.color.direction=${fill.color.direction}`);
+        const fillColor = fill.color;
+        if (typeof fillColor === 'object') {
+          fillColor.startColor && (url += `&style.api.fill.color.startColor=${fillColor.startColor}`);
+          fillColor.endColor && (url += `&style.api.fill.color.endColor=${fillColor.endColor}`);
+          fillColor.direction && (url += `&style.api.fill.color.direction=${fillColor.direction}`);
         } else {
-          fill.color && (url += `&style.api.fill.color=${fill.color}`);
+          fillColor && (url += `&style.api.fill.color=${fillColor}`);
         }
 
         fill.opacity && (url += `&style.api.fill.opacity=${fill.opacity}`);
