@@ -17,6 +17,31 @@ updates:
       - skip-changelog
     reviewers:
       - process-analytics/pa-collaborators
+    groups:
+       css:
+          patterns:
+            - "autoprefixer"
+            - "cssnano"
+            - "postcss*"
+            - "tailwindcss"
+       jest:
+          patterns:
+            - "@types/jest-*"
+            - "jest"
+            - "jest-*"
+            - "ts-jest"
+       lint:
+          patterns:
+            - "@typescript-eslint/*"
+            - "eslint"
+            - "eslint-*"
+            - "lint-staged"
+            - "prettier"
+       rollup:
+          patterns:
+            - "@rollup/*"
+            - "rollup"
+            - "rollup-plugin-*"
 
   - package-ecosystem: "github-actions"
     # Workflow files stored in the default location of `.github/workflows`
