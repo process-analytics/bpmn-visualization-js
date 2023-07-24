@@ -110,7 +110,7 @@
     "@types/minimist": "~1.2.2",
     "@typescript-eslint/eslint-plugin": "~6.1.0",
     "@typescript-eslint/parser": "~6.1.0",
-    "asciidoctor": "~2.2.6",
+    "asciidoctor": "~3.0.2",
     "autoprefixer": "~10.4.14",
     "clipboardy": "~3.0.0",
     "cross-env": "~7.0.3",
