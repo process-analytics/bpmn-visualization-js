@@ -19,7 +19,10 @@ import { JsonParsingWarning } from '../parsing-messages';
 import type { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
 
 export class GroupUnknownCategoryValueWarning extends JsonParsingWarning {
-  constructor(readonly groupBpmnElementId: string, readonly categoryValueRef: string) {
+  constructor(
+    readonly groupBpmnElementId: string,
+    readonly categoryValueRef: string,
+  ) {
     super();
   }
 
@@ -58,7 +61,10 @@ export class EdgeUnknownBpmnElementWarning extends JsonParsingWarning {
 }
 
 export class LabelStyleMissingFontWarning extends JsonParsingWarning {
-  constructor(readonly shapeOrEdgeId: string, readonly labelStyleId: string) {
+  constructor(
+    readonly shapeOrEdgeId: string,
+    readonly labelStyleId: string,
+  ) {
     super();
   }
 
@@ -71,7 +77,10 @@ export class LabelStyleMissingFontWarning extends JsonParsingWarning {
 }
 
 export class LaneUnknownFlowNodeRefWarning extends JsonParsingWarning {
-  constructor(readonly laneId: string, readonly flowNodeRef: string) {
+  constructor(
+    readonly laneId: string,
+    readonly flowNodeRef: string,
+  ) {
     super();
   }
 
@@ -84,7 +93,11 @@ export class LaneUnknownFlowNodeRefWarning extends JsonParsingWarning {
 }
 
 export class BoundaryEventNotAttachedToActivityWarning extends JsonParsingWarning {
-  constructor(readonly bpmnElementId: string, readonly attachedToRef: string, readonly attachedToKind: ShapeBpmnElementKind) {
+  constructor(
+    readonly bpmnElementId: string,
+    readonly attachedToRef: string,
+    readonly attachedToKind: ShapeBpmnElementKind,
+  ) {
     super();
   }
 

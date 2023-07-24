@@ -32,7 +32,11 @@ import type { mxCell } from 'mxgraph';
  * @internal
  */
 export class BpmnRenderer {
-  constructor(readonly graph: BpmnGraph, readonly coordinatesTranslator: CoordinatesTranslator, readonly styleComputer: StyleComputer) {}
+  constructor(
+    readonly graph: BpmnGraph,
+    readonly coordinatesTranslator: CoordinatesTranslator,
+    readonly styleComputer: StyleComputer,
+  ) {}
 
   render(renderedModel: RenderedModel, fitOptions?: FitOptions): void {
     this.insertShapesAndEdges(renderedModel);

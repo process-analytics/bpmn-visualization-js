@@ -385,7 +385,10 @@ export class BpmnElementsRegistry {
 }
 
 class HtmlElementRegistry {
-  constructor(private container: HTMLElement, private querySelectors: BpmnQuerySelectors) {}
+  constructor(
+    private container: HTMLElement,
+    private querySelectors: BpmnQuerySelectors,
+  ) {}
 
   /**
    * Returns `null` if no element is found.
