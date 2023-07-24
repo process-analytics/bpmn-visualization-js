@@ -25,7 +25,10 @@ import type { ParserOptions } from '../options';
  * @internal
  */
 class BpmnParser {
-  constructor(readonly jsonParser: BpmnJsonParser, readonly xmlParser: BpmnXmlParser) {}
+  constructor(
+    readonly jsonParser: BpmnJsonParser,
+    readonly xmlParser: BpmnXmlParser,
+  ) {}
 
   parse(bpmnAsXml: string): BpmnModel {
     const json = this.xmlParser.parse(bpmnAsXml);

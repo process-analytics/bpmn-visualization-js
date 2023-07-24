@@ -30,7 +30,10 @@ import type { ParsingMessageCollector } from '../../parsing-messages';
  * @internal
  */
 export default class CollaborationConverter {
-  constructor(private convertedElements: ConvertedElements, private parsingMessageCollector: ParsingMessageCollector) {}
+  constructor(
+    private convertedElements: ConvertedElements,
+    private parsingMessageCollector: ParsingMessageCollector,
+  ) {}
 
   deserialize(collaborations: string | TCollaboration | (string | TCollaboration)[]): void {
     ensureIsArray(collaborations).forEach(collaboration => this.parseCollaboration(collaboration));
