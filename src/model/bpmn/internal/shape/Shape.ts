@@ -25,5 +25,11 @@ import type { ShapeExtensions } from '../types';
 export default class Shape {
   readonly extensions: ShapeExtensions = {};
 
-  constructor(readonly id: string, readonly bpmnElement: ShapeBpmnElement, readonly bounds?: Bounds, readonly label?: Label, readonly isHorizontal?: boolean) {}
+  constructor(
+    readonly id: string,
+    readonly bpmnElement: ShapeBpmnElement,
+    readonly bounds?: Bounds,
+    readonly label?: Label,
+    readonly isHorizontal?: boolean,
+  ) {}
 }

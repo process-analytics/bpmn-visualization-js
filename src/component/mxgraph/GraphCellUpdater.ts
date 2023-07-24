@@ -39,7 +39,11 @@ export function newGraphCellUpdater(graph: BpmnGraph, cssRegistry: CssRegistry):
  * @internal
  */
 export default class GraphCellUpdater {
-  constructor(readonly graph: BpmnGraph, readonly overlayConverter: OverlayConverter, private readonly styleManager: StyleManager) {}
+  constructor(
+    readonly graph: BpmnGraph,
+    readonly overlayConverter: OverlayConverter,
+    private readonly styleManager: StyleManager,
+  ) {}
 
   clear(): void {
     this.styleManager.clear();

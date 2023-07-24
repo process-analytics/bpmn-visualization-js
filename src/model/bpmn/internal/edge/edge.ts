@@ -38,5 +38,8 @@ export class Edge {
  * @internal
  */
 export class Waypoint {
-  constructor(readonly x: number, readonly y: number) {}
+  constructor(
+    readonly x: number,
+    readonly y: number,
+  ) {}
 }

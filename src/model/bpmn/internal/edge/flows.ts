@@ -20,14 +20,26 @@ import { AssociationDirectionKind, FlowKind, SequenceFlowKind } from './kinds';
  * @internal
  */
 export abstract class Flow {
-  protected constructor(readonly id: string, readonly name: string, readonly kind: FlowKind, readonly sourceRefId?: string, readonly targetRefId?: string) {}
+  protected constructor(
+    readonly id: string,
+    readonly name: string,
+    readonly kind: FlowKind,
+    readonly sourceRefId?: string,
+    readonly targetRefId?: string,
+  ) {}
 }
 
 /**
  * @internal
  */
 export class SequenceFlow extends Flow {
-  constructor(id: string, name: string, sourceRefId?: string, targetRefId?: string, readonly sequenceFlowKind = SequenceFlowKind.NORMAL) {
+  constructor(
+    id: string,
+    name: string,
+    sourceRefId?: string,
+    targetRefId?: string,
+    readonly sequenceFlowKind = SequenceFlowKind.NORMAL,
+  ) {
     super(id, name, FlowKind.SEQUENCE_FLOW, sourceRefId, targetRefId);
   }
 }
@@ -45,7 +57,13 @@ export class MessageFlow extends Flow {
  * @internal
  */
 export class AssociationFlow extends Flow {
-  constructor(id: string, name: string, sourceRefId?: string, targetRefId?: string, readonly associationDirectionKind = AssociationDirectionKind.NONE) {
+  constructor(
+    id: string,
+    name: string,
+    sourceRefId?: string,
+    targetRefId?: string,
+    readonly associationDirectionKind = AssociationDirectionKind.NONE,
+  ) {
     super(id, name, FlowKind.ASSOCIATION_FLOW, sourceRefId, targetRefId);
   }
 }

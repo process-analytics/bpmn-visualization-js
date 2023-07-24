@@ -21,7 +21,12 @@ export class DropFileUserInterface {
   private head: Element;
   private body: Element;
 
-  constructor(private window: Window, private outerContainerId: string, private containerToFade: HTMLElement, private dropCallback: (file: File) => void) {
+  constructor(
+    private window: Window,
+    private outerContainerId: string,
+    private containerToFade: HTMLElement,
+    private dropCallback: (file: File) => void,
+  ) {
     this.document = window.document;
     this.head = document.head;
     this.body = document.body;

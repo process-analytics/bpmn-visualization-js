@@ -24,14 +24,27 @@ export default class ShapeBpmnElement {
   incomingIds?: string[] = [];
   outgoingIds?: string[] = [];
 
-  constructor(readonly id: string, readonly name: string, readonly kind: ShapeBpmnElementKind, public parentId?: string, readonly instantiate: boolean = false) {}
+  constructor(
+    readonly id: string,
+    readonly name: string,
+    readonly kind: ShapeBpmnElementKind,
+    public parentId?: string,
+    readonly instantiate: boolean = false,
+  ) {}
 }
 
 /**
  * @internal
  */
 export class ShapeBpmnActivity extends ShapeBpmnElement {
-  constructor(id: string, name: string, kind: ShapeBpmnElementKind, parentId: string, instantiate?: boolean, readonly markers: ShapeBpmnMarkerKind[] = []) {
+  constructor(
+    id: string,
+    name: string,
+    kind: ShapeBpmnElementKind,
+    parentId: string,
+    instantiate?: boolean,
+    readonly markers: ShapeBpmnMarkerKind[] = [],
+  ) {
     super(id, name, kind, parentId, instantiate);
   }
 }
@@ -56,7 +69,13 @@ export class ShapeBpmnCallActivity extends ShapeBpmnActivity {
  * @internal
  */
 export class ShapeBpmnSubProcess extends ShapeBpmnActivity {
-  constructor(id: string, name: string, readonly subProcessKind: ShapeBpmnSubProcessKind, parentId: string, markers?: ShapeBpmnMarkerKind[]) {
+  constructor(
+    id: string,
+    name: string,
+    readonly subProcessKind: ShapeBpmnSubProcessKind,
+    parentId: string,
+    markers?: ShapeBpmnMarkerKind[],
+  ) {
     subProcessKind == ShapeBpmnSubProcessKind.AD_HOC && !markers.includes(ShapeBpmnMarkerKind.ADHOC) && markers.push(ShapeBpmnMarkerKind.ADHOC);
     super(id, name, ShapeBpmnElementKind.SUB_PROCESS, parentId, undefined, markers);
   }
@@ -66,7 +85,13 @@ export class ShapeBpmnSubProcess extends ShapeBpmnActivity {
  * @internal
  */
 export class ShapeBpmnEvent extends ShapeBpmnElement {
-  constructor(id: string, name: string, elementKind: BpmnEventKind, readonly eventDefinitionKind: ShapeBpmnEventDefinitionKind, parentId: string) {
+  constructor(
+    id: string,
+    name: string,
+    elementKind: BpmnEventKind,
+    readonly eventDefinitionKind: ShapeBpmnEventDefinitionKind,
+    parentId: string,
+  ) {
     super(id, name, elementKind, parentId);
   }
 }
@@ -75,7 +100,13 @@ export class ShapeBpmnEvent extends ShapeBpmnElement {
  * @internal
  */
 export class ShapeBpmnStartEvent extends ShapeBpmnEvent {
-  constructor(id: string, name: string, eventDefinitionKind: ShapeBpmnEventDefinitionKind, parentId: string, readonly isInterrupting?: boolean) {
+  constructor(
+    id: string,
+    name: string,
+    eventDefinitionKind: ShapeBpmnEventDefinitionKind,
+    parentId: string,
+    readonly isInterrupting?: boolean,
+  ) {
     super(id, name, ShapeBpmnElementKind.EVENT_START, eventDefinitionKind, parentId);
   }
 }
@@ -84,7 +115,13 @@ export class ShapeBpmnStartEvent extends ShapeBpmnEvent {
  * @internal
  */
 export class ShapeBpmnBoundaryEvent extends ShapeBpmnEvent {
-  constructor(id: string, name: string, eventDefinitionKind: ShapeBpmnEventDefinitionKind, parentId: string, readonly isInterrupting: boolean = true) {
+  constructor(
+    id: string,
+    name: string,
+    eventDefinitionKind: ShapeBpmnEventDefinitionKind,
+    parentId: string,
+    readonly isInterrupting: boolean = true,
+  ) {
     super(id, name, ShapeBpmnElementKind.EVENT_BOUNDARY, eventDefinitionKind, parentId);
   }
 }
@@ -93,7 +130,13 @@ export class ShapeBpmnBoundaryEvent extends ShapeBpmnEvent {
  * @internal
  */
 export class ShapeBpmnEventBasedGateway extends ShapeBpmnElement {
-  constructor(id: string, name: string, parentId: string, instantiate?: boolean, readonly gatewayKind = ShapeBpmnEventBasedGatewayKind.None) {
+  constructor(
+    id: string,
+    name: string,
+    parentId: string,
+    instantiate?: boolean,
+    readonly gatewayKind = ShapeBpmnEventBasedGatewayKind.None,
+  ) {
     super(id, name, ShapeBpmnElementKind.GATEWAY_EVENT_BASED, parentId, instantiate);
   }
 }

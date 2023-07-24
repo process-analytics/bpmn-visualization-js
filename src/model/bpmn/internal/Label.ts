@@ -23,7 +23,10 @@ import type { LabelExtensions } from './types';
 export default class Label {
   readonly extensions: LabelExtensions = {};
 
-  constructor(readonly font?: Font, readonly bounds?: Bounds) {}
+  constructor(
+    readonly font?: Font,
+    readonly bounds?: Bounds,
+  ) {}
 }
 
 /**

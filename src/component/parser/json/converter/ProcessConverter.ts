@@ -87,7 +87,10 @@ export default class ProcessConverter {
   private elementsWithoutParentByProcessId: Map<string, ShapeBpmnElement[]> = new Map();
   private callActivitiesCallingProcess: Map<string, ShapeBpmnElement> = new Map();
 
-  constructor(private convertedElements: ConvertedElements, private parsingMessageCollector: ParsingMessageCollector) {}
+  constructor(
+    private convertedElements: ConvertedElements,
+    private parsingMessageCollector: ParsingMessageCollector,
+  ) {}
 
   deserialize(processes: string | TProcess | (string | TProcess)[]): void {
     ensureIsArray(processes).forEach(process => this.parseProcess(process));

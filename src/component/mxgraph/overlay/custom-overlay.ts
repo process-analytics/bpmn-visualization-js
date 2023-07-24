@@ -36,7 +36,10 @@ export type MxGraphCustomOverlayStyle = Required<OverlayStyle>;
 export class MxGraphCustomOverlay extends mxgraph.mxCellOverlay {
   readonly style: MxGraphCustomOverlayStyle;
 
-  constructor(public label: string, options: MxGraphCustomOverlayOptions) {
+  constructor(
+    public label: string,
+    options: MxGraphCustomOverlayOptions,
+  ) {
     super(null, '', options.position.horizontalAlign, options.position.verticalAlign, null, 'default');
     this.style = options.style;
   }

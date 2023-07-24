@@ -35,7 +35,10 @@ const pageCheckLog = debugLogger('bv:test:page-check');
 class BpmnPage {
   private bpmnQuerySelectors = new BpmnQuerySelectorsForTests();
 
-  constructor(private bpmnContainerId: string, private page: Page) {}
+  constructor(
+    private bpmnContainerId: string,
+    private page: Page,
+  ) {}
 
   async expectAvailableBpmnContainer(options?: PageWaitForSelectorOptions): Promise<void> {
     pageCheckLog('Expecting the BPMN container available (confirm bpmn-visualization initialization)');
@@ -154,7 +157,10 @@ export class PageTester {
   /**
    * Configure how the BPMN file is loaded by the test page.
    */
-  constructor(protected targetedPageConfiguration: TargetedPageConfiguration, protected page: Page) {
+  constructor(
+    protected targetedPageConfiguration: TargetedPageConfiguration,
+    protected page: Page,
+  ) {
     const showMousePointer = targetedPageConfiguration.showMousePointer ?? false;
     this.baseUrl = `http://localhost:10001/dev/public/${targetedPageConfiguration.targetedPage.pageFileName}.html?showMousePointer=${showMousePointer}`;
     this.bpmnContainerId = targetedPageConfiguration.bpmnContainerId ?? 'bpmn-container';

@@ -21,7 +21,10 @@ import type { CssRegistry } from '../../registry/css-registry';
 export class StyleManager {
   private stylesCache: Map<string, string> = new Map();
 
-  constructor(readonly cssRegistry: CssRegistry, readonly model: mxGraphModel) {}
+  constructor(
+    readonly cssRegistry: CssRegistry,
+    readonly model: mxGraphModel,
+  ) {}
 
   clear(): void {
     this.stylesCache.clear();
