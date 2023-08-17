@@ -119,8 +119,8 @@ function configureDisplayedFooterContent(): void {
 function preventZoomingPage(): void {
   document.addEventListener(
     'wheel',
-    (ev: WheelEvent): void => {
-      if (ev.ctrlKey) ev.preventDefault(); // prevent whole page zoom
+    (e: WheelEvent): void => {
+      if (e.ctrlKey) e.preventDefault(); // prevent whole page zoom
     },
     { passive: false, capture: true },
   );
