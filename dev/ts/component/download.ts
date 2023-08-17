@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { logDownload } from '../internal/internal-helpers';
+import { logDownload } from '../utils/internal-helpers';
 
 // inspired from https://ourcodeworld.com/articles/read/189/how-to-create-a-file-and-generate-a-download-with-javascript-in-the-browser-without-a-server
 function download(filename: string, contentType: string, text: string): void {

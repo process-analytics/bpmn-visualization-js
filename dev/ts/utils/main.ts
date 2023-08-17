@@ -32,7 +32,7 @@ import type {
   GradientDirection,
 } from '../../../src/bpmn-visualization';
 import { FlowKind, ShapeBpmnElementKind } from '../../../src/bpmn-visualization';
-import { fetchBpmnContent, logDownload, logError, logErrorAndOpenAlert, logStartup } from '../internal/internal-helpers';
+import { fetchBpmnContent, logDownload, logError, logErrorAndOpenAlert, logStartup } from './internal-helpers';
 import { log } from './shared-helpers';
 import { DropFileUserInterface } from '../component/DropFileUserInterface';
 import { SvgExporter } from '../component/SvgExporter';
