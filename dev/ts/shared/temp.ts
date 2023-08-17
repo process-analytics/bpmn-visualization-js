@@ -14,24 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { FlowKind, ShapeBpmnElementKind } from '../../../src/model/bpmn/internal';
+import { FlowKind } from '../../../src/model/bpmn/internal';
 
 // TODO duplicated with mxgraph/renderer function
 export function isFlowKind(kind: string): kind is FlowKind {
   return Object.values(FlowKind)
     .map(value => value as string)
     .includes(kind);
-}
-
-function isShapeBpmnElementKind(kind: string): kind is ShapeBpmnElementKind {
-  return Object.values(ShapeBpmnElementKind)
-    .map(value => value as string)
-    .includes(kind);
-}
-
-export function toShapeBpmnElementKind(value: string): ShapeBpmnElementKind | null {
-  if (isShapeBpmnElementKind(value)) {
-    return value;
-  }
-  return null;
 }
