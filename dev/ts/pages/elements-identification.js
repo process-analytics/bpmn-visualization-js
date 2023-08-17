@@ -34,7 +34,7 @@ import {
   getParentElementIds,
   ShapeBpmnElementKind,
   isChildOfSubProcess,
-} from '../../../ts/dev-bundle-index';
+} from '../dev-bundle-index';
 
 let lastIdentifiedBpmnIds = [];
 let lastIdentifiedParentBpmnIds = [];
