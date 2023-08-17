@@ -14,36 +14,36 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import { readFileSync } from 'node:fs';
+import { copySync, ensureDirSync, removeSync } from 'fs-extra/esm';
+import asciidoctor from '@asciidoctor/core';
+
 function log(...data) {
   // eslint-disable-next-line no-console
   console.info(...data);
 }
-
-const fs = require('fs');
-const fse = require('fs-extra');
-const Asciidoctor = require('asciidoctor');
 
 const docsOutput = 'build/docs';
 
 log('Building bpmn-visualization html documentation');
 
 // clean existing docs
-fse.removeSync(docsOutput);
+removeSync(docsOutput);
 
 // build html docs
-Asciidoctor().convert(fs.readFileSync('docs/users/index.adoc'), {
+asciidoctor().convert(readFileSync('docs/users/index.adoc'), {
   base_dir: 'docs/users',
   to_file: `../../${docsOutput}/index.html`,
   standalone: true,
   mkdirs: true,
-  safe: 'unsafe', // needed because we want to generate the html outside of the directory that stores the source files
+  safe: 'unsafe', // needed because we want to generate the HTML outside the directory that stores the source files
 });
 
 // copy images
-fse.ensureDirSync(`${docsOutput}/images`);
+ensureDirSync(`${docsOutput}/images`);
 
-fse.copySync('docs/users/images', `${docsOutput}/images`);
-fse.copySync('docs/users/architecture/images', `${docsOutput}/images`);
-fse.copySync('dev/public/static/img/favicon.svg', `${docsOutput}/favicon.svg`);
+copySync('docs/users/images', `${docsOutput}/images`);
+copySync('docs/users/architecture/images', `${docsOutput}/images`);
+copySync('dev/public/static/img/favicon.svg', `${docsOutput}/favicon.svg`);
 
 log(`Documentation is now available in ${docsOutput}`);
