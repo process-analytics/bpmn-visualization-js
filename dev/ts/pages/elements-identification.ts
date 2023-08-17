@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BpmnElement, BpmnElementKind, Overlay, ShapeStyleUpdate } from '../dev-bundle-index';
+import type { BpmnElement, BpmnElementKind, Overlay, ShapeStyleUpdate, StyleUpdate, FlowKind } from '../dev-bundle-index';
 import {
   addCssClasses,
   addOverlays,
@@ -35,6 +35,8 @@ import {
   getParentElementIds,
   ShapeBpmnElementKind,
   isChildOfSubProcess,
+  isFlowKind,
+  toShapeBpmnElementKind,
 } from '../dev-bundle-index';
 
 let lastIdentifiedBpmnIds: string[] = [];
@@ -44,9 +46,22 @@ const cssClassName = 'detection';
 let isOverlaysDisplayed = true;
 let useCSS = true;
 
-// TODO should be BpmnElementKind
-function computeStyleUpdateByKind(bpmnKind: ShapeBpmnElementKind): ShapeStyleUpdate {
+function computeStyleUpdateByKind(bpmnKind: BpmnElementKind): StyleUpdate {
   const style: ShapeStyleUpdate = { font: {}, fill: {}, stroke: {} };
+
+  if (isFlowKind(bpmnKind)) {
+    switch (bpmnKind as FlowKind) {
+      case 'messageFlow':
+      case 'sequenceFlow':
+      case 'association':
+        style.font.color = 'Chocolate';
+        style.stroke.color = 'Chocolate';
+        style.stroke.width = 4;
+        break;
+    }
+    return style;
+  }
+
   if (ShapeUtil.isTask(bpmnKind)) {
     style.font.color = 'Indigo';
     style.fill.color = 'gold';
@@ -100,13 +115,6 @@ function computeStyleUpdateByKind(bpmnKind: ShapeBpmnElementKind): ShapeStyleUpd
 
         style.stroke.color = 'Chartreuse';
         style.stroke.width = 6;
-        break;
-      case 'messageFlow':
-      case 'sequenceFlow':
-      case 'association':
-        style.font.color = 'Chocolate';
-        style.stroke.color = 'Chocolate';
-        style.stroke.width = 4;
         break;
     }
   }
@@ -193,7 +201,7 @@ function resetTextArea(): void {
 function configureControls(): void {
   const selectedKindElt = <HTMLSelectElement>document.getElementById('bpmn-kinds-select');
   selectedKindElt.onchange = event => updateSelectedBPMNElements(event.target.value);
-  document.addEventListener('diagramLoaded', () => updateSelectedBPMNElements(selectedKindElt.value), false);
+  document.addEventListener('diagramLoaded', () => updateSelectedBPMNElements(toShapeBpmnElementKind(selectedKindElt.value)), false);
 
   document.getElementById('clear-btn').onclick = function () {
     resetTextArea();
@@ -210,7 +218,7 @@ function configureControls(): void {
   checkboxDisplayOverlaysElt.addEventListener('change', function () {
     isOverlaysDisplayed = this.checked;
     log('Request overlays display:', isOverlaysDisplayed);
-    updateSelectedBPMNElements(selectedKindElt.value);
+    updateSelectedBPMNElements(toShapeBpmnElementKind(selectedKindElt.value));
   });
   checkboxDisplayOverlaysElt.checked = isOverlaysDisplayed;
 
@@ -225,7 +233,7 @@ function configureControls(): void {
       addCssClasses(lastIdentifiedBpmnIds, cssClassName);
     } else {
       removeCssClasses(lastIdentifiedBpmnIds, cssClassName);
-      updateStyleByAPI(lastIdentifiedBpmnIds, selectedKindElt.value);
+      updateStyleByAPI(lastIdentifiedBpmnIds, toShapeBpmnElementKind(selectedKindElt.value));
     }
   });
   checkboxUseCSSElt.checked = useCSS;

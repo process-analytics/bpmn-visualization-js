@@ -17,4 +17,5 @@ limitations under the License.
 export * from './shared/controls';
 export * from './shared/main';
 export * from './shared/shared-helpers';
+export * from './shared/temp';
 export * from '../../src/bpmn-visualization';
