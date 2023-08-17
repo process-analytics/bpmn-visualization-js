@@ -14,9 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { FlowKind } from '../../../src/model/bpmn/internal';
+import { FlowKind } from './kinds';
 
-// TODO duplicated with mxgraph/renderer function
+/** @internal */
 export function isFlowKind(kind: string): kind is FlowKind {
   return Object.values(FlowKind)
     .map(value => value as string)

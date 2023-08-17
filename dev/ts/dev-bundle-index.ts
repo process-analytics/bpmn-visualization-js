@@ -17,5 +17,6 @@ limitations under the License.
 export * from './shared/controls';
 export * from './shared/main';
 export * from './shared/shared-helpers';
-export * from './shared/temp';
 export * from '../../src/bpmn-visualization';
+// extra code not exported by bpmn-visualization
+export * from '../../src/model/bpmn/internal/edge/utils';
