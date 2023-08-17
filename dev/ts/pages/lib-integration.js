@@ -14,6 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+// IMPORTANT: here we want to test only the integration of the lib.
+// So we must NOT use any demo code.
 import { BpmnVisualization } from '../../../../src/bpmn-visualization';
 
 const bpmnVisualizationIntegration = new BpmnVisualization({ container: 'bpmn-container-custom' });
