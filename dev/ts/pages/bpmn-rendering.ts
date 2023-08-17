@@ -16,12 +16,12 @@ limitations under the License.
 
 import { documentReady, log, logError, startBpmnVisualization } from '../dev-bundle-index';
 
-const statusFetchKO = (errorMsg: string): void => {
+function statusFetchKO(errorMsg: string): void {
   logError(errorMsg);
   const statusElt = document.getElementById('status-zone');
   statusElt.innerText = errorMsg;
   statusElt.className = 'status-ko';
   log('Status zone set with error:', errorMsg);
-};
+}
 
 documentReady(() => startBpmnVisualization({ globalOptions: { container: 'bpmn-container' }, statusKoNotifier: statusFetchKO }));
