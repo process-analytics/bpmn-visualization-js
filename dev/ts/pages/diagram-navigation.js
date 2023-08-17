@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { documentReady, fit, FitType, startBpmnVisualization, zoom, ZoomType } from '../dev-bundle-index';
-import { configureControlsPanel, configureMousePointer } from '../../public/static/js/helpers/controls.js';
+// import { configureControlsPanel, configureMousePointer } from 'dev/ts/shared/controls.js';
 
 function configureFitAndZoomButtons() {
   Object.values(FitType).forEach(fitType => {
