@@ -85,9 +85,7 @@ function showMousePointer(): void {
   );
   function updateButtons(buttons: number): void {
     for (let i = 0; i < 5; i++) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      box.classList.toggle('button-' + i, buttons & (1 << i));
+      box.classList.toggle('button-' + i, (buttons & (1 << i)) > 0);
     }
   }
 }
