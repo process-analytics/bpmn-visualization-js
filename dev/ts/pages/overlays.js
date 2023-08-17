@@ -14,8 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { addOverlays, documentReady, getElementsByIds, removeAllOverlays, startBpmnVisualization } from '../dev-bundle-index';
-// import { configureControlsPanel, configureMousePointer } from 'dev/ts/shared/controls.js';
+import { addOverlays, configureControlsPanel, configureMousePointer, documentReady, getElementsByIds, removeAllOverlays, startBpmnVisualization } from '../dev-bundle-index';
 
 function addOverlay(overlay) {
   const bpmnId = document.getElementById('bpmn-id-input').value;

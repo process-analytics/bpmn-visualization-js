@@ -16,7 +16,7 @@ limitations under the License.
 
 // @see https://github.com/puppeteer/puppeteer/issues/374
 // @see https://github.com/puppeteer/puppeteer/blob/4fdb1e3cab34310b4a1012c3024a94bc422b3b92/test/assets/input/mouse-helper.js
-function showMousePointer() {
+function showMousePointer(): void {
   const box = document.createElement('div');
   box.classList.add('mouse-helper');
   const styleElement = document.createElement('style');
@@ -83,18 +83,22 @@ function showMousePointer() {
     },
     true,
   );
-  function updateButtons(buttons) {
-    for (let i = 0; i < 5; i++) box.classList.toggle('button-' + i, buttons & (1 << i));
+  function updateButtons(buttons: number): void {
+    for (let i = 0; i < 5; i++) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      box.classList.toggle('button-' + i, buttons & (1 << i));
+    }
   }
 }
 
-export function configureMousePointer(parameters) {
+export function configureMousePointer(parameters: URLSearchParams): void {
   if (parameters.get('showMousePointer') === 'true') {
     showMousePointer();
   }
 }
 
-export function configureControlsPanel(parameters) {
+export function configureControlsPanel(parameters: URLSearchParams): void {
   const elControlsPanel = document.getElementById('controls-panel');
   if (parameters.get('showControlsPanel') === 'true') {
     elControlsPanel.classList.remove('hidden');
