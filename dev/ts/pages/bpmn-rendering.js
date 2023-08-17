@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { documentReady, log, logError, startBpmnVisualization } from '../../../ts/dev-bundle-index';
+import { documentReady, log, logError, startBpmnVisualization } from '../dev-bundle-index';
 
 function statusFetchKO(errorMsg) {
   logError(errorMsg);
