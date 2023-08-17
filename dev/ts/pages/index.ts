@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { FitOptions } from '../dev-bundle-index';
+import type { FitOptions, FitType } from '../dev-bundle-index';
 import {
   documentReady,
   handleFileSelect,
@@ -68,7 +68,7 @@ function configureFitTypeSelect(): void {
   if (fitOptions.type) {
     fitTypeSelectedElt.value = fitOptions.type;
   } else {
-    updateFitConfig({ type: fitTypeSelectedElt.value });
+    updateFitConfig({ type: fitTypeSelectedElt.value as FitType });
   }
 }
 
