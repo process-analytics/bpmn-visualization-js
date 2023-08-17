@@ -62,7 +62,7 @@
     "demo:prepare": "node scripts/prepare-demo-for-publish.mjs",
     "demo-preview": "vite preview",
     "docs": "run-s docs:*",
-    "docs:user": "node scripts/docs.js",
+    "docs:user": "node scripts/docs.mjs",
     "docs:api": "typedoc --tsconfig ./tsconfig.typedoc.json src/bpmn-visualization.ts",
     "lint": "eslint \"**/*.{js,mjs,ts}\" --max-warnings 0 --quiet --fix",
     "lint-check": "eslint \"**/*.{js,mjs,ts}\" --max-warnings 0",
@@ -100,6 +100,7 @@
     "strnum": "1.0.5"
   },
   "devDependencies": {
+    "@asciidoctor/core": "~3.0.2",
     "@microsoft/api-extractor": "~7.36.4",
     "@rollup/plugin-commonjs": "~25.0.4",
     "@rollup/plugin-node-resolve": "~15.1.0",
@@ -110,7 +111,6 @@
     "@types/minimist": "~1.2.2",
     "@typescript-eslint/eslint-plugin": "~6.4.0",
     "@typescript-eslint/parser": "~6.4.0",
-    "asciidoctor": "~3.0.2",
     "autoprefixer": "~10.4.15",
     "clipboardy": "~3.0.0",
     "cross-env": "~7.0.3",
