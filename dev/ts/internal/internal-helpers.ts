@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { log } from './shared-helpers';
+import { log } from '../utils/shared-helpers';
 
 export function _log(header: string, message: unknown, ...optionalParams: unknown[]): void {
   // eslint-disable-next-line no-console
