@@ -220,7 +220,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           // high values due to font rendering discrepancies with chromium rendering
           linux: 1.15 / 100, // 1.1412952972301604%
           macos: 1.72 / 100, // 1.7113512021706412%
-          windows: 12.78 / 100, // 12.772014023565726%
+          windows: 12.85 / 100, // 12.8418857562695% - different word wrapping, see https://github.com/process-analytics/bpmn-visualization-js/pull/2790#issuecomment-1680765999
         },
       ],
       [
