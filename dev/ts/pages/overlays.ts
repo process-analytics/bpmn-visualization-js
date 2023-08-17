@@ -14,17 +14,20 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { Overlay, OverlayPosition } from '../dev-bundle-index';
 import { addOverlays, configureControlsPanel, configureMousePointer, documentReady, getElementsByIds, removeAllOverlays, startBpmnVisualization } from '../dev-bundle-index';
 
-function addOverlay(overlay) {
-  const bpmnId = document.getElementById('bpmn-id-input').value;
+const bpmnIdInputElt = <HTMLInputElement>document.getElementById('bpmn-id-input');
+
+function addOverlay(overlay: Overlay): void {
+  const bpmnId = bpmnIdInputElt.value;
   if (bpmnId) {
     addOverlays(bpmnId, overlay);
   }
 }
 
-function getPosition() {
-  const bpmnId = document.getElementById('bpmn-id-input').value;
+function getPosition(): OverlayPosition {
+  const bpmnId = bpmnIdInputElt.value;
   if (bpmnId) {
     const elementsByIds = getElementsByIds(bpmnId);
     if (elementsByIds) {
@@ -36,27 +39,27 @@ function getPosition() {
   }
 }
 
-function configureAddDefaultOverlay(position) {
+function configureAddDefaultOverlay(position: OverlayPosition): void {
   document.getElementById(position).onclick = () => addOverlay({ position, label: '123' });
 }
 
-function configureAddOverlayWithCustomFont() {
+function configureAddOverlayWithCustomFont(): void {
   document.getElementById('font').onclick = () => addOverlay({ position: getPosition(), label: '7896', style: { font: { color: 'LightSeaGreen', size: 30 } } });
 }
 
-function configureAddOverlayWithCustomFill() {
+function configureAddOverlayWithCustomFill(): void {
   document.getElementById('fill').onclick = () => addOverlay({ position: getPosition(), label: '3', style: { fill: { color: 'LightSalmon', opacity: 50 } } });
 }
 
-function configureAddOverlayWithCustomStroke() {
+function configureAddOverlayWithCustomStroke(): void {
   document.getElementById('stroke').onclick = () => addOverlay({ position: getPosition(), label: '41', style: { stroke: { color: 'Aquamarine', width: 5 } } });
 }
 
-function configureRemoveAllOverlays() {
-  document.getElementById('clear').onclick = () => removeAllOverlays(document.getElementById('bpmn-id-input').value);
+function configureRemoveAllOverlays(): void {
+  document.getElementById('clear').onclick = () => removeAllOverlays(bpmnIdInputElt.value);
 }
 
-function start() {
+function start(): void {
   const parameters = new URLSearchParams(window.location.search);
   configureMousePointer(parameters);
   configureControlsPanel(parameters);
