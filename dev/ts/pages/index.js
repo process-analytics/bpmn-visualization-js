@@ -28,7 +28,7 @@ import {
   zoom,
   ZoomType,
   windowAlertStatusKoNotifier,
-} from 'dev/ts/dev-bundle-index';
+} from '../dev-bundle-index';
 
 let fitOnLoad = true;
 let fitOptions = {};
