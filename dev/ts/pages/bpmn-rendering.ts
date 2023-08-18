@@ -14,9 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { documentReady, log, logError, startBpmnVisualization } from '../../../ts/dev-bundle-index';
+import { documentReady, log, logError, startBpmnVisualization } from '../dev-bundle-index';
 
-function statusFetchKO(errorMsg) {
+function statusFetchKO(errorMsg: string): void {
   logError(errorMsg);
   const statusElt = document.getElementById('status-zone');
   statusElt.innerText = errorMsg;

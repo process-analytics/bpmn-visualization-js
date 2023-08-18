@@ -48,7 +48,7 @@ export default defineConfig(({ mode }) => {
           },
         },
       },
-      chunkSizeWarningLimit: 820, // mxgraph
+      chunkSizeWarningLimit: 838, // mxgraph
     },
     preview: {
       port: 10002,

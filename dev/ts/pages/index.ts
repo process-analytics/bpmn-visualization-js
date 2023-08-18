@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { FitOptions, FitType } from '../dev-bundle-index';
 import {
   documentReady,
   handleFileSelect,
@@ -28,22 +29,22 @@ import {
   zoom,
   ZoomType,
   windowAlertStatusKoNotifier,
-} from '../../../ts/dev-bundle-index';
+} from '../dev-bundle-index';
 
 let fitOnLoad = true;
-let fitOptions = {};
+let fitOptions: FitOptions = {};
 
-function configureFitOnLoadCheckBox() {
-  const fitOnLoadElt = document.getElementById('fitOnLoad');
+function configureFitOnLoadCheckBox(): void {
+  const fitOnLoadElt = <HTMLInputElement>document.getElementById('fitOnLoad');
   fitOnLoadElt.onchange = event => {
-    fitOnLoad = event.target.checked;
+    fitOnLoad = (<HTMLInputElement>event.target).checked;
     log('Fit on load updated!', fitOnLoad);
     updateLoadOptions(fitOnLoad ? fitOptions : {});
   };
   fitOnLoadElt.checked = fitOnLoad;
 }
 
-function updateFitConfig(config) {
+function updateFitConfig(config: FitOptions): void {
   log('Updating fit config', config);
 
   fitOptions.margin = config.margin || fitOptions.margin;
@@ -57,45 +58,45 @@ function updateFitConfig(config) {
   }
 }
 
-function configureFitTypeSelect() {
-  const fitTypeSelectedElt = document.getElementById('fitType-selected');
+function configureFitTypeSelect(): void {
+  const fitTypeSelectedElt = <HTMLSelectElement>document.getElementById('fitType-selected');
   fitTypeSelectedElt.onchange = event => {
-    updateFitConfig({ type: event.target.value });
+    updateFitConfig({ type: (<HTMLSelectElement>event.target).value as FitType });
     fit(fitOptions);
   };
 
   if (fitOptions.type) {
     fitTypeSelectedElt.value = fitOptions.type;
   } else {
-    updateFitConfig({ type: fitTypeSelectedElt.value });
+    updateFitConfig({ type: fitTypeSelectedElt.value as FitType });
   }
 }
 
-function configureFitMarginInput() {
-  const fitMarginElt = document.getElementById('fit-margin');
+function configureFitMarginInput(): void {
+  const fitMarginElt = <HTMLInputElement>document.getElementById('fit-margin');
   fitMarginElt.onchange = event => {
-    updateFitConfig({ margin: event.target.value });
+    updateFitConfig({ margin: Number((<HTMLInputElement>event.target).value) });
     fit(fitOptions);
   };
 
   if (fitOptions.margin) {
-    fitMarginElt.value = fitOptions.margin;
+    fitMarginElt.value = String(fitOptions.margin);
   } else {
-    updateFitConfig({ margin: fitMarginElt.value });
+    updateFitConfig({ margin: Number(fitMarginElt.value) });
   }
 }
 
-function configureZoomButtons() {
+function configureZoomButtons(): void {
   Object.values(ZoomType).forEach(zoomType => {
     document.getElementById(`zoom-${zoomType}`).onclick = () => zoom(zoomType);
   });
   document.getElementById(`zoom-reset`).onclick = () => fit(fitOptions);
 }
 
-function configureThemeSelect() {
-  const themeSelectedElt = document.getElementById('theme-selected');
+function configureThemeSelect(): void {
+  const themeSelectedElt = <HTMLSelectElement>document.getElementById('theme-selected');
   themeSelectedElt.onchange = event => {
-    switchTheme(event.target.value);
+    switchTheme((<HTMLSelectElement>event.target).value);
   };
 
   const currentTheme = getCurrentTheme();
@@ -104,7 +105,7 @@ function configureThemeSelect() {
   }
 }
 
-function configureDisplayedFooterContent() {
+function configureDisplayedFooterContent(): void {
   const version = getVersion();
   const versionAsString = `bpmn-visualization@${version.lib}`;
   const dependenciesAsString = [...version.dependencies].map(([name, version]) => `${name}@${version}`).join('/');
@@ -115,17 +116,17 @@ function configureDisplayedFooterContent() {
 // The following function `preventZoomingPage` serves to block the page content zoom.
 // It is to make zooming of the actual diagram area more convenient for the user.
 // Without that function, the zooming performed out of the diagram area can mess up the page layout.
-function preventZoomingPage() {
+function preventZoomingPage(): void {
   document.addEventListener(
     'wheel',
-    e => {
+    (e: WheelEvent): void => {
       if (e.ctrlKey) e.preventDefault(); // prevent whole page zoom
     },
-    { passive: false, capture: 'bubble' },
+    { passive: false, capture: true },
   );
 }
 
-function startDemo() {
+function startDemo(): void {
   preventZoomingPage();
   const bpmnContainerId = 'bpmn-container';
 

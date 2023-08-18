@@ -30,14 +30,14 @@ import type {
   ZoomType,
   FillColorGradient,
   GradientDirection,
-} from '../../src/bpmn-visualization';
-import { FlowKind, ShapeBpmnElementKind } from '../../src/bpmn-visualization';
-import { fetchBpmnContent, logDownload, logError, logErrorAndOpenAlert, logStartup } from './utils/internal-helpers';
-import { log } from './utils/shared-helpers';
-import { DropFileUserInterface } from './component/DropFileUserInterface';
-import { SvgExporter } from './component/SvgExporter';
-import { downloadAsPng, downloadAsSvg } from './component/download';
-import { ThemedBpmnVisualization } from './component/ThemedBpmnVisualization';
+} from '../../../src/bpmn-visualization';
+import { FlowKind, ShapeBpmnElementKind } from '../../../src/bpmn-visualization';
+import { fetchBpmnContent, logDownload, logError, logErrorAndOpenAlert, logStartup } from './internal-helpers';
+import { log } from './shared-helpers';
+import { DropFileUserInterface } from '../component/DropFileUserInterface';
+import { SvgExporter } from '../component/SvgExporter';
+import { downloadAsPng, downloadAsSvg } from '../component/download';
+import { ThemedBpmnVisualization } from '../component/ThemedBpmnVisualization';
 
 let bpmnVisualization: ThemedBpmnVisualization;
 let loadOptions: LoadOptions = {};

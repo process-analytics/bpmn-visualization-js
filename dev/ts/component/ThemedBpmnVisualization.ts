@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { BpmnVisualization, FlowKind, ShapeBpmnElementKind, ShapeUtil, StyleConfigurator, StyleDefault } from '../../../src/bpmn-visualization';
-import { logStartup } from '../utils/internal-helpers';
+import { logStartup } from '../shared/internal-helpers';
 import { mxConstants } from '../../../src/component/mxgraph/initializer';
 
 interface Theme {

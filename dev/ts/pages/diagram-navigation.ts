@@ -14,10 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { documentReady, fit, FitType, startBpmnVisualization, zoom, ZoomType } from '../../../ts/dev-bundle-index';
-import { configureControlsPanel, configureMousePointer } from './helpers/controls.js';
+import { configureControlsPanel, configureMousePointer, documentReady, fit, FitType, startBpmnVisualization, zoom, ZoomType } from '../dev-bundle-index';
 
-function configureFitAndZoomButtons() {
+function configureFitAndZoomButtons(): void {
   Object.values(FitType).forEach(fitType => {
     document.getElementById(fitType).onclick = () => fit({ type: fitType });
   });
@@ -26,23 +25,23 @@ function configureFitAndZoomButtons() {
   });
 }
 
-function configureZoomThrottleInput(parameters) {
-  const elZoomThrottle = document.getElementById('zoom-throttle');
+function configureZoomThrottleInput(parameters: URLSearchParams): HTMLInputElement {
+  const elZoomThrottle = <HTMLInputElement>document.getElementById('zoom-throttle');
   if (parameters.get('zoomThrottle')) {
     elZoomThrottle.value = parameters.get('zoomThrottle');
   }
   return elZoomThrottle;
 }
 
-function configureZoomDebounceInput(parameters) {
-  const elZoomDebounce = document.getElementById('zoom-debounce');
+function configureZoomDebounceInput(parameters: URLSearchParams): HTMLInputElement {
+  const elZoomDebounce = <HTMLInputElement>document.getElementById('zoom-debounce');
   if (parameters.get('zoomDebounce')) {
     elZoomDebounce.value = parameters.get('zoomDebounce');
   }
   return elZoomDebounce;
 }
 
-function start() {
+function start(): void {
   const parameters = new URLSearchParams(window.location.search);
   configureMousePointer(parameters);
   configureControlsPanel(parameters);
@@ -56,8 +55,8 @@ function start() {
       navigation: {
         enabled: true,
         zoom: {
-          throttleDelay: elZoomThrottle.value,
-          debounceDelay: elZoomDebounce.value,
+          throttleDelay: Number(elZoomThrottle.value),
+          debounceDelay: Number(elZoomDebounce.value),
         },
       },
     },

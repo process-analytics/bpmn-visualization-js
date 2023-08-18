@@ -1,5 +1,5 @@
 /*
-Copyright 2021 Bonitasoft S.A.
+Copyright 2023 Bonitasoft S.A.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,9 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-export * from './shared/controls';
-export * from './shared/main';
-export * from './shared/shared-helpers';
-export * from '../../src/bpmn-visualization';
-// extra code not exported by bpmn-visualization
-export * from '../../src/model/bpmn/internal/edge/utils';
+import { FlowKind } from './kinds';
+
+/** @internal */
+export function isFlowKind(kind: string): kind is FlowKind {
+  return Object.values(FlowKind)
+    .map(value => value as string)
+    .includes(kind);
+}

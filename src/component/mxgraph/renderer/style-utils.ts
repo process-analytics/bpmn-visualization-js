@@ -15,7 +15,8 @@ limitations under the License.
 */
 
 import type { mxCell } from 'mxgraph';
-import { FlowKind, ShapeUtil } from '../../../model/bpmn/internal';
+import { ShapeUtil } from '../../../model/bpmn/internal';
+import { isFlowKind } from '../../../model/bpmn/internal/edge/utils';
 import { BpmnStyleIdentifier } from '../style/identifiers';
 
 /**
@@ -84,12 +85,6 @@ export function computeAllBpmnClassNames(style: string, isLabel: boolean): strin
     classes.push('bpmn-label');
   }
   return classes;
-}
-
-function isFlowKind(kind: string): boolean {
-  return Object.values(FlowKind)
-    .map(value => value as string)
-    .includes(kind);
 }
 
 /**

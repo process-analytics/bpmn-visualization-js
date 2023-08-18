@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { BpmnElement, BpmnElementKind, Overlay, ShapeStyleUpdate, StyleUpdate, FlowKind } from '../dev-bundle-index';
 import {
   addCssClasses,
   addOverlays,
@@ -34,17 +35,32 @@ import {
   getParentElementIds,
   ShapeBpmnElementKind,
   isChildOfSubProcess,
-} from '../../../ts/dev-bundle-index';
+  isFlowKind,
+} from '../dev-bundle-index';
 
-let lastIdentifiedBpmnIds = [];
-let lastIdentifiedParentBpmnIds = [];
-let styledPoolAndLaneIds = [];
+let lastIdentifiedBpmnIds: string[] = [];
+let lastIdentifiedParentBpmnIds: string[] = [];
+let styledPoolAndLaneIds: string[] = [];
 const cssClassName = 'detection';
 let isOverlaysDisplayed = true;
 let useCSS = true;
 
-function computeStyleUpdateByKind(bpmnKind) {
-  const style = { font: {}, fill: {}, stroke: {} };
+function computeStyleUpdateByKind(bpmnKind: BpmnElementKind): StyleUpdate {
+  const style: ShapeStyleUpdate = { font: {}, fill: {}, stroke: {} };
+
+  if (isFlowKind(bpmnKind)) {
+    switch (bpmnKind as FlowKind) {
+      case 'messageFlow':
+      case 'sequenceFlow':
+      case 'association':
+        style.font.color = 'Chocolate';
+        style.stroke.color = 'Chocolate';
+        style.stroke.width = 4;
+        break;
+    }
+    return style;
+  }
+
   if (ShapeUtil.isTask(bpmnKind)) {
     style.font.color = 'Indigo';
     style.fill.color = 'gold';
@@ -99,19 +115,12 @@ function computeStyleUpdateByKind(bpmnKind) {
         style.stroke.color = 'Chartreuse';
         style.stroke.width = 6;
         break;
-      case 'messageFlow':
-      case 'sequenceFlow':
-      case 'association':
-        style.font.color = 'Chocolate';
-        style.stroke.color = 'Chocolate';
-        style.stroke.width = 4;
-        break;
     }
   }
   return style;
 }
 
-function updateStyleByAPI(bpmnIds, bpmnKind) {
+function updateStyleByAPI(bpmnIds: string[], bpmnKind: ShapeBpmnElementKind): void {
   const subProcessChildrenIds = bpmnIds.filter(isChildOfSubProcess);
   const otherIds = bpmnIds.filter(bpmnId => !subProcessChildrenIds.includes(bpmnId));
 
@@ -130,17 +139,17 @@ function updateStyleByAPI(bpmnIds, bpmnKind) {
   updateStyle(otherIds, style);
 }
 
-function styleByCSS(idsToStyle) {
+function styleByCSS(idsToStyle: string[]): void {
   removeCssClasses(lastIdentifiedBpmnIds, cssClassName);
   addCssClasses(idsToStyle, cssClassName);
 }
 
-function styleByAPI(idsToStyle, bpmnKind) {
+function styleByAPI(idsToStyle: string[], bpmnKind: ShapeBpmnElementKind): void {
   resetStyleByAPI();
   updateStyleByAPI(idsToStyle, bpmnKind);
 }
 
-function resetStyleByAPI() {
+function resetStyleByAPI(): void {
   resetStyle(lastIdentifiedBpmnIds);
   resetStyle(lastIdentifiedParentBpmnIds);
   lastIdentifiedParentBpmnIds = [];
@@ -148,7 +157,7 @@ function resetStyleByAPI() {
   styledPoolAndLaneIds = [];
 }
 
-function manageOverlays(idsToAddOverlay, bpmnKind) {
+function manageOverlays(idsToAddOverlay: string[], bpmnKind: ShapeBpmnElementKind): void {
   lastIdentifiedBpmnIds.forEach(id => removeAllOverlays(id));
   if (isOverlaysDisplayed) {
     idsToAddOverlay.forEach(id => addOverlays(id, getOverlay(bpmnKind)));
@@ -157,7 +166,7 @@ function manageOverlays(idsToAddOverlay, bpmnKind) {
   }
 }
 
-function updateSelectedBPMNElements(bpmnKind) {
+function updateSelectedBPMNElements(bpmnKind: ShapeBpmnElementKind): void {
   log(`Searching for Bpmn elements of '${bpmnKind}' kind`);
   const elementsByKinds = getElementsByKinds(bpmnKind);
 
@@ -172,8 +181,8 @@ function updateSelectedBPMNElements(bpmnKind) {
   lastIdentifiedBpmnIds = newlyIdentifiedBpmnIds;
 }
 
-function updateTextArea(elementsByKinds, bpmnKind) {
-  const textArea = document.getElementById('elements-result');
+function updateTextArea(elementsByKinds: BpmnElement[], bpmnKind: string): void {
+  const textArea = <HTMLTextAreaElement>document.getElementById('elements-result');
 
   const textHeader = `Found ${elementsByKinds.length} ${bpmnKind}(s)`;
   log(textHeader);
@@ -183,15 +192,15 @@ function updateTextArea(elementsByKinds, bpmnKind) {
   textArea.scrollTop = textArea.scrollHeight;
 }
 
-function resetTextArea() {
-  const textArea = document.getElementById('elements-result');
+function resetTextArea(): void {
+  const textArea = <HTMLTextAreaElement>document.getElementById('elements-result');
   textArea.value = '';
 }
 
-function configureControls() {
-  const selectedKindElt = document.getElementById('bpmn-kinds-select');
-  selectedKindElt.onchange = event => updateSelectedBPMNElements(event.target.value);
-  document.addEventListener('diagramLoaded', () => updateSelectedBPMNElements(selectedKindElt.value), false);
+function configureControls(): void {
+  const selectedKindElt = <HTMLSelectElement>document.getElementById('bpmn-kinds-select');
+  selectedKindElt.onchange = event => updateSelectedBPMNElements((<HTMLSelectElement>event.target).value as ShapeBpmnElementKind);
+  document.addEventListener('diagramLoaded', () => updateSelectedBPMNElements(selectedKindElt.value as ShapeBpmnElementKind), false);
 
   document.getElementById('clear-btn').onclick = function () {
     resetTextArea();
@@ -204,16 +213,16 @@ function configureControls() {
   };
 
   // display overlay option
-  const checkboxDisplayOverlaysElt = document.getElementById('checkbox-display-overlays');
+  const checkboxDisplayOverlaysElt = <HTMLInputElement>document.getElementById('checkbox-display-overlays');
   checkboxDisplayOverlaysElt.addEventListener('change', function () {
     isOverlaysDisplayed = this.checked;
     log('Request overlays display:', isOverlaysDisplayed);
-    updateSelectedBPMNElements(selectedKindElt.value);
+    updateSelectedBPMNElements(selectedKindElt.value as ShapeBpmnElementKind);
   });
   checkboxDisplayOverlaysElt.checked = isOverlaysDisplayed;
 
   // use CSS or API to style the BPMN elements
-  const checkboxUseCSSElt = document.getElementById('checkbox-css-style');
+  const checkboxUseCSSElt = <HTMLInputElement>document.getElementById('checkbox-css-style');
   checkboxUseCSSElt.addEventListener('change', function () {
     useCSS = this.checked;
     log('Request CSS style feature:', useCSS);
@@ -223,13 +232,13 @@ function configureControls() {
       addCssClasses(lastIdentifiedBpmnIds, cssClassName);
     } else {
       removeCssClasses(lastIdentifiedBpmnIds, cssClassName);
-      updateStyleByAPI(lastIdentifiedBpmnIds, selectedKindElt.value);
+      updateStyleByAPI(lastIdentifiedBpmnIds, selectedKindElt.value as ShapeBpmnElementKind);
     }
   });
   checkboxUseCSSElt.checked = useCSS;
 }
 
-function getOverlay(bpmnKind) {
+function getOverlay(bpmnKind: BpmnElementKind): Overlay {
   if (ShapeUtil.isActivity(bpmnKind)) {
     return {
       position: 'top-right',
@@ -274,7 +283,7 @@ function getOverlay(bpmnKind) {
   return { position: 'top-left', label: '40' };
 }
 
-function configureDownloadButtons() {
+function configureDownloadButtons(): void {
   document.getElementById('btn-dl-svg').addEventListener('click', downloadSvg, false);
   document.getElementById('btn-dl-png').addEventListener('click', downloadPng, false);
 }
@@ -283,7 +292,7 @@ documentReady(() => {
   startBpmnVisualization({
     globalOptions: {
       // Use a DOM element without id to test the fix for https://github.com/process-analytics/bpmn-visualization-js/issues/2270
-      container: document.querySelector('.bpmn-container'),
+      container: <HTMLElement>document.querySelector('.bpmn-container'),
       navigation: {
         enabled: true,
       },
