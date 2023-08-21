@@ -194,11 +194,8 @@ export default class ProcessConverter {
         shapeBpmnElement = new ShapeBpmnElement(bpmnElement.id, name, kind, parentId, bpmnElement.instantiate);
       }
 
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- We know that the 'default' field is not on all types, but it's already tested
-      // @ts-ignore
-      const defaultFlow = bpmnElement.default;
-      if (ShapeUtil.isWithDefaultSequenceFlow(kind) && defaultFlow) {
-        this.defaultSequenceFlowIds.push(defaultFlow);
+      if ('default' in bpmnElement && ShapeUtil.isWithDefaultSequenceFlow(kind)) {
+        this.defaultSequenceFlowIds.push(bpmnElement.default);
       }
 
       if (shapeBpmnElement) {
