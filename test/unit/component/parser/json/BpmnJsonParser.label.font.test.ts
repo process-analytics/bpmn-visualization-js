@@ -21,7 +21,6 @@ import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 import { expectAsWarning, parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector, verifyLabelFont } from '../../../helpers/JsonTestUtils';
 import { shapeBpmnElementKindForLabelTests } from '../../../helpers/TestUtils';
 
-import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
 import { LabelStyleMissingFontWarning } from '@lib/component/parser/json/warnings';
 
 function expectMissingFontWarning(shapeOrEdgeId: string, labelStyleId: string): void {
@@ -39,6 +38,7 @@ describe('parse bpmn as json for label font', () => {
           targetNamespace: '',
           process: {
             id: 'Process_1',
+            [sourceKind]: { id: 'source_id_0', name: `${sourceKind}_id_0` },
           },
           BPMNDiagram: {
             id: 'BpmnDiagram_1',
@@ -64,7 +64,6 @@ describe('parse bpmn as json for label font', () => {
           },
         },
       };
-      (json.definitions.process as TProcess)[`${sourceKind}`] = { id: 'source_id_0', name: `${sourceKind}_id_0` };
 
       const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 

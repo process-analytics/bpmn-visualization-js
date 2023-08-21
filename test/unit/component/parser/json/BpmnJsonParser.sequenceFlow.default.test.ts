@@ -20,7 +20,6 @@ import { verifyEdge } from '../../../helpers/bpmn-model-expect';
 
 import { SequenceFlowKind } from '@lib/model/bpmn/internal';
 import { Waypoint } from '@lib/model/bpmn/internal/edge/edge';
-import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
 
 describe('parse bpmn as json for default sequence flow', () => {
   it.each([
@@ -48,6 +47,7 @@ describe('parse bpmn as json for default sequence flow', () => {
             sourceRef: 'source_id_0',
             targetRef: 'targetRef_RLk',
           },
+          [sourceKind]: { id: 'source_id_0', default: 'sequenceFlow_id_0' },
         },
         BPMNDiagram: {
           id: 'BpmnDiagram_1',
@@ -67,7 +67,6 @@ describe('parse bpmn as json for default sequence flow', () => {
         },
       },
     };
-    (json.definitions.process as TProcess)[`${sourceKind}`] = { id: 'source_id_0', default: 'sequenceFlow_id_0' };
 
     const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
 

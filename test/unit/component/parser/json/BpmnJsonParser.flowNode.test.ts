@@ -39,16 +39,17 @@ describe.each([
   ['eventBasedGateway', ShapeBpmnElementKind.GATEWAY_EVENT_BASED],
   ['complexGateway', ShapeBpmnElementKind.GATEWAY_COMPLEX],
 ])('parse bpmn as json for %s', (bpmnKind: string, expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
-  const processWithFlowNodeAsObject = {} as TProcess;
-  processWithFlowNodeAsObject[`${bpmnKind}`] = {
-    id: `${bpmnKind}_id_0`,
-    name: `${bpmnKind} name`,
+  const processWithFlowNodeAsObject: TProcess = {
+    [bpmnKind]: {
+      id: `${bpmnKind}_id_0`,
+      name: `${bpmnKind} name`,
+    },
   };
 
   it.each([
     ['object', processWithFlowNodeAsObject],
     ['array', [processWithFlowNodeAsObject]],
-  ])(`should convert as Shape, when a ${bpmnKind} is an attribute (as object) of 'process' (as %s)`, (title: string, processJson: TProcess) => {
+  ])(`should convert as Shape, when a ${bpmnKind} is an attribute (as object) of 'process' (as %s)`, (title: string, processJson: TProcess | TProcess[]) => {
     const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
@@ -81,7 +82,9 @@ describe.each([
     const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
-        process: {},
+        process: {
+          [bpmnKind]: [{ id: `${bpmnKind}_id_0`, name: `${bpmnKind} name` }, { id: `${bpmnKind}_id_1` }],
+        },
         BPMNDiagram: {
           name: 'process 0',
           BPMNPlane: {
@@ -101,15 +104,6 @@ describe.each([
         },
       },
     };
-    (json.definitions.process as TProcess)[`${bpmnKind}`] = [
-      {
-        id: `${bpmnKind}_id_0`,
-        name: `${bpmnKind} name`,
-      },
-      {
-        id: `${bpmnKind}_id_1`,
-      },
-    ];
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
 
@@ -144,7 +138,9 @@ describe.each([
       const json: BpmnJsonModel = {
         definitions: {
           targetNamespace: '',
-          process: {},
+          process: {
+            [bpmnKind]: [{ id: `${bpmnKind}_id_0` }, { id: `${bpmnKind}_id_1`, instantiate: true }],
+          },
           BPMNDiagram: {
             name: 'process 0',
             BPMNPlane: {
@@ -164,15 +160,6 @@ describe.each([
           },
         },
       };
-      (json.definitions.process as TProcess)[`${bpmnKind}`] = [
-        {
-          id: `${bpmnKind}_id_0`,
-        },
-        {
-          id: `${bpmnKind}_id_1`,
-          instantiate: true,
-        },
-      ];
 
       const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
 
@@ -211,7 +198,17 @@ describe.each([
       const json: BpmnJsonModel = {
         definitions: {
           targetNamespace: '',
-          process: {},
+          process: {
+            [bpmnKind]: [
+              { id: `${bpmnKind}_id_1` },
+              { id: `${bpmnKind}_id_2`, eventGatewayType: 'Exclusive' },
+              // forbidden by the BPMN spec, only valid when 'instantiate: true'
+              { id: `${bpmnKind}_id_3`, eventGatewayType: 'Parallel' },
+              { id: `${bpmnKind}_id_11`, instantiate: true },
+              { id: `${bpmnKind}_id_12`, instantiate: true, eventGatewayType: 'Exclusive' },
+              { id: `${bpmnKind}_id_13`, instantiate: true, eventGatewayType: 'Parallel' },
+            ],
+          },
           BPMNDiagram: {
             name: 'process 0',
             BPMNPlane: {
@@ -251,33 +248,6 @@ describe.each([
           },
         },
       };
-      (json.definitions.process as TProcess)[`${bpmnKind}`] = [
-        {
-          id: `${bpmnKind}_id_1`,
-        },
-        {
-          id: `${bpmnKind}_id_2`,
-          eventGatewayType: 'Exclusive',
-        },
-        {
-          id: `${bpmnKind}_id_3`,
-          eventGatewayType: 'Parallel', // forbidden by the BPMN spec, only valid when 'instantiate: true'
-        },
-        {
-          id: `${bpmnKind}_id_11`,
-          instantiate: true,
-        },
-        {
-          id: `${bpmnKind}_id_12`,
-          instantiate: true,
-          eventGatewayType: 'Exclusive',
-        },
-        {
-          id: `${bpmnKind}_id_13`,
-          instantiate: true,
-          eventGatewayType: 'Parallel',
-        },
-      ];
 
       const model = parseJsonAndExpectOnlyFlowNodes(json, 6);
 
