@@ -43,6 +43,7 @@ module.exports = {
   coverageReporters: ['lcov', 'text-summary'],
   coverageDirectory: 'build/test-report/integration',
   setupFilesAfterEnv: [
+    'jest-extended/all',
     './test/integration/config/mxgraph-config.ts',
     // put at the latest place to see logs that could be displayed by setup files
     './test/integration/config/hide-console-warnings.js',
