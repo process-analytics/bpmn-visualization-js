@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 import type { BuildProcessParameter } from '../../../helpers/JsonBuilder';
 import { buildDefinitions } from '../../../helpers/JsonBuilder';
 import {
@@ -307,7 +308,7 @@ describe('parse bpmn as json for sub-process', () => {
     }
 
     it(`should convert activities, events, gateways, textAnnotation, association and sequence-flows in sub-process`, () => {
-      const json = {
+      const json: BpmnJsonModel = {
         definitions: {
           targetNamespace: '',
           process: {
@@ -511,7 +512,7 @@ describe('parse bpmn as json for sub-process', () => {
     if (expectedShapeBpmnSubProcessKind === ShapeBpmnSubProcessKind.EVENT) {
       it(`should convert error start event in '${expectedShapeBpmnSubProcessKind} sub-process'`, () => {
         const errorStartEventName = `${expectedShapeBpmnSubProcessKind} SubProcess Error Event`;
-        const json = {
+        const json: BpmnJsonModel = {
           definitions: {
             targetNamespace: '',
             process: {

@@ -14,13 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 import { expectAsWarning, parseJsonAndExpectOnlyWarnings, parsingMessageCollector } from '../../../helpers/JsonTestUtils';
 import { EdgeUnknownBpmnElementWarning } from '@lib/component/parser/json/warnings';
 
 describe('parse bpmn as json for edges', () => {
   // this also covers unsupported bpmn element types that are then not retrieved during the parsing
   it('should not convert as Edge without related BPMN element', () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: '',

@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 import { buildDefinitions } from '../../../helpers/JsonBuilder';
 import { parseJsonAndExpectOnlyEdgesAndFlowNodes, parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtils';
 import type { ExpectedShape } from '../../../helpers/bpmn-model-expect';
@@ -48,7 +49,7 @@ describe.each([
     ['object', processWithFlowNodeAsObject],
     ['array', [processWithFlowNodeAsObject]],
   ])(`should convert as Shape, when a ${bpmnKind} is an attribute (as object) of 'process' (as %s)`, (title: string, processJson: TProcess) => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: processJson,
@@ -77,7 +78,7 @@ describe.each([
   });
 
   it(`should convert as Shape, when a ${bpmnKind} (with/without name) is an attribute (as array) of 'process'`, () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {},
@@ -140,7 +141,7 @@ describe.each([
 
   if (expectedShapeBpmnElementKind === ShapeBpmnElementKind.TASK_RECEIVE) {
     it(`should convert as Shape, when a ${bpmnKind} (with/without instantiate) is an attribute (as array) of 'process'`, () => {
-      const json = {
+      const json: BpmnJsonModel = {
         definitions: {
           targetNamespace: '',
           process: {},
@@ -207,7 +208,7 @@ describe.each([
 
   if (expectedShapeBpmnElementKind === ShapeBpmnElementKind.GATEWAY_EVENT_BASED) {
     it(`should convert as Shape, when a ${bpmnKind} (with/without instantiate) is an attribute (as array) of 'process'`, () => {
-      const json = {
+      const json: BpmnJsonModel = {
         definitions: {
           targetNamespace: '',
           process: {},

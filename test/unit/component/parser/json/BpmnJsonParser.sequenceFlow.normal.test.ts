@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 import { parseJsonAndExpectOnlyEdges } from '../../../helpers/JsonTestUtils';
 import { verifyEdge } from '../../../helpers/bpmn-model-expect';
 
@@ -33,8 +34,8 @@ describe('parse bpmn as json for sequence flow', () => {
   it.each([
     ['object', processWithSequenceFlowAsObject],
     ['array', [processWithSequenceFlowAsObject]],
-  ])(`should convert as Edge, when a sequence flow is an attribute (as object) of 'process' (as %s)`, (title: string, processJson: TProcess) => {
-    const json = {
+  ])(`should convert as Edge, when a sequence flow is an attribute (as object) of 'process' (as %s)`, (title: string, processJson: TProcess | TProcess[]) => {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: processJson,
@@ -64,7 +65,7 @@ describe('parse bpmn as json for sequence flow', () => {
   });
 
   it(`should convert as Edge, when a sequence flow (with/without name) is an attribute (as array) of 'process'`, () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
@@ -125,7 +126,7 @@ describe('parse bpmn as json for sequence flow', () => {
   });
 
   it(`should convert as Edge, when a sequence flow (with 2 & several waypoints) is an attribute (as array) of 'process'`, () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {

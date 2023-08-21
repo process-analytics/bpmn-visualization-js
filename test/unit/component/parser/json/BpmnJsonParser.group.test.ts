@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 import {
   expectAsWarning,
   parseJsonAndExpectOnlyFlowNodes,
@@ -28,7 +29,7 @@ import { GroupUnknownCategoryValueWarning, ShapeUnknownBpmnElementWarning } from
 
 describe('parse bpmn as json for group', () => {
   it('Single Group with label in process', () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
@@ -78,7 +79,7 @@ describe('parse bpmn as json for group', () => {
   });
 
   it('Several Groups with or without label in process', () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
@@ -165,7 +166,7 @@ describe('parse bpmn as json for group', () => {
   });
 
   it('Single Group with label in collaboration', () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         collaboration: {
@@ -241,7 +242,7 @@ describe('parse bpmn as json for group', () => {
 
   describe('Robustness', () => {
     it('Single Group in process without matching categoryValueRef', () => {
-      const json = {
+      const json: BpmnJsonModel = {
         definitions: {
           targetNamespace: '',
           process: {
@@ -284,7 +285,7 @@ describe('parse bpmn as json for group', () => {
     }
 
     it('Single Group in collaboration without matching categoryValueRef', () => {
-      const json = {
+      const json: BpmnJsonModel = {
         definitions: {
           targetNamespace: '',
           collaboration: {

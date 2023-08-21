@@ -17,6 +17,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtils';
 import { shapeBpmnElementKindForLabelTests } from '../../../helpers/TestUtils';
 
@@ -26,7 +27,7 @@ describe('parse bpmn as json for label', () => {
   it.each(shapeBpmnElementKindForLabelTests)(
     "should convert as Shape without Label, when a BPMNShape (attached to %s & with empty BPMNLabel) is an attribute (as object) of 'BPMNPlane' (as object)",
     sourceKind => {
-      const json = {
+      const json: BpmnJsonModel = {
         definitions: {
           targetNamespace: '',
           process: {
@@ -55,7 +56,7 @@ describe('parse bpmn as json for label', () => {
   );
 
   it("should convert as Edge without Label, when a BPMNEdge (with empty BPMNLabel) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
@@ -86,7 +87,7 @@ describe('parse bpmn as json for label', () => {
   });
 
   it("should convert as Shape without Label, when a BPMNShape (with BPMNLabel with just id) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
@@ -118,7 +119,7 @@ describe('parse bpmn as json for label', () => {
   });
 
   it("should convert as Edge without Label, when a BPMNEdge (with BPMNLabel with just id) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
@@ -151,7 +152,7 @@ describe('parse bpmn as json for label', () => {
   });
 
   it("should convert as Shape without Label, when a BPMNShape (without BPMNLabel) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
@@ -180,7 +181,7 @@ describe('parse bpmn as json for label', () => {
   });
 
   it("should convert as Edge without Label, when a BPMNEdge (without BPMNLabel) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {

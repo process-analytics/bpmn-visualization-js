@@ -17,6 +17,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 import { expectAsWarning, parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector, verifyLabelFont } from '../../../helpers/JsonTestUtils';
 import { shapeBpmnElementKindForLabelTests } from '../../../helpers/TestUtils';
 
@@ -33,7 +34,7 @@ describe('parse bpmn as json for label font', () => {
   it.each(shapeBpmnElementKindForLabelTests)(
     "should convert as Shape with Font, when a BPMNShape (attached to %s & who references a BPMNLabelStyle with font) is an attribute (as object) of 'BPMNPlane' (as object)",
     sourceKind => {
-      const json = {
+      const json: BpmnJsonModel = {
         definitions: {
           targetNamespace: '',
           process: {
@@ -72,7 +73,7 @@ describe('parse bpmn as json for label font', () => {
   );
 
   it("should convert as Edge with Font, when a BPMNEdge (which references a BPMNLabelStyle with font) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
@@ -113,7 +114,7 @@ describe('parse bpmn as json for label font', () => {
   });
 
   it("should convert as Shape[] with Font, when several BPMNShapes (who reference the same BPMNLabelStyle) are an attribute (as array) of 'BPMNPlane' (as object)", () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
@@ -167,7 +168,7 @@ describe('parse bpmn as json for label font', () => {
   });
 
   it("should convert as Edge[] with Font, when several BPMNEdges (who reference the same BPMNLabelStyle) are an attribute (as array) of 'BPMNPlane' (as object)", () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
@@ -225,7 +226,7 @@ describe('parse bpmn as json for label font', () => {
   });
 
   it("should convert as Shape[] without Font, when BPMNShapes (who reference a BPMNLabelStyle) are an attribute (as array) of 'BPMNPlane' (as object) & BPMNLabelStyle (with font with/without all attributes) is an attribute (as array) of 'BPMNDiagram' (as object)", () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
@@ -267,7 +268,6 @@ describe('parse bpmn as json for label font', () => {
             {
               id: 'style_id_1',
               Font: {
-                id: '1',
                 isBold: false,
                 isItalic: false,
                 isStrikeThrough: false,
@@ -293,7 +293,7 @@ describe('parse bpmn as json for label font', () => {
   });
 
   it("should convert as Edge[] without Font, when BPMNEdges (which reference a BPMNLabelStyle) are an attribute (as array) of 'BPMNPlane' (as object) & BPMNLabelStyle (with font with/without all attributes) is an attribute (as array) of 'BPMNDiagram' (as object)", () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
@@ -339,7 +339,6 @@ describe('parse bpmn as json for label font', () => {
             {
               id: 'style_id_1',
               Font: {
-                id: '1',
                 isBold: false,
                 isItalic: false,
                 isStrikeThrough: false,
@@ -365,7 +364,7 @@ describe('parse bpmn as json for label font', () => {
   });
 
   it("should convert as Shape without Font, when a BPMNShape (who references a BPMNLabelStyle without font) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
@@ -402,7 +401,7 @@ describe('parse bpmn as json for label font', () => {
   });
 
   it("should convert as Edge without Font, when a BPMNEdge (which references a BPMNLabelStyle without font) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
@@ -440,7 +439,7 @@ describe('parse bpmn as json for label font', () => {
   });
 
   it("should convert as Shape without Font, when a BPMNShape (who references a non-existing BPMNLabelStyle) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
@@ -474,7 +473,7 @@ describe('parse bpmn as json for label font', () => {
   });
 
   it("should convert as Edge without Font, when a BPMNEdge (which references a non-existing BPMNLabelStyle) is an attribute (as object) of 'BPMNPlane' (as object)", () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {

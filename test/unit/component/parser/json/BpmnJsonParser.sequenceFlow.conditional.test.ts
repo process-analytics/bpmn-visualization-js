@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 import { parseJsonAndExpectOnlyEdgesAndFlowNodes } from '../../../helpers/JsonTestUtils';
 import { verifyEdge } from '../../../helpers/bpmn-model-expect';
 
@@ -40,7 +41,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
   ])(
     `should convert as Edge, when an sequence flow (defined as conditional in %s) is an attribute (as object) of 'process' (as object)`,
     (sourceKind, expectedSequenceFlowKind) => {
-      const json = {
+      const json: BpmnJsonModel = {
         definitions: {
           targetNamespace: '',
           process: {
@@ -91,7 +92,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
   );
 
   it(`should NOT convert, when an sequence flow (defined as conditional) is an attribute of 'process' and attached to a flow node where is NOT possible in BPMN Semantic`, () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {

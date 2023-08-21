@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 import { buildDefinitions } from '../../../helpers/JsonBuilder';
 import type { BuildProcessParameter } from '../../../helpers/JsonBuilder';
 import { parseJsonAndExpectOnlyEdges } from '../../../helpers/JsonTestUtils';
@@ -88,7 +89,7 @@ describe('parse bpmn as json for association', () => {
   });
 
   it('should convert as Edge, when BPMNDiagram is an array', () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: processJsonAsObjectWithAssociationJsonAsObject,

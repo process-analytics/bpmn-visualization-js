@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 import { parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtils';
 import { getExpectedMarkers, verifyShape } from '../../../helpers/bpmn-model-expect';
 
@@ -53,7 +54,7 @@ describe.each([
           | TMultiInstanceLoopCharacteristics
           | (string | TStandardLoopCharacteristics | TMultiInstanceLoopCharacteristics)[],
       ) => {
-        const json = {
+        const json: BpmnJsonModel = {
           definitions: {
             targetNamespace: '',
             process: {},
@@ -93,7 +94,7 @@ describe.each([
 
     if (expectedShapeBpmnElementKind === ShapeBpmnElementKind.SUB_PROCESS) {
       it(`should convert as Shape with ${expectedMarkerKind} & expand markers, when '${bpmnLoopCharacteristicsKind}' is an attribute of '${bpmnSemanticType}' and BPMNShape is NOT expanded`, () => {
-        const json = {
+        const json: BpmnJsonModel = {
           definitions: {
             targetNamespace: '',
             process: {},
@@ -139,7 +140,7 @@ describe.each([
     ])(
       `should convert as Shape with ${expectedMarkerKind} marker, when 'isSequential' is an attribute (as ${isSequential}) of 'multiInstanceLoopCharacteristics' (as %s) of '${bpmnSemanticType}'  and BPMNShape is expanded`,
       (title: string, loopCharacteristics: TMultiInstanceLoopCharacteristics | TMultiInstanceLoopCharacteristics[]) => {
-        const json = {
+        const json: BpmnJsonModel = {
           definitions: {
             targetNamespace: '',
             process: {},
@@ -179,7 +180,7 @@ describe.each([
 
     if (expectedShapeBpmnElementKind === ShapeBpmnElementKind.SUB_PROCESS || expectedShapeBpmnElementKind === ShapeBpmnElementKind.CALL_ACTIVITY) {
       it(`should convert as Shape with ${expectedMarkerKind} & expand markers, when 'isSequential' is an attribute (as ${isSequential}) of 'multiInstanceLoopCharacteristics' of '${bpmnSemanticType}' and BPMNShape is NOT expanded`, () => {
-        const json = {
+        const json: BpmnJsonModel = {
           definitions: {
             targetNamespace: '',
             process: {},
