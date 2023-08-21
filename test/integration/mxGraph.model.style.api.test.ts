@@ -1128,6 +1128,60 @@ describe('mxGraph model - reset style', () => {
         verticalAlign: 'bottom',
       });
     });
+
+    describe('Reset style - special cases', () => {
+      const bpmnElementsRegistry = bpmnVisualization.bpmnElementsRegistry;
+
+      it.each([null, undefined])('Reset style with nullish parameter: %s', (nullishResetParameter: string) => {
+        // Apply custom style
+        const customStyle: StyleUpdate = {
+          font: { color: 'blue' },
+        };
+        bpmnElementsRegistry.updateStyle(['startEvent_lane_1', 'sequenceFlow_lane_1_elt_1'], customStyle);
+
+        // Reset style
+        bpmnElementsRegistry.resetStyle(nullishResetParameter);
+
+        // Check that the style has been reset to default values for each element
+        expect('startEvent_lane_1').toBeStartEvent({
+          // not under test
+          eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
+          parentId: 'lane_01',
+          label: 'message start 1',
+        });
+        expect('sequenceFlow_lane_1_elt_1').toBeSequenceFlow({
+          // not under test
+          parentId: 'lane_01',
+          verticalAlign: 'bottom',
+        });
+      });
+
+      it('Reset style with an empty array', () => {
+        // Apply custom style
+        const customStyle: StyleUpdate = {
+          opacity: 25,
+        };
+        bpmnElementsRegistry.updateStyle(['startEvent_lane_1', 'sequenceFlow_lane_1_elt_1'], customStyle);
+
+        // Reset style. It should have no effect.
+        bpmnElementsRegistry.resetStyle([]);
+
+        // Check that the style has been reset to default values for each element
+        expect('startEvent_lane_1').toBeStartEvent({
+          opacity: 25,
+          // not under test
+          eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
+          parentId: 'lane_01',
+          label: 'message start 1',
+        });
+        expect('sequenceFlow_lane_1_elt_1').toBeSequenceFlow({
+          opacity: 25,
+          // not under test
+          parentId: 'lane_01',
+          verticalAlign: 'bottom',
+        });
+      });
+    });
   });
 
   // Check that there is no bad interactions between the two features
