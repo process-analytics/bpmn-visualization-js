@@ -22,6 +22,8 @@ import type GraphCellUpdater from '../mxgraph/GraphCellUpdater';
 import { newGraphCellUpdater } from '../mxgraph/GraphCellUpdater';
 import { BpmnQuerySelectors } from './query-selectors';
 import type { BpmnElement, Overlay, StyleUpdate } from './types';
+import { createNewOverlaysRegistry } from './overlays-registry';
+import type { OverlaysRegistry } from './overlays-registry';
 import type { BpmnModelRegistry } from './bpmn-model-registry';
 import type { BpmnElementKind } from '../../model/bpmn/internal';
 
@@ -30,7 +32,13 @@ import type { BpmnElementKind } from '../../model/bpmn/internal';
  */
 export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, graph: BpmnGraph): BpmnElementsRegistry {
   const cssRegistry = new CssRegistry();
-  return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(graph.container, new BpmnQuerySelectors()), cssRegistry, newGraphCellUpdater(graph, cssRegistry));
+  return new BpmnElementsRegistry(
+    bpmnModelRegistry,
+    new HtmlElementRegistry(graph.container, new BpmnQuerySelectors()),
+    cssRegistry,
+    newGraphCellUpdater(graph, cssRegistry),
+    createNewOverlaysRegistry(graph),
+  );
 }
 
 /**
@@ -61,6 +69,7 @@ export class BpmnElementsRegistry {
     private htmlElementRegistry: HtmlElementRegistry,
     private cssRegistry: CssRegistry,
     private graphCellUpdater: GraphCellUpdater,
+    private overlaysRegistry: OverlaysRegistry,
   ) {
     this.bpmnModelRegistry.registerOnLoadCallback(() => {
       this.cssRegistry.clear();
@@ -71,7 +80,7 @@ export class BpmnElementsRegistry {
   /**
    * Get all elements by ids. The returned array contains elements in the order of the `bpmnElementIds` parameter.
    *
-   * Not found elements are not returned as undefined in the array, so the returned array contains at most as much elements as the `bpmnElementIds` parameter.
+   * Not found elements are not returned as undefined in the array, so the returned array contains at most as many elements as the `bpmnElementIds` parameter.
    *
    * ```javascript
    * ...
@@ -144,7 +153,7 @@ export class BpmnElementsRegistry {
    * bpmnVisualization.bpmnElementsRegistry.addCssClasses('task_3', ['suspicious-path', 'additional-info']);
    * ```
    *
-   * @param bpmnElementIds The BPMN ID of the element(s) to add the CSS classes to.
+   * @param bpmnElementIds The BPMN ID of the element(s) to add the CSS classes to. Passing a nullish parameter or an empty array has no effect.
    * @param classNames The name of the class(es) to add to the BPMN element(s).
    *
    * @see {@link removeCssClasses} to remove specific CSS classes from a BPMN element.
@@ -159,7 +168,7 @@ export class BpmnElementsRegistry {
   /**
    * Remove one or more CSS classes that were previously added to one or more BPMN elements using the {@link addCssClasses} or the {@link toggleCssClasses} methods.
    *
-   * **Note**: If an ID is passed that does not reference an existing BPMN element, no rendering changes are made.
+   * **Note**: If you pass IDs that are not related to existing BPMN elements, they will be ignored and no changes will be made to the rendering.
    *
    * @example
    * ```javascript
@@ -170,7 +179,7 @@ export class BpmnElementsRegistry {
    * bpmnVisualization.bpmnElementsRegistry.removeCssClasses('task_3', ['running', 'additional-info']);
    * ```
    *
-   * @param bpmnElementIds The BPMN ID of the element(s) from which to remove the CSS classes.
+   * @param bpmnElementIds The BPMN ID of the element(s) from which to remove the CSS classes. Passing a nullish parameter or an empty array has no effect.
    * @param classNames The name of the class(es) to remove from the BPMN element(s).
    *
    * @see {@link removeAllCssClasses} to remove all CSS classes from a BPMN element.
@@ -182,7 +191,7 @@ export class BpmnElementsRegistry {
   /**
    * Remove any CSS classes that were previously added to one or more BPMN elements using the {@link addCssClasses} or the {@link toggleCssClasses} methods.
    *
-   * **Note**: If an ID is passed that does not reference an existing BPMN element, no rendering changes are made.
+   * **Note**: If you pass IDs that are not related to existing BPMN elements, they will be ignored and no changes will be made to the rendering.
    *
    * @example
    * ```javascript
@@ -197,7 +206,7 @@ export class BpmnElementsRegistry {
    * ```
    *
    * @param bpmnElementIds The BPMN ID of the element(s) from which to remove all CSS classes.
-   * If no IDs are specified, all CSS classes associated with BPMN elements will be removed.
+   * When passing a nullish parameter, all CSS classes associated with all BPMN elements will be removed. Passing an empty array has no effect.
    *
    * @see {@link removeCssClasses} to remove specific classes from a BPMN element.
    * @since 0.34.0
@@ -229,7 +238,7 @@ export class BpmnElementsRegistry {
    * bpmnVisualization.bpmnElementsRegistry.toggleCssClasses('task_3', ['running', 'additional-info']);
    * ```
    *
-   * @param bpmnElementIds The BPMN ID of the element(s) on which to toggle the CSS classes.
+   * @param bpmnElementIds The BPMN ID of the element(s) on which to toggle the CSS classes. Passing a nullish parameter or an empty array has no effect.
    * @param classNames The name of the class(es) to toggle on the BPMN element(s).
    *
    * @see {@link removeCssClasses} to remove specific CSS classes from a BPMN element.
@@ -297,7 +306,7 @@ export class BpmnElementsRegistry {
    * @param overlays The overlays to add to the BPMN element
    */
   addOverlays(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
-    this.graphCellUpdater.addOverlays(bpmnElementId, overlays);
+    this.overlaysRegistry.addOverlays(bpmnElementId, overlays);
   }
 
   /**
@@ -316,7 +325,7 @@ export class BpmnElementsRegistry {
    * @param bpmnElementId The BPMN id of the element where to remove the overlays
    */
   removeAllOverlays(bpmnElementId: string): void {
-    this.graphCellUpdater.removeAllOverlays(bpmnElementId);
+    this.overlaysRegistry.removeAllOverlays(bpmnElementId);
   }
 
   /**
@@ -365,12 +374,12 @@ export class BpmnElementsRegistry {
    *
    * - This method is intended to update the style of specific elements, e.g. to update their colors. When rendering a BPMN diagram, `bpmn-visualization` applies style properties
    * to all elements according to their types.
-   * So if you want to style all elements of a certain type, change the default configuration of the styles instead of updating the element afterwards. See the repository providing the
+   * So if you want to style all elements of a certain type, change the default configuration of the styles instead of updating the element afterward. See the repository providing the
    * [examples of the `bpmn-visualization` TypeScript library](https://github.com/process-analytics/bpmn-visualization-examples/) for more details.
    * - If you pass IDs that are not related to existing BPMN elements, they will be ignored and no changes will be made to the rendering.
    *
    * @param bpmnElementIds The BPMN ID of the element(s) whose style must be reset.
-   * If no IDs are specified, the style of all BPMN elements will be reset.
+   * When passing a nullish parameter, the style of all BPMN elements will be reset. Passing an empty array has no effect.
    *
    * @see {@link updateStyle} to update the style of one or several BPMN elements.
    * @see {@link addCssClasses} to add CSS classes to a BPMN element.
@@ -380,7 +389,7 @@ export class BpmnElementsRegistry {
    * @since 0.37.0
    */
   resetStyle(bpmnElementIds?: string | string[]): void {
-    this.graphCellUpdater.resetStyle(ensureIsArray<string>(bpmnElementIds));
+    this.graphCellUpdater.resetStyle(bpmnElementIds);
   }
 }
 

@@ -20,11 +20,9 @@ import { StyleManager } from './style/StyleManager';
 import type { BpmnGraph } from './BpmnGraph';
 import { mxConstants } from './initializer';
 import { BpmnStyleIdentifier } from './style';
-import type { Overlay, StyleUpdate } from '../registry';
+import type { StyleUpdate } from '../registry';
 import type { CssRegistry } from '../registry/css-registry';
-import { MxGraphCustomOverlay } from './overlay/custom-overlay';
 import { ensureIsArray } from '../helpers/array-utils';
-import { OverlayConverter } from './overlay/OverlayConverter';
 import { messageFlowIconId } from './BpmnRenderer';
 import { ensureOpacityValue } from '../helpers/validators';
 
@@ -32,7 +30,7 @@ import { ensureOpacityValue } from '../helpers/validators';
  * @internal
  */
 export function newGraphCellUpdater(graph: BpmnGraph, cssRegistry: CssRegistry): GraphCellUpdater {
-  return new GraphCellUpdater(graph, new OverlayConverter(), new StyleManager(cssRegistry, graph.getModel()));
+  return new GraphCellUpdater(graph, new StyleManager(cssRegistry, graph.getModel()));
 }
 
 /**
@@ -41,7 +39,6 @@ export function newGraphCellUpdater(graph: BpmnGraph, cssRegistry: CssRegistry):
 export default class GraphCellUpdater {
   constructor(
     readonly graph: BpmnGraph,
-    readonly overlayConverter: OverlayConverter,
     private readonly styleManager: StyleManager,
   ) {}
 
@@ -67,25 +64,6 @@ export default class GraphCellUpdater {
     let cellStyle = cell.getStyle();
     cellStyle = setStyle(cellStyle, BpmnStyleIdentifier.EXTRA_CSS_CLASSES, cssClasses.join(','));
     model.setStyle(cell, cellStyle);
-  }
-
-  addOverlays(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
-    const cell = this.graph.getModel().getCell(bpmnElementId);
-    if (!cell) {
-      return;
-    }
-    ensureIsArray(overlays).forEach(overlay => {
-      const bpmnOverlay = new MxGraphCustomOverlay(overlay.label, this.overlayConverter.convert(overlay));
-      this.graph.addCellOverlay(cell, bpmnOverlay);
-    });
-  }
-
-  removeAllOverlays(bpmnElementId: string): void {
-    const cell = this.graph.getModel().getCell(bpmnElementId);
-    if (!cell) {
-      return;
-    }
-    this.graph.removeCellOverlays(cell);
   }
 
   updateStyle(bpmnElementIds: string | string[], styleUpdate: StyleUpdate): void {
@@ -122,9 +100,9 @@ export default class GraphCellUpdater {
     });
   }
 
-  resetStyle(bpmnElementIds: string[]): void {
+  resetStyle(bpmnElementIds: string | string[]): void {
     this.graph.batchUpdate(() => {
-      if (bpmnElementIds.length == 0) {
+      if (!bpmnElementIds) {
         this.styleManager.resetAllStyles();
       } else {
         for (const id of withCellIdsOfMessageFlowIcons(bpmnElementIds)) {
