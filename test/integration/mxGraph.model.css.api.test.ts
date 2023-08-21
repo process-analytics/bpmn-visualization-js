@@ -24,8 +24,10 @@ describe('mxGraph model - CSS API', () => {
     bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
   });
 
+  const bpmnElementsRegistry = bpmnVisualization.bpmnElementsRegistry;
+
   test('Add CSS classes on Shape', () => {
-    bpmnVisualization.bpmnElementsRegistry.addCssClasses('userTask_2_2', ['class#1', 'class#2']);
+    bpmnElementsRegistry.addCssClasses('userTask_2_2', ['class#1', 'class#2']);
     expect('userTask_2_2').toBeUserTask({
       extraCssClasses: ['class#1', 'class#2'],
       // not under test
@@ -35,12 +37,84 @@ describe('mxGraph model - CSS API', () => {
   });
 
   test('Add CSS classes on Edge', () => {
-    bpmnVisualization.bpmnElementsRegistry.addCssClasses('sequenceFlow_lane_3_elt_3', ['class-1', 'class-2', 'class-3']);
+    bpmnElementsRegistry.addCssClasses('sequenceFlow_lane_3_elt_3', ['class-1', 'class-2', 'class-3']);
     expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
       extraCssClasses: ['class-1', 'class-2', 'class-3'],
       // not under test
       parentId: 'lane_03',
       verticalAlign: 'bottom',
+    });
+  });
+
+  describe('Remove CSS classes - special cases', () => {
+    const emptyArray: string[] = [];
+    it.each([null, undefined, emptyArray])('Remove CSS classes with parameter: %s', (bpmnElementIds: string) => {
+      // ensure we pass an empty array
+      if (bpmnElementIds) {
+        // eslint-disable-next-line jest/no-conditional-expect -- here we only validate the test parameter
+        expect(emptyArray).toBeArray();
+        // eslint-disable-next-line jest/no-conditional-expect
+        expect(emptyArray).toHaveLength(0);
+      }
+
+      bpmnElementsRegistry.addCssClasses(['userTask_2_2', 'sequenceFlow_lane_3_elt_3'], ['class1', 'class2']);
+
+      // should have no effect
+      bpmnElementsRegistry.removeCssClasses(bpmnElementIds, ['class1', 'class3']);
+
+      expect('userTask_2_2').toBeUserTask({
+        extraCssClasses: ['class1', 'class2'],
+        // not under test
+        parentId: 'lane_02',
+        label: 'User Task 2.2',
+      });
+      expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
+        extraCssClasses: ['class1', 'class2'],
+        // not under test
+        parentId: 'lane_03',
+        verticalAlign: 'bottom',
+      });
+    });
+  });
+
+  describe('Remove all CSS classes - special cases', () => {
+    it.each([null, undefined])('Remove all CSS classes with nullish parameter: %s', (nullishResetParameter: string) => {
+      bpmnElementsRegistry.addCssClasses(['userTask_2_2', 'sequenceFlow_lane_3_elt_3'], ['class1', 'class2']);
+
+      bpmnElementsRegistry.removeAllCssClasses(nullishResetParameter);
+
+      expect('userTask_2_2').toBeUserTask({
+        extraCssClasses: undefined,
+        // not under test
+        parentId: 'lane_02',
+        label: 'User Task 2.2',
+      });
+      expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
+        extraCssClasses: undefined,
+        // not under test
+        parentId: 'lane_03',
+        verticalAlign: 'bottom',
+      });
+    });
+
+    it('Remove all CSS classes with an empty array', () => {
+      bpmnElementsRegistry.addCssClasses(['userTask_2_2', 'sequenceFlow_lane_3_elt_3'], ['class#1', 'class#2']);
+
+      // should have no effect
+      bpmnElementsRegistry.removeAllCssClasses([]);
+
+      expect('userTask_2_2').toBeUserTask({
+        extraCssClasses: ['class#1', 'class#2'],
+        // not under test
+        parentId: 'lane_02',
+        label: 'User Task 2.2',
+      });
+      expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
+        extraCssClasses: ['class#1', 'class#2'],
+        // not under test
+        parentId: 'lane_03',
+        verticalAlign: 'bottom',
+      });
     });
   });
 });

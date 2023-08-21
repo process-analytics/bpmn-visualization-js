@@ -100,9 +100,9 @@ export default class GraphCellUpdater {
     });
   }
 
-  resetStyle(bpmnElementIds: string[]): void {
+  resetStyle(bpmnElementIds: string | string[]): void {
     this.graph.batchUpdate(() => {
-      if (bpmnElementIds.length == 0) {
+      if (!bpmnElementIds) {
         this.styleManager.resetAllStyles();
       } else {
         for (const id of withCellIdsOfMessageFlowIcons(bpmnElementIds)) {
