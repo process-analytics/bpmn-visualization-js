@@ -38,7 +38,7 @@ describe.each([
   ['parallelGateway', ShapeBpmnElementKind.GATEWAY_PARALLEL],
   ['eventBasedGateway', ShapeBpmnElementKind.GATEWAY_EVENT_BASED],
   ['complexGateway', ShapeBpmnElementKind.GATEWAY_COMPLEX],
-])('parse bpmn as json for %s', (bpmnKind: string, expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
+] as [keyof TProcess, ShapeBpmnElementKind][])('parse bpmn as json for %s', (bpmnKind: keyof TProcess, expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
   const processWithFlowNodeAsObject: TProcess = {
     [bpmnKind]: {
       id: `${bpmnKind}_id_0`,
