@@ -22,6 +22,8 @@ import type GraphCellUpdater from '../mxgraph/GraphCellUpdater';
 import { newGraphCellUpdater } from '../mxgraph/GraphCellUpdater';
 import { BpmnQuerySelectors } from './query-selectors';
 import type { BpmnElement, Overlay, StyleUpdate } from './types';
+import { createNewOverlaysRegistry } from './overlays-registry';
+import type { OverlaysRegistry } from './overlays-registry';
 import type { BpmnModelRegistry } from './bpmn-model-registry';
 import type { BpmnElementKind } from '../../model/bpmn/internal';
 
@@ -30,7 +32,13 @@ import type { BpmnElementKind } from '../../model/bpmn/internal';
  */
 export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, graph: BpmnGraph): BpmnElementsRegistry {
   const cssRegistry = new CssRegistry();
-  return new BpmnElementsRegistry(bpmnModelRegistry, new HtmlElementRegistry(graph.container, new BpmnQuerySelectors()), cssRegistry, newGraphCellUpdater(graph, cssRegistry));
+  return new BpmnElementsRegistry(
+    bpmnModelRegistry,
+    new HtmlElementRegistry(graph.container, new BpmnQuerySelectors()),
+    cssRegistry,
+    newGraphCellUpdater(graph, cssRegistry),
+    createNewOverlaysRegistry(graph),
+  );
 }
 
 /**
@@ -61,6 +69,7 @@ export class BpmnElementsRegistry {
     private htmlElementRegistry: HtmlElementRegistry,
     private cssRegistry: CssRegistry,
     private graphCellUpdater: GraphCellUpdater,
+    private overlaysRegistry: OverlaysRegistry,
   ) {
     this.bpmnModelRegistry.registerOnLoadCallback(() => {
       this.cssRegistry.clear();
@@ -297,7 +306,7 @@ export class BpmnElementsRegistry {
    * @param overlays The overlays to add to the BPMN element
    */
   addOverlays(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
-    this.graphCellUpdater.addOverlays(bpmnElementId, overlays);
+    this.overlaysRegistry.addOverlays(bpmnElementId, overlays);
   }
 
   /**
@@ -316,7 +325,7 @@ export class BpmnElementsRegistry {
    * @param bpmnElementId The BPMN id of the element where to remove the overlays
    */
   removeAllOverlays(bpmnElementId: string): void {
-    this.graphCellUpdater.removeAllOverlays(bpmnElementId);
+    this.overlaysRegistry.removeAllOverlays(bpmnElementId);
   }
 
   /**
