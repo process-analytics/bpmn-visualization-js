@@ -14,8 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { mxgraph, mxCellRenderer, mxConstants, mxRectangle, mxSvgCanvas2D } from '../initializer';
-import type { mxCellState, mxImageShape, mxShape } from 'mxgraph';
+import { mxgraph, mxCellRenderer, mxConstants, mxSvgCanvas2D } from '../initializer';
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
 import { EndEventShape, EventShape, IntermediateEventShape, ThrowIntermediateEventShape } from '../shape/event-shapes';
 import { ComplexGatewayShape, EventBasedGatewayShape, ExclusiveGatewayShape, InclusiveGatewayShape, ParallelGatewayShape } from '../shape/gateway-shapes';
@@ -35,8 +34,6 @@ import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { BpmnStyleIdentifier } from '../style';
 import { computeAllBpmnClassNamesOfCell } from '../renderer/style-utils';
-import { MxGraphCustomOverlay } from '../overlay/custom-overlay';
-import { OverlayBadgeShape } from '../overlay/shapes';
 import { BpmnConnector } from '../shape/edges';
 
 /**
@@ -47,7 +44,6 @@ export default class ShapeConfigurator {
     this.initMxSvgCanvasPrototype();
     this.initMxShapePrototype();
     this.registerShapes();
-    this.initMxCellRendererCreateCellOverlays();
   }
 
   private registerShapes(): void {
@@ -171,67 +167,6 @@ export default class ShapeConfigurator {
       }
 
       return canvas;
-    };
-  }
-
-  initMxCellRendererCreateCellOverlays(): void {
-    mxCellRenderer.prototype.createCellOverlays = function (state: mxCellState) {
-      const graph = state.view.graph;
-      const overlays = graph.getCellOverlays(state.cell);
-      let dict = null;
-
-      if (overlays != null) {
-        dict = new mxgraph.mxDictionary<mxShape>();
-
-        for (const currentOverlay of overlays) {
-          const shape = state.overlays != null ? state.overlays.remove(currentOverlay) : null;
-          if (shape != null) {
-            dict.put(currentOverlay, shape);
-            continue;
-          }
-
-          let overlayShape: mxShape;
-
-          // START bpmn-visualization CUSTOMIZATION
-          if (currentOverlay instanceof MxGraphCustomOverlay) {
-            overlayShape = new OverlayBadgeShape(currentOverlay.label, new mxRectangle(0, 0, 0, 0), currentOverlay.style);
-          } else {
-            overlayShape = new mxgraph.mxImageShape(new mxRectangle(0, 0, 0, 0), currentOverlay.image.src);
-            (<mxImageShape>overlayShape).preserveImageAspect = false;
-          }
-          // END bpmn-visualization CUSTOMIZATION
-
-          overlayShape.dialect = state.view.graph.dialect;
-          overlayShape.overlay = currentOverlay;
-
-          // The 'initializeOverlay' signature forces us to hardly cast the overlayShape
-          this.initializeOverlay(state, <mxImageShape>overlayShape);
-          this.installCellOverlayListeners(state, currentOverlay, overlayShape);
-
-          if (currentOverlay.cursor != null) {
-            overlayShape.node.style.cursor = currentOverlay.cursor;
-          }
-
-          // START bpmn-visualization CUSTOMIZATION
-          if (overlayShape instanceof OverlayBadgeShape) {
-            overlayShape.node.classList.add('overlay-badge');
-            overlayShape.node.setAttribute('data-bpmn-id', state.cell.id);
-          }
-          // END bpmn-visualization CUSTOMIZATION
-
-          dict.put(currentOverlay, overlayShape);
-        }
-      }
-
-      // Removes unused
-      if (state.overlays != null) {
-        // prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
-        state.overlays.visit(function (_id: string, shape: mxShape) {
-          shape.destroy();
-        });
-      }
-
-      state.overlays = dict;
     };
   }
 }
