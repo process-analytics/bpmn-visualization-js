@@ -18,7 +18,6 @@ import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 import { parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtils';
 import { getExpectedMarkers, verifyShape } from '../../../helpers/bpmn-model-expect';
 
-import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
 import type { TMultiInstanceLoopCharacteristics, TStandardLoopCharacteristics } from '@lib/model/bpmn/json/baseElement/loopCharacteristics';
 import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '@lib/model/bpmn/internal';
 
@@ -57,7 +56,9 @@ describe.each([
         const json: BpmnJsonModel = {
           definitions: {
             targetNamespace: '',
-            process: {},
+            process: {
+              [bpmnSemanticType]: { id: `${bpmnSemanticType}_id_0`, name: `${bpmnSemanticType} name`, [bpmnLoopCharacteristicsKind]: loopCharacteristics },
+            },
             BPMNDiagram: {
               name: 'process 0',
               BPMNPlane: {
@@ -71,11 +72,6 @@ describe.each([
             },
           },
         };
-        (json.definitions.process as TProcess)[bpmnSemanticType] = {
-          id: `${bpmnSemanticType}_id_0`,
-          name: `${bpmnSemanticType} name`,
-        };
-        (json.definitions.process as TProcess)[bpmnSemanticType][bpmnLoopCharacteristicsKind] = loopCharacteristics;
 
         const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
@@ -97,7 +93,13 @@ describe.each([
         const json: BpmnJsonModel = {
           definitions: {
             targetNamespace: '',
-            process: {},
+            process: {
+              [bpmnSemanticType]: {
+                id: `${bpmnSemanticType}_id_0`,
+                name: `${bpmnSemanticType} name`,
+                [bpmnLoopCharacteristicsKind]: '',
+              },
+            },
             BPMNDiagram: {
               name: 'process 0',
               BPMNPlane: {
@@ -111,11 +113,6 @@ describe.each([
             },
           },
         };
-        (json.definitions.process as TProcess)[bpmnSemanticType] = {
-          id: `${bpmnSemanticType}_id_0`,
-          name: `${bpmnSemanticType} name`,
-        };
-        (json.definitions.process as TProcess)[bpmnSemanticType][bpmnLoopCharacteristicsKind] = '';
 
         const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
@@ -143,7 +140,13 @@ describe.each([
         const json: BpmnJsonModel = {
           definitions: {
             targetNamespace: '',
-            process: {},
+            process: {
+              [bpmnSemanticType]: {
+                id: `${bpmnSemanticType}_id_0`,
+                name: `${bpmnSemanticType} name`,
+                multiInstanceLoopCharacteristics: loopCharacteristics,
+              },
+            },
             BPMNDiagram: {
               name: 'process 0',
               BPMNPlane: {
@@ -156,11 +159,6 @@ describe.each([
               },
             },
           },
-        };
-        (json.definitions.process as TProcess)[bpmnSemanticType] = {
-          id: `${bpmnSemanticType}_id_0`,
-          name: `${bpmnSemanticType} name`,
-          multiInstanceLoopCharacteristics: loopCharacteristics,
         };
 
         const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
@@ -183,7 +181,13 @@ describe.each([
         const json: BpmnJsonModel = {
           definitions: {
             targetNamespace: '',
-            process: {},
+            process: {
+              [bpmnSemanticType]: {
+                id: `${bpmnSemanticType}_id_0`,
+                name: `${bpmnSemanticType} name`,
+                multiInstanceLoopCharacteristics: { isSequential },
+              },
+            },
             BPMNDiagram: {
               name: 'process 0',
               BPMNPlane: {
@@ -196,11 +200,6 @@ describe.each([
               },
             },
           },
-        };
-        (json.definitions.process as TProcess)[bpmnSemanticType] = {
-          id: `${bpmnSemanticType}_id_0`,
-          name: `${bpmnSemanticType} name`,
-          multiInstanceLoopCharacteristics: { isSequential },
         };
 
         const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
