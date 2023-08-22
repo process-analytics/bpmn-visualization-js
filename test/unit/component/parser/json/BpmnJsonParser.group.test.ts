@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 import {
   expectAsWarning,
   parseJsonAndExpectOnlyFlowNodes,
@@ -24,6 +23,8 @@ import {
   parsingMessageCollector,
 } from '../../../helpers/JsonTestUtils';
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
+
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 import { GroupUnknownCategoryValueWarning, ShapeUnknownBpmnElementWarning } from '@lib/component/parser/json/warnings';
 

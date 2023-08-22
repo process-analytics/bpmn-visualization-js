@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 import type { BuildProcessParameter } from '../../../helpers/JsonBuilder';
 import { buildDefinitions } from '../../../helpers/JsonBuilder';
 import {
@@ -28,6 +27,7 @@ import { getEventShapes } from '../../../helpers/TestUtils';
 import type { ExpectedActivityShape, ExpectedBounds, ExpectedShape } from '../../../helpers/bpmn-model-expect';
 import { getExpectedMarkers, verifyEdge, verifyShape } from '../../../helpers/bpmn-model-expect';
 
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 import type BpmnModel from '@lib/model/bpmn/internal/BpmnModel';
 import { Waypoint } from '@lib/model/bpmn/internal/edge/edge';
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';

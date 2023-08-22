@@ -14,10 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 import { parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtils';
 import { getExpectedMarkers, verifyShape } from '../../../helpers/bpmn-model-expect';
 
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 import type { TMultiInstanceLoopCharacteristics, TStandardLoopCharacteristics } from '@lib/model/bpmn/json/baseElement/loopCharacteristics';
 import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '@lib/model/bpmn/internal';
 

@@ -14,9 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { ShapeBpmnElementKind, ShapeUtil } from '@lib/model/bpmn/internal';
-
 /** Internal model */
+import { ShapeBpmnElementKind, ShapeUtil } from '@lib/model/bpmn/internal';
 import { Waypoint } from '@lib/model/bpmn/internal/edge/edge';
 import { MessageVisibleKind } from '@lib/model/bpmn/internal/edge/kinds';
 
