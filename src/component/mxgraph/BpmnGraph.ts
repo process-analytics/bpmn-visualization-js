@@ -19,7 +19,8 @@ import { FitType } from '../options';
 import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/validators';
 import { debounce, throttle } from 'lodash-es';
 import { mxgraph, mxEvent } from './initializer';
-import type { mxCellState, mxGraphView, mxPoint } from 'mxgraph';
+import { BpmnCellRenderer } from './BpmnCellRenderer';
+import type { mxCellRenderer, mxCellState, mxGraphView, mxPoint } from 'mxgraph';
 
 const zoomFactorIn = 1.25;
 const zoomFactorOut = 1 / zoomFactorIn;
@@ -44,6 +45,10 @@ export class BpmnGraph extends mxgraph.mxGraph {
    */
   override createGraphView(): mxGraphView {
     return new BpmnGraphView(this);
+  }
+
+  override createCellRenderer(): mxCellRenderer {
+    return new BpmnCellRenderer();
   }
 
   /**
