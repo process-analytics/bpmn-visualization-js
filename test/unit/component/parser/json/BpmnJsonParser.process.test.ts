@@ -72,7 +72,7 @@ describe('parse bpmn as json for process/pool', () => {
     });
 
     it(`json containing one ${title} participant without related process`, () => {
-      const json = {
+      const json: BpmnJsonModel = {
         definitions: {
           targetNamespace: '',
           collaboration: {
@@ -156,7 +156,7 @@ describe('parse bpmn as json for process/pool', () => {
   });
 
   it('json containing one participant without name and the related process has a name', () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         collaboration: {
@@ -200,8 +200,8 @@ describe('parse bpmn as json for process/pool', () => {
     });
   });
 
-  it('json containing one participant referencing a process (with a single lane without flowNodeRef)', () => {
-    const json = {
+  it('json containing one participant referencing a process (with a single laneSet without flowNodeRef)', () => {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         collaboration: {
@@ -211,7 +211,7 @@ describe('parse bpmn as json for process/pool', () => {
           id: 'Process_0vbjbkf',
           name: 'RequestLoan',
           isExecutable: false,
-          lane: { id: 'Lane_12u5n6x' },
+          laneSet: { lane: { id: 'Lane_12u5n6x' } },
         },
         BPMNDiagram: {
           BPMNPlane: {
@@ -267,8 +267,8 @@ describe('parse bpmn as json for process/pool', () => {
     });
   });
 
-  it('json containing several participants referencing processes (with lane or laneset)', () => {
-    const json = {
+  it('json containing several participants referencing processes (with laneSet)', () => {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         collaboration: {
@@ -282,7 +282,9 @@ describe('parse bpmn as json for process/pool', () => {
             id: 'Process_1',
             name: 'process 1',
             isExecutable: false,
-            lane: { id: 'Lane_1_1' },
+            laneSet: {
+              lane: { id: 'Lane_1_1' },
+            },
           },
           {
             id: 'Process_2',
@@ -385,7 +387,7 @@ describe('parse bpmn as json for process/pool', () => {
   });
 
   it('json containing participants with and without processRef (black box pool)', () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         collaboration: {
@@ -451,7 +453,7 @@ describe('parse bpmn as json for process/pool', () => {
   });
 
   it('json containing one participant referencing a process (with flowNode and without lane)', () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         collaboration: {
@@ -520,7 +522,7 @@ describe('parse bpmn as json for process/pool', () => {
   });
 
   it('json containing one participant referencing a process (without displaying the participant/pool, but with displaying process elements)', () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         collaboration: {
@@ -566,7 +568,7 @@ describe('parse bpmn as json for process/pool', () => {
 
   it('json containing no participant, but one process (with bpmn elements)', () => {
     // json generated from https://github.com/bpmn-miwg/bpmn-miwg-test-suite/blob/b1569235563b58d7216caa880c447bafee3e23cf/Reference/A.1.0.bpmn
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         id: '_1373649849716',
         name: 'A.1.0',

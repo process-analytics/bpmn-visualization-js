@@ -17,18 +17,20 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
 import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes, verifyLabelBounds } from '../../../helpers/JsonTestUtils';
 import { shapeBpmnElementKindForLabelTests } from '../../../helpers/TestUtils';
+
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 
 describe('parse bpmn as json for label bounds', () => {
   describe.each(shapeBpmnElementKindForLabelTests)('parse bpmn as json for label bounds on %s', sourceKind => {
     it(`should convert as Shape, when a BPMNShape (attached to ${sourceKind} & with bounds with all attributes) is an attribute (as object) of 'BPMNPlane' (as object)`, () => {
-      const json = {
+      const json: BpmnJsonModel = {
         definitions: {
           targetNamespace: '',
           process: {
             id: 'Process_1',
+            [sourceKind]: { id: 'source_id_0', name: `${sourceKind}_id_0` },
           },
           BPMNDiagram: {
             id: 'BpmnDiagram_1',
@@ -47,7 +49,6 @@ describe('parse bpmn as json for label bounds', () => {
           },
         },
       };
-      (json.definitions.process as TProcess)[`${sourceKind}`] = { id: 'source_id_0', name: `${sourceKind}_id_0` };
 
       const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
@@ -55,10 +56,12 @@ describe('parse bpmn as json for label bounds', () => {
     });
 
     it(`should convert as Shape, when a BPMNShape (attached to ${sourceKind} & without bounds) is an attribute (as object) of 'BPMNPlane' (as object)`, () => {
-      const json = {
+      const json: BpmnJsonModel = {
         definitions: {
           targetNamespace: '',
-          process: {},
+          process: {
+            [sourceKind]: { id: 'source_id_0', name: `${sourceKind}_id_0` },
+          },
           BPMNDiagram: {
             id: 'BpmnDiagram_1',
             BPMNPlane: {
@@ -75,7 +78,6 @@ describe('parse bpmn as json for label bounds', () => {
           },
         },
       };
-      (json.definitions.process as TProcess)[`${sourceKind}`] = { id: 'source_id_0', name: `${sourceKind}_id_0` };
 
       const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
@@ -84,7 +86,7 @@ describe('parse bpmn as json for label bounds', () => {
   });
 
   it(`should convert as Edge, when a BPMNEdge (with bounds with all attributes) is an attribute (as object) of 'BPMNPlane' (as object)`, () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
@@ -118,7 +120,7 @@ describe('parse bpmn as json for label bounds', () => {
   });
 
   it(`should convert as Edge, when a BPMNEdge (without bounds) is an attribute (as object) of 'BPMNPlane' (as object)`, () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
