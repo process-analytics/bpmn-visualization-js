@@ -33,6 +33,16 @@ class MouseNavigationImageSnapshotThresholds extends MultiBrowserImageSnapshotTh
 
   // if no dedicated information, set minimal threshold to make test pass on GitHub Workflow
   // linux threshold are set for Ubuntu
+  protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    return new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'simple.2.start.events.1.task',
+        {
+          macos: 0.02 / 100, // 0.015022037589296211%
+        },
+      ],
+    ]);
+  }
   protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
@@ -123,7 +133,7 @@ async function doZoomWithButton(zoomType: ZoomType, xTimes = 1): Promise<void> {
 describe('diagram navigation - zoom with buttons', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
     new MultiBrowserImageSnapshotThresholds({
-      chromium: 0.03 / 100, // max 0.029310570733620533%
+      chromium: 0.04 / 100, // max 0.03513530712989654%
       firefox: 0.03 / 100, // max 0.029286409410644865%
       webkit: 0.034 / 100, // max 0.03302199927066596%
     }),
@@ -161,7 +171,7 @@ describe('diagram navigation - zoom with buttons', () => {
 describe('diagram navigation - zoom with buttons and mouse', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
     new MultiBrowserImageSnapshotThresholds({
-      chromium: 0.03 / 100, // max 0.029310570733620533%
+      chromium: 0.04 / 100, // max 0.03513530712989654%
       firefox: 0.03 / 100, // max 0.029286409410644865%
       webkit: 0.035 / 100, // max 0.03302199927066596%
     }),

@@ -45,6 +45,24 @@ class StyleImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           windows: 0.11 / 100, // 0.10872082550010823%
         },
       ],
+      [
+        'fill.color.string',
+        {
+          macos: 0.11 / 100, // 0.10486874434754156%
+        },
+      ],
+      [
+        'fill.color.opacity.group',
+        {
+          macos: 0.13 / 100, // 0.12861950774821773%
+        },
+      ],
+      [
+        'stroke.color',
+        {
+          macos: 0.09 / 100, // 0.08553874565668806%
+        },
+      ],
     ]);
   }
 

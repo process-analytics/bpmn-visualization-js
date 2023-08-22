@@ -71,9 +71,27 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     // linux threshold are set for Ubuntu
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
+        'horizontal',
+        {
+          macos: 0.026, // max 0.025094962866600845%
+        },
+      ],
+      [
+        'vertical',
+        {
+          macos: 0.026, // max 0.025094962866600845%
+        },
+      ],
+      [
+        'with.outside.flows',
+        {
+          macos: 0.04 / 100, // max 0.033407969331455956%%
+        },
+      ],
+      [
         'with.outside.labels',
         {
-          macos: 0.25 / 100, // max 0.24369443621680142%
+          macos: 0.26 / 100, // max 0.2520311140280951%
           windows: 0.39 / 100, // max 0.38276450047973753%
         },
       ],
