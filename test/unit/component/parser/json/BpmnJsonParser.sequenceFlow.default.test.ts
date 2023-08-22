@@ -87,7 +87,7 @@ describe('parse bpmn as json for default sequence flow', () => {
         targetNamespace: '',
         process: {
           id: 'Process_1',
-          // To enforce the type and test a case who never should happen
+          // Enforcement of the 'default' property in case the XML BPMN content is malformed
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           parallelGateway: { id: 'gateway_id_0', default: 'sequenceFlow_id_0' },

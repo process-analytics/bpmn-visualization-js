@@ -202,8 +202,7 @@ describe.each([
             [bpmnKind]: [
               { id: `${bpmnKind}_id_1` },
               { id: `${bpmnKind}_id_2`, eventGatewayType: 'Exclusive' },
-              // forbidden by the BPMN spec, only valid when 'instantiate: true'
-              { id: `${bpmnKind}_id_3`, eventGatewayType: 'Parallel' },
+              { id: `${bpmnKind}_id_3`, eventGatewayType: 'Parallel' }, // forbidden by the BPMN spec, only valid when 'instantiate: true'
               { id: `${bpmnKind}_id_11`, instantiate: true },
               { id: `${bpmnKind}_id_12`, instantiate: true, eventGatewayType: 'Exclusive' },
               { id: `${bpmnKind}_id_13`, instantiate: true, eventGatewayType: 'Parallel' },
