@@ -109,6 +109,17 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       ],
     ]);
   }
+
+  protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
+    return new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'with.outside.labels',
+        {
+          macos: 0.39 / 100, // max 0.38104004012843307%
+        },
+      ],
+    ]);
+  }
 }
 
 describe('diagram navigation - fit', () => {

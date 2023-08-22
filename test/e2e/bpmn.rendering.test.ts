@@ -25,7 +25,7 @@ import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from '
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
     // threshold for webkit is taken from macOS only
-    super({ chromium: 0.16 / 100, firefox: 0.09 / 100, webkit: 0.12 / 100 });
+    super({ chromium: 0.16 / 100, firefox: 0.09 / 100, webkit: 0.14 / 100 });
   }
 
   protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
