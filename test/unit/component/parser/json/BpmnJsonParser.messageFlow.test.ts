@@ -14,9 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { ShapeBpmnElementKind, ShapeUtil } from '@lib/model/bpmn/internal';
-
 /** Internal model */
+import { ShapeBpmnElementKind, ShapeUtil } from '@lib/model/bpmn/internal';
 import { Waypoint } from '@lib/model/bpmn/internal/edge/edge';
 import { MessageVisibleKind } from '@lib/model/bpmn/internal/edge/kinds';
 
@@ -32,7 +31,7 @@ import { verifyEdge } from '../../../helpers/bpmn-model-expect';
 
 describe('parse bpmn as json for message flow', () => {
   it(`should convert as Edge, when an message flow is an attribute (as object) of 'collaboration' (as object)`, () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         collaboration: {
@@ -72,7 +71,7 @@ describe('parse bpmn as json for message flow', () => {
   });
 
   it(`should convert as Edge, when an message flow (with/without name) is an attribute (as array) of 'collaboration'`, () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         collaboration: {
@@ -134,7 +133,7 @@ describe('parse bpmn as json for message flow', () => {
   });
 
   it(`should convert as Edge, when an message flow (with one & several waypoints) is an attribute (as array) of 'collaboration'`, () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         collaboration: {
@@ -209,7 +208,7 @@ describe('parse bpmn as json for message flow', () => {
   });
 
   it(`should convert as Edge, when none/initiating/non-initiating message flows are an attribute (as array) of 'collaboration'`, () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         collaboration: {

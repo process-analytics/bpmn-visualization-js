@@ -18,17 +18,13 @@ import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
 import { BpmnStyleIdentifier } from '../style';
 import { mxRectangleShape, mxUtils } from '../initializer';
-import type { mxAbstractCanvas2D, mxRectangle } from 'mxgraph';
+import type { mxAbstractCanvas2D } from 'mxgraph';
 
 /**
  * @internal
  */
 export class MessageFlowIconShape extends mxRectangleShape {
   protected iconPainter = IconPainterProvider.get();
-
-  constructor(bounds: mxRectangle, fill: string, stroke: string, strokewidth: number) {
-    super(bounds, fill, stroke, strokewidth);
-  }
 
   override paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const paintParameter = buildPaintParameter({

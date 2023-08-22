@@ -17,9 +17,8 @@ limitations under the License.
 import { parseJsonAndExpectOnlyEdgesAndFlowNodes } from '../../../helpers/JsonTestUtils';
 import { verifyEdge } from '../../../helpers/bpmn-model-expect';
 
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 import { SequenceFlowKind } from '@lib/model/bpmn/internal';
-import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
-import type { TSequenceFlow } from '@lib/model/bpmn/json/baseElement/flowElement';
 import { Waypoint } from '@lib/model/bpmn/internal/edge/edge';
 
 describe('parse bpmn as json for conditional sequence flow', () => {
@@ -40,7 +39,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
   ])(
     `should convert as Edge, when an sequence flow (defined as conditional in %s) is an attribute (as object) of 'process' (as object)`,
     (sourceKind, expectedSequenceFlowKind) => {
-      const json = {
+      const json: BpmnJsonModel = {
         definitions: {
           targetNamespace: '',
           process: {
@@ -51,8 +50,10 @@ describe('parse bpmn as json for conditional sequence flow', () => {
               targetRef: 'targetRef_RLk',
               conditionExpression: {
                 evaluatesToTypeRef: 'java:java.lang.Boolean',
+                '#text': '&quot;Contract to be written&quot;.equals(loanRequested.status)',
               },
             },
+            [sourceKind]: { id: 'source_id_0' },
           },
           BPMNDiagram: {
             id: 'BpmnDiagram_1',
@@ -72,9 +73,6 @@ describe('parse bpmn as json for conditional sequence flow', () => {
           },
         },
       };
-      const process = json.definitions.process as TProcess;
-      process[`${sourceKind}`] = { id: 'source_id_0' };
-      (process.sequenceFlow as TSequenceFlow).conditionExpression['#text'] = '&quot;Contract to be written&quot;.equals(loanRequested.status)';
 
       const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
 
@@ -91,7 +89,7 @@ describe('parse bpmn as json for conditional sequence flow', () => {
   );
 
   it(`should NOT convert, when an sequence flow (defined as conditional) is an attribute of 'process' and attached to a flow node where is NOT possible in BPMN Semantic`, () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {

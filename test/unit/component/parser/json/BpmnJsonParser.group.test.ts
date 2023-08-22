@@ -23,12 +23,14 @@ import {
   parsingMessageCollector,
 } from '../../../helpers/JsonTestUtils';
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
+
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 import { GroupUnknownCategoryValueWarning, ShapeUnknownBpmnElementWarning } from '@lib/component/parser/json/warnings';
 
 describe('parse bpmn as json for group', () => {
   it('Single Group with label in process', () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
@@ -78,7 +80,7 @@ describe('parse bpmn as json for group', () => {
   });
 
   it('Several Groups with or without label in process', () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
@@ -165,7 +167,7 @@ describe('parse bpmn as json for group', () => {
   });
 
   it('Single Group with label in collaboration', () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         collaboration: {
@@ -241,7 +243,7 @@ describe('parse bpmn as json for group', () => {
 
   describe('Robustness', () => {
     it('Single Group in process without matching categoryValueRef', () => {
-      const json = {
+      const json: BpmnJsonModel = {
         definitions: {
           targetNamespace: '',
           process: {
@@ -284,7 +286,7 @@ describe('parse bpmn as json for group', () => {
     }
 
     it('Single Group in collaboration without matching categoryValueRef', () => {
-      const json = {
+      const json: BpmnJsonModel = {
         definitions: {
           targetNamespace: '',
           collaboration: {
