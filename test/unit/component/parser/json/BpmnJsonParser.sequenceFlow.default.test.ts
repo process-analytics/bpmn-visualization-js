@@ -17,9 +17,9 @@ limitations under the License.
 import { parseJsonAndExpectOnlyEdgesAndFlowNodes } from '../../../helpers/JsonTestUtils';
 import { verifyEdge } from '../../../helpers/bpmn-model-expect';
 
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 import { SequenceFlowKind } from '@lib/model/bpmn/internal';
 import { Waypoint } from '@lib/model/bpmn/internal/edge/edge';
-import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
 
 describe('parse bpmn as json for default sequence flow', () => {
   it.each([
@@ -37,7 +37,7 @@ describe('parse bpmn as json for default sequence flow', () => {
     ['callActivity'],
     ['subProcess'],
   ])(`should convert as Edge, when an sequence flow (defined as default in %s) is an attribute (as object) of 'process' (as object)`, sourceKind => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
@@ -47,6 +47,7 @@ describe('parse bpmn as json for default sequence flow', () => {
             sourceRef: 'source_id_0',
             targetRef: 'targetRef_RLk',
           },
+          [sourceKind]: { id: 'source_id_0', default: 'sequenceFlow_id_0' },
         },
         BPMNDiagram: {
           id: 'BpmnDiagram_1',
@@ -66,7 +67,6 @@ describe('parse bpmn as json for default sequence flow', () => {
         },
       },
     };
-    (json.definitions.process as TProcess)[`${sourceKind}`] = { id: 'source_id_0', default: 'sequenceFlow_id_0' };
 
     const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
 
@@ -82,11 +82,14 @@ describe('parse bpmn as json for default sequence flow', () => {
   });
 
   it(`should NOT convert, when an sequence flow (defined as default) is an attribute of 'process' and attached to a flow node where is NOT possible in BPMN Semantic`, () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
           id: 'Process_1',
+          // Enforcement of the 'default' property in case the XML BPMN content is malformed
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           parallelGateway: { id: 'gateway_id_0', default: 'sequenceFlow_id_0' },
           sequenceFlow: {
             id: 'sequenceFlow_id_0',

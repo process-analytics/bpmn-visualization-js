@@ -16,13 +16,14 @@ limitations under the License.
 
 import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 import { LaneUnknownFlowNodeRefWarning } from '@lib/component/parser/json/warnings';
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 
 import { expectAsWarning, parseJson, parseJsonAndExpectOnlyLanes, parsingMessageCollector } from '../../../helpers/JsonTestUtils';
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
 
 describe('parse bpmn as json for lane', () => {
   it('json containing one process with a single lane without flowNodeRef', () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
@@ -59,7 +60,7 @@ describe('parse bpmn as json for lane', () => {
   });
 
   it('json containing one process with a single lane with flowNodeRef as object & flowNode already parsed', () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
@@ -108,7 +109,7 @@ describe('parse bpmn as json for lane', () => {
   });
 
   it('json containing one process with a single lane with flowNodeRef as object & flowNode not parsed', () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
@@ -149,11 +150,13 @@ describe('parse bpmn as json for lane', () => {
   });
 
   it('json containing one process with a single lane with flowNodeRef as array', () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
-          lane: { id: 'Lane_12u5n6x', flowNodeRef: ['event_id_0'] },
+          laneSet: {
+            lane: { id: 'Lane_12u5n6x', flowNodeRef: ['event_id_0'] },
+          },
           startEvent: { id: 'event_id_0' },
         },
         BPMNDiagram: {
@@ -198,7 +201,7 @@ describe('parse bpmn as json for lane', () => {
   });
 
   it('json containing one process declared as array with a laneSet', () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: [
@@ -240,7 +243,7 @@ describe('parse bpmn as json for lane', () => {
   });
 
   it('json containing one process with an array of lanes with & without name', () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
@@ -313,7 +316,7 @@ describe('parse bpmn as json for lane', () => {
     ['horizontal', true],
   ])('parse bpmn as json for %s lane', (title: string, isHorizontal: boolean) => {
     it(`json containing one process declared as array with a ${title} laneSet with childLaneSet`, () => {
-      const json = {
+      const json: BpmnJsonModel = {
         definitions: {
           targetNamespace: '',
           process: [
@@ -464,7 +467,7 @@ describe('parse bpmn as json for lane', () => {
     });
 
     it(`json containing one process with a ${title} lane`, () => {
-      const json = {
+      const json: BpmnJsonModel = {
         definitions: {
           targetNamespace: '',
           process: {
@@ -502,7 +505,7 @@ describe('parse bpmn as json for lane', () => {
   });
 
   it("json containing one process with a lane without 'isHorizontal' attribute", () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {

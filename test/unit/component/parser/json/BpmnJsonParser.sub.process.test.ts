@@ -27,6 +27,7 @@ import { getEventShapes } from '../../../helpers/TestUtils';
 import type { ExpectedActivityShape, ExpectedBounds, ExpectedShape } from '../../../helpers/bpmn-model-expect';
 import { getExpectedMarkers, verifyEdge, verifyShape } from '../../../helpers/bpmn-model-expect';
 
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
 import type BpmnModel from '@lib/model/bpmn/internal/BpmnModel';
 import { Waypoint } from '@lib/model/bpmn/internal/edge/edge';
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';
@@ -307,7 +308,7 @@ describe('parse bpmn as json for sub-process', () => {
     }
 
     it(`should convert activities, events, gateways, textAnnotation, association and sequence-flows in sub-process`, () => {
-      const json = {
+      const json: BpmnJsonModel = {
         definitions: {
           targetNamespace: '',
           process: {
@@ -511,7 +512,7 @@ describe('parse bpmn as json for sub-process', () => {
     if (expectedShapeBpmnSubProcessKind === ShapeBpmnSubProcessKind.EVENT) {
       it(`should convert error start event in '${expectedShapeBpmnSubProcessKind} sub-process'`, () => {
         const errorStartEventName = `${expectedShapeBpmnSubProcessKind} SubProcess Error Event`;
-        const json = {
+        const json: BpmnJsonModel = {
           definitions: {
             targetNamespace: '',
             process: {
