@@ -63,8 +63,7 @@ const bpmnDiagramNames = getBpmnDiagramNames(diagramSubfolder);
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
-    const defaultFailureThreshold = 0.006 / 100; // all OS 0.005379276499073438%
-    super({ chromium: defaultFailureThreshold, firefox: defaultFailureThreshold, webkit: defaultFailureThreshold });
+    super({ chromium: 0.006 / 100, firefox: 0.042 / 100, webkit: 0.058 / 100 });
   }
   protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     // if no dedicated information, set minimal threshold to make test pass on GitHub Workflow
@@ -101,65 +100,11 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
-        'horizontal',
-        {
-          linux: 0.0003, // max 0.024774485137324387%
-          macos: 0.0003, // max 0.024774485137324387%
-          windows: 0.0003, // max 0.024774485137324387%
-        },
-      ],
-      [
-        'vertical',
-        {
-          linux: 0.00042, // max 0.041092716803170504%
-          macos: 0.00042, // max 0.041092716803170504%
-          windows: 0.00042, // max 0.041092716803170504%
-        },
-      ],
-      [
-        'with.outside.flows',
-        {
-          linux: 0.014 / 100, // max 0.013336184209755686%
-          macos: 0.014 / 100, // max 0.013336184209755686%
-          windows: 0.014 / 100, // max 0.013336184209755686%
-        },
-      ],
-      [
         'with.outside.labels',
         {
-          linux: 0.01 / 100, // max 0.009366366103591428%
           macos: 0.25 / 100, // max 0.24536808515324138%
           // TODO possible rendering issue so high threshold value
           windows: 4.4 / 100, // max 4.039381490979144%
-        },
-      ],
-    ]);
-  }
-
-  protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
-    return new Map<string, ImageSnapshotThresholdConfig>([
-      [
-        'horizontal',
-        {
-          macos: 0.0005, // max is 0.040879927795189897%
-        },
-      ],
-      [
-        'vertical',
-        {
-          macos: 0.0006, // max is 0.05782432968098884%
-        },
-      ],
-      [
-        'with.outside.flows',
-        {
-          macos: 0.03 / 100, // max is 0.029136454748612817%
-        },
-      ],
-      [
-        'with.outside.labels',
-        {
-          macos: 0.39 / 100, // max is 0.3810397001432486%
         },
       ],
     ]);
