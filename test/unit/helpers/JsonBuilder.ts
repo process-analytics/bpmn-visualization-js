@@ -289,13 +289,13 @@ function addParticipantProcessAndElements(processParameter: BuildProcessParamete
   if (processParameter.withParticipant) {
     addParticipant(id, jsonModel);
   }
-  jsonModel.definitions.process = getBpmnElementNewValue(jsonModel.definitions.process as TProcess | TProcess[], { id: processParameter.withParticipant ? `process_${id}` : id });
+  jsonModel.definitions.process = enrichBpmnElement(jsonModel.definitions.process as TProcess | TProcess[], { id: processParameter.withParticipant ? `process_${id}` : id });
   addElementsOnProcess(processParameter, jsonModel, index);
 }
 
 function addParticipant(id: string, jsonModel: BpmnJsonModel): void {
   const collaboration: TCollaboration = getElementOfArray<TProcess>(jsonModel.definitions.collaboration as TCollaboration);
-  collaboration.participant = getBpmnElementNewValue(collaboration.participant, { id: id, processRef: `process_${id}` });
+  collaboration.participant = enrichBpmnElement(collaboration.participant, { id: id, processRef: `process_${id}` });
 
   const shape = {
     id: `shape_${id}`,
@@ -309,7 +309,7 @@ function addMessageFlow(messageFlowParameter: BuildMessageFlowParameter, jsonMod
   const messageFlow: TMessageFlow = messageFlowParameter;
 
   const collaboration: TCollaboration = getElementOfArray<TCollaboration>(jsonModel.definitions.collaboration as TCollaboration);
-  collaboration.messageFlow = getBpmnElementNewValue(collaboration.messageFlow, messageFlow);
+  collaboration.messageFlow = enrichBpmnElement(collaboration.messageFlow, messageFlow);
 
   addEdge(jsonModel, {
     bpmnElement: messageFlow.id,
@@ -327,7 +327,7 @@ const addGlobalTask = ({ id, bpmnKind = 'globalTask', ...rest }: BuildGlobalTask
   };
 
   const definitions = jsonModel.definitions;
-  definitions[bpmnKind] = getBpmnElementNewValue(definitions[bpmnKind], globalTask);
+  definitions[bpmnKind] = enrichBpmnElement(definitions[bpmnKind], globalTask);
 };
 
 function addElementsOnProcess(processParameter: BuildProcessParameter, json: BpmnJsonModel, processIndex: number): void {
@@ -418,17 +418,17 @@ function getElementOfArray<T>(object: T | T[], index = 0): T {
   }
 }
 
-function getBpmnElementNewValue<T extends TBaseElement | DiagramElement>(currentValue: T | T[], elementToAdd: T): T | T[] {
-  if (currentValue) {
-    if (!Array.isArray(currentValue)) {
-      return [currentValue, elementToAdd];
-    } else {
-      currentValue.push(elementToAdd);
-      return currentValue;
-    }
-  } else {
+function enrichBpmnElement<T extends TBaseElement | DiagramElement>(currentElement: T | T[], elementToAdd: T): T | T[] {
+  if (!currentElement) {
     return elementToAdd;
   }
+
+  if (Array.isArray(currentElement)) {
+    currentElement.push(elementToAdd);
+    return currentElement;
+  }
+
+  return [currentElement, elementToAdd];
 }
 
 function addLane(jsonModel: BpmnJsonModel, { id, name, ...rest }: BuildLaneParameter, index: number, processIndex: number): void {
@@ -441,7 +441,7 @@ function addLane(jsonModel: BpmnJsonModel, { id, name, ...rest }: BuildLaneParam
   }
 
   const laneSet = getElementOfArray<TProcess>(jsonModel.definitions.process as TProcess | TProcess[], processIndex).laneSet as TLaneSet;
-  laneSet.lane = getBpmnElementNewValue(laneSet.lane, lane);
+  laneSet.lane = enrichBpmnElement(laneSet.lane, lane);
 
   const shape = {
     id: `shape_${lane.id}`,
@@ -474,7 +474,7 @@ function addProcessElement(jsonModel: BpmnJsonModel, bpmnKind: keyof TProcess, {
   };
 
   const process: TProcess = getElementOfArray<TProcess>(jsonModel.definitions.process as TProcess | TProcess[], processIndex);
-  (process[bpmnKind] as TFlowElement | TArtifact | TFlowNode[] | TArtifact[]) = getBpmnElementNewValue<TFlowElement | TArtifact>(
+  (process[bpmnKind] as TFlowElement | TArtifact | TFlowNode[] | TArtifact[]) = enrichBpmnElement<TFlowElement | TArtifact>(
     process[bpmnKind] as TFlowElement | TArtifact | TFlowNode[] | TArtifact[],
     processElement,
   );
@@ -483,7 +483,7 @@ function addProcessElement(jsonModel: BpmnJsonModel, bpmnKind: keyof TProcess, {
 
 function addShape(jsonModel: BpmnJsonModel, shape: BPMNShape): void {
   const bpmnPlane: BPMNPlane = getElementOfArray(jsonModel.definitions.BPMNDiagram).BPMNPlane;
-  bpmnPlane.BPMNShape = getBpmnElementNewValue(bpmnPlane.BPMNShape, {
+  bpmnPlane.BPMNShape = enrichBpmnElement(bpmnPlane.BPMNShape, {
     id: `shape_${shape.bpmnElement}`,
     ...shape,
   });
@@ -491,7 +491,7 @@ function addShape(jsonModel: BpmnJsonModel, shape: BPMNShape): void {
 
 function addEdge(jsonModel: BpmnJsonModel, edge: BPMNEdge): void {
   const bpmnPlane: BPMNPlane = getElementOfArray(jsonModel.definitions.BPMNDiagram).BPMNPlane;
-  bpmnPlane.BPMNEdge = getBpmnElementNewValue(bpmnPlane.BPMNEdge, {
+  bpmnPlane.BPMNEdge = enrichBpmnElement(bpmnPlane.BPMNEdge, {
     id: `edge_${edge.bpmnElement}`,
     ...edge,
   });
