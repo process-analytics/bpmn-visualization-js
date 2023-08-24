@@ -39,7 +39,7 @@ module.exports = {
       ],
       parserOptions: {
         // This setting is required if you want to use rules which require type information
-        // https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/parser#parseroptionsproject
+        // https://typescript-eslint.io/packages/parser/#project
         project: ['./tsconfig.json', './tsconfig.test.json', './tsconfig.utils.json'],
       },
       rules: {
