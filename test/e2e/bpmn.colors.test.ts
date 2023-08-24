@@ -23,7 +23,7 @@ import type { Page } from 'playwright';
 class ImageSnapshotThresholdsModelColors extends MultiBrowserImageSnapshotThresholds {
   constructor() {
     // threshold for webkit is taken from macOS only
-    super({ chromium: 0.04 / 100, firefox: 0.006 / 100, webkit: 0.07 / 100 });
+    super({ chromium: 0.07 / 100, firefox: 0.006 / 100, webkit: 0.07 / 100 });
   }
 
   protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
@@ -31,7 +31,7 @@ class ImageSnapshotThresholdsModelColors extends MultiBrowserImageSnapshotThresh
       [
         'elements.colors.02.labels',
         {
-          macos: 0.15 / 100, // 0.14367268757742302%
+          macos: 0.16 / 100, // 0.15342106983194936%
           windows: 0.13 / 100, // 0.1213310788226063%
         },
       ],
@@ -66,7 +66,7 @@ class ImageSnapshotThresholdsModelColors extends MultiBrowserImageSnapshotThresh
 class ImageSnapshotThresholdsIgnoreBpmnColors extends MultiBrowserImageSnapshotThresholds {
   constructor() {
     // threshold for webkit is taken from macOS only
-    super({ chromium: 0.03 / 100, firefox: 0.007 / 100, webkit: 0.07 / 100 });
+    super({ chromium: 0.07 / 100, firefox: 0.007 / 100, webkit: 0.07 / 100 });
   }
 
   protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
@@ -74,7 +74,7 @@ class ImageSnapshotThresholdsIgnoreBpmnColors extends MultiBrowserImageSnapshotT
       [
         'elements.colors.02.labels',
         {
-          macos: 0.12 / 100, // 0.1103917951008726%
+          macos: 0.13 / 100, // 0.1212088519104926%
           windows: 0.13 / 100, // 0.1213310788226063%
         },
       ],

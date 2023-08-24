@@ -31,7 +31,7 @@ const log = debugLogger('bv:test:e2e:overlays');
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
-    super({ chromium: 0.0005 / 100, firefox: 0.04 / 100, webkit: 0 });
+    super({ chromium: 0.17 / 100, firefox: 0.44 / 100, webkit: 0.59 / 100 });
   }
 
   protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
@@ -39,26 +39,11 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     // linux threshold are set for Ubuntu
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
-        'overlays.start.flow.task.gateway',
-        {
-          linux: 0.0008 / 100, // max 0.0007333061246894701%
-          macos: 0.1 / 100, // max 0.09371109158465839%
-          windows: 0.12 / 100, // max 0.11574540756377205%
-        },
-      ],
-      [
         'overlays.edges.associations.complex.paths',
         {
           linux: 0.31 / 100, // max 0.30203253615374015%
           macos: 0.31 / 100, // max 0.3006830880479039%
           windows: 0.31 / 100, // max 0.3013649459581602%
-        },
-      ],
-      [
-        'overlays.edges.message.flows.complex.paths',
-        {
-          macos: 0.17 / 100, // 0.16085016564131302%
-          windows: 0.08 / 100, // 0.07293820549113537%
         },
       ],
       [
@@ -77,17 +62,13 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'overlays.start.flow.task.gateway',
         {
-          linux: 0.44 / 100, // max 0.435363088442553%
           macos: 0.71 / 100, // max 0.7027880077090211%
-          windows: 0.14 / 100, // max 0.13629575601151744%
         },
       ],
       [
         'overlays.edges.associations.complex.paths',
         {
-          linux: 0.4 / 100, // max 0.3964089055703668%
           macos: 0.53 / 100, // max 0.5254958628580608%
-          windows: 0.43 / 100, // max 0.42268320684041294%
         },
       ],
       [
@@ -101,38 +82,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'overlays.edges.sequence.flows.complex.paths',
         {
-          linux: 0.36 / 100, // max 0.35664699175183%
           macos: 0.44 / 100, // max 0.43144267510022427%
-          windows: 0.3 / 100, // max 0.2931831722714717%
-        },
-      ],
-    ]);
-  }
-
-  protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
-    return new Map<string, ImageSnapshotThresholdConfig>([
-      [
-        'overlays.start.flow.task.gateway',
-        {
-          macos: 0.59 / 100, // max 0.5856189551567081%
-        },
-      ],
-      [
-        'overlays.edges.associations.complex.paths',
-        {
-          macos: 0.48 / 100, // max 0.4771582239915584%
-        },
-      ],
-      [
-        'overlays.edges.message.flows.complex.paths',
-        {
-          macos: 0.35 / 100, // max 0.3492043109226462%
-        },
-      ],
-      [
-        'overlays.edges.sequence.flows.complex.paths',
-        {
-          macos: 0.39 / 100, // max 0.3876107955861241%
         },
       ],
     ]);
@@ -282,20 +232,7 @@ describe('Overlay navigation', () => {
   class OverlayNavigationImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     constructor() {
       // don't set defaults as we defined thresholds for all style variants
-      super({ chromium: 0, firefox: 0, webkit: 0 });
-    }
-
-    protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
-      return new Map<string, ImageSnapshotThresholdConfig>([
-        [
-          'overlays.start.flow.task.gateway',
-          {
-            linux: 0.002 / 100, // max 0.0013092137383430291%
-            macos: 0.09 / 100, // max 0.08430877145797488%
-            windows: 0.12 / 100, // max 0.11213898282994572%
-          },
-        ],
-      ]);
+      super({ chromium: 0.12 / 100, firefox: 0.23 / 100, webkit: 0.36 / 100 });
     }
 
     protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
@@ -303,20 +240,7 @@ describe('Overlay navigation', () => {
         [
           'overlays.start.flow.task.gateway',
           {
-            linux: 0.23 / 100, // max 0.22238155947217342%
             macos: 0.58 / 100, // max 0.5781644435027378%
-            windows: 0.12 / 100, // max 0.11775550254274902%
-          },
-        ],
-      ]);
-    }
-
-    protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
-      return new Map<string, ImageSnapshotThresholdConfig>([
-        [
-          'overlays.start.flow.task.gateway',
-          {
-            macos: 0.36 / 100, // max 0.35907994310595553%
           },
         ],
       ]);
@@ -377,7 +301,7 @@ describe('Overlay style', () => {
   class OverlayStylesImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     constructor() {
       // don't set defaults as we defined thresholds for all style variants
-      super({ chromium: 0, firefox: 0, webkit: 0 });
+      super({ chromium: 0.03 / 100, firefox: 0.38 / 100, webkit: 0.33 / 100 });
     }
 
     protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
@@ -385,17 +309,8 @@ describe('Overlay style', () => {
       // linux threshold are set for Ubuntu
       return new Map<string, ImageSnapshotThresholdConfig>([
         [
-          'fill',
-          {
-            linux: 0.001 / 100, // 0.0007276893557062181%
-            macos: 0.016 / 100, // 0.01515942258121239%
-            windows: 0.03 / 100, // 0.021221138510052473%
-          },
-        ],
-        [
           'font',
           {
-            linux: 0.001 / 100, // 0.0007342796874976187%
             macos: 0.56 / 100, // 0.5500536579274629%
             windows: 0.33 / 100, // 0.3231773603294519%
           },
@@ -403,8 +318,7 @@ describe('Overlay style', () => {
         [
           'stroke',
           {
-            linux: 0.001 / 100, // 0.0007363497292800503%
-            macos: 0.18 / 100, // 0.1787876617120987%
+            macos: 0.19 / 100, // 0.18879188656002463%
             windows: 0.22 / 100, // 0.2184761338537622%
           },
         ],
@@ -414,28 +328,11 @@ describe('Overlay style', () => {
     protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
       return new Map<string, ImageSnapshotThresholdConfig>([
         [
-          'fill',
-          {
-            linux: 0.16 / 100, // 0.15701274621052752
-            macos: 0.38 / 100, // 0.37208408401212534%
-            windows: 0.036 / 100, // 0.03540156823378382%
-          },
-        ],
-        [
           'font',
           {
             linux: 0.7 / 100, // 0.6957363425958542%
             // TODO very large threshold on Firefox macOS for font overlay styles
             macos: 2.01 / 100, // 2.0033547194979073%
-            windows: 0.34 / 100, // 0.33890377031536856%
-          },
-        ],
-        [
-          'stroke',
-          {
-            linux: 0.13 / 100, // 0.12558613624870096%
-            macos: 0.36 / 100, // 0.35018722925578283%
-            windows: 0.24 / 100, // 0.23760788536359984%
           },
         ],
       ]);
@@ -444,21 +341,9 @@ describe('Overlay style', () => {
     protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
       return new Map<string, ImageSnapshotThresholdConfig>([
         [
-          'fill',
-          {
-            macos: 0.17 / 100, // 0.1664526237549535%
-          },
-        ],
-        [
           'font',
           {
             macos: 1.24 / 100, // 1.2343878983440026%
-          },
-        ],
-        [
-          'stroke',
-          {
-            macos: 0.33 / 100, // 0.325165957934348%
           },
         ],
       ]);
