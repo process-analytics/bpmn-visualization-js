@@ -23,5 +23,4 @@ runs:
         # Do not install browsers https://playwright.dev/docs/browsers#installing-browsers
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
       with:
-        # restore --ignore-scripts when https://github.com/playwright-community/jest-playwright/issues/808 is fixed
-        install-command: npm ci --prefer-offline --audit false
+        install-command: npm ci --ignore-scripts --prefer-offline --audit false
