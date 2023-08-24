@@ -16,7 +16,6 @@ limitations under the License.
 
 import 'jest-playwright-preset';
 import { join } from 'node:path';
-import type { Page } from 'playwright';
 import { ensureIsArray } from '@lib/component/helpers/array-utils';
 import type { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '@lib/component/registry';
 import { ZoomType } from '@lib/component/options';
@@ -119,7 +118,7 @@ class OverlaysPageTester extends PageTester {
   }
 }
 
-const pageTester = new OverlaysPageTester({ targetedPage: AvailableTestPages.OVERLAYS, diagramSubfolder: 'overlays' }, <Page>page);
+const pageTester = new OverlaysPageTester({ targetedPage: AvailableTestPages.OVERLAYS, diagramSubfolder: 'overlays' }, page);
 
 describe('BPMN Shapes with overlays', () => {
   const bpmnDiagramName = 'overlays.start.flow.task.gateway';

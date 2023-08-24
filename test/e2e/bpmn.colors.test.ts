@@ -18,7 +18,6 @@ import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
 import { getBpmnDiagramNames } from '@test/shared/visu/test-utils';
-import type { Page } from 'playwright';
 
 class ImageSnapshotThresholdsModelColors extends MultiBrowserImageSnapshotThresholds {
   constructor() {
@@ -108,7 +107,7 @@ class ImageSnapshotThresholdsIgnoreBpmnColors extends MultiBrowserImageSnapshotT
 
 describe('BPMN in color', () => {
   const diagramSubfolder = 'bpmn-in-color';
-  const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder }, <Page>page);
+  const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder }, page);
   const bpmnDiagramNames = getBpmnDiagramNames(diagramSubfolder);
 
   describe.each([false, true])('Ignore BPMN colors: %s', (ignoreBpmnColors: boolean) => {

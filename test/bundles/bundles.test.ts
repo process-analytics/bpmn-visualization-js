@@ -30,7 +30,7 @@ describe('bundles', () => {
         },
         bpmnContainerId: 'bpmn-container-for-iife-bundle',
       },
-      <Page>page,
+      page,
     );
     await pageTester.gotoPageAndLoadBpmnDiagram();
 

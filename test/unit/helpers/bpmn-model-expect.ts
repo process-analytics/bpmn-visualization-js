@@ -116,8 +116,8 @@ export const verifyShape = (
 
   if (('bpmnElementCallActivityKind' in expectedShape && expectedShape.bpmnElementCallActivityKind) || 'bpmnElementGlobalTaskKind' in expectedShape) {
     expect(bpmnElement instanceof ShapeBpmnCallActivity).toBeTruthy();
-    expect((bpmnElement as ShapeBpmnCallActivity).callActivityKind).toEqual((expectedShape as ExpectedCallActivityShape).bpmnElementCallActivityKind);
-    expect((bpmnElement as ShapeBpmnCallActivity).globalTaskKind).toEqual((expectedShape as ExpectedCallActivityShape).bpmnElementGlobalTaskKind);
+    expect((bpmnElement as ShapeBpmnCallActivity).callActivityKind).toEqual(expectedShape.bpmnElementCallActivityKind);
+    expect((bpmnElement as ShapeBpmnCallActivity).globalTaskKind).toEqual(expectedShape.bpmnElementGlobalTaskKind);
   }
 
   if ('eventDefinitionKind' in expectedShape) {
@@ -127,7 +127,7 @@ export const verifyShape = (
 
   if ('isInterrupting' in expectedShape) {
     expect(bpmnElement instanceof ShapeBpmnBoundaryEvent).toBeTruthy();
-    expect((bpmnElement as ShapeBpmnBoundaryEvent).isInterrupting).toEqual((expectedShape as ExpectedBoundaryEventShape).isInterrupting);
+    expect((bpmnElement as ShapeBpmnBoundaryEvent).isInterrupting).toEqual(expectedShape.isInterrupting);
   }
 
   const bounds = shape.bounds;
