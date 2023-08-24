@@ -26,9 +26,7 @@ describe('parse bpmn as json for lane', () => {
     const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
-        process: {
-          lane: { id: 'Lane_12u5n6x' },
-        },
+        process: { laneSet: { lane: { id: 'Lane_12u5n6x' } } },
         BPMNDiagram: {
           BPMNPlane: {
             BPMNShape: {
@@ -64,7 +62,7 @@ describe('parse bpmn as json for lane', () => {
       definitions: {
         targetNamespace: '',
         process: {
-          lane: { id: 'Lane_12u5n6x', flowNodeRef: 'event_id_0' },
+          laneSet: { lane: { id: 'Lane_12u5n6x', flowNodeRef: 'event_id_0' } },
           startEvent: { id: 'event_id_0' },
         },
         BPMNDiagram: {
@@ -113,7 +111,7 @@ describe('parse bpmn as json for lane', () => {
       definitions: {
         targetNamespace: '',
         process: {
-          lane: { id: 'Lane_12u5n6x', flowNodeRef: 'event_id_0' },
+          laneSet: { lane: { id: 'Lane_12u5n6x', flowNodeRef: 'event_id_0' } },
         },
         BPMNDiagram: {
           BPMNPlane: {
@@ -471,7 +469,7 @@ describe('parse bpmn as json for lane', () => {
         definitions: {
           targetNamespace: '',
           process: {
-            lane: { id: 'Lane_12u5n6x' },
+            laneSet: { lane: { id: 'Lane_12u5n6x' } },
           },
           BPMNDiagram: {
             BPMNPlane: {
@@ -509,7 +507,7 @@ describe('parse bpmn as json for lane', () => {
       definitions: {
         targetNamespace: '',
         process: {
-          lane: { id: 'Lane_12u5n6x' },
+          laneSet: { lane: { id: 'Lane_12u5n6x' } },
         },
         BPMNDiagram: {
           BPMNPlane: {

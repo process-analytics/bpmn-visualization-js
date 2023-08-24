@@ -70,9 +70,9 @@ const computeSubProcessKind = (processedSemanticType: BpmnSemanticType, bpmnElem
   }
 };
 
-const orderedFlowNodeBpmnTypes: BpmnSemanticType[] = ['adHocSubProcess', 'transaction'] // specific management for adhoc and transaction sub-processes which are handled with a dedicated ShapeBpmnSubProcessKind
+const orderedFlowNodeBpmnTypes: BpmnSemanticType[] = (['adHocSubProcess', 'transaction'] as BpmnSemanticType[]) // specific management for adhoc and transaction sub-processes which are handled with a dedicated ShapeBpmnSubProcessKind
   // process boundary events afterward as we need its parent activity to be available when building it
-  .concat(ShapeUtil.flowNodeKinds().filter(kind => kind != ShapeBpmnElementKind.EVENT_BOUNDARY))
+  .concat(ShapeUtil.flowNodeKinds().filter(kind => kind != ShapeBpmnElementKind.EVENT_BOUNDARY) as BpmnSemanticType[])
   .concat([ShapeBpmnElementKind.EVENT_BOUNDARY]);
 
 function getShapeBpmnElementKind(bpmnSemanticType: BpmnSemanticType): ShapeBpmnElementKind {
@@ -152,7 +152,6 @@ export default class ProcessConverter {
     // flow nodes
     orderedFlowNodeBpmnTypes.forEach(bpmnType => this.buildFlowNodeBpmnElements(process[bpmnType], getShapeBpmnElementKind(bpmnType), parentId, process.id, bpmnType));
     // containers
-    this.buildLaneBpmnElements(process[ShapeBpmnElementKind.LANE], parentId, process.id);
     this.buildLaneSetBpmnElements(process.laneSet, parentId, process.id);
 
     // flows
