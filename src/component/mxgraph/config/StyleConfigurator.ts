@@ -17,7 +17,7 @@ limitations under the License.
 import { AssociationDirectionKind, FlowKind, SequenceFlowKind, ShapeBpmnElementKind, ShapeUtil } from '../../../model/bpmn/internal';
 import { BpmnStyleIdentifier, MarkerIdentifier, StyleDefault } from '../style';
 import type { BpmnGraph } from '../BpmnGraph';
-import { mxConstants, mxPerimeter } from '../initializer';
+import { mxConstants } from '../initializer';
 import type { mxStylesheet, StyleMap } from 'mxgraph';
 
 const arrowDefaultSize = 12;
@@ -168,7 +168,7 @@ export class StyleConfigurator {
     ShapeUtil.eventKinds().forEach(kind => {
       const style: StyleMap = {};
       style[mxConstants.STYLE_SHAPE] = kind;
-      style[mxConstants.STYLE_PERIMETER] = mxPerimeter.EllipsePerimeter;
+      style[mxConstants.STYLE_PERIMETER] = mxConstants.PERIMETER_ELLIPSE;
       style[mxConstants.STYLE_STROKEWIDTH] = kind == ShapeBpmnElementKind.EVENT_END ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN;
       style[mxConstants.STYLE_VERTICAL_LABEL_POSITION] = mxConstants.ALIGN_BOTTOM;
       this.putCellStyle(kind, style);
@@ -215,7 +215,7 @@ export class StyleConfigurator {
     ShapeUtil.gatewayKinds().forEach(kind => {
       const style: StyleMap = {};
       style[mxConstants.STYLE_SHAPE] = kind;
-      style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RhombusPerimeter;
+      style[mxConstants.STYLE_PERIMETER] = mxConstants.PERIMETER_RHOMBUS;
       style[mxConstants.STYLE_STROKEWIDTH] = StyleDefault.STROKE_WIDTH_THIN;
       style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_TOP;
 
