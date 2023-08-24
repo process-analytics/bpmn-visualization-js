@@ -80,7 +80,7 @@ function loadBpmn(bpmn: string, handleError = true): void {
     collapseBpmnElement(bpmnElementIdToCollapse);
     document.dispatchEvent(new CustomEvent('diagramLoaded'));
   } catch (error) {
-    if (handleError) {
+    if (handleError && error instanceof Error) {
       statusKoNotifier(`Cannot load the BPMN diagram: ${error.message}`);
     } else {
       throw error;
@@ -175,10 +175,12 @@ function readAndLoadFile(f: File): void {
 /**
  * <b>IMPORTANT</b>: be sure to have call the `startBpmnVisualization` function prior calling this function as it relies on resources that must be initialized first.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types
-export function handleFileSelect(evt: any): void {
-  const f = evt.target.files[0];
-  readAndLoadFile(f);
+export function handleFileSelect(evt: Event): void {
+  const files = (evt.target as HTMLInputElement).files;
+  if (files && files.length > 0) {
+    const f = files[0];
+    readAndLoadFile(f);
+  }
 }
 
 function loadBpmnFromUrl(url: string): void {
@@ -301,7 +303,9 @@ function configurePoolsFilteringFromParameters(parameters: URLSearchParams): Mod
 
 export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): void {
   const log = logStartup;
-  log(`Initializing BpmnVisualization with container '${config.globalOptions.container}'...`);
+  const container = config.globalOptions.container;
+  const containerId = typeof container === 'string' ? container : container.id;
+  log(`Initializing BpmnVisualization with container '${containerId}'...`);
 
   const parameters = new URLSearchParams(window.location.search);
   const rendererIgnoreBpmnColors = parameters.get('renderer.ignore.bpmn.colors');
