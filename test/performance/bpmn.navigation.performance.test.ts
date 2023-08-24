@@ -25,11 +25,12 @@ import { ZoomType } from '@lib/component/options';
 import { performanceDataFilePath } from './helpers/file-utils';
 
 const metricsArray: Array<PerformanceMetric> = [];
-
 let metricsCollector: ChromiumMetricsCollector;
+
 beforeAll(async () => {
   metricsCollector = await ChromiumMetricsCollector.create(page);
 });
+
 describe('Mouse wheel zoom performance', () => {
   const pageTester = new PageTester({ targetedPage: AvailableTestPages.DIAGRAM_NAVIGATION, diagramSubfolder: 'performance' }, page);
 
@@ -66,17 +67,19 @@ describe('Mouse wheel zoom performance', () => {
     expect(true).toBe(true);
   });
 });
-afterAll(() => {
-  metricsCollector.destroy();
-  try {
-    const oldDataString = fs.readFileSync(performanceDataFilePath, 'utf8');
-    const oldData = JSON.parse(oldDataString.substring('const data = '.length, oldDataString.length)) as ChartData;
-    const data = {
-      zoom: oldData.zoom.concat(metricsArray),
-      load: oldData.load,
-    };
-    fs.writeFileSync(performanceDataFilePath, 'const data = ' + JSON.stringify(data));
-  } catch (err) {
-    console.error(err);
-  }
+
+afterAll(async () => {
+  await metricsCollector.destroy().then(() => {
+    try {
+      const oldDataString = fs.readFileSync(performanceDataFilePath, 'utf8');
+      const oldData = JSON.parse(oldDataString.substring('const data = '.length, oldDataString.length)) as ChartData;
+      const data = {
+        zoom: oldData.zoom.concat(metricsArray),
+        load: oldData.load,
+      };
+      fs.writeFileSync(performanceDataFilePath, 'const data = ' + JSON.stringify(data));
+    } catch (err) {
+      console.error(err);
+    }
+  });
 });
