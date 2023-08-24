@@ -18,6 +18,7 @@ import { parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtils'
 import { getExpectedMarkers, verifyShape } from '../../../helpers/bpmn-model-expect';
 
 import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
+import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
 import type { TMultiInstanceLoopCharacteristics, TStandardLoopCharacteristics } from '@lib/model/bpmn/json/baseElement/loopCharacteristics';
 import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '@lib/model/bpmn/internal';
 
@@ -34,7 +35,7 @@ describe.each([
   ['manualTask', ShapeBpmnElementKind.TASK_MANUAL],
   ['scriptTask', ShapeBpmnElementKind.TASK_SCRIPT],
   ['businessRuleTask', ShapeBpmnElementKind.TASK_BUSINESS_RULE],
-])(`parse bpmn as json for '%s'`, (bpmnSemanticType: string, expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
+] as [keyof TProcess, ShapeBpmnElementKind][])(`parse bpmn as json for '%s'`, (bpmnSemanticType: keyof TProcess, expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
   describe.each([
     ['standardLoopCharacteristics', ShapeBpmnMarkerKind.LOOP],
     ['multiInstanceLoopCharacteristics', ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],

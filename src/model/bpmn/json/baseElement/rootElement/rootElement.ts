@@ -166,9 +166,6 @@ export interface TProcess extends TCallableElement {
   isClosed?: boolean; // default="false"
   isExecutable?: boolean;
   definitionalCollaborationRef?: string;
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
 }
 
 export enum tProcessType {

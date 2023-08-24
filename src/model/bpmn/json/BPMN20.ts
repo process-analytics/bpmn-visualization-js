@@ -107,9 +107,6 @@ export interface TDefinitions {
   typeLanguage?: string; // default="http://www.w3.org/2001/XMLSchema"
   exporter?: string;
   exporterVersion?: string;
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
 }
 
 export interface TImport {
