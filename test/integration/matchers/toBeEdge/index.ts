@@ -47,7 +47,7 @@ function buildExpectedMsgFlowIconCellStyle(expectedModel: ExpectedEdgeModelEleme
 function buildExpectedEdgeStylePropertyRegexp(expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement): string {
   let expectedStyle: string = expectedModel.kind;
   if ('sequenceFlowKind' in expectedModel) {
-    expectedStyle = expectedStyle + `;${(expectedModel as ExpectedSequenceFlowModelElement).sequenceFlowKind}`;
+    expectedStyle = expectedStyle + `;${expectedModel.sequenceFlowKind}`;
   }
   return expectedStyle + '.*';
 }

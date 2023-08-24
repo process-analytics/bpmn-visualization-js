@@ -117,7 +117,7 @@ export function parseJsonAndExpectOnlyEdgesAndFlowNodes(json: BpmnJsonModel, num
 export function verifySubProcess(model: BpmnModel, kind: ShapeBpmnSubProcessKind, expectedNumber: number): void {
   const subProcesses = model.flowNodes.filter(shape => {
     const bpmnElement = shape.bpmnElement;
-    return bpmnElement instanceof ShapeBpmnSubProcess && (bpmnElement as ShapeBpmnSubProcess).subProcessKind === kind;
+    return bpmnElement instanceof ShapeBpmnSubProcess && bpmnElement.subProcessKind === kind;
   });
   expect(subProcesses).toHaveLength(expectedNumber);
 }
@@ -170,7 +170,7 @@ export function parseJsonAndExpectEvent(json: BpmnJsonModel, eventDefinitionKind
 
   const events = model.flowNodes.filter(shape => {
     const bpmnElement = shape.bpmnElement;
-    return bpmnElement instanceof ShapeBpmnEvent && (bpmnElement as ShapeBpmnEvent).eventDefinitionKind === eventDefinitionKind;
+    return bpmnElement instanceof ShapeBpmnEvent && bpmnElement.eventDefinitionKind === eventDefinitionKind;
   });
   expect(events).toHaveLength(expectedNumber);
 

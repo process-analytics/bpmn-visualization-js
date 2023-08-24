@@ -17,7 +17,6 @@ limitations under the License.
 import debugLogger from 'debug';
 import 'jest-playwright-preset';
 import { join } from 'node:path';
-import type { Page } from 'playwright';
 import type { Point } from '@test/shared/visu/bpmn-page-utils';
 import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
 import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
@@ -55,7 +54,7 @@ class MouseNavigationImageSnapshotThresholds extends MultiBrowserImageSnapshotTh
   }
 }
 
-const pageTester = new PageTester({ targetedPage: AvailableTestPages.DIAGRAM_NAVIGATION, diagramSubfolder: 'navigation' }, <Page>page);
+const pageTester = new PageTester({ targetedPage: AvailableTestPages.DIAGRAM_NAVIGATION, diagramSubfolder: 'navigation' }, page);
 const bpmnDiagramName = 'simple.2.start.events.1.task';
 
 describe('diagram navigation - zoom and pan with mouse', () => {

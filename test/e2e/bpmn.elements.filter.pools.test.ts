@@ -16,7 +16,6 @@ limitations under the License.
 
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
-import type { Page } from 'playwright';
 import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 
 class FilterPoolsImageSnapshotConfigurator extends ImageSnapshotConfigurator {
@@ -36,7 +35,7 @@ describe('Filter pools', () => {
     new MultiBrowserImageSnapshotThresholds({ chromium: 0.08 / 100, firefox: 0.013 / 100, webkit: 0.17 / 100 }),
     diagramSubfolder,
   );
-  const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder }, <Page>page);
+  const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder }, page);
 
   // Participant_1 start/task/end
   // Participant_2 black box pool

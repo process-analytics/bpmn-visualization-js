@@ -15,7 +15,6 @@ limitations under the License.
 */
 
 import * as fs from 'node:fs';
-import type { Page } from 'playwright';
 import { delay } from '@test/shared/visu/test-utils';
 import type { Point } from '@test/shared/visu/bpmn-page-utils';
 import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
@@ -29,10 +28,10 @@ const metricsArray: Array<PerformanceMetric> = [];
 
 let metricsCollector: ChromiumMetricsCollector;
 beforeAll(async () => {
-  metricsCollector = await ChromiumMetricsCollector.create(<Page>page);
+  metricsCollector = await ChromiumMetricsCollector.create(page);
 });
 describe('Mouse wheel zoom performance', () => {
-  const pageTester = new PageTester({ targetedPage: AvailableTestPages.DIAGRAM_NAVIGATION, diagramSubfolder: 'performance' }, <Page>page);
+  const pageTester = new PageTester({ targetedPage: AvailableTestPages.DIAGRAM_NAVIGATION, diagramSubfolder: 'performance' }, page);
 
   const bpmnDiagramName = 'B.2.0';
   let containerCenter: Point;

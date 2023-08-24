@@ -15,7 +15,6 @@ limitations under the License.
 */
 
 import * as fs from 'node:fs';
-import type { Page } from 'playwright';
 import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
 import { ChromiumMetricsCollector } from './helpers/metrics-chromium';
 import type { ChartData, PerformanceMetric } from './helpers/perf-utils';
@@ -26,10 +25,10 @@ const metricsArray: Array<PerformanceMetric> = [];
 
 let metricsCollector: ChromiumMetricsCollector;
 beforeAll(async () => {
-  metricsCollector = await ChromiumMetricsCollector.create(<Page>page);
+  metricsCollector = await ChromiumMetricsCollector.create(page);
 });
 describe('load performance', () => {
-  const pageTester = new PageTester({ targetedPage: AvailableTestPages.DIAGRAM_NAVIGATION, diagramSubfolder: 'performance' }, <Page>page);
+  const pageTester = new PageTester({ targetedPage: AvailableTestPages.DIAGRAM_NAVIGATION, diagramSubfolder: 'performance' }, page);
   const bpmnDiagramName = 'B.2.0';
 
   it.each([1, 2, 3, 4, 5])('run %s - file loading and displaying diagram with FitType.HorizontalVertical', async run => {

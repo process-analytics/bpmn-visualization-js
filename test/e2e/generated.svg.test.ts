@@ -15,14 +15,13 @@ limitations under the License.
 */
 
 import 'jest-playwright-preset';
-import type { Page } from 'playwright';
 import { AvailableTestPages, BpmnPageSvgTester } from '@test/shared/visu/bpmn-page-utils';
 
 const diagramSubfolder = 'svg';
 
 describe('Check generated SVG in demo page', () => {
   it('should display diagram in page', async () => {
-    const pageTester = new BpmnPageSvgTester({ targetedPage: AvailableTestPages.INDEX, diagramSubfolder }, <Page>page);
+    const pageTester = new BpmnPageSvgTester({ targetedPage: AvailableTestPages.INDEX, diagramSubfolder }, page);
     await pageTester.gotoPageAndLoadBpmnDiagram('simple-start-task-end');
 
     await pageTester.expectEvent('StartEvent_1', 'Start Event 1');
@@ -41,7 +40,7 @@ describe('Check generated SVG in lib-integration page', () => {
         bpmnContainerId: 'bpmn-container-custom',
         diagramSubfolder,
       },
-      <Page>page,
+      page,
     );
     await pageTester.gotoPageAndLoadBpmnDiagram();
 

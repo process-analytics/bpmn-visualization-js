@@ -17,7 +17,6 @@ limitations under the License.
 import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
 import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
-import type { Page } from 'playwright';
 
 class StyleImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
@@ -132,7 +131,7 @@ class StyleImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
 describe('Style API', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new StyleImageSnapshotThresholds(), 'style');
 
-  const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder: 'theme' }, <Page>page);
+  const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder: 'theme' }, page);
 
   it(`Update 'stroke.color'`, async () => {
     await pageTester.gotoPageAndLoadBpmnDiagram('01.most.bpmn.types.without.label', {
@@ -193,7 +192,7 @@ describe('Style API', () => {
   });
 
   it(`Update 'color' and 'opacity' of 'fill' for task`, async () => {
-    const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder: 'bpmn-rendering' }, <Page>page);
+    const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder: 'bpmn-rendering' }, page);
     await pageTester.gotoPageAndLoadBpmnDiagram('tasks', {
       styleOptions: {
         styleUpdate: { fill: { color: 'chartreuse', opacity: 15 } },
@@ -206,7 +205,7 @@ describe('Style API', () => {
   });
 
   it(`Update 'color' and 'opacity' of 'font'`, async () => {
-    const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder: 'bpmn-rendering' }, <Page>page);
+    const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder: 'bpmn-rendering' }, page);
     await pageTester.gotoPageAndLoadBpmnDiagram('labels.04.fonts', {
       styleOptions: {
         styleUpdate: {

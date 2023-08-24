@@ -23,7 +23,7 @@ import 'expect-playwright';
 import type { PageWaitForSelectorOptions } from 'expect-playwright';
 import type { ElementHandle, Page } from 'playwright';
 import { type LoadOptions, FitType, ZoomType } from '@lib/component/options';
-import type { ShapeStyleUpdate, StyleUpdate } from '@lib/component/registry';
+import type { StyleUpdate } from '@lib/component/registry';
 import { BpmnQuerySelectorsForTests } from '@test/shared/query-selectors';
 import { delay } from './test-utils';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -228,7 +228,7 @@ export class PageTester {
       }
 
       if ('fill' in styleUpdate) {
-        const fill = (<ShapeStyleUpdate>styleUpdate).fill;
+        const fill = styleUpdate.fill;
 
         const fillColor = fill.color;
         if (typeof fillColor === 'object') {

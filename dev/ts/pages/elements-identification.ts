@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BpmnElement, BpmnElementKind, Overlay, ShapeStyleUpdate, StyleUpdate, FlowKind } from '../dev-bundle-index';
+import type { BpmnElement, BpmnElementKind, Overlay, ShapeStyleUpdate, StyleUpdate } from '../dev-bundle-index';
 import {
   addCssClasses,
   addOverlays,
@@ -49,7 +49,7 @@ function computeStyleUpdateByKind(bpmnKind: BpmnElementKind): StyleUpdate {
   const style: ShapeStyleUpdate = { font: {}, fill: {}, stroke: {} };
 
   if (isFlowKind(bpmnKind)) {
-    switch (bpmnKind as FlowKind) {
+    switch (bpmnKind) {
       case 'messageFlow':
       case 'sequenceFlow':
       case 'association':
@@ -292,7 +292,7 @@ documentReady(() => {
   startBpmnVisualization({
     globalOptions: {
       // Use a DOM element without id to test the fix for https://github.com/process-analytics/bpmn-visualization-js/issues/2270
-      container: <HTMLElement>document.querySelector('.bpmn-container'),
+      container: document.querySelector<HTMLElement>('.bpmn-container'),
       navigation: {
         enabled: true,
       },

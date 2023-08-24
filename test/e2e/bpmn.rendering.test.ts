@@ -15,7 +15,6 @@ limitations under the License.
 */
 
 import 'jest-playwright-preset';
-import type { Page } from 'playwright';
 import { getBpmnDiagramNames } from '@test/shared/visu/test-utils';
 import type { StyleOptions } from '@test/shared/visu/bpmn-page-utils';
 import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
@@ -242,7 +241,7 @@ describe('BPMN rendering', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new ImageSnapshotThresholds(), 'bpmn-rendering');
 
   const diagramSubfolder = 'bpmn-rendering';
-  const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder }, <Page>page);
+  const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder }, page);
   const bpmnDiagramNames = getBpmnDiagramNames(diagramSubfolder);
 
   describe('BPMN diagram files are present', () => {

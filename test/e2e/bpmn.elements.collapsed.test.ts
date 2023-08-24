@@ -17,7 +17,6 @@ limitations under the License.
 import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
-import type { Page } from 'playwright';
 import { getBpmnDiagramNames } from '@test/shared/visu/test-utils';
 
 // key: diagram name
@@ -50,7 +49,7 @@ describe('Collapse BPMN elements', () => {
     new MultiBrowserImageSnapshotThresholds({ chromium: 0.07 / 100, firefox: 0.11 / 100, webkit: 0.15 / 100 }),
     diagramSubfolder,
   );
-  const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder }, <Page>page);
+  const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder }, page);
   const bpmnDiagramNames = getBpmnDiagramNames(diagramSubfolder);
 
   describe.each(bpmnDiagramNames)(`%s`, (bpmnDiagramName: string) => {
