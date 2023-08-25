@@ -114,7 +114,7 @@ export const verifyShape = (
     expect(bpmnElement.markers).toHaveLength(0);
   }
 
-  if ('bpmnElementCallActivityKind' in expectedShape || 'bpmnElementGlobalTaskKind' in expectedShape) {
+  if ('bpmnElementCallActivityKind' in expectedShape) {
     expect(bpmnElement instanceof ShapeBpmnCallActivity).toBeTruthy();
     expect((bpmnElement as ShapeBpmnCallActivity).callActivityKind).toEqual(expectedShape.bpmnElementCallActivityKind);
     expect((bpmnElement as ShapeBpmnCallActivity).globalTaskKind).toEqual(expectedShape.bpmnElementGlobalTaskKind);
