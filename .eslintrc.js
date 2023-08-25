@@ -64,6 +64,7 @@ module.exports = {
           },
         ],
         '@typescript-eslint/consistent-type-imports': ['error'],
+        '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
       },
     },
   ],
