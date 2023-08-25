@@ -48,58 +48,58 @@ export enum EventDefinitionOn {
  * If the id field is set, the default id is override.
  * Otherwise, the id has the format: `event_id_${processIndex}_${index}`
  */
-interface BuildEventParameter extends TFlowNode {
+type BuildEventParameter = {
   eventDefinitionParameter: BuildEventDefinitionParameter;
-}
+} & TFlowNode;
 
-interface BuildInterruptingEventParameter extends BuildEventParameter {
+type BuildInterruptingEventParameter = {
   isInterrupting?: boolean;
-}
+} & BuildEventParameter;
 
 export type BuildEventsParameter = BuildOtherEventParameter | BuildStartEventParameter | BuildBoundaryEventParameter;
 
 export type OtherBuildEventKind = 'endEvent' | 'intermediateCatchEvent' | 'intermediateThrowEvent';
-interface BuildOtherEventParameter extends BuildEventParameter {
+type BuildOtherEventParameter = {
   bpmnKind: OtherBuildEventKind;
-}
+} & BuildEventParameter;
 
-interface BuildStartEventParameter extends BuildInterruptingEventParameter {
+type BuildStartEventParameter = {
   bpmnKind: 'startEvent';
-}
+} & BuildInterruptingEventParameter;
 
-interface BuildBoundaryEventParameter extends BuildInterruptingEventParameter {
+type BuildBoundaryEventParameter = {
   bpmnKind: 'boundaryEvent';
   attachedToRef: string;
-}
+} & BuildInterruptingEventParameter;
 
-export interface BuildEventDefinitionParameter {
+export type BuildEventDefinitionParameter = {
   eventDefinitionKind?: string;
   eventDefinitionOn: EventDefinitionOn;
   eventDefinition?: BPMNEventDefinition;
   withDifferentDefinition?: boolean;
   withMultipleDefinitions?: boolean;
-}
+};
 
 export type BuildTaskKind = 'task' | 'businessRuleTask' | 'manualTask' | 'receiveTask' | 'sendTask' | 'serviceTask' | 'scriptTask' | 'userTask';
 /**
  * If the id field is set, the default id is override.
  * Otherwise, the id has the format: `task_id_${processIndex}_${index}`
  */
-export interface BuildTaskParameter extends TFlowNode {
+export type BuildTaskParameter = {
   /** @default 'task' */
   bpmnKind?: BuildTaskKind;
-}
+} & TFlowNode;
 
 /**
  * If the id field is set, the default id is override.
  * Otherwise, the id has the format: `callActivity_id_${processIndex}_${index}`
  */
-export interface BuildCallActivityParameter extends TFlowNode {
+export type BuildCallActivityParameter = {
   calledElement: string;
 
   /** @default false */
   isExpanded?: boolean;
-}
+} & TFlowNode;
 
 /**
  * If the id field is set, the default id is override.
@@ -117,9 +117,9 @@ export type BuildGatewayKind = 'complexGateway' | 'eventBasedGateway' | 'exclusi
  * If the id field is set, the default id is override.
  * Otherwise, the id has the format: `exclusiveGateway_id_${processIndex}_${index}`
  */
-export interface BuildGatewayParameter extends TFlowNode {
+export type BuildGatewayParameter = {
   bpmnKind: BuildGatewayKind;
-}
+} & TFlowNode;
 
 /**
  * If the id field is set, the default id is override.
@@ -131,10 +131,10 @@ export type BuildLaneParameter = TFlowElement;
  * If the id field is set, the default id is override.
  * Otherwise, the id has the format: `sequence_flow_id_${processIndex}_${index}`
  */
-export interface BuildSequenceFlowParameter extends TFlowElement {
+export type BuildSequenceFlowParameter = {
   sourceRef: string;
   targetRef: string;
-}
+} & TFlowElement;
 
 /**
  * If the id field is set, the default id is override.
@@ -148,7 +148,7 @@ export type BuildAssociationParameter = Pick<TAssociation, 'id' | 'sourceRef' | 
  */
 export type BuildTextAnnotationParameter = Pick<TTextAnnotation, 'id' | 'text'>;
 
-export interface BuildProcessParameter {
+export type BuildProcessParameter = {
   lane?: BuildLaneParameter | BuildLaneParameter[];
   task?: BuildTaskParameter | BuildTaskParameter[];
   event?: BuildEventsParameter | BuildEventsParameter[];
@@ -226,14 +226,14 @@ export interface BuildProcessParameter {
 
   /** @default false */
   withParticipant?: boolean;
-}
+};
 
-export interface BuildMessageFlowParameter {
+export type BuildMessageFlowParameter = {
   id: string;
   name?: string;
   sourceRef: string;
   targetRef: string;
-}
+};
 
 export type BpmnGlobalTaskKind = keyof Pick<TDefinitions, 'globalTask' | 'globalBusinessRuleTask' | 'globalManualTask' | 'globalScriptTask' | 'globalUserTask'>;
 export type BuildGlobalTaskParameter = {
@@ -243,16 +243,11 @@ export type BuildGlobalTaskParameter = {
   bpmnKind?: BpmnGlobalTaskKind;
 };
 
-export interface BuildTaskParameter extends TFlowNode {
-  /** @default 'task' */
-  bpmnKind?: BuildTaskKind;
-}
-
-export interface BuildDefinitionParameter {
+export type BuildDefinitionParameter = {
   process: BuildProcessParameter | BuildProcessParameter[];
   messageFlows?: BuildMessageFlowParameter | BuildMessageFlowParameter[];
   globalTask?: BuildGlobalTaskParameter | BuildGlobalTaskParameter[];
-}
+};
 
 export function buildDefinitions({ process, messageFlows, globalTask }: BuildDefinitionParameter): BpmnJsonModel {
   const json: BpmnJsonModel = {
