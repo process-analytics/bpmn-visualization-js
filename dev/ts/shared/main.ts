@@ -217,7 +217,7 @@ function logOnlyStatusKoNotifier(errorMsg: string): void {
 }
 
 function getFitOptionsFromParameters(config: BpmnVisualizationDemoConfiguration, parameters: URLSearchParams): FitOptions {
-  const fitOptions: FitOptions = config.loadOptions?.fit || {};
+  const fitOptions: FitOptions = config.loadOptions?.fit ?? {};
   const parameterFitType: string = parameters.get('fitTypeOnLoad');
   if (parameterFitType) {
     // As the parameter is a string, and the load/fit APIs accept only enum to avoid error, we need to convert it
@@ -320,7 +320,7 @@ export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguratio
   statusKoNotifier = config.statusKoNotifier ?? logOnlyStatusKoNotifier;
 
   log('Configuring Load Options');
-  loadOptions = config.loadOptions || {};
+  loadOptions = config.loadOptions ?? {};
   loadOptions.fit = getFitOptionsFromParameters(config, parameters);
   loadOptions.modelFilter = configurePoolsFilteringFromParameters(parameters);
 

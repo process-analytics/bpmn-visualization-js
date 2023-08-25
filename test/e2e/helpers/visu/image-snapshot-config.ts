@@ -71,7 +71,7 @@ export class ImageSnapshotConfigurator {
       configLog(`Using dedicated image snapshot threshold for '${fileName}'`);
       const simplePlatformName = getSimplePlatformName();
       configLog(`Simple platform name: ${simplePlatformName}`);
-      failureThreshold = config[simplePlatformName] || failureThreshold;
+      failureThreshold = config[simplePlatformName] ?? failureThreshold;
     } else {
       configLog(`Using default image snapshot threshold for '${fileName}'`);
     }

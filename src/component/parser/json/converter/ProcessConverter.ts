@@ -371,7 +371,7 @@ const buildMarkers = (bpmnElement: TActivity): ShapeBpmnMarkerKind[] => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- We know that the multiInstanceLoopCharacteristics field is not on all types, but it's already tested
   // @ts-ignore
   const multiInstanceLoopCharacteristics = ensureIsArray(bpmnElement.multiInstanceLoopCharacteristics, true)[0];
-  if (standardLoopCharacteristics || standardLoopCharacteristics === '') {
+  if (standardLoopCharacteristics ?? standardLoopCharacteristics === '') {
     markers.push(ShapeBpmnMarkerKind.LOOP);
   } else if (multiInstanceLoopCharacteristics) {
     markers.push(multiInstanceLoopCharacteristics.isSequential ? ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL : ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL);
