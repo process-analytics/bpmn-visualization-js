@@ -59,8 +59,6 @@ export default class GraphCellUpdater {
       return;
     }
 
-    this.styleManager.ensureStyleIsStored(cell);
-
     let cellStyle = cell.getStyle();
     cellStyle = setStyle(cellStyle, BpmnStyleIdentifier.EXTRA_CSS_CLASSES, cssClasses.join(','));
     model.setStyle(cell, cellStyle);
