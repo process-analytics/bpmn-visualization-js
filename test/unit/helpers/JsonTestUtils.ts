@@ -19,7 +19,7 @@ import { newBpmnJsonParser } from '@lib/component/parser/json/BpmnJsonParser';
 import type BpmnModel from '@lib/model/bpmn/internal/BpmnModel';
 import { ShapeBpmnEvent, ShapeBpmnSubProcess } from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
 import type Label from '@lib/model/bpmn/internal/Label';
-import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
 import type { JsonParsingWarning } from '@lib/component/parser/parsing-messages';
 import { ParsingMessageCollector } from '@lib/component/parser/parsing-messages';
 import type { ExpectedBounds, ExpectedFont, ExpectedLabel } from './bpmn-model-expect';

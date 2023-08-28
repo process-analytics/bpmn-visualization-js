@@ -16,29 +16,43 @@ limitations under the License.
 
 import BpmnXmlParser from '@lib/component/parser/xml/BpmnXmlParser';
 import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
-import type { BPMNDiagram } from '@lib/model/bpmn/json/BPMNDI';
+import type { BPMNDiagram } from '@lib/model/bpmn/json/bpmndi';
 import { readFileSync } from '@test/shared/file-helper';
 
-describe('parse bpmn as xml for Camunda Eclipse Plugin 3.0.0', () => {
+describe('parse bpmn as xml for ADONIS NP 8.0', () => {
   it('bpmn with process with extension, ensure elements are present', () => {
-    const a20Process = readFileSync('../fixtures/bpmn/xml-parsing/camuda-eclipse-plugin-3_0_0-A.2.0-export.bpmn');
+    const a21Process = readFileSync('../fixtures/bpmn/xml-parsing/adonis-np-8_0-miwg-A.2.1-export.bpmn');
 
-    const json = new BpmnXmlParser().parse(a20Process);
+    const json = new BpmnXmlParser().parse(a21Process);
 
     expect(json).toMatchObject({
       definitions: {
         process: {
-          id: 'Process_1',
-          isExecutable: false,
+          id: 'process_49bb2d82-cd27-4d9f-a3b7-58edc4d60bce',
+          name: 'A.2.1',
+          processType: 'None',
+          extensionElements: {
+            modelattributes: {
+              attribute: expect.anything(),
+              record: expect.anything(),
+            },
+          },
           startEvent: {
-            id: 'StartEvent_1',
+            id: '_56a03e72-acf0-4522-adeb-ad954c847612',
             name: 'Start Event',
-            outgoing: 'SequenceFlow_1',
+            extensionElements: {
+              instance: {
+                attribute: expect.anything(),
+                record: expect.anything(),
+              },
+            },
+            outgoing: '_ab1dbc48-3851-440e-bee0-ef1af884a1a5',
           },
           endEvent: {
-            id: 'EndEvent_1',
+            id: '_e8302d6f-0ef9-4b95-9b23-96de2c175589',
             name: 'End Event',
-            incoming: ['SequenceFlow_8', 'SequenceFlow_9'],
+            extensionElements: expect.anything(),
+            incoming: ['_91a75c3f-7a0d-44a4-a1ba-ba6064187a9f', '_eeddf2a4-a7f0-415b-b154-a98f64d411c2'],
           },
           task: expect.arrayContaining([expect.anything()]),
           exclusiveGateway: expect.arrayContaining([expect.anything()]),
@@ -49,17 +63,15 @@ describe('parse bpmn as xml for Camunda Eclipse Plugin 3.0.0', () => {
             BPMNShape: expect.arrayContaining([expect.anything()]),
             BPMNEdge: expect.arrayContaining([
               {
-                id: 'BPMNEdge_SequenceFlow_7',
-                bpmnElement: 'SequenceFlow_7',
-                sourceElement: '_BPMNShape_Task_7',
-                targetElement: '_BPMNShape_ExclusiveGateway_3',
-                waypoint: [expect.anything(), expect.anything(), expect.anything(), expect.anything()],
+                id: 'BPMN_Edge_107fb1c6-cf96-45a1-934e-e9a74f0ccb0c',
+                bpmnElement: '_107fb1c6-cf96-45a1-934e-e9a74f0ccb0c',
+                waypoint: [expect.anything(), expect.anything(), expect.anything()],
                 BPMNLabel: {
                   Bounds: {
-                    height: 6.0,
-                    width: 6.0,
-                    x: 696.0,
-                    y: 338.0,
+                    height: 0,
+                    width: 0,
+                    x: 398,
+                    y: 340,
                   },
                 },
               },
@@ -72,10 +84,10 @@ describe('parse bpmn as xml for Camunda Eclipse Plugin 3.0.0', () => {
     const process: TProcess = json.definitions.process as TProcess;
     expect(process.task).toHaveLength(4);
     expect(process.exclusiveGateway).toHaveLength(2);
-    expect(process.sequenceFlow).toHaveLength(9);
+    expect(process.sequenceFlow).toHaveLength(11);
 
     const bpmnDiagram: BPMNDiagram = json.definitions.BPMNDiagram as BPMNDiagram;
     expect(bpmnDiagram.BPMNPlane.BPMNShape).toHaveLength(8);
-    expect(bpmnDiagram.BPMNPlane.BPMNEdge).toHaveLength(9);
+    expect(bpmnDiagram.BPMNPlane.BPMNEdge).toHaveLength(11);
   });
 });

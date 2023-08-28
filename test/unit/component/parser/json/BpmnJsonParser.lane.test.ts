@@ -16,7 +16,7 @@ limitations under the License.
 
 import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 import { LaneUnknownFlowNodeRefWarning } from '@lib/component/parser/json/warnings';
-import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
 
 import { expectAsWarning, parseJson, parseJsonAndExpectOnlyLanes, parsingMessageCollector } from '../../../helpers/JsonTestUtils';
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
