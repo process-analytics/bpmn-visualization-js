@@ -28,7 +28,7 @@ export function ensureInRange(value: number, min: number, max: number, defaultVa
  * @internal
  */
 export function ensurePositiveValue(input: number | undefined | null): number {
-  return Math.max(input || 0, 0);
+  return Math.max(input ?? 0, 0);
 }
 
 /**

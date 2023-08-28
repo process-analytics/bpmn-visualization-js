@@ -47,7 +47,7 @@ function configureFitOnLoadCheckBox(): void {
 function updateFitConfig(config: FitOptions): void {
   log('Updating fit config', config);
 
-  fitOptions.margin = config.margin || fitOptions.margin;
+  fitOptions.margin = config.margin ?? fitOptions.margin;
   if (config.type) {
     fitOptions.type = config.type;
   }
