@@ -14,13 +14,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-const { moduleNameMapper } = require('../config/ts-jest');
+const { moduleNameMapper } = require('../config/ts-jest.cjs');
+
+process.env.JEST_PLAYWRIGHT_CONFIG = './test/bundles/jest-playwright.config.cjs';
 
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
+  preset: 'jest-playwright-preset',
   rootDir: '../..',
-  roots: ['./test/unit'],
+  roots: ['./test/bundles'],
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
+  testTimeout: 20000,
   transform: {
     '^.+\\.ts?$': [
       'ts-jest',
@@ -30,26 +34,16 @@ module.exports = {
     ],
   },
   moduleNameMapper,
-  collectCoverageFrom: ['src/**/*.{ts,js}'],
-  coveragePathIgnorePatterns: ['/src/model/'],
-  coverageReporters: ['lcov', 'text-summary'],
-  coverageDirectory: 'build/test-report/unit',
-  setupFilesAfterEnv: ['jest-extended/all'],
+  setupFilesAfterEnv: ['jest-extended/all', 'expect-playwright', './test/config/jest.retries.ts'],
   reporters: [
     'default',
     [
       'jest-html-reporter',
       {
-        pageTitle: 'bpmn-visualization Unit Test Report',
-        outputPath: 'build/test-report/unit/index.html',
+        pageTitle: 'bpmn-visualization bundles Test Report',
+        outputPath: 'build/test-report/bundles/index.html',
         includeFailureMsg: true,
         includeSuiteFailure: true,
-      },
-    ],
-    [
-      'jest-sonar',
-      {
-        outputDirectory: 'build/test-report/unit',
       },
     ],
   ],

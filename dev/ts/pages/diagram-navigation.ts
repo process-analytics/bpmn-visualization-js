@@ -26,7 +26,7 @@ function configureFitAndZoomButtons(): void {
 }
 
 function configureZoomThrottleInput(parameters: URLSearchParams): HTMLInputElement {
-  const elZoomThrottle = <HTMLInputElement>document.getElementById('zoom-throttle');
+  const elZoomThrottle = document.getElementById('zoom-throttle') as HTMLInputElement;
   if (parameters.get('zoomThrottle')) {
     elZoomThrottle.value = parameters.get('zoomThrottle');
   }
@@ -34,7 +34,7 @@ function configureZoomThrottleInput(parameters: URLSearchParams): HTMLInputEleme
 }
 
 function configureZoomDebounceInput(parameters: URLSearchParams): HTMLInputElement {
-  const elZoomDebounce = <HTMLInputElement>document.getElementById('zoom-debounce');
+  const elZoomDebounce = document.getElementById('zoom-debounce') as HTMLInputElement;
   if (parameters.get('zoomDebounce')) {
     elZoomDebounce.value = parameters.get('zoomDebounce');
   }

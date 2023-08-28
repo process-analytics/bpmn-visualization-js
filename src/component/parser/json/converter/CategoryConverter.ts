@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { TDefinitions } from '../../../../model/bpmn/json/BPMN20';
+import type { TDefinitions } from '../../../../model/bpmn/json/bpmn20';
 import type { ConvertedElements } from './utils';
 import { ensureIsArray } from '../../../helpers/array-utils';
 import type { TCategory } from '../../../../model/bpmn/json/baseElement/rootElement/rootElement';

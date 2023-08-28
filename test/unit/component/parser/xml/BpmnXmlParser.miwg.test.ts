@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import BpmnXmlParser from '@lib/component/parser/xml/BpmnXmlParser';
-import type { BPMNDiagram } from '@lib/model/bpmn/json/BPMNDI';
+import type { BPMNDiagram } from '@lib/model/bpmn/json/bpmndi';
 import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
 import { readFileSync } from '@test/shared/file-helper';
 

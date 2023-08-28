@@ -20,7 +20,7 @@ import { expectEndEvent, expectPool, expectSequenceFlow, expectServiceTask, expe
 import { expectSvgEvent, expectSvgPool, expectSvgSequenceFlow, expectSvgTask } from './html-utils';
 
 export function expectStartEventBpmnElement(bpmnElement: BpmnElement, expected: ExpectedFlowNodeElement): void {
-  expectStartEvent(<ShapeBpmnSemantic>bpmnElement.bpmnSemantic, expected);
+  expectStartEvent(bpmnElement.bpmnSemantic as ShapeBpmnSemantic, expected);
   expectSvgEvent(bpmnElement.htmlElement);
 }
 
@@ -30,12 +30,12 @@ export function expectEndEventBpmnElement(bpmnElement: BpmnElement, expected: Ex
 }
 
 export function expectSequenceFlowBpmnElement(bpmnElement: BpmnElement, expected: ExpectedFlowElement): void {
-  expectSequenceFlow(<EdgeBpmnSemantic>bpmnElement.bpmnSemantic, expected);
+  expectSequenceFlow(bpmnElement.bpmnSemantic as EdgeBpmnSemantic, expected);
   expectSvgSequenceFlow(bpmnElement.htmlElement);
 }
 
 export function expectTaskBpmnElement(bpmnElement: BpmnElement, expected: ExpectedFlowNodeElement): void {
-  expectTask(<ShapeBpmnSemantic>bpmnElement.bpmnSemantic, expected);
+  expectTask(bpmnElement.bpmnSemantic as ShapeBpmnSemantic, expected);
   expectSvgTask(bpmnElement.htmlElement);
 }
 

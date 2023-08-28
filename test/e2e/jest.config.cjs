@@ -14,9 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-const { moduleNameMapper } = require('../config/ts-jest');
+const { moduleNameMapper } = require('../config/ts-jest.cjs');
 
-process.env.JEST_PLAYWRIGHT_CONFIG = './test/e2e/jest-playwright.config.js';
+process.env.JEST_PLAYWRIGHT_CONFIG = './test/e2e/jest-playwright.config.cjs';
 
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {

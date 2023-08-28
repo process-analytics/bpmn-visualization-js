@@ -24,7 +24,8 @@ import { calculateMetrics } from './helpers/perf-utils';
 import { ZoomType } from '@lib/component/options';
 import { performanceDataFilePath } from './helpers/file-utils';
 
-const metricsArray: Array<PerformanceMetric> = [];
+const metricsArray: PerformanceMetric[] = [];
+
 let metricsCollector: ChromiumMetricsCollector;
 
 beforeAll(async () => {

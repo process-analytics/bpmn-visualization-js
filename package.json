@@ -1,6 +1,8 @@
 {
   "name": "bpmn-visualization",
   "version": "0.38.1-post",
+  "type": "module",
+  "sideEffects": false,
   "description": "A TypeScript library for visualizing process execution data on BPMN diagrams",
   "keywords": [
     "typescript",
@@ -34,6 +36,10 @@
   "browser": "dist/bpmn-visualization.esm.js",
   "module": "dist/bpmn-visualization.esm.js",
   "types": "dist/not-supported-ts-versions.d.ts",
+  "exports": {
+    ".": "./dist/bpmn-visualization.esm.js",
+    "./package.json": "./package.json"
+  },
   "typesVersions": {
     ">=4.0.2": {
       "*": [
@@ -64,21 +70,21 @@
     "docs": "run-s docs:*",
     "docs:user": "node scripts/docs.mjs",
     "docs:api": "typedoc --tsconfig ./tsconfig.typedoc.json src/bpmn-visualization.ts",
-    "lint": "eslint \"**/*.{js,mjs,ts}\" --max-warnings 0 --quiet --fix",
-    "lint-check": "eslint \"**/*.{js,mjs,ts}\" --max-warnings 0",
+    "lint": "eslint \"**/*.{js,cjs,mjs,ts,cts,mts}\" --max-warnings 0 --quiet --fix",
+    "lint-check": "eslint \"**/*.{js,cjs,mjs,ts,cts,mts}\" --max-warnings 0",
     "test": "run-s test:unit test:integration test:e2e",
-    "test:unit": "jest --runInBand --config=./test/unit/jest.config.js",
+    "test:unit": "jest --runInBand --config=./test/unit/jest.config.cjs",
     "test:unit:coverage": "npm run test:unit -- --coverage",
-    "test:integration": "jest --runInBand --config=./test/integration/jest.config.js",
+    "test:integration": "jest --runInBand --config=./test/integration/jest.config.cjs",
     "test:integration:coverage": "npm run test:integration -- --coverage",
     "test:unit:watch": "npm run test:unit:coverage -- --watchAll",
-    "test:e2e": "cross-env JEST_IMAGE_SNAPSHOT_TRACK_OBSOLETE=1 jest --runInBand --detectOpenHandles --config=./test/e2e/jest.config.js",
+    "test:e2e": "cross-env JEST_IMAGE_SNAPSHOT_TRACK_OBSOLETE=1 jest --runInBand --detectOpenHandles --config=./test/e2e/jest.config.cjs",
     "test:e2e:verbose": "cross-env DEBUG=bv:test:*,pw:browser* npm run test:e2e",
     "test:e2e:coverage": "npm run test:e2e -- --coverage",
-    "test:perf": "jest --runInBand --detectOpenHandles --config=./test/performance/jest.config.js",
+    "test:perf": "jest --runInBand --detectOpenHandles --config=./test/performance/jest.config.cjs",
     "test:perf:verbose": "cross-env DEBUG=bv:test:*,pw:browser* npm run test:perf",
     "test:perf:compile": "tsc -p test/performance/",
-    "test:bundles": "jest --runInBand --detectOpenHandles --config=./test/bundles/jest.config.js",
+    "test:bundles": "jest --runInBand --detectOpenHandles --config=./test/bundles/jest.config.cjs",
     "test:bundles:verbose": "cross-env DEBUG=bv:*,pw:browser* npm run test:bundles",
     "version-prepare": "node scripts/manage-version-in-files.mjs && git commit --no-verify -a -m \"chore(release): prepare version for release\"",
     "version": "IS_RELEASING=true node scripts/manage-version-in-files.mjs && git add .",
@@ -123,6 +129,7 @@
     "eslint-plugin-notice": "~0.9.10",
     "eslint-plugin-playwright": "~0.16.0",
     "eslint-plugin-prettier": "~5.0.0",
+    "eslint-plugin-unicorn": "~48.0.1",
     "expect-playwright": "~0.8.0",
     "fs-extra": "~11.1.1",
     "husky": "~8.0.3",
@@ -150,15 +157,15 @@
     "rollup-plugin-typescript2": "~0.35.0",
     "tailwindcss": "~3.3.3",
     "ts-jest": "~29.1.1",
-    "typedoc": "~0.24.8",
-    "typescript": "~5.1.6",
+    "typedoc": "~0.25.0",
+    "typescript": "~5.2.2",
     "vite": "~4.4.9"
   },
   "overrides": {
     "@types/node": "^16.18.0"
   },
   "lint-staged": {
-    "*.{js,mjs,ts}": [
+    "*.{js,cjs,mjs,ts,cts,mts}": [
       "eslint --fix"
     ]
   }

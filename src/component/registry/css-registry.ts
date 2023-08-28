@@ -14,12 +14,67 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { CssClassesRegistry } from './types';
 import { ensureIsArray } from '../helpers/array-utils';
+import type { BpmnGraph } from '../mxgraph/BpmnGraph';
+import { createNewCssClassesUpdater, type CssClassesUpdater } from '../mxgraph/style/css-classes-updater';
+
+export function createNewCssRegistry(graph: BpmnGraph): CssClassesRegistryImpl {
+  return new CssClassesRegistryImpl(createNewCssClassesUpdater(graph), new CssClassesCache());
+}
+
+export class CssClassesRegistryImpl implements CssClassesRegistry {
+  constructor(
+    private readonly cssClassesUpdater: CssClassesUpdater,
+    private readonly cssClassesCache: CssClassesCache,
+  ) {}
+
+  clearCache(): void {
+    this.cssClassesCache.clear();
+  }
+
+  addCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
+    this.updateCssClasses(bpmnElementIds, classNames, this.cssClassesCache.addClassNames);
+  }
+
+  removeCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
+    this.updateCssClasses(bpmnElementIds, classNames, this.cssClassesCache.removeClassNames);
+  }
+
+  removeAllCssClasses(bpmnElementIds?: string | string[]): void {
+    if (bpmnElementIds) {
+      ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => {
+        const isChanged = this.cssClassesCache.removeAllClassNames(bpmnElementId);
+        this.updateCellIfChanged(isChanged, bpmnElementId);
+      });
+    } else {
+      const bpmnIds = this.cssClassesCache.getBpmnIds();
+      this.cssClassesCache.clear();
+      bpmnIds.forEach(bpmnElementId => this.updateCellIfChanged(true, bpmnElementId));
+    }
+  }
+
+  toggleCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
+    this.updateCssClasses(bpmnElementIds, classNames, this.cssClassesCache.toggleClassNames);
+  }
+
+  private updateCssClasses(bpmnElementIds: string | string[], classNames: string | string[], updateClassNames: (bpmnElementId: string, classNames: string[]) => boolean): void {
+    const arrayClassNames = ensureIsArray<string>(classNames);
+    ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => this.updateCellIfChanged(updateClassNames(bpmnElementId, arrayClassNames), bpmnElementId));
+  }
+
+  private updateCellIfChanged(updateCell: boolean, bpmnElementId: string): void {
+    if (updateCell) {
+      const allClassNames = this.cssClassesCache.getClassNames(bpmnElementId);
+      this.cssClassesUpdater.updateAndRefreshCssClassesOfCell(bpmnElementId, allClassNames);
+    }
+  }
+}
 
 /**
  * @internal
  */
-export class CssRegistry {
+export class CssClassesCache {
   private classNamesByBpmnId = new Map<string, Set<string>>();
 
   /**

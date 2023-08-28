@@ -14,17 +14,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { Overlay } from './types';
-import type { OverlaysUpdater } from '../mxgraph/overlay/updater';
-import { createNewOverlaysUpdater } from '../mxgraph/overlay/updater';
+import type { Overlay, OverlaysRegistry } from './types';
+import { createNewOverlaysUpdater, type OverlaysUpdater } from '../mxgraph/overlay/updater';
 import type { BpmnGraph } from '../mxgraph/BpmnGraph';
 
 export function createNewOverlaysRegistry(graph: BpmnGraph): OverlaysRegistry {
-  return new OverlaysRegistry(createNewOverlaysUpdater(graph));
+  return new OverlaysRegistryImpl(createNewOverlaysUpdater(graph));
 }
 
-export class OverlaysRegistry {
-  constructor(private overlaysUpdater: OverlaysUpdater) {}
+class OverlaysRegistryImpl implements OverlaysRegistry {
+  constructor(private readonly overlaysUpdater: OverlaysUpdater) {}
 
   addOverlays(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
     this.overlaysUpdater.addOverlays(bpmnElementId, overlays);

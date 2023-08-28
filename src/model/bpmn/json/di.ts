@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { Bounds, Point } from './DC';
-import type { BPMNEdge, BPMNLabel, BPMNShape } from './BPMNDI';
+import type { Bounds, Point } from './dc';
+import type { BPMNEdge, BPMNLabel, BPMNShape } from './bpmndi';
 import type { TExtension } from './Semantic';
 
 // <xsd:any namespace="##other" minOccurs="0" maxOccurs="unbounded" />

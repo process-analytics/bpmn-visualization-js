@@ -20,8 +20,8 @@ import { Waypoint } from '@lib/model/bpmn/internal/edge/edge';
 import { MessageVisibleKind } from '@lib/model/bpmn/internal/edge/kinds';
 
 /** Json model */
-import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
-import * as bpmndi from '@lib/model/bpmn/json/BPMNDI';
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
+import * as bpmndi from '@lib/model/bpmn/json/bpmndi';
 
 /** Test utils */
 import { parseJson, parseJsonAndExpectOnlyEdges } from '../../../helpers/JsonTestUtils';

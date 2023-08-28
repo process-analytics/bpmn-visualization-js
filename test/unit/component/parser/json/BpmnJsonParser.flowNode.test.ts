@@ -19,7 +19,7 @@ import { parseJsonAndExpectOnlyEdgesAndFlowNodes, parseJsonAndExpectOnlyFlowNode
 import type { ExpectedShape } from '../../../helpers/bpmn-model-expect';
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
 
-import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
 import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
 import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind, ShapeUtil } from '@lib/model/bpmn/internal';
 import type { ShapeBpmnEventBasedGateway } from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';

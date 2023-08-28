@@ -15,9 +15,9 @@ limitations under the License.
 */
 
 import type { Overlay, OverlayPosition } from '../dev-bundle-index';
-import { addOverlays, configureControlsPanel, configureMousePointer, documentReady, getElementsByIds, removeAllOverlays, startBpmnVisualization } from '../dev-bundle-index';
+import { addOverlays, configureControlsPanel, configureMousePointer, documentReady, getModelElementsByIds, removeAllOverlays, startBpmnVisualization } from '../dev-bundle-index';
 
-const bpmnIdInputElt = <HTMLInputElement>document.getElementById('bpmn-id-input');
+const bpmnIdInputElt = document.getElementById('bpmn-id-input') as HTMLInputElement;
 
 function addOverlay(overlay: Overlay): void {
   const bpmnId = bpmnIdInputElt.value;
@@ -29,12 +29,9 @@ function addOverlay(overlay: Overlay): void {
 function getPosition(): OverlayPosition {
   const bpmnId = bpmnIdInputElt.value;
   if (bpmnId) {
-    const elementsByIds = getElementsByIds(bpmnId);
+    const elementsByIds = getModelElementsByIds(bpmnId);
     if (elementsByIds) {
-      if (elementsByIds[0].bpmnSemantic.isShape) {
-        return 'top-left';
-      }
-      return 'middle';
+      return elementsByIds[0].isShape ? 'top-left' : 'middle';
     }
   }
 }

@@ -1,5 +1,5 @@
 /*
-Copyright 2020 Bonitasoft S.A.
+Copyright 2021 Bonitasoft S.A.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -16,49 +16,27 @@ limitations under the License.
 
 import BpmnXmlParser from '@lib/component/parser/xml/BpmnXmlParser';
 import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
-import type { BPMNDiagram } from '@lib/model/bpmn/json/BPMNDI';
+import type { BPMNDiagram } from '@lib/model/bpmn/json/bpmndi';
 import { readFileSync } from '@test/shared/file-helper';
 
-describe('parse bpmn as xml for Activiti Designer 5.14.1', () => {
+describe('parse bpmn as xml for Bonita Community 2021.1', () => {
   it('bpmn with process with extension, ensure elements are present', () => {
-    const a20Process = readFileSync('../fixtures/bpmn/xml-parsing/activiti-5_14_1-miwg-A.2.0.export.bpmn');
+    const a20Process = readFileSync('../fixtures/bpmn/xml-parsing/bonita-community-2021.1-A.2.0.export.bpmn');
 
     const json = new BpmnXmlParser().parse(a20Process);
 
-    expect(json).toMatchObject({
-      definitions: {
-        process: {
-          id: 'myProcess',
-          name: 'My process',
-          startEvent: {
-            id: 'startevent1',
-            name: 'Start',
-          },
-          endEvent: {
-            id: 'endevent1',
-            name: 'End',
-          },
-          userTask: expect.arrayContaining([expect.anything()]),
-          exclusiveGateway: expect.arrayContaining([expect.anything()]),
-          sequenceFlow: expect.arrayContaining([expect.anything()]),
-          textAnnotation: expect.anything(),
-        },
-        BPMNDiagram: {
-          BPMNPlane: {
-            BPMNShape: expect.arrayContaining([expect.anything()]),
-            BPMNEdge: expect.arrayContaining([{ id: 'BPMNEdge_flow9', bpmnElement: 'flow9', waypoint: [expect.anything(), expect.anything(), expect.anything()] }]),
-          },
-        },
-      },
-    });
-
+    // Bonita generates a single object, most Modeler generates an array with a single element
     const process: TProcess = json.definitions.process as TProcess;
-    expect(process.userTask).toHaveLength(4);
+    expect(process.id).toBe('_GW8mAGJcEeuag9wrqgia1Q');
+    expect(process.name).toBe('WFP-6-');
+
+    expect(process.task).toHaveLength(4);
     expect(process.exclusiveGateway).toHaveLength(2);
     expect(process.sequenceFlow).toHaveLength(9);
 
     const bpmnDiagram: BPMNDiagram = json.definitions.BPMNDiagram as BPMNDiagram;
     expect(bpmnDiagram.BPMNPlane.BPMNShape).toHaveLength(9);
     expect(bpmnDiagram.BPMNPlane.BPMNEdge).toHaveLength(9);
+    expect(bpmnDiagram.BPMNLabelStyle).toBeDefined();
   });
 });

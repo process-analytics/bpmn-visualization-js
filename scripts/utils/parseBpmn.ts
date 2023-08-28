@@ -18,7 +18,7 @@ import { resolve as resolvePath } from 'node:path';
 import clipboardy from 'clipboardy';
 import parseArgs from 'minimist';
 import type BpmnModel from '../../src/model/bpmn/internal/BpmnModel';
-import type { BpmnJsonModel } from '../../src/model/bpmn/json/BPMN20';
+import type { BpmnJsonModel } from '../../src/model/bpmn/json/bpmn20';
 import BpmnXmlParser from '../../src/component/parser/xml/BpmnXmlParser';
 import { newBpmnJsonParser } from '../../src/component/parser/json/BpmnJsonParser';
 import { ParsingMessageCollector } from '../../src/component/parser/parsing-messages';

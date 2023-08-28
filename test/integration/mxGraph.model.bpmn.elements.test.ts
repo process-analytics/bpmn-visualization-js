@@ -1634,23 +1634,23 @@ describe('mxGraph model - BPMN elements', () => {
       ),
     });
 
-    const sequenceFlowMxGeometry = new mxGeometry(0, 0, 0, 0);
-    sequenceFlowMxGeometry.points = [
+    const sequenceFlowGeometry = new mxGeometry(0, 0, 0, 0);
+    sequenceFlowGeometry.points = [
       new mxPoint(160, 100), // absolute coordinates: parent x="190" y="80", cell x="350" y="180"
       new mxPoint(320, 100), // absolute coordinates: parent x="190" y="80", cell x="510" y="180"
     ];
     expect('SequenceFlow_id').toBeCellWithParentAndGeometry({
       parentId: 'Lane_1_1',
-      geometry: sequenceFlowMxGeometry,
+      geometry: sequenceFlowGeometry,
     });
 
-    const messageFlowMxGeometry = new mxGeometry(0, 0, 0, 0);
-    messageFlowMxGeometry.points = [
+    const messageFlowGeometry = new mxGeometry(0, 0, 0, 0);
+    messageFlowGeometry.points = [
       new mxPoint(334, 480), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="480"
       new mxPoint(334, 632), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="632"
     ];
     expect('MessageFlow_1').toBeCellWithParentAndGeometry({
-      geometry: messageFlowMxGeometry,
+      geometry: messageFlowGeometry,
     });
   });
 
