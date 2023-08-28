@@ -79,12 +79,12 @@ describe('Verify interaction between the CSS and style APIs', () => {
     it.each([true, false])('Apply style update first %s', (isStyleUpdateAppliedFirst: boolean) => {
       const bpmnElementId = 'endEvent_message_1';
       const strokeColor = 'pink';
-      const cssClassName = ['class-1', 'class-2'];
+      const cssClassNames = ['class-1', 'class-2'];
       if (isStyleUpdateAppliedFirst) {
         bpmnElementsRegistry.updateStyle(bpmnElementId, { stroke: { color: strokeColor } });
-        bpmnElementsRegistry.addCssClasses(bpmnElementId, cssClassName);
+        bpmnElementsRegistry.addCssClasses(bpmnElementId, cssClassNames);
       } else {
-        bpmnElementsRegistry.addCssClasses(bpmnElementId, cssClassName);
+        bpmnElementsRegistry.addCssClasses(bpmnElementId, cssClassNames);
         bpmnElementsRegistry.updateStyle(bpmnElementId, { stroke: { color: strokeColor } });
       }
 
@@ -101,15 +101,15 @@ describe('Verify interaction between the CSS and style APIs', () => {
   describe('Style API Reset and CSS class update', () => {
     it.each([true, false])('Reset style first %s', (isStyleResetFirst: boolean) => {
       const bpmnElementId = 'endEvent_message_1';
-      const cssClassName = ['class-1', 'class-2'];
+      const cssClassNames = ['class-1', 'class-2'];
 
       bpmnElementsRegistry.updateStyle(bpmnElementId, { stroke: { color: 'pink' } });
 
       if (isStyleResetFirst) {
         bpmnElementsRegistry.resetStyle(bpmnElementId);
-        bpmnElementsRegistry.addCssClasses(bpmnElementId, cssClassName);
+        bpmnElementsRegistry.addCssClasses(bpmnElementId, cssClassNames);
       } else {
-        bpmnElementsRegistry.addCssClasses(bpmnElementId, cssClassName);
+        bpmnElementsRegistry.addCssClasses(bpmnElementId, cssClassNames);
         bpmnElementsRegistry.resetStyle(bpmnElementId);
       }
 
