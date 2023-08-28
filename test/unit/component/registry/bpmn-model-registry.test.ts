@@ -27,7 +27,7 @@ describe('Bpmn Model registry', () => {
     const callback = jest.fn();
     bpmnModelRegistry.registerOnLoadCallback(callback);
     bpmnModelRegistry.load(startEventInModel('id', 'name'));
-    expect(callback).toHaveBeenCalledTimes(1);
+    expect(callback).toHaveBeenCalledOnce();
   });
 
   it('search sequence flow', () => {

@@ -64,7 +64,7 @@ describe('Mouse wheel zoom performance', () => {
 
     const metric = { ...calculateMetrics(metricsStart, metricsEnd), run: run };
     metricsArray.push(metric);
-    expect(true).toBe(true);
+    expect(true).toBeTrue();
   });
 });
 
