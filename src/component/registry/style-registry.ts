@@ -14,15 +14,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { StyleRegistry, StyleUpdate } from './types';
 import type { BpmnGraph } from '../mxgraph/BpmnGraph';
 import { createNewStyleUpdater, type StyleUpdater } from '../mxgraph/style/style-updater';
-import type { StyleUpdate } from './types';
 
-export function createNewStyleRegistry(graph: BpmnGraph): StyleRegistry {
-  return new StyleRegistry(createNewStyleUpdater(graph));
+export function createNewStyleRegistry(graph: BpmnGraph): StyleRegistryImpl {
+  return new StyleRegistryImpl(createNewStyleUpdater(graph));
 }
 
-export class StyleRegistry {
+export class StyleRegistryImpl implements StyleRegistry {
   constructor(private readonly styleUpdater: StyleUpdater) {}
 
   clearCache(): void {

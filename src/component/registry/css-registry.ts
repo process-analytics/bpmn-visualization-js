@@ -14,15 +14,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { CssClassesRegistry } from './types';
 import { ensureIsArray } from '../helpers/array-utils';
 import type { BpmnGraph } from '../mxgraph/BpmnGraph';
 import { createNewCssClassesUpdater, type CssClassesUpdater } from '../mxgraph/style/css-classes-updater';
 
-export function createNewCssRegistry(graph: BpmnGraph): CssClassesRegistry {
-  return new CssClassesRegistry(createNewCssClassesUpdater(graph), new CssClassesCache());
+export function createNewCssRegistry(graph: BpmnGraph): CssClassesRegistryImpl {
+  return new CssClassesRegistryImpl(createNewCssClassesUpdater(graph), new CssClassesCache());
 }
 
-export class CssClassesRegistry {
+export class CssClassesRegistryImpl implements CssClassesRegistry {
   constructor(
     private readonly cssClassesUpdater: CssClassesUpdater,
     private readonly cssClassesCache: CssClassesCache,
