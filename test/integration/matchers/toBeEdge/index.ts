@@ -24,7 +24,7 @@ import { mxConstants } from '@lib/component/mxgraph/initializer';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 
-function buildExpectedEdgeCellStyle(expectedModel: ExpectedEdgeModelElement): BpmnCellStyle {
+export function buildExpectedEdgeCellStyle(expectedModel: ExpectedEdgeModelElement): BpmnCellStyle {
   const style = buildExpectedCellStyleWithCommonAttributes(expectedModel);
   style.verticalAlign = expectedModel.verticalAlign ?? 'top';
   style.align = 'center';
