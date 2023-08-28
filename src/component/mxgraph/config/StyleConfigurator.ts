@@ -169,6 +169,7 @@ export class StyleConfigurator {
     for (const kind of ShapeUtil.eventKinds()) {
       const style: StyleMap = {};
       style[mxConstants.STYLE_SHAPE] = kind;
+      // eslint-disable-next-line @typescript-eslint/unbound-method -- This method is static.
       style[mxConstants.STYLE_PERIMETER] = mxPerimeter.EllipsePerimeter;
       style[mxConstants.STYLE_STROKEWIDTH] = kind == ShapeBpmnElementKind.EVENT_END ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN;
       style[mxConstants.STYLE_VERTICAL_LABEL_POSITION] = mxConstants.ALIGN_BOTTOM;
@@ -216,6 +217,7 @@ export class StyleConfigurator {
     for (const kind of ShapeUtil.gatewayKinds()) {
       const style: StyleMap = {};
       style[mxConstants.STYLE_SHAPE] = kind;
+      // eslint-disable-next-line @typescript-eslint/unbound-method -- This method is static.
       style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RhombusPerimeter;
       style[mxConstants.STYLE_STROKEWIDTH] = StyleDefault.STROKE_WIDTH_THIN;
       style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_TOP;
