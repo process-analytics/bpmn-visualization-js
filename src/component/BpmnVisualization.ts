@@ -20,7 +20,7 @@ import { newBpmnParser } from './parser/BpmnParser';
 import type { BpmnGraph } from './mxgraph/BpmnGraph';
 import type { GlobalOptions, LoadOptions, ParserOptions, RendererOptions } from './options';
 import type { BpmnElementsRegistry } from './registry';
-import { newBpmnElementsRegistry } from './registry/bpmn-elements-registry';
+import { createNewBpmnElementsRegistry } from './registry/bpmn-elements-registry';
 import { BpmnModelRegistry } from './registry/bpmn-model-registry';
 import { htmlElement } from './helpers/dom-utils';
 import { Navigation } from './navigation';
@@ -79,7 +79,7 @@ export class BpmnVisualization {
     // other configurations
     this.navigation = new Navigation(this.graph);
     this.bpmnModelRegistry = new BpmnModelRegistry();
-    this.bpmnElementsRegistry = newBpmnElementsRegistry(this.bpmnModelRegistry, this.graph);
+    this.bpmnElementsRegistry = createNewBpmnElementsRegistry(this.bpmnModelRegistry, this.graph);
     this.parserOptions = options?.parser;
   }
 

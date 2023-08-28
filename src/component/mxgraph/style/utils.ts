@@ -110,6 +110,13 @@ export const updateFont = (cellStyle: string, font: Font): string => {
   return cellStyle;
 };
 
+export const getStyleValue = (cellStyle: string, key: string, defaultValue: string): string =>
+  cellStyle
+    ?.split(';')
+    .map(entry => entry.split('='))
+    .filter(([k]) => k === key)
+    .map(([, v]) => v)[0] ?? defaultValue;
+
 const convertDirection = (direction: GradientDirection): string => {
   switch (direction) {
     case 'right-to-left':

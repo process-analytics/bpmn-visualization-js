@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 /*
 Copyright 2021 Bonitasoft S.A.
 
@@ -14,270 +18,270 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { CssRegistry } from '@lib/component/registry/css-registry';
+import { CssClassesCache } from '@lib/component/registry/css-registry';
 
-const cssRegistry = new CssRegistry();
+const cssClassesCache = new CssClassesCache();
 beforeEach(() => {
-  cssRegistry.clear();
+  cssClassesCache.clear();
 });
 
-describe('manage css classes for BPMN cells', () => {
+describe('CssClassesCache - manage CSS classes for BPMN cells', () => {
   describe('Get css classes', () => {
     it('getClassNames should return a empty array, when no class is registered at all', () => {
-      expect(cssRegistry.getClassNames('bpmn-id-1')).toHaveLength(0);
+      expect(cssClassesCache.getClassNames('bpmn-id-1')).toHaveLength(0);
     });
 
     it('getClassNames should return a empty array, when no class name is registered for the BPMN element', () => {
-      cssRegistry.addClassNames('bpmn-id-1', ['class-name']);
-      expect(cssRegistry.getClassNames('bpmn-id-2')).toHaveLength(0);
+      cssClassesCache.addClassNames('bpmn-id-1', ['class-name']);
+      expect(cssClassesCache.getClassNames('bpmn-id-2')).toHaveLength(0);
     });
 
     it('getClassNames should not let modify the stored class names except when using the API', () => {
       const bpmnElementId = 'bpmn-id-1';
-      cssRegistry.addClassNames(bpmnElementId, ['class-name']);
-      const classNames = cssRegistry.getClassNames('bpmn-id-1');
+      cssClassesCache.addClassNames(bpmnElementId, ['class-name']);
+      const classNames = cssClassesCache.getClassNames('bpmn-id-1');
       expect(classNames).toEqual(['class-name']);
       classNames.push('new-class-1', 'new-class-2');
-      expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class-name']);
+      expect(cssClassesCache.getClassNames(bpmnElementId)).toEqual(['class-name']);
     });
 
     it('getClassNames after clearing the whole registry', () => {
-      cssRegistry.addClassNames('bpmn-id-1', ['class1']);
-      cssRegistry.addClassNames('bpmn-id-2', ['class1', 'class2']);
-      expect(cssRegistry.getClassNames('bpmn-id-1')).toEqual(['class1']);
-      expect(cssRegistry.getClassNames('bpmn-id-2')).toEqual(['class1', 'class2']);
+      cssClassesCache.addClassNames('bpmn-id-1', ['class1']);
+      cssClassesCache.addClassNames('bpmn-id-2', ['class1', 'class2']);
+      expect(cssClassesCache.getClassNames('bpmn-id-1')).toEqual(['class1']);
+      expect(cssClassesCache.getClassNames('bpmn-id-2')).toEqual(['class1', 'class2']);
 
-      cssRegistry.clear();
-      expect(cssRegistry.getClassNames('bpmn-id-1')).toHaveLength(0);
-      expect(cssRegistry.getClassNames('bpmn-id-2')).toHaveLength(0);
+      cssClassesCache.clear();
+      expect(cssClassesCache.getClassNames('bpmn-id-1')).toHaveLength(0);
+      expect(cssClassesCache.getClassNames('bpmn-id-2')).toHaveLength(0);
     });
   });
 
   describe('Get bpmn ids', () => {
     it('getBpmnIds should return a empty array, when no class is registered at all', () => {
-      const bpmnIds = cssRegistry.getBpmnIds();
+      const bpmnIds = cssClassesCache.getBpmnIds();
 
       expect(bpmnIds).toHaveLength(0);
     });
 
     it('getBpmnIds should return an array of BPMN element ids that have at least one CSS class', () => {
-      cssRegistry.addClassNames('bpmn-id-1', ['class-name-1', 'class-name-3']);
-      cssRegistry.addClassNames('bpmn-id-2', ['class-name-2']);
+      cssClassesCache.addClassNames('bpmn-id-1', ['class-name-1', 'class-name-3']);
+      cssClassesCache.addClassNames('bpmn-id-2', ['class-name-2']);
 
-      const bpmnIds = cssRegistry.getBpmnIds();
+      const bpmnIds = cssClassesCache.getBpmnIds();
 
       expect(bpmnIds).toStrictEqual(['bpmn-id-1', 'bpmn-id-2']);
     });
 
     it('getBpmnIds after clearing the whole registry', () => {
-      cssRegistry.addClassNames('bpmn-id-1', ['class1']);
-      cssRegistry.addClassNames('bpmn-id-2', ['class1', 'class2']);
+      cssClassesCache.addClassNames('bpmn-id-1', ['class1']);
+      cssClassesCache.addClassNames('bpmn-id-2', ['class1', 'class2']);
 
-      expect(cssRegistry.getBpmnIds()).toEqual(['bpmn-id-1', 'bpmn-id-2']);
+      expect(cssClassesCache.getBpmnIds()).toEqual(['bpmn-id-1', 'bpmn-id-2']);
 
-      cssRegistry.clear();
-      expect(cssRegistry.getBpmnIds()).toHaveLength(0);
+      cssClassesCache.clear();
+      expect(cssClassesCache.getBpmnIds()).toHaveLength(0);
     });
   });
 
   describe('Add css classes', () => {
     it('Add an undefined array of classes', () => {
-      expect(cssRegistry.addClassNames('bpmn-id', undefined)).toBeFalsy();
+      expect(cssClassesCache.addClassNames('bpmn-id', undefined)).toBeFalsy();
     });
 
     it('1 class name should be registered, when add it for the first time', () => {
       const bpmnElementId = 'bpmn-id';
       const classNames = ['class-name'];
 
-      const result = cssRegistry.addClassNames(bpmnElementId, classNames);
+      const result = cssClassesCache.addClassNames(bpmnElementId, classNames);
 
       expect(result).toBeTruthy();
-      expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(classNames);
+      expect(cssClassesCache.getClassNames(bpmnElementId)).toEqual(classNames);
     });
 
     it('2 class names should be registered, when add them for the first time', () => {
       const bpmnElementId = 'bpmn-id';
       const classNames = ['class-name-1', 'class-name-2'];
 
-      const result = cssRegistry.addClassNames(bpmnElementId, classNames);
+      const result = cssClassesCache.addClassNames(bpmnElementId, classNames);
 
       expect(result).toBeTruthy();
-      expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(classNames);
+      expect(cssClassesCache.getClassNames(bpmnElementId)).toEqual(classNames);
     });
 
     it('register several classes with a single string parameter', () => {
       const bpmnElementId = 'bpmn-id';
       const classNames = ['class-name-1 class-name-2'];
 
-      const result = cssRegistry.addClassNames(bpmnElementId, classNames);
+      const result = cssClassesCache.addClassNames(bpmnElementId, classNames);
 
       expect(result).toBeTruthy();
-      expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(classNames);
+      expect(cssClassesCache.getClassNames(bpmnElementId)).toEqual(classNames);
     });
 
     it('a class name should be registered only once, when add it twice', () => {
       const bpmnElementId = 'bpmn-id';
-      cssRegistry.addClassNames(bpmnElementId, ['class-name-1', 'class-name-2']);
+      cssClassesCache.addClassNames(bpmnElementId, ['class-name-1', 'class-name-2']);
 
-      const result = cssRegistry.addClassNames(bpmnElementId, ['class-name-2', 'class-name-1']);
+      const result = cssClassesCache.addClassNames(bpmnElementId, ['class-name-2', 'class-name-1']);
 
       expect(result).toBeFalsy();
-      expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class-name-1', 'class-name-2']);
+      expect(cssClassesCache.getClassNames(bpmnElementId)).toEqual(['class-name-1', 'class-name-2']);
     });
 
     it('register several classes several times, check classes order', () => {
       const bpmnElementId = 'bpmn-id';
-      cssRegistry.addClassNames(bpmnElementId, ['class-name-1', 'class-name-2']);
+      cssClassesCache.addClassNames(bpmnElementId, ['class-name-1', 'class-name-2']);
 
-      const result = cssRegistry.addClassNames(bpmnElementId, ['class-name-3', 'class-name-2', 'class-name-4']);
+      const result = cssClassesCache.addClassNames(bpmnElementId, ['class-name-3', 'class-name-2', 'class-name-4']);
 
       expect(result).toBeTruthy();
-      expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class-name-1', 'class-name-2', 'class-name-3', 'class-name-4']);
+      expect(cssClassesCache.getClassNames(bpmnElementId)).toEqual(['class-name-1', 'class-name-2', 'class-name-3', 'class-name-4']);
     });
   });
 
   describe('Remove css classes', () => {
     it('Remove an undefined array of classes', () => {
       const bpmnElementId = 'bpmn-id';
-      cssRegistry.addClassNames(bpmnElementId, ['class']);
-      expect(cssRegistry.removeClassNames(bpmnElementId, undefined)).toBeFalsy();
-      expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class']);
+      cssClassesCache.addClassNames(bpmnElementId, ['class']);
+      expect(cssClassesCache.removeClassNames(bpmnElementId, undefined)).toBeFalsy();
+      expect(cssClassesCache.getClassNames(bpmnElementId)).toEqual(['class']);
     });
 
     it('Remove the only existing class', () => {
       const bpmnElementId = 'bpmn-id';
-      cssRegistry.addClassNames(bpmnElementId, ['class-to-remove']);
-      expect(cssRegistry.removeClassNames(bpmnElementId, ['class-to-remove'])).toBeTruthy();
-      expect(cssRegistry.getClassNames(bpmnElementId)).toHaveLength(0);
+      cssClassesCache.addClassNames(bpmnElementId, ['class-to-remove']);
+      expect(cssClassesCache.removeClassNames(bpmnElementId, ['class-to-remove'])).toBeTruthy();
+      expect(cssClassesCache.getClassNames(bpmnElementId)).toHaveLength(0);
     });
 
     it('Remove a single class when several exist', () => {
       const bpmnElementId = 'bpmn-id';
-      cssRegistry.addClassNames(bpmnElementId, ['class1', 'class-to-remove', 'class2']);
-      expect(cssRegistry.removeClassNames(bpmnElementId, ['class-to-remove'])).toBeTruthy();
-      expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class1', 'class2']);
+      cssClassesCache.addClassNames(bpmnElementId, ['class1', 'class-to-remove', 'class2']);
+      expect(cssClassesCache.removeClassNames(bpmnElementId, ['class-to-remove'])).toBeTruthy();
+      expect(cssClassesCache.getClassNames(bpmnElementId)).toEqual(['class1', 'class2']);
     });
 
     it('Remove several classes when several exist', () => {
       const bpmnElementId = 'bpmn-id';
-      cssRegistry.addClassNames(bpmnElementId, ['class1', 'class-to-remove1', 'class2', 'class-to-remove2']);
-      expect(cssRegistry.removeClassNames(bpmnElementId, ['class-to-remove1', 'class-to-remove2'])).toBeTruthy();
-      expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class1', 'class2']);
+      cssClassesCache.addClassNames(bpmnElementId, ['class1', 'class-to-remove1', 'class2', 'class-to-remove2']);
+      expect(cssClassesCache.removeClassNames(bpmnElementId, ['class-to-remove1', 'class-to-remove2'])).toBeTruthy();
+      expect(cssClassesCache.getClassNames(bpmnElementId)).toEqual(['class1', 'class2']);
     });
 
     it('Remove a class when none had been added first', () => {
       const bpmnElementId = 'bpmn-id';
-      expect(cssRegistry.removeClassNames(bpmnElementId, ['class-to-remove'])).toBeFalsy();
-      expect(cssRegistry.getClassNames(bpmnElementId)).toHaveLength(0);
+      expect(cssClassesCache.removeClassNames(bpmnElementId, ['class-to-remove'])).toBeFalsy();
+      expect(cssClassesCache.getClassNames(bpmnElementId)).toHaveLength(0);
     });
 
     it('Remove a class that is not present when others have been added first', () => {
       const bpmnElementId = 'bpmn-id';
-      cssRegistry.addClassNames(bpmnElementId, ['class1', 'class2']);
-      expect(cssRegistry.removeClassNames(bpmnElementId, ['class-to-remove'])).toBeFalsy();
-      expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class1', 'class2']);
+      cssClassesCache.addClassNames(bpmnElementId, ['class1', 'class2']);
+      expect(cssClassesCache.removeClassNames(bpmnElementId, ['class-to-remove'])).toBeFalsy();
+      expect(cssClassesCache.getClassNames(bpmnElementId)).toEqual(['class1', 'class2']);
     });
 
     it('Remove existing and non-existing classes', () => {
       const bpmnElementId = 'bpmn-id';
-      cssRegistry.addClassNames(bpmnElementId, ['class1', 'class-to-remove-1', 'class2']);
-      expect(cssRegistry.removeClassNames(bpmnElementId, ['class-to-remove-1', 'not-exist'])).toBeTruthy();
-      expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class1', 'class2']);
+      cssClassesCache.addClassNames(bpmnElementId, ['class1', 'class-to-remove-1', 'class2']);
+      expect(cssClassesCache.removeClassNames(bpmnElementId, ['class-to-remove-1', 'not-exist'])).toBeTruthy();
+      expect(cssClassesCache.getClassNames(bpmnElementId)).toEqual(['class1', 'class2']);
     });
 
     it('Remove a class twice', () => {
       const bpmnElementId = 'bpmn-id';
-      cssRegistry.addClassNames(bpmnElementId, ['class-to-remove']);
-      expect(cssRegistry.removeClassNames(bpmnElementId, ['class-to-remove'])).toBeTruthy();
-      expect(cssRegistry.removeClassNames(bpmnElementId, ['class-to-remove'])).toBeFalsy();
-      expect(cssRegistry.getClassNames(bpmnElementId)).toHaveLength(0);
+      cssClassesCache.addClassNames(bpmnElementId, ['class-to-remove']);
+      expect(cssClassesCache.removeClassNames(bpmnElementId, ['class-to-remove'])).toBeTruthy();
+      expect(cssClassesCache.removeClassNames(bpmnElementId, ['class-to-remove'])).toBeFalsy();
+      expect(cssClassesCache.getClassNames(bpmnElementId)).toHaveLength(0);
     });
   });
 
   describe('Remove all css classes', () => {
     it('Remove the only existing class of a HTML element', () => {
       const bpmnElementId = 'bpmn-id';
-      cssRegistry.addClassNames(bpmnElementId, ['class-to-remove']);
+      cssClassesCache.addClassNames(bpmnElementId, ['class-to-remove']);
 
-      const result = cssRegistry.removeAllClassNames(bpmnElementId);
+      const result = cssClassesCache.removeAllClassNames(bpmnElementId);
 
       expect(result).toBeTruthy();
-      expect(cssRegistry.getClassNames(bpmnElementId)).toHaveLength(0);
+      expect(cssClassesCache.getClassNames(bpmnElementId)).toHaveLength(0);
     });
 
     it('Remove all classes of a HTML element', () => {
       const bpmnElementId = 'bpmn-id';
-      cssRegistry.addClassNames(bpmnElementId, ['class-to-remove1', 'class-to-remove2']);
+      cssClassesCache.addClassNames(bpmnElementId, ['class-to-remove1', 'class-to-remove2']);
 
-      const result = cssRegistry.removeAllClassNames(bpmnElementId);
+      const result = cssClassesCache.removeAllClassNames(bpmnElementId);
 
       expect(result).toBeTruthy();
-      expect(cssRegistry.getClassNames(bpmnElementId)).toHaveLength(0);
+      expect(cssClassesCache.getClassNames(bpmnElementId)).toHaveLength(0);
     });
 
     it('Do nothing when none had been added first on a HTML element', () => {
       const bpmnElementId = 'bpmn-id';
 
-      const result = cssRegistry.removeAllClassNames(bpmnElementId);
+      const result = cssClassesCache.removeAllClassNames(bpmnElementId);
 
       expect(result).toBeFalsy();
-      expect(cssRegistry.getClassNames(bpmnElementId)).toHaveLength(0);
+      expect(cssClassesCache.getClassNames(bpmnElementId)).toHaveLength(0);
     });
   });
 
   describe('Toggle css classes', () => {
     it('Toggle an undefined array of classes', () => {
       const bpmnElementId = 'bpmn-id';
-      cssRegistry.toggleClassNames(bpmnElementId, ['class']);
-      expect(cssRegistry.toggleClassNames(bpmnElementId, undefined)).toBeFalsy();
-      expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class']);
+      cssClassesCache.toggleClassNames(bpmnElementId, ['class']);
+      expect(cssClassesCache.toggleClassNames(bpmnElementId, undefined)).toBeFalsy();
+      expect(cssClassesCache.getClassNames(bpmnElementId)).toEqual(['class']);
     });
     it('Toggle an empty array of classes', () => {
       const bpmnElementId = 'bpmn-id';
-      cssRegistry.toggleClassNames(bpmnElementId, ['class']);
-      expect(cssRegistry.toggleClassNames(bpmnElementId, [])).toBeFalsy();
-      expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class']);
+      cssClassesCache.toggleClassNames(bpmnElementId, ['class']);
+      expect(cssClassesCache.toggleClassNames(bpmnElementId, [])).toBeFalsy();
+      expect(cssClassesCache.getClassNames(bpmnElementId)).toEqual(['class']);
     });
 
     it('Toggle the only existing class', () => {
       const bpmnElementId = 'bpmn-id';
-      cssRegistry.toggleClassNames(bpmnElementId, ['class-to-toggle']);
-      expect(cssRegistry.toggleClassNames(bpmnElementId, ['class-to-toggle'])).toBeTruthy();
-      expect(cssRegistry.getClassNames(bpmnElementId)).toHaveLength(0);
+      cssClassesCache.toggleClassNames(bpmnElementId, ['class-to-toggle']);
+      expect(cssClassesCache.toggleClassNames(bpmnElementId, ['class-to-toggle'])).toBeTruthy();
+      expect(cssClassesCache.getClassNames(bpmnElementId)).toHaveLength(0);
     });
 
     it('Toggle a single class when several exist', () => {
       const bpmnElementId = 'bpmn-id';
-      cssRegistry.toggleClassNames(bpmnElementId, ['class1', 'class-to-toggle', 'class2']);
-      expect(cssRegistry.toggleClassNames(bpmnElementId, ['class-to-toggle'])).toBeTruthy();
-      expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class1', 'class2']);
+      cssClassesCache.toggleClassNames(bpmnElementId, ['class1', 'class-to-toggle', 'class2']);
+      expect(cssClassesCache.toggleClassNames(bpmnElementId, ['class-to-toggle'])).toBeTruthy();
+      expect(cssClassesCache.getClassNames(bpmnElementId)).toEqual(['class1', 'class2']);
     });
 
     it('Toggle several classes when several exist', () => {
       const bpmnElementId = 'bpmn-id';
-      cssRegistry.toggleClassNames(bpmnElementId, ['class1', 'class-to-toggle1', 'class2', 'class-to-toggle2']);
-      expect(cssRegistry.toggleClassNames(bpmnElementId, ['class-to-toggle1', 'class-to-toggle2', 'class3'])).toBeTruthy();
-      expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class1', 'class2', 'class3']);
+      cssClassesCache.toggleClassNames(bpmnElementId, ['class1', 'class-to-toggle1', 'class2', 'class-to-toggle2']);
+      expect(cssClassesCache.toggleClassNames(bpmnElementId, ['class-to-toggle1', 'class-to-toggle2', 'class3'])).toBeTruthy();
+      expect(cssClassesCache.getClassNames(bpmnElementId)).toEqual(['class1', 'class2', 'class3']);
     });
 
     it('Toggle a class when none had been added first', () => {
       const bpmnElementId = 'bpmn-id';
-      expect(cssRegistry.toggleClassNames(bpmnElementId, ['class-to-toggle'])).toBeTruthy();
-      expect(cssRegistry.getClassNames(bpmnElementId)).toHaveLength(1);
+      expect(cssClassesCache.toggleClassNames(bpmnElementId, ['class-to-toggle'])).toBeTruthy();
+      expect(cssClassesCache.getClassNames(bpmnElementId)).toHaveLength(1);
     });
 
     it('Toggle a class that is not present when others have been added first', () => {
       const bpmnElementId = 'bpmn-id';
-      cssRegistry.toggleClassNames(bpmnElementId, ['class1', 'class2']);
-      expect(cssRegistry.toggleClassNames(bpmnElementId, ['class-to-toggle'])).toBeTruthy();
-      expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class1', 'class2', 'class-to-toggle']);
+      cssClassesCache.toggleClassNames(bpmnElementId, ['class1', 'class2']);
+      expect(cssClassesCache.toggleClassNames(bpmnElementId, ['class-to-toggle'])).toBeTruthy();
+      expect(cssClassesCache.getClassNames(bpmnElementId)).toEqual(['class1', 'class2', 'class-to-toggle']);
     });
 
     it('Toggle existing and non-existing classes', () => {
       const bpmnElementId = 'bpmn-id';
-      cssRegistry.toggleClassNames(bpmnElementId, ['class1', 'class-to-toggle-1', 'class2']);
-      expect(cssRegistry.toggleClassNames(bpmnElementId, ['class-to-toggle-1', 'not-exist'])).toBeTruthy();
-      expect(cssRegistry.getClassNames(bpmnElementId)).toEqual(['class1', 'class2', 'not-exist']);
+      cssClassesCache.toggleClassNames(bpmnElementId, ['class1', 'class-to-toggle-1', 'class2']);
+      expect(cssClassesCache.toggleClassNames(bpmnElementId, ['class-to-toggle-1', 'not-exist'])).toBeTruthy();
+      expect(cssClassesCache.getClassNames(bpmnElementId)).toEqual(['class1', 'class2', 'not-exist']);
     });
   });
 });

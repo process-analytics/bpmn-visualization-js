@@ -17,27 +17,24 @@ limitations under the License.
 import { ensureIsArray } from '../helpers/array-utils';
 import type { BpmnGraph } from '../mxgraph/BpmnGraph';
 import { computeBpmnBaseClassName } from '../mxgraph/renderer/style-utils';
-import { CssRegistry } from './css-registry';
-import type GraphCellUpdater from '../mxgraph/GraphCellUpdater';
-import { newGraphCellUpdater } from '../mxgraph/GraphCellUpdater';
-import { BpmnQuerySelectors } from './query-selectors';
-import type { BpmnElement, Overlay, StyleUpdate } from './types';
-import { createNewOverlaysRegistry } from './overlays-registry';
-import type { OverlaysRegistry } from './overlays-registry';
 import type { BpmnModelRegistry } from './bpmn-model-registry';
+import { createNewCssRegistry, type CssClassesRegistry } from './css-registry';
+import { createNewOverlaysRegistry, type OverlaysRegistry } from './overlays-registry';
+import { BpmnQuerySelectors } from './query-selectors';
+import { createNewStyleRegistry, type StyleRegistry } from './style-registry';
+import type { BpmnElement, Overlay, StyleUpdate } from './types';
 import type { BpmnElementKind } from '../../model/bpmn/internal';
 
 /**
  * @internal
  */
-export function newBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, graph: BpmnGraph): BpmnElementsRegistry {
-  const cssRegistry = new CssRegistry();
+export function createNewBpmnElementsRegistry(bpmnModelRegistry: BpmnModelRegistry, graph: BpmnGraph): BpmnElementsRegistry {
   return new BpmnElementsRegistry(
     bpmnModelRegistry,
     new HtmlElementRegistry(graph.container, new BpmnQuerySelectors()),
-    cssRegistry,
-    newGraphCellUpdater(graph, cssRegistry),
+    createNewCssRegistry(graph),
     createNewOverlaysRegistry(graph),
+    createNewStyleRegistry(graph),
   );
 }
 
@@ -65,15 +62,15 @@ export class BpmnElementsRegistry {
    * @internal
    */
   constructor(
-    private bpmnModelRegistry: BpmnModelRegistry,
-    private htmlElementRegistry: HtmlElementRegistry,
-    private cssRegistry: CssRegistry,
-    private graphCellUpdater: GraphCellUpdater,
-    private overlaysRegistry: OverlaysRegistry,
+    private readonly bpmnModelRegistry: BpmnModelRegistry,
+    private readonly htmlElementRegistry: HtmlElementRegistry,
+    private readonly cssClassesRegistry: CssClassesRegistry,
+    private readonly overlaysRegistry: OverlaysRegistry,
+    private readonly styleRegistry: StyleRegistry,
   ) {
     this.bpmnModelRegistry.registerOnLoadCallback(() => {
-      this.cssRegistry.clear();
-      this.graphCellUpdater.clear();
+      this.cssClassesRegistry.clearCache();
+      this.styleRegistry.clearCache();
     });
   }
 
@@ -162,7 +159,7 @@ export class BpmnElementsRegistry {
    * @see {@link updateStyle} to directly update the style of BPMN elements.
    */
   addCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
-    this.updateCssClasses(bpmnElementIds, classNames, this.cssRegistry.addClassNames);
+    this.cssClassesRegistry.addCssClasses(bpmnElementIds, classNames);
   }
 
   /**
@@ -185,7 +182,7 @@ export class BpmnElementsRegistry {
    * @see {@link removeAllCssClasses} to remove all CSS classes from a BPMN element.
    */
   removeCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
-    this.updateCssClasses(bpmnElementIds, classNames, this.cssRegistry.removeClassNames);
+    this.cssClassesRegistry.removeCssClasses(bpmnElementIds, classNames);
   }
 
   /**
@@ -212,16 +209,7 @@ export class BpmnElementsRegistry {
    * @since 0.34.0
    */
   removeAllCssClasses(bpmnElementIds?: string | string[]): void {
-    if (bpmnElementIds) {
-      ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => {
-        const isChanged = this.cssRegistry.removeAllClassNames(bpmnElementId);
-        this.updateCellIfChanged(isChanged, bpmnElementId);
-      });
-    } else {
-      const bpmnIds = this.cssRegistry.getBpmnIds();
-      this.cssRegistry.clear();
-      bpmnIds.forEach(bpmnElementId => this.updateCellIfChanged(true, bpmnElementId));
-    }
+    this.cssClassesRegistry.removeAllCssClasses(bpmnElementIds);
   }
 
   /**
@@ -246,19 +234,7 @@ export class BpmnElementsRegistry {
    * @see {@link addCssClasses} to add CSS classes to a BPMN element.
    */
   toggleCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
-    this.updateCssClasses(bpmnElementIds, classNames, this.cssRegistry.toggleClassNames);
-  }
-
-  private updateCssClasses(bpmnElementIds: string | string[], classNames: string | string[], updateClassNames: (bpmnElementId: string, classNames: string[]) => boolean): void {
-    const arrayClassNames = ensureIsArray<string>(classNames);
-    ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => this.updateCellIfChanged(updateClassNames(bpmnElementId, arrayClassNames), bpmnElementId));
-  }
-
-  private updateCellIfChanged(updateCell: boolean, bpmnElementId: string): void {
-    if (updateCell) {
-      const allClassNames = this.cssRegistry.getClassNames(bpmnElementId);
-      this.graphCellUpdater.updateAndRefreshCssClassesOfCell(bpmnElementId, allClassNames);
-    }
+    this.cssClassesRegistry.toggleCssClasses(bpmnElementIds, classNames);
   }
 
   /**
@@ -359,7 +335,7 @@ export class BpmnElementsRegistry {
    * @since 0.33.0
    */
   updateStyle(bpmnElementIds: string | string[], styleUpdate: StyleUpdate): void {
-    this.graphCellUpdater.updateStyle(bpmnElementIds, styleUpdate);
+    this.styleRegistry.updateStyle(bpmnElementIds, styleUpdate);
   }
 
   /**
@@ -389,7 +365,7 @@ export class BpmnElementsRegistry {
    * @since 0.37.0
    */
   resetStyle(bpmnElementIds?: string | string[]): void {
-    this.graphCellUpdater.resetStyle(bpmnElementIds);
+    this.styleRegistry.resetStyle(bpmnElementIds);
   }
 }
 
