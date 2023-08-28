@@ -122,7 +122,7 @@ function computeStyleUpdateByKind(bpmnKind: BpmnElementKind): StyleUpdate {
 }
 
 function updateStyleByAPI(bpmnIds: string[], bpmnKind: ShapeBpmnElementKind): void {
-  const subProcessChildrenIds = bpmnIds.filter(isChildOfSubProcess);
+  const subProcessChildrenIds = bpmnIds.filter(element => isChildOfSubProcess(element));
   const otherIds = bpmnIds.filter(bpmnId => !subProcessChildrenIds.includes(bpmnId));
 
   if (subProcessChildrenIds.length > 0) {
