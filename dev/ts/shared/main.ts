@@ -80,8 +80,8 @@ function loadBpmn(bpmn: string, handleError = true): void {
     collapseBpmnElement(bpmnElementIdToCollapse);
     document.dispatchEvent(new CustomEvent('diagramLoaded'));
   } catch (error) {
-    if (handleError && error instanceof Error) {
-      statusKoNotifier(`Cannot load the BPMN diagram: ${error.message}`);
+    if (handleError) {
+      statusKoNotifier(`Cannot load the BPMN diagram: ${error instanceof Error ? error.message : String(error)}`);
     } else {
       throw error;
     }
