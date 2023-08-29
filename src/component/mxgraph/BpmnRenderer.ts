@@ -79,46 +79,46 @@ export class BpmnRenderer {
   }
 
   private insertEdges(edges: Edge[]): void {
-    edges.forEach(edge => {
-      const bpmnElement = edge.bpmnElement;
+    edges.forEach(internalEdge => {
+      const bpmnElement = internalEdge.bpmnElement;
       const parent = this.graph.getDefaultParent();
       const source = this.getCell(bpmnElement.sourceRefId);
       const target = this.getCell(bpmnElement.targetRefId);
-      const labelBounds = edge.label?.bounds;
-      const style = this.styleComputer.computeStyle(edge, labelBounds);
-      const mxEdge = this.graph.insertEdge(parent, bpmnElement.id, bpmnElement.name, source, target, style);
-      this.insertWaypoints(edge.waypoints, mxEdge);
+      const labelBounds = internalEdge.label?.bounds;
+      const style = this.styleComputer.computeStyle(internalEdge, labelBounds);
+      const edge = this.graph.insertEdge(parent, bpmnElement.id, bpmnElement.name, source, target, style);
+      this.insertWaypoints(internalEdge.waypoints, edge);
 
       if (labelBounds) {
-        mxEdge.geometry.width = labelBounds.width;
-        mxEdge.geometry.height = labelBounds.height;
+        edge.geometry.width = labelBounds.width;
+        edge.geometry.height = labelBounds.height;
 
-        const edgeCenterCoordinate = this.coordinatesTranslator.computeEdgeCenter(mxEdge);
+        const edgeCenterCoordinate = this.coordinatesTranslator.computeEdgeCenter(edge);
         if (edgeCenterCoordinate) {
-          mxEdge.geometry.relative = false;
+          edge.geometry.relative = false;
 
-          const labelBoundsRelativeCoordinateFromParent = this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new mxPoint(labelBounds.x, labelBounds.y));
+          const labelBoundsRelativeCoordinateFromParent = this.coordinatesTranslator.computeRelativeCoordinates(edge.parent, new mxPoint(labelBounds.x, labelBounds.y));
           const relativeLabelX = labelBoundsRelativeCoordinateFromParent.x + labelBounds.width / 2 - edgeCenterCoordinate.x;
           const relativeLabelY = labelBoundsRelativeCoordinateFromParent.y - edgeCenterCoordinate.y;
-          mxEdge.geometry.offset = new mxPoint(relativeLabelX, relativeLabelY);
+          edge.geometry.offset = new mxPoint(relativeLabelX, relativeLabelY);
         }
       }
 
-      this.insertMessageFlowIconIfNeeded(edge, mxEdge);
+      this.insertMessageFlowIconIfNeeded(internalEdge, edge);
     });
   }
 
-  private insertMessageFlowIconIfNeeded(edge: Edge, mxEdge: mxCell): void {
-    if (edge.bpmnElement instanceof MessageFlow && edge.messageVisibleKind !== MessageVisibleKind.NONE) {
-      const cell = this.graph.insertVertex(mxEdge, messageFlowIconId(mxEdge.id), undefined, 0, 0, 20, 14, this.styleComputer.computeMessageFlowIconStyle(edge));
+  private insertMessageFlowIconIfNeeded(internalEdge: Edge, edge: mxCell): void {
+    if (internalEdge.bpmnElement instanceof MessageFlow && internalEdge.messageVisibleKind !== MessageVisibleKind.NONE) {
+      const cell = this.graph.insertVertex(edge, messageFlowIconId(edge.id), undefined, 0, 0, 20, 14, this.styleComputer.computeMessageFlowIconStyle(internalEdge));
       cell.geometry.relative = true;
       cell.geometry.offset = new mxPoint(-10, -7);
     }
   }
 
-  private insertWaypoints(waypoints: Waypoint[], mxEdge: mxCell): void {
+  private insertWaypoints(waypoints: Waypoint[], edge: mxCell): void {
     if (waypoints) {
-      mxEdge.geometry.points = waypoints.map(waypoint => this.coordinatesTranslator.computeRelativeCoordinates(mxEdge.parent, new mxPoint(waypoint.x, waypoint.y)));
+      edge.geometry.points = waypoints.map(waypoint => this.coordinatesTranslator.computeRelativeCoordinates(edge.parent, new mxPoint(waypoint.x, waypoint.y)));
     }
   }
 
