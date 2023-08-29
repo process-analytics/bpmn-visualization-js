@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { XMLParser, type X2jOptions } from 'fast-xml-parser';
-import type { BpmnJsonModel } from '../../../model/bpmn/json/BPMN20';
+import type { BpmnJsonModel } from '../../../model/bpmn/json/bpmn20';
 import type { ParserOptions } from '../../options';
 
 type Replacement = {

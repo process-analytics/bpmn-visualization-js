@@ -92,9 +92,9 @@ const supportedMetrics = new Set<string>([
   'JSHeapTotalSize',
 ]);
 
-function buildMetricsObject(metrics?: Array<Metric>): Metrics {
+function buildMetricsObject(metrics?: Metric[]): Metrics {
   const result: Metrics = {};
-  for (const metric of metrics || []) {
+  for (const metric of metrics ?? []) {
     if (supportedMetrics.has(metric.name)) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore

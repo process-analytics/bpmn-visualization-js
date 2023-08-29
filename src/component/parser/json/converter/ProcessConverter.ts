@@ -76,7 +76,7 @@ const orderedFlowNodeBpmnTypes: BpmnSemanticType[] = (['adHocSubProcess', 'trans
   .concat([ShapeBpmnElementKind.EVENT_BOUNDARY]);
 
 function getShapeBpmnElementKind(bpmnSemanticType: BpmnSemanticType): ShapeBpmnElementKind {
-  return ['adHocSubProcess', 'transaction'].includes(<string>bpmnSemanticType) ? ShapeBpmnElementKind.SUB_PROCESS : <ShapeBpmnElementKind>bpmnSemanticType;
+  return ['adHocSubProcess', 'transaction'].includes(bpmnSemanticType as string) ? ShapeBpmnElementKind.SUB_PROCESS : (bpmnSemanticType as ShapeBpmnElementKind);
 }
 
 /**
@@ -84,8 +84,8 @@ function getShapeBpmnElementKind(bpmnSemanticType: BpmnSemanticType): ShapeBpmnE
  */
 export default class ProcessConverter {
   private defaultSequenceFlowIds: string[] = [];
-  private elementsWithoutParentByProcessId: Map<string, ShapeBpmnElement[]> = new Map();
-  private callActivitiesCallingProcess: Map<string, ShapeBpmnElement> = new Map();
+  private elementsWithoutParentByProcessId = new Map<string, ShapeBpmnElement[]>();
+  private callActivitiesCallingProcess = new Map<string, ShapeBpmnElement>();
 
   constructor(
     private convertedElements: ConvertedElements,
@@ -160,7 +160,7 @@ export default class ProcessConverter {
   }
 
   private buildFlowNodeBpmnElements(
-    bpmnElements: Array<FlowNode> | FlowNode,
+    bpmnElements: FlowNode[] | FlowNode,
     kind: ShapeBpmnElementKind,
     parentId: string,
     processId: string,
@@ -299,11 +299,11 @@ export default class ProcessConverter {
     return convertedSubProcess;
   }
 
-  private buildLaneSetBpmnElements(laneSets: Array<TLaneSet> | TLaneSet, parentId: string, processId: string): void {
+  private buildLaneSetBpmnElements(laneSets: TLaneSet[] | TLaneSet, parentId: string, processId: string): void {
     ensureIsArray(laneSets).forEach(laneSet => this.buildLaneBpmnElements(laneSet.lane, parentId, processId));
   }
 
-  private buildLaneBpmnElements(lanes: Array<TLane> | TLane, parentId: string, processId: string): void {
+  private buildLaneBpmnElements(lanes: TLane[] | TLane, parentId: string, processId: string): void {
     ensureIsArray(lanes).forEach(lane => {
       const shapeBpmnElement = new ShapeBpmnElement(lane.id, lane.name, ShapeBpmnElementKind.LANE, parentId);
       this.convertedElements.registerLane(shapeBpmnElement);
@@ -332,14 +332,14 @@ export default class ProcessConverter {
     });
   }
 
-  private buildSequenceFlows(bpmnElements: Array<TSequenceFlow> | TSequenceFlow): void {
+  private buildSequenceFlows(bpmnElements: TSequenceFlow[] | TSequenceFlow): void {
     ensureIsArray(bpmnElements).forEach(sequenceFlow => {
       const kind = this.getSequenceFlowKind(sequenceFlow);
       this.convertedElements.registerSequenceFlow(new SequenceFlow(sequenceFlow.id, sequenceFlow.name, sequenceFlow.sourceRef, sequenceFlow.targetRef, kind));
     });
   }
 
-  private buildAssociationFlows(bpmnElements: Array<TAssociation> | TAssociation): void {
+  private buildAssociationFlows(bpmnElements: TAssociation[] | TAssociation): void {
     ensureIsArray(bpmnElements).forEach(association => {
       const direction = association.associationDirection as unknown as AssociationDirectionKind;
       this.convertedElements.registerAssociationFlow(new AssociationFlow(association.id, undefined, association.sourceRef, association.targetRef, direction));
@@ -365,13 +365,9 @@ export default class ProcessConverter {
 
 const buildMarkers = (bpmnElement: TActivity): ShapeBpmnMarkerKind[] => {
   const markers: ShapeBpmnMarkerKind[] = [];
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- We know that the standardLoopCharacteristics field is not on all types, but it's already tested
-  // @ts-ignore
   const standardLoopCharacteristics = bpmnElement.standardLoopCharacteristics;
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- We know that the multiInstanceLoopCharacteristics field is not on all types, but it's already tested
-  // @ts-ignore
   const multiInstanceLoopCharacteristics = ensureIsArray(bpmnElement.multiInstanceLoopCharacteristics, true)[0];
-  if (standardLoopCharacteristics || standardLoopCharacteristics === '') {
+  if (standardLoopCharacteristics !== undefined) {
     markers.push(ShapeBpmnMarkerKind.LOOP);
   } else if (multiInstanceLoopCharacteristics) {
     markers.push(multiInstanceLoopCharacteristics.isSequential ? ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL : ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL);

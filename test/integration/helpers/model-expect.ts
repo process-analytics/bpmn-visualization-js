@@ -64,6 +64,7 @@ import { getCell } from '../matchers/matcher-utils';
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace jest {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Since we are overriding an existing interface in Jest, it is not possible to convert it to a type.
     interface Matchers<R> {
       toBeCell(): R;
       toBeCellWithParentAndGeometry(modelElement: ExpectedCellWithGeometry): R;
@@ -134,12 +135,12 @@ expect.extend({
   toBeTextAnnotation,
 });
 
-export interface ExpectedCellWithGeometry {
+export type ExpectedCellWithGeometry = {
   parentId?: string;
   geometry: mxGeometry;
-}
+};
 
-export interface ExpectedFont {
+export type ExpectedFont = {
   color?: string;
   family?: string;
   size?: number;
@@ -148,7 +149,7 @@ export interface ExpectedFont {
   isUnderline?: boolean;
   isStrikeThrough?: boolean;
   opacity?: Opacity;
-}
+};
 
 export type HorizontalAlign = 'center' | 'left' | 'right';
 export type VerticalAlign = 'bottom' | 'middle' | 'top';
@@ -166,19 +167,19 @@ type ExpectedModelElement = {
   extraCssClasses?: string[];
 };
 
-export interface ExpectedFill {
+export type ExpectedFill = {
   color?: string;
   opacity?: Opacity;
-}
+};
 
 export type ExpectedDirection = 'west' | 'east' | 'north' | 'south';
 
-export interface ExpectedGradient {
+export type ExpectedGradient = {
   color: string;
   direction?: ExpectedDirection;
-}
+};
 
-export interface ExpectedShapeModelElement extends ExpectedModelElement {
+export type ExpectedShapeModelElement = {
   kind?: ShapeBpmnElementKind;
   /** Generally needed when the BPMN shape doesn't exist yet (use an arbitrary shape until the final render is implemented) */
   styleShape?: string;
@@ -192,41 +193,41 @@ export interface ExpectedShapeModelElement extends ExpectedModelElement {
   isSwimLaneLabelHorizontal?: boolean;
   fill?: ExpectedFill;
   gradient?: ExpectedGradient;
-}
+} & ExpectedModelElement;
 
-export interface ExpectedEventModelElement extends ExpectedShapeModelElement {
+export type ExpectedEventModelElement = {
   eventDefinitionKind: ShapeBpmnEventDefinitionKind;
-}
+} & ExpectedShapeModelElement;
 
-export interface ExpectedSubProcessModelElement extends ExpectedShapeModelElement {
+export type ExpectedSubProcessModelElement = {
   subProcessKind: ShapeBpmnSubProcessKind;
-}
+} & ExpectedShapeModelElement;
 
-export interface ExpectedCallActivityModelElement extends ExpectedShapeModelElement {
+export type ExpectedCallActivityModelElement = {
   globalTaskKind?: GlobalTaskKind;
-}
+} & ExpectedShapeModelElement;
 
-export interface ExpectedEdgeModelElement extends ExpectedModelElement {
+export type ExpectedEdgeModelElement = {
   kind?: FlowKind;
   startArrow?: string;
   endArrow?: string;
   messageVisibleKind?: MessageVisibleKind;
-}
+} & ExpectedModelElement;
 
-export interface ExpectedSequenceFlowModelElement extends ExpectedEdgeModelElement {
+export type ExpectedSequenceFlowModelElement = {
   sequenceFlowKind?: SequenceFlowKind;
-}
+} & ExpectedEdgeModelElement;
 
-export interface ExpectedBoundaryEventModelElement extends ExpectedEventModelElement {
+export type ExpectedBoundaryEventModelElement = {
   isInterrupting?: boolean;
-}
-export interface ExpectedStartEventModelElement extends ExpectedEventModelElement {
+} & ExpectedEventModelElement;
+export type ExpectedStartEventModelElement = {
   isInterrupting?: boolean;
-}
+} & ExpectedEventModelElement;
 
-export interface ExpectedEventBasedGatewayModelElement extends ExpectedShapeModelElement {
+export type ExpectedEventBasedGatewayModelElement = {
   gatewayKind?: ShapeBpmnEventBasedGatewayKind;
-}
+} & ExpectedShapeModelElement;
 
 export const bpmnVisualization = new BpmnVisualization(null);
 const defaultParent = bpmnVisualization.graph.getDefaultParent();

@@ -43,7 +43,7 @@ export interface ExpectedActivityShape extends ExpectedShape {
 
 export interface ExpectedCallActivityShape extends ExpectedActivityShape {
   bpmnElementGlobalTaskKind?: GlobalTaskKind;
-  bpmnElementCallActivityKind?: ShapeBpmnCallActivityKind;
+  bpmnElementCallActivityKind: ShapeBpmnCallActivityKind;
 }
 
 export interface ExpectedEventShape extends ExpectedShape {
@@ -114,7 +114,7 @@ export const verifyShape = (
     expect(bpmnElement.markers).toHaveLength(0);
   }
 
-  if (('bpmnElementCallActivityKind' in expectedShape && expectedShape.bpmnElementCallActivityKind) || 'bpmnElementGlobalTaskKind' in expectedShape) {
+  if ('bpmnElementCallActivityKind' in expectedShape && expectedShape.bpmnElementCallActivityKind) {
     expect(bpmnElement instanceof ShapeBpmnCallActivity).toBeTruthy();
     expect((bpmnElement as ShapeBpmnCallActivity).callActivityKind).toEqual(expectedShape.bpmnElementCallActivityKind);
     expect((bpmnElement as ShapeBpmnCallActivity).globalTaskKind).toEqual(expectedShape.bpmnElementGlobalTaskKind);

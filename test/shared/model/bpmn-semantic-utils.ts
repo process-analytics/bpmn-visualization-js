@@ -77,6 +77,16 @@ export function expectEndEvent(bpmnSemantic: BpmnSemantic, expected: ExpectedBas
   expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.EVENT_END);
 }
 
+export function expectBoundaryEvent(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedFlowNodeElement): void {
+  expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.EVENT_BOUNDARY);
+  expectedFlowNode(bpmnSemantic, expected);
+}
+
+export function expectParallelGateway(bpmnSemantic: BpmnSemantic, expected: ExpectedBaseBpmnElement): void {
+  expectShape(bpmnSemantic, expected);
+  expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.GATEWAY_PARALLEL);
+}
+
 export function expectLane(bpmnSemantic: BpmnSemantic, expected: ExpectedBaseBpmnElement): void {
   expectShape(bpmnSemantic, expected);
   expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.LANE);
@@ -95,4 +105,14 @@ export function expectTask(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedFl
 export function expectServiceTask(bpmnSemantic: BpmnSemantic, expected: ExpectedBaseBpmnElement): void {
   expectShape(bpmnSemantic, expected);
   expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.TASK_SERVICE);
+}
+
+export function expectUserTask(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedFlowNodeElement): void {
+  expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.TASK_USER);
+  expectedFlowNode(bpmnSemantic, expected);
+}
+
+export function expectSubprocess(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedFlowNodeElement): void {
+  expectedFlowNode(bpmnSemantic, expected);
+  expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.SUB_PROCESS);
 }

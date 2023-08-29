@@ -16,7 +16,7 @@ limitations under the License.
 
 import { expectAsWarning, parseJsonAndExpectOnlyWarnings, parsingMessageCollector } from '../../../helpers/JsonTestUtils';
 
-import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
 import { EdgeUnknownBpmnElementWarning } from '@lib/component/parser/json/warnings';
 
 describe('parse bpmn as json for edges', () => {

@@ -14,4 +14,4 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-module.exports = require('../config/jest-playwright').computeConfiguration({ startWebServer: false, defaultBrowsers: 'chromium,firefox,webkit' });
+module.exports = require('../config/jest-playwright.cjs').computeConfiguration({ defaultBrowsers: 'chromium' });

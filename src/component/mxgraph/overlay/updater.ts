@@ -26,8 +26,8 @@ export function createNewOverlaysUpdater(graph: BpmnGraph): OverlaysUpdater {
 
 export class OverlaysUpdater {
   constructor(
-    readonly graph: BpmnGraph,
-    readonly overlayConverter: OverlayConverter,
+    private readonly graph: BpmnGraph,
+    private readonly overlayConverter: OverlayConverter,
   ) {}
 
   addOverlays(bpmnElementId: string, overlays: Overlay | Overlay[]): void {

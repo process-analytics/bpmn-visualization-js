@@ -74,7 +74,7 @@ export const StyleDefault = {
  * @internal
  * @private
  */
-export const getBpmnIsInstantiating = (style: { [p: string]: unknown }): boolean => mxUtils.getValue(style, BpmnStyleIdentifier.IS_INSTANTIATING, 'false') == 'true';
+export const getBpmnIsInstantiating = (style: Record<string, unknown>): boolean => mxUtils.getValue(style, BpmnStyleIdentifier.IS_INSTANTIATING, 'false') == 'true';
 
 const convertDefaultValue = (value: string): string | undefined => (value == 'default' ? undefined : value);
 
@@ -109,6 +109,13 @@ export const updateFont = (cellStyle: string, font: Font): string => {
   }
   return cellStyle;
 };
+
+export const getStyleValue = (cellStyle: string, key: string, defaultValue: string): string =>
+  cellStyle
+    ?.split(';')
+    .map(entry => entry.split('='))
+    .filter(([k]) => k === key)
+    .map(([, v]) => v)[0] ?? defaultValue;
 
 const convertDirection = (direction: GradientDirection): string => {
   switch (direction) {

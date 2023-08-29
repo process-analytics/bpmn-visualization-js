@@ -57,7 +57,7 @@ class RetriesCounter {
 const retriesCounter = new RetriesCounter();
 
 function saveAndRegisterImages(matcherContext: MatcherContext, received: Buffer, options: MatchImageSnapshotOptions): void {
-  const snapshotIdentifier = <string>options.customSnapshotIdentifier;
+  const snapshotIdentifier = options.customSnapshotIdentifier as string;
   // Manage expected and received images
   const baseImagePathWithName = `${options.customDiffDir}/${snapshotIdentifier}`;
   const expectedImagePath = `${baseImagePathWithName}-expected.png`;
@@ -70,7 +70,7 @@ function saveAndRegisterImages(matcherContext: MatcherContext, received: Buffer,
   // Create a custom context as the async call can be done whereas the global jest context has changed (another test is currently running).
   // So the test name and path changed, and the images would be attached to the wrong test.
   // For the context object structure, see https://github.com/Hazyzh/jest-html-reporters/blob/v3.0.5/helper.ts#L95
-  const context: { [key: symbol]: unknown } = {};
+  const context: Record<symbol, unknown> = {};
   context[Symbol('bpmn-visualization')] = {
     state: {
       currentTestName: matcherContext.currentTestName,

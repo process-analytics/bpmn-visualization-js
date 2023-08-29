@@ -27,7 +27,7 @@ import { getEventShapes } from '../../../helpers/TestUtils';
 import type { ExpectedActivityShape, ExpectedBounds, ExpectedShape } from '../../../helpers/bpmn-model-expect';
 import { getExpectedMarkers, verifyEdge, verifyShape } from '../../../helpers/bpmn-model-expect';
 
-import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
 import type BpmnModel from '@lib/model/bpmn/internal/BpmnModel';
 import { Waypoint } from '@lib/model/bpmn/internal/edge/edge';
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';
@@ -296,14 +296,14 @@ describe('parse bpmn as json for sub-process', () => {
 
         const model = parseJsonAndExpectOnlySubProcess(json, expectedShapeBpmnSubProcessKind, 1);
 
-        verifyShape(model.flowNodes[0], <ExpectedActivityShape>{
+        verifyShape(model.flowNodes[0], {
           shapeId: 'shape_sub_process_id_1',
           bpmnElementId: 'sub_process_id_1',
           bpmnElementName: undefined,
           bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
           bpmnElementMarkers: getExpectedMarkers([ShapeBpmnMarkerKind.EXPAND], expectedShapeBpmnSubProcessKind),
           bounds: expectedBounds,
-        });
+        } as ExpectedActivityShape);
       });
     }
 
@@ -422,14 +422,14 @@ describe('parse bpmn as json for sub-process', () => {
       expectNoPoolLane(model);
 
       verifySubProcess(model, expectedShapeBpmnSubProcessKind, 1);
-      verifyShape(model.flowNodes[0], <ExpectedActivityShape>{
+      verifyShape(model.flowNodes[0], {
         shapeId: 'shape_sub-process_id_1',
         bpmnElementId: 'sub-process_id_1',
         bpmnElementName: undefined,
         bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
         bpmnElementMarkers: getExpectedMarkers([], expectedShapeBpmnSubProcessKind),
         bounds: { x: 365, y: 235, width: 300, height: 200 },
-      });
+      } as ExpectedActivityShape);
 
       const eventShapes = getEventShapes(model);
       expect(eventShapes).toHaveLength(2);

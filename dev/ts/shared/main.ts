@@ -16,11 +16,13 @@ limitations under the License.
 
 import type { mxCell } from 'mxgraph';
 import type {
-  BpmnElement,
   BpmnElementKind,
+  BpmnSemantic,
+  FillColorGradient,
   FitOptions,
   FitType,
   GlobalOptions,
+  GradientDirection,
   LoadOptions,
   ModelFilter,
   Overlay,
@@ -28,8 +30,6 @@ import type {
   StyleUpdate,
   Version,
   ZoomType,
-  FillColorGradient,
-  GradientDirection,
 } from '../../../src/bpmn-visualization';
 import { FlowKind, ShapeBpmnElementKind } from '../../../src/bpmn-visualization';
 import { fetchBpmnContent, logDownload, logError, logErrorAndOpenAlert, logStartup } from './internal-helpers';
@@ -100,12 +100,12 @@ export function zoom(zoomType: ZoomType): void {
   log('Zoom done');
 }
 
-export function getElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[]): BpmnElement[] {
-  return bpmnVisualization.bpmnElementsRegistry.getElementsByKinds(bpmnKinds);
+export function getModelElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[]): BpmnSemantic[] {
+  return bpmnVisualization.bpmnElementsRegistry.getModelElementsByKinds(bpmnKinds);
 }
 
-export function getElementsByIds(bpmnId: string | string[]): BpmnElement[] {
-  return bpmnVisualization.bpmnElementsRegistry.getElementsByIds(bpmnId);
+export function getModelElementsByIds(bpmnIds: string | string[]): BpmnSemantic[] {
+  return bpmnVisualization.bpmnElementsRegistry.getModelElementsByIds(bpmnIds);
 }
 
 function getParentElement(id: string): mxCell {
@@ -120,8 +120,8 @@ export function getParentElementIds(bpmnIds: string[]): string[] {
 
 export function isChildOfSubProcess(bpmnId: string): boolean {
   const parent = getParentElement(bpmnId);
-  const bpmnElement = getElementsByIds(parent.getId());
-  return bpmnElement && bpmnElement[0]?.bpmnSemantic.kind === ShapeBpmnElementKind.SUB_PROCESS;
+  const bpmnSemantics = getModelElementsByIds(parent.getId());
+  return bpmnSemantics && bpmnSemantics[0]?.kind === ShapeBpmnElementKind.SUB_PROCESS;
 }
 
 export function addCssClasses(bpmnElementId: string | string[], classNames: string | string[]): void {
@@ -219,11 +219,11 @@ function logOnlyStatusKoNotifier(errorMsg: string): void {
 }
 
 function getFitOptionsFromParameters(config: BpmnVisualizationDemoConfiguration, parameters: URLSearchParams): FitOptions {
-  const fitOptions: FitOptions = config.loadOptions?.fit || {};
+  const fitOptions: FitOptions = config.loadOptions?.fit ?? {};
   const parameterFitType: string = parameters.get('fitTypeOnLoad');
   if (parameterFitType) {
     // As the parameter is a string, and the load/fit APIs accept only enum to avoid error, we need to convert it
-    fitOptions.type = <FitType>parameterFitType;
+    fitOptions.type = parameterFitType as FitType;
   }
   const parameterFitMargin = parameters.get('fitMargin');
   if (parameterFitMargin) {
@@ -322,7 +322,7 @@ export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguratio
   statusKoNotifier = config.statusKoNotifier ?? logOnlyStatusKoNotifier;
 
   log('Configuring Load Options');
-  loadOptions = config.loadOptions || {};
+  loadOptions = config.loadOptions ?? {};
   loadOptions.fit = getFitOptionsFromParameters(config, parameters);
   loadOptions.modelFilter = configurePoolsFilteringFromParameters(parameters);
 
@@ -380,8 +380,7 @@ function updateStyleOfElementsIfRequested(): void {
 function retrieveAllBpmnElementIds(): string[] {
   log('Retrieving ids of all BPMN elements');
   const allKinds = [...Object.values(ShapeBpmnElementKind), ...Object.values(FlowKind)];
-  const elements = bpmnVisualization.bpmnElementsRegistry.getElementsByKinds(allKinds);
-  const bpmnElementsIds = elements.map(elt => elt.bpmnSemantic.id);
+  const bpmnElementsIds = bpmnVisualization.bpmnElementsRegistry.getModelElementsByKinds(allKinds).map(elt => elt.id);
   log('All BPMN elements ids retrieved:', bpmnElementsIds.length);
   return bpmnElementsIds;
 }

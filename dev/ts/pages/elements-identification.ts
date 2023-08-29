@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BpmnElement, BpmnElementKind, Overlay, ShapeStyleUpdate, StyleUpdate } from '../dev-bundle-index';
+import type { BpmnElementKind, BpmnSemantic, Overlay, ShapeStyleUpdate, StyleUpdate } from '../dev-bundle-index';
 import {
   addCssClasses,
   addOverlays,
@@ -22,7 +22,7 @@ import {
   downloadPng,
   downloadSvg,
   FitType,
-  getElementsByKinds,
+  getModelElementsByKinds,
   log,
   removeAllOverlays,
   removeCssClasses,
@@ -125,7 +125,7 @@ function updateStyleByAPI(bpmnIds: string[], bpmnKind: ShapeBpmnElementKind): vo
   const otherIds = bpmnIds.filter(bpmnId => !subProcessChildrenIds.includes(bpmnId));
 
   if (subProcessChildrenIds.length > 0) {
-    styledPoolAndLaneIds = getElementsByKinds([ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.LANE]).map(element => element.bpmnSemantic.id);
+    styledPoolAndLaneIds = getModelElementsByKinds([ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.LANE]).map(element => element.id);
     updateStyle(styledPoolAndLaneIds, { opacity: 5, font: { color: 'blue', opacity: 5 }, fill: { color: 'pink' }, stroke: { color: 'green' } });
   }
   updateStyle(subProcessChildrenIds, { fill: { color: 'swimlane' }, stroke: { color: 'swimlane' }, font: { color: 'swimlane' } });
@@ -168,12 +168,12 @@ function manageOverlays(idsToAddOverlay: string[], bpmnKind: ShapeBpmnElementKin
 
 function updateSelectedBPMNElements(bpmnKind: ShapeBpmnElementKind): void {
   log(`Searching for Bpmn elements of '${bpmnKind}' kind`);
-  const elementsByKinds = getElementsByKinds(bpmnKind);
+  const elementsByKinds = getModelElementsByKinds(bpmnKind);
 
   updateTextArea(elementsByKinds, bpmnKind);
 
   // newly identified elements and values
-  const newlyIdentifiedBpmnIds = elementsByKinds.map(elt => elt.bpmnSemantic.id);
+  const newlyIdentifiedBpmnIds = elementsByKinds.map(elt => elt.id);
   useCSS ? styleByCSS(newlyIdentifiedBpmnIds) : styleByAPI(newlyIdentifiedBpmnIds, bpmnKind);
   manageOverlays(newlyIdentifiedBpmnIds, bpmnKind);
 
@@ -181,25 +181,25 @@ function updateSelectedBPMNElements(bpmnKind: ShapeBpmnElementKind): void {
   lastIdentifiedBpmnIds = newlyIdentifiedBpmnIds;
 }
 
-function updateTextArea(elementsByKinds: BpmnElement[], bpmnKind: string): void {
-  const textArea = <HTMLTextAreaElement>document.getElementById('elements-result');
+function updateTextArea(elementsByKinds: BpmnSemantic[], bpmnKind: string): void {
+  const textArea = document.getElementById('elements-result') as HTMLTextAreaElement;
 
   const textHeader = `Found ${elementsByKinds.length} ${bpmnKind}(s)`;
   log(textHeader);
-  const lines = elementsByKinds.map(elt => `  - ${elt.bpmnSemantic.id}: '${elt.bpmnSemantic.name}'`).join('\n');
+  const lines = elementsByKinds.map(elt => `  - ${elt.id}: '${elt.name}'`).join('\n');
 
   textArea.value += [textHeader, lines].join('\n') + '\n';
   textArea.scrollTop = textArea.scrollHeight;
 }
 
 function resetTextArea(): void {
-  const textArea = <HTMLTextAreaElement>document.getElementById('elements-result');
+  const textArea = document.getElementById('elements-result') as HTMLTextAreaElement;
   textArea.value = '';
 }
 
 function configureControls(): void {
-  const selectedKindElt = <HTMLSelectElement>document.getElementById('bpmn-kinds-select');
-  selectedKindElt.onchange = event => updateSelectedBPMNElements((<HTMLSelectElement>event.target).value as ShapeBpmnElementKind);
+  const selectedKindElt = document.getElementById('bpmn-kinds-select') as HTMLSelectElement;
+  selectedKindElt.onchange = event => updateSelectedBPMNElements((event.target as HTMLSelectElement).value as ShapeBpmnElementKind);
   document.addEventListener('diagramLoaded', () => updateSelectedBPMNElements(selectedKindElt.value as ShapeBpmnElementKind), false);
 
   document.getElementById('clear-btn').onclick = function () {
@@ -213,7 +213,7 @@ function configureControls(): void {
   };
 
   // display overlay option
-  const checkboxDisplayOverlaysElt = <HTMLInputElement>document.getElementById('checkbox-display-overlays');
+  const checkboxDisplayOverlaysElt = document.getElementById('checkbox-display-overlays') as HTMLInputElement;
   checkboxDisplayOverlaysElt.addEventListener('change', function () {
     isOverlaysDisplayed = this.checked;
     log('Request overlays display:', isOverlaysDisplayed);
@@ -222,7 +222,7 @@ function configureControls(): void {
   checkboxDisplayOverlaysElt.checked = isOverlaysDisplayed;
 
   // use CSS or API to style the BPMN elements
-  const checkboxUseCSSElt = <HTMLInputElement>document.getElementById('checkbox-css-style');
+  const checkboxUseCSSElt = document.getElementById('checkbox-css-style') as HTMLInputElement;
   checkboxUseCSSElt.addEventListener('change', function () {
     useCSS = this.checked;
     log('Request CSS style feature:', useCSS);

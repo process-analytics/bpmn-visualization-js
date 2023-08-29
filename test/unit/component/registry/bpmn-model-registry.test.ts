@@ -27,28 +27,28 @@ describe('Bpmn Model registry', () => {
     const callback = jest.fn();
     bpmnModelRegistry.registerOnLoadCallback(callback);
     bpmnModelRegistry.load(startEventInModel('id', 'name'));
-    expect(callback).toHaveBeenCalledTimes(1);
+    expect(callback).toHaveBeenCalledOnce();
   });
 
   it('search sequence flow', () => {
     bpmnModelRegistry.load(sequenceFlowInModel('seq_flow_id', 'seq flow name', 'sourceRefId', 'targetRefId'));
-    const bpmnSemantic = <EdgeBpmnSemantic>bpmnModelRegistry.getBpmnSemantic('seq_flow_id');
+    const bpmnSemantic = bpmnModelRegistry.getBpmnSemantic('seq_flow_id') as EdgeBpmnSemantic;
     expectSequenceFlow(bpmnSemantic, { id: 'seq_flow_id', name: 'seq flow name', source: 'sourceRefId', target: 'targetRefId' });
   });
   it('search message flow', () => {
     bpmnModelRegistry.load(messageFlowInModel('msg_flow_id', 'msg flow name', 'sourceRefId', 'targetRefId'));
-    const bpmnSemantic = <EdgeBpmnSemantic>bpmnModelRegistry.getBpmnSemantic('msg_flow_id');
+    const bpmnSemantic = bpmnModelRegistry.getBpmnSemantic('msg_flow_id') as EdgeBpmnSemantic;
     expectMessageFlow(bpmnSemantic, { id: 'msg_flow_id', name: 'msg flow name', source: 'sourceRefId', target: 'targetRefId' });
   });
   it('search association flow', () => {
     bpmnModelRegistry.load(associationFlowInModel('association_flow_id', 'association flow name', 'sourceRefId', 'targetRefId'));
-    const bpmnSemantic = <EdgeBpmnSemantic>bpmnModelRegistry.getBpmnSemantic('association_flow_id');
+    const bpmnSemantic = bpmnModelRegistry.getBpmnSemantic('association_flow_id') as EdgeBpmnSemantic;
     expectAssociationFlow(bpmnSemantic, { id: 'association_flow_id', name: 'association flow name', source: 'sourceRefId', target: 'targetRefId' });
   });
 
   it('search flowNode', () => {
     bpmnModelRegistry.load(startEventInModel('start event id', 'start event name', { incomingIds: ['incoming_1'], outgoingIds: ['outgoing_1', 'outgoing_2'] }));
-    const bpmnSemantic = <ShapeBpmnSemantic>bpmnModelRegistry.getBpmnSemantic('start event id');
+    const bpmnSemantic = bpmnModelRegistry.getBpmnSemantic('start event id') as ShapeBpmnSemantic;
     expectStartEvent(bpmnSemantic, { id: 'start event id', name: 'start event name', incoming: ['incoming_1'], outgoing: ['outgoing_1', 'outgoing_2'] });
   });
 

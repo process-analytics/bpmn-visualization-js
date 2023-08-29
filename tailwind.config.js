@@ -14,7 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-module.exports = {
+/** @type {import('tailwindcss').Config} */
+const config = {
   content: ['./dev/public/index.html'],
   theme: {
     extend: {},
@@ -24,3 +25,5 @@ module.exports = {
   },
   plugins: [],
 };
+
+export default config;

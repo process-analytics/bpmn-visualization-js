@@ -134,14 +134,14 @@ export class DropFileUserInterface {
 
   private getAddClassCallback(containerToBeFaded: HTMLElement, isDocument: boolean, outerContainerId?: string) {
     return function (this: Document | HTMLElement): void {
-      isDocument ? (<Document>this).querySelector('#' + outerContainerId).classList.add('dragging') : (<HTMLElement>this).classList.add('dragging');
+      isDocument ? (this as Document).querySelector('#' + outerContainerId).classList.add('dragging') : (this as HTMLElement).classList.add('dragging');
       containerToBeFaded.classList.add('faded');
     };
   }
 
   private getRemoveClassCallback(containerToBeFaded: HTMLElement, isDocument: boolean, outerContainerId?: string) {
     return function (this: Document | HTMLElement): void {
-      isDocument ? (<Document>this).querySelector('#' + outerContainerId).classList.remove('dragging') : (<HTMLElement>this).classList.remove('dragging');
+      isDocument ? (this as Document).querySelector('#' + outerContainerId).classList.remove('dragging') : (this as HTMLElement).classList.remove('dragging');
       containerToBeFaded.classList.remove('faded');
     };
   }
@@ -156,7 +156,7 @@ export class DropFileUserInterface {
         const errorMessage = e instanceof Error ? e.message : String(e);
         logErrorAndOpenAlert(errorMessage);
       } finally {
-        isDocument ? (<Document>this).querySelector('#' + outerContainerId).classList.remove('dragging') : (<HTMLElement>this).classList.remove('dragging');
+        isDocument ? (this as Document).querySelector('#' + outerContainerId).classList.remove('dragging') : (this as HTMLElement).classList.remove('dragging');
         containerToBeFaded.classList.remove('faded');
       }
     };

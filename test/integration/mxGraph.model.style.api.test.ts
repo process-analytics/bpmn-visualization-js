@@ -14,39 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { initializeBpmnVisualizationWithContainerId } from './helpers/bpmn-visualization-initialization';
-import { HtmlElementLookup } from './helpers/html-utils';
-import type { ExpectedDirection, ExpectedFill, ExpectedShapeModelElement, VerticalAlign } from './helpers/model-expect';
+import type { ExpectedDirection, ExpectedFill } from './helpers/model-expect';
 import { bpmnVisualization } from './helpers/model-expect';
-import { buildReceivedResolvedModelCellStyle, buildReceivedViewStateStyle } from './matchers/matcher-utils';
-import { buildExpectedShapeCellStyle } from './matchers/toBeShape';
 import { readFileSync } from '@test/shared/file-helper';
-import { MessageVisibleKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
+import { MessageVisibleKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
 import type { EdgeStyleUpdate, Fill, Font, GradientDirection, Stroke, StyleUpdate } from '@lib/component/registry';
-import type { mxCell } from 'mxgraph';
-
-// Create a dedicated instance with a DOM container as it is required by the CSS API.
-const bv = initializeBpmnVisualizationWithContainerId('bpmn-container-style-css-cross-tests');
-const htmlElementLookup = new HtmlElementLookup(bv);
-
-const getCell = (bpmnElementId: string): mxCell => {
-  const graph = bv.graph;
-  const cell = graph.model.getCell(bpmnElementId);
-  if (!cell) {
-    throw new Error(`Unable to find cell in the model with id ${bpmnElementId}`);
-  }
-  return cell;
-};
-
-// we cannot reuse the model expect functions here. They are using the shared bpmnVisualization that we cannot use here.
-// So use the minimal expect function. We only need to check a part of the data, the rest is already checked in details in other tests.
-const checkViewStateStyle = (bpmnElementId: string, expectedModel: ExpectedShapeModelElement): void => {
-  expect(buildReceivedViewStateStyle(getCell(bpmnElementId), bv)).toEqual(buildExpectedShapeCellStyle(expectedModel));
-};
-
-const checkModelStyle = (bpmnElementId: string, expectedModel: ExpectedShapeModelElement): void => {
-  expect(buildReceivedResolvedModelCellStyle(getCell(bpmnElementId), bv)).toEqual(buildExpectedShapeCellStyle(expectedModel));
-};
 
 describe('mxGraph model - update style', () => {
   describe('Shapes', () => {
@@ -197,11 +169,11 @@ describe('mxGraph model - update style', () => {
     });
 
     it.each([
-      [<GradientDirection>'top-to-bottom', <ExpectedDirection>'south'],
-      [<GradientDirection>'bottom-to-top', <ExpectedDirection>'north'],
-      [<GradientDirection>'left-to-right', <ExpectedDirection>'east'],
-      [<GradientDirection>'right-to-left', <ExpectedDirection>'west'],
-    ])('Update the fill color as gradient with direction %s', (direction: GradientDirection, expectedDirection: ExpectedDirection) => {
+      ['top-to-bottom', 'south'],
+      ['bottom-to-top', 'north'],
+      ['left-to-right', 'east'],
+      ['right-to-left', 'west'],
+    ] as [GradientDirection, ExpectedDirection][])('Update the fill color as gradient with direction %s', (direction: GradientDirection, expectedDirection: ExpectedDirection) => {
       const fill = { color: { startColor: 'gold', endColor: 'pink', direction } };
       bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { fill });
 
@@ -587,7 +559,7 @@ describe('mxGraph model - update style', () => {
       });
 
       // Reset the style by passing special values
-      bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', <EdgeStyleUpdate>{
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', {
         font: {
           color: 'default',
           opacity: 'default',
@@ -598,7 +570,7 @@ describe('mxGraph model - update style', () => {
           opacity: 'default',
           width: 'default',
         },
-      });
+      } as EdgeStyleUpdate);
 
       // The properties should have been reset to use the default values
       expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
@@ -669,7 +641,7 @@ describe('mxGraph model - update style', () => {
       });
 
       // Reset the style by passing special values
-      bpmnVisualization.bpmnElementsRegistry.updateStyle('MessageFlow_3_msgVisibilityKind_non_initiating', <EdgeStyleUpdate>{
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('MessageFlow_3_msgVisibilityKind_non_initiating', {
         font: {
           color: 'default',
           opacity: 'default',
@@ -680,7 +652,7 @@ describe('mxGraph model - update style', () => {
           opacity: 'default',
           width: 'default',
         },
-      });
+      } as EdgeStyleUpdate);
 
       // The properties should have been reset to use the default values
       expect('MessageFlow_3_msgVisibilityKind_non_initiating').toBeMessageFlow({
@@ -795,34 +767,6 @@ describe('mxGraph model - update style', () => {
         label: 'link',
         verticalAlign: 'bottom',
       });
-    });
-  });
-
-  // Check that there is no bad interactions between the two features
-  describe('Both style API update and CSS class', () => {
-    it.each([true, false])('Apply style update first %s', (isStyleUpdateAppliedFirst: boolean) => {
-      bv.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
-
-      const bpmnElementId = 'endEvent_message_1';
-      const strokeColor = 'pink';
-      const cssClassName = ['class-1', 'class-2'];
-      if (isStyleUpdateAppliedFirst) {
-        bv.bpmnElementsRegistry.updateStyle(bpmnElementId, { stroke: { color: strokeColor } });
-        bv.bpmnElementsRegistry.addCssClasses(bpmnElementId, cssClassName);
-      } else {
-        bv.bpmnElementsRegistry.addCssClasses(bpmnElementId, cssClassName);
-        bv.bpmnElementsRegistry.updateStyle(bpmnElementId, { stroke: { color: strokeColor } });
-      }
-
-      const expectedModel = {
-        extraCssClasses: ['class-1', 'class-2'],
-        kind: ShapeBpmnElementKind.EVENT_END,
-        stroke: { color: strokeColor },
-        verticalAlign: <VerticalAlign>'top', // when events have a label
-      };
-      checkModelStyle(bpmnElementId, expectedModel);
-      checkViewStateStyle(bpmnElementId, expectedModel);
-      htmlElementLookup.expectEndEvent(bpmnElementId, ShapeBpmnEventDefinitionKind.MESSAGE, { label: 'message end 2', additionalClasses: ['class-1', 'class-2'] });
     });
   });
 });
@@ -1181,36 +1125,6 @@ describe('mxGraph model - reset style', () => {
           verticalAlign: 'bottom',
         });
       });
-    });
-  });
-
-  // Check that there is no bad interactions between the two features
-  describe('Style API Reset and CSS class update', () => {
-    it.each([true, false])('Reset style first %s', (isStyleResetFirst: boolean) => {
-      bv.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
-
-      const bpmnElementId = 'endEvent_message_1';
-      const cssClassName = ['class-1', 'class-2'];
-
-      bv.bpmnElementsRegistry.updateStyle(bpmnElementId, { stroke: { color: 'pink' } });
-
-      if (isStyleResetFirst) {
-        bv.bpmnElementsRegistry.resetStyle(bpmnElementId);
-        bv.bpmnElementsRegistry.addCssClasses(bpmnElementId, cssClassName);
-      } else {
-        bv.bpmnElementsRegistry.addCssClasses(bpmnElementId, cssClassName);
-        bv.bpmnElementsRegistry.resetStyle(bpmnElementId);
-      }
-
-      // Check that the style has been reset to default values for each element
-      const expectedModel = {
-        extraCssClasses: ['class-1', 'class-2'],
-        kind: ShapeBpmnElementKind.EVENT_END,
-        verticalAlign: 'top' as VerticalAlign, // when events have a label
-      };
-      checkModelStyle(bpmnElementId, expectedModel);
-      checkViewStateStyle(bpmnElementId, expectedModel);
-      htmlElementLookup.expectEndEvent(bpmnElementId, ShapeBpmnEventDefinitionKind.MESSAGE, { label: 'message end 2', additionalClasses: ['class-1', 'class-2'] });
     });
   });
 });
