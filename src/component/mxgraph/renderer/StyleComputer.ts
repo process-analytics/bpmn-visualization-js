@@ -198,8 +198,7 @@ export default class StyleComputer {
 
   computeMessageFlowIconStyle(edge: Edge): string {
     const styleValues: [string, string][] = [];
-    styleValues.push(['shape', BpmnStyleIdentifier.MESSAGE_FLOW_ICON]);
-    styleValues.push([BpmnStyleIdentifier.IS_INITIATING, String(edge.messageVisibleKind === MessageVisibleKind.INITIATING)]);
+    styleValues.push(['shape', BpmnStyleIdentifier.MESSAGE_FLOW_ICON], [BpmnStyleIdentifier.IS_INITIATING, String(edge.messageVisibleKind === MessageVisibleKind.INITIATING)]);
     if (!this.ignoreBpmnColors) {
       edge.extensions.strokeColor && styleValues.push([mxConstants.STYLE_STROKECOLOR, edge.extensions.strokeColor]);
     }
