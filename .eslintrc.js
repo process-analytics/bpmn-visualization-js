@@ -16,7 +16,7 @@ limitations under the License.
 
 module.exports = {
   root: true,
-  plugins: ['notice'],
+  plugins: ['notice', 'unicorn'],
   parser: '@typescript-eslint/parser', // Specifies the ESLint parser
   extends: [
     'plugin:prettier/recommended', // Enables eslint-plugin-prettier and eslint-config-prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
@@ -28,6 +28,17 @@ module.exports = {
   rules: {
     'notice/notice': ['error', { templateFile: 'config/license-header.js', onNonMatchingHeader: 'replace' }],
     'no-console': ['error', { allow: ['warn', 'error'] }],
+    'unicorn/filename-case': [
+      'error',
+      {
+        cases: {
+          camelCase: true,
+          kebabCase: true,
+          pascalCase: true,
+          snakeCase: true,
+        },
+      },
+    ],
   },
   overrides: [
     // typescript

@@ -17,7 +17,7 @@ limitations under the License.
 import { parseJsonAndExpectOnlyEdges } from '../../../helpers/JsonTestUtils';
 import { verifyEdge } from '../../../helpers/bpmn-model-expect';
 
-import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
 import { Waypoint } from '@lib/model/bpmn/internal/edge/edge';
 import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
 
