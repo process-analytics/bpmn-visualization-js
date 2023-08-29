@@ -29,7 +29,7 @@ export default class ShapeBpmnElement {
     readonly name: string,
     readonly kind: ShapeBpmnElementKind,
     public parentId?: string,
-    readonly instantiate: boolean = false,
+    readonly instantiate = false,
   ) {}
 }
 
@@ -120,7 +120,7 @@ export class ShapeBpmnBoundaryEvent extends ShapeBpmnEvent {
     name: string,
     eventDefinitionKind: ShapeBpmnEventDefinitionKind,
     parentId: string,
-    readonly isInterrupting: boolean = true,
+    readonly isInterrupting = true,
   ) {
     super(id, name, ShapeBpmnElementKind.EVENT_BOUNDARY, eventDefinitionKind, parentId);
   }

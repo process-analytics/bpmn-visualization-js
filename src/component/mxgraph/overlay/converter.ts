@@ -19,7 +19,7 @@ import { StyleDefault } from '../style';
 import type { MxGraphCustomOverlayOptions, MxGraphCustomOverlayPosition, MxGraphCustomOverlayStyle } from './custom-overlay';
 
 export class OverlayConverter {
-  private overlayPositions: Map<OverlayPosition, MxGraphCustomOverlayPosition> = new Map([
+  private overlayPositions = new Map<OverlayPosition, MxGraphCustomOverlayPosition>([
     // Edge
     ['start', { horizontalAlign: 'left', verticalAlign: 'top' }],
     ['middle', { horizontalAlign: 'center', verticalAlign: 'top' }],
@@ -54,7 +54,7 @@ export class OverlayConverter {
     };
 
     const style = overlay.style;
-    const convertedStyle = <MxGraphCustomOverlayStyle>{ ...defaultStyle };
+    const convertedStyle = { ...defaultStyle } as MxGraphCustomOverlayStyle;
     if (!style) {
       return convertedStyle;
     }

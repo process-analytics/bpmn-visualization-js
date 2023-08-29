@@ -93,7 +93,7 @@ export class StyleUpdater {
 
 const cssClassesStyleIdentifier = BpmnStyleIdentifier.EXTRA_CSS_CLASSES;
 class StyleManager {
-  private stylesCache: Map<string, string> = new Map();
+  private stylesCache = new Map<string, string>();
 
   constructor(private readonly model: mxGraphModel) {}
 

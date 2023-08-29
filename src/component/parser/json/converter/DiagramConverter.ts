@@ -39,9 +39,9 @@ export default class DiagramConverter {
     private parsingMessageCollector: ParsingMessageCollector,
   ) {}
 
-  private convertedFonts: Map<string, Font> = new Map();
+  private convertedFonts = new Map<string, Font>();
 
-  deserialize(bpmnDiagrams: Array<BPMNDiagram> | BPMNDiagram): BpmnModel {
+  deserialize(bpmnDiagrams: BPMNDiagram[] | BPMNDiagram): BpmnModel {
     const flowNodes: Shape[] = [];
     const lanes: Shape[] = [];
     const pools: Shape[] = [];
@@ -64,7 +64,7 @@ export default class DiagramConverter {
     return { flowNodes, lanes, pools, edges };
   }
 
-  private deserializeFonts(bpmnLabelStyle: Array<BPMNLabelStyle> | BPMNLabelStyle): void {
+  private deserializeFonts(bpmnLabelStyle: BPMNLabelStyle[] | BPMNLabelStyle): void {
     this.convertedFonts = new Map();
 
     ensureIsArray(bpmnLabelStyle).forEach(labelStyle =>
@@ -74,7 +74,7 @@ export default class DiagramConverter {
     );
   }
 
-  private deserializeShapes(shapes: Array<BPMNShape> | BPMNShape): Shapes {
+  private deserializeShapes(shapes: BPMNShape[] | BPMNShape): Shapes {
     const convertedShapes: Shapes = { flowNodes: [], lanes: [], pools: [] };
 
     ensureIsArray(shapes).forEach(shape => {
@@ -97,7 +97,7 @@ export default class DiagramConverter {
     return convertedShapes;
   }
 
-  private deserializeShapeAndStoreIfFound(shape: BPMNShape, storage: Array<Shape>, findShapeElement: (bpmnElement: string) => ShapeBpmnElement): boolean {
+  private deserializeShapeAndStoreIfFound(shape: BPMNShape, storage: Shape[], findShapeElement: (bpmnElement: string) => ShapeBpmnElement): boolean {
     const element = this.deserializeShape(shape, findShapeElement);
     if (element) {
       storage.push(element);
@@ -136,14 +136,14 @@ export default class DiagramConverter {
   // 'BPMN in Color' extensions with fallback to bpmn.io colors
   private static setColorExtensionsOnShape(shape: Shape, bpmnShape: BPMNShape): void {
     if ('background-color' in bpmnShape) {
-      shape.extensions.fillColor = <string>bpmnShape['background-color'];
+      shape.extensions.fillColor = bpmnShape['background-color'] as string;
     } else if ('fill' in bpmnShape) {
-      shape.extensions.fillColor = <string>bpmnShape['fill'];
+      shape.extensions.fillColor = bpmnShape['fill'] as string;
     }
     if ('border-color' in bpmnShape) {
-      shape.extensions.strokeColor = <string>bpmnShape['border-color'];
+      shape.extensions.strokeColor = bpmnShape['border-color'] as string;
     } else if ('stroke' in bpmnShape) {
-      shape.extensions.strokeColor = <string>bpmnShape['stroke'];
+      shape.extensions.strokeColor = bpmnShape['stroke'] as string;
     }
   }
 
@@ -181,9 +181,9 @@ export default class DiagramConverter {
   // 'BPMN in Color' extensions  with fallback to bpmn.io colors
   private static setColorExtensionsOnEdge(edge: Edge, bpmnEdge: BPMNEdge): void {
     if ('border-color' in bpmnEdge) {
-      edge.extensions.strokeColor = <string>bpmnEdge['border-color'];
+      edge.extensions.strokeColor = bpmnEdge['border-color'] as string;
     } else if ('stroke' in bpmnEdge) {
-      edge.extensions.strokeColor = <string>bpmnEdge['stroke'];
+      edge.extensions.strokeColor = bpmnEdge['stroke'] as string;
     }
   }
 
@@ -197,7 +197,7 @@ export default class DiagramConverter {
       const bounds = DiagramConverter.deserializeBounds(bpmnLabel);
       const label = new Label(font, bounds);
       if ('color' in bpmnLabel) {
-        label.extensions.color = <string>bpmnLabel.color;
+        label.extensions.color = bpmnLabel.color as string;
         return label;
       }
       if (font || bounds) {

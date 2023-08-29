@@ -25,7 +25,7 @@ import { ParsingMessageCollector } from '@lib/component/parser/parsing-messages'
 import type { ExpectedBounds, ExpectedFont, ExpectedLabel } from './bpmn-model-expect';
 
 class ParsingMessageCollectorTester extends ParsingMessageCollector {
-  private warnings: Array<JsonParsingWarning> = [];
+  private warnings: JsonParsingWarning[] = [];
 
   override warning(warning: JsonParsingWarning): void {
     this.warnings.push(warning);
@@ -35,7 +35,7 @@ class ParsingMessageCollectorTester extends ParsingMessageCollector {
     this.warnings = [];
   }
 
-  getWarnings(): Array<JsonParsingWarning> {
+  getWarnings(): JsonParsingWarning[] {
     return this.warnings;
   }
 }
