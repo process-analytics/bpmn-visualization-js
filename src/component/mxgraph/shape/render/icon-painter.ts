@@ -60,10 +60,10 @@ export function buildPaintParameter({
   isFilled?: boolean;
   iconStrokeWidth?: number;
 }): PaintParameter {
-  const shapeStrokeWidth = shape.strokewidth || mxUtils.getValue(shape.style, mxConstants.STYLE_STROKEWIDTH, StyleDefault.STROKE_WIDTH_THIN);
-  const fillColor = shape.fill || mxUtils.getValue(shape.style, mxConstants.STYLE_FILLCOLOR, StyleDefault.DEFAULT_FILL_COLOR);
-  const strokeColor = shape.stroke || mxUtils.getValue(shape.style, mxConstants.STYLE_STROKECOLOR, StyleDefault.DEFAULT_STROKE_COLOR);
-  const margin = mxUtils.getValue(shape.style, mxConstants.STYLE_MARGIN, StyleDefault.DEFAULT_MARGIN);
+  const shapeStrokeWidth = shape.strokewidth || (mxUtils.getValue(shape.style, mxConstants.STYLE_STROKEWIDTH, StyleDefault.STROKE_WIDTH_THIN) as number);
+  const fillColor = shape.fill || (mxUtils.getValue(shape.style, mxConstants.STYLE_FILLCOLOR, StyleDefault.DEFAULT_FILL_COLOR) as string);
+  const strokeColor = shape.stroke || (mxUtils.getValue(shape.style, mxConstants.STYLE_STROKECOLOR, StyleDefault.DEFAULT_STROKE_COLOR) as string);
+  const margin = mxUtils.getValue(shape.style, mxConstants.STYLE_MARGIN, StyleDefault.DEFAULT_MARGIN) as number;
   ratioFromParent ??= 0.25;
   isFilled ??= false;
   iconStrokeWidth ??= 0;

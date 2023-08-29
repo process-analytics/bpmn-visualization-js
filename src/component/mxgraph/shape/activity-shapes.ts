@@ -52,7 +52,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
   }
 
   protected paintMarkerIcons(paintParameter: PaintParameter): void {
-    const markers = mxUtils.getValue(this.style, BpmnStyleIdentifier.MARKERS, undefined);
+    const markers = mxUtils.getValue(this.style, BpmnStyleIdentifier.MARKERS, undefined) as string;
     if (markers) {
       const orderedMarkers = orderActivityMarkers(markers.split(','));
       for (const [index, marker] of orderedMarkers.entries()) {
@@ -258,7 +258,7 @@ export class CallActivityShape extends BaseActivityShape {
  */
 export class SubProcessShape extends BaseActivityShape {
   override paintBackground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
-    const subProcessKind = mxUtils.getValue(this.style, BpmnStyleIdentifier.SUB_PROCESS_KIND, undefined);
+    const subProcessKind = mxUtils.getValue(this.style, BpmnStyleIdentifier.SUB_PROCESS_KIND, undefined) as ShapeBpmnSubProcessKind;
     c.save(); // ensure we can later restore the configuration
     if (subProcessKind === ShapeBpmnSubProcessKind.EVENT) {
       c.setDashed(true, false);

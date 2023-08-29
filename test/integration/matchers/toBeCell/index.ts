@@ -58,6 +58,7 @@ function buildExpectedCell(id: string, expected: ExpectedCellWithGeometry): Expe
   return {
     id,
     parent: { id: parentId ?? getDefaultParentId() },
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     geometry: expect.objectContaining(expectedObject),
   };
 }

@@ -24,7 +24,7 @@ describe('helper functions', () => {
     ${-30}       | ${0}    | ${45}  | ${0}
     ${130}       | ${0}    | ${72}  | ${72}
     ${0}         | ${-100} | ${100} | ${0}
-  `('Range number restriction: input ($input) min ($min) max ($max)', ({ input, min, max, expected }) => {
+  `('Range number restriction: input ($input) min ($min) max ($max)', ({ input, min, max, expected }: { input: number; min: number; max: number; expected: number }) => {
     expect(ensureInRange(input, min, max, 20)).toEqual(expected);
   });
 
@@ -35,7 +35,7 @@ describe('helper functions', () => {
     ${-30}       | ${0}
     ${130}       | ${130}
     ${0}         | ${0}
-  `('Ensure positive values: input ($input)', ({ input, expected }) => {
+  `('Ensure positive values: input ($input)', ({ input, expected }: { input: number; expected: number }) => {
     expect(ensurePositiveValue(input)).toEqual(expected);
   });
 });
@@ -47,9 +47,12 @@ describe('validate configuration', () => {
     ${{ throttleDelay: 12 }}                      | ${{ debounceDelay: 50, throttleDelay: 12 }}
     ${{ debounceDelay: 72 }}                      | ${{ debounceDelay: 72, throttleDelay: 50 }}
     ${{ debounceDelay: 172, throttleDelay: -50 }} | ${{ debounceDelay: 100, throttleDelay: 0 }}
-  `('zoom configuration: input ($input)', ({ input, expected }) => {
-    expect(ensureValidZoomConfiguration(input)).toEqual(expected);
-  });
+  `(
+    'zoom configuration: input ($input)',
+    ({ input, expected }: { input: { debounceDelay: number; throttleDelay: number }; expected: { debounceDelay: number; throttleDelay: number } }) => {
+      expect(ensureValidZoomConfiguration(input)).toEqual(expected);
+    },
+  );
 });
 
 describe('validate opacity', () => {
@@ -60,7 +63,7 @@ describe('validate opacity', () => {
     ${172}       | ${100}
     ${-50}       | ${0}
     ${'default'} | ${undefined}
-  `('opacity: $input', ({ input, expected }) => {
+  `('opacity: $input', ({ input, expected }: { input: number | 'default'; expected: number }) => {
     expect(ensureOpacityValue(input)).toEqual(expected);
   });
 });
@@ -73,7 +76,7 @@ describe('validate stroke width', () => {
     ${-50}       | ${1}
     ${67}        | ${50}
     ${'default'} | ${undefined}
-  `('opacity: $input', ({ input, expected }) => {
+  `('opacity: $input', ({ input, expected }: { input: number | 'default'; expected: number }) => {
     expect(ensureStrokeWidthValue(input)).toEqual(expected);
   });
 });

@@ -148,6 +148,7 @@ export default class ShapeConfigurator {
         const cell = this.state.cell;
         // dialect = strictHtml is set means that current node holds an HTML label
         const allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === mxConstants.DIALECT_STRICTHTML);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const extraCssClasses = this.state.style[BpmnStyleIdentifier.EXTRA_CSS_CLASSES];
         if (typeof extraCssClasses == 'string') {
           allBpmnClassNames.push(...extraCssClasses.split(','));

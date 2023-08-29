@@ -160,7 +160,7 @@ export default class ProcessConverter {
     this.elementsWithoutParentByProcessId.set(process.id, []);
 
     // flow nodes
-    for (const bpmnType of orderedFlowNodeBpmnTypes) this.buildFlowNodeBpmnElements(process[bpmnType], getShapeBpmnElementKind(bpmnType), parentId, process.id, bpmnType);
+    for (const bpmnType of orderedFlowNodeBpmnTypes) this.buildFlowNodeBpmnElements(process[bpmnType] as FlowNode | FlowNode[], getShapeBpmnElementKind(bpmnType), parentId, process.id, bpmnType);
     // containers
     this.buildLaneSetBpmnElements(process.laneSet, parentId, process.id);
 
@@ -226,9 +226,8 @@ export default class ProcessConverter {
     }
 
     if (!ShapeUtil.isCallActivity(kind)) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- the 'instantiate' property doesn't always exist, in that case, it will be undefined
-      // @ts-ignore
-      return new ShapeBpmnActivity(bpmnElement.id, bpmnElement.name, kind, parentId, bpmnElement.instantiate, markers);
+      const instantiate = 'instantiate' in bpmnElement ? (bpmnElement.instantiate as boolean) : undefined;
+      return new ShapeBpmnActivity(bpmnElement.id, bpmnElement.name, kind, parentId, instantiate, markers);
     }
     return this.buildShapeBpmnCallActivity(bpmnElement, parentId, markers);
   }
@@ -258,7 +257,7 @@ export default class ProcessConverter {
         return this.buildShapeBpmnBoundaryEvent(bpmnElement as TBoundaryEvent, eventDefinitionKind);
       }
       if (ShapeUtil.isStartEvent(elementKind)) {
-        return new ShapeBpmnStartEvent(bpmnElement.id, bpmnElement.name, eventDefinitionKind, parentId, bpmnElement.isInterrupting);
+        return new ShapeBpmnStartEvent(bpmnElement.id, bpmnElement.name, eventDefinitionKind, parentId, (bpmnElement as TStartEvent).isInterrupting);
       }
       return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventDefinitionKind, parentId);
     }
@@ -284,7 +283,7 @@ export default class ProcessConverter {
 
     for (const eventDefinitionKind of eventDefinitionKinds) {
       // sometimes eventDefinition is simple, and therefore it is parsed as empty string "", in that case eventDefinition will be converted to an empty object
-      const eventDefinition = bpmnElement[eventDefinitionKind + 'EventDefinition'];
+      const eventDefinition = bpmnElement[`${eventDefinitionKind}EventDefinition`] as TEventDefinition;
       const counter = ensureIsArray(eventDefinition, true).length;
       eventDefinitions.set(eventDefinitionKind, counter);
     }

@@ -26,6 +26,7 @@ describe('parse bpmn as xml for Bizagi Modeler 2.8.0.8', () => {
 
     const json = new BpmnXmlParser().parse(a20Process);
 
+    /* eslint-disable @typescript-eslint/no-unsafe-assignment */
     expect(json).toMatchObject({
       definitions: {
         process: [
@@ -88,6 +89,7 @@ describe('parse bpmn as xml for Bizagi Modeler 2.8.0.8', () => {
         },
       },
     });
+    /* eslint-enable @typescript-eslint/no-unsafe-assignment */
 
     const process: TProcess = (json.definitions.process as TProcess[])[0];
     expect(process.task).toHaveLength(4);

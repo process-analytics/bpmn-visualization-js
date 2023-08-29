@@ -28,9 +28,10 @@ import BpmnXmlParser from '../../src/component/parser/xml/BpmnXmlParser';
 import { readFileSync } from '../../test/shared/file-helper';
 
 const __dirname = resolvePath();
-const argv = parseArgs(process.argv.slice(2));
+const argv: ParsedArgs = parseArgs(process.argv.slice(2));
 const bpmnFilePath = argv._[0];
-const outputType = argv['output'] || 'json';
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+const outputType: string = argv['output'] || 'json';
 
 // eslint-disable-next-line no-console
 console.info('Generating BPMN in the "%s" output type', outputType);

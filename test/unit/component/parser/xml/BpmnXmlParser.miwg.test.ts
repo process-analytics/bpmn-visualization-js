@@ -26,6 +26,7 @@ describe('parse bpmn as xml for MIWG', () => {
 
     const json = new BpmnXmlParser().parse(a21Process);
 
+    /* eslint-disable @typescript-eslint/no-unsafe-assignment */
     expect(json).toMatchObject({
       definitions: {
         process: {
@@ -90,6 +91,7 @@ describe('parse bpmn as xml for MIWG', () => {
         },
       },
     });
+    /* eslint-enable @typescript-eslint/no-unsafe-assignment */
 
     const process: TProcess = json.definitions.process as TProcess;
     expect(process.task).toHaveLength(4);
@@ -107,6 +109,7 @@ describe('parse bpmn as xml for MIWG', () => {
 
     const json = new BpmnXmlParser().parse(a10Process);
 
+    /* eslint-disable @typescript-eslint/no-unsafe-assignment */
     expect(json).toMatchObject({
       definitions: {
         process: {
@@ -118,6 +121,7 @@ describe('parse bpmn as xml for MIWG', () => {
         },
       },
     });
+    /* eslint-enable @typescript-eslint/no-unsafe-assignment */
   });
 
   it('bpmn with boolean attribute, ensure xml boolean are json boolean', () => {
@@ -140,6 +144,7 @@ describe('parse bpmn as xml for MIWG', () => {
 
     const json = new BpmnXmlParser().parse(a10Process);
 
+    /* eslint-disable @typescript-eslint/no-unsafe-assignment */
     expect(json).toMatchObject({
       definitions: {
         process: {
@@ -149,6 +154,7 @@ describe('parse bpmn as xml for MIWG', () => {
         BPMNDiagram: expect.anything(),
       },
     });
+    /* eslint-enable @typescript-eslint/no-unsafe-assignment */
   });
 
   it('bpmn with attribute containing japanese characters', () => {
@@ -156,6 +162,7 @@ describe('parse bpmn as xml for MIWG', () => {
 
     const json = new BpmnXmlParser().parse(a10Process);
 
+    /* eslint-disable @typescript-eslint/no-unsafe-assignment */
     expect(json).toMatchObject({
       definitions: {
         process: {
@@ -165,6 +172,7 @@ describe('parse bpmn as xml for MIWG', () => {
         BPMNDiagram: expect.anything(),
       },
     });
+    /* eslint-enable @typescript-eslint/no-unsafe-assignment */
   });
 
   it('bpmn with attribute containing entities (known and unknown)', () => {
@@ -172,6 +180,7 @@ describe('parse bpmn as xml for MIWG', () => {
 
     const json = new BpmnXmlParser().parse(a10Process);
 
+    /* eslint-disable @typescript-eslint/no-unsafe-assignment */
     expect(json).toMatchObject({
       definitions: {
         process: {
@@ -181,5 +190,6 @@ describe('parse bpmn as xml for MIWG', () => {
         BPMNDiagram: expect.anything(),
       },
     });
+    /* eslint-enable @typescript-eslint/no-unsafe-assignment */
   });
 });

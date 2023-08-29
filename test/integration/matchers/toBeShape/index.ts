@@ -135,6 +135,7 @@ function buildExpectedCell(id: string, expectedModel: ExpectedShapeModelElement)
   return {
     id,
     value: expectedModel.label,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     styleRawFromModelOrJestExpect: expect.stringMatching(buildExpectedShapeStylePropertyRegexp(expectedModel)),
     styleResolvedFromModel: buildExpectedShapeCellStyle(expectedModel),
     styleViewState: buildExpectedShapeCellStyle(expectedModel),

@@ -60,7 +60,7 @@ export default class BpmnXmlParser {
   parse(xml: string): BpmnJsonModel {
     let model: BpmnJsonModel;
     try {
-      model = this.xmlParser.parse(xml);
+      model = this.xmlParser.parse(xml) as BpmnJsonModel;
     } catch {
       throw new Error('XML parsing failed. Invalid BPMN source.');
     }

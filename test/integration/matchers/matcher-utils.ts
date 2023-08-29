@@ -182,6 +182,7 @@ export function buildReceivedResolvedModelCellStyle(cell: mxCell, bv = bpmnVisua
   return toBpmnStyle(bv.graph.getCellStyle(cell), cell.edge);
 }
 
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 function toBpmnStyle(rawStyle: StyleMap, isEdge: boolean): BpmnCellStyle {
   const style: BpmnCellStyle = {
     opacity: rawStyle.opacity,
@@ -218,7 +219,9 @@ function toBpmnStyle(rawStyle: StyleMap, isEdge: boolean): BpmnCellStyle {
   }
   return style;
 }
+/* eslint-enable @typescript-eslint/no-unsafe-assignment */
 
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 function buildBaseReceivedExpectedCell(cell: mxCell): ExpectedCell {
   return {
     value: cell.value,
@@ -231,6 +234,7 @@ function buildBaseReceivedExpectedCell(cell: mxCell): ExpectedCell {
     parent: { id: cell.parent.id },
   };
 }
+/* eslint-enable @typescript-eslint/no-unsafe-assignment */
 
 export function buildReceivedCellWithCommonAttributes(cell: mxCell): ExpectedCell {
   const receivedCell = buildBaseReceivedExpectedCell(cell);

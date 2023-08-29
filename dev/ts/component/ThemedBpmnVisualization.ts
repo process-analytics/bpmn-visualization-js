@@ -100,6 +100,7 @@ const themes = new Map<string, Theme>([
   ],
 ]);
 
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 export class ThemedBpmnVisualization extends BpmnVisualization {
   configureTheme(name: string): boolean {
     if (name == 'default') {
@@ -199,3 +200,4 @@ export class ThemedBpmnVisualization extends BpmnVisualization {
     logStartup('Sequence flows style updated');
   }
 }
+/* eslint-enable @typescript-eslint/no-unsafe-assignment */

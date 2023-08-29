@@ -55,6 +55,7 @@ function buildExpectedEdgeStylePropertyRegexp(expectedModel: ExpectedEdgeModelEl
   return expectedStyle + '.*';
 }
 
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement): ExpectedCell {
   const parentId = expectedModel.parentId;
   const expectedCell: ExpectedCell = {
@@ -75,6 +76,7 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement |
       {
         id: `messageFlowIcon_of_${id}`,
         value: undefined,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         styleRawFromModelOrJestExpect: expect.stringMatching(
           `shape=${BpmnStyleIdentifier.MESSAGE_FLOW_ICON};${BpmnStyleIdentifier.IS_INITIATING}=${expectedModel.messageVisibleKind == MessageVisibleKind.INITIATING}`,
         ),
@@ -89,6 +91,7 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement |
 
   return expectedCell;
 }
+/* eslint-enable @typescript-eslint/no-unsafe-assignment */
 
 function buildEdgeMatcher(matcherName: string, matcherContext: MatcherContext, received: string, expected: ExpectedEdgeModelElement): CustomMatcherResult {
   return buildCellMatcher(matcherName, matcherContext, received, expected, 'Edge', buildExpectedCell, buildReceivedCellWithCommonAttributes);

@@ -68,6 +68,7 @@ describe('Special parsing cases', () => {
   it('Parse a diagram with entities in the name attributes', () => {
     const json = new BpmnXmlParser().parse(readFileSync('../fixtures/bpmn/xml-parsing/special/start-tasks-end_entities_in_attributes.bpmn'));
 
+    /* eslint-disable @typescript-eslint/no-unsafe-assignment */
     expect(json).toMatchObject({
       definitions: {
         process: {
@@ -79,5 +80,6 @@ describe('Special parsing cases', () => {
         BPMNDiagram: expect.anything(),
       },
     });
+    /* eslint-enable @typescript-eslint/no-unsafe-assignment */
   });
 });

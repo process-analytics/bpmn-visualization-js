@@ -26,6 +26,7 @@ describe('parse bpmn as xml for Activiti Designer 5.14.1', () => {
 
     const json = new BpmnXmlParser().parse(a20Process);
 
+    /* eslint-disable @typescript-eslint/no-unsafe-assignment */
     expect(json).toMatchObject({
       definitions: {
         process: {
@@ -52,6 +53,7 @@ describe('parse bpmn as xml for Activiti Designer 5.14.1', () => {
         },
       },
     });
+    /* eslint-enable @typescript-eslint/no-unsafe-assignment */
 
     const process: TProcess = json.definitions.process as TProcess;
     expect(process.userTask).toHaveLength(4);
