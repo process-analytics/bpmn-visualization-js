@@ -303,9 +303,7 @@ function configurePoolsFilteringFromParameters(parameters: URLSearchParams): Mod
 
 export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguration): void {
   const log = logStartup;
-  const container = config.globalOptions.container;
-  const containerId = typeof container === 'string' ? container : container.id;
-  log(`Initializing BpmnVisualization with container '${containerId}'...`);
+  log(`Initializing BpmnVisualization with container:`, config.globalOptions.container);
 
   const parameters = new URLSearchParams(window.location.search);
   const rendererIgnoreBpmnColors = parameters.get('renderer.ignore.bpmn.colors');
