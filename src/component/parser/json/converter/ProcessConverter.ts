@@ -21,8 +21,9 @@ import type { TLane, TLaneSet } from '../../../../model/bpmn/json/baseElement/ba
 import type { TFlowNode, TSequenceFlow } from '../../../../model/bpmn/json/baseElement/flowElement';
 import type { TActivity, TCallActivity, TSubProcess } from '../../../../model/bpmn/json/baseElement/flowNode/activity/activity';
 import type { TReceiveTask } from '../../../../model/bpmn/json/baseElement/flowNode/activity/task';
-import type { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../../../model/bpmn/json/baseElement/flowNode/event';
+import type { TBoundaryEvent, TCatchEvent, TStartEvent, TThrowEvent } from '../../../../model/bpmn/json/baseElement/flowNode/event';
 import type { TEventBasedGateway } from '../../../../model/bpmn/json/baseElement/flowNode/gateway';
+import type { TEventDefinition } from '../../../../model/bpmn/json/baseElement/rootElement/eventDefinition';
 import type { TProcess } from '../../../../model/bpmn/json/baseElement/rootElement/rootElement';
 import type { ParsingMessageCollector } from '../../parsing-messages';
 
@@ -209,13 +210,16 @@ export default class ProcessConverter {
     } else if (kind == ShapeBpmnElementKind.GROUP) {
       return buildShapeBpmnGroup(this.convertedElements, this.parsingMessageCollector, bpmnElement as TGroup, parentId);
     } else {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- We know that the 'text' & 'name' fields are not on all types, but it's already tested
-      // @ts-ignore
-      const name = kind === ShapeBpmnElementKind.TEXT_ANNOTATION ? bpmnElement.text : bpmnElement.name;
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- We know that the 'instantiate' field is not on all types, but it's already tested
-      // @ts-ignore
-      return new ShapeBpmnElement(bpmnElement.id, name, kind, parentId, bpmnElement.instantiate);
-    }
+        let name: string;
+        if (kind === ShapeBpmnElementKind.TEXT_ANNOTATION && 'text' in bpmnElement && typeof bpmnElement.text === 'string') {
+          name = bpmnElement.text;
+        } else if ('name' in bpmnElement) {
+          name = bpmnElement.name;
+        }
+
+        const instantiate = 'instantiate' in bpmnElement ? bpmnElement.instantiate : undefined;
+        return new ShapeBpmnElement(bpmnElement.id, name, kind, parentId, instantiate);
+      }
   }
 
   private buildShapeBpmnActivity(bpmnElement: TActivity, kind: ShapeBpmnElementKind, parentId: string, processedSemanticType: BpmnSemanticType): ShapeBpmnActivity {
@@ -229,6 +233,7 @@ export default class ProcessConverter {
       const instantiate = 'instantiate' in bpmnElement ? (bpmnElement.instantiate as boolean) : undefined;
       return new ShapeBpmnActivity(bpmnElement.id, bpmnElement.name, kind, parentId, instantiate, markers);
     }
+
     return this.buildShapeBpmnCallActivity(bpmnElement, parentId, markers);
   }
 

@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import type { StyleMap } from 'mxgraph';
+
 import { BpmnVisualization, FlowKind, ShapeBpmnElementKind, ShapeUtil, StyleConfigurator, StyleDefault } from '../../../src/bpmn-visualization';
 import { mxConstants } from '../../../src/component/mxgraph/initializer';
 import { logStartup } from '../shared/internal-helpers';
@@ -191,10 +192,10 @@ export class ThemedBpmnVisualization extends BpmnVisualization {
   configureSequenceFlowColor(color: string): void {
     logStartup(`Use dedicated ${color} color for sequence flows`);
 
-    const stylesheet = this.graph.getStylesheet();
+    const styleSheet = this.graph.getStylesheet();
 
     // directly access the 'styles' map to update values. Using stylesheet.getCellStyle returns a copy of the style
-    const seqFlowStyle: StyleMap = stylesheet.styles[FlowKind.SEQUENCE_FLOW];
+    const seqFlowStyle: StyleMap = styleSheet.styles[FlowKind.SEQUENCE_FLOW];
     seqFlowStyle[mxConstants.STYLE_STROKECOLOR] = color;
     seqFlowStyle[mxConstants.STYLE_FILLCOLOR] = color;
 

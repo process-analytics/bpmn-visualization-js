@@ -16,6 +16,7 @@ limitations under the License.
 
 import type BpmnModel from '../../src/model/bpmn/internal/BpmnModel';
 import type { BpmnJsonModel } from '../../src/model/bpmn/json/bpmn20';
+import type { ParsedArgs } from 'minimist';
 
 import { resolve as resolvePath } from 'node:path';
 

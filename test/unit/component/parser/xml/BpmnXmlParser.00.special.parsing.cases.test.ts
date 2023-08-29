@@ -77,7 +77,7 @@ describe('Special parsing cases', () => {
           endEvent: { name: '&unknown; End Event & 1/2\\3 &#x00D8; \n &yen; / &#165;' },
           sequenceFlow: [{ name: '<Sequence> Flow 1&2' }, { name: 'Sequence \'Flow" 2' }],
         },
-        BPMNDiagram: expect.anything(),
+        BPMNDiagram: expect.anything() as BPMNDiagram,
       },
     });
     /* eslint-enable @typescript-eslint/no-unsafe-assignment */

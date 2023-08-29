@@ -15,8 +15,9 @@ limitations under the License.
 */
 
 import type { BpmnGraph } from './mxgraph/BpmnGraph';
-import { ZoomType } from './options';
 import type { FitOptions } from './options';
+
+import { ZoomType } from './options';
 
 /**
  * Perform BPMN diagram navigation.

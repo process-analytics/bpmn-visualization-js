@@ -254,7 +254,7 @@ export class PageTester {
     otherPageOptions?.bpmnElementIdToCollapse && (url += `&bpmn.element.id.collapsed=${otherPageOptions.bpmnElementIdToCollapse}`);
     // the array is transformed into string with the 'comma' separator, as expected by the page
     otherPageOptions?.poolIdsToFilter &&
-      (url += `&bpmn.filter.pool.ids=${Array.isArray(otherPageOptions.poolIdsToFilter) ? otherPageOptions.poolIdsToFilter.join(',') : otherPageOptions.poolIdsToFilter}`);
+      (url += `&bpmn.filter.pool.ids=${typeof otherPageOptions.poolIdsToFilter === 'string' ? otherPageOptions.poolIdsToFilter : otherPageOptions.poolIdsToFilter.join(',')}`);
     // renderer options
     otherPageOptions?.rendererIgnoreBpmnColors !== undefined && (url += `&renderer.ignore.bpmn.colors=${otherPageOptions.rendererIgnoreBpmnColors}`);
 

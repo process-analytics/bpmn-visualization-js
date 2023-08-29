@@ -95,7 +95,7 @@ export class ShapeUtil {
   }
 
   static isPoolOrLane(kind: ShapeBpmnElementKind | string): boolean {
-    return kind == ShapeBpmnElementKind.POOL.toString() || kind == ShapeBpmnElementKind.LANE.toString();
+    return kind == ShapeBpmnElementKind.POOL.valueOf() || kind == ShapeBpmnElementKind.LANE.valueOf();
   }
 }
 

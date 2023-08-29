@@ -151,7 +151,7 @@ describe('parse bpmn as xml for MIWG', () => {
           startEvent: { name: 'évènement de début' },
           task: [{ id: 'à_ec59e164-68b4-4f94-98de-ffb1c58a84af' }, expect.anything(), expect.anything()],
         },
-        BPMNDiagram: expect.anything(),
+        BPMNDiagram: expect.anything() as BPMNDiagram,
       },
     });
     /* eslint-enable @typescript-eslint/no-unsafe-assignment */
@@ -169,7 +169,7 @@ describe('parse bpmn as xml for MIWG', () => {
           startEvent: { name: '開始イベント' },
           task: [{ id: '識別子_ec59e164-68b4-4f94-98de-ffb1c58a84af' }, expect.anything(), expect.anything()],
         },
-        BPMNDiagram: expect.anything(),
+        BPMNDiagram: expect.anything() as BPMNDiagram,
       },
     });
     /* eslint-enable @typescript-eslint/no-unsafe-assignment */
@@ -187,7 +187,7 @@ describe('parse bpmn as xml for MIWG', () => {
           startEvent: { name: 'Start Event \n(Main) with &unknown; entity' },
           task: [{ id: '<_ec59e164-68b4-4f94-98de-ffb1c58a84af>' }, expect.anything(), expect.anything()],
         },
-        BPMNDiagram: expect.anything(),
+        BPMNDiagram: expect.anything() as BPMNDiagram,
       },
     });
     /* eslint-enable @typescript-eslint/no-unsafe-assignment */

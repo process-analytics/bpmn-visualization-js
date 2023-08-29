@@ -249,6 +249,7 @@ export class StyleConfigurator {
     for (const kind of styleKinds) {
       const style: StyleMap = {};
       specificStyles.get(kind)(style);
+      // eslint-disable-next-line @typescript-eslint/no-base-to-string
       this.graph.getStylesheet().putCellStyle(kind.toString(), style);
     }
   }
