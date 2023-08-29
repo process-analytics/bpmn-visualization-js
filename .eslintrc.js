@@ -67,6 +67,15 @@ module.exports = {
         '@typescript-eslint/consistent-type-definitions': 'off',
 
         '@typescript-eslint/no-base-to-string': 'error',
+        '@typescript-eslint/restrict-plus-operands': 'error',
+
+        // These lines are commented out because they only show errors in the demo files.
+
+        // '@typescript-eslint/no-unsafe-assignment': 'error',
+        // '@typescript-eslint/no-unsafe-argument': 'error',
+        // '@typescript-eslint/no-unsafe-member-access': 'error',
+        // '@typescript-eslint/restrict-template-expressions': 'error',
+        // '@typescript-eslint/unbound-method': 'error',
       },
     },
   ],
