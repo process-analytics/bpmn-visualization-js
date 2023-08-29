@@ -128,6 +128,26 @@ export interface CssClassesRegistry {
  */
 export interface ElementsRegistry {
   /**
+   * Get all model elements by ids. The returned array contains elements in the order of the `bpmnElementIds` parameter.
+   *
+   * Not found elements are not returned as undefined in the array, so the returned array contains at most as many elements as the `bpmnElementIds` parameter.
+   *
+   * ```javascript
+   * ...
+   * // Find all elements by specified id or ids
+   * const bpmnElements1 = bpmnVisualization.bpmnElementsRegistry.getModelElementsByIds('userTask_1');
+   * const bpmnElements2 = bpmnVisualization.bpmnElementsRegistry.getModelElementsByIds(['startEvent_3', 'userTask_2']);
+   * // now you can do whatever you want with the elements
+   * ...
+   * ```
+   *
+   * If you also need to retrieve the related DOM elements and more information, use {@link getElementsByIds} instead.
+   *
+   * @param bpmnElementIds The BPMN ID of the element(s) to retrieve.
+   */
+  getModelElementsByIds(bpmnElementIds: string | string[]): BpmnSemantic[];
+
+  /**
    * Get all elements by ids. The returned array contains elements in the order of the `bpmnElementIds` parameter.
    *
    * Not found elements are not returned as undefined in the array, so the returned array contains at most as many elements as the `bpmnElementIds` parameter.
@@ -143,6 +163,10 @@ export interface ElementsRegistry {
    *
    * **WARNING**: this method is not designed to accept a large amount of ids. It does DOM lookup to retrieve the HTML elements relative to the BPMN elements.
    * Attempts to retrieve too many elements, especially on large BPMN diagram, may lead to performance issues.
+   *
+   * @see {@link getModelElementsByIds}
+   *
+   * @param bpmnElementIds The BPMN ID of the element(s) to retrieve.
    */
   getElementsByIds(bpmnElementIds: string | string[]): BpmnElement[];
 
