@@ -16,7 +16,7 @@ limitations under the License.
 
 export interface MessageDetails {
   template: string;
-  arguments: Array<string>;
+  arguments: string[];
 }
 
 export abstract class JsonParsingWarning {

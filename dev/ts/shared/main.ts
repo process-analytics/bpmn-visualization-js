@@ -221,7 +221,7 @@ function getFitOptionsFromParameters(config: BpmnVisualizationDemoConfiguration,
   const parameterFitType: string = parameters.get('fitTypeOnLoad');
   if (parameterFitType) {
     // As the parameter is a string, and the load/fit APIs accept only enum to avoid error, we need to convert it
-    fitOptions.type = <FitType>parameterFitType;
+    fitOptions.type = parameterFitType as FitType;
   }
   const parameterFitMargin = parameters.get('fitMargin');
   if (parameterFitMargin) {

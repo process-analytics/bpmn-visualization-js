@@ -35,7 +35,7 @@ function convertEmptyStringAndObject<T>(element: string | T, acceptEmptyString: 
 /**
  * @internal
  */
-export function ensureIsArray<T>(elements: (T | string)[] | T | string, acceptEmptyString = false): Array<T> {
+export function ensureIsArray<T>(elements: (T | string)[] | T | string, acceptEmptyString = false): T[] {
   if (elements === undefined || elements === null) {
     return [];
   }
@@ -52,7 +52,7 @@ export function ensureIsArray<T>(elements: (T | string)[] | T | string, acceptEm
 /**
  * @internal
  */
-export function filter<T extends string>(arrayToFilter: Array<T>, suffix: string, options?: FilterParameter): Array<T> {
+export function filter<T extends string>(arrayToFilter: T[], suffix: string, options?: FilterParameter): T[] {
   let pattern = '';
   if (options?.startingWith) {
     pattern = pattern.concat(`^(${options.startingWith}).*`);

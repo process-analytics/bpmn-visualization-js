@@ -41,7 +41,7 @@ describe('BpmnVisualization API', () => {
 
   describe('Load', () => {
     it.each(allTestedFitTypes)('Fit type: %s', (fitType: string) => {
-      bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'), { fit: { type: <FitType>fitType } });
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'), { fit: { type: fitType as FitType } });
     });
 
     it('Load invalid diagram (text file)', () => {

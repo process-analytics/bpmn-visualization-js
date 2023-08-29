@@ -33,7 +33,7 @@ describe('diagram navigation', () => {
     });
 
     it.each(allTestedFitTypes)('Fit with %s', (fitType: string) => {
-      bpmnVisualization.navigation.fit({ type: <FitType>fitType });
+      bpmnVisualization.navigation.fit({ type: fitType as FitType });
     });
   });
 

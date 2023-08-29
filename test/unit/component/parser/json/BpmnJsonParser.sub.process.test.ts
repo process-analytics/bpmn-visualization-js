@@ -296,14 +296,14 @@ describe('parse bpmn as json for sub-process', () => {
 
         const model = parseJsonAndExpectOnlySubProcess(json, expectedShapeBpmnSubProcessKind, 1);
 
-        verifyShape(model.flowNodes[0], <ExpectedActivityShape>{
+        verifyShape(model.flowNodes[0], {
           shapeId: 'shape_sub_process_id_1',
           bpmnElementId: 'sub_process_id_1',
           bpmnElementName: undefined,
           bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
           bpmnElementMarkers: getExpectedMarkers([ShapeBpmnMarkerKind.EXPAND], expectedShapeBpmnSubProcessKind),
           bounds: expectedBounds,
-        });
+        } as ExpectedActivityShape);
       });
     }
 
@@ -422,14 +422,14 @@ describe('parse bpmn as json for sub-process', () => {
       expectNoPoolLane(model);
 
       verifySubProcess(model, expectedShapeBpmnSubProcessKind, 1);
-      verifyShape(model.flowNodes[0], <ExpectedActivityShape>{
+      verifyShape(model.flowNodes[0], {
         shapeId: 'shape_sub-process_id_1',
         bpmnElementId: 'sub-process_id_1',
         bpmnElementName: undefined,
         bpmnElementKind: ShapeBpmnElementKind.SUB_PROCESS,
         bpmnElementMarkers: getExpectedMarkers([], expectedShapeBpmnSubProcessKind),
         bounds: { x: 365, y: 235, width: 300, height: 200 },
-      });
+      } as ExpectedActivityShape);
 
       const eventShapes = getEventShapes(model);
       expect(eventShapes).toHaveLength(2);

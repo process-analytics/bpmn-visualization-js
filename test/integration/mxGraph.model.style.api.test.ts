@@ -169,11 +169,11 @@ describe('mxGraph model - update style', () => {
     });
 
     it.each([
-      [<GradientDirection>'top-to-bottom', <ExpectedDirection>'south'],
-      [<GradientDirection>'bottom-to-top', <ExpectedDirection>'north'],
-      [<GradientDirection>'left-to-right', <ExpectedDirection>'east'],
-      [<GradientDirection>'right-to-left', <ExpectedDirection>'west'],
-    ])('Update the fill color as gradient with direction %s', (direction: GradientDirection, expectedDirection: ExpectedDirection) => {
+      ['top-to-bottom', 'south'],
+      ['bottom-to-top', 'north'],
+      ['left-to-right', 'east'],
+      ['right-to-left', 'west'],
+    ] as [GradientDirection, ExpectedDirection][])('Update the fill color as gradient with direction %s', (direction: GradientDirection, expectedDirection: ExpectedDirection) => {
       const fill = { color: { startColor: 'gold', endColor: 'pink', direction } };
       bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { fill });
 
@@ -559,7 +559,7 @@ describe('mxGraph model - update style', () => {
       });
 
       // Reset the style by passing special values
-      bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', <EdgeStyleUpdate>{
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', {
         font: {
           color: 'default',
           opacity: 'default',
@@ -570,7 +570,7 @@ describe('mxGraph model - update style', () => {
           opacity: 'default',
           width: 'default',
         },
-      });
+      } as EdgeStyleUpdate);
 
       // The properties should have been reset to use the default values
       expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
@@ -641,7 +641,7 @@ describe('mxGraph model - update style', () => {
       });
 
       // Reset the style by passing special values
-      bpmnVisualization.bpmnElementsRegistry.updateStyle('MessageFlow_3_msgVisibilityKind_non_initiating', <EdgeStyleUpdate>{
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('MessageFlow_3_msgVisibilityKind_non_initiating', {
         font: {
           color: 'default',
           opacity: 'default',
@@ -652,7 +652,7 @@ describe('mxGraph model - update style', () => {
           opacity: 'default',
           width: 'default',
         },
-      });
+      } as EdgeStyleUpdate);
 
       // The properties should have been reset to use the default values
       expect('MessageFlow_3_msgVisibilityKind_non_initiating').toBeMessageFlow({
