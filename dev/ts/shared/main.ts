@@ -18,6 +18,7 @@ import type { mxCell } from 'mxgraph';
 import type {
   BpmnElement,
   BpmnElementKind,
+  BpmnSemantic,
   FitOptions,
   FitType,
   GlobalOptions,
@@ -104,8 +105,8 @@ export function getElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[
   return bpmnVisualization.bpmnElementsRegistry.getElementsByKinds(bpmnKinds);
 }
 
-export function getElementsByIds(bpmnId: string | string[]): BpmnElement[] {
-  return bpmnVisualization.bpmnElementsRegistry.getElementsByIds(bpmnId);
+export function getModelElementsByIds(bpmnIds: string | string[]): BpmnSemantic[] {
+  return bpmnVisualization.bpmnElementsRegistry.getModelElementsByIds(bpmnIds);
 }
 
 function getParentElement(id: string): mxCell {
@@ -120,8 +121,8 @@ export function getParentElementIds(bpmnIds: string[]): string[] {
 
 export function isChildOfSubProcess(bpmnId: string): boolean {
   const parent = getParentElement(bpmnId);
-  const bpmnElement = getElementsByIds(parent.getId());
-  return bpmnElement && bpmnElement[0]?.bpmnSemantic.kind === ShapeBpmnElementKind.SUB_PROCESS;
+  const bpmnSemantics = getModelElementsByIds(parent.getId());
+  return bpmnSemantics && bpmnSemantics[0]?.kind === ShapeBpmnElementKind.SUB_PROCESS;
 }
 
 export function addCssClasses(bpmnElementId: string | string[], classNames: string | string[]): void {
