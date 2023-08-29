@@ -82,7 +82,7 @@ ___
 - In the release description (check previous releases as a source of inspiration)
   - at least add/update a link to the related milestone
   - put screenshots/gif of the new features
-- Use the content of the `Notes for next release notes` draft release to write the release. Keep the unrelated content in this draft release.
+- Use the content of the `Notes for next release notes` draft release to write the description. Keep the unrelated content in this draft release.
 - Assign the new tag as release target and save the draft (this may have been already managed by `release-drafter`). **Do it only just before
 publishing** especially if you update an already set tag for minor version. Once you change the tag and save, the update date of the release
 is updated making it the newest one. This is the one that is updated by release-drafter so there is a risk to loose the whole content of
