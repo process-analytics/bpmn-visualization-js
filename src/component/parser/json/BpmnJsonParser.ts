@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import type BpmnModel from '../../../model/bpmn/internal/BpmnModel';
-import type { BpmnJsonModel, TDefinitions } from '../../../model/bpmn/json/BPMN20';
+import type { BpmnJsonModel, TDefinitions } from '../../../model/bpmn/json/bpmn20';
 import CollaborationConverter from './converter/CollaborationConverter';
 import ProcessConverter from './converter/ProcessConverter';
 import DiagramConverter from './converter/DiagramConverter';

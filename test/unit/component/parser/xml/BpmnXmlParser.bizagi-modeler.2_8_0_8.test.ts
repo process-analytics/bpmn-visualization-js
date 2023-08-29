@@ -16,7 +16,7 @@ limitations under the License.
 
 import BpmnXmlParser from '@lib/component/parser/xml/BpmnXmlParser';
 import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
-import type { BPMNDiagram } from '@lib/model/bpmn/json/BPMNDI';
+import type { BPMNDiagram } from '@lib/model/bpmn/json/bpmndi';
 import { readFileSync } from '@test/shared/file-helper';
 
 describe('parse bpmn as xml for Bizagi Modeler 2.8.0.8', () => {

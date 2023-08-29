@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { TDefinitions } from '../../../../model/bpmn/json/BPMN20';
+import type { TDefinitions } from '../../../../model/bpmn/json/bpmn20';
 import { eventDefinitionKinds } from '../../../../model/bpmn/internal/shape/utils';
 import type { TEventDefinition } from '../../../../model/bpmn/json/baseElement/rootElement/eventDefinition';
 import type { ConvertedElements } from './utils';

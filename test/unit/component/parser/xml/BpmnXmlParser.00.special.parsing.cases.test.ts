@@ -16,7 +16,7 @@ limitations under the License.
 
 import { readFileSync } from '@test/shared/file-helper';
 import BpmnXmlParser from '@lib/component/parser/xml/BpmnXmlParser';
-import type { BPMNDiagram, BPMNLabel, BPMNShape } from '@lib/model/bpmn/json/BPMNDI';
+import type { BPMNDiagram, BPMNLabel, BPMNShape } from '@lib/model/bpmn/json/bpmndi';
 import Bounds from '@lib/model/bpmn/internal/Bounds';
 
 describe('Special parsing cases', () => {
