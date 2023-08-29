@@ -30,8 +30,7 @@ are automated once the release is triggered but manual actions are required for:
   - [release-drafter](https://github.com/release-drafter/release-drafter) creates or updates draft release for the
   next version each time a pull request is merged to the `master` branch.
   - Rename the existing draft release to `In Progress`. The name is not relevant and will be later used to identify the draft release to update.
-  - If an old `Notes for next release notes` exists, put its content in the `In Progress` release to later help to write the details. Then, delete this release.
-- Create a new draft release and name it `Notes for next release notes`. It will be used during development to note important things and prepare
+  - If no `Notes for next release notes` draft release exists, create a new one. It will be used during development to note important things and prepare
   the content of the next release notes.
 - Create a new draft release and name it `Next` (the name is not relevant and will be replaced automatically later).
   This ensures that development can continue without impacting the writing of the content of the `In Progress` release. That way,
@@ -83,6 +82,7 @@ ___
 - In the release description (check previous releases as a source of inspiration)
   - at least add/update a link to the related milestone
   - put screenshots/gif of the new features
+- Use the content of the `Notes for next release notes` draft release to write the release. Keep the unrelated content in this draft release.
 - Assign the new tag as release target and save the draft (this may have been already managed by `release-drafter`). **Do it only just before
 publishing** especially if you update an already set tag for minor version. Once you change the tag and save, the update date of the release
 is updated making it the newest one. This is the one that is updated by release-drafter so there is a risk to loose the whole content of
