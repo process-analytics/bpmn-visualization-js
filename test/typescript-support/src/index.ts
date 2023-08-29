@@ -17,7 +17,7 @@ limitations under the License.
 // eslint-disable-next-line import/no-unresolved -- The bpmn-visualization package may not have been built prior running eslint (it happens when running GitHub Actions)
 import { BpmnVisualization } from 'bpmn-visualization';
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call */
 const bpmnVisualization = new BpmnVisualization({ container: 'bpmn-container' });
 bpmnVisualization.load(`fake BPMN content`);
-/* eslint-enable @typescript-eslint/no-unsafe-assignment */
+/* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call */
