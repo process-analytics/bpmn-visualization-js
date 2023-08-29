@@ -21,7 +21,7 @@ import { getBpmnDiagramNames } from '@test/shared/visu/test-utils';
 
 // key: diagram name
 // values: the ids of the elements to collapse. The elements are collapsed one by one, in dedicated tests
-const elementsToCollapsePerDiagram = new Map<string, Array<string>>([
+const elementsToCollapsePerDiagram = new Map<string, string[]>([
   ['pools', ['Participant_1', 'Participant_2', 'Participant_3', 'Participant_4']],
   ['subprocess', ['SubProcess_1']],
 ]);
@@ -34,7 +34,7 @@ class CollapsedElementImageSnapshotConfigurator extends ImageSnapshotConfigurato
   }
 }
 
-const getElementsToCollapse = (bpmnDiagramName: string): Array<string> => {
+const getElementsToCollapse = (bpmnDiagramName: string): string[] => {
   const elementsToCollapse = elementsToCollapsePerDiagram.get(bpmnDiagramName);
   // add 'none' to test the diagram rendering without collapsing any element. There is no element in diagrams with the 'none' id (in this case, the value is ignored  and there is no collapsing).
   return ['none', ...elementsToCollapse];

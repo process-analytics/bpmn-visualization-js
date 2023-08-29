@@ -182,7 +182,7 @@ function updateSelectedBPMNElements(bpmnKind: ShapeBpmnElementKind): void {
 }
 
 function updateTextArea(elementsByKinds: BpmnElement[], bpmnKind: string): void {
-  const textArea = <HTMLTextAreaElement>document.getElementById('elements-result');
+  const textArea = document.getElementById('elements-result') as HTMLTextAreaElement;
 
   const textHeader = `Found ${elementsByKinds.length} ${bpmnKind}(s)`;
   log(textHeader);
@@ -193,13 +193,13 @@ function updateTextArea(elementsByKinds: BpmnElement[], bpmnKind: string): void 
 }
 
 function resetTextArea(): void {
-  const textArea = <HTMLTextAreaElement>document.getElementById('elements-result');
+  const textArea = document.getElementById('elements-result') as HTMLTextAreaElement;
   textArea.value = '';
 }
 
 function configureControls(): void {
-  const selectedKindElt = <HTMLSelectElement>document.getElementById('bpmn-kinds-select');
-  selectedKindElt.onchange = event => updateSelectedBPMNElements((<HTMLSelectElement>event.target).value as ShapeBpmnElementKind);
+  const selectedKindElt = document.getElementById('bpmn-kinds-select') as HTMLSelectElement;
+  selectedKindElt.onchange = event => updateSelectedBPMNElements((event.target as HTMLSelectElement).value as ShapeBpmnElementKind);
   document.addEventListener('diagramLoaded', () => updateSelectedBPMNElements(selectedKindElt.value as ShapeBpmnElementKind), false);
 
   document.getElementById('clear-btn').onclick = function () {
@@ -213,7 +213,7 @@ function configureControls(): void {
   };
 
   // display overlay option
-  const checkboxDisplayOverlaysElt = <HTMLInputElement>document.getElementById('checkbox-display-overlays');
+  const checkboxDisplayOverlaysElt = document.getElementById('checkbox-display-overlays') as HTMLInputElement;
   checkboxDisplayOverlaysElt.addEventListener('change', function () {
     isOverlaysDisplayed = this.checked;
     log('Request overlays display:', isOverlaysDisplayed);
@@ -222,7 +222,7 @@ function configureControls(): void {
   checkboxDisplayOverlaysElt.checked = isOverlaysDisplayed;
 
   // use CSS or API to style the BPMN elements
-  const checkboxUseCSSElt = <HTMLInputElement>document.getElementById('checkbox-css-style');
+  const checkboxUseCSSElt = document.getElementById('checkbox-css-style') as HTMLInputElement;
   checkboxUseCSSElt.addEventListener('change', function () {
     useCSS = this.checked;
     log('Request CSS style feature:', useCSS);

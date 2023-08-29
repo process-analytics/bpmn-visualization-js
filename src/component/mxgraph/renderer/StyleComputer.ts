@@ -196,7 +196,7 @@ export default class StyleComputer {
   }
 
   computeMessageFlowIconStyle(edge: Edge): string {
-    const styleValues: Array<[string, string]> = [];
+    const styleValues: [string, string][] = [];
     styleValues.push(['shape', BpmnStyleIdentifier.MESSAGE_FLOW_ICON]);
     styleValues.push([BpmnStyleIdentifier.IS_INITIATING, String(edge.messageVisibleKind === MessageVisibleKind.INITIATING)]);
     if (!this.ignoreBpmnColors) {
@@ -228,6 +228,6 @@ export function getFontStyleValue(font: Font): number {
   return value;
 }
 
-function toArrayOfMxGraphStyleEntries(styleValues: Array<[string, string | number]>): string[] {
+function toArrayOfMxGraphStyleEntries(styleValues: [string, string | number][]): string[] {
   return styleValues.filter(([, v]) => v && v != 'undefined').map(([key, value]) => `${key}=${value}`);
 }

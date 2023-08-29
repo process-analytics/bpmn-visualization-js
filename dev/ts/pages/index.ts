@@ -35,9 +35,9 @@ let fitOnLoad = true;
 let fitOptions: FitOptions = {};
 
 function configureFitOnLoadCheckBox(): void {
-  const fitOnLoadElt = <HTMLInputElement>document.getElementById('fitOnLoad');
+  const fitOnLoadElt = document.getElementById('fitOnLoad') as HTMLInputElement;
   fitOnLoadElt.onchange = event => {
-    fitOnLoad = (<HTMLInputElement>event.target).checked;
+    fitOnLoad = (event.target as HTMLInputElement).checked;
     log('Fit on load updated!', fitOnLoad);
     updateLoadOptions(fitOnLoad ? fitOptions : {});
   };
@@ -59,9 +59,9 @@ function updateFitConfig(config: FitOptions): void {
 }
 
 function configureFitTypeSelect(): void {
-  const fitTypeSelectedElt = <HTMLSelectElement>document.getElementById('fitType-selected');
+  const fitTypeSelectedElt = document.getElementById('fitType-selected') as HTMLSelectElement;
   fitTypeSelectedElt.onchange = event => {
-    updateFitConfig({ type: (<HTMLSelectElement>event.target).value as FitType });
+    updateFitConfig({ type: (event.target as HTMLSelectElement).value as FitType });
     fit(fitOptions);
   };
 
@@ -73,9 +73,9 @@ function configureFitTypeSelect(): void {
 }
 
 function configureFitMarginInput(): void {
-  const fitMarginElt = <HTMLInputElement>document.getElementById('fit-margin');
+  const fitMarginElt = document.getElementById('fit-margin') as HTMLInputElement;
   fitMarginElt.onchange = event => {
-    updateFitConfig({ margin: Number((<HTMLInputElement>event.target).value) });
+    updateFitConfig({ margin: Number((event.target as HTMLInputElement).value) });
     fit(fitOptions);
   };
 
@@ -94,9 +94,9 @@ function configureZoomButtons(): void {
 }
 
 function configureThemeSelect(): void {
-  const themeSelectedElt = <HTMLSelectElement>document.getElementById('theme-selected');
+  const themeSelectedElt = document.getElementById('theme-selected') as HTMLSelectElement;
   themeSelectedElt.onchange = event => {
-    switchTheme((<HTMLSelectElement>event.target).value);
+    switchTheme((event.target as HTMLSelectElement).value);
   };
 
   const currentTheme = getCurrentTheme();

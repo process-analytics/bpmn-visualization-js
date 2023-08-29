@@ -16,9 +16,9 @@ limitations under the License.
 
 import type { OverlayEdgePosition, OverlayShapePosition } from '@lib/component/registry';
 
-export const overlayEdgePositionValues = <Array<OverlayEdgePosition>>['start', 'middle', 'end'];
+export const overlayEdgePositionValues = ['start', 'middle', 'end'] as OverlayEdgePosition[];
 
-export const overlayShapePositionValues = <Array<OverlayShapePosition>>[
+export const overlayShapePositionValues = [
   'top-left',
   'top-center',
   'top-right',
@@ -27,4 +27,4 @@ export const overlayShapePositionValues = <Array<OverlayShapePosition>>[
   'bottom-right',
   'middle-left',
   'middle-right',
-];
+] as OverlayShapePosition[];

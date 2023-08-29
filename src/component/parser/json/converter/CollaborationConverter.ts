@@ -45,19 +45,19 @@ export default class CollaborationConverter {
     this.buildGroups(collaboration.group);
   }
 
-  private buildParticipant(bpmnElements: Array<TParticipant> | TParticipant): void {
+  private buildParticipant(bpmnElements: TParticipant[] | TParticipant): void {
     ensureIsArray(bpmnElements).forEach(participant =>
       this.convertedElements.registerPool(new ShapeBpmnElement(participant.id, participant.name, ShapeBpmnElementKind.POOL), participant.processRef),
     );
   }
 
-  private buildMessageFlows(bpmnElements: Array<TMessageFlow> | TMessageFlow): void {
+  private buildMessageFlows(bpmnElements: TMessageFlow[] | TMessageFlow): void {
     ensureIsArray(bpmnElements).forEach(messageFlow =>
       this.convertedElements.registerMessageFlow(new MessageFlow(messageFlow.id, messageFlow.name, messageFlow.sourceRef, messageFlow.targetRef)),
     );
   }
 
-  private buildGroups(bpmnElements: Array<TGroup> | TGroup): void {
+  private buildGroups(bpmnElements: TGroup[] | TGroup): void {
     ensureIsArray(bpmnElements).forEach(groupBpmnElement => {
       const shapeBpmnElement = buildShapeBpmnGroup(this.convertedElements, this.parsingMessageCollector, groupBpmnElement);
       shapeBpmnElement && this.convertedElements.registerFlowNode(shapeBpmnElement);

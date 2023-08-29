@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BPMNDiagram } from './BPMNDI';
+import type { BPMNDiagram } from './bpmndi';
 import type { TRelationship } from './baseElement/baseElement';
 import type { TExtension } from './Semantic';
 import type { TGlobalBusinessRuleTask, TGlobalManualTask, TGlobalScriptTask, TGlobalTask, TGlobalUserTask } from './baseElement/rootElement/globalTask';

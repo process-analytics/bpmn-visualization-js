@@ -42,7 +42,7 @@ export class BpmnCellRenderer extends mxgraph.mxCellRenderer {
           overlayShape = new OverlayBadgeShape(currentOverlay.label, new mxRectangle(0, 0, 0, 0), currentOverlay.style);
         } else {
           overlayShape = new mxgraph.mxImageShape(new mxRectangle(0, 0, 0, 0), currentOverlay.image.src);
-          (<mxImageShape>overlayShape).preserveImageAspect = false;
+          (overlayShape as mxImageShape).preserveImageAspect = false;
         }
         // END bpmn-visualization CUSTOMIZATION
 
@@ -50,7 +50,7 @@ export class BpmnCellRenderer extends mxgraph.mxCellRenderer {
         overlayShape.overlay = currentOverlay;
 
         // The 'initializeOverlay' signature forces us to hardly cast the overlayShape
-        this.initializeOverlay(state, <mxImageShape>overlayShape);
+        this.initializeOverlay(state, overlayShape as mxImageShape);
         this.installCellOverlayListeners(state, currentOverlay, overlayShape);
 
         if (currentOverlay.cursor != null) {
