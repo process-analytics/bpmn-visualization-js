@@ -25,8 +25,8 @@ export interface PerformanceMetric {
 }
 
 export interface ChartData {
-  load: Array<PerformanceMetric>;
-  zoom: Array<PerformanceMetric>;
+  load: PerformanceMetric[];
+  zoom: PerformanceMetric[];
 }
 
 export function calculateMetrics(metricsStart: Metrics, metricsEnd: Metrics): PerformanceMetric {

@@ -164,6 +164,11 @@ describe('Style Computer', () => {
       expect(computeStyle(shape)).toBe('intermediateThrowEvent;fontStyle=3');
     });
 
+    it('compute style of shape with label including font family only', () => {
+      const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.TASK_SCRIPT), undefined, new Label(toFont({ name: 'Roboto' }), undefined));
+      expect(computeStyle(shape)).toBe('scriptTask;fontFamily=Roboto');
+    });
+
     it('compute style of shape with label bounds', () => {
       const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.CALL_ACTIVITY), undefined, new Label(undefined, new Bounds(40, 200, 80, 140)));
       expect(computeStyle(shape)).toBe('callActivity;verticalAlign=top;align=center;labelWidth=81;labelPosition=ignore;verticalLabelPosition=middle');
@@ -386,6 +391,7 @@ describe('Style Computer', () => {
     it.each([
       ['vertical', false, '1'],
       ['horizontal', true, '0'],
+      ['no isHorizontal value for a', undefined, '1'],
     ])('%s pool references a Process', (title: string, isHorizontal: boolean, expected: string) => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.POOL), undefined, isHorizontal);
       expect(computeStyle(shape)).toBe(`pool;horizontal=${expected}`);
@@ -396,6 +402,7 @@ describe('Style Computer', () => {
     it.each([
       ['vertical', false, '1'],
       ['horizontal', true, '0'],
+      ['no isHorizontal value for a', undefined, '1'],
     ])('%s lane', (title: string, isHorizontal: boolean, expected: string) => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.LANE), undefined, isHorizontal);
       expect(computeStyle(shape)).toBe(`lane;horizontal=${expected}`);

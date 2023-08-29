@@ -19,7 +19,7 @@ import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/model/b
 import { readFileSync } from '@test/shared/file-helper';
 import { initializeBpmnVisualizationWithContainerId } from './helpers/bpmn-visualization-initialization';
 import { HtmlElementLookup } from './helpers/html-utils';
-import type { ExpectedEdgeModelElement, ExpectedShapeModelElement, VerticalAlign } from './helpers/model-expect';
+import type { ExpectedEdgeModelElement, ExpectedShapeModelElement } from './helpers/model-expect';
 import { buildReceivedResolvedModelCellStyle, buildReceivedViewStateStyle } from './matchers/matcher-utils';
 import { buildExpectedShapeCellStyle } from './matchers/toBeShape';
 import { buildExpectedEdgeCellStyle } from './matchers/toBeEdge';
@@ -93,7 +93,7 @@ describe('Verify interaction between the CSS and style APIs', () => {
         kind: ShapeBpmnElementKind.EVENT_END,
         label: 'message end 2',
         stroke: { color: strokeColor },
-        verticalAlign: <VerticalAlign>'top', // the element has a label
+        verticalAlign: 'top', // the element has a label
       } as ExpectedShapeModelElement);
     });
   });
@@ -118,7 +118,7 @@ describe('Verify interaction between the CSS and style APIs', () => {
         extraCssClasses: ['class-1', 'class-2'],
         kind: ShapeBpmnElementKind.EVENT_END,
         label: 'message end 2',
-        verticalAlign: <VerticalAlign>'top', // the element has a label
+        verticalAlign: 'top', // the element has a label
       } as ExpectedShapeModelElement);
     });
   });
@@ -175,7 +175,7 @@ describe('Verify interaction between the CSS and style APIs', () => {
       extraCssClasses: ['class-1', 'class-2', 'class-11'],
       kind: ShapeBpmnElementKind.EVENT_END,
       label: 'message end 2',
-      verticalAlign: <VerticalAlign>'top', // the element has a label
+      verticalAlign: 'top', // the element has a label
     } as ExpectedShapeModelElement);
 
     // Check elements whose style were not updated prior calling 'reset all'

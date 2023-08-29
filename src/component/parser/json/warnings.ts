@@ -26,7 +26,7 @@ export class GroupUnknownCategoryValueWarning extends JsonParsingWarning {
     super();
   }
 
-  override getMessage(): { template: string; arguments: Array<string> } {
+  override getMessage(): { template: string; arguments: string[] } {
     return {
       arguments: [this.categoryValueRef, this.groupBpmnElementId],
       template: 'Group json deserialization: unable to find category value ref %s for bpmn element %s',
@@ -39,7 +39,7 @@ export class ShapeUnknownBpmnElementWarning extends JsonParsingWarning {
     super();
   }
 
-  override getMessage(): { template: string; arguments: Array<string> } {
+  override getMessage(): { template: string; arguments: string[] } {
     return {
       arguments: [this.bpmnElementId],
       template: 'Shape json deserialization: unable to find bpmn element with id %s',
@@ -52,7 +52,7 @@ export class EdgeUnknownBpmnElementWarning extends JsonParsingWarning {
     super();
   }
 
-  override getMessage(): { template: string; arguments: Array<string> } {
+  override getMessage(): { template: string; arguments: string[] } {
     return {
       arguments: [this.bpmnElementId],
       template: 'Edge json deserialization: unable to find bpmn element with id %s',
@@ -68,7 +68,7 @@ export class LabelStyleMissingFontWarning extends JsonParsingWarning {
     super();
   }
 
-  override getMessage(): { template: string; arguments: Array<string> } {
+  override getMessage(): { template: string; arguments: string[] } {
     return {
       arguments: [this.labelStyleId, this.shapeOrEdgeId],
       template: 'Unable to assign font from style %s to shape/edge %s',

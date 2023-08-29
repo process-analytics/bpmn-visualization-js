@@ -21,7 +21,7 @@ import type { ChartData, PerformanceMetric } from './helpers/perf-utils';
 import { calculateMetrics } from './helpers/perf-utils';
 import { performanceDataFilePath } from './helpers/file-utils';
 
-const metricsArray: Array<PerformanceMetric> = [];
+const metricsArray: PerformanceMetric[] = [];
 
 let metricsCollector: ChromiumMetricsCollector;
 beforeAll(async () => {

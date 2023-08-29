@@ -17,7 +17,7 @@ limitations under the License.
 import type { Overlay, OverlayPosition } from '../dev-bundle-index';
 import { addOverlays, configureControlsPanel, configureMousePointer, documentReady, getElementsByIds, removeAllOverlays, startBpmnVisualization } from '../dev-bundle-index';
 
-const bpmnIdInputElt = <HTMLInputElement>document.getElementById('bpmn-id-input');
+const bpmnIdInputElt = document.getElementById('bpmn-id-input') as HTMLInputElement;
 
 function addOverlay(overlay: Overlay): void {
   const bpmnId = bpmnIdInputElt.value;

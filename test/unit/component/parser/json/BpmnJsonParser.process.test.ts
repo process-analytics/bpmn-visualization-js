@@ -20,7 +20,7 @@ import type { ExpectedShape } from '../../../helpers/bpmn-model-expect';
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
 
 import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
-import type { BpmnJsonModel } from '@lib/model/bpmn/json/BPMN20';
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
 
 describe('parse bpmn as json for process/pool', () => {
   describe.each([
