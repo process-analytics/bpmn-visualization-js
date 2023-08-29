@@ -44,9 +44,9 @@ export class ModelFiltering {
     // If there is no shape associated to a Pool, no flow nodes, no lanes and no edges, there is no ShapeBPMNElement associated to the pool id to filter.
     // So we need to throw an error.
     if (filteredPools.length === 0 && filteredLanes.length === 0 && filteredFlowNodes.length === 0 && filteredEdges.length === 0) {
-      let errorMessageSuffix = poolIdsFilter.length > 0 ? ` for ids [${poolIdsFilter}]` : '';
+      let errorMessageSuffix = poolIdsFilter.length > 0 ? ` for ids [${poolIdsFilter.join(',')}]` : '';
       const messageSeparator = errorMessageSuffix ? ' and' : '';
-      errorMessageSuffix += poolNamesFilter.length > 0 ? `${messageSeparator} for names [${poolNamesFilter}]` : '';
+      errorMessageSuffix += poolNamesFilter.length > 0 ? `${messageSeparator} for names [${poolNamesFilter.join(',')}]` : '';
       throw new Error('No matching pools' + errorMessageSuffix);
     }
 
