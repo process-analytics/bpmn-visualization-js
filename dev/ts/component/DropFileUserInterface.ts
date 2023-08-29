@@ -153,11 +153,8 @@ export class DropFileUserInterface {
         const files = dt.files;
         dropCallback(files[0]);
       } catch (e) {
-        if (e instanceof Error) {
-          logErrorAndOpenAlert(e.message);
-        } else {
-          console.error('An error occurred:', e);
-        }
+        const errorMessage = e instanceof Error ? e.message : String(e);
+        logErrorAndOpenAlert(errorMessage);
       } finally {
         isDocument ? (<Document>this).querySelector('#' + outerContainerId).classList.remove('dragging') : (<HTMLElement>this).classList.remove('dragging');
         containerToBeFaded.classList.remove('faded');
