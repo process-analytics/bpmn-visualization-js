@@ -81,8 +81,7 @@ module.exports = {
         '@typescript-eslint/no-base-to-string': 'error',
         '@typescript-eslint/restrict-plus-operands': 'error',
 
-        // These lines are commented out because they only show errors in the demo files.
-
+        // The following lines are commented, because they show errors on files other than the demo:
         // '@typescript-eslint/no-unsafe-assignment': 'error',
         // '@typescript-eslint/no-unsafe-argument': 'error',
         // '@typescript-eslint/no-unsafe-member-access': 'error',
