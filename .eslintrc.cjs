@@ -79,6 +79,7 @@ module.exports = {
         '@typescript-eslint/consistent-type-definitions': 'off',
         
         '@typescript-eslint/require-await': 'error',
+        '@typescript-eslint/no-floating-promises': 'error',
       },
     },
   ],
