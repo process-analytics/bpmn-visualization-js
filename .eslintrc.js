@@ -28,6 +28,17 @@ module.exports = {
   rules: {
     'notice/notice': ['error', { templateFile: 'config/license-header.js', onNonMatchingHeader: 'replace' }],
     'no-console': ['error', { allow: ['warn', 'error'] }],
+    'unicorn/filename-case': [
+      'error',
+      {
+        cases: {
+          camelCase: true,
+          kebabCase: true,
+          pascalCase: true,
+          snakeCase: true,
+        },
+      },
+    ],
   },
   overrides: [
     // typescript
@@ -63,17 +74,6 @@ module.exports = {
           },
         ],
         '@typescript-eslint/consistent-type-imports': ['error'],
-        'unicorn/filename-case': [
-          'error',
-          {
-            cases: {
-              camelCase: true,
-              kebabCase: true,
-              pascalCase: true,
-              snakeCase: true,
-            },
-          },
-        ],
       },
     },
   ],
