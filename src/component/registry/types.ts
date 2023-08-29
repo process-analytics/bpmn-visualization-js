@@ -530,6 +530,7 @@ export type Stroke = StyleWithOpacity & {
    * - It can be used when the style is first updated and then needs to be reset to its initial value.
    * - It doesn't use the color set in the BPMN source when the "BPMN in Color" support is enabled. It uses the color defined in the BPMN element default style.
    */
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   color?: 'default' | 'inherit' | 'none' | 'swimlane' | string;
 
   /**
@@ -569,6 +570,7 @@ export type Font = StyleWithOpacity & {
    * - It can be used when the style is first updated and then needs to be reset to its initial value.
    * - It doesn't use the color set in the BPMN source when the "BPMN in Color" support is enabled. It uses the color defined in the BPMN element default style.
    */
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   color?: 'default' | 'inherit' | 'swimlane' | string;
 
   /**
@@ -615,6 +617,7 @@ export type Fill = StyleWithOpacity & {
    * - It doesn't use the color set in the BPMN source when the "BPMN in Color" support is enabled. It uses the color defined in the BPMN element default style.
    * - If a gradient was set, it will be completely reverted.
    */
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   color?: FillColorGradient | 'default' | 'inherit' | 'none' | 'swimlane' | string;
 };
 
@@ -635,6 +638,7 @@ export type FillColorGradient = {
    * - `none` for no color.
    * - `swimlane` to apply the fill color of the nearest parent element with the type {@link ShapeBpmnElementKind.LANE} or {@link ShapeBpmnElementKind.POOL}.
    */
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   startColor: 'inherit' | 'none' | 'swimlane' | string;
 
   /**
@@ -643,6 +647,7 @@ export type FillColorGradient = {
    * - `none` for no color.
    * - `swimlane` to apply the fill color of the nearest parent element with the type {@link ShapeBpmnElementKind.LANE} or {@link ShapeBpmnElementKind.POOL}.
    */
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   endColor: 'inherit' | 'none' | 'swimlane' | string;
 
   /**
