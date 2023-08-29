@@ -22,7 +22,7 @@ import { createNewCssRegistry, type CssClassesRegistryImpl } from './css-registr
 import { createNewOverlaysRegistry } from './overlays-registry';
 import { BpmnQuerySelectors } from './query-selectors';
 import { createNewStyleRegistry, type StyleRegistryImpl } from './style-registry';
-import type { BpmnElement, CssClassesRegistry, ElementsRegistry, Overlay, OverlaysRegistry, StyleRegistry, StyleUpdate } from './types';
+import type { BpmnElement, BpmnSemantic, CssClassesRegistry, ElementsRegistry, Overlay, OverlaysRegistry, StyleRegistry, StyleUpdate } from './types';
 import type { BpmnElementKind } from '../../model/bpmn/internal';
 
 /**
@@ -74,11 +74,17 @@ export class BpmnElementsRegistry implements CssClassesRegistry, ElementsRegistr
     });
   }
 
-  getElementsByIds(bpmnElementIds: string | string[]): BpmnElement[] {
+  getModelElementsByIds(bpmnElementIds: string | string[]): BpmnSemantic[] {
     return ensureIsArray<string>(bpmnElementIds)
       .map(id => this.bpmnModelRegistry.getBpmnSemantic(id))
-      .filter(Boolean)
-      .map(bpmnSemantic => ({ bpmnSemantic: bpmnSemantic, htmlElement: this.htmlElementRegistry.getBpmnHtmlElement(bpmnSemantic.id) }));
+      .filter(Boolean);
+  }
+
+  getElementsByIds(bpmnElementIds: string | string[]): BpmnElement[] {
+    return this.getModelElementsByIds(bpmnElementIds).map(bpmnSemantic => ({
+      bpmnSemantic: bpmnSemantic,
+      htmlElement: this.htmlElementRegistry.getBpmnHtmlElement(bpmnSemantic.id),
+    }));
   }
 
   getElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[]): BpmnElement[] {
