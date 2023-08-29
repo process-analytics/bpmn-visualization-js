@@ -63,6 +63,10 @@ module.exports = {
           },
         ],
         '@typescript-eslint/consistent-type-imports': ['error'],
+        // We choose to disable it and choose later if we want to enable it. See https://github.com/process-analytics/bpmn-visualization-js/pull/2821.
+        '@typescript-eslint/consistent-type-definitions': 'off',
+
+        '@typescript-eslint/no-base-to-string': 'error',
       },
     },
   ],
