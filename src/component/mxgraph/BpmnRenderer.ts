@@ -79,15 +79,15 @@ export class BpmnRenderer {
   }
 
   private insertEdges(edges: Edge[]): void {
-    edges.forEach(bpmnEdge => {
-      const bpmnElement = bpmnEdge.bpmnElement;
+    edges.forEach(internalEdge => {
+      const bpmnElement = internalEdge.bpmnElement;
       const parent = this.graph.getDefaultParent();
       const source = this.getCell(bpmnElement.sourceRefId);
       const target = this.getCell(bpmnElement.targetRefId);
-      const labelBounds = bpmnEdge.label?.bounds;
-      const style = this.styleComputer.computeStyle(bpmnEdge, labelBounds);
+      const labelBounds = internalEdge.label?.bounds;
+      const style = this.styleComputer.computeStyle(internalEdge, labelBounds);
       const edge = this.graph.insertEdge(parent, bpmnElement.id, bpmnElement.name, source, target, style);
-      this.insertWaypoints(bpmnEdge.waypoints, edge);
+      this.insertWaypoints(internalEdge.waypoints, edge);
 
       if (labelBounds) {
         edge.geometry.width = labelBounds.width;
@@ -104,13 +104,13 @@ export class BpmnRenderer {
         }
       }
 
-      this.insertMessageFlowIconIfNeeded(bpmnEdge, edge);
+      this.insertMessageFlowIconIfNeeded(internalEdge, edge);
     });
   }
 
-  private insertMessageFlowIconIfNeeded(bpmnEdge: Edge, edge: mxCell): void {
-    if (bpmnEdge.bpmnElement instanceof MessageFlow && bpmnEdge.messageVisibleKind !== MessageVisibleKind.NONE) {
-      const cell = this.graph.insertVertex(edge, messageFlowIconId(edge.id), undefined, 0, 0, 20, 14, this.styleComputer.computeMessageFlowIconStyle(bpmnEdge));
+  private insertMessageFlowIconIfNeeded(internalEdge: Edge, edge: mxCell): void {
+    if (internalEdge.bpmnElement instanceof MessageFlow && internalEdge.messageVisibleKind !== MessageVisibleKind.NONE) {
+      const cell = this.graph.insertVertex(edge, messageFlowIconId(edge.id), undefined, 0, 0, 20, 14, this.styleComputer.computeMessageFlowIconStyle(internalEdge));
       cell.geometry.relative = true;
       cell.geometry.offset = new mxPoint(-10, -7);
     }
