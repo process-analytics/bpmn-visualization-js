@@ -28,7 +28,6 @@ import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-util
 import { delay } from '@test/shared/visu/test-utils';
 
 const metricsArray: PerformanceMetric[] = [];
-
 let metricsCollector: ChromiumMetricsCollector;
 
 beforeAll(async () => {

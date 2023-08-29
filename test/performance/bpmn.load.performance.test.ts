@@ -25,7 +25,6 @@ import { calculateMetrics } from './helpers/perf-utils';
 import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
 
 const metricsArray: PerformanceMetric[] = [];
-
 let metricsCollector: ChromiumMetricsCollector;
 
 beforeAll(async () => {
