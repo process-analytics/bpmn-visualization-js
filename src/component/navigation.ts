@@ -15,7 +15,8 @@ limitations under the License.
 */
 
 import type { BpmnGraph } from './mxgraph/BpmnGraph';
-import type { FitOptions, ZoomType } from './options';
+import { ZoomType } from './options';
+import type { FitOptions } from './options';
 
 /**
  * Perform BPMN diagram navigation.
@@ -34,6 +35,6 @@ export class Navigation {
   }
 
   zoom(type: ZoomType): void {
-    type == 'in' ? this.graph.zoomIn() : this.graph.zoomOut();
+    type == ZoomType.In ? this.graph.zoomIn() : this.graph.zoomOut();
   }
 }
