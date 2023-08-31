@@ -14,16 +14,29 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { EdgeBpmnSemantic, ShapeBpmnSemantic } from '@lib/component/registry';
+import { type BpmnElementKind, FlowKind, ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
+import type { BpmnSemantic, EdgeBpmnSemantic, ShapeBpmnSemantic } from '@lib/component/registry';
 import { readFileSync } from '@test/shared/file-helper';
-import { expectBoundaryEvent, expectSequenceFlow, expectStartEvent, expectSubprocess } from '@test/shared/model/bpmn-semantic-utils';
+import {
+  expectBoundaryEvent,
+  expectEndEvent,
+  expectParallelGateway,
+  expectSequenceFlow,
+  expectStartEvent,
+  expectSubprocess,
+  expectUserTask,
+} from '@test/shared/model/bpmn-semantic-utils';
+import { initializeBpmnVisualization } from './helpers/bpmn-visualization-initialization';
 import { bpmnVisualization } from './helpers/model-expect';
 
 describe('Registry API - retrieve Model Bpmn elements', () => {
-  bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-complete-semantic.bpmn'));
-  const bpmnElementsRegistry = bpmnVisualization.bpmnElementsRegistry;
-
   describe('Get by ids', () => {
+    const bpmnElementsRegistry = bpmnVisualization.bpmnElementsRegistry;
+
+    beforeEach(() => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-complete-semantic.bpmn'));
+    });
+
     test('Pass a single existing id', () => {
       const modelElements = bpmnElementsRegistry.getModelElementsByIds('start_event_message_id');
 
@@ -71,4 +84,62 @@ describe('Registry API - retrieve Model Bpmn elements', () => {
       });
     });
   });
+
+  describe('Get by kinds', () => {
+    const bv = initializeBpmnVisualization(null);
+    const bpmnElementsRegistry = bv.bpmnElementsRegistry;
+
+    beforeEach(() => {
+      bv.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
+    });
+
+    // match userTasks
+    test('Pass a single kind with matching elements', () => {
+      const modelElements = bpmnElementsRegistry.getModelElementsByKinds(ShapeBpmnElementKind.TASK_USER);
+
+      expect(modelElements).toHaveLength(4);
+
+      expectUserTask(modelElements[0] as ShapeBpmnSemantic, {
+        id: 'userTask_0',
+        name: 'User Task 0',
+        incoming: ['sequenceFlow_lane_1_elt_1'],
+        outgoing: ['sequenceFlow_lane_1_elt_2'],
+      });
+      expectAllElementsWithKind(modelElements, ShapeBpmnElementKind.TASK_USER);
+    });
+
+    test('Pass a single kind without matching elements', () => {
+      expect(bpmnElementsRegistry.getModelElementsByKinds(ShapeBpmnElementKind.TEXT_ANNOTATION)).toHaveLength(0);
+    });
+
+    test('Pass several kinds, with and without matching elements', () => {
+      const modelElements = bpmnElementsRegistry.getModelElementsByKinds([
+        ShapeBpmnElementKind.EVENT_END,
+        ShapeBpmnElementKind.TEXT_ANNOTATION,
+        ShapeBpmnElementKind.GATEWAY_PARALLEL,
+        ShapeBpmnElementKind.GROUP,
+        FlowKind.SEQUENCE_FLOW,
+      ]);
+
+      expect(modelElements).toHaveLength(17);
+
+      expectEndEvent(modelElements[0] as ShapeBpmnSemantic, { id: 'endEvent_terminate_1', name: 'terminate end 1' });
+      expectEndEvent(modelElements[1] as ShapeBpmnSemantic, { id: 'endEvent_message_1', name: 'message end 2' });
+      expectParallelGateway(modelElements[2] as ShapeBpmnSemantic, { id: 'Gateway_1hq21li', name: 'gateway 2' });
+      expectSequenceFlow(modelElements[3] as EdgeBpmnSemantic, { id: 'Flow_1noi0ay', source: 'task_1', target: 'gateway_01' });
+      // all remaining are sequence flows
+      expectAllElementsWithKind(modelElements.slice(3), FlowKind.SEQUENCE_FLOW);
+    });
+
+    test.each([null, undefined])('Pass nullish parameter: %s', (nullishResetParameter: BpmnElementKind) => {
+      expect(bpmnElementsRegistry.getModelElementsByKinds(nullishResetParameter)).toHaveLength(0);
+    });
+  });
 });
+
+function expectAllElementsWithKind(elements: BpmnSemantic[], kind: BpmnElementKind): void {
+  const array: BpmnElementKind[] = [];
+  array.length = elements.length;
+  array.fill(kind);
+  expect(elements.map(bpmnSemantic => bpmnSemantic.kind)).toIncludeSameMembers(array);
+}
