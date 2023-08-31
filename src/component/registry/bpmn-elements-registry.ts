@@ -91,20 +91,18 @@ export class BpmnElementsRegistry implements CssClassesRegistry, ElementsRegistr
     return ensureIsArray<BpmnElementKind>(bpmnKinds)
       .map(kind => this.htmlElementRegistry.getBpmnHtmlElements(kind))
       .flat()
-      .map(htmlElement => this.bpmnModelRegistry.getBpmnSemantic(htmlElement.getAttribute('data-bpmn-id')));
+      .map(htmlElement => this.getRelatedBpmnSemantic(htmlElement));
   }
 
   getElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[]): BpmnElement[] {
     return ensureIsArray<BpmnElementKind>(bpmnKinds)
       .map(kind => this.htmlElementRegistry.getBpmnHtmlElements(kind))
       .flat()
-      .map(
-        htmlElement =>
-          ({
-            htmlElement,
-            bpmnSemantic: this.bpmnModelRegistry.getBpmnSemantic(htmlElement.getAttribute('data-bpmn-id')),
-          }) as BpmnElement,
-      );
+      .map(htmlElement => ({ htmlElement, bpmnSemantic: this.getRelatedBpmnSemantic(htmlElement) }));
+  }
+
+  private getRelatedBpmnSemantic(htmlElement: HTMLElement): BpmnSemantic {
+    return this.bpmnModelRegistry.getBpmnSemantic(htmlElement.getAttribute('data-bpmn-id'));
   }
 
   addCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
