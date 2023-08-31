@@ -2,6 +2,7 @@
   "name": "bpmn-visualization",
   "version": "0.38.1-post",
   "type": "module",
+  "sideEffects": false,
   "description": "A TypeScript library for visualizing process execution data on BPMN diagrams",
   "keywords": [
     "typescript",
