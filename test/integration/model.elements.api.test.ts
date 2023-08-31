@@ -93,7 +93,6 @@ describe('Registry API - retrieve Model Bpmn elements', () => {
       bv.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
     });
 
-    // match userTasks
     test('Pass a single kind with matching elements', () => {
       const modelElements = bpmnElementsRegistry.getModelElementsByKinds(ShapeBpmnElementKind.TASK_USER);
 
