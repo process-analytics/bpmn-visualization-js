@@ -128,7 +128,7 @@ export interface CssClassesRegistry {
  */
 export interface ElementsRegistry {
   /**
-   * Get all model elements by ids. The returned array contains elements in the order of the `bpmnElementIds` parameter.
+   * Get all model elements in the form of {@link BpmnSemantic} objects corresponding to the identifiers supplied. The returned array contains elements in the order of the `bpmnElementIds` parameter.
    *
    * Not found elements are not returned as undefined in the array, so the returned array contains at most as many elements as the `bpmnElementIds` parameter.
    *
@@ -144,6 +144,7 @@ export interface ElementsRegistry {
    * If you also need to retrieve the related DOM elements and more information, use {@link getElementsByIds} instead.
    *
    * @param bpmnElementIds The BPMN ID of the element(s) to retrieve.
+   * @since 0.39.0
    */
   getModelElementsByIds(bpmnElementIds: string | string[]): BpmnSemantic[];
 
@@ -164,11 +165,30 @@ export interface ElementsRegistry {
    * **WARNING**: this method is not designed to accept a large amount of ids. It does DOM lookup to retrieve the HTML elements relative to the BPMN elements.
    * Attempts to retrieve too many elements, especially on large BPMN diagram, may lead to performance issues.
    *
-   * @see {@link getModelElementsByIds}
+   * If you only need to retrieve the BPMN model data, use {@link getModelElementsByIds} instead.
    *
    * @param bpmnElementIds The BPMN ID of the element(s) to retrieve.
    */
   getElementsByIds(bpmnElementIds: string | string[]): BpmnElement[];
+
+  /**
+   * Get all model elements in the form of {@link BpmnSemantic} objects corresponding to the BPMN kinds supplied
+   *
+   * ```javascript
+   * ...
+   * // Find all elements by specified id or ids
+   * const bpmnElements1 = bpmnVisualization.bpmnElementsRegistry.getModelElementsByIds('userTask_1');
+   * const bpmnElements2 = bpmnVisualization.bpmnElementsRegistry.getModelElementsByIds(['startEvent_3', 'userTask_2']);
+   * // now you can do whatever you want with the elements
+   * ...
+   * ```
+   *
+   * If you also need to retrieve the related DOM elements and more information, use {@link getElementsByKinds} instead.
+   *
+   * @param bpmnKinds The BPMN kind of the element(s) to retrieve.
+   * @since 0.39.0
+   */
+  getModelElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[]): BpmnSemantic[];
 
   /**
    * Get all elements by kinds.
@@ -182,8 +202,12 @@ export interface ElementsRegistry {
    * ...
    * ```
    *
+   * If you only need to retrieve the BPMN model data, use {@link getModelElementsByKinds} instead.
+   *
    * **WARNING**: this method is not designed to accept a large amount of types. It does DOM lookup to retrieve the HTML elements relative to the BPMN elements.
    * Attempts to retrieve too many elements, especially on large BPMN diagrams, may lead to performance issues.
+   *
+   * @param bpmnKinds The BPMN kind of the element(s) to retrieve.
    */
   getElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[]): BpmnElement[];
 }

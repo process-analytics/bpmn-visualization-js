@@ -16,12 +16,13 @@ limitations under the License.
 
 import type { mxCell } from 'mxgraph';
 import type {
-  BpmnElement,
   BpmnElementKind,
   BpmnSemantic,
+  FillColorGradient,
   FitOptions,
   FitType,
   GlobalOptions,
+  GradientDirection,
   LoadOptions,
   ModelFilter,
   Overlay,
@@ -29,8 +30,6 @@ import type {
   StyleUpdate,
   Version,
   ZoomType,
-  FillColorGradient,
-  GradientDirection,
 } from '../../../src/bpmn-visualization';
 import { FlowKind, ShapeBpmnElementKind } from '../../../src/bpmn-visualization';
 import { fetchBpmnContent, logDownload, logError, logErrorAndOpenAlert, logStartup } from './internal-helpers';
@@ -101,8 +100,8 @@ export function zoom(zoomType: ZoomType): void {
   log('Zoom done');
 }
 
-export function getElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[]): BpmnElement[] {
-  return bpmnVisualization.bpmnElementsRegistry.getElementsByKinds(bpmnKinds);
+export function getModelElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[]): BpmnSemantic[] {
+  return bpmnVisualization.bpmnElementsRegistry.getModelElementsByKinds(bpmnKinds);
 }
 
 export function getModelElementsByIds(bpmnIds: string | string[]): BpmnSemantic[] {
@@ -379,8 +378,7 @@ function updateStyleOfElementsIfRequested(): void {
 function retrieveAllBpmnElementIds(): string[] {
   log('Retrieving ids of all BPMN elements');
   const allKinds = [...Object.values(ShapeBpmnElementKind), ...Object.values(FlowKind)];
-  const elements = bpmnVisualization.bpmnElementsRegistry.getElementsByKinds(allKinds);
-  const bpmnElementsIds = elements.map(elt => elt.bpmnSemantic.id);
+  const bpmnElementsIds = bpmnVisualization.bpmnElementsRegistry.getModelElementsByKinds(allKinds).map(elt => elt.id);
   log('All BPMN elements ids retrieved:', bpmnElementsIds.length);
   return bpmnElementsIds;
 }
