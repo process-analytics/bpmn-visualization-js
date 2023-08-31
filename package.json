@@ -1,6 +1,7 @@
 {
   "name": "bpmn-visualization",
   "version": "0.38.1-post",
+  "type": "module",
   "description": "A TypeScript library for visualizing process execution data on BPMN diagrams",
   "keywords": [
     "typescript",
@@ -31,7 +32,6 @@
     "type": "git",
     "url": "git+https://github.com/process-analytics/bpmn-visualization-js.git"
   },
-  "type": "module",
   "browser": "dist/bpmn-visualization.esm.js",
   "module": "dist/bpmn-visualization.esm.js",
   "types": "dist/not-supported-ts-versions.d.ts",
