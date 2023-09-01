@@ -15,11 +15,13 @@ limitations under the License.
 */
 
 import 'jest-playwright-preset';
-import { getBpmnDiagramNames } from '@test/shared/visu/test-utils';
-import type { StyleOptions } from '@test/shared/visu/bpmn-page-utils';
-import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
 import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
+import type { StyleOptions } from '@test/shared/visu/bpmn-page-utils';
+
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
+
+import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
+import { getBpmnDiagramNames } from '@test/shared/visu/test-utils';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {

@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { ExpectedOverlay } from '../matchers/matcher-utils';
 import type {
   FlowKind,
   GlobalTaskKind,
@@ -26,7 +27,8 @@ import type {
   ShapeBpmnSubProcessKind,
   Stroke,
 } from '@lib/bpmn-visualization';
-import { BpmnVisualization, ShapeBpmnElementKind } from '@lib/bpmn-visualization';
+import type { mxCell, mxGeometry } from 'mxgraph';
+
 import {
   toBeAssociationFlow,
   toBeBoundaryEvent,
@@ -57,9 +59,9 @@ import {
   toBeTextAnnotation,
   toBeUserTask,
 } from '../matchers';
-import type { mxCell, mxGeometry } from 'mxgraph';
-import type { ExpectedOverlay } from '../matchers/matcher-utils';
 import { getCell } from '../matchers/matcher-utils';
+
+import { BpmnVisualization, ShapeBpmnElementKind } from '@lib/bpmn-visualization';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace

@@ -14,19 +14,21 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { BpmnGraph } from './BpmnGraph';
+import type Bounds from '../../model/bpmn/internal/Bounds';
 import type { Edge, Waypoint } from '../../model/bpmn/internal/edge/edge';
-import { MessageFlow } from '../../model/bpmn/internal/edge/flows';
 import type Shape from '../../model/bpmn/internal/shape/Shape';
 import type ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
-import type Bounds from '../../model/bpmn/internal/Bounds';
-import { MessageVisibleKind, ShapeUtil } from '../../model/bpmn/internal';
-import CoordinatesTranslator from './renderer/CoordinatesTranslator';
-import StyleComputer from './renderer/StyleComputer';
-import type { BpmnGraph } from './BpmnGraph';
 import type { FitOptions, RendererOptions } from '../options';
 import type { RenderedModel } from '../registry/bpmn-model-registry';
-import { mxPoint } from './initializer';
 import type { mxCell } from 'mxgraph';
+
+import { MessageVisibleKind, ShapeUtil } from '../../model/bpmn/internal';
+import { MessageFlow } from '../../model/bpmn/internal/edge/flows';
+
+import { mxPoint } from './initializer';
+import CoordinatesTranslator from './renderer/CoordinatesTranslator';
+import StyleComputer from './renderer/StyleComputer';
 
 /**
  * @internal

@@ -14,9 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { mxgraph, mxConstants, mxPoint, mxRectangle } from '../initializer';
-import type { mxCellState, mxPoint as mxPointType, mxRectangle as mxRectangleType } from 'mxgraph';
 import type { OverlayStyle } from '../../registry';
+import type { mxCellState, mxPoint as mxPointType, mxRectangle as mxRectangleType } from 'mxgraph';
+
+import { mxgraph, mxConstants, mxPoint, mxRectangle } from '../initializer';
 
 export type VerticalAlignType = 'bottom' | 'middle' | 'top';
 export type HorizontalAlignType = 'left' | 'center' | 'right';

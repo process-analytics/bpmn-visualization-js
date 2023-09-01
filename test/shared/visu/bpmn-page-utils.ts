@@ -18,17 +18,22 @@ limitations under the License.
 // see https://github.com/jest-community/jest-extended/issues/367
 /// <reference types="jest-extended" />
 
-import debugLogger from 'debug';
-import 'expect-playwright';
+import type { StyleUpdate } from '@lib/component/registry';
 import type { PageWaitForSelectorOptions } from 'expect-playwright';
 import type { ElementHandle, Page } from 'playwright';
-import { type LoadOptions, FitType, ZoomType } from '@lib/component/options';
-import type { StyleUpdate } from '@lib/component/registry';
-import { BpmnQuerySelectorsForTests } from '@test/shared/query-selectors';
+
+import debugLogger from 'debug';
+
+import 'expect-playwright';
+
+import envUtils = require('../environment-utils.cjs');
+
 import { delay } from './test-utils';
+
+import { type LoadOptions, FitType, ZoomType } from '@lib/component/options';
+import { BpmnQuerySelectorsForTests } from '@test/shared/query-selectors';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore js file with commonjs export
-import envUtils = require('../environment-utils.cjs');
 
 const pageCheckLog = debugLogger('bv:test:page-check');
 

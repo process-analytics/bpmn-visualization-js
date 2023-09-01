@@ -14,12 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 import type BpmnModel from '@lib/model/bpmn/internal/BpmnModel';
-import { newBpmnParser } from '@lib/component/parser/BpmnParser';
-import { readFileSync } from '@test/shared/file-helper';
-import { expectPoolLaneEdgeFlowNode, verifyLabel } from '../../helpers/JsonTestUtils';
+
 import { getEdgeByBpmnElementId, getFlowNodeByBpmnElementId, getLaneByBpmnElementId, getPoolByBpmnElementId, verifyEdge, verifyShape } from '../../helpers/bpmn-model-expect';
+import { expectPoolLaneEdgeFlowNode, verifyLabel } from '../../helpers/JsonTestUtils';
+
+import { newBpmnParser } from '@lib/component/parser/BpmnParser';
+import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
+import { readFileSync } from '@test/shared/file-helper';
 
 describe('parse xml to model', () => {
   it('Single process with no participant', () => {

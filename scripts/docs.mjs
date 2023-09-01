@@ -15,8 +15,9 @@ limitations under the License.
 */
 
 import { readFileSync } from 'node:fs';
-import { copySync, ensureDirSync, removeSync } from 'fs-extra';
+
 import asciidoctor from '@asciidoctor/core';
+import { copySync, ensureDirSync, removeSync } from 'fs-extra';
 
 function log(...data) {
   // eslint-disable-next-line no-console

@@ -15,19 +15,20 @@ limitations under the License.
 */
 
 /** Internal model */
+import type { BuildProcessParameter, BuildEventsParameter, OtherBuildEventKind } from '../../../helpers/JsonBuilder';
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
+
+import { verifyEdge } from '../../../helpers/bpmn-model-expect';
+import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilder';
+import { parseJson, parseJsonAndExpectOnlyEdges } from '../../../helpers/JsonTestUtils';
+
+/** Json model */
 import { ShapeBpmnElementKind, ShapeUtil } from '@lib/model/bpmn/internal';
 import { Waypoint } from '@lib/model/bpmn/internal/edge/edge';
 import { MessageVisibleKind } from '@lib/model/bpmn/internal/edge/kinds';
-
-/** Json model */
-import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
 import * as bpmndi from '@lib/model/bpmn/json/bpmndi';
 
 /** Test utils */
-import { parseJson, parseJsonAndExpectOnlyEdges } from '../../../helpers/JsonTestUtils';
-import type { BuildProcessParameter, BuildEventsParameter, OtherBuildEventKind } from '../../../helpers/JsonBuilder';
-import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilder';
-import { verifyEdge } from '../../../helpers/bpmn-model-expect';
 
 describe('parse bpmn as json for message flow', () => {
   it(`should convert as Edge, when an message flow is an attribute (as object) of 'collaboration' (as object)`, () => {

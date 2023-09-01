@@ -15,10 +15,12 @@ limitations under the License.
 */
 
 import type { OverlayEdgePosition, OverlayShapePosition } from '@lib/bpmn-visualization';
-import { readFileSync } from '@test/shared/file-helper';
-import { overlayEdgePositionValues, overlayShapePositionValues } from '@test/shared/overlays';
+
 import { initializeBpmnVisualizationWithContainerId } from './helpers/bpmn-visualization-initialization';
 import { HtmlElementLookup } from './helpers/html-utils';
+
+import { readFileSync } from '@test/shared/file-helper';
+import { overlayEdgePositionValues, overlayShapePositionValues } from '@test/shared/overlays';
 
 describe('Bpmn Elements registry - Overlay management', () => {
   const bpmnVisualization = initializeBpmnVisualizationWithContainerId();

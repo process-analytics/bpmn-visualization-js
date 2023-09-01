@@ -15,9 +15,11 @@ limitations under the License.
 */
 
 import 'jest-playwright-preset';
-import { resolve } from 'node:path';
-import type { Page } from 'playwright';
 import type { TargetedPageConfiguration } from '@test/shared/visu/bpmn-page-utils';
+import type { Page } from 'playwright';
+
+import { resolve } from 'node:path';
+
 import { BpmnPageSvgTester } from '@test/shared/visu/bpmn-page-utils';
 
 describe('bundles', () => {

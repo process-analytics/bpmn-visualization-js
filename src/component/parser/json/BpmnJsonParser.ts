@@ -16,14 +16,15 @@ limitations under the License.
 
 import type BpmnModel from '../../../model/bpmn/internal/BpmnModel';
 import type { BpmnJsonModel, TDefinitions } from '../../../model/bpmn/json/bpmn20';
+import type { ParsingMessageCollector } from '../parsing-messages';
+
+import CategoryConverter from './converter/CategoryConverter';
 import CollaborationConverter from './converter/CollaborationConverter';
-import ProcessConverter from './converter/ProcessConverter';
 import DiagramConverter from './converter/DiagramConverter';
 import EventDefinitionConverter from './converter/EventDefinitionConverter';
 import GlobalTaskConverter from './converter/GlobalTaskConverter';
+import ProcessConverter from './converter/ProcessConverter';
 import { ConvertedElements } from './converter/utils';
-import CategoryConverter from './converter/CategoryConverter';
-import type { ParsingMessageCollector } from '../parsing-messages';
 
 /**
  * @internal

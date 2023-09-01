@@ -14,15 +14,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { TCorrelationKey } from '../correlation';
-import type { TParticipantAssociation } from '../participant';
-import type { TArtifact, TAssociation, TGroup, TTextAnnotation } from '../artifact';
-import type { TFlowElement, TFlowNode, TSequenceFlow } from '../flowElement';
 import type { TAdHocSubProcess, TCallActivity, TSubProcess, TTransaction } from './activity/activity';
-import type { TDataObject, TDataObjectReference, TDataStoreReference } from '../data';
+import type { TBusinessRuleTask, TManualTask, TReceiveTask, TScriptTask, TSendTask, TServiceTask, TTask, TUserTask } from './activity/task';
 import type { TBoundaryEvent, TEndEvent, TEvent, TImplicitThrowEvent, TIntermediateCatchEvent, TIntermediateThrowEvent, TStartEvent } from './event';
 import type { TComplexGateway, TEventBasedGateway, TExclusiveGateway, TInclusiveGateway, TParallelGateway } from './gateway';
-import type { TBusinessRuleTask, TManualTask, TReceiveTask, TScriptTask, TSendTask, TServiceTask, TTask, TUserTask } from './activity/task';
+import type { TArtifact, TAssociation, TGroup, TTextAnnotation } from '../artifact';
+import type { TCorrelationKey } from '../correlation';
+import type { TDataObject, TDataObjectReference, TDataStoreReference } from '../data';
+import type { TFlowElement, TFlowNode, TSequenceFlow } from '../flowElement';
+import type { TParticipantAssociation } from '../participant';
 
 // abstract="true"
 export interface TChoreographyActivity extends TFlowNode {

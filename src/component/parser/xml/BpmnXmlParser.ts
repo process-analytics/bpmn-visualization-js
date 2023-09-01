@@ -14,9 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { XMLParser, type X2jOptions } from 'fast-xml-parser';
 import type { BpmnJsonModel } from '../../../model/bpmn/json/bpmn20';
 import type { ParserOptions } from '../../options';
+
+import { XMLParser, type X2jOptions } from 'fast-xml-parser';
 
 type Replacement = {
   regex: RegExp;

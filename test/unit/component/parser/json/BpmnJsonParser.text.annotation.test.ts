@@ -14,11 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { buildDefinitions } from '../../../helpers/JsonBuilder';
-import type { BuildProcessParameter } from '../../../helpers/JsonBuilder';
-import { parseJsonAndExpectOnlyEdgesAndFlowNodes, parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtils';
 import type { ExpectedShape } from '../../../helpers/bpmn-model-expect';
+import type { BuildProcessParameter } from '../../../helpers/JsonBuilder';
+
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
+import { buildDefinitions } from '../../../helpers/JsonBuilder';
+import { parseJsonAndExpectOnlyEdgesAndFlowNodes, parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtils';
 
 import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 

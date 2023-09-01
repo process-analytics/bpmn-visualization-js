@@ -15,9 +15,9 @@ limitations under the License.
 */
 
 import type { TAssignment, TBaseElement } from './baseElement';
-import type { TRootElement } from './rootElement/rootElement';
 import type { TFormalExpression } from './expression';
 import type { TFlowElement } from './flowElement';
+import type { TRootElement } from './rootElement/rootElement';
 
 export type TDataInputAssociation = TDataAssociation;
 

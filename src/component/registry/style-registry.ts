@@ -16,6 +16,7 @@ limitations under the License.
 
 import type { StyleRegistry, StyleUpdate } from './types';
 import type { BpmnGraph } from '../mxgraph/BpmnGraph';
+
 import { createNewStyleUpdater, type StyleUpdater } from '../mxgraph/style/style-updater';
 
 export function createNewStyleRegistry(graph: BpmnGraph): StyleRegistryImpl {

@@ -14,15 +14,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { ExpectedShape } from '../../../helpers/bpmn-model-expect';
+import type { ShapeBpmnEventBasedGateway } from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
+import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
+
+import { verifyShape } from '../../../helpers/bpmn-model-expect';
 import { buildDefinitions } from '../../../helpers/JsonBuilder';
 import { parseJsonAndExpectOnlyEdgesAndFlowNodes, parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtils';
-import type { ExpectedShape } from '../../../helpers/bpmn-model-expect';
-import { verifyShape } from '../../../helpers/bpmn-model-expect';
 
-import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
-import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
 import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind, ShapeUtil } from '@lib/model/bpmn/internal';
-import type { ShapeBpmnEventBasedGateway } from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
 
 describe.each([
   ['task', ShapeBpmnElementKind.TASK],

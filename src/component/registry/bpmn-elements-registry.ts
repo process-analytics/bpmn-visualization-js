@@ -14,16 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { ensureIsArray } from '../helpers/array-utils';
-import type { BpmnGraph } from '../mxgraph/BpmnGraph';
-import { computeBpmnBaseClassName } from '../mxgraph/renderer/style-utils';
 import type { BpmnModelRegistry } from './bpmn-model-registry';
+import type { BpmnElement, BpmnSemantic, CssClassesRegistry, ElementsRegistry, Overlay, OverlaysRegistry, StyleRegistry, StyleUpdate } from './types';
+import type { BpmnElementKind } from '../../model/bpmn/internal';
+import type { BpmnGraph } from '../mxgraph/BpmnGraph';
+
+import { ensureIsArray } from '../helpers/array-utils';
+import { computeBpmnBaseClassName } from '../mxgraph/renderer/style-utils';
+
 import { createNewCssRegistry, type CssClassesRegistryImpl } from './css-registry';
 import { createNewOverlaysRegistry } from './overlays-registry';
 import { BpmnQuerySelectors } from './query-selectors';
 import { createNewStyleRegistry, type StyleRegistryImpl } from './style-registry';
-import type { BpmnElement, BpmnSemantic, CssClassesRegistry, ElementsRegistry, Overlay, OverlaysRegistry, StyleRegistry, StyleUpdate } from './types';
-import type { BpmnElementKind } from '../../model/bpmn/internal';
 
 /**
  * @internal

@@ -14,6 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
+
+import { verifyShape } from '../../../helpers/bpmn-model-expect';
 import {
   expectAsWarning,
   parseJsonAndExpectOnlyFlowNodes,
@@ -22,11 +25,9 @@ import {
   parseJsonAndExpectOnlyWarnings,
   parsingMessageCollector,
 } from '../../../helpers/JsonTestUtils';
-import { verifyShape } from '../../../helpers/bpmn-model-expect';
 
-import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
-import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 import { GroupUnknownCategoryValueWarning, ShapeUnknownBpmnElementWarning } from '@lib/component/parser/json/warnings';
+import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 
 describe('parse bpmn as json for group', () => {
   it('Single Group with label in process', () => {

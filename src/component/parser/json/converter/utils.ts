@@ -14,12 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import ShapeBpmnElement from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
-import type { Flow, AssociationFlow, MessageFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/flows';
 import type { GlobalTaskKind, ShapeBpmnEventDefinitionKind } from '../../../../model/bpmn/internal';
-import { ShapeBpmnElementKind } from '../../../../model/bpmn/internal';
+import type { Flow, AssociationFlow, MessageFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/flows';
 import type { TGroup } from '../../../../model/bpmn/json/baseElement/artifact';
 import type { ParsingMessageCollector } from '../../parsing-messages';
+
+import { ShapeBpmnElementKind } from '../../../../model/bpmn/internal';
+import ShapeBpmnElement from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { GroupUnknownCategoryValueWarning } from '../warnings';
 
 /**

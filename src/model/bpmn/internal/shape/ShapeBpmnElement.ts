@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import type { BpmnEventKind, GlobalTaskKind, ShapeBpmnCallActivityKind, ShapeBpmnEventDefinitionKind } from './kinds';
+
 import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind, ShapeBpmnSubProcessKind, ShapeBpmnMarkerKind } from './kinds';
 
 /**

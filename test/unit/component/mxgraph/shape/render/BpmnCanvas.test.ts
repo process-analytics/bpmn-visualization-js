@@ -18,6 +18,7 @@ limitations under the License.
 */
 
 import type { IconStyleConfiguration, ShapeConfiguration, Size } from '@lib/component/mxgraph/shape/render';
+
 import { computeScaledIconSize } from '@lib/component/mxgraph/shape/render/BpmnCanvas';
 
 describe('compute scaled icon size', () => {

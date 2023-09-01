@@ -15,13 +15,15 @@ limitations under the License.
 */
 
 import type { BpmnVisualization } from '@lib/bpmn-visualization';
-import { ShapeBpmnEventDefinitionKind } from '@lib/bpmn-visualization';
+
 import {
   initializeBpmnVisualizationWithContainerId,
   initializeBpmnVisualizationWithHtmlElement,
   initializeBpmnVisualizationWithoutId,
 } from './helpers/bpmn-visualization-initialization';
 import { HtmlElementLookup } from './helpers/html-utils';
+
+import { ShapeBpmnEventDefinitionKind } from '@lib/bpmn-visualization';
 import { readFileSync } from '@test/shared/file-helper';
 
 describe.each`

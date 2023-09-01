@@ -14,9 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import { join } from 'node:path';
+
 import debugLogger from 'debug';
 import 'jest-playwright-preset';
-import { join } from 'node:path';
+
 import { findFiles } from '@test/shared/file-helper';
 
 export const configLog = debugLogger('bv:test:config');

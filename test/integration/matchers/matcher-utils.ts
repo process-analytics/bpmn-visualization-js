@@ -15,13 +15,16 @@ limitations under the License.
 */
 
 import type { ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement, HorizontalAlign, VerticalAlign } from '../helpers/model-expect';
-import { bpmnVisualization } from '../helpers/model-expect';
-import type { mxCell, mxGeometry, StyleMap } from 'mxgraph';
-import type { Opacity } from '@lib/component/registry';
 import type { MxGraphCustomOverlay, MxGraphCustomOverlayStyle } from '@lib/component/mxgraph/overlay/custom-overlay';
+import type { Opacity } from '@lib/component/registry';
+import type { mxCell, mxGeometry, StyleMap } from 'mxgraph';
+
+import { bpmnVisualization } from '../helpers/model-expect';
+
 import { getFontStyleValue as computeFontStyleValue } from '@lib/component/mxgraph/renderer/StyleComputer';
 import { BpmnStyleIdentifier } from '@lib/component/mxgraph/style';
 import { Font } from '@lib/model/bpmn/internal/Label';
+
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 
