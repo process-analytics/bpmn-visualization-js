@@ -21,7 +21,7 @@ import pkg from './package.json' assert { type: 'json' };
 
 import terser from '@rollup/plugin-terser';
 import cleanup from 'rollup-plugin-cleanup';
-import externals from 'rollup-plugin-node-externals';
+import externals from 'rollup-plugin-node-externals/dist';
 import sizes from 'rollup-plugin-sizes';
 
 import typescript from 'rollup-plugin-typescript2';

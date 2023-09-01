@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import typescript from 'rollup-plugin-typescript2';
-import externals from 'rollup-plugin-node-externals';
+import externals from 'rollup-plugin-node-externals/dist';
 
 export default {
   input: 'scripts/utils/parseBpmn.ts',
