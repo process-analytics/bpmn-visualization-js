@@ -14,11 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-export * from './shape';
-export * from './edge/kinds';
-
 import type { FlowKind } from './edge/kinds';
 import type { ShapeBpmnElementKind } from './shape';
+
+export * from './shape';
+export * from './edge/kinds';
 /**
  * @category BPMN
  */
