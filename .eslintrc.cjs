@@ -41,6 +41,7 @@ module.exports = {
       },
     ],
     'import/newline-after-import': ['error', { count: 1 }],
+    'import/first': ['error'],
   },
   overrides: [
     // typescript
