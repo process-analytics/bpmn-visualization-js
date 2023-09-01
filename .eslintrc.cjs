@@ -41,7 +41,19 @@ module.exports = {
       },
     ],
     'import/newline-after-import': ['error', { count: 1 }],
-    'import/first': ['error'],
+    'import/first': 'error',
+    'import/order': [
+      'error',
+      {
+        groups: ['type', 'builtin', 'external', 'parent', 'sibling', 'index', 'internal'],
+        'newlines-between': 'always',
+        alphabetize: {
+          order: 'asc',
+          orderImportKind: 'asc',
+          caseInsensitive: true,
+        },
+      },
+    ],
   },
   overrides: [
     // typescript
