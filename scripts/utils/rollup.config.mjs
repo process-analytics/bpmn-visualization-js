@@ -14,7 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import externals from 'rollup-plugin-node-externals/dist';
+// eslint-disable-next-line import/no-unresolved
+import externals from 'rollup-plugin-node-externals';
 import typescript from 'rollup-plugin-typescript2';
 
 export default {

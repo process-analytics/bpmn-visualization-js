@@ -21,7 +21,8 @@ import commonjs from '@rollup/plugin-commonjs'; // at least, needed to bundle mx
 import resolve from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
 import cleanup from 'rollup-plugin-cleanup';
-import externals from 'rollup-plugin-node-externals/dist';
+// eslint-disable-next-line import/no-unresolved
+import externals from 'rollup-plugin-node-externals';
 import sizes from 'rollup-plugin-sizes';
 import typescript from 'rollup-plugin-typescript2';
 
