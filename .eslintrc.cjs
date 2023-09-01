@@ -53,10 +53,10 @@ module.exports = {
       ],
       settings: {
         'import/resolver': {
-          // You will also need to install and configure the TypeScript resolver
-          // See also https://github.com/import-js/eslint-import-resolver-typescript#configuration
-          typescript: true,
-          node: true,
+          typescript: {
+            alwaysTryTypes: true, // always try to resolve types under `<root>@types` directory even it doesn't contain any source code, like `@types/unist`
+            project: '**/tsconfig.json',
+          },
         },
       },
       parserOptions: {
