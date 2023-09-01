@@ -49,7 +49,16 @@ module.exports = {
         'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
         'plugin:prettier/recommended', // Enables eslint-plugin-prettier and eslint-config-prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
         'plugin:@typescript-eslint/stylistic',
+        'plugin:import/typescript',
       ],
+      settings: {
+        'import/resolver': {
+          // You will also need to install and configure the TypeScript resolver
+          // See also https://github.com/import-js/eslint-import-resolver-typescript#configuration
+          typescript: true,
+          node: true,
+        },
+      },
       parserOptions: {
         // This setting is required if you want to use rules which require type information
         // https://typescript-eslint.io/packages/parser/#project
