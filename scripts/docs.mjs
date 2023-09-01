@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { readFileSync } from 'node:fs';
-import { copySync, ensureDirSync, removeSync } from 'fs-extra/esm';
+import { copySync, ensureDirSync, removeSync } from 'fs-extra';
 import asciidoctor from '@asciidoctor/core';
 
 function log(...data) {
