@@ -14,9 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-// generate warning when running with Node 18
-// (node:75278) ExperimentalWarning: Importing JSON modules is an experimental feature. This feature could change at any time
-
 import commonjs from '@rollup/plugin-commonjs'; // at least, needed to bundle mxGraph which is only available as a CommonJS module
 import resolve from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
@@ -26,6 +23,8 @@ import externals from 'rollup-plugin-node-externals';
 import sizes from 'rollup-plugin-sizes';
 import typescript from 'rollup-plugin-typescript2';
 
+// generate warning when running with Node 18
+// (node:75278) ExperimentalWarning: Importing JSON modules is an experimental feature. This feature could change at any time
 import pkg from './package.json' assert { type: 'json' };
 import { computeBanner } from './scripts/shared/banner.mjs';
 
