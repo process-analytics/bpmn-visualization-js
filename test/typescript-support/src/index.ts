@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+// eslint-disable-next-line import/no-unresolved
 import { BpmnVisualization } from 'bpmn-visualization';
 
 const bpmnVisualization = new BpmnVisualization({ container: 'bpmn-container' });
