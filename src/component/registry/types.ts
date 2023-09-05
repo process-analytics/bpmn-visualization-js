@@ -176,9 +176,9 @@ export interface ElementsRegistry {
    *
    * ```javascript
    * ...
-   * // Find all elements by specified id or ids
-   * const bpmnElements1 = bpmnVisualization.bpmnElementsRegistry.getModelElementsByIds('userTask_1');
-   * const bpmnElements2 = bpmnVisualization.bpmnElementsRegistry.getModelElementsByIds(['startEvent_3', 'userTask_2']);
+   * // Find all elements by desired type or types
+   * const bpmnElements1 = bpmnVisualization.bpmnElementsRegistry.getModelElementsByKinds(ShapeBpmnElementKind.TASK);
+   * const bpmnElements2 = bpmnVisualization.bpmnElementsRegistry.getModelElementsByKinds([ShapeBpmnElementKind.EVENT_END, ShapeBpmnElementKind.POOL]);
    * // now you can do whatever you want with the elements
    * ...
    * ```
