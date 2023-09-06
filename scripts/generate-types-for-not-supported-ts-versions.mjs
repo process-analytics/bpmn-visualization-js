@@ -16,7 +16,6 @@ limitations under the License.
 
 import * as fs from 'node:fs';
 
-
 import { getTypeFilesInformation } from './shared/types-info.mjs';
 
 // generate a definition file for not supported TS versions. It provokes syntax error to show an explicit message about what are the supported versions.
