@@ -14,9 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { StyleDefault } from '../style';
-import { mxRectangleShape } from '../initializer';
 import type { mxAbstractCanvas2D } from 'mxgraph';
+
+import { mxRectangleShape } from '../initializer';
+import { StyleDefault } from '../style';
 
 /**
  * @internal

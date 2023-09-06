@@ -15,12 +15,15 @@ limitations under the License.
 */
 
 import type { FitOptions, ZoomConfiguration } from '../options';
-import { FitType } from '../options';
-import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/validators';
-import { debounce, throttle } from 'lodash-es';
-import { mxgraph, mxEvent } from './initializer';
-import { BpmnCellRenderer } from './BpmnCellRenderer';
 import type { mxCellRenderer, mxCellState, mxGraphView, mxPoint } from 'mxgraph';
+
+import { debounce, throttle } from 'lodash-es';
+
+import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/validators';
+import { FitType } from '../options';
+
+import { BpmnCellRenderer } from './BpmnCellRenderer';
+import { mxgraph, mxEvent } from './initializer';
 
 const zoomFactorIn = 1.25;
 const zoomFactorOut = 1 / zoomFactorIn;

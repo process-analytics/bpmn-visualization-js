@@ -14,16 +14,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import GraphConfigurator from './mxgraph/GraphConfigurator';
-import { newBpmnRenderer } from './mxgraph/BpmnRenderer';
-import { newBpmnParser } from './parser/BpmnParser';
 import type { BpmnGraph } from './mxgraph/BpmnGraph';
 import type { GlobalOptions, LoadOptions, ParserOptions, RendererOptions } from './options';
 import type { BpmnElementsRegistry } from './registry';
+
+import { htmlElement } from './helpers/dom-utils';
+import { newBpmnRenderer } from './mxgraph/BpmnRenderer';
+import GraphConfigurator from './mxgraph/GraphConfigurator';
+import { Navigation } from './navigation';
+import { newBpmnParser } from './parser/BpmnParser';
 import { createNewBpmnElementsRegistry } from './registry/bpmn-elements-registry';
 import { BpmnModelRegistry } from './registry/bpmn-model-registry';
-import { htmlElement } from './helpers/dom-utils';
-import { Navigation } from './navigation';
 import { version, type Version } from './version';
 
 /**

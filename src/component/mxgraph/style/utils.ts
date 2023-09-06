@@ -14,10 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { ensureOpacityValue, ensureStrokeWidthValue } from '../../helpers/validators';
 import type { Fill, Font, ShapeStyleUpdate, Stroke, StyleUpdate, GradientDirection, FillColorGradient } from '../../registry';
+
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
+import { ensureOpacityValue, ensureStrokeWidthValue } from '../../helpers/validators';
 import { mxConstants, mxUtils } from '../initializer';
+
 import { BpmnStyleIdentifier } from './identifiers';
 
 /**

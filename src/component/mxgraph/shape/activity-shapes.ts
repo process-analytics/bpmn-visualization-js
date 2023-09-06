@@ -14,14 +14,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { BpmnCanvas, PaintParameter, ShapeConfiguration } from './render';
 import type { mxAbstractCanvas2D } from 'mxgraph';
+
+import { ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal';
 import { mxRectangleShape, mxUtils } from '../initializer';
 import { BpmnStyleIdentifier, StyleDefault } from '../style';
 import { getBpmnIsInstantiating } from '../style/utils';
-import type { BpmnCanvas, PaintParameter, ShapeConfiguration } from './render';
+
 import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
-import { ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal';
 import { orderActivityMarkers } from './render/utils';
 
 function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): void {

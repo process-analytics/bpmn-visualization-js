@@ -14,12 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { PaintParameter } from './render';
 import type { mxAbstractCanvas2D } from 'mxgraph';
+
+import { ShapeBpmnEventBasedGatewayKind } from '../../../model/bpmn/internal';
 import { mxgraph, mxUtils } from '../initializer';
 import { BpmnStyleIdentifier, StyleDefault } from '../style';
 import { getBpmnIsInstantiating } from '../style/utils';
-import { ShapeBpmnEventBasedGatewayKind } from '../../../model/bpmn/internal';
-import type { PaintParameter } from './render';
+
 import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
 

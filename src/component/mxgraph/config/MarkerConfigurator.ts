@@ -14,9 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { MarkerIdentifier } from '../style';
-import { mxgraph } from '../initializer';
 import type { mxAbstractCanvas2D, mxCell, mxPoint, mxShape } from 'mxgraph';
+
+import { mxgraph } from '../initializer';
+import { MarkerIdentifier } from '../style';
 
 /**
  * @internal

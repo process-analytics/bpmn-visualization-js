@@ -14,9 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from './kinds';
 import type { FilterParameter } from '../../../../component/helpers/array-utils';
+
 import { filter } from '../../../../component/helpers/array-utils';
+
+import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from './kinds';
 
 /**
  * Utils to simplify the management of {@link ShapeBpmnElementKind}.

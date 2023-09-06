@@ -15,10 +15,13 @@ limitations under the License.
 */
 
 // Inspired from https://kulshekhar.github.io/ts-jest/docs/getting-started/paths-mapping/
+const fs = require('fs');
+
+const JSON5 = require('json5');
 const { pathsToModuleNameMapper } = require('ts-jest');
 // Cannot use const { compilerOptions } = require('../../tsconfig.test.json');
 // parsing fails as the file contains comment, so use the following hack taken from https://stackoverflow.com/questions/61996234/requiring-a-json-with-comments-in-node-js
-const fs = require('fs');
+
 let jsonTxt;
 try {
   jsonTxt = fs.readFileSync('./tsconfig.test.json', 'utf8');
@@ -29,7 +32,6 @@ try {
   jsonTxt = fs.readFileSync('../../tsconfig.test.json', 'utf8');
 }
 
-const JSON5 = require('json5');
 const tsconfig = JSON5.parse(jsonTxt);
 const compilerOptions = tsconfig.compilerOptions;
 

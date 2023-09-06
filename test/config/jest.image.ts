@@ -14,11 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import debugLogger from 'debug';
 import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
-import { toMatchImageSnapshot } from 'jest-image-snapshot';
-import { addAttach } from 'jest-html-reporters/helper';
+
 import { copyFileSync } from 'node:fs';
+
+import debugLogger from 'debug';
+import { addAttach } from 'jest-html-reporters/helper';
+import { toMatchImageSnapshot } from 'jest-image-snapshot';
+
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 

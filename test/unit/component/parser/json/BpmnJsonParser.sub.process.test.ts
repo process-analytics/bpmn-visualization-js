@@ -14,7 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { ExpectedActivityShape, ExpectedBounds, ExpectedShape } from '../../../helpers/bpmn-model-expect';
 import type { BuildProcessParameter } from '../../../helpers/JsonBuilder';
+import type BpmnModel from '@lib/model/bpmn/internal/BpmnModel';
+import type Shape from '@lib/model/bpmn/internal/shape/Shape';
+import type { ShapeBpmnEvent } from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
+
+import { getExpectedMarkers, verifyEdge, verifyShape } from '../../../helpers/bpmn-model-expect';
 import { buildDefinitions } from '../../../helpers/JsonBuilder';
 import {
   parseJson,
@@ -24,15 +31,9 @@ import {
   verifySubProcess,
 } from '../../../helpers/JsonTestUtils';
 import { getEventShapes } from '../../../helpers/TestUtils';
-import type { ExpectedActivityShape, ExpectedBounds, ExpectedShape } from '../../../helpers/bpmn-model-expect';
-import { getExpectedMarkers, verifyEdge, verifyShape } from '../../../helpers/bpmn-model-expect';
 
-import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
-import type BpmnModel from '@lib/model/bpmn/internal/BpmnModel';
-import { Waypoint } from '@lib/model/bpmn/internal/edge/edge';
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';
-import type { ShapeBpmnEvent } from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
-import type Shape from '@lib/model/bpmn/internal/shape/Shape';
+import { Waypoint } from '@lib/model/bpmn/internal/edge/edge';
 
 function expectNoPoolLane(model: BpmnModel): void {
   expect(model.lanes).toHaveLength(0);

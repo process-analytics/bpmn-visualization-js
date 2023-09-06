@@ -14,10 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { mxgraph, mxCellRenderer, mxConstants, mxSvgCanvas2D } from '../initializer';
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
-import { EndEventShape, EventShape, IntermediateEventShape, ThrowIntermediateEventShape } from '../shape/event-shapes';
-import { ComplexGatewayShape, EventBasedGatewayShape, ExclusiveGatewayShape, InclusiveGatewayShape, ParallelGatewayShape } from '../shape/gateway-shapes';
+import { mxgraph, mxCellRenderer, mxConstants, mxSvgCanvas2D } from '../initializer';
+import { computeAllBpmnClassNamesOfCell } from '../renderer/style-utils';
 import {
   BusinessRuleTaskShape,
   CallActivityShape,
@@ -30,11 +29,12 @@ import {
   TaskShape,
   UserTaskShape,
 } from '../shape/activity-shapes';
-import { TextAnnotationShape } from '../shape/text-annotation-shapes';
-import { MessageFlowIconShape } from '../shape/flow-shapes';
-import { BpmnStyleIdentifier } from '../style';
-import { computeAllBpmnClassNamesOfCell } from '../renderer/style-utils';
 import { BpmnConnector } from '../shape/edges';
+import { EndEventShape, EventShape, IntermediateEventShape, ThrowIntermediateEventShape } from '../shape/event-shapes';
+import { MessageFlowIconShape } from '../shape/flow-shapes';
+import { ComplexGatewayShape, EventBasedGatewayShape, ExclusiveGatewayShape, InclusiveGatewayShape, ParallelGatewayShape } from '../shape/gateway-shapes';
+import { TextAnnotationShape } from '../shape/text-annotation-shapes';
+import { BpmnStyleIdentifier } from '../style';
 
 /**
  * @internal

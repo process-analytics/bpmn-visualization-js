@@ -14,10 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BpmnGraph } from '../BpmnGraph';
-import { OverlayConverter } from './converter';
 import type { Overlay } from '../../registry';
+import type { BpmnGraph } from '../BpmnGraph';
+
 import { ensureIsArray } from '../../helpers/array-utils';
+
+import { OverlayConverter } from './converter';
 import { MxGraphCustomOverlay } from './custom-overlay';
 
 export function createNewOverlaysUpdater(graph: BpmnGraph): OverlaysUpdater {

@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { Diagram, Label, LabeledEdge, LabeledShape, Plane, Style } from './di';
 import type { Font } from './dc';
+import type { Diagram, Label, LabeledEdge, LabeledShape, Plane, Style } from './di';
 
 export interface BPMNDiagram extends Diagram {
   BPMNPlane: BPMNPlane;

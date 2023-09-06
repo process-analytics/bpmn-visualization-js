@@ -16,6 +16,7 @@ limitations under the License.
 
 import type { TProperty } from '../baseElement';
 import type { TDataInput, TDataInputAssociation, TDataOutput, TDataOutputAssociation } from '../data';
+import type { TFlowNode } from '../flowElement';
 import type { TInputSet, TOutputSet } from '../input-output';
 import type {
   TCancelEventDefinition,
@@ -30,7 +31,6 @@ import type {
   TTerminateEventDefinition,
   TTimerEventDefinition,
 } from '../rootElement/eventDefinition';
-import type { TFlowNode } from '../flowElement';
 
 // abstract="true"
 export interface TEvent extends TFlowNode {

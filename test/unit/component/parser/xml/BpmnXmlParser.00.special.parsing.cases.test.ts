@@ -14,10 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { readFileSync } from '@test/shared/file-helper';
-import BpmnXmlParser from '@lib/component/parser/xml/BpmnXmlParser';
 import type { BPMNDiagram, BPMNLabel, BPMNShape } from '@lib/model/bpmn/json/bpmndi';
+
+import BpmnXmlParser from '@lib/component/parser/xml/BpmnXmlParser';
 import Bounds from '@lib/model/bpmn/internal/Bounds';
+import { readFileSync } from '@test/shared/file-helper';
 
 describe('Special parsing cases', () => {
   it('Parse a text file', () => {

@@ -14,15 +14,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { ExpectedShape } from '../../../helpers/bpmn-model-expect';
 import type { BuildCallActivityParameter, BuildGatewayKind, BuildTaskKind, OtherBuildEventKind, BpmnGlobalTaskKind } from '../../../helpers/JsonBuilder';
+import type { GlobalTaskKind } from '@lib/model/bpmn/internal';
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
+
+import { verifyEdge, verifyShape } from '../../../helpers/bpmn-model-expect';
 import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilder';
 import { parseJsonAndExpect, parseJsonAndExpectOnlyEdgesAndFlowNodes, parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtils';
-import type { ExpectedShape } from '../../../helpers/bpmn-model-expect';
-import { verifyEdge, verifyShape } from '../../../helpers/bpmn-model-expect';
 
-import type { GlobalTaskKind } from '@lib/model/bpmn/internal';
 import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '@lib/model/bpmn/internal';
-import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
 
 const expectedBounds = { x: 346, y: 856, width: 45, height: 56 };
 

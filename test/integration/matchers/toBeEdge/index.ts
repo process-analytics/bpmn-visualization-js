@@ -14,13 +14,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BpmnCellStyle, ExpectedCell } from '../matcher-utils';
-import { buildCellMatcher, buildExpectedCellStyleWithCommonAttributes, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
-import { FlowKind, MessageVisibleKind } from '@lib/model/bpmn/internal';
 import type { ExpectedEdgeModelElement, ExpectedSequenceFlowModelElement } from '../../helpers/model-expect';
+import type { BpmnCellStyle, ExpectedCell } from '../matcher-utils';
+
 import { getDefaultParentId } from '../../helpers/model-expect';
-import { BpmnStyleIdentifier } from '@lib/component/mxgraph/style';
+import { buildCellMatcher, buildExpectedCellStyleWithCommonAttributes, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
+
 import { mxConstants } from '@lib/component/mxgraph/initializer';
+import { BpmnStyleIdentifier } from '@lib/component/mxgraph/style';
+import { FlowKind, MessageVisibleKind } from '@lib/model/bpmn/internal';
+
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 

@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { TExpression } from './expression';
 import type { TAuditing, TBaseElement, TMonitoring } from './baseElement';
+import type { TExpression } from './expression';
 
 export interface TFlowElement extends TBaseElement {
   auditing?: TAuditing;

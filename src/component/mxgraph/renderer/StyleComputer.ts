@@ -14,10 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { mxConstants } from '../initializer';
-import Shape from '../../../model/bpmn/internal/shape/Shape';
-import type { Edge } from '../../../model/bpmn/internal/edge/edge';
 import type Bounds from '../../../model/bpmn/internal/Bounds';
+import type { Edge } from '../../../model/bpmn/internal/edge/edge';
+import type { Font } from '../../../model/bpmn/internal/Label';
+import type { RendererOptions } from '../../options';
+
+import { MessageVisibleKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeUtil } from '../../../model/bpmn/internal';
+import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/flows';
+import Shape from '../../../model/bpmn/internal/shape/Shape';
 import {
   ShapeBpmnActivity,
   ShapeBpmnBoundaryEvent,
@@ -27,11 +31,8 @@ import {
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../model/bpmn/internal/shape/ShapeBpmnElement';
+import { mxConstants } from '../initializer';
 import { BpmnStyleIdentifier } from '../style';
-import { MessageVisibleKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeUtil } from '../../../model/bpmn/internal';
-import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/flows';
-import type { Font } from '../../../model/bpmn/internal/Label';
-import type { RendererOptions } from '../../options';
 
 /**
  * @internal

@@ -14,11 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtils';
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
+
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
+import { parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtils';
 
 import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
-import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
 
 describe('parse bpmn as json for diagram', () => {
   const jsonModelWithoutBPMNDiagram: BpmnJsonModel = {

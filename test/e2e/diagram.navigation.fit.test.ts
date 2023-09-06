@@ -14,14 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
-import 'jest-playwright-preset';
-import { join } from 'node:path';
-import { FitType } from '@lib/component/options';
-import { getBpmnDiagramNames } from '@test/shared/visu/test-utils';
-import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
 import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
+import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
+
+import { join } from 'node:path';
+
+import 'jest-playwright-preset';
+
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
+
+import { FitType } from '@lib/component/options';
+import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
+import { getBpmnDiagramNames } from '@test/shared/visu/test-utils';
 
 class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
   override getConfig(param: {
