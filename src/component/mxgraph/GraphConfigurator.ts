@@ -14,13 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { StyleConfigurator } from './config/StyleConfigurator';
-import ShapeConfigurator from './config/ShapeConfigurator';
-import MarkerConfigurator from './config/MarkerConfigurator';
 import type { GlobalOptions } from '../options';
-import { BpmnGraph } from './BpmnGraph';
-import { mxEvent } from './initializer';
 import type { mxMouseEvent } from 'mxgraph';
+
+import { BpmnGraph } from './BpmnGraph';
+import MarkerConfigurator from './config/MarkerConfigurator';
+import ShapeConfigurator from './config/ShapeConfigurator';
+import { StyleConfigurator } from './config/StyleConfigurator';
+import { mxEvent } from './initializer';
 
 /**
  * Configure the BpmnMxGraph graph that can be used by the lib

@@ -14,9 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { mxgraph } from '../initializer';
-import type { mxRectangle } from 'mxgraph';
 import type { MxGraphCustomOverlayStyle } from './custom-overlay';
+import type { mxRectangle } from 'mxgraph';
+
+import { mxgraph } from '../initializer';
 
 export class OverlayBadgeShape extends mxgraph.mxText {
   constructor(value: string, bounds: mxRectangle, style: MxGraphCustomOverlayStyle) {

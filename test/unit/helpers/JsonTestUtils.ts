@@ -14,15 +14,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { ExpectedBounds, ExpectedFont, ExpectedLabel } from './bpmn-model-expect';
+import type { JsonParsingWarning } from '@lib/component/parser/parsing-messages';
 import type { ShapeBpmnSubProcessKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
-import { newBpmnJsonParser } from '@lib/component/parser/json/BpmnJsonParser';
 import type BpmnModel from '@lib/model/bpmn/internal/BpmnModel';
-import { ShapeBpmnEvent, ShapeBpmnSubProcess } from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
 import type Label from '@lib/model/bpmn/internal/Label';
 import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
-import type { JsonParsingWarning } from '@lib/component/parser/parsing-messages';
+
+import { newBpmnJsonParser } from '@lib/component/parser/json/BpmnJsonParser';
 import { ParsingMessageCollector } from '@lib/component/parser/parsing-messages';
-import type { ExpectedBounds, ExpectedFont, ExpectedLabel } from './bpmn-model-expect';
+import { ShapeBpmnEvent, ShapeBpmnSubProcess } from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
 
 class ParsingMessageCollectorTester extends ParsingMessageCollector {
   private warnings: JsonParsingWarning[] = [];

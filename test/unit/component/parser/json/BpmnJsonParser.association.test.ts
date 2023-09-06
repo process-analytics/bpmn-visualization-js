@@ -14,12 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { buildDefinitions } from '../../../helpers/JsonBuilder';
 import type { BuildProcessParameter } from '../../../helpers/JsonBuilder';
-import { parseJsonAndExpectOnlyEdges } from '../../../helpers/JsonTestUtils';
-import { verifyEdge } from '../../../helpers/bpmn-model-expect';
-
 import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
+
+import { verifyEdge } from '../../../helpers/bpmn-model-expect';
+import { buildDefinitions } from '../../../helpers/JsonBuilder';
+import { parseJsonAndExpectOnlyEdges } from '../../../helpers/JsonTestUtils';
+
 import { Waypoint } from '@lib/model/bpmn/internal/edge/edge';
 
 describe('parse bpmn as json for association', () => {

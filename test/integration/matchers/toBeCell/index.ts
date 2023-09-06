@@ -14,13 +14,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { ExpectedCellWithGeometry } from '../../helpers/model-expect';
 import type { ExpectedCell } from '../matcher-utils';
+import type { mxCell } from 'mxgraph';
+
+import { getDefaultParentId } from '../../helpers/model-expect';
 import { buildCellMatcher, getCell } from '../matcher-utils';
+
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
-import type { ExpectedCellWithGeometry } from '../../helpers/model-expect';
-import { getDefaultParentId } from '../../helpers/model-expect';
-import type { mxCell } from 'mxgraph';
 
 export function toBeCell(this: MatcherContext, received: string): CustomMatcherResult {
   const pass = getCell(received) ? true : false;

@@ -14,15 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { mxCell, mxGraphModel } from 'mxgraph';
-import { BpmnStyleIdentifier } from '.';
-import { getStyleValue, isShapeStyleUpdate, setStyle, updateFill, updateFont, updateStroke } from './utils';
-import { mxConstants } from '../initializer';
+import type { StyleUpdate } from '../../registry';
 import type { BpmnGraph } from '../BpmnGraph';
-import { messageFlowIconId } from '../BpmnRenderer';
+import type { mxCell, mxGraphModel } from 'mxgraph';
+
 import { ensureIsArray } from '../../helpers/array-utils';
 import { ensureOpacityValue } from '../../helpers/validators';
-import type { StyleUpdate } from '../../registry';
+import { messageFlowIconId } from '../BpmnRenderer';
+import { mxConstants } from '../initializer';
+
+import { getStyleValue, isShapeStyleUpdate, setStyle, updateFill, updateFont, updateStroke } from './utils';
+
+import { BpmnStyleIdentifier } from '.';
 
 export function createNewStyleUpdater(graph: BpmnGraph): StyleUpdater {
   return new StyleUpdater(graph, new StyleManager(graph.getModel()));

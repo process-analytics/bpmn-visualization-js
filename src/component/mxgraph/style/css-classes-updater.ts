@@ -14,10 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { BpmnStyleIdentifier } from './index';
-import { setStyle } from './utils';
 import type { BpmnGraph } from '../BpmnGraph';
+
 import { messageFlowIconId } from '../BpmnRenderer';
+
+import { setStyle } from './utils';
+
+import { BpmnStyleIdentifier } from './index';
 
 /**
  * @internal

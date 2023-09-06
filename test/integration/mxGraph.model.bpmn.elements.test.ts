@@ -14,6 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { ExpectedShapeModelElement } from './helpers/model-expect';
+
+import {
+  bpmnVisualization,
+  expectEdgesInModel,
+  expectPoolsInModel,
+  expectShapesInModel,
+  expectTotalEdgesInModel,
+  expectTotalShapesInModel,
+  getDefaultParentId,
+} from './helpers/model-expect';
+
 import {
   MarkerIdentifier,
   MessageVisibleKind,
@@ -24,18 +36,8 @@ import {
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
 } from '@lib/bpmn-visualization';
-import { readFileSync } from '@test/shared/file-helper';
-import type { ExpectedShapeModelElement } from './helpers/model-expect';
-import {
-  bpmnVisualization,
-  expectEdgesInModel,
-  expectPoolsInModel,
-  expectShapesInModel,
-  expectTotalEdgesInModel,
-  expectTotalShapesInModel,
-  getDefaultParentId,
-} from './helpers/model-expect';
 import { mxgraph, mxConstants, mxPoint } from '@lib/component/mxgraph/initializer';
+import { readFileSync } from '@test/shared/file-helper';
 
 const mxGeometry = mxgraph.mxGeometry;
 

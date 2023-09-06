@@ -16,10 +16,11 @@ limitations under the License.
 
 module.exports = {
   root: true,
-  plugins: ['notice', 'unicorn'],
+  plugins: ['notice', 'unicorn', 'import'],
   parser: '@typescript-eslint/parser', // Specifies the ESLint parser
   extends: [
     'plugin:prettier/recommended', // Enables eslint-plugin-prettier and eslint-config-prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
+    'plugin:import/recommended',
   ],
   parserOptions: {
     ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
@@ -39,6 +40,20 @@ module.exports = {
         },
       },
     ],
+    'import/newline-after-import': ['error', { count: 1 }],
+    'import/first': 'error',
+    'import/order': [
+      'error',
+      {
+        groups: ['type', 'builtin', 'external', 'parent', 'sibling', 'index', 'internal'],
+        'newlines-between': 'always',
+        alphabetize: {
+          order: 'asc',
+          orderImportKind: 'asc',
+          caseInsensitive: true,
+        },
+      },
+    ],
   },
   overrides: [
     // typescript
@@ -48,7 +63,16 @@ module.exports = {
         'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
         'plugin:prettier/recommended', // Enables eslint-plugin-prettier and eslint-config-prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
         'plugin:@typescript-eslint/stylistic',
+        'plugin:import/typescript',
       ],
+      settings: {
+        'import/resolver': {
+          typescript: {
+            alwaysTryTypes: true, // always try to resolve types under `<root>@types` directory even it doesn't contain any source code, like `@types/unist`
+            project: '**/tsconfig.json',
+          },
+        },
+      },
       parserOptions: {
         // This setting is required if you want to use rules which require type information
         // https://typescript-eslint.io/packages/parser/#project

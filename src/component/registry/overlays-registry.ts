@@ -15,8 +15,9 @@ limitations under the License.
 */
 
 import type { Overlay, OverlaysRegistry } from './types';
-import { createNewOverlaysUpdater, type OverlaysUpdater } from '../mxgraph/overlay/updater';
 import type { BpmnGraph } from '../mxgraph/BpmnGraph';
+
+import { createNewOverlaysUpdater, type OverlaysUpdater } from '../mxgraph/overlay/updater';
 
 export function createNewOverlaysRegistry(graph: BpmnGraph): OverlaysRegistry {
   return new OverlaysRegistryImpl(createNewOverlaysUpdater(graph));

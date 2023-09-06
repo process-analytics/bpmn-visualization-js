@@ -15,10 +15,8 @@ limitations under the License.
 */
 
 import * as fs from 'node:fs';
+
 import { getTypeFilesInformation } from './shared/types-info.mjs';
-// generate warning when running with Node 18
-// (node:75278) ExperimentalWarning: Importing JSON modules is an experimental feature. This feature could change at any time
-import packageJSON from '../package.json' assert { type: 'json' };
 
 // generate a definition file for not supported TS versions. It provokes syntax error to show an explicit message about what are the supported versions.
 // inspired from https://github.com/graphql/graphql-js/blob/743f42b6ef6006d35bf9e0b45e3b70d6e9100596/resources/build-npm.ts#L86-L97

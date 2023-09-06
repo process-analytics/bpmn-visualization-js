@@ -15,8 +15,8 @@ limitations under the License.
 */
 
 import type { TBaseElement } from './baseElement';
-import type { TRootElement } from './rootElement/rootElement';
 import type { TFormalExpression } from './expression';
+import type { TRootElement } from './rootElement/rootElement';
 
 export interface TCorrelationProperty extends TRootElement {
   correlationPropertyRetrievalExpression: TCorrelationPropertyRetrievalExpression | TCorrelationPropertyRetrievalExpression[];

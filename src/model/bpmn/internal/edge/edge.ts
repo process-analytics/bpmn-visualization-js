@@ -14,10 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type Label from '../Label';
 import type { Flow } from './flows';
-import { MessageVisibleKind } from './kinds';
+import type Label from '../Label';
 import type { EdgeExtensions } from '../types';
+
+import { MessageVisibleKind } from './kinds';
 
 /**
  * @internal

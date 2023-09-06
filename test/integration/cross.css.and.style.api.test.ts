@@ -14,15 +14,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { ExpectedEdgeModelElement, ExpectedShapeModelElement } from './helpers/model-expect';
 import type { mxCell } from 'mxgraph';
-import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
-import { readFileSync } from '@test/shared/file-helper';
+
 import { initializeBpmnVisualizationWithContainerId } from './helpers/bpmn-visualization-initialization';
 import { HtmlElementLookup } from './helpers/html-utils';
-import type { ExpectedEdgeModelElement, ExpectedShapeModelElement } from './helpers/model-expect';
 import { buildReceivedResolvedModelCellStyle, buildReceivedViewStateStyle } from './matchers/matcher-utils';
-import { buildExpectedShapeCellStyle } from './matchers/toBeShape';
 import { buildExpectedEdgeCellStyle } from './matchers/toBeEdge';
+import { buildExpectedShapeCellStyle } from './matchers/toBeShape';
+
+import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
+import { readFileSync } from '@test/shared/file-helper';
 
 // Here, we are checking both the model and the DOM.
 // This fully ensures that the usage of both APIs have no impact on the model update and that the repaints are correctly done.

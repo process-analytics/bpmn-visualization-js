@@ -14,15 +14,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { FitType } from '@lib/component/options';
+
 import {
   type GlobalOptionsWithoutContainer,
   initializeBpmnVisualizationWithContainerId,
   initializeBpmnVisualizationWithHtmlElement,
 } from './helpers/bpmn-visualization-initialization';
-import { readFileSync } from '@test/shared/file-helper';
 import { allTestedFitTypes } from './helpers/fit-utils';
-import type { FitType } from '@lib/component/options';
+
 import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
+import { readFileSync } from '@test/shared/file-helper';
 
 describe('BpmnVisualization initialization', () => {
   it.each`

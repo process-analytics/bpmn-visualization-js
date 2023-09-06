@@ -15,10 +15,12 @@ limitations under the License.
 */
 
 import type { ExpectedDirection, ExpectedFill } from './helpers/model-expect';
-import { bpmnVisualization } from './helpers/model-expect';
-import { readFileSync } from '@test/shared/file-helper';
-import { MessageVisibleKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
 import type { EdgeStyleUpdate, Fill, Font, GradientDirection, Stroke, StyleUpdate } from '@lib/component/registry';
+
+import { bpmnVisualization } from './helpers/model-expect';
+
+import { MessageVisibleKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
+import { readFileSync } from '@test/shared/file-helper';
 
 describe('mxGraph model - update style', () => {
   describe('Shapes', () => {

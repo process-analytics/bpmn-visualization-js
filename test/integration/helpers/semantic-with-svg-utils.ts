@@ -16,8 +16,10 @@ limitations under the License.
 
 import type { BpmnElement, EdgeBpmnSemantic, ShapeBpmnSemantic } from '@lib/component/registry';
 import type { ExpectedBaseBpmnElement, ExpectedFlowElement, ExpectedFlowNodeElement } from '@test/shared/model/bpmn-semantic-utils';
-import { expectEndEvent, expectPool, expectSequenceFlow, expectServiceTask, expectStartEvent, expectTask } from '@test/shared/model/bpmn-semantic-utils';
+
 import { expectSvgEvent, expectSvgPool, expectSvgSequenceFlow, expectSvgTask } from './html-utils';
+
+import { expectEndEvent, expectPool, expectSequenceFlow, expectServiceTask, expectStartEvent, expectTask } from '@test/shared/model/bpmn-semantic-utils';
 
 export function expectStartEventBpmnElement(bpmnElement: BpmnElement, expected: ExpectedFlowNodeElement): void {
   expectStartEvent(bpmnElement.bpmnSemantic as ShapeBpmnSemantic, expected);

@@ -14,10 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { TScript } from '../../../Semantic';
 import type { TActivity } from './activity';
-import type { tImplementation } from '../../rootElement/globalTask';
+import type { TScript } from '../../../Semantic';
 import type { TRendering } from '../../baseElement';
+import type { tImplementation } from '../../rootElement/globalTask';
 
 export type TTask = TActivity;
 

@@ -14,8 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { mxgraph, mxSvgCanvas2D, mxUtils } from '../initializer';
 import type { mxAbstractCanvas2D, mxPoint } from 'mxgraph';
+
+import { mxgraph, mxSvgCanvas2D, mxUtils } from '../initializer';
 import { BpmnStyleIdentifier } from '../style';
 
 export class BpmnConnector extends mxgraph.mxConnector {

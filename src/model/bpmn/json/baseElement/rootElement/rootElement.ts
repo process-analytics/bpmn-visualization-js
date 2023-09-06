@@ -14,18 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { TInputOutputBinding, TInputOutputSpecification } from '../input-output';
-import type { TAuditing, TBaseElement, TCategoryValue, TLaneSet, TMonitoring, TOperation, TProperty } from '../baseElement';
-import type { THumanPerformer, TPerformer, TPotentialOwner, TResourceParameter, TResourceRole } from '../resource';
-import type { TCorrelationSubscription } from '../correlation';
 import type { TArtifact, TAssociation, TGroup, TTextAnnotation } from '../artifact';
-import type { TFlowElement, TSequenceFlow } from '../flowElement';
-import type { TBoundaryEvent, TEndEvent, TEvent, TImplicitThrowEvent, TIntermediateCatchEvent, TIntermediateThrowEvent, TStartEvent } from '../flowNode/event';
-import type { TCallChoreography, TChoreographyTask, TSubChoreography } from '../flowNode/choreographyActivity';
-import type { TAdHocSubProcess, TCallActivity, TSubProcess, TTransaction } from '../flowNode/activity/activity';
-import type { TComplexGateway, TEventBasedGateway, TExclusiveGateway, TInclusiveGateway, TParallelGateway } from '../flowNode/gateway';
+import type { TAuditing, TBaseElement, TCategoryValue, TLaneSet, TMonitoring, TOperation, TProperty } from '../baseElement';
+import type { TCorrelationSubscription } from '../correlation';
 import type { TDataObject, TDataObjectReference, TDataStoreReference } from '../data';
+import type { TFlowElement, TSequenceFlow } from '../flowElement';
+import type { TAdHocSubProcess, TCallActivity, TSubProcess, TTransaction } from '../flowNode/activity/activity';
 import type { TBusinessRuleTask, TManualTask, TReceiveTask, TScriptTask, TSendTask, TServiceTask, TTask, TUserTask } from '../flowNode/activity/task';
+import type { TCallChoreography, TChoreographyTask, TSubChoreography } from '../flowNode/choreographyActivity';
+import type { TBoundaryEvent, TEndEvent, TEvent, TImplicitThrowEvent, TIntermediateCatchEvent, TIntermediateThrowEvent, TStartEvent } from '../flowNode/event';
+import type { TComplexGateway, TEventBasedGateway, TExclusiveGateway, TInclusiveGateway, TParallelGateway } from '../flowNode/gateway';
+import type { TInputOutputBinding, TInputOutputSpecification } from '../input-output';
+import type { THumanPerformer, TPerformer, TPotentialOwner, TResourceParameter, TResourceRole } from '../resource';
 
 // abstract="true"
 export type TRootElement = TBaseElement;

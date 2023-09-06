@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import type { BpmnElementKind, BpmnSemantic, Overlay, ShapeStyleUpdate, StyleUpdate } from '../dev-bundle-index';
+
 import {
   addCssClasses,
   addOverlays,

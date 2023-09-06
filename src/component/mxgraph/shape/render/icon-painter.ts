@@ -14,11 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { IconStyleConfiguration, ShapeConfiguration, Size } from './render-types';
 import type { mxAbstractCanvas2D, mxShape } from 'mxgraph';
+
 import { mxConstants, mxUtils } from '../../initializer';
 import { StyleDefault } from '../../style';
+
 import { BpmnCanvas } from './BpmnCanvas';
-import type { IconStyleConfiguration, ShapeConfiguration, Size } from './render-types';
 
 /**
  * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.

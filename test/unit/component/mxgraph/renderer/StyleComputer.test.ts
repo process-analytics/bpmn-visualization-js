@@ -17,18 +17,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import StyleComputer from '@lib/component/mxgraph/renderer/StyleComputer';
-import Shape from '@lib/model/bpmn/internal/shape/Shape';
-import ShapeBpmnElement, {
-  ShapeBpmnActivity,
-  ShapeBpmnBoundaryEvent,
-  ShapeBpmnCallActivity,
-  ShapeBpmnEvent,
-  ShapeBpmnEventBasedGateway,
-  ShapeBpmnStartEvent,
-  ShapeBpmnSubProcess,
-} from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
+import type { ExpectedFont } from '../../../helpers/bpmn-model-expect';
 import type { BpmnEventKind, GlobalTaskKind } from '@lib/model/bpmn/internal';
+
+import { getExpectedMarkers } from '../../../helpers/bpmn-model-expect';
+
+import StyleComputer from '@lib/component/mxgraph/renderer/StyleComputer';
 import {
   AssociationDirectionKind,
   MessageVisibleKind,
@@ -41,12 +35,20 @@ import {
   ShapeBpmnSubProcessKind,
   ShapeUtil,
 } from '@lib/model/bpmn/internal';
-import Label, { Font } from '@lib/model/bpmn/internal/Label';
+import Bounds from '@lib/model/bpmn/internal/Bounds';
 import { Edge } from '@lib/model/bpmn/internal/edge/edge';
 import { AssociationFlow, MessageFlow, SequenceFlow } from '@lib/model/bpmn/internal/edge/flows';
-import Bounds from '@lib/model/bpmn/internal/Bounds';
-import type { ExpectedFont } from '../../../helpers/bpmn-model-expect';
-import { getExpectedMarkers } from '../../../helpers/bpmn-model-expect';
+import Label, { Font } from '@lib/model/bpmn/internal/Label';
+import Shape from '@lib/model/bpmn/internal/shape/Shape';
+import ShapeBpmnElement, {
+  ShapeBpmnActivity,
+  ShapeBpmnBoundaryEvent,
+  ShapeBpmnCallActivity,
+  ShapeBpmnEvent,
+  ShapeBpmnEventBasedGateway,
+  ShapeBpmnStartEvent,
+  ShapeBpmnSubProcess,
+} from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
 
 function toFont(font: ExpectedFont): Font {
   return new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough);

@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { mxCell } from 'mxgraph';
 import type {
   BpmnElementKind,
   BpmnSemantic,
@@ -31,13 +30,16 @@ import type {
   Version,
   ZoomType,
 } from '../../../src/bpmn-visualization';
+import type { mxCell } from 'mxgraph';
+
 import { FlowKind, ShapeBpmnElementKind } from '../../../src/bpmn-visualization';
-import { fetchBpmnContent, logDownload, logError, logErrorAndOpenAlert, logStartup } from './internal-helpers';
-import { log } from './shared-helpers';
+import { downloadAsPng, downloadAsSvg } from '../component/download';
 import { DropFileUserInterface } from '../component/DropFileUserInterface';
 import { SvgExporter } from '../component/SvgExporter';
-import { downloadAsPng, downloadAsSvg } from '../component/download';
 import { ThemedBpmnVisualization } from '../component/ThemedBpmnVisualization';
+
+import { fetchBpmnContent, logDownload, logError, logErrorAndOpenAlert, logStartup } from './internal-helpers';
+import { log } from './shared-helpers';
 
 let bpmnVisualization: ThemedBpmnVisualization;
 let loadOptions: LoadOptions = {};
