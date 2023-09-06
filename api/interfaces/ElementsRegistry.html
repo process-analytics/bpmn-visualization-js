@@ -24,7 +24,7 @@
 <ul class="tsd-hierarchy">
 <li><a href="../classes/BpmnElementsRegistry.html" class="tsd-signature-type tsd-kind-class">BpmnElementsRegistry</a></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/42f13ee/src/component/registry/types.ts#L129">component/registry/types.ts:129</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/2c9ab0a/src/component/registry/types.ts#L129">component/registry/types.ts:129</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -62,7 +62,7 @@ Attempts to retrieve too many elements, especially on large BPMN diagram, may le
 <h4 class="tsd-returns-title">Returns <a href="BpmnElement.html" class="tsd-signature-type tsd-kind-interface">BpmnElement</a><span class="tsd-signature-symbol">[]</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/42f13ee/src/component/registry/types.ts#L172">component/registry/types.ts:172</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/2c9ab0a/src/component/registry/types.ts#L172">component/registry/types.ts:172</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="getElementsByKinds" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Elements<wbr/>By<wbr/>Kinds</span><a href="#getElementsByKinds" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -85,7 +85,7 @@ Attempts to retrieve too many elements, especially on large BPMN diagrams, may l
 <h4 class="tsd-returns-title">Returns <a href="BpmnElement.html" class="tsd-signature-type tsd-kind-interface">BpmnElement</a><span class="tsd-signature-symbol">[]</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/42f13ee/src/component/registry/types.ts#L212">component/registry/types.ts:212</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/2c9ab0a/src/component/registry/types.ts#L212">component/registry/types.ts:212</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="getModelElementsByIds" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Model<wbr/>Elements<wbr/>By<wbr/>Ids</span><a href="#getModelElementsByIds" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -109,14 +109,14 @@ Attempts to retrieve too many elements, especially on large BPMN diagrams, may l
 <h4>Since</h4><p>0.39.0</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/42f13ee/src/component/registry/types.ts#L149">component/registry/types.ts:149</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/2c9ab0a/src/component/registry/types.ts#L149">component/registry/types.ts:149</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="getModelElementsByKinds" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Model<wbr/>Elements<wbr/>By<wbr/>Kinds</span><a href="#getModelElementsByKinds" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
 <li class="tsd-signature tsd-anchor-link" id="getModelElementsByKinds.getModelElementsByKinds-1"><span class="tsd-kind-call-signature">get<wbr/>Model<wbr/>Elements<wbr/>By<wbr/>Kinds</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">bpmnKinds</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../types/BpmnSemantic.html" class="tsd-signature-type tsd-kind-type-alias">BpmnSemantic</a><span class="tsd-signature-symbol">[]</span><a href="#getModelElementsByKinds.getModelElementsByKinds-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Get all model elements in the form of <a href="../types/BpmnSemantic.html" class="tsd-kind-type-alias">BpmnSemantic</a> objects corresponding to the BPMN kinds supplied</p>
-<pre><code class="language-javascript"><span class="hl-1">...</span><br/><span class="hl-6">// Find all elements by specified id or ids</span><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">bpmnElements1</span><span class="hl-1"> = </span><span class="hl-4">bpmnVisualization</span><span class="hl-1">.</span><span class="hl-4">bpmnElementsRegistry</span><span class="hl-1">.</span><span class="hl-5">getModelElementsByIds</span><span class="hl-1">(</span><span class="hl-7">&#39;userTask_1&#39;</span><span class="hl-1">);</span><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">bpmnElements2</span><span class="hl-1"> = </span><span class="hl-4">bpmnVisualization</span><span class="hl-1">.</span><span class="hl-4">bpmnElementsRegistry</span><span class="hl-1">.</span><span class="hl-5">getModelElementsByIds</span><span class="hl-1">([</span><span class="hl-7">&#39;startEvent_3&#39;</span><span class="hl-1">, </span><span class="hl-7">&#39;userTask_2&#39;</span><span class="hl-1">]);</span><br/><span class="hl-6">// now you can do whatever you want with the elements</span><br/><span class="hl-1">...</span>
+<pre><code class="language-javascript"><span class="hl-1">...</span><br/><span class="hl-6">// Find all elements by desired kind or kinds</span><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">bpmnElements1</span><span class="hl-1"> = </span><span class="hl-4">bpmnVisualization</span><span class="hl-1">.</span><span class="hl-4">bpmnElementsRegistry</span><span class="hl-1">.</span><span class="hl-5">getModelElementsByKinds</span><span class="hl-1">(</span><span class="hl-4">ShapeBpmnElementKind</span><span class="hl-1">.</span><span class="hl-2">TASK</span><span class="hl-1">);</span><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">bpmnElements2</span><span class="hl-1"> = </span><span class="hl-4">bpmnVisualization</span><span class="hl-1">.</span><span class="hl-4">bpmnElementsRegistry</span><span class="hl-1">.</span><span class="hl-5">getModelElementsByKinds</span><span class="hl-1">([</span><span class="hl-4">ShapeBpmnElementKind</span><span class="hl-1">.</span><span class="hl-2">EVENT_END</span><span class="hl-1">, </span><span class="hl-4">ShapeBpmnElementKind</span><span class="hl-1">.</span><span class="hl-2">POOL</span><span class="hl-1">]);</span><br/><span class="hl-6">// now you can do whatever you want with the elements</span><br/><span class="hl-1">...</span>
 </code><button>Copy</button></pre>
 <p>If you also need to retrieve the related DOM elements and more information, use <a href="ElementsRegistry.html#getElementsByKinds" class="tsd-kind-method">getElementsByKinds</a> instead.</p>
 </div>
@@ -132,7 +132,7 @@ Attempts to retrieve too many elements, especially on large BPMN diagrams, may l
 <h4>Since</h4><p>0.39.0</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/42f13ee/src/component/registry/types.ts#L191">component/registry/types.ts:191</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/process-analytics/bpmn-visualization-js/blob/2c9ab0a/src/component/registry/types.ts#L191">component/registry/types.ts:191</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
