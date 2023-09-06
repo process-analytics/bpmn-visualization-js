@@ -4,5 +4,6 @@
 /config/
 /dist/
 node_modules/
-scripts/utils/dist/
+/scripts/utils/dist/
+/scripts/utils/build/
 test/performance/data/

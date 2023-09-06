@@ -10,6 +10,7 @@
 /dist/
 node_modules/
 /scripts/utils/dist/
+/scripts/utils/build
 
 # npm build
 *.tgz
