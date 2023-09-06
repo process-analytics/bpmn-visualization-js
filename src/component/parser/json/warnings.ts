@@ -14,9 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { MessageDetails } from '../parsing-messages';
-import { JsonParsingWarning } from '../parsing-messages';
 import type { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
+import type { MessageDetails } from '../parsing-messages';
+
+import { JsonParsingWarning } from '../parsing-messages';
 
 export class GroupUnknownCategoryValueWarning extends JsonParsingWarning {
   constructor(

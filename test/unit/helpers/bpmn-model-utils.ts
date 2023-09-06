@@ -15,6 +15,9 @@ limitations under the License.
 */
 
 import type BpmnModel from '@lib/model/bpmn/internal/BpmnModel';
+
+import { ensureIsArray } from '@lib/component/helpers/array-utils';
+import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';
 import { Edge } from '@lib/model/bpmn/internal/edge/edge';
 import { AssociationFlow, MessageFlow, SequenceFlow } from '@lib/model/bpmn/internal/edge/flows';
 import Shape from '@lib/model/bpmn/internal/shape/Shape';
@@ -25,8 +28,6 @@ import ShapeBpmnElement, {
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
-import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';
-import { ensureIsArray } from '@lib/component/helpers/array-utils';
 
 const newBpmnModel = (): BpmnModel => ({
   edges: [],

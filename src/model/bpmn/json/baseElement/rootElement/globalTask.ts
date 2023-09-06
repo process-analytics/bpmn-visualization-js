@@ -15,9 +15,9 @@ limitations under the License.
 */
 
 import type { TCallableElement } from './rootElement';
-import type { THumanPerformer, TPerformer, TPotentialOwner, TResourceRole } from '../resource';
 import type { TScript } from '../../Semantic';
 import type { TRendering } from '../baseElement';
+import type { THumanPerformer, TPerformer, TPotentialOwner, TResourceRole } from '../resource';
 
 export interface TGlobalTask extends TCallableElement {
   // resourceRole

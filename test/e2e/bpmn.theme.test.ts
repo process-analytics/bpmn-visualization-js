@@ -15,8 +15,10 @@ limitations under the License.
 */
 
 import type { StyleOptions } from '@test/shared/visu/bpmn-page-utils';
-import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
+
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
+
+import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
 
 const styleOptionsPerUseCase = new Map<string, StyleOptions>([
   [

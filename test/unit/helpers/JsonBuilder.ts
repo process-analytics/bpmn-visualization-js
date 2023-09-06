@@ -14,20 +14,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { TTextAnnotation } from '@lib/model/bpmn/json/baseElement/artifact';
-import type { TGlobalTask } from '@lib/model/bpmn/json/baseElement/rootElement/globalTask';
-import type { TArtifact } from '@lib/model/bpmn/json/baseElement/artifact';
-import type { TAssociation } from '@lib/model/bpmn/json/baseElement/artifact';
-import type { DiagramElement } from '@lib/model/bpmn/json/di';
+import type { TTextAnnotation, TArtifact, TAssociation } from '@lib/model/bpmn/json/baseElement/artifact';
 import type { TBaseElement, TLane, TLaneSet, TMessageFlow } from '@lib/model/bpmn/json/baseElement/baseElement';
-import type { TFlowElement } from '@lib/model/bpmn/json/baseElement/flowElement';
-import type { TFlowNode } from '@lib/model/bpmn/json/baseElement/flowElement';
+import type { TFlowElement, TFlowNode } from '@lib/model/bpmn/json/baseElement/flowElement';
 import type { TBoundaryEvent, TCatchEvent, TThrowEvent } from '@lib/model/bpmn/json/baseElement/flowNode/event';
 import type { TCollaboration } from '@lib/model/bpmn/json/baseElement/rootElement/collaboration';
 import type { TEventDefinition } from '@lib/model/bpmn/json/baseElement/rootElement/eventDefinition';
+import type { TGlobalTask } from '@lib/model/bpmn/json/baseElement/rootElement/globalTask';
 import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
 import type { BpmnJsonModel, TDefinitions } from '@lib/model/bpmn/json/bpmn20';
 import type { BPMNEdge, BPMNPlane, BPMNShape } from '@lib/model/bpmn/json/bpmndi';
+import type { DiagramElement } from '@lib/model/bpmn/json/di';
 
 type BuildProcessElementParameter = (Pick<TFlowNode, 'id' | 'name'> | Pick<TArtifact, 'id'>) & {
   index: number;

@@ -14,14 +14,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { resolve as resolvePath } from 'node:path';
-import clipboardy from 'clipboardy';
-import parseArgs from 'minimist';
 import type BpmnModel from '../../src/model/bpmn/internal/BpmnModel';
 import type { BpmnJsonModel } from '../../src/model/bpmn/json/bpmn20';
-import BpmnXmlParser from '../../src/component/parser/xml/BpmnXmlParser';
+
+import { resolve as resolvePath } from 'node:path';
+
+import clipboardy from 'clipboardy';
+import parseArgs from 'minimist';
+
 import { newBpmnJsonParser } from '../../src/component/parser/json/BpmnJsonParser';
 import { ParsingMessageCollector } from '../../src/component/parser/parsing-messages';
+import BpmnXmlParser from '../../src/component/parser/xml/BpmnXmlParser';
 import { readFileSync } from '../../test/shared/file-helper';
 
 const __dirname = resolvePath();

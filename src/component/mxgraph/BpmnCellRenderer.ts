@@ -14,8 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { mxgraph, mxRectangle } from './initializer';
 import type { mxCellState, mxImageShape, mxShape } from 'mxgraph';
+
+import { mxgraph, mxRectangle } from './initializer';
 import { MxGraphCustomOverlay } from './overlay/custom-overlay';
 import { OverlayBadgeShape } from './overlay/shapes';
 

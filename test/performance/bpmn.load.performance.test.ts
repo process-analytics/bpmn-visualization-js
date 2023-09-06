@@ -14,12 +14,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import * as fs from 'node:fs';
-import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
-import { ChromiumMetricsCollector } from './helpers/metrics-chromium';
 import type { ChartData, PerformanceMetric } from './helpers/perf-utils';
-import { calculateMetrics } from './helpers/perf-utils';
+
+import * as fs from 'node:fs';
+
 import { performanceDataFilePath } from './helpers/file-utils';
+import { ChromiumMetricsCollector } from './helpers/metrics-chromium';
+import { calculateMetrics } from './helpers/perf-utils';
+
+import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
 
 const metricsArray: PerformanceMetric[] = [];
 

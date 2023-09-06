@@ -14,8 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { type BpmnElementKind, FlowKind, ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 import type { BpmnSemantic, EdgeBpmnSemantic, ShapeBpmnSemantic } from '@lib/component/registry';
+
+import { initializeBpmnVisualization } from './helpers/bpmn-visualization-initialization';
+import { bpmnVisualization } from './helpers/model-expect';
+
+import { type BpmnElementKind, FlowKind, ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 import { readFileSync } from '@test/shared/file-helper';
 import {
   expectBoundaryEvent,
@@ -26,8 +30,6 @@ import {
   expectSubprocess,
   expectUserTask,
 } from '@test/shared/model/bpmn-semantic-utils';
-import { initializeBpmnVisualization } from './helpers/bpmn-visualization-initialization';
-import { bpmnVisualization } from './helpers/model-expect';
 
 describe('Registry API - retrieve Model Bpmn elements', () => {
   describe('Get by ids', () => {

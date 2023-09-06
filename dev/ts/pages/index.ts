@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import type { FitOptions, FitType } from '../dev-bundle-index';
+
 import {
   documentReady,
   handleFileSelect,

@@ -14,11 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { mxAbstractCanvas2D } from 'mxgraph';
+
+import { mxRectangleShape, mxUtils } from '../initializer';
+import { BpmnStyleIdentifier } from '../style';
+
 import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
-import { BpmnStyleIdentifier } from '../style';
-import { mxRectangleShape, mxUtils } from '../initializer';
-import type { mxAbstractCanvas2D } from 'mxgraph';
 
 /**
  * @internal

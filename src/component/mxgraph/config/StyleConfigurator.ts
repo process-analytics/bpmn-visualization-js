@@ -14,11 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { AssociationDirectionKind, FlowKind, SequenceFlowKind, ShapeBpmnElementKind, ShapeUtil } from '../../../model/bpmn/internal';
-import { BpmnStyleIdentifier, MarkerIdentifier, StyleDefault } from '../style';
 import type { BpmnGraph } from '../BpmnGraph';
-import { mxConstants, mxPerimeter } from '../initializer';
 import type { mxStylesheet, StyleMap } from 'mxgraph';
+
+import { AssociationDirectionKind, FlowKind, SequenceFlowKind, ShapeBpmnElementKind, ShapeUtil } from '../../../model/bpmn/internal';
+import { mxConstants, mxPerimeter } from '../initializer';
+import { BpmnStyleIdentifier, MarkerIdentifier, StyleDefault } from '../style';
 
 const arrowDefaultSize = 12;
 

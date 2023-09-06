@@ -14,14 +14,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { readFileSync } from '@test/shared/file-helper';
-import BpmnXmlParser from '@lib/component/parser/xml/BpmnXmlParser';
-import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
-import type { TSubProcess } from '@lib/model/bpmn/json/baseElement/flowNode/activity/activity';
-import { ensureIsArray } from '@lib/component/helpers/array-utils';
-import type { TStartEvent } from '@lib/model/bpmn/json/baseElement/flowNode/event';
-import type { TTask } from '@lib/model/bpmn/json/baseElement/flowNode/activity/task';
 import type { TSequenceFlow } from '@lib/model/bpmn/json/baseElement/flowElement';
+import type { TSubProcess } from '@lib/model/bpmn/json/baseElement/flowNode/activity/activity';
+import type { TTask } from '@lib/model/bpmn/json/baseElement/flowNode/activity/task';
+import type { TStartEvent } from '@lib/model/bpmn/json/baseElement/flowNode/event';
+import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
+
+import { ensureIsArray } from '@lib/component/helpers/array-utils';
+import BpmnXmlParser from '@lib/component/parser/xml/BpmnXmlParser';
+import { readFileSync } from '@test/shared/file-helper';
 
 describe('parse bpmn as xml for Trisotech BPMN Modeler 6.2.0', () => {
   it('bpmn with process with extension, ensure elements are present', () => {

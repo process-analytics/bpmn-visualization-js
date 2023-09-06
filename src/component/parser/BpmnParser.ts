@@ -14,12 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type BpmnModel from '../../model/bpmn/internal/BpmnModel';
-import BpmnXmlParser from './xml/BpmnXmlParser';
 import type BpmnJsonParser from './json/BpmnJsonParser';
+import type BpmnModel from '../../model/bpmn/internal/BpmnModel';
+import type { ParserOptions } from '../options';
+
 import { newBpmnJsonParser } from './json/BpmnJsonParser';
 import { ParsingMessageCollector } from './parsing-messages';
-import type { ParserOptions } from '../options';
+import BpmnXmlParser from './xml/BpmnXmlParser';
 
 /**
  * @internal

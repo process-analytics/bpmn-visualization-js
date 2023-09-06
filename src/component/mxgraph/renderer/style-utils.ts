@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import type { mxCell } from 'mxgraph';
+
 import { ShapeUtil } from '../../../model/bpmn/internal';
 import { isFlowKind } from '../../../model/bpmn/internal/edge/utils';
 import { BpmnStyleIdentifier } from '../style/identifiers';

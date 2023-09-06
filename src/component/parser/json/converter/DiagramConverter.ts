@@ -14,20 +14,21 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import Shape from '../../../../model/bpmn/internal/shape/Shape';
-import Bounds from '../../../../model/bpmn/internal/Bounds';
-import type ShapeBpmnElement from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
-import { ShapeBpmnCallActivity, ShapeBpmnSubProcess } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
-import { Edge, Waypoint } from '../../../../model/bpmn/internal/edge/edge';
+import type { ConvertedElements } from './utils';
 import type { Shapes } from '../../../../model/bpmn/internal/BpmnModel';
 import type BpmnModel from '../../../../model/bpmn/internal/BpmnModel';
-import Label, { Font } from '../../../../model/bpmn/internal/Label';
-import { MessageVisibleKind, ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind, ShapeUtil } from '../../../../model/bpmn/internal';
+import type ShapeBpmnElement from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import type { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../../../../model/bpmn/json/bpmndi';
 import type { Point } from '../../../../model/bpmn/json/dc';
-import type { ConvertedElements } from './utils';
-import { ensureIsArray } from '../../../helpers/array-utils';
 import type { ParsingMessageCollector } from '../../parsing-messages';
+
+import { MessageVisibleKind, ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind, ShapeUtil } from '../../../../model/bpmn/internal';
+import Bounds from '../../../../model/bpmn/internal/Bounds';
+import { Edge, Waypoint } from '../../../../model/bpmn/internal/edge/edge';
+import Label, { Font } from '../../../../model/bpmn/internal/Label';
+import Shape from '../../../../model/bpmn/internal/shape/Shape';
+import { ShapeBpmnCallActivity, ShapeBpmnSubProcess } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
+import { ensureIsArray } from '../../../helpers/array-utils';
 import { EdgeUnknownBpmnElementWarning, LabelStyleMissingFontWarning, ShapeUnknownBpmnElementWarning } from '../warnings';
 
 /**

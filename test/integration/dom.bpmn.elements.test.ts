@@ -15,7 +15,13 @@ limitations under the License.
 */
 
 import type { BpmnVisualization } from '@lib/bpmn-visualization';
-import { FlowKind, ShapeBpmnElementKind } from '@lib/bpmn-visualization';
+
+import {
+  initializeBpmnVisualization,
+  initializeBpmnVisualizationWithContainerId,
+  initializeBpmnVisualizationWithHtmlElement,
+  initializeBpmnVisualizationWithoutId,
+} from './helpers/bpmn-visualization-initialization';
 import {
   expectEndEventBpmnElement,
   expectPoolBpmnElement,
@@ -24,12 +30,8 @@ import {
   expectStartEventBpmnElement,
   expectTaskBpmnElement,
 } from './helpers/semantic-with-svg-utils';
-import {
-  initializeBpmnVisualization,
-  initializeBpmnVisualizationWithContainerId,
-  initializeBpmnVisualizationWithHtmlElement,
-  initializeBpmnVisualizationWithoutId,
-} from './helpers/bpmn-visualization-initialization';
+
+import { FlowKind, ShapeBpmnElementKind } from '@lib/bpmn-visualization';
 import { readFileSync } from '@test/shared/file-helper';
 
 describe('Bpmn Elements registry - retrieve BPMN elements', () => {

@@ -14,12 +14,24 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BPMNDiagram } from './bpmndi';
 import type { TRelationship } from './baseElement/baseElement';
-import type { TExtension } from './Semantic';
-import type { TGlobalBusinessRuleTask, TGlobalManualTask, TGlobalScriptTask, TGlobalTask, TGlobalUserTask } from './baseElement/rootElement/globalTask';
 import type { TCorrelationProperty } from './baseElement/correlation';
 import type { TDataStore } from './baseElement/data';
+import type { TChoreography, TCollaboration, TGlobalChoreographyTask, TGlobalConversation } from './baseElement/rootElement/collaboration';
+import type {
+  TCancelEventDefinition,
+  TCompensateEventDefinition,
+  TConditionalEventDefinition,
+  TErrorEventDefinition,
+  TEscalationEventDefinition,
+  TEventDefinition,
+  TLinkEventDefinition,
+  TMessageEventDefinition,
+  TSignalEventDefinition,
+  TTerminateEventDefinition,
+  TTimerEventDefinition,
+} from './baseElement/rootElement/eventDefinition';
+import type { TGlobalBusinessRuleTask, TGlobalManualTask, TGlobalScriptTask, TGlobalTask, TGlobalUserTask } from './baseElement/rootElement/globalTask';
 import type {
   TCategory,
   TEndPoint,
@@ -35,20 +47,8 @@ import type {
   TRootElement,
   TSignal,
 } from './baseElement/rootElement/rootElement';
-import type { TChoreography, TCollaboration, TGlobalChoreographyTask, TGlobalConversation } from './baseElement/rootElement/collaboration';
-import type {
-  TCancelEventDefinition,
-  TCompensateEventDefinition,
-  TConditionalEventDefinition,
-  TErrorEventDefinition,
-  TEscalationEventDefinition,
-  TEventDefinition,
-  TLinkEventDefinition,
-  TMessageEventDefinition,
-  TSignalEventDefinition,
-  TTerminateEventDefinition,
-  TTimerEventDefinition,
-} from './baseElement/rootElement/eventDefinition';
+import type { BPMNDiagram } from './bpmndi';
+import type { TExtension } from './Semantic';
 
 export interface BpmnJsonModel {
   definitions: TDefinitions;

@@ -17,10 +17,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { OverlayConverter } from '@lib/component/mxgraph/overlay/converter';
 import type { MxGraphCustomOverlayPosition } from '@lib/component/mxgraph/overlay/custom-overlay';
-import { StyleDefault } from '@lib/component/mxgraph/style';
 import type { Overlay, OverlayPosition } from '@lib/component/registry/types';
+
+import { OverlayConverter } from '@lib/component/mxgraph/overlay/converter';
+import { StyleDefault } from '@lib/component/mxgraph/style';
 
 describe('overlay converter', () => {
   const overlayConverter = new OverlayConverter();

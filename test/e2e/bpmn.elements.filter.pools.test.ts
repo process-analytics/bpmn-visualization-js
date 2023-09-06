@@ -14,9 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
-import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
 import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
+
+import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
+
+import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
 
 class FilterPoolsImageSnapshotConfigurator extends ImageSnapshotConfigurator {
   override getConfig(name: string): MatchImageSnapshotOptions {

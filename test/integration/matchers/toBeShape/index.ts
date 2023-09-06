@@ -14,8 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BpmnCellStyle, ExpectedCell } from '../matcher-utils';
-import { buildCellMatcher, buildExpectedCellStyleWithCommonAttributes, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
 import type {
   ExpectedBoundaryEventModelElement,
   ExpectedCallActivityModelElement,
@@ -25,9 +23,14 @@ import type {
   ExpectedStartEventModelElement,
   ExpectedSubProcessModelElement,
 } from '../../helpers/model-expect';
+import type { BpmnCellStyle, ExpectedCell } from '../matcher-utils';
+
 import { getDefaultParentId } from '../../helpers/model-expect';
-import { ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';
+import { buildCellMatcher, buildExpectedCellStyleWithCommonAttributes, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
+
 import { mxConstants } from '@lib/component/mxgraph/initializer';
+import { ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';
+
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 
