@@ -36,6 +36,8 @@ export interface GlobalOptions {
 export interface NavigationConfiguration {
   /**
    * Enable the navigation with the mouse wheel or with gesture/pinch on touch devices.
+   *
+   * **IMPORTANT**: the navigation API is not affected by this value. Navigation actions performed with the API always have an effect.
    * @default false
    */
   enabled: boolean;
