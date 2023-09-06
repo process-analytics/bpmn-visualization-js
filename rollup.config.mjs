@@ -18,7 +18,7 @@ import commonjs from '@rollup/plugin-commonjs'; // at least, needed to bundle mx
 import resolve from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
 import cleanup from 'rollup-plugin-cleanup';
-// eslint-disable-next-line import/no-unresolved
+// eslint-disable-next-line import/no-unresolved -- The package is malformed. So, the rule doesn't resolve it.
 import externals from 'rollup-plugin-node-externals';
 import sizes from 'rollup-plugin-sizes';
 import typescript from 'rollup-plugin-typescript2';

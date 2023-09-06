@@ -16,9 +16,6 @@ limitations under the License.
 
 import * as fs from 'node:fs';
 
-// generate warning when running with Node 18
-// (node:75278) ExperimentalWarning: Importing JSON modules is an experimental feature. This feature could change at any time
-import packageJSON from '../package.json' assert { type: 'json' };
 
 import { getTypeFilesInformation } from './shared/types-info.mjs';
 
