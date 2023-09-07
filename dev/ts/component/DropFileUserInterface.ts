@@ -54,7 +54,7 @@ export class DropFileUserInterface {
   }
 
   private preventDefaultsOnEvents(events: string[], container: Element | Window): void {
-    events.forEach(eventName => container.addEventListener(eventName, this.preventDefaults, false));
+    events.forEach(eventName => container.addEventListener(eventName, this.preventDefaults.bind(this), false));
   }
 
   private addDomElements(containerToBeFaded: HTMLElement): void {
@@ -153,7 +153,8 @@ export class DropFileUserInterface {
         const files = dt.files;
         dropCallback(files[0]);
       } catch (e) {
-        logErrorAndOpenAlert(e);
+        const errorMessage = e instanceof Error ? e.message : String(e);
+        logErrorAndOpenAlert(errorMessage);
       } finally {
         isDocument ? (this as Document).querySelector('#' + outerContainerId).classList.remove('dragging') : (this as HTMLElement).classList.remove('dragging');
         containerToBeFaded.classList.remove('faded');

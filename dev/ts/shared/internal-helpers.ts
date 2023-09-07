@@ -16,34 +16,33 @@ limitations under the License.
 
 import { log } from './shared-helpers';
 
-export function _log(header: string, message: unknown, ...optionalParams: unknown[]): void {
+export function _log(header: string, message: string, ...optionalParams: unknown[]): void {
   // eslint-disable-next-line no-console
-  console.info(header + ' ' + message, ...optionalParams);
+  console.info(`${header} ${message}`, ...optionalParams);
 }
 
 export function logStartup(message?: string, ...optionalParams: unknown[]): void {
   _log('[DEMO STARTUP]', message, ...optionalParams);
 }
 
-export function logErrorAndOpenAlert(error: unknown, alertMsg?: string): void {
+export function logErrorAndOpenAlert(error: string, alertMsg?: string): void {
   logError(error);
   window.alert(alertMsg ?? error);
 }
 
-export function logError(error: unknown): void {
+export function logError(error: string): void {
   console.error(`[DEMO]`, error);
 }
 
-export function logDownload(message?: unknown, ...optionalParams: unknown[]): void {
+export function logDownload(message?: string, ...optionalParams: unknown[]): void {
   _log('[DEMO DOWNLOAD]', message, ...optionalParams);
 }
 
-export function fetchBpmnContent(url: string): Promise<string> {
+export async function fetchBpmnContent(url: string): Promise<string> {
   log(`Fetching BPMN content from url ${url}`);
-  return fetch(url).then(response => {
-    if (!response.ok) {
-      throw Error(`HTTP status ${response.status}`);
-    }
-    return response.text();
-  });
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw Error(`HTTP status ${response.status}`);
+  }
+  return await response.text();
 }
