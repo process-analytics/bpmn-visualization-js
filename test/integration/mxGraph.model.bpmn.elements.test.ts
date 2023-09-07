@@ -980,7 +980,7 @@ describe('mxGraph model - BPMN elements', () => {
             });
           });
 
-          test('Elements in expanded Sub Process', async () => {
+          test('Elements in expanded Sub Process', () => {
             expect('start_event_in_adHoc_sub_process_id').toBeStartEvent({
               eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
               label: 'Start Event In AdHoc Sub-Process',
@@ -1005,7 +1005,7 @@ describe('mxGraph model - BPMN elements', () => {
             });
           });
 
-          test('Elements of collapsed Sub Process', async () => {
+          test('Elements of collapsed Sub Process', () => {
             expect('message_boundary_event_attached_to_collapsed_adHoc_sub_process_id').toBeBoundaryEvent({
               eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
               label: 'Interrupting Message Boundary Event attached to collapsed AdHoc Sub-Process',

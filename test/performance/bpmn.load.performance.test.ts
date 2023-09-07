@@ -27,9 +27,11 @@ import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-util
 const metricsArray: PerformanceMetric[] = [];
 
 let metricsCollector: ChromiumMetricsCollector;
+
 beforeAll(async () => {
   metricsCollector = await ChromiumMetricsCollector.create(page);
 });
+
 describe('load performance', () => {
   const pageTester = new PageTester({ targetedPage: AvailableTestPages.DIAGRAM_NAVIGATION, diagramSubfolder: 'performance' }, page);
   const bpmnDiagramName = 'B.2.0';
@@ -44,17 +46,19 @@ describe('load performance', () => {
     expect(true).toBeTrue();
   });
 });
-afterAll(() => {
-  metricsCollector.destroy();
-  try {
-    const oldDataString = fs.readFileSync(performanceDataFilePath, 'utf8');
-    const oldData = JSON.parse(oldDataString.substring('const data = '.length, oldDataString.length)) as ChartData;
-    const data = {
-      zoom: oldData.zoom,
-      load: oldData.load.concat(metricsArray),
-    };
-    fs.writeFileSync(performanceDataFilePath, 'const data = ' + JSON.stringify(data));
-  } catch (err) {
-    console.error(err);
-  }
+
+afterAll(async () => {
+  await metricsCollector.destroy().then(() => {
+    try {
+      const oldDataString = fs.readFileSync(performanceDataFilePath, 'utf8');
+      const oldData = JSON.parse(oldDataString.substring('const data = '.length, oldDataString.length)) as ChartData;
+      const data = {
+        zoom: oldData.zoom,
+        load: oldData.load.concat(metricsArray),
+      };
+      fs.writeFileSync(performanceDataFilePath, 'const data = ' + JSON.stringify(data));
+    } catch (err) {
+      console.error(err);
+    }
+  });
 });
