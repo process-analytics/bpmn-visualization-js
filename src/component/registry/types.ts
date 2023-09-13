@@ -350,10 +350,11 @@ export interface StyleRegistry {
  */
 export interface BaseBpmnSemantic {
   id: string;
-  name: string;
   /** `true` when relates to a BPMN Shape, `false` when relates to a BPMN Edge. */
   isShape: boolean;
   kind: BpmnElementKind;
+  name: string;
+  parentId: string;
 }
 
 /**
