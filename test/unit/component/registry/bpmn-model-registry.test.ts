@@ -19,6 +19,7 @@ import type { EdgeBpmnSemantic, ShapeBpmnSemantic } from '@lib/component/registr
 import { associationFlowInModel, laneInModel, messageFlowInModel, poolInModel, sequenceFlowInModel, startEventInModel } from '../../helpers/bpmn-model-utils';
 
 import { BpmnModelRegistry } from '@lib/component/registry/bpmn-model-registry';
+import { ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
 import { expectAssociationFlow, expectLane, expectMessageFlow, expectPool, expectSequenceFlow, expectStartEvent } from '@test/shared/model/bpmn-semantic-utils';
 
 const bpmnModelRegistry = new BpmnModelRegistry();
@@ -51,7 +52,14 @@ describe('Bpmn Model registry', () => {
   it('search flowNode', () => {
     bpmnModelRegistry.load(startEventInModel('start event id', 'start event name', { incomingIds: ['incoming_1'], outgoingIds: ['outgoing_1', 'outgoing_2'] }));
     const bpmnSemantic = bpmnModelRegistry.getBpmnSemantic('start event id') as ShapeBpmnSemantic;
-    expectStartEvent(bpmnSemantic, { id: 'start event id', name: 'start event name', incoming: ['incoming_1'], outgoing: ['outgoing_1', 'outgoing_2'] });
+    expectStartEvent(bpmnSemantic, {
+      id: 'start event id',
+      name: 'start event name',
+      incoming: ['incoming_1'],
+      outgoing: ['outgoing_1', 'outgoing_2'],
+      parentId: 'parentId',
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.TIMER,
+    });
   });
 
   it('search lane', () => {

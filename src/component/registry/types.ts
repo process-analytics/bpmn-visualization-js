@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BpmnElementKind } from '../../model/bpmn/internal';
+import type { BpmnElementKind, ShapeBpmnEventDefinitionKind } from '../../model/bpmn/internal';
 
 /**
  * @category Element Style
@@ -371,6 +371,8 @@ export interface EdgeBpmnSemantic extends BaseBpmnSemantic {
  * @category Custom Behavior
  */
 export interface ShapeBpmnSemantic extends BaseBpmnSemantic {
+  /** Set when the {@link BaseBpmnSemantic.kind} relates to a BPMN event. */
+  eventDefinitionKind?: ShapeBpmnEventDefinitionKind;
   incomingIds: string[];
   outgoingIds: string[];
 }

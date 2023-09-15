@@ -31,7 +31,7 @@ import {
   expectTaskBpmnElement,
 } from './helpers/semantic-with-svg-utils';
 
-import { FlowKind, ShapeBpmnElementKind } from '@lib/bpmn-visualization';
+import { FlowKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/bpmn-visualization';
 import { readFileSync } from '@test/shared/file-helper';
 
 describe('Bpmn Elements registry - retrieve BPMN elements', () => {
@@ -51,7 +51,7 @@ describe('Bpmn Elements registry - retrieve BPMN elements', () => {
         const bpmnElements = bpmnVisualization.bpmnElementsRegistry.getElementsByIds(['StartEvent_1', 'Flow_2']);
         expect(bpmnElements).toHaveLength(2);
 
-        expectStartEventBpmnElement(bpmnElements[0], { id: 'StartEvent_1', name: 'Start Event 1', outgoing: ['Flow_1'] });
+        expectStartEventBpmnElement(bpmnElements[0], { id: 'StartEvent_1', name: 'Start Event 1', outgoing: ['Flow_1'], eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE });
         expectSequenceFlowBpmnElement(bpmnElements[1], { id: 'Flow_2', source: 'Activity_1', target: 'EndEvent_1' });
       });
 
@@ -97,8 +97,20 @@ describe('Bpmn Elements registry - retrieve BPMN elements', () => {
         const bpmnElements = bpmnVisualization.bpmnElementsRegistry.getElementsByKinds([ShapeBpmnElementKind.EVENT_END, ShapeBpmnElementKind.POOL]);
         expect(bpmnElements).toHaveLength(3);
 
-        expectEndEventBpmnElement(bpmnElements[0], { id: 'endEvent_terminate_1', name: 'terminate end 1', parentId: 'lane_01' });
-        expectEndEventBpmnElement(bpmnElements[1], { id: 'endEvent_message_1', name: 'message end 2', parentId: 'lane_02' });
+        expectEndEventBpmnElement(bpmnElements[0], {
+          id: 'endEvent_terminate_1',
+          name: 'terminate end 1',
+          parentId: 'lane_01',
+          eventDefinitionKind: ShapeBpmnEventDefinitionKind.TERMINATE,
+          incoming: ['sequenceFlow_lane_1_elt_6'],
+        });
+        expectEndEventBpmnElement(bpmnElements[1], {
+          id: 'endEvent_message_1',
+          name: 'message end 2',
+          parentId: 'lane_02',
+          eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
+          incoming: ['Flow_09zytr1'],
+        });
         expectPoolBpmnElement(bpmnElements[2], { id: 'Participant_1', name: 'Pool 1' });
       });
 

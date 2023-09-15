@@ -19,7 +19,7 @@ import type { BpmnSemantic, EdgeBpmnSemantic, ShapeBpmnSemantic } from '@lib/com
 import { initializeBpmnVisualization } from './helpers/bpmn-visualization-initialization';
 import { bpmnVisualization } from './helpers/model-expect';
 
-import { type BpmnElementKind, FlowKind, ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
+import { type BpmnElementKind, FlowKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
 import { readFileSync } from '@test/shared/file-helper';
 import {
   expectBoundaryEvent,
@@ -49,6 +49,7 @@ describe('Registry API - retrieve Model Bpmn elements', () => {
         name: 'Message Start Event',
         outgoing: ['message_flow_initiating_message_id'],
         parentId: 'participant_1_id',
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
       });
     });
 
@@ -91,6 +92,7 @@ describe('Registry API - retrieve Model Bpmn elements', () => {
         id: 'boundary_event_non_interrupting_signal_id',
         name: 'Non-interrupting Signal Boundary Intermediate Event',
         parentId: 'collapsed_call_activity_id',
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.SIGNAL,
       });
       expectSequenceFlow(modelElements[1] as EdgeBpmnSemantic, {
         id: 'conditional_sequence_flow_from_activity_id',
@@ -138,8 +140,20 @@ describe('Registry API - retrieve Model Bpmn elements', () => {
 
       expect(modelElements).toHaveLength(17);
 
-      expectEndEvent(modelElements[0] as ShapeBpmnSemantic, { id: 'endEvent_terminate_1', name: 'terminate end 1', parentId: 'lane_01' });
-      expectEndEvent(modelElements[1] as ShapeBpmnSemantic, { id: 'endEvent_message_1', name: 'message end 2', parentId: 'lane_02' });
+      expectEndEvent(modelElements[0] as ShapeBpmnSemantic, {
+        id: 'endEvent_terminate_1',
+        name: 'terminate end 1',
+        parentId: 'lane_01',
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.TERMINATE,
+        incoming: ['sequenceFlow_lane_1_elt_6'],
+      });
+      expectEndEvent(modelElements[1] as ShapeBpmnSemantic, {
+        id: 'endEvent_message_1',
+        name: 'message end 2',
+        parentId: 'lane_02',
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
+        incoming: ['Flow_09zytr1'],
+      });
       expectParallelGateway(modelElements[2] as ShapeBpmnSemantic, { id: 'Gateway_1hq21li', name: 'gateway 2', parentId: 'lane_02' });
       expectSequenceFlow(modelElements[3] as EdgeBpmnSemantic, { id: 'Flow_1noi0ay', source: 'task_1', target: 'gateway_01' });
       // all remaining are sequence flows

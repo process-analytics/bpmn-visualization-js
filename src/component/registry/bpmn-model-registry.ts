@@ -23,7 +23,7 @@ import type { ModelFilter } from '../options';
 
 import { ShapeBpmnMarkerKind, ShapeUtil } from '../../model/bpmn/internal';
 import { Flow } from '../../model/bpmn/internal/edge/flows';
-import ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
+import ShapeBpmnElement, { ShapeBpmnEvent } from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 
 import { ModelFiltering } from './bpmn-model-filters';
 
@@ -61,6 +61,9 @@ export class BpmnModelRegistry {
       semantic.parentId = bpmnElement.parentId;
       (semantic as ShapeBpmnSemantic).incomingIds = bpmnElement.incomingIds;
       (semantic as ShapeBpmnSemantic).outgoingIds = bpmnElement.outgoingIds;
+      if (bpmnElement instanceof ShapeBpmnEvent) {
+        (semantic as ShapeBpmnSemantic).eventDefinitionKind = bpmnElement.eventDefinitionKind;
+      }
     }
     return semantic as BpmnSemantic;
   }

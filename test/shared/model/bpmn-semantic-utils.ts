@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import type { BpmnSemantic, EdgeBpmnSemantic, ShapeBpmnSemantic, BaseBpmnSemantic } from '@lib/component/registry';
+import type { ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
 
 import { FlowKind, ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 
@@ -73,19 +74,27 @@ function expectedFlowNode(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedFlo
   expect(bpmnSemantic.outgoingIds).toEqual(expected.outgoing ?? []);
 }
 
-export function expectStartEvent(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedFlowNodeElement): void {
+export interface ExpectedEventElement extends ExpectedFlowNodeElement {
+  eventDefinitionKind: ShapeBpmnEventDefinitionKind;
+}
+
+function expectEvent(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedEventElement): void {
+  expectedFlowNode(bpmnSemantic, expected);
+  expect(bpmnSemantic.eventDefinitionKind).toBe(expected.eventDefinitionKind);
+}
+
+export function expectStartEvent(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedEventElement): void {
   expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.EVENT_START);
-  expectedFlowNode(bpmnSemantic, expected);
+  expectEvent(bpmnSemantic, expected);
 }
-
-export function expectEndEvent(bpmnSemantic: BpmnSemantic, expected: ExpectedBaseBpmnElement): void {
-  expectShape(bpmnSemantic, expected);
+export function expectEndEvent(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedEventElement): void {
   expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.EVENT_END);
+  expectEvent(bpmnSemantic, expected);
 }
 
-export function expectBoundaryEvent(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedFlowNodeElement): void {
+export function expectBoundaryEvent(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedEventElement): void {
   expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.EVENT_BOUNDARY);
-  expectedFlowNode(bpmnSemantic, expected);
+  expectEvent(bpmnSemantic, expected);
 }
 
 export function expectParallelGateway(bpmnSemantic: BpmnSemantic, expected: ExpectedBaseBpmnElement): void {
