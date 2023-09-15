@@ -363,7 +363,7 @@ describe.each([
       ${'string'} | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
       ${'array'}  | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
     `(
-      `should convert as Shape with $inputAttribute attribute calculated from ${bpmnKind} attribute as $title`,
+      `should convert as Shape without $inputAttribute attribute calculated from ${bpmnKind} attribute as $title`,
       ({ title, inputAttribute, expectedAttribute }: { title: string; inputAttribute: 'incoming' | 'outgoing'; expectedAttribute: keyof ExpectedShape }) => {
         const json = buildDefinitions({
           process: {
@@ -383,7 +383,7 @@ describe.each([
           bpmnElementName: undefined,
           bpmnElementKind: expectedShapeBpmnElementKind,
           bounds: expectedBounds,
-          [expectedAttribute]: title === 'array' ? [`flow_${inputAttribute}_1`, `flow_${inputAttribute}_2`] : [`flow_${inputAttribute}_1`],
+          [expectedAttribute]: [], // nothing inferred from flows
         });
       },
     );
@@ -395,7 +395,7 @@ describe.each([
       ${'incoming'} | ${'association'}  | ${'bpmnElementIncomingIds'}
       ${'outgoing'} | ${'association'}  | ${'bpmnElementOutgoingIds'}
     `(
-      `should convert as Shape with $title attribute calculated from $flowKind`,
+      `should convert as Shape without $title attribute calculated from $flowKind`,
       ({ title, flowKind, expectedAttribute }: { title: string; flowKind: 'sequenceFlow' | 'association'; expectedAttribute: keyof ExpectedShape }) => {
         const json = buildDefinitions({
           process: {
@@ -416,7 +416,7 @@ describe.each([
           bpmnElementName: undefined,
           bpmnElementKind: expectedShapeBpmnElementKind,
           bounds: expectedBounds,
-          [expectedAttribute]: [`flow_${title}`],
+          [expectedAttribute]: [`flow_${title}`], // only inferred from flows
         });
       },
     );
