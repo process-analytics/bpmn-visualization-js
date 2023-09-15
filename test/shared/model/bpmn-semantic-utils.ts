@@ -15,17 +15,10 @@ limitations under the License.
 */
 
 import type { BpmnSemantic, EdgeBpmnSemantic, ShapeBpmnSemantic, BaseBpmnSemantic } from '@lib/component/registry';
-import type { GlobalTaskKind, ShapeBpmnEventDefinitionKind, ShapeBpmnSubProcessKind, ShapeBpmnCallActivityKind } from '@lib/model/bpmn/internal';
 
 import { FlowKind, ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 
-// interface ExpectedBaseBpmnElement {
-//   id: string;
-//   name?: string;
-//   parentId?: string;
-// }
-
-type ExpectedBaseBpmnElement = Pick<BaseBpmnSemantic, 'id' | 'name' | 'parentId'>;
+export type ExpectedBaseBpmnElement = Pick<BaseBpmnSemantic, 'id' | 'parentId'> & Partial<Pick<BaseBpmnSemantic, 'name' | 'parentId'>>;
 
 export interface ExpectedFlowElement extends ExpectedBaseBpmnElement {
   source: string;
@@ -76,9 +69,7 @@ function expectedFlowNode(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedFlo
   expect(bpmnSemantic.outgoingIds).toEqual(expected.outgoing ?? []);
 }
 
-export interface ExpectedEventElement extends ExpectedFlowNodeElement {
-  eventDefinitionKind: ShapeBpmnEventDefinitionKind;
-}
+export type ExpectedEventElement = ExpectedFlowNodeElement & Pick<ShapeBpmnSemantic, 'eventDefinitionKind'>;
 
 function expectEvent(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedEventElement): void {
   expectedFlowNode(bpmnSemantic, expected);
@@ -129,10 +120,8 @@ export function expectUserTask(bpmnSemantic: ShapeBpmnSemantic, expected: Expect
   expectedFlowNode(bpmnSemantic, expected);
 }
 
-export interface ExpectedCallActivityElement extends ExpectedFlowNodeElement {
-  callActivityKind: ShapeBpmnCallActivityKind;
-  callActivityGlobalTaskKind?: GlobalTaskKind;
-}
+export type ExpectedCallActivityElement = ExpectedFlowNodeElement & Pick<ShapeBpmnSemantic, 'callActivityKind' | 'callActivityGlobalTaskKind'>;
+
 export function expectCallActivity(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedCallActivityElement): void {
   expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.CALL_ACTIVITY);
   expect(bpmnSemantic.callActivityKind).toEqual(expected.callActivityKind);
@@ -140,9 +129,7 @@ export function expectCallActivity(bpmnSemantic: ShapeBpmnSemantic, expected: Ex
   expectShape(bpmnSemantic, expected);
 }
 
-export interface ExpectedSubprocessElement extends ExpectedFlowNodeElement {
-  subProcessKind: ShapeBpmnSubProcessKind;
-}
+export type ExpectedSubprocessElement = ExpectedFlowNodeElement & Pick<ShapeBpmnSemantic, 'subProcessKind'>;
 
 export function expectSubprocess(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedSubprocessElement): void {
   expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.SUB_PROCESS);
