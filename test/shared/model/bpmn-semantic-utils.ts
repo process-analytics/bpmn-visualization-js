@@ -19,11 +19,13 @@ import type { GlobalTaskKind, ShapeBpmnEventDefinitionKind, ShapeBpmnSubProcessK
 
 import { FlowKind, ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 
-export interface ExpectedBaseBpmnElement {
-  id: string;
-  name?: string;
-  parentId?: string;
-}
+// interface ExpectedBaseBpmnElement {
+//   id: string;
+//   name?: string;
+//   parentId?: string;
+// }
+
+type ExpectedBaseBpmnElement = Pick<BaseBpmnSemantic, 'id' | 'name' | 'parentId'>;
 
 export interface ExpectedFlowElement extends ExpectedBaseBpmnElement {
   source: string;
