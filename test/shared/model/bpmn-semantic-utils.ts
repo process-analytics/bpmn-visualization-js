@@ -127,6 +127,11 @@ export function expectUserTask(bpmnSemantic: ShapeBpmnSemantic, expected: Expect
   expectedFlowNode(bpmnSemantic, expected);
 }
 
+export function expectCallActivity(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedFlowNodeElement): void {
+  expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.CALL_ACTIVITY);
+  expectShape(bpmnSemantic, expected);
+}
+
 export interface ExpectedSubprocessElement extends ExpectedFlowNodeElement {
   subProcessKind: ShapeBpmnSubProcessKind;
 }

@@ -23,6 +23,7 @@ import { type BpmnElementKind, FlowKind, ShapeBpmnElementKind, ShapeBpmnEventDef
 import { readFileSync } from '@test/shared/file-helper';
 import {
   expectBoundaryEvent,
+  expectCallActivity,
   expectEndEvent,
   expectParallelGateway,
   expectSequenceFlow,
@@ -58,9 +59,11 @@ describe('Registry API - retrieve Model Bpmn elements', () => {
         'expanded_event_sub_process_with_loop_id',
         'sequence_flow_in_sub_process_1_id',
         'collapsed_embedded_sub_process_id',
+        'expanded_call_activity_id',
+        'call_activity_calling_global_task_id',
       ]);
 
-      expect(modelElements).toHaveLength(3);
+      expect(modelElements).toHaveLength(5);
 
       expectSubprocess(modelElements[0] as ShapeBpmnSemantic, {
         id: 'expanded_event_sub_process_with_loop_id',
@@ -78,6 +81,16 @@ describe('Registry API - retrieve Model Bpmn elements', () => {
         name: 'Collapsed Embedded Sub-Process',
         parentId: 'participant_1_id',
         subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
+      });
+      expectCallActivity(modelElements[3] as ShapeBpmnSemantic, {
+        id: 'expanded_call_activity_id',
+        name: 'Expanded Call Activity',
+        parentId: 'participant_1_id',
+      });
+      expectCallActivity(modelElements[4] as ShapeBpmnSemantic, {
+        id: 'call_activity_calling_global_task_id',
+        name: 'Call Activity Calling Global Task',
+        parentId: 'participant_1_id',
       });
     });
 
