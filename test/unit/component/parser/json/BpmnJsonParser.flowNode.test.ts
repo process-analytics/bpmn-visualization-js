@@ -449,7 +449,7 @@ describe.each([
       });
     });
 
-    it(`should convert as Shape with incoming/outgoing attributes calculated from ${bpmnKind} attributes and from flows`, () => {
+    it(`should convert as Shape with incoming/outgoing attributes calculated from ${bpmnKind} from flows only`, () => {
       const json = buildDefinitions({
         process: {
           [flowNodeParameterKind]: { id: `${bpmnKind}_id_0`, bpmnKind, incoming: 'flow_in_1', outgoing: ['flow_out_1', 'flow_out_2'] },
@@ -470,8 +470,8 @@ describe.each([
         bpmnElementName: undefined,
         bpmnElementKind: expectedShapeBpmnElementKind,
         bounds: expectedBounds,
-        bpmnElementIncomingIds: ['flow_in_1', 'flow_in_2'],
-        bpmnElementOutgoingIds: ['flow_out_1', 'flow_out_2', 'flow_out_3'],
+        bpmnElementIncomingIds: ['flow_in_2'], // 'flow_in_1' is in 'incoming' but is not inferred from the actual flows
+        bpmnElementOutgoingIds: ['flow_out_3'], // 'flow_out_1' and 'flow_out_2' are in 'outgoing' but are not inferred from the actual flows
       });
     });
   });
