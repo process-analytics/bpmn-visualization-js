@@ -54,9 +54,13 @@ describe('Registry API - retrieve Model Bpmn elements', () => {
     });
 
     test('Pass several existing ids', () => {
-      const modelElements = bpmnElementsRegistry.getModelElementsByIds(['expanded_event_sub_process_with_loop_id', 'sequence_flow_in_sub_process_1_id']);
+      const modelElements = bpmnElementsRegistry.getModelElementsByIds([
+        'expanded_event_sub_process_with_loop_id',
+        'sequence_flow_in_sub_process_1_id',
+        'collapsed_embedded_sub_process_id',
+      ]);
 
-      expect(modelElements).toHaveLength(2);
+      expect(modelElements).toHaveLength(3);
 
       expectSubprocess(modelElements[0] as ShapeBpmnSemantic, {
         id: 'expanded_event_sub_process_with_loop_id',
@@ -68,6 +72,12 @@ describe('Registry API - retrieve Model Bpmn elements', () => {
         id: 'sequence_flow_in_sub_process_1_id',
         source: 'start_event_in_sub_process_id',
         target: 'task_in_sub_process_id',
+      });
+      expectSubprocess(modelElements[2] as ShapeBpmnSemantic, {
+        id: 'collapsed_embedded_sub_process_id',
+        name: 'Collapsed Embedded Sub-Process',
+        parentId: 'participant_1_id',
+        subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
       });
     });
 
