@@ -53,11 +53,12 @@ export class BpmnModelRegistry {
     }
     const bpmnElement = element.bpmnElement;
     const isShape = bpmnElement instanceof ShapeBpmnElement;
-    const semantic: BaseBpmnSemantic = { id: bpmnElementId, isShape: isShape, kind: bpmnElement.kind, name: bpmnElement.name, parentId: 'FAIL' };
+    const semantic: BaseBpmnSemantic = { id: bpmnElementId, isShape: isShape, kind: bpmnElement.kind, name: bpmnElement.name };
     if (bpmnElement instanceof Flow) {
       (semantic as EdgeBpmnSemantic).sourceRefId = bpmnElement.sourceRefId;
       (semantic as EdgeBpmnSemantic).targetRefId = bpmnElement.targetRefId;
     } else {
+      semantic.parentId = bpmnElement.parentId;
       (semantic as ShapeBpmnSemantic).incomingIds = bpmnElement.incomingIds;
       (semantic as ShapeBpmnSemantic).outgoingIds = bpmnElement.outgoingIds;
     }

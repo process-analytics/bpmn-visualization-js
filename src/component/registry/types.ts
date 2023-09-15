@@ -354,7 +354,7 @@ export interface BaseBpmnSemantic {
   isShape: boolean;
   kind: BpmnElementKind;
   name: string;
-  parentId: string;
+  parentId?: string;
 }
 
 /**

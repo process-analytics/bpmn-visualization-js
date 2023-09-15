@@ -37,7 +37,7 @@ export interface ExpectedFlowNodeElement extends ExpectedBaseBpmnElement {
 const expectBaseElement = (bpmnSemantic: BaseBpmnSemantic, expected: ExpectedBaseBpmnElement): void => {
   expect(bpmnSemantic.id).toEqual(expected.id);
   expect(bpmnSemantic.name).toEqual(expected.name);
-  // expect(bpmnSemantic.parentId).toEqual(expected.parentId);
+  expect(bpmnSemantic.parentId).toEqual(expected.parentId);
 };
 
 const expectFlow = (bpmnSemantic: EdgeBpmnSemantic, expected: ExpectedFlowElement): void => {

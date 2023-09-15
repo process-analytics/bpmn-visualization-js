@@ -97,8 +97,8 @@ describe('Bpmn Elements registry - retrieve BPMN elements', () => {
         const bpmnElements = bpmnVisualization.bpmnElementsRegistry.getElementsByKinds([ShapeBpmnElementKind.EVENT_END, ShapeBpmnElementKind.POOL]);
         expect(bpmnElements).toHaveLength(3);
 
-        expectEndEventBpmnElement(bpmnElements[0], { id: 'endEvent_terminate_1', name: 'terminate end 1' });
-        expectEndEventBpmnElement(bpmnElements[1], { id: 'endEvent_message_1', name: 'message end 2' });
+        expectEndEventBpmnElement(bpmnElements[0], { id: 'endEvent_terminate_1', name: 'terminate end 1', parentId: 'lane_01' });
+        expectEndEventBpmnElement(bpmnElements[1], { id: 'endEvent_message_1', name: 'message end 2', parentId: 'lane_02' });
         expectPoolBpmnElement(bpmnElements[2], { id: 'Participant_1', name: 'Pool 1' });
       });
 
@@ -107,8 +107,8 @@ describe('Bpmn Elements registry - retrieve BPMN elements', () => {
         const bpmnElements = bpmnVisualization.bpmnElementsRegistry.getElementsByKinds([ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.TASK_SERVICE]);
         expect(bpmnElements).toHaveLength(2);
 
-        expectServiceTaskBpmnElement(bpmnElements[0], { id: 'serviceTask_1_2', name: 'Service Task 1.2' });
-        expectServiceTaskBpmnElement(bpmnElements[1], { id: 'serviceTask_2_1', name: 'Service Task 2.1' });
+        expectServiceTaskBpmnElement(bpmnElements[0], { id: 'serviceTask_1_2', name: 'Service Task 1.2', parentId: 'lane_01' });
+        expectServiceTaskBpmnElement(bpmnElements[1], { id: 'serviceTask_2_1', name: 'Service Task 2.1', parentId: 'lane_02' });
       });
     });
   });
