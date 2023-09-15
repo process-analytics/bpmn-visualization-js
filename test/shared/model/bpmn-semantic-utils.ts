@@ -14,13 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BpmnSemantic, EdgeBpmnSemantic, ShapeBpmnSemantic } from '@lib/component/registry';
+import type { BpmnSemantic, EdgeBpmnSemantic, ShapeBpmnSemantic, BaseBpmnSemantic } from '@lib/component/registry';
 
 import { FlowKind, ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 
 export interface ExpectedBaseBpmnElement {
   id: string;
   name?: string;
+  parentId?: string;
 }
 
 export interface ExpectedFlowElement extends ExpectedBaseBpmnElement {
@@ -33,9 +34,14 @@ export interface ExpectedFlowNodeElement extends ExpectedBaseBpmnElement {
   outgoing?: string[];
 }
 
-const expectFlow = (bpmnSemantic: EdgeBpmnSemantic, expected: ExpectedFlowElement): void => {
+const expectBaseElement = (bpmnSemantic: BaseBpmnSemantic, expected: ExpectedBaseBpmnElement): void => {
   expect(bpmnSemantic.id).toEqual(expected.id);
   expect(bpmnSemantic.name).toEqual(expected.name);
+  // expect(bpmnSemantic.parentId).toEqual(expected.parentId);
+};
+
+const expectFlow = (bpmnSemantic: EdgeBpmnSemantic, expected: ExpectedFlowElement): void => {
+  expectBaseElement(bpmnSemantic, expected);
   expect(bpmnSemantic.isShape).toBeFalsy();
   expect(bpmnSemantic.sourceRefId).toEqual(expected.source);
   expect(bpmnSemantic.targetRefId).toEqual(expected.target);
@@ -57,8 +63,7 @@ export const expectAssociationFlow = (bpmnSemantic: EdgeBpmnSemantic, expected: 
 };
 
 function expectShape(bpmnSemantic: BpmnSemantic, expected: ExpectedBaseBpmnElement): void {
-  expect(bpmnSemantic.id).toEqual(expected.id);
-  expect(bpmnSemantic.name).toEqual(expected.name);
+  expectBaseElement(bpmnSemantic, expected);
   expect(bpmnSemantic.isShape).toBeTruthy();
 }
 
