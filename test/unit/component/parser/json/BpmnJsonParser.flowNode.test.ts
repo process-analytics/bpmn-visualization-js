@@ -449,7 +449,7 @@ describe.each([
       });
     });
 
-    it(`should convert as Shape with incoming/outgoing attributes calculated from ${bpmnKind} from flows only`, () => {
+    it(`should convert as Shape with incoming/outgoing attributes calculated from flows only`, () => {
       const json = buildDefinitions({
         process: {
           [flowNodeParameterKind]: { id: `${bpmnKind}_id_0`, bpmnKind, incoming: 'flow_in_1', outgoing: ['flow_out_1', 'flow_out_2'] },
