@@ -19,7 +19,7 @@ import type { BpmnSemantic, EdgeBpmnSemantic, ShapeBpmnSemantic } from '@lib/com
 import { initializeBpmnVisualization } from './helpers/bpmn-visualization-initialization';
 import { bpmnVisualization } from './helpers/model-expect';
 
-import { type BpmnElementKind, FlowKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';
+import { type BpmnElementKind, FlowKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';
 import { readFileSync } from '@test/shared/file-helper';
 import {
   expectBoundaryEvent,
@@ -61,9 +61,10 @@ describe('Registry API - retrieve Model Bpmn elements', () => {
         'collapsed_embedded_sub_process_id',
         'expanded_call_activity_id',
         'call_activity_calling_global_task_id',
+        'call_activity_calling_global_business_rule_task_id',
       ]);
 
-      expect(modelElements).toHaveLength(5);
+      expect(modelElements).toHaveLength(6);
 
       expectSubprocess(modelElements[0] as ShapeBpmnSemantic, {
         id: 'expanded_event_sub_process_with_loop_id',
@@ -86,11 +87,21 @@ describe('Registry API - retrieve Model Bpmn elements', () => {
         id: 'expanded_call_activity_id',
         name: 'Expanded Call Activity',
         parentId: 'participant_1_id',
+        callActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
       });
       expectCallActivity(modelElements[4] as ShapeBpmnSemantic, {
         id: 'call_activity_calling_global_task_id',
         name: 'Call Activity Calling Global Task',
         parentId: 'participant_1_id',
+        callActivityKind: ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK,
+        callActivityGlobalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK,
+      });
+      expectCallActivity(modelElements[5] as ShapeBpmnSemantic, {
+        id: 'call_activity_calling_global_business_rule_task_id',
+        name: 'Call Activity Calling Global Business Rule Task',
+        parentId: 'participant_1_id',
+        callActivityKind: ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK,
+        callActivityGlobalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK_BUSINESS_RULE,
       });
     });
 

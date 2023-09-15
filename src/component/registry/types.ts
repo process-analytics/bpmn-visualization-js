@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnSubProcessKind } from '../../model/bpmn/internal';
+import type { BpmnElementKind, GlobalTaskKind, ShapeBpmnEventDefinitionKind, ShapeBpmnSubProcessKind, ShapeBpmnCallActivityKind } from '../../model/bpmn/internal';
 
 /**
  * @category Element Style
@@ -371,6 +371,10 @@ export interface EdgeBpmnSemantic extends BaseBpmnSemantic {
  * @category Custom Behavior
  */
 export interface ShapeBpmnSemantic extends BaseBpmnSemantic {
+  /** Set when the {@link BaseBpmnSemantic.kind} relates to a BPMN Call Activity calling a global task. */
+  callActivityGlobalTaskKind?: GlobalTaskKind;
+  /** Set when the {@link BaseBpmnSemantic.kind} relates to a BPMN Call Activity. */
+  callActivityKind?: ShapeBpmnCallActivityKind;
   /** Set when the {@link BaseBpmnSemantic.kind} relates to a BPMN event. */
   eventDefinitionKind?: ShapeBpmnEventDefinitionKind;
   incomingIds: string[];

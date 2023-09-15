@@ -22,7 +22,7 @@ import type { ModelFilter } from '../options';
 
 import { ShapeBpmnMarkerKind, ShapeUtil } from '../../model/bpmn/internal';
 import { Flow } from '../../model/bpmn/internal/edge/flows';
-import ShapeBpmnElement, { ShapeBpmnSubProcess, ShapeBpmnEvent } from '../../model/bpmn/internal/shape/ShapeBpmnElement';
+import ShapeBpmnElement, { ShapeBpmnSubProcess, ShapeBpmnEvent, ShapeBpmnCallActivity } from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 
 import { ModelFiltering } from './bpmn-model-filters';
 
@@ -64,6 +64,9 @@ export class BpmnModelRegistry {
         (semantic as ShapeBpmnSemantic).eventDefinitionKind = bpmnElement.eventDefinitionKind;
       } else if (bpmnElement instanceof ShapeBpmnSubProcess) {
         (semantic as ShapeBpmnSemantic).subProcessKind = bpmnElement.subProcessKind;
+      } else if (bpmnElement instanceof ShapeBpmnCallActivity) {
+        (semantic as ShapeBpmnSemantic).callActivityKind = bpmnElement.callActivityKind;
+        (semantic as ShapeBpmnSemantic).callActivityGlobalTaskKind = bpmnElement.globalTaskKind;
       }
     }
     return semantic as BpmnSemantic;
