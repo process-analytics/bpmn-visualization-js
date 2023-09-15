@@ -18,12 +18,11 @@ import type { BaseBpmnSemantic, BpmnSemantic, EdgeBpmnSemantic, ShapeBpmnSemanti
 import type BpmnModel from '../../model/bpmn/internal/BpmnModel';
 import type { Edge } from '../../model/bpmn/internal/edge/edge';
 import type Shape from '../../model/bpmn/internal/shape/Shape';
-import type { ShapeBpmnSubProcess } from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 import type { ModelFilter } from '../options';
 
 import { ShapeBpmnMarkerKind, ShapeUtil } from '../../model/bpmn/internal';
 import { Flow } from '../../model/bpmn/internal/edge/flows';
-import ShapeBpmnElement, { ShapeBpmnEvent } from '../../model/bpmn/internal/shape/ShapeBpmnElement';
+import ShapeBpmnElement, { ShapeBpmnSubProcess, ShapeBpmnEvent } from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 
 import { ModelFiltering } from './bpmn-model-filters';
 
@@ -63,6 +62,8 @@ export class BpmnModelRegistry {
       (semantic as ShapeBpmnSemantic).outgoingIds = bpmnElement.outgoingIds;
       if (bpmnElement instanceof ShapeBpmnEvent) {
         (semantic as ShapeBpmnSemantic).eventDefinitionKind = bpmnElement.eventDefinitionKind;
+      } else if (bpmnElement instanceof ShapeBpmnSubProcess) {
+        (semantic as ShapeBpmnSemantic).subProcessKind = bpmnElement.subProcessKind;
       }
     }
     return semantic as BpmnSemantic;

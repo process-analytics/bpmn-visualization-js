@@ -19,7 +19,7 @@ import type { BpmnSemantic, EdgeBpmnSemantic, ShapeBpmnSemantic } from '@lib/com
 import { initializeBpmnVisualization } from './helpers/bpmn-visualization-initialization';
 import { bpmnVisualization } from './helpers/model-expect';
 
-import { type BpmnElementKind, FlowKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
+import { type BpmnElementKind, FlowKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';
 import { readFileSync } from '@test/shared/file-helper';
 import {
   expectBoundaryEvent,
@@ -62,6 +62,7 @@ describe('Registry API - retrieve Model Bpmn elements', () => {
         id: 'expanded_event_sub_process_with_loop_id',
         name: 'Expanded Event Sub-Process With Loop',
         parentId: 'participant_1_id',
+        subProcessKind: ShapeBpmnSubProcessKind.EVENT,
       });
       expectSequenceFlow(modelElements[1] as EdgeBpmnSemantic, {
         id: 'sequence_flow_in_sub_process_1_id',

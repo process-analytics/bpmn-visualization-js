@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import type { BpmnSemantic, EdgeBpmnSemantic, ShapeBpmnSemantic, BaseBpmnSemantic } from '@lib/component/registry';
-import type { ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
+import type { ShapeBpmnEventDefinitionKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';
 
 import { FlowKind, ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 
@@ -127,7 +127,12 @@ export function expectUserTask(bpmnSemantic: ShapeBpmnSemantic, expected: Expect
   expectedFlowNode(bpmnSemantic, expected);
 }
 
-export function expectSubprocess(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedFlowNodeElement): void {
-  expectedFlowNode(bpmnSemantic, expected);
+export interface ExpectedSubprocessElement extends ExpectedFlowNodeElement {
+  subProcessKind: ShapeBpmnSubProcessKind;
+}
+
+export function expectSubprocess(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedSubprocessElement): void {
   expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.SUB_PROCESS);
+  expect(bpmnSemantic.subProcessKind).toBe(expected.subProcessKind);
+  expectShape(bpmnSemantic, expected);
 }
