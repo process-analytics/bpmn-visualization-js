@@ -206,10 +206,10 @@ export default class ProcessConverter {
         }
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- the incoming property doesn't exist in TTextAnnotation, in that case, set the array to empty
         // @ts-ignore
-        shapeBpmnElement.incomingIds = ensureIsArray<string>(bpmnElement.incoming);
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- the outgoing property doesn't exist in TTextAnnotation, in that case, set the array to empty
-        // @ts-ignore
-        shapeBpmnElement.outgoingIds = ensureIsArray<string>(bpmnElement.outgoing);
+        // shapeBpmnElement.incomingIds = ensureIsArray<string>(bpmnElement.incoming);
+        // // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- the outgoing property doesn't exist in TTextAnnotation, in that case, set the array to empty
+        // // @ts-ignore
+        // shapeBpmnElement.outgoingIds = ensureIsArray<string>(bpmnElement.outgoing);
       }
     });
   }
