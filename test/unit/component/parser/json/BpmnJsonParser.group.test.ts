@@ -29,6 +29,17 @@ import {
 import { GroupUnknownCategoryValueWarning, ShapeUnknownBpmnElementWarning } from '@lib/component/parser/json/warnings';
 import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 
+function expectWarnings(): void {
+  const warnings = parsingMessageCollector.getWarnings();
+
+  const warning0 = expectAsWarning<GroupUnknownCategoryValueWarning>(warnings[0], GroupUnknownCategoryValueWarning);
+  expect(warning0.groupBpmnElementId).toBe('Group_0');
+  expect(warning0.categoryValueReference).toBe('unknown_CategoryValue_0');
+
+  const warning1 = expectAsWarning<ShapeUnknownBpmnElementWarning>(warnings[1], ShapeUnknownBpmnElementWarning);
+  expect(warning1.bpmnElementId).toBe('Group_0');
+}
+
 describe('parse bpmn as json for group', () => {
   it('Single Group with label in process', () => {
     const json: BpmnJsonModel = {
@@ -274,17 +285,6 @@ describe('parse bpmn as json for group', () => {
       parseJsonAndExpectOnlyWarnings(json, 2);
       expectWarnings();
     });
-
-    function expectWarnings(): void {
-      const warnings = parsingMessageCollector.getWarnings();
-
-      const warning0 = expectAsWarning<GroupUnknownCategoryValueWarning>(warnings[0], GroupUnknownCategoryValueWarning);
-      expect(warning0.groupBpmnElementId).toBe('Group_0');
-      expect(warning0.categoryValueReference).toBe('unknown_CategoryValue_0');
-
-      const warning1 = expectAsWarning<ShapeUnknownBpmnElementWarning>(warnings[1], ShapeUnknownBpmnElementWarning);
-      expect(warning1.bpmnElementId).toBe('Group_0');
-    }
 
     it('Single Group in collaboration without matching categoryValueRef', () => {
       const json: BpmnJsonModel = {
