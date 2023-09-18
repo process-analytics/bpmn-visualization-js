@@ -122,6 +122,7 @@ export default class ProcessConverter {
       shapeBpmnElementId: string,
       shapeBpmnElementAttributeName: keyof Pick<ShapeBpmnElement, 'outgoingIds' | 'incomingIds'>,
       valueToAdd: string,
+      // eslint-disable-next-line unicorn/consistent-function-scoping -- No need for now to move it
     ): void => {
       const shapeBpmnElement =
         this.convertedElements.findFlowNode(shapeBpmnElementId) ?? this.convertedElements.findLane(shapeBpmnElementId) ?? this.convertedElements.findPoolById(shapeBpmnElementId);
