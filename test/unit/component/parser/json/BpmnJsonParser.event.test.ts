@@ -110,11 +110,14 @@ function executeEventCommonTests(buildEventParameter: BuildEventsParameter, omit
       ${'string'} | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
       ${'array'}  | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
     `(
-      `should convert as Shape with $inputAttribute attribute calculated from ${buildEventParameter.bpmnKind} attribute as $title`,
+      `should convert as Shape without $inputAttribute attribute calculated from ${buildEventParameter.bpmnKind} attribute as $title`,
       ({ title, inputAttribute, expectedAttribute }: { title: string; inputAttribute: 'incoming' | 'outgoing'; expectedAttribute: keyof ExpectedShape }) => {
         testMustConvertShapes(
           { ...buildEventParameter, [inputAttribute]: title === 'array' ? [`flow_${inputAttribute}_1`, `flow_${inputAttribute}_2`] : `flow_${inputAttribute}_1` },
-          { ...omitExpectedShape, [expectedAttribute]: title === 'array' ? [`flow_${inputAttribute}_1`, `flow_${inputAttribute}_2`] : [`flow_${inputAttribute}_1`] },
+          {
+            ...omitExpectedShape,
+            [expectedAttribute]: [], // nothing inferred from flows
+          },
         );
       },
     );
@@ -180,7 +183,7 @@ function executeEventCommonTests(buildEventParameter: BuildEventsParameter, omit
       });
     });
 
-    it(`should convert as Shape with incoming/outgoing attributes calculated from ${buildEventParameter.bpmnKind} attributes and from flows`, () => {
+    it(`should convert as Shape with incoming/outgoing attributes only calculated from flows`, () => {
       const json = buildDefinitions({
         process: {
           event: { ...buildEventParameter, incoming: 'flow_in_1', outgoing: ['flow_out_1', 'flow_out_2'] },
@@ -201,8 +204,8 @@ function executeEventCommonTests(buildEventParameter: BuildEventsParameter, omit
         shapeId: `shape_event_id_0_0`,
         bpmnElementId: `event_id_0_0`,
         bounds: expectedBounds,
-        bpmnElementIncomingIds: ['flow_in_1', 'flow_in_2'],
-        bpmnElementOutgoingIds: ['flow_out_1', 'flow_out_2', 'flow_out_3'],
+        bpmnElementIncomingIds: ['flow_in_2', 'flow_in_1'],
+        bpmnElementOutgoingIds: ['flow_out_2', 'flow_out_3'], // 'flow_out_1' is in 'outgoing' but is not inferred from the actual flows
       });
     });
   });

@@ -472,7 +472,7 @@ describe('parse bpmn as json for callActivity', () => {
           ${'string'} | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
           ${'array'}  | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
         `(
-          `should convert as Shape with $inputAttribute attribute calculated from ${expandedKind} call activity attribute as $title`,
+          `should convert as Shape without $inputAttribute attribute calculated from ${expandedKind} call activity attribute as $title`,
           ({ title, inputAttribute, expectedAttribute }: { title: string; inputAttribute: 'incoming' | 'outgoing'; expectedAttribute: keyof ExpectedShape }) => {
             const json = buildDefinitions({
               process: [
@@ -499,7 +499,7 @@ describe('parse bpmn as json for callActivity', () => {
               bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
               bpmnElementMarkers: expectedBpmnElementMarkers,
               bounds: expectedBounds,
-              [expectedAttribute]: title === 'array' ? [`flow_${inputAttribute}_1`, `flow_${inputAttribute}_2`] : [`flow_${inputAttribute}_1`],
+              [expectedAttribute]: [], // nothing inferred from flows
             });
           },
         );
@@ -581,7 +581,7 @@ describe('parse bpmn as json for callActivity', () => {
           },
         );
 
-        it(`should convert as Shape with incoming/outgoing attributes calculated from ${expandedKind} call activity attributes and from flows`, () => {
+        it(`should convert as Shape with incoming/outgoing attributes only calculated from flows`, () => {
           const json = buildDefinitions({
             process: [
               { id: 'process_1' },
@@ -608,8 +608,8 @@ describe('parse bpmn as json for callActivity', () => {
             bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
             bpmnElementMarkers: expectedBpmnElementMarkers,
             bounds: expectedBounds,
-            bpmnElementIncomingIds: ['flow_in_1', 'flow_in_2'],
-            bpmnElementOutgoingIds: ['flow_out_1', 'flow_out_2', 'flow_out_3'],
+            bpmnElementIncomingIds: ['flow_in_2', 'flow_in_1'],
+            bpmnElementOutgoingIds: ['flow_out_2', 'flow_out_3'], // 'flow_out_1' is in 'outgoing' but is not inferred from the actual flows
           });
         });
       });
@@ -649,7 +649,7 @@ describe('parse bpmn as json for callActivity', () => {
         ${'string'} | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
         ${'array'}  | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
       `(
-        `should convert as Shape with $inputAttribute attribute calculated from call activity attribute as $title`,
+        `should convert as Shape without $inputAttribute attribute calculated from call activity attribute as $title`,
         ({ title, inputAttribute, expectedAttribute }: { title: string; inputAttribute: 'incoming' | 'outgoing'; expectedAttribute: keyof ExpectedShape }) => {
           const json = buildDefinitions({
             process: {
@@ -672,7 +672,7 @@ describe('parse bpmn as json for callActivity', () => {
             bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK,
             bpmnElementGlobalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK,
             bounds: expectedBounds,
-            [expectedAttribute]: title === 'array' ? [`flow_${inputAttribute}_1`, `flow_${inputAttribute}_2`] : [`flow_${inputAttribute}_1`],
+            [expectedAttribute]: [], // nothing inferred from flows
           });
         },
       );
@@ -744,7 +744,7 @@ describe('parse bpmn as json for callActivity', () => {
         });
       });
 
-      it(`should convert as Shape with incoming/outgoing attributes calculated from call activity attributes and from flows`, () => {
+      it(`should convert as Shape with incoming/outgoing attributes only calculated from flows`, () => {
         const json = buildDefinitions({
           process: {
             callActivity: { id: `call_activity_id_0`, incoming: 'flow_in_1', outgoing: ['flow_out_1', 'flow_out_2'], calledElement: 'task_id' },
@@ -768,8 +768,8 @@ describe('parse bpmn as json for callActivity', () => {
           bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK,
           bpmnElementGlobalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK,
           bounds: expectedBounds,
-          bpmnElementIncomingIds: ['flow_in_1', 'flow_in_2'],
-          bpmnElementOutgoingIds: ['flow_out_1', 'flow_out_2', 'flow_out_3'],
+          bpmnElementIncomingIds: ['flow_in_2', 'flow_in_1'],
+          bpmnElementOutgoingIds: ['flow_out_2', 'flow_out_3'], // 'flow_out_1' is in 'outgoing' but is not inferred from the actual flows
         });
       });
     });
