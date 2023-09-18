@@ -395,7 +395,7 @@ describe.each([
       ${'incoming'} | ${'association'}  | ${'bpmnElementIncomingIds'}
       ${'outgoing'} | ${'association'}  | ${'bpmnElementOutgoingIds'}
     `(
-      `should convert as Shape without $title attribute calculated from $flowKind`,
+      `should convert as Shape with $title attribute calculated from $flowKind`,
       ({ title, flowKind, expectedAttribute }: { title: string; flowKind: 'sequenceFlow' | 'association'; expectedAttribute: keyof ExpectedShape }) => {
         const json = buildDefinitions({
           process: {
@@ -449,7 +449,7 @@ describe.each([
       });
     });
 
-    it(`should convert as Shape with incoming/outgoing attributes calculated from flows only`, () => {
+    it(`should convert as Shape with incoming/outgoing attributes only calculated from flows`, () => {
       const json = buildDefinitions({
         process: {
           [flowNodeParameterKind]: { id: `${bpmnKind}_id_0`, bpmnKind, incoming: 'flow_in_1', outgoing: ['flow_out_1', 'flow_out_2'] },
