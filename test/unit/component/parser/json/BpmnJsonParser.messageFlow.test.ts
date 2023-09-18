@@ -30,6 +30,31 @@ import * as bpmndi from '@lib/model/bpmn/json/bpmndi';
 
 /** Test utils */
 
+function buildProcessParameter(kind: ShapeBpmnElementKind, id: string): BuildProcessParameter {
+  if (kind === ShapeBpmnElementKind.POOL) {
+    return { id, withParticipant: true };
+  } else if (ShapeUtil.isEvent(kind)) {
+    const isBoundaryEvent = kind === ShapeBpmnElementKind.EVENT_BOUNDARY;
+    const eventParameter: BuildEventsParameter = isBoundaryEvent
+      ? {
+          id,
+          bpmnKind: kind as 'boundaryEvent',
+          isInterrupting: true,
+          attachedToRef: 'task_id_0',
+          eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT },
+        }
+      : {
+          id,
+          bpmnKind: kind as OtherBuildEventKind | 'startEvent',
+          eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT },
+        };
+
+    return { withParticipant: true, event: eventParameter, task: isBoundaryEvent ? { id: 'task_id_0' } : undefined };
+  } else {
+    return { withParticipant: true, task: { id } };
+  }
+}
+
 describe('parse bpmn as json for message flow', () => {
   it(`should convert as Edge, when an message flow is an attribute (as object) of 'collaboration' (as object)`, () => {
     const json: BpmnJsonModel = {
@@ -348,29 +373,4 @@ describe('parse bpmn as json for message flow', () => {
       });
     });
   });
-
-  function buildProcessParameter(kind: ShapeBpmnElementKind, id: string): BuildProcessParameter {
-    if (kind === ShapeBpmnElementKind.POOL) {
-      return { id, withParticipant: true };
-    } else if (ShapeUtil.isEvent(kind)) {
-      const isBoundaryEvent = kind === ShapeBpmnElementKind.EVENT_BOUNDARY;
-      const eventParameter: BuildEventsParameter = isBoundaryEvent
-        ? {
-            id,
-            bpmnKind: kind as 'boundaryEvent',
-            isInterrupting: true,
-            attachedToRef: 'task_id_0',
-            eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT },
-          }
-        : {
-            id,
-            bpmnKind: kind as OtherBuildEventKind | 'startEvent',
-            eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT },
-          };
-
-      return { withParticipant: true, event: eventParameter, task: isBoundaryEvent ? { id: 'task_id_0' } : undefined };
-    } else {
-      return { withParticipant: true, task: { id } };
-    }
-  }
 });
