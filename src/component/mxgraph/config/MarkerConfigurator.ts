@@ -42,6 +42,7 @@ export default class MarkerConfigurator {
       size: number,
       _source: mxCell,
       strokewidth: number,
+      // eslint-disable-next-line unicorn/consistent-function-scoping -- Code from mxGraph example
     ): (() => void) => {
       const nx = unitX * (size + strokewidth + 4);
       const ny = unitY * (size + strokewidth + 4);
