@@ -45,6 +45,7 @@ module.exports = {
     'unicorn/prefer-add-event-listener': 'error',
     'unicorn/no-array-for-each': 'error',
     'unicorn/prefer-dom-node-text-content': 'error',
+    'unicorn/prefer-ternary': 'error',
     'import/newline-after-import': ['error', { count: 1 }],
     'import/first': 'error',
     'import/order': [
