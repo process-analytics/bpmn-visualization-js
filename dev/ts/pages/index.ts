@@ -36,12 +36,12 @@ let fitOnLoad = true;
 let fitOptions: FitOptions = {};
 
 function configureFitOnLoadCheckBox(): void {
-  const fitOnLoadElt = document.getElementById('fitOnLoad') as HTMLInputElement;
-  fitOnLoadElt.onchange = event => {
+  const fitOnLoadElt = document.querySelector('#fitOnLoad') as HTMLInputElement;
+  fitOnLoadElt.addEventListener('change', event => {
     fitOnLoad = (event.target as HTMLInputElement).checked;
     log('Fit on load updated!', fitOnLoad);
     updateLoadOptions(fitOnLoad ? fitOptions : {});
-  };
+  });
   fitOnLoadElt.checked = fitOnLoad;
 }
 
@@ -60,11 +60,11 @@ function updateFitConfig(config: FitOptions): void {
 }
 
 function configureFitTypeSelect(): void {
-  const fitTypeSelectedElt = document.getElementById('fitType-selected') as HTMLSelectElement;
-  fitTypeSelectedElt.onchange = event => {
+  const fitTypeSelectedElt = document.querySelector('#fitType-selected') as HTMLSelectElement;
+  fitTypeSelectedElt.addEventListener('change', event => {
     updateFitConfig({ type: (event.target as HTMLSelectElement).value as FitType });
     fit(fitOptions);
-  };
+  });
 
   if (fitOptions.type) {
     fitTypeSelectedElt.value = fitOptions.type;
@@ -74,11 +74,11 @@ function configureFitTypeSelect(): void {
 }
 
 function configureFitMarginInput(): void {
-  const fitMarginElt = document.getElementById('fit-margin') as HTMLInputElement;
-  fitMarginElt.onchange = event => {
+  const fitMarginElt = document.querySelector('#fit-margin') as HTMLInputElement;
+  fitMarginElt.addEventListener('change', event => {
     updateFitConfig({ margin: Number((event.target as HTMLInputElement).value) });
     fit(fitOptions);
-  };
+  });
 
   if (fitOptions.margin) {
     fitMarginElt.value = String(fitOptions.margin);
@@ -89,16 +89,16 @@ function configureFitMarginInput(): void {
 
 function configureZoomButtons(): void {
   Object.values(ZoomType).forEach(zoomType => {
-    document.getElementById(`zoom-${zoomType}`).onclick = () => zoom(zoomType);
+    document.querySelector(`#zoom-${zoomType}`).addEventListener('click', () => zoom(zoomType));
   });
-  document.getElementById(`zoom-reset`).onclick = () => fit(fitOptions);
+  document.querySelector(`#zoom-reset`).addEventListener('click', () => fit(fitOptions));
 }
 
 function configureThemeSelect(): void {
-  const themeSelectedElt = document.getElementById('theme-selected') as HTMLSelectElement;
-  themeSelectedElt.onchange = event => {
+  const themeSelectedElt = document.querySelector('#theme-selected') as HTMLSelectElement;
+  themeSelectedElt.addEventListener('change', event => {
     switchTheme((event.target as HTMLSelectElement).value);
-  };
+  });
 
   const currentTheme = getCurrentTheme();
   if (currentTheme) {
@@ -110,7 +110,7 @@ function configureDisplayedFooterContent(): void {
   const version = getVersion();
   const versionAsString = `bpmn-visualization@${version.lib}`;
   const dependenciesAsString = [...version.dependencies].map(([name, version]) => `${name}@${version}`).join('/');
-  const versionElt = document.getElementById('footer-content');
+  const versionElt = document.querySelector('#footer-content') as HTMLDivElement;
   versionElt.innerText = `${versionAsString} with ${dependenciesAsString}`;
 }
 
@@ -142,7 +142,7 @@ function startDemo(): void {
   });
 
   // Configure custom html elements
-  document.getElementById('bpmn-file').addEventListener('change', handleFileSelect, false);
+  document.querySelector('#bpmn-file').addEventListener('change', handleFileSelect, false);
 
   fitOptions = getCurrentLoadOptions().fit;
   configureFitTypeSelect();

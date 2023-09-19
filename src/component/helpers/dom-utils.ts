@@ -21,5 +21,5 @@ export function htmlElement(element: string | HTMLElement): HTMLElement | null {
   if (element instanceof HTMLElement) {
     return element;
   }
-  return document.getElementById(element);
+  return document.querySelector(`#${element}`);
 }

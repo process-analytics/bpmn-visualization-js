@@ -39,7 +39,7 @@ export class DropFileUserInterface {
     this.addDomElements(this.containerToFade);
     this.addStyle();
 
-    const dropContainer = document.getElementById(this.outerContainerId);
+    const dropContainer = document.querySelector<HTMLDivElement>(`#${this.outerContainerId}`);
     // prevent loading file by the browser
     this.preventDefaultsOnEvents(['dragover', 'drop'], this.window);
     this.preventDefaultsOnEvents(['dragover', 'dragleave', 'drop'], dropContainer);

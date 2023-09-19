@@ -18,15 +18,15 @@ import { configureControlsPanel, configureMousePointer, documentReady, fit, FitT
 
 function configureFitAndZoomButtons(): void {
   Object.values(FitType).forEach(fitType => {
-    document.getElementById(fitType).onclick = () => fit({ type: fitType });
+    document.querySelector(`#${fitType}`).addEventListener('click', () => fit({ type: fitType }));
   });
   Object.values(ZoomType).forEach(zoomType => {
-    document.getElementById(`zoom-${zoomType}`).onclick = () => zoom(zoomType);
+    document.querySelector(`#zoom-${zoomType}`).addEventListener('click', () => zoom(zoomType));
   });
 }
 
 function configureZoomThrottleInput(parameters: URLSearchParams): HTMLInputElement {
-  const elementZoomThrottle = document.getElementById('zoom-throttle') as HTMLInputElement;
+  const elementZoomThrottle = document.querySelector('#zoom-throttle') as HTMLInputElement;
   if (parameters.get('zoomThrottle')) {
     elementZoomThrottle.value = parameters.get('zoomThrottle');
   }
@@ -34,7 +34,7 @@ function configureZoomThrottleInput(parameters: URLSearchParams): HTMLInputEleme
 }
 
 function configureZoomDebounceInput(parameters: URLSearchParams): HTMLInputElement {
-  const elementZoomDebounce = document.getElementById('zoom-debounce') as HTMLInputElement;
+  const elementZoomDebounce = document.querySelector('#zoom-debounce') as HTMLInputElement;
   if (parameters.get('zoomDebounce')) {
     elementZoomDebounce.value = parameters.get('zoomDebounce');
   }
