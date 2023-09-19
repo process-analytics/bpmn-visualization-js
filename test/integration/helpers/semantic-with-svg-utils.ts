@@ -15,19 +15,19 @@ limitations under the License.
 */
 
 import type { BpmnElement, EdgeBpmnSemantic, ShapeBpmnSemantic } from '@lib/component/registry';
-import type { ExpectedBaseBpmnElement, ExpectedFlowElement, ExpectedFlowNodeElement } from '@test/shared/model/bpmn-semantic-utils';
+import type { ExpectedBaseBpmnElement, ExpectedFlowElement, ExpectedFlowNodeElement, ExpectedEventElement } from '@test/shared/model/bpmn-semantic-utils';
 
 import { expectSvgEvent, expectSvgPool, expectSvgSequenceFlow, expectSvgTask } from './html-utils';
 
 import { expectEndEvent, expectPool, expectSequenceFlow, expectServiceTask, expectStartEvent, expectTask } from '@test/shared/model/bpmn-semantic-utils';
 
-export function expectStartEventBpmnElement(bpmnElement: BpmnElement, expected: ExpectedFlowNodeElement): void {
+export function expectStartEventBpmnElement(bpmnElement: BpmnElement, expected: ExpectedEventElement): void {
   expectStartEvent(bpmnElement.bpmnSemantic as ShapeBpmnSemantic, expected);
   expectSvgEvent(bpmnElement.htmlElement);
 }
 
-export function expectEndEventBpmnElement(bpmnElement: BpmnElement, expected: ExpectedBaseBpmnElement): void {
-  expectEndEvent(bpmnElement.bpmnSemantic, expected);
+export function expectEndEventBpmnElement(bpmnElement: BpmnElement, expected: ExpectedEventElement): void {
+  expectEndEvent(bpmnElement.bpmnSemantic as ShapeBpmnSemantic, expected);
   expectSvgEvent(bpmnElement.htmlElement);
 }
 
@@ -41,8 +41,8 @@ export function expectTaskBpmnElement(bpmnElement: BpmnElement, expected: Expect
   expectSvgTask(bpmnElement.htmlElement);
 }
 
-export function expectServiceTaskBpmnElement(bpmnElement: BpmnElement, expected: ExpectedBaseBpmnElement): void {
-  expectServiceTask(bpmnElement.bpmnSemantic, expected);
+export function expectServiceTaskBpmnElement(bpmnElement: BpmnElement, expected: ExpectedFlowNodeElement): void {
+  expectServiceTask(bpmnElement.bpmnSemantic as ShapeBpmnSemantic, expected);
   expectSvgTask(bpmnElement.htmlElement);
 }
 

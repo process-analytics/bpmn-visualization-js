@@ -19,10 +19,11 @@ import type { BpmnSemantic, EdgeBpmnSemantic, ShapeBpmnSemantic } from '@lib/com
 import { initializeBpmnVisualization } from './helpers/bpmn-visualization-initialization';
 import { bpmnVisualization } from './helpers/model-expect';
 
-import { type BpmnElementKind, FlowKind, ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
+import { type BpmnElementKind, FlowKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';
 import { readFileSync } from '@test/shared/file-helper';
 import {
   expectBoundaryEvent,
+  expectCallActivity,
   expectEndEvent,
   expectParallelGateway,
   expectSequenceFlow,
@@ -44,19 +45,63 @@ describe('Registry API - retrieve Model Bpmn elements', () => {
 
       expect(modelElements).toHaveLength(1);
 
-      expectStartEvent(modelElements[0] as ShapeBpmnSemantic, { id: 'start_event_message_id', name: 'Message Start Event', outgoing: ['message_flow_initiating_message_id'] });
+      expectStartEvent(modelElements[0] as ShapeBpmnSemantic, {
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
+        id: 'start_event_message_id',
+        name: 'Message Start Event',
+        outgoing: ['message_flow_initiating_message_id'],
+        parentId: 'participant_1_id',
+      });
     });
 
     test('Pass several existing ids', () => {
-      const modelElements = bpmnElementsRegistry.getModelElementsByIds(['expanded_event_sub_process_with_loop_id', 'sequence_flow_in_sub_process_1_id']);
+      const modelElements = bpmnElementsRegistry.getModelElementsByIds([
+        'expanded_event_sub_process_with_loop_id',
+        'sequence_flow_in_sub_process_1_id',
+        'collapsed_embedded_sub_process_id',
+        'expanded_call_activity_id',
+        'call_activity_calling_global_task_id',
+        'call_activity_calling_global_business_rule_task_id',
+      ]);
 
-      expect(modelElements).toHaveLength(2);
+      expect(modelElements).toHaveLength(6);
 
-      expectSubprocess(modelElements[0] as ShapeBpmnSemantic, { id: 'expanded_event_sub_process_with_loop_id', name: 'Expanded Event Sub-Process With Loop' });
+      expectSubprocess(modelElements[0] as ShapeBpmnSemantic, {
+        id: 'expanded_event_sub_process_with_loop_id',
+        name: 'Expanded Event Sub-Process With Loop',
+        parentId: 'participant_1_id',
+        subProcessKind: ShapeBpmnSubProcessKind.EVENT,
+      });
       expectSequenceFlow(modelElements[1] as EdgeBpmnSemantic, {
         id: 'sequence_flow_in_sub_process_1_id',
         source: 'start_event_in_sub_process_id',
         target: 'task_in_sub_process_id',
+      });
+      expectSubprocess(modelElements[2] as ShapeBpmnSemantic, {
+        id: 'collapsed_embedded_sub_process_id',
+        name: 'Collapsed Embedded Sub-Process',
+        parentId: 'participant_1_id',
+        subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
+      });
+      expectCallActivity(modelElements[3] as ShapeBpmnSemantic, {
+        id: 'expanded_call_activity_id',
+        name: 'Expanded Call Activity',
+        parentId: 'participant_1_id',
+        callActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
+      });
+      expectCallActivity(modelElements[4] as ShapeBpmnSemantic, {
+        id: 'call_activity_calling_global_task_id',
+        name: 'Call Activity Calling Global Task',
+        parentId: 'participant_1_id',
+        callActivityKind: ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK,
+        callActivityGlobalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK,
+      });
+      expectCallActivity(modelElements[5] as ShapeBpmnSemantic, {
+        id: 'call_activity_calling_global_business_rule_task_id',
+        name: 'Call Activity Calling Global Business Rule Task',
+        parentId: 'participant_1_id',
+        callActivityKind: ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK,
+        callActivityGlobalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK_BUSINESS_RULE,
       });
     });
 
@@ -78,7 +123,12 @@ describe('Registry API - retrieve Model Bpmn elements', () => {
 
       expect(modelElements).toHaveLength(2);
 
-      expectBoundaryEvent(modelElements[0] as ShapeBpmnSemantic, { id: 'boundary_event_non_interrupting_signal_id', name: 'Non-interrupting Signal Boundary Intermediate Event' });
+      expectBoundaryEvent(modelElements[0] as ShapeBpmnSemantic, {
+        id: 'boundary_event_non_interrupting_signal_id',
+        name: 'Non-interrupting Signal Boundary Intermediate Event',
+        parentId: 'collapsed_call_activity_id',
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.SIGNAL,
+      });
       expectSequenceFlow(modelElements[1] as EdgeBpmnSemantic, {
         id: 'conditional_sequence_flow_from_activity_id',
         source: 'task_with_flows_id',
@@ -105,6 +155,7 @@ describe('Registry API - retrieve Model Bpmn elements', () => {
         name: 'User Task 0',
         incoming: ['sequenceFlow_lane_1_elt_1'],
         outgoing: ['sequenceFlow_lane_1_elt_2'],
+        parentId: 'lane_01',
       });
       expectAllElementsWithKind(modelElements, ShapeBpmnElementKind.TASK_USER);
     });
@@ -124,9 +175,21 @@ describe('Registry API - retrieve Model Bpmn elements', () => {
 
       expect(modelElements).toHaveLength(17);
 
-      expectEndEvent(modelElements[0] as ShapeBpmnSemantic, { id: 'endEvent_terminate_1', name: 'terminate end 1' });
-      expectEndEvent(modelElements[1] as ShapeBpmnSemantic, { id: 'endEvent_message_1', name: 'message end 2' });
-      expectParallelGateway(modelElements[2] as ShapeBpmnSemantic, { id: 'Gateway_1hq21li', name: 'gateway 2' });
+      expectEndEvent(modelElements[0] as ShapeBpmnSemantic, {
+        id: 'endEvent_terminate_1',
+        name: 'terminate end 1',
+        parentId: 'lane_01',
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.TERMINATE,
+        incoming: ['sequenceFlow_lane_1_elt_6'],
+      });
+      expectEndEvent(modelElements[1] as ShapeBpmnSemantic, {
+        id: 'endEvent_message_1',
+        name: 'message end 2',
+        parentId: 'lane_02',
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
+        incoming: ['Flow_09zytr1'],
+      });
+      expectParallelGateway(modelElements[2] as ShapeBpmnSemantic, { id: 'Gateway_1hq21li', name: 'gateway 2', parentId: 'lane_02' });
       expectSequenceFlow(modelElements[3] as EdgeBpmnSemantic, { id: 'Flow_1noi0ay', source: 'task_1', target: 'gateway_01' });
       // all remaining are sequence flows
       expectAllElementsWithKind(modelElements.slice(3), FlowKind.SEQUENCE_FLOW);
