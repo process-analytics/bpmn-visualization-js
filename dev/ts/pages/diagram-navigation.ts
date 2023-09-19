@@ -26,19 +26,19 @@ function configureFitAndZoomButtons(): void {
 }
 
 function configureZoomThrottleInput(parameters: URLSearchParams): HTMLInputElement {
-  const elementZoomThrottle = document.getElementById('zoom-throttle') as HTMLInputElement;
+  const zoomThrottleElement = document.getElementById('zoom-throttle') as HTMLInputElement;
   if (parameters.get('zoomThrottle')) {
-    elementZoomThrottle.value = parameters.get('zoomThrottle');
+    zoomThrottleElement.value = parameters.get('zoomThrottle');
   }
-  return elementZoomThrottle;
+  return zoomThrottleElement;
 }
 
 function configureZoomDebounceInput(parameters: URLSearchParams): HTMLInputElement {
-  const elementZoomDebounce = document.getElementById('zoom-debounce') as HTMLInputElement;
+  const zoomDebounceElement = document.getElementById('zoom-debounce') as HTMLInputElement;
   if (parameters.get('zoomDebounce')) {
-    elementZoomDebounce.value = parameters.get('zoomDebounce');
+    zoomDebounceElement.value = parameters.get('zoomDebounce');
   }
-  return elementZoomDebounce;
+  return zoomDebounceElement;
 }
 
 function start(): void {
@@ -46,8 +46,8 @@ function start(): void {
   configureMousePointer(parameters);
   configureControlsPanel(parameters);
 
-  const elementZoomThrottle = configureZoomThrottleInput(parameters);
-  const elementZoomDebounce = configureZoomDebounceInput(parameters);
+  const zoomThrottleElement = configureZoomThrottleInput(parameters);
+  const zoomDebounceElement = configureZoomDebounceInput(parameters);
 
   startBpmnVisualization({
     globalOptions: {
@@ -55,8 +55,8 @@ function start(): void {
       navigation: {
         enabled: true,
         zoom: {
-          throttleDelay: Number(elementZoomThrottle.value),
-          debounceDelay: Number(elementZoomDebounce.value),
+          throttleDelay: Number(zoomThrottleElement.value),
+          debounceDelay: Number(zoomDebounceElement.value),
         },
       },
     },

@@ -25,10 +25,10 @@ import typescript from 'rollup-plugin-typescript2';
 
 // generate warning when running with Node 18
 // (node:75278) ExperimentalWarning: Importing JSON modules is an experimental feature. This feature could change at any time
-import package_ from './package.json' assert { type: 'json' };
+import packageJson from './package.json' assert { type: 'json' };
 import { computeBanner } from './scripts/shared/banner.mjs';
 
-const libraryInput = 'src/bpmn-visualization.ts';
+const input = 'src/bpmn-visualization.ts';
 const pluginsBundleIIFE = [
   typescriptPlugin(),
   // the 'resolve' and 'commonjs' plugins ensure we can bundle commonjs dependencies
@@ -52,7 +52,7 @@ const outputIIFE = {
  * @type {import('rollup').RollupOptions}
  */
 const configIIFE = {
-  input: libraryInput,
+  input: input,
   output: outputIIFE,
   plugins: withCleanup(pluginsBundleIIFE),
 };
@@ -60,14 +60,14 @@ const configIIFE = {
  * @type {import('rollup').RollupOptions}
  */
 const configIIFEMinified = {
-  input: libraryInput,
+  input: input,
   output: {
     ...outputIIFE,
     file: iifeMinifiedBundleFile,
   },
   plugins: withMinification(
     pluginsBundleIIFE,
-    `/* bpmn-visualization v${package_.version} | Copyright (c) 2020-${new Date().getFullYear()}, Bonitasoft SA | Apache 2.0 license */`,
+    `/* bpmn-visualization v${packageJson.version} | Copyright (c) 2020-${new Date().getFullYear()}, Bonitasoft SA | Apache 2.0 license */`,
   ),
 };
 
@@ -75,7 +75,7 @@ const configIIFEMinified = {
  * @type {import('rollup').RollupOptions}
  */
 const configESM = {
-  input: libraryInput,
+  input: input,
   plugins: withCleanup([
     typescriptPlugin(),
     // ensure we do not bundle dependencies
@@ -84,7 +84,7 @@ const configESM = {
     sizes(),
   ]),
   output: {
-    file: package_.module,
+    file: packageJson.module,
     format: 'es',
     banner: computeBanner(),
   },

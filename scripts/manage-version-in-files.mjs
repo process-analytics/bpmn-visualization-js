@@ -60,8 +60,8 @@ function readFileContent(path) {
 
 function getCurrentVersion() {
   const json = readFileContent('./package.json');
-  const package_ = JSON.parse(json);
-  return package_.version;
+  const packageJson = JSON.parse(json);
+  return packageJson.version;
 }
 
 function addOrRemoveVersionSuffix(version) {

@@ -97,8 +97,8 @@ export function configureMousePointer(parameters: URLSearchParams): void {
 }
 
 export function configureControlsPanel(parameters: URLSearchParams): void {
-  const elementControlsPanel = document.getElementById('controls-panel');
+  const controlsPanelElement = document.getElementById('controls-panel');
   if (parameters.get('showControlsPanel') === 'true') {
-    elementControlsPanel.classList.remove('hidden');
+    controlsPanelElement.classList.remove('hidden');
   }
 }

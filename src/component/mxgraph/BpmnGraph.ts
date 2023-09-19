@@ -59,15 +59,15 @@ export class BpmnGraph extends mxgraph.mxGraph {
    *
    * This method is inspired from {@link https://github.com/maxGraph/maxGraph/blob/v0.1.0/packages/core/src/view/Graph.ts#L487-L494 maxGraph}.
    *
-   * @param fn the update to be made in the transaction.
+   * @param callBack the update to be made in the transaction.
    *
    * @experimental subject to change, may move to a subclass of `mxGraphModel`
    * @alpha
    */
-  batchUpdate(function_: () => void): void {
+  batchUpdate(callBack: () => void): void {
     this.model.beginUpdate();
     try {
-      function_();
+      callBack();
     } finally {
       this.model.endUpdate();
     }
@@ -184,15 +184,14 @@ export class BpmnGraph extends mxgraph.mxGraph {
   }
 
   private createMouseWheelZoomListener(performScaling: boolean) {
-    return (event: Event, up: boolean) => {
+    return (event: MouseEvent, up: boolean) => {
       if (mxEvent.isConsumed(event)) {
         return;
       }
-      const event_ = event as MouseEvent;
       // only the ctrl key
-      const isZoomWheelEvent = event_.ctrlKey && !event_.altKey && !event_.shiftKey && !event_.metaKey;
+      const isZoomWheelEvent = event.ctrlKey && !event.altKey && !event.shiftKey && !event.metaKey;
       if (isZoomWheelEvent) {
-        this.manageMouseWheelZoomEvent(up, event_, performScaling);
+        this.manageMouseWheelZoomEvent(up, event, performScaling);
       }
     };
   }
