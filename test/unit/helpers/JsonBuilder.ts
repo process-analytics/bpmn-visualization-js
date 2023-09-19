@@ -500,9 +500,12 @@ function addEventDefinitionsOnDefinition(jsonModel: BpmnJsonModel, buildParamete
     addEventDefinitions(jsonModel.definitions, { ...buildParameter, eventDefinition: { id: 'event_definition_id' } }, { id: 'other_event_definition_id' });
     (event.eventDefinitionRef as string[]) = ['event_definition_id', 'other_event_definition_id'];
   } else {
-    const eventDefinition =
-      buildParameter.eventDefinition ??
-      (buildParameter.withMultipleDefinitions ? [{ id: 'event_definition_1_id' }, { id: 'event_definition_2_id' }] : { id: 'event_definition_id' });
+    // eslint-disable-next-line unicorn/prefer-logical-operator-over-ternary -- Because if `eventDefinition` is an empty string, the logical operator returns `true` and the ternary returns `false`.
+    const eventDefinition = buildParameter.eventDefinition
+      ? buildParameter.eventDefinition
+      : buildParameter.withMultipleDefinitions
+      ? [{ id: 'event_definition_1_id' }, { id: 'event_definition_2_id' }]
+      : { id: 'event_definition_id' };
     addEventDefinitions(jsonModel.definitions, { ...buildParameter, eventDefinition });
     event.eventDefinitionRef = Array.isArray(eventDefinition)
       ? eventDefinition.map(eventDefinition => (typeof eventDefinition === 'string' ? eventDefinition : eventDefinition.id))
