@@ -30,12 +30,11 @@ export default class EventDefinitionConverter {
   constructor(private convertedElements: ConvertedElements) {}
 
   deserialize(definitions: TDefinitions): void {
-    eventDefinitionKinds.forEach(eventDefinitionKind => {
+    for (const eventDefinitionKind of eventDefinitionKinds) {
       // sometimes eventDefinition is simple, and therefore it is parsed as empty string "", in that case eventDefinition will be converted to an empty object
       const eventDefinitions = definitions[(eventDefinitionKind + 'EventDefinition') as keyof TDefinitions] as EventDefinitions;
-      ensureIsArray<TEventDefinition>(eventDefinitions, true).forEach(eventDefinition =>
-        this.convertedElements.registerEventDefinitionsOfDefinition(eventDefinition.id, eventDefinitionKind),
-      );
-    });
+      for (const eventDefinition of ensureIsArray<TEventDefinition>(eventDefinitions, true))
+        this.convertedElements.registerEventDefinitionsOfDefinition(eventDefinition.id, eventDefinitionKind);
+    }
   }
 }

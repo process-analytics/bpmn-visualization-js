@@ -28,9 +28,8 @@ export class ModelFiltering {
   filter(bpmnModel: BpmnModel, modelFilter?: ModelFilter): BpmnModel {
     const poolIdsFilter: string[] = [];
     const poolNamesFilter: string[] = [];
-    ensureIsArray(modelFilter?.pools)
-      .filter(p => p && Object.keys(p).length)
-      .forEach(filter => (filter.id ? poolIdsFilter.push(filter.id) : filter.name && poolNamesFilter.push(filter.name)));
+    for (const filter of ensureIsArray(modelFilter?.pools).filter(p => p && Object.keys(p).length))
+      filter.id ? poolIdsFilter.push(filter.id) : filter.name && poolNamesFilter.push(filter.name);
 
     if (poolIdsFilter.length == 0 && poolNamesFilter.length == 0) {
       return bpmnModel;

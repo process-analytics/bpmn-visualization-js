@@ -54,7 +54,7 @@ export class DropFileUserInterface {
   }
 
   private preventDefaultsOnEvents(events: string[], container: Element | Window): void {
-    events.forEach(eventName => container.addEventListener(eventName, this.preventDefaults.bind(this), false));
+    for (const eventName of events) container.addEventListener(eventName, this.preventDefaults.bind(this), false);
   }
 
   private addDomElements(containerToBeFaded: HTMLElement): void {

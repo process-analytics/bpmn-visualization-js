@@ -835,7 +835,7 @@ describe('parse bpmn as json for process/pool', () => {
 
     const model = parseJsonAndExpect(json, 0, 0, 5, 4);
 
-    model.flowNodes.map(flowNode => flowNode.bpmnElement).forEach(bpmnElement => expect(bpmnElement.parentId).toBeUndefined());
+    for (const bpmnElement of model.flowNodes.map(flowNode => flowNode.bpmnElement)) expect(bpmnElement.parentId).toBeUndefined();
   });
 
   describe(`incoming/outgoing management for participant referencing a process`, () => {

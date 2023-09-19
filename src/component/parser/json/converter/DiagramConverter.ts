@@ -68,32 +68,30 @@ export default class DiagramConverter {
   private deserializeFonts(bpmnLabelStyle: BPMNLabelStyle[] | BPMNLabelStyle): void {
     this.convertedFonts = new Map();
 
-    ensureIsArray(bpmnLabelStyle).forEach(labelStyle =>
-      ensureIsArray(labelStyle.Font).forEach(font =>
-        this.convertedFonts.set(labelStyle.id, new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough)),
-      ),
-    );
+    for (const labelStyle of ensureIsArray(bpmnLabelStyle))
+      for (const font of ensureIsArray(labelStyle.Font))
+        this.convertedFonts.set(labelStyle.id, new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough));
   }
 
   private deserializeShapes(shapes: BPMNShape[] | BPMNShape): Shapes {
     const convertedShapes: Shapes = { flowNodes: [], lanes: [], pools: [] };
 
-    ensureIsArray(shapes).forEach(shape => {
+    for (const shape of ensureIsArray(shapes)) {
       // flow nodes
       if (this.deserializeShapeAndStoreIfFound(shape, convertedShapes.flowNodes, (bpmnElementId: string) => this.convertedElements.findFlowNode(bpmnElementId))) {
-        return;
+        continue;
       }
       // lane
       if (this.deserializeShapeAndStoreIfFound(shape, convertedShapes.lanes, (bpmnElementId: string) => this.convertedElements.findLane(bpmnElementId))) {
-        return;
+        continue;
       }
       // pool
       if (this.deserializeShapeAndStoreIfFound(shape, convertedShapes.pools, (bpmnElementId: string) => this.convertedElements.findPoolById(bpmnElementId))) {
-        return;
+        continue;
       }
       // not found
       this.parsingMessageCollector.warning(new ShapeUnknownBpmnElementWarning(shape.bpmnElement));
-    });
+    }
 
     return convertedShapes;
   }

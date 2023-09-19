@@ -37,10 +37,10 @@ export class OverlaysUpdater {
     if (!cell) {
       return;
     }
-    ensureIsArray(overlays).forEach(overlay => {
+    for (const overlay of ensureIsArray(overlays)) {
       const bpmnOverlay = new MxGraphCustomOverlay(overlay.label, this.overlayConverter.convert(overlay));
       this.graph.addCellOverlay(cell, bpmnOverlay);
-    });
+    }
   }
 
   removeAllOverlays(bpmnElementId: string): void {
