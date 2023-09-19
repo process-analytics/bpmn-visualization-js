@@ -44,6 +44,7 @@ module.exports = {
     'unicorn/prefer-query-selector': 'error',
     'unicorn/prefer-add-event-listener': 'error',
     'unicorn/no-array-for-each': 'error',
+    'unicorn/prefer-dom-node-text-content': 'error',
     'import/newline-after-import': ['error', { count: 1 }],
     'import/first': 'error',
     'import/order': [
