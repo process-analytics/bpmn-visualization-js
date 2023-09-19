@@ -114,5 +114,5 @@ function filterFlowNodes(
 }
 
 function filterEdges(edges: Edge[], filteredElementIds: string[]): Edge[] {
-  return edges.filter(edge => filteredElementIds.includes(edge.bpmnElement.sourceRefId) && filteredElementIds.includes(edge.bpmnElement.targetRefId));
+  return edges.filter(edge => filteredElementIds.includes(edge.bpmnElement.sourceReferenceId) && filteredElementIds.includes(edge.bpmnElement.targetReferenceId));
 }

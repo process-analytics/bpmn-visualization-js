@@ -48,7 +48,7 @@ import ShapeBpmnElement, {
 } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { eventDefinitionKinds } from '../../../../model/bpmn/internal/shape/utils';
 import { ensureIsArray } from '../../../helpers/array-utils';
-import { BoundaryEventNotAttachedToActivityWarning, LaneUnknownFlowNodeRefWarning as LaneUnknownFlowNodeReferenceWarning } from '../warnings';
+import { BoundaryEventNotAttachedToActivityWarning, LaneUnknownFlowNodeReferenceWarning } from '../warnings';
 
 import { buildShapeBpmnGroup } from './utils';
 
@@ -131,8 +131,8 @@ export default class ProcessConverter {
     };
 
     this.convertedElements.getFlows().forEach(flow => {
-      fillShapeBpmnElementAttribute(flow.sourceRefId, 'outgoingIds', flow.id);
-      fillShapeBpmnElementAttribute(flow.targetRefId, 'incomingIds', flow.id);
+      fillShapeBpmnElementAttribute(flow.sourceReferenceId, 'outgoingIds', flow.id);
+      fillShapeBpmnElementAttribute(flow.targetReferenceId, 'incomingIds', flow.id);
     });
   }
 

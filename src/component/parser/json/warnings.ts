@@ -29,7 +29,7 @@ export class GroupUnknownCategoryValueWarning extends JsonParsingWarning {
 
   override getMessage(): { template: string; arguments: string[] } {
     return {
-      arguments: [this.categoryValueRef, this.groupBpmnElementId],
+      arguments: [this.categoryValueReference, this.groupBpmnElementId],
       template: 'Group json deserialization: unable to find category value ref %s for bpmn element %s',
     };
   }
@@ -87,7 +87,7 @@ export class LaneUnknownFlowNodeReferenceWarning extends JsonParsingWarning {
 
   override getMessage(): MessageDetails {
     return {
-      arguments: [this.flowNodeRef, this.laneId],
+      arguments: [this.flowNodeReference, this.laneId],
       template: 'Unable to assign lane %s as parent: flow node %s is not found',
     };
   }
@@ -104,7 +104,7 @@ export class BoundaryEventNotAttachedToActivityWarning extends JsonParsingWarnin
 
   override getMessage(): MessageDetails {
     return {
-      arguments: [this.bpmnElementId, this.attachedToRef, this.attachedToKind],
+      arguments: [this.bpmnElementId, this.attachedToReference, this.attachedToKind],
       template: 'The boundary event %s must be attached to an activity, and not to %s of kind %s',
     };
   }

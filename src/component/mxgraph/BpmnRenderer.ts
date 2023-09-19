@@ -84,8 +84,8 @@ export class BpmnRenderer {
     edges.forEach(internalEdge => {
       const bpmnElement = internalEdge.bpmnElement;
       const parent = this.graph.getDefaultParent();
-      const source = this.getCell(bpmnElement.sourceRefId);
-      const target = this.getCell(bpmnElement.targetRefId);
+      const source = this.getCell(bpmnElement.sourceReferenceId);
+      const target = this.getCell(bpmnElement.targetReferenceId);
       const labelBounds = internalEdge.label?.bounds;
       const style = this.styleComputer.computeStyle(internalEdge, labelBounds);
       const edge = this.graph.insertEdge(parent, bpmnElement.id, bpmnElement.name, source, target, style);

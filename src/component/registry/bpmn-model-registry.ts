@@ -55,8 +55,8 @@ export class BpmnModelRegistry {
     const isShape = bpmnElement instanceof ShapeBpmnElement;
     const semantic: BaseBpmnSemantic = { id: bpmnElementId, name: bpmnElement.name, isShape: isShape, kind: bpmnElement.kind };
     if (bpmnElement instanceof Flow) {
-      (semantic as EdgeBpmnSemantic).sourceRefId = bpmnElement.sourceRefId;
-      (semantic as EdgeBpmnSemantic).targetRefId = bpmnElement.targetRefId;
+      (semantic as EdgeBpmnSemantic).sourceRefId = bpmnElement.sourceReferenceId;
+      (semantic as EdgeBpmnSemantic).targetRefId = bpmnElement.targetReferenceId;
     } else {
       (semantic as ShapeBpmnSemantic).incomingIds = bpmnElement.incomingIds;
       (semantic as ShapeBpmnSemantic).outgoingIds = bpmnElement.outgoingIds;
@@ -109,7 +109,7 @@ class SearchableModel {
     ([] as (Edge | Shape)[])
       .concat(bpmnModel.pools, bpmnModel.lanes, bpmnModel.flowNodes, bpmnModel.edges)
       // use the bpmn element id and not the bpmn shape id
-      .forEach(shapeOrEdge => this.elements.set(shapeOrEdge.bpmnElement.id, eshapeOrEdge));
+      .forEach(shapeOrEdge => this.elements.set(shapeOrEdge.bpmnElement.id, shapeOrEdge));
   }
 
   elementById(id: string): Shape | Edge | undefined {
