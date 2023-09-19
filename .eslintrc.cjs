@@ -42,6 +42,7 @@ module.exports = {
     ],
     'unicorn/prevent-abbreviations': 'error',
     'unicorn/prefer-query-selector': 'error',
+    'unicorn/prefer-add-event-listener': 'error',
     'import/newline-after-import': ['error', { count: 1 }],
     'import/first': 'error',
     'import/order': [
