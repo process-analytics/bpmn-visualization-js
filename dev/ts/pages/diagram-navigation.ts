@@ -17,12 +17,12 @@ limitations under the License.
 import { configureControlsPanel, configureMousePointer, documentReady, fit, FitType, startBpmnVisualization, zoom, ZoomType } from '../development-bundle-index';
 
 function configureFitAndZoomButtons(): void {
-  Object.values(FitType).forEach(fitType => {
+  for (const fitType of Object.values(FitType)) {
     document.querySelector(`#${fitType}`).addEventListener('click', () => fit({ type: fitType }));
-  });
-  Object.values(ZoomType).forEach(zoomType => {
+  }
+  for (const zoomType of Object.values(ZoomType)) {
     document.querySelector(`#zoom-${zoomType}`).addEventListener('click', () => zoom(zoomType));
-  });
+  }
 }
 
 function configureZoomThrottleInput(parameters: URLSearchParams): HTMLInputElement {

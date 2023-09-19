@@ -54,10 +54,11 @@ export abstract class BaseActivityShape extends mxRectangleShape {
   protected paintMarkerIcons(paintParameter: PaintParameter): void {
     const markers = mxUtils.getValue(this.style, BpmnStyleIdentifier.MARKERS, undefined);
     if (markers) {
-      orderActivityMarkers(markers.split(',')).forEach((marker, index, allMarkers) => {
+      const orderedMarkers = orderActivityMarkers(markers.split(','));
+      for (const [index, marker] of orderedMarkers.entries()) {
         paintParameter = {
           ...paintParameter,
-          setIconOriginFunct: this.getMarkerIconOriginFunction(allMarkers.length, index + 1),
+          setIconOriginFunct: this.getMarkerIconOriginFunction(orderedMarkers.length, index + 1),
         };
         paintParameter.canvas.save(); // ensure we can later restore the configuration
         switch (marker) {
@@ -76,7 +77,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
         }
         // Restore original configuration to avoid side effects if the iconPainter changed the canvas configuration (colors, ....)
         paintParameter.canvas.restore();
-      });
+      }
     }
   }
 

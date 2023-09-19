@@ -153,15 +153,15 @@ export const toBpmnModel = (model: BpmnModelTestRepresentation): BpmnModel => {
   const bpmnModel = newBpmnModel();
   const pools = ensureIsArray(model.pools);
 
-  pools.forEach(pool => {
+  for (const pool of pools) {
     if (pool.isDisplayed !== false) {
       addNewPool(bpmnModel, pool.id, pool.name);
     }
     addContainerElements(bpmnModel, pool);
-  });
+  }
 
   if (model.messageFlows) {
-    ensureIsArray(model.messageFlows).forEach(messageFlow => bpmnModel.edges.push(newMessageFlow(messageFlow.id, messageFlow.name, messageFlow.source, messageFlow.target)));
+    for (const messageFlow of ensureIsArray(model.messageFlows)) bpmnModel.edges.push(newMessageFlow(messageFlow.id, messageFlow.name, messageFlow.source, messageFlow.target));
   }
 
   if (model.elementsWithoutPool) {

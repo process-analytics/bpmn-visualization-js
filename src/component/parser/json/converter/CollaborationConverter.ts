@@ -38,7 +38,7 @@ export default class CollaborationConverter {
   ) {}
 
   deserialize(collaborations: string | TCollaboration | (string | TCollaboration)[]): void {
-    ensureIsArray(collaborations).forEach(collaboration => this.parseCollaboration(collaboration));
+    for (const collaboration of ensureIsArray(collaborations)) this.parseCollaboration(collaboration);
   }
 
   private parseCollaboration(collaboration: TCollaboration): void {
@@ -48,21 +48,19 @@ export default class CollaborationConverter {
   }
 
   private buildParticipant(bpmnElements: TParticipant[] | TParticipant): void {
-    ensureIsArray(bpmnElements).forEach(participant =>
-      this.convertedElements.registerPool(new ShapeBpmnElement(participant.id, participant.name, ShapeBpmnElementKind.POOL), participant.processRef),
-    );
+    for (const participant of ensureIsArray(bpmnElements))
+      this.convertedElements.registerPool(new ShapeBpmnElement(participant.id, participant.name, ShapeBpmnElementKind.POOL), participant.processRef);
   }
 
   private buildMessageFlows(bpmnElements: TMessageFlow[] | TMessageFlow): void {
-    ensureIsArray(bpmnElements).forEach(messageFlow =>
-      this.convertedElements.registerMessageFlow(new MessageFlow(messageFlow.id, messageFlow.name, messageFlow.sourceRef, messageFlow.targetRef)),
-    );
+    for (const messageFlow of ensureIsArray(bpmnElements))
+      this.convertedElements.registerMessageFlow(new MessageFlow(messageFlow.id, messageFlow.name, messageFlow.sourceRef, messageFlow.targetRef));
   }
 
   private buildGroups(bpmnElements: TGroup[] | TGroup): void {
-    ensureIsArray(bpmnElements).forEach(groupBpmnElement => {
+    for (const groupBpmnElement of ensureIsArray(bpmnElements)) {
       const shapeBpmnElement = buildShapeBpmnGroup(this.convertedElements, this.parsingMessageCollector, groupBpmnElement);
       shapeBpmnElement && this.convertedElements.registerFlowNode(shapeBpmnElement);
-    });
+    }
   }
 }

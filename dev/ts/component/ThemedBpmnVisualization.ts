@@ -116,7 +116,7 @@ export class ThemedBpmnVisualization extends BpmnVisualization {
     const styleSheet = this.graph.getStylesheet();
 
     // EVENT
-    ShapeUtil.eventKinds().forEach(kind => {
+    for (const kind of ShapeUtil.eventKinds()) {
       let fillColor;
       let strokeColor;
       switch (kind) {
@@ -142,13 +142,13 @@ export class ThemedBpmnVisualization extends BpmnVisualization {
       const style = styleSheet.styles[kind];
       style['fillColor'] = fillColor;
       style['strokeColor'] = strokeColor;
-    });
+    }
 
     // TASK
-    ShapeUtil.taskKinds().forEach(kind => {
+    for (const kind of ShapeUtil.taskKinds()) {
       const style = styleSheet.styles[kind];
       style['fillColor'] = theme.taskAndCallActivityFillColor;
-    });
+    }
 
     // CALL ACTIVITY
     const callActivityStyle = styleSheet.styles[ShapeBpmnElementKind.CALL_ACTIVITY];

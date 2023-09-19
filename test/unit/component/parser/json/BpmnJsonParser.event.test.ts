@@ -43,7 +43,7 @@ function testMustConvertShapes(buildEventParameter: BuildEventsParameter | Build
   const model = parseJsonAndExpectEvent(json, omitExpectedShape.eventDefinitionKind, Array.isArray(buildEventParameter) ? buildEventParameter.length : 1);
 
   const shapes = getEventShapes(model);
-  shapes.forEach((shape, index) => {
+  for (const [index, shape] of shapes.entries()) {
     const expectedShape: ExpectedEventShape = {
       ...omitExpectedShape,
       shapeId: `shape_event_id_0_${index}`,
@@ -51,7 +51,7 @@ function testMustConvertShapes(buildEventParameter: BuildEventsParameter | Build
       bounds: expectedBounds,
     };
     verifyShape(shape, expectedShape);
-  });
+  }
 }
 
 function testMustNotConvertEvent(buildEventParameter: BuildEventsParameter): void {

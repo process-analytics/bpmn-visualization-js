@@ -76,7 +76,7 @@ function toRenderedModel(bpmnModel: BpmnModel): RenderedModel {
   const subprocesses: Shape[] = [];
   const boundaryEvents: Shape[] = [];
   const otherFlowNodes: Shape[] = [];
-  bpmnModel.flowNodes.forEach(shape => {
+  for (const shape of bpmnModel.flowNodes) {
     const kind = shape.bpmnElement.kind;
     if (ShapeUtil.isSubProcess(kind)) {
       subprocesses.push(shape);
@@ -85,7 +85,7 @@ function toRenderedModel(bpmnModel: BpmnModel): RenderedModel {
     } else if (!collapsedSubProcessIds.includes(shape.bpmnElement.parentId)) {
       otherFlowNodes.push(shape);
     }
-  });
+  }
 
   return { boundaryEvents: boundaryEvents, edges: bpmnModel.edges, lanes: bpmnModel.lanes, otherFlowNodes: otherFlowNodes, pools: bpmnModel.pools, subprocesses: subprocesses };
 }
@@ -106,10 +106,8 @@ class SearchableModel {
   private elements = new Map<string, Shape | Edge>();
 
   constructor(bpmnModel: BpmnModel) {
-    ([] as (Edge | Shape)[])
-      .concat(bpmnModel.pools, bpmnModel.lanes, bpmnModel.flowNodes, bpmnModel.edges)
-      // use the bpmn element id and not the bpmn shape id
-      .forEach(shapeOrEdge => this.elements.set(shapeOrEdge.bpmnElement.id, shapeOrEdge));
+    for (const shapeOrEdge of ([] as (Edge | Shape)[]).concat(bpmnModel.pools, bpmnModel.lanes, bpmnModel.flowNodes, bpmnModel.edges))
+      this.elements.set(shapeOrEdge.bpmnElement.id, shapeOrEdge);
   }
 
   elementById(id: string): Shape | Edge | undefined {

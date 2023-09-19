@@ -44,14 +44,14 @@ export class CssClassesRegistryImpl implements CssClassesRegistry {
 
   removeAllCssClasses(bpmnElementIds?: string | string[]): void {
     if (bpmnElementIds) {
-      ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => {
+      for (const bpmnElementId of ensureIsArray<string>(bpmnElementIds)) {
         const isChanged = this.cssClassesCache.removeAllClassNames(bpmnElementId);
         this.updateCellIfChanged(isChanged, bpmnElementId);
-      });
+      }
     } else {
       const bpmnIds = this.cssClassesCache.getBpmnIds();
       this.cssClassesCache.clear();
-      bpmnIds.forEach(bpmnElementId => this.updateCellIfChanged(true, bpmnElementId));
+      for (const bpmnElementId of bpmnIds) this.updateCellIfChanged(true, bpmnElementId);
     }
   }
 
@@ -61,7 +61,7 @@ export class CssClassesRegistryImpl implements CssClassesRegistry {
 
   private updateCssClasses(bpmnElementIds: string | string[], classNames: string | string[], updateClassNames: (bpmnElementId: string, classNames: string[]) => boolean): void {
     const arrayClassNames = ensureIsArray<string>(classNames);
-    ensureIsArray<string>(bpmnElementIds).forEach(bpmnElementId => this.updateCellIfChanged(updateClassNames(bpmnElementId, arrayClassNames), bpmnElementId));
+    for (const bpmnElementId of ensureIsArray<string>(bpmnElementIds)) this.updateCellIfChanged(updateClassNames(bpmnElementId, arrayClassNames), bpmnElementId);
   }
 
   private updateCellIfChanged(updateCell: boolean, bpmnElementId: string): void {
@@ -154,7 +154,7 @@ export class CssClassesCache {
   private updateClassNames(bpmnElementId: string, classNames: string[], manageClassNames: (currentClassNames: Set<string>, className: string) => void): boolean {
     const currentClassNames = this.getOrInitializeClassNames(bpmnElementId);
     const initialClassNamesNumber = currentClassNames.size;
-    ensureIsArray(classNames).forEach(className => manageClassNames(currentClassNames, className));
+    for (const className of ensureIsArray(classNames)) manageClassNames(currentClassNames, className);
     return currentClassNames.size != initialClassNamesNumber;
   }
 

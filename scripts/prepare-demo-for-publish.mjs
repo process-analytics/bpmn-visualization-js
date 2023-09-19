@@ -28,15 +28,13 @@ const updateAssetsLoadingFile = path => {
 const demoRootDirectory = './build/demo';
 const htmlPagesPath = join(demoRootDirectory, 'dev/public');
 const pages = readdirSync(htmlPagesPath);
-pages
-  .filter(file => extname(file).toLowerCase() === '.html')
-  .forEach(page => {
-    // eslint-disable-next-line no-console
-    console.info('Managing', page);
+for (const page of pages.filter(file => extname(file).toLowerCase() === '.html')) {
+  // eslint-disable-next-line no-console
+  console.info('Managing', page);
 
-    // change the path of the assets in the current html page
-    updateAssetsLoadingFile(join(htmlPagesPath, page));
-  });
+  // change the path of the assets in the current html page
+  updateAssetsLoadingFile(join(htmlPagesPath, page));
+}
 
 // copy ./index.html in build/demo directory, to reproduce the hierarchy on the examples' repo, on the demo preview in GitHub
 copyFileSync('./index.html', join(demoRootDirectory, 'index.html'));

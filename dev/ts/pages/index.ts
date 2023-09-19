@@ -88,9 +88,9 @@ function configureFitMarginInput(): void {
 }
 
 function configureZoomButtons(): void {
-  Object.values(ZoomType).forEach(zoomType => {
+  for (const zoomType of Object.values(ZoomType)) {
     document.querySelector(`#zoom-${zoomType}`).addEventListener('click', () => zoom(zoomType));
-  });
+  }
   document.querySelector(`#zoom-reset`).addEventListener('click', () => fit(fitOptions));
 }
 

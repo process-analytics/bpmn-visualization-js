@@ -159,9 +159,9 @@ function resetStyleByAPI(): void {
 }
 
 function manageOverlays(idsToAddOverlay: string[], bpmnKind: ShapeBpmnElementKind): void {
-  lastIdentifiedBpmnIds.forEach(id => removeAllOverlays(id));
+  for (const id of lastIdentifiedBpmnIds) removeAllOverlays(id);
   if (isOverlaysDisplayed) {
-    idsToAddOverlay.forEach(id => addOverlays(id, getOverlay(bpmnKind)));
+    for (const id of idsToAddOverlay) addOverlays(id, getOverlay(bpmnKind));
   } else {
     log('Do not display overlays');
   }
@@ -207,7 +207,7 @@ function configureControls(): void {
     resetTextArea();
 
     useCSS ? removeCssClasses(lastIdentifiedBpmnIds, cssClassName) : resetStyleByAPI();
-    lastIdentifiedBpmnIds.forEach(id => removeAllOverlays(id));
+    for (const id of lastIdentifiedBpmnIds) removeAllOverlays(id);
 
     // reset identified elements and values
     lastIdentifiedBpmnIds = [];

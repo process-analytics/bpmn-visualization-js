@@ -166,14 +166,14 @@ export class StyleConfigurator {
   }
 
   private configureEventStyles(): void {
-    ShapeUtil.eventKinds().forEach(kind => {
+    for (const kind of ShapeUtil.eventKinds()) {
       const style: StyleMap = {};
       style[mxConstants.STYLE_SHAPE] = kind;
       style[mxConstants.STYLE_PERIMETER] = mxPerimeter.EllipsePerimeter;
       style[mxConstants.STYLE_STROKEWIDTH] = kind == ShapeBpmnElementKind.EVENT_END ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN;
       style[mxConstants.STYLE_VERTICAL_LABEL_POSITION] = mxConstants.ALIGN_BOTTOM;
       this.putCellStyle(kind, style);
-    });
+    }
   }
 
   private configureTextAnnotationStyle(): void {
@@ -202,18 +202,18 @@ export class StyleConfigurator {
   }
 
   private configureActivityStyles(): void {
-    ShapeUtil.activityKinds().forEach(kind => {
+    for (const kind of ShapeUtil.activityKinds()) {
       const style: StyleMap = {};
       style[mxConstants.STYLE_SHAPE] = kind;
       style[mxConstants.STYLE_ROUNDED] = true; // required by the BPMN specification
       style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
       style[mxConstants.STYLE_STROKEWIDTH] = kind == ShapeBpmnElementKind.CALL_ACTIVITY ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN;
       this.putCellStyle(kind, style);
-    });
+    }
   }
 
   private configureGatewayStyles(): void {
-    ShapeUtil.gatewayKinds().forEach(kind => {
+    for (const kind of ShapeUtil.gatewayKinds()) {
       const style: StyleMap = {};
       style[mxConstants.STYLE_SHAPE] = kind;
       style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RhombusPerimeter;
@@ -225,7 +225,7 @@ export class StyleConfigurator {
       style[mxConstants.STYLE_VERTICAL_LABEL_POSITION] = mxConstants.ALIGN_TOP;
 
       this.putCellStyle(kind, style);
-    });
+    }
   }
 
   private configureDefaultEdgeStyle(): void {
@@ -244,11 +244,11 @@ export class StyleConfigurator {
   }
 
   private configureEdgeStyles<T>(styleKinds: T[], specificStyles: Map<T, (style: StyleMap) => void>): void {
-    styleKinds.forEach(kind => {
+    for (const kind of styleKinds) {
       const style: StyleMap = {};
       specificStyles.get(kind)(style);
       this.graph.getStylesheet().putCellStyle(kind.toString(), style);
-    });
+    }
   }
 
   private configureFlowStyles(): void {

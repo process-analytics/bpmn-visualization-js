@@ -60,7 +60,7 @@ export class BpmnRenderer {
   }
 
   private insertShapes(shapes: Shape[]): void {
-    shapes.forEach(shape => this.insertShape(shape));
+    for (const shape of shapes) this.insertShape(shape);
   }
 
   private getParent(bpmnElement: ShapeBpmnElement): mxCell {
@@ -81,7 +81,7 @@ export class BpmnRenderer {
   }
 
   private insertEdges(edges: Edge[]): void {
-    edges.forEach(internalEdge => {
+    for (const internalEdge of edges) {
       const bpmnElement = internalEdge.bpmnElement;
       const parent = this.graph.getDefaultParent();
       const source = this.getCell(bpmnElement.sourceReferenceId);
@@ -107,7 +107,7 @@ export class BpmnRenderer {
       }
 
       this.insertMessageFlowIconIfNeeded(internalEdge, edge);
-    });
+    }
   }
 
   private insertMessageFlowIconIfNeeded(internalEdge: Edge, edge: mxCell): void {
