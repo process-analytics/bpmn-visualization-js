@@ -29,9 +29,9 @@ const elementsToCollapsePerDiagram = new Map<string, string[]>([
 ]);
 
 class CollapsedElementImageSnapshotConfigurator extends ImageSnapshotConfigurator {
-  override getConfig(param: { fileName: string; collapsedElement: string }): MatchImageSnapshotOptions {
-    const config = super.getConfig(param);
-    config.customSnapshotIdentifier = `${param.fileName}-collapse-${param.collapsedElement}`;
+  override getConfig(parameter: { fileName: string; collapsedElement: string }): MatchImageSnapshotOptions {
+    const config = super.getConfig(parameter);
+    config.customSnapshotIdentifier = `${parameter.fileName}-collapse-${parameter.collapsedElement}`;
     return config;
   }
 }

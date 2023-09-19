@@ -47,10 +47,10 @@ export class BpmnConnector extends mxgraph.mxConnector {
   // taken from mxPolyline, required as we cannot call mxPolyline method here (parent of the parent)
   // we only support non STYLE_CURVED here (is possible with parent class)
   private paintEdgeLine(c: mxAbstractCanvas2D, pts: mxPoint[]): void {
-    const prev = getPointerEventsValue(c);
+    const previous = getPointerEventsValue(c);
     setPointerEventsValue(c, 'stroke');
     this.paintLine(c, pts, this.isRounded);
-    setPointerEventsValue(c, prev);
+    setPointerEventsValue(c, previous);
   }
 }
 

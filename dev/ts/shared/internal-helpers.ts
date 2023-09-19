@@ -16,26 +16,26 @@ limitations under the License.
 
 import { log } from './shared-helpers';
 
-export function _log(header: string, message: string, ...optionalParams: unknown[]): void {
+export function _log(header: string, message: string, ...optionalParameters: unknown[]): void {
   // eslint-disable-next-line no-console
-  console.info(`${header} ${message}`, ...optionalParams);
+  console.info(`${header} ${message}`, ...optionalParameters);
 }
 
-export function logStartup(message?: string, ...optionalParams: unknown[]): void {
-  _log('[DEMO STARTUP]', message, ...optionalParams);
+export function logStartup(message?: string, ...optionalParameters: unknown[]): void {
+  _log('[DEMO STARTUP]', message, ...optionalParameters);
 }
 
-export function logErrorAndOpenAlert(error: string, alertMsg?: string): void {
+export function logErrorAndOpenAlert(error: string, alertMessage?: string): void {
   logError(error);
-  window.alert(alertMsg ?? error);
+  window.alert(alertMessage ?? error);
 }
 
 export function logError(error: string): void {
   console.error(`[DEMO]`, error);
 }
 
-export function logDownload(message?: string, ...optionalParams: unknown[]): void {
-  _log('[DEMO DOWNLOAD]', message, ...optionalParams);
+export function logDownload(message?: string, ...optionalParameters: unknown[]): void {
+  _log('[DEMO DOWNLOAD]', message, ...optionalParameters);
 }
 
 export async function fetchBpmnContent(url: string): Promise<string> {

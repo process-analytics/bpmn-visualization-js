@@ -27,7 +27,7 @@ import debugLogger from 'debug';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import envUtils = require('../environment-utils.cjs');
+import environmentUtils = require('../environment-utils.cjs');
 
 import { delay } from './test-utils';
 
@@ -89,7 +89,7 @@ export class AvailableTestPages {
   };
 
   static readonly LIB_INTEGRATION: AvailableTestPage = {
-    pageFileName: 'lib-integration',
+    pageFileName: 'library-integration',
     expectedPageTitle: 'bpmn-visualization - Library Integration',
   };
 
@@ -290,10 +290,10 @@ export class PageTester {
 
   async mouseZoom(point: Point, zoomType: ZoomType, xTimes = 1): Promise<void> {
     pageCheckLog('Start mouse zoom - point: %o / type: %o / xTimes: %s', point, zoomType, xTimes);
-    for (let i = 0; i < xTimes; i++) {
+    for (let index = 0; index < xTimes; index++) {
       await this.mouseZoomNoDelay(point, zoomType);
       // delay here is needed to make the tests pass on macOS, delay must be greater than debounce timing, so it surely gets triggered
-      await delay(envUtils.isRunningOnCISlowOS() ? 300 : 150);
+      await delay(environmentUtils.isRunningOnCISlowOS() ? 300 : 150);
     }
     pageCheckLog('Mouse zoom done');
   }

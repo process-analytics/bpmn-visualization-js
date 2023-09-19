@@ -14,9 +14,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { Overlay, OverlayPosition } from '../dev-bundle-index';
+import type { Overlay, OverlayPosition } from '../development-bundle-index';
 
-import { addOverlays, configureControlsPanel, configureMousePointer, documentReady, getModelElementsByIds, removeAllOverlays, startBpmnVisualization } from '../dev-bundle-index';
+import {
+  addOverlays,
+  configureControlsPanel,
+  configureMousePointer,
+  documentReady,
+  getModelElementsByIds,
+  removeAllOverlays,
+  startBpmnVisualization,
+} from '../development-bundle-index';
 
 const bpmnIdInputElt = document.getElementById('bpmn-id-input') as HTMLInputElement;
 

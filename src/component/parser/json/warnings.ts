@@ -22,7 +22,7 @@ import { JsonParsingWarning } from '../parsing-messages';
 export class GroupUnknownCategoryValueWarning extends JsonParsingWarning {
   constructor(
     readonly groupBpmnElementId: string,
-    readonly categoryValueRef: string,
+    readonly categoryValueReference: string,
   ) {
     super();
   }
@@ -77,10 +77,10 @@ export class LabelStyleMissingFontWarning extends JsonParsingWarning {
   }
 }
 
-export class LaneUnknownFlowNodeRefWarning extends JsonParsingWarning {
+export class LaneUnknownFlowNodeReferenceWarning extends JsonParsingWarning {
   constructor(
     readonly laneId: string,
-    readonly flowNodeRef: string,
+    readonly flowNodeReference: string,
   ) {
     super();
   }
@@ -96,7 +96,7 @@ export class LaneUnknownFlowNodeRefWarning extends JsonParsingWarning {
 export class BoundaryEventNotAttachedToActivityWarning extends JsonParsingWarning {
   constructor(
     readonly bpmnElementId: string,
-    readonly attachedToRef: string,
+    readonly attachedToReference: string,
     readonly attachedToKind: ShapeBpmnElementKind,
   ) {
     super();

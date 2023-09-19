@@ -17,11 +17,11 @@ limitations under the License.
 import { readdirSync, readFileSync as fsReadFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-export function readFileSync(relPathToSourceFile: string, encoding: BufferEncoding = 'utf-8', dirName = __dirname): string {
-  return fsReadFileSync(join(dirName, relPathToSourceFile), { encoding });
+export function readFileSync(relativePathToSourceFile: string, encoding: BufferEncoding = 'utf-8', directoryName = __dirname): string {
+  return fsReadFileSync(join(directoryName, relativePathToSourceFile), { encoding });
 }
 
 /** Returns the files in the given directory. The function doesn't do any recursion in sub directories. */
-export function findFiles(relPathToSourceDirectory: string): string[] {
-  return readdirSync(join(__dirname, relPathToSourceDirectory));
+export function findFiles(relativePathToSourceDirectory: string): string[] {
+  return readdirSync(join(__dirname, relativePathToSourceDirectory));
 }

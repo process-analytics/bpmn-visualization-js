@@ -49,8 +49,8 @@ export default class BpmnXmlParser {
     parseAttributeValue: true, // ensure numbers are parsed as number, not as string
     // entities management
     processEntities: false, // If you don't have entities in your XML document then it is recommended to disable it for better performance.
-    attributeValueProcessor: (_name: string, val: string) => {
-      return this.processAttribute(val);
+    attributeValueProcessor: (_name: string, value: string) => {
+      return this.processAttribute(value);
     },
   };
   private xmlParser: XMLParser = new XMLParser(this.x2jOptions);
@@ -74,13 +74,13 @@ export default class BpmnXmlParser {
     return model;
   }
 
-  private processAttribute(val: string): string {
+  private processAttribute(value: string): string {
     for (const replacement of entitiesReplacements) {
-      val = val.replace(replacement.regex, replacement.val);
+      value = value.replace(replacement.regex, replacement.val);
     }
     if (this.options?.additionalXmlAttributeProcessor) {
-      val = this.options.additionalXmlAttributeProcessor(val);
+      value = this.options.additionalXmlAttributeProcessor(value);
     }
-    return val;
+    return value;
   }
 }

@@ -67,7 +67,7 @@ describe('BpmnVisualization API', () => {
 
   describe('Version', () => {
     it('lib version', () => {
-      expect(bpmnVisualization.getVersion().lib).toBe(getLibVersionFromPackageJson());
+      expect(bpmnVisualization.getVersion().lib).toBe(getLibraryVersionFromPackageJson());
     });
     it('mxGraph version', () => {
       expect(bpmnVisualization.getVersion().dependencies.get('mxGraph')).toBeDefined();
@@ -113,8 +113,8 @@ describe('BpmnVisualization API', () => {
   });
 });
 
-function getLibVersionFromPackageJson(): string {
+function getLibraryVersionFromPackageJson(): string {
   const json = readFileSync('../../package.json');
-  const pkg = JSON.parse(json);
-  return pkg.version;
+  const package_ = JSON.parse(json);
+  return package_.version;
 }

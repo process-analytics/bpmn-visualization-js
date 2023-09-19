@@ -127,8 +127,8 @@ const pageTester = new OverlaysPageTester({ targetedPage: AvailableTestPages.OVE
 describe('BPMN Shapes with overlays', () => {
   const bpmnDiagramName = 'overlays.start.flow.task.gateway';
 
-  function getShapeDir(dir: string): string {
-    return join(dir, `on.shape`);
+  function getShapeDirectory(directory: string): string {
+    return join(directory, `on.shape`);
   }
 
   it.each(overlayShapePositionValues)(`add overlay on StartEvent, Gateway and Task on %s`, async (position: OverlayShapePosition) => {
@@ -141,8 +141,8 @@ describe('BPMN Shapes with overlays', () => {
     expect(image).toMatchImageSnapshot({
       ...config,
       customSnapshotIdentifier: `add.overlay.on.position.${position}`,
-      customSnapshotsDir: getShapeDir(config.customSnapshotsDir),
-      customDiffDir: getShapeDir(config.customDiffDir),
+      customSnapshotsDir: getShapeDirectory(config.customSnapshotsDir),
+      customDiffDir: getShapeDirectory(config.customDiffDir),
     });
   });
 
@@ -157,8 +157,8 @@ describe('BPMN Shapes with overlays', () => {
     expect(image).toMatchImageSnapshot({
       ...config,
       customSnapshotIdentifier: 'remove.all.overlays.of.shape',
-      customSnapshotsDir: getShapeDir(config.customSnapshotsDir),
-      customDiffDir: getShapeDir(config.customDiffDir),
+      customSnapshotsDir: getShapeDirectory(config.customSnapshotsDir),
+      customDiffDir: getShapeDirectory(config.customDiffDir),
     });
   });
 });
@@ -186,12 +186,12 @@ describe('BPMN Edges with overlays', () => {
     ],
     ['overlays.edges.sequence.flows.complex.paths', 'sequence', ['Flow_039xs1c', 'Flow_0m2ldux', 'Flow_1r3oti3', 'Flow_1byeukq']],
   ])('diagram %s', (bpmnDiagramName: string, edgeKind: string, bpmnElementIds: string[]) => {
-    function getEdgeDir(dir: string): string {
-      return join(dir, `on.edge`);
+    function getEdgeDirectory(directory: string): string {
+      return join(directory, `on.edge`);
     }
 
-    function getEdgePositionDir(dir: string, position: OverlayEdgePosition): string {
-      return join(getEdgeDir(dir), `on-position-${position}`);
+    function getEdgePositionDirectory(directory: string, position: OverlayEdgePosition): string {
+      return join(getEdgeDirectory(directory), `on-position-${position}`);
     }
 
     it.each(overlayEdgePositionValues)(`add overlay on ${edgeKind} flow on %s`, async (position: OverlayEdgePosition) => {
@@ -204,8 +204,8 @@ describe('BPMN Edges with overlays', () => {
       expect(image).toMatchImageSnapshot({
         ...config,
         customSnapshotIdentifier: `add.overlay.on.${edgeKind}.flow`,
-        customSnapshotsDir: getEdgePositionDir(config.customSnapshotsDir, position),
-        customDiffDir: getEdgePositionDir(config.customDiffDir, position),
+        customSnapshotsDir: getEdgePositionDirectory(config.customSnapshotsDir, position),
+        customDiffDir: getEdgePositionDirectory(config.customDiffDir, position),
       });
     });
 
@@ -221,8 +221,8 @@ describe('BPMN Edges with overlays', () => {
       expect(image).toMatchImageSnapshot({
         ...config,
         customSnapshotIdentifier: `remove.all.overlays.of.${edgeKind}.flow`,
-        customSnapshotsDir: getEdgeDir(config.customSnapshotsDir),
-        customDiffDir: getEdgeDir(config.customDiffDir),
+        customSnapshotsDir: getEdgeDirectory(config.customSnapshotsDir),
+        customDiffDir: getEdgeDirectory(config.customDiffDir),
       });
     });
   });

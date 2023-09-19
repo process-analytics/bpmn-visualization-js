@@ -57,8 +57,8 @@ afterAll(async () => {
         load: oldData.load.concat(metricsArray),
       };
       fs.writeFileSync(performanceDataFilePath, 'const data = ' + JSON.stringify(data));
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
     }
   });
 });

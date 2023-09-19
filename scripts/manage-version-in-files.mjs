@@ -60,8 +60,8 @@ function readFileContent(path) {
 
 function getCurrentVersion() {
   const json = readFileContent('./package.json');
-  const pkg = JSON.parse(json);
-  return pkg.version;
+  const package_ = JSON.parse(json);
+  return package_.version;
 }
 
 function addOrRemoveVersionSuffix(version) {
@@ -70,9 +70,9 @@ function addOrRemoveVersionSuffix(version) {
 
 function updateVersionInNpmFile(path, newVersion) {
   const json = readFileContent(path);
-  const pkg = JSON.parse(json);
-  pkg.version = newVersion;
-  writeFileSync(path, JSON.stringify(pkg, null, 2) + '\n');
+  const package_ = JSON.parse(json);
+  package_.version = newVersion;
+  writeFileSync(path, JSON.stringify(package_, null, 2) + '\n');
 }
 
 function updateVersionInSonarFile(newVersion) {

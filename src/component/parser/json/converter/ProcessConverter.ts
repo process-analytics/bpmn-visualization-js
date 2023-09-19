@@ -48,7 +48,7 @@ import ShapeBpmnElement, {
 } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { eventDefinitionKinds } from '../../../../model/bpmn/internal/shape/utils';
 import { ensureIsArray } from '../../../helpers/array-utils';
-import { BoundaryEventNotAttachedToActivityWarning, LaneUnknownFlowNodeRefWarning } from '../warnings';
+import { BoundaryEventNotAttachedToActivityWarning, LaneUnknownFlowNodeRefWarning as LaneUnknownFlowNodeReferenceWarning } from '../warnings';
 
 import { buildShapeBpmnGroup } from './utils';
 
@@ -137,12 +137,12 @@ export default class ProcessConverter {
   }
 
   private parseProcess(process: TProcess): void {
-    const processRef = process.id;
-    const pool = this.convertedElements.findPoolByProcessRef(processRef);
+    const processReference = process.id;
+    const pool = this.convertedElements.findPoolByProcessRef(processReference);
 
     // for pool without name, use the process name instead
     if (pool && !pool.name) {
-      this.convertedElements.registerPool(new ShapeBpmnElement(pool.id, process.name, ShapeBpmnElementKind.POOL), processRef);
+      this.convertedElements.registerPool(new ShapeBpmnElement(pool.id, process.name, ShapeBpmnElementKind.POOL), processReference);
     }
 
     this.buildProcessInnerElements(process, pool?.id);
@@ -279,8 +279,8 @@ export default class ProcessConverter {
       eventDefinitions.set(eventDefinitionKind, counter);
     });
 
-    ensureIsArray<string>(bpmnElement.eventDefinitionRef).forEach(eventDefinitionRef => {
-      const kind = this.convertedElements.findEventDefinitionOfDefinition(eventDefinitionRef);
+    ensureIsArray<string>(bpmnElement.eventDefinitionRef).forEach(eventDefinitionReference => {
+      const kind = this.convertedElements.findEventDefinitionOfDefinition(eventDefinitionReference);
       eventDefinitions.set(kind, eventDefinitions.get(kind) + 1);
     });
 
@@ -315,15 +315,15 @@ export default class ProcessConverter {
   }
 
   private assignParentOfLaneFlowNodes(lane: TLane): void {
-    ensureIsArray<string>(lane.flowNodeRef).forEach(flowNodeRef => {
-      const shapeBpmnElement = this.convertedElements.findFlowNode(flowNodeRef);
+    ensureIsArray<string>(lane.flowNodeRef).forEach(flowNodeReference => {
+      const shapeBpmnElement = this.convertedElements.findFlowNode(flowNodeReference);
       const laneId = lane.id;
       if (shapeBpmnElement) {
         if (!ShapeUtil.isBoundaryEvent(shapeBpmnElement.kind)) {
           shapeBpmnElement.parentId = laneId;
         }
       } else {
-        this.parsingMessageCollector.warning(new LaneUnknownFlowNodeRefWarning(laneId, flowNodeRef));
+        this.parsingMessageCollector.warning(new LaneUnknownFlowNodeReferenceWarning(laneId, flowNodeReference));
       }
     });
   }

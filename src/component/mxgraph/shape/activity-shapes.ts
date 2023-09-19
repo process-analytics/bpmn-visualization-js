@@ -54,10 +54,10 @@ export abstract class BaseActivityShape extends mxRectangleShape {
   protected paintMarkerIcons(paintParameter: PaintParameter): void {
     const markers = mxUtils.getValue(this.style, BpmnStyleIdentifier.MARKERS, undefined);
     if (markers) {
-      orderActivityMarkers(markers.split(',')).forEach((marker, idx, allMarkers) => {
+      orderActivityMarkers(markers.split(',')).forEach((marker, index, allMarkers) => {
         paintParameter = {
           ...paintParameter,
-          setIconOriginFunct: this.getMarkerIconOriginFunction(allMarkers.length, idx + 1),
+          setIconOriginFunct: this.getMarkerIconOriginFunction(allMarkers.length, index + 1),
         };
         paintParameter.canvas.save(); // ensure we can later restore the configuration
         switch (marker) {

@@ -103,11 +103,11 @@ async function saveAndRegisterImages(matcherContext: MatcherContext, received: B
       bufferFormat: 'png',
       context,
     });
-  } catch (e) {
+  } catch (error) {
     console.error(
       `Error while attaching images to test ${snapshotIdentifier}.` +
         `The 'jest-html-reporters' reporter is probably not in use. For instance, this occurs when running tests with the IntelliJ/Webstorm Jest runner.`,
-      e,
+      error,
     );
   }
 }

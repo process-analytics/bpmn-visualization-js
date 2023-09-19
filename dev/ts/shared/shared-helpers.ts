@@ -26,8 +26,8 @@ export function documentReady(callbackFunction: () => void): void {
   }
 }
 
-export function log(message?: string, ...optionalParams: unknown[]): void {
-  _log('[DEMO]', message, ...optionalParams);
+export function log(message?: string, ...optionalParameters: unknown[]): void {
+  _log('[DEMO]', message, ...optionalParameters);
 }
 
 export { logError } from './internal-helpers';

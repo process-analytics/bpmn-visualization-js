@@ -38,7 +38,7 @@ export function buildExpectedEdgeCellStyle(expectedModel: ExpectedEdgeModelEleme
   return style;
 }
 
-function buildExpectedMsgFlowIconCellStyle(expectedModel: ExpectedEdgeModelElement): BpmnCellStyle {
+function buildExpectedMessageFlowIconCellStyle(expectedModel: ExpectedEdgeModelElement): BpmnCellStyle {
   const style = buildExpectedCellStyleWithCommonAttributes(expectedModel);
   style.align = 'center';
   style.verticalAlign = 'middle';
@@ -78,8 +78,8 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement |
         styleRawFromModelOrJestExpect: expect.stringMatching(
           `shape=${BpmnStyleIdentifier.MESSAGE_FLOW_ICON};${BpmnStyleIdentifier.IS_INITIATING}=${expectedModel.messageVisibleKind == MessageVisibleKind.INITIATING}`,
         ),
-        styleResolvedFromModel: buildExpectedMsgFlowIconCellStyle(expectedModel),
-        styleViewState: buildExpectedMsgFlowIconCellStyle(expectedModel),
+        styleResolvedFromModel: buildExpectedMessageFlowIconCellStyle(expectedModel),
+        styleViewState: buildExpectedMessageFlowIconCellStyle(expectedModel),
         edge: false,
         vertex: true,
         parent: { id: expectedCell.id },

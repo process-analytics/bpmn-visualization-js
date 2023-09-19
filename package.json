@@ -68,7 +68,7 @@
     "demo:prepare": "node scripts/prepare-demo-for-publish.mjs",
     "demo-preview": "vite preview",
     "docs": "run-s docs:*",
-    "docs:user": "node scripts/docs.mjs",
+    "docs:user": "node scripts/documentation.mjs",
     "docs:api": "typedoc --tsconfig ./tsconfig.typedoc.json src/bpmn-visualization.ts",
     "lint": "eslint \"**/*.{js,cjs,mjs,ts,cts,mts}\" --max-warnings 0 --quiet --fix",
     "lint-check": "eslint \"**/*.{js,cjs,mjs,ts,cts,mts}\" --max-warnings 0",

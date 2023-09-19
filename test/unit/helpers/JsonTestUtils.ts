@@ -187,7 +187,7 @@ export function parseJsonAndExpectOnlySubProcess(json: BpmnJsonModel, kind: Shap
   return model;
 }
 
-export function expectAsWarning<T>(instance: unknown, constructor: new (...args: never) => T): T {
+export function expectAsWarning<T>(instance: unknown, constructor: new (...arguments_: never) => T): T {
   expect(instance).toBeInstanceOf(constructor);
   return instance as T;
 }

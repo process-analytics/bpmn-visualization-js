@@ -50,16 +50,16 @@ describe('Mouse wheel zoom performance', () => {
   it.each([1, 2, 3, 4, 5])(`run %s - zoom in and zoom out [${xTimes} times]`, async run => {
     const metricsStart = await metricsCollector.metrics();
 
-    for (let i = 0; i < xTimes; i++) {
+    for (let index = 0; index < xTimes; index++) {
       await pageTester.mouseZoomNoDelay({ x: containerCenter.x + 200, y: containerCenter.y }, ZoomType.In);
-      if (i % 5 === 0) {
+      if (index % 5 === 0) {
         await delay(30);
       }
     }
     await delay(100);
-    for (let i = 0; i < xTimes; i++) {
+    for (let index = 0; index < xTimes; index++) {
       await pageTester.mouseZoomNoDelay({ x: containerCenter.x + 200, y: containerCenter.y }, ZoomType.Out);
-      if (i % 5 === 0) {
+      if (index % 5 === 0) {
         await delay(30);
       }
     }
@@ -82,8 +82,8 @@ afterAll(async () => {
         load: oldData.load,
       };
       fs.writeFileSync(performanceDataFilePath, 'const data = ' + JSON.stringify(data));
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
     }
   });
 });

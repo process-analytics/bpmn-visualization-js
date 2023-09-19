@@ -165,8 +165,8 @@ export const verifyEdge = (edge: Edge, expectedValue: ExpectedEdge | ExpectedSeq
   const bpmnElement = edge.bpmnElement;
   expect(bpmnElement.id).toEqual(expectedValue.bpmnElementId);
   expect(bpmnElement.name).toEqual(expectedValue.bpmnElementName);
-  expect(bpmnElement.sourceRefId).toEqual(expectedValue.bpmnElementSourceRefId);
-  expect(bpmnElement.targetRefId).toEqual(expectedValue.bpmnElementTargetRefId);
+  expect(bpmnElement.sourceReferenceId).toEqual(expectedValue.bpmnElementSourceRefId);
+  expect(bpmnElement.targetReferenceId).toEqual(expectedValue.bpmnElementTargetRefId);
 
   if (bpmnElement instanceof SequenceFlow) {
     expect(edge.bpmnElement.kind).toEqual(FlowKind.SEQUENCE_FLOW);

@@ -27,7 +27,7 @@ describe('bundles', () => {
     const pageTester = new BpmnStaticPageSvgTester(
       {
         targetedPage: {
-          pageFileName: 'lib-integration-iife',
+          pageFileName: 'library-integration-iife',
           expectedPageTitle: 'bpmn-visualization IIFE bundle',
         },
         bpmnContainerId: 'bpmn-container-for-iife-bundle',

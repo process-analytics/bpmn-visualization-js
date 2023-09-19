@@ -128,7 +128,7 @@ describe('diagram navigation - zoom and pan with mouse', () => {
 });
 
 async function doZoomWithButton(zoomType: ZoomType, xTimes = 1): Promise<void> {
-  for (let i = 0; i < xTimes; i++) {
+  for (let index = 0; index < xTimes; index++) {
     await pageTester.clickOnButton(`zoom-${zoomType}`);
   }
 }

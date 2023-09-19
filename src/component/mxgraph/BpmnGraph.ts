@@ -64,10 +64,10 @@ export class BpmnGraph extends mxgraph.mxGraph {
    * @experimental subject to change, may move to a subclass of `mxGraphModel`
    * @alpha
    */
-  batchUpdate(fn: () => void): void {
+  batchUpdate(function_: () => void): void {
     this.model.beginUpdate();
     try {
-      fn();
+      function_();
     } finally {
       this.model.endUpdate();
     }
@@ -172,14 +172,14 @@ export class BpmnGraph extends mxgraph.mxGraph {
 
   // Update the currentZoomLevel when performScaling is false, use the currentZoomLevel to set the scale otherwise
   // Initial implementation inspired by https://github.com/algenty/grafana-flowcharting/blob/0.9.0/src/graph_class.ts#L1254
-  private manageMouseWheelZoomEvent(up: boolean, evt: MouseEvent, performScaling: boolean): void {
+  private manageMouseWheelZoomEvent(up: boolean, event: MouseEvent, performScaling: boolean): void {
     if (!performScaling) {
       this.currentZoomLevel *= up ? zoomFactorIn : zoomFactorOut;
     } else {
-      const [offsetX, offsetY] = this.getEventRelativeCoordinates(evt);
+      const [offsetX, offsetY] = this.getEventRelativeCoordinates(event);
       const [newScale, dx, dy] = this.getScaleAndTranslationDeltas(offsetX, offsetY);
       this.view.scaleAndTranslate(newScale, this.view.translate.x + dx, this.view.translate.y + dy);
-      mxEvent.consume(evt);
+      mxEvent.consume(event);
     }
   }
 
@@ -188,19 +188,19 @@ export class BpmnGraph extends mxgraph.mxGraph {
       if (mxEvent.isConsumed(event)) {
         return;
       }
-      const evt = event as MouseEvent;
+      const event_ = event as MouseEvent;
       // only the ctrl key
-      const isZoomWheelEvent = evt.ctrlKey && !evt.altKey && !evt.shiftKey && !evt.metaKey;
+      const isZoomWheelEvent = event_.ctrlKey && !event_.altKey && !event_.shiftKey && !event_.metaKey;
       if (isZoomWheelEvent) {
-        this.manageMouseWheelZoomEvent(up, evt, performScaling);
+        this.manageMouseWheelZoomEvent(up, event_, performScaling);
       }
     };
   }
 
-  private getEventRelativeCoordinates(evt: MouseEvent): [number, number] {
+  private getEventRelativeCoordinates(event: MouseEvent): [number, number] {
     const rect = this.container.getBoundingClientRect();
-    const x = evt.clientX - rect.left;
-    const y = evt.clientY - rect.top;
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
     return [x, y];
   }
 

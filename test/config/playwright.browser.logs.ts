@@ -20,4 +20,4 @@ import 'jest-playwright-preset';
 // Allow getting browser console logs
 // this is from https://playwright.dev/docs/api/class-page#page-event-console
 const browserLog = debugLogger('bv:test:browser');
-page.on('console', msg => browserLog('<%s> %s', msg.type(), msg.text()));
+page.on('console', message => browserLog('<%s> %s', message.type(), message.text()));

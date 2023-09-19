@@ -32,7 +32,7 @@ describe('Check generated SVG in demo page', () => {
   });
 });
 
-describe('Check generated SVG in lib-integration page', () => {
+describe('Check generated SVG in library-integration page', () => {
   it('should display diagram in page', async () => {
     const pageTester = new BpmnPageSvgTester(
       {

@@ -24,8 +24,8 @@ export abstract class Flow {
     readonly id: string,
     readonly name: string,
     readonly kind: FlowKind,
-    readonly sourceRefId?: string,
-    readonly targetRefId?: string,
+    readonly sourceReferenceId?: string,
+    readonly targetReferenceId?: string,
   ) {}
 }
 
@@ -36,11 +36,11 @@ export class SequenceFlow extends Flow {
   constructor(
     id: string,
     name: string,
-    sourceRefId?: string,
-    targetRefId?: string,
+    sourceReferenceId?: string,
+    targetReferenceId?: string,
     readonly sequenceFlowKind = SequenceFlowKind.NORMAL,
   ) {
-    super(id, name, FlowKind.SEQUENCE_FLOW, sourceRefId, targetRefId);
+    super(id, name, FlowKind.SEQUENCE_FLOW, sourceReferenceId, targetReferenceId);
   }
 }
 
@@ -48,8 +48,8 @@ export class SequenceFlow extends Flow {
  * @internal
  */
 export class MessageFlow extends Flow {
-  constructor(id: string, name: string, sourceRefId?: string, targetRefId?: string) {
-    super(id, name, FlowKind.MESSAGE_FLOW, sourceRefId, targetRefId);
+  constructor(id: string, name: string, sourceReferenceId?: string, targetReferenceId?: string) {
+    super(id, name, FlowKind.MESSAGE_FLOW, sourceReferenceId, targetReferenceId);
   }
 }
 
@@ -60,10 +60,10 @@ export class AssociationFlow extends Flow {
   constructor(
     id: string,
     name: string,
-    sourceRefId?: string,
-    targetRefId?: string,
+    sourceReferenceId?: string,
+    targetReferenceId?: string,
     readonly associationDirectionKind = AssociationDirectionKind.NONE,
   ) {
-    super(id, name, FlowKind.ASSOCIATION_FLOW, sourceRefId, targetRefId);
+    super(id, name, FlowKind.ASSOCIATION_FLOW, sourceReferenceId, targetReferenceId);
   }
 }
