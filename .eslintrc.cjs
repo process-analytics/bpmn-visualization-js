@@ -46,6 +46,7 @@ module.exports = {
     'unicorn/no-array-for-each': 'error',
     'unicorn/prefer-dom-node-text-content': 'error',
     'unicorn/prefer-ternary': 'error',
+    'unicorn/prefer-logical-operator-over-ternary': 'error',
     'import/newline-after-import': ['error', { count: 1 }],
     'import/first': 'error',
     'import/order': [
