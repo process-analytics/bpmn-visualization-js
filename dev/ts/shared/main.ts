@@ -167,9 +167,9 @@ function collapseBpmnElement(bpmnElementId: string): void {
 // callback function for opening | dropping the file to be loaded
 function readAndLoadFile(f: File): void {
   const reader = new FileReader();
-  reader.onload = () => {
+  reader.addEventListener('load', () => {
     loadBpmn(reader.result as string);
-  };
+  });
   reader.readAsText(f);
 }
 

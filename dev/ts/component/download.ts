@@ -66,21 +66,21 @@ export function downloadAsPng(svg: string): void {
   const canvas = document.createElement('canvas');
   const canvasContext = canvas.getContext('2d');
 
-  imgPreview.onload = function () {
+  imgPreview.addEventListener('load', function () {
     const img = new Image();
     // B.2.0 not fully exported with client width/height, so use natural width/height
     canvas.width = imgPreview.naturalWidth;
     canvas.height = imgPreview.naturalHeight;
     img.crossOrigin = 'Anonymous';
-    img.onload = function () {
+    img.addEventListener('load', function () {
       canvasContext.drawImage(img, 0, 0);
       URL.revokeObjectURL(svgUrl);
       const pngInBase64 = canvas.toDataURL('image/png');
       document.body.removeChild(imgPreview);
       download('diagram.png', '', pngInBase64);
       logDownload('Download completed');
-    };
+    });
     img.src = imgPreview.src;
-  };
+  });
   imgPreview.src = svgUrl;
 }
