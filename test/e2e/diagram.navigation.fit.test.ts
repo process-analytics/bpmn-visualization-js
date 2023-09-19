@@ -35,7 +35,7 @@ class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
     margin?: number;
   }): MatchImageSnapshotOptions {
     const config = super.getConfig(parameter);
-    config.customSnapshotsDir = FitImageSnapshotConfigurator.buildSnapshotFitDirectory(config.customSnapshotsDir, parameter.fitType, true, parameter.margin ? parameter.margin : 0);
+    config.customSnapshotsDir = FitImageSnapshotConfigurator.buildSnapshotFitDirectory(config.customSnapshotsDir, parameter.fitType, true, parameter.margin ?? 0);
     config.customDiffDir = parameter.buildCustomDiffDir(config, parameter.fitType, parameter.margin);
     return config;
   }
