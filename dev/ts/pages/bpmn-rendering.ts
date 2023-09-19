@@ -18,8 +18,8 @@ import { documentReady, log, logError, startBpmnVisualization } from '../develop
 
 function statusFetchKO(errorMessage: string): void {
   logError(errorMessage);
-  const statusElt = document.querySelector('#status-zone') as HTMLDivElement;
-  statusElt.innerText = errorMessage;
+  const statusElt = document.querySelector<HTMLDivElement>('#status-zone');
+  statusElt.textContent = errorMessage;
   statusElt.className = 'status-ko';
   log('Status zone set with error:', errorMessage);
 }
