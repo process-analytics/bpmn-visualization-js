@@ -110,8 +110,8 @@ function configureDisplayedFooterContent(): void {
   const version = getVersion();
   const versionAsString = `bpmn-visualization@${version.lib}`;
   const dependenciesAsString = [...version.dependencies].map(([name, version]) => `${name}@${version}`).join('/');
-  const versionElt = document.querySelector('#footer-content') as HTMLDivElement;
-  versionElt.innerText = `${versionAsString} with ${dependenciesAsString}`;
+  const versionElt = document.querySelector('#footer-content');
+  versionElt.textContent = `${versionAsString} with ${dependenciesAsString}`;
 }
 
 // The following function `preventZoomingPage` serves to block the page content zoom.
