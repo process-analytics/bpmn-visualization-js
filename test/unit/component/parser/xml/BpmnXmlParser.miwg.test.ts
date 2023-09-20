@@ -113,8 +113,8 @@ describe('parse bpmn as xml for MIWG', () => {
           task: [{ startQuantity: 1 }, expect.anything(), expect.anything()],
         },
         BPMNDiagram: {
-          BPMNPlane: { BPMNShape: expect.arrayContaining([expect.objectContaining({ Bounds: { x: 186.0, y: 336.0, width: 30.0, height: 30.0 } })]) },
-          BPMNLabelStyle: { Font: { size: 11.0 } },
+          BPMNPlane: { BPMNShape: expect.arrayContaining([expect.objectContaining({ Bounds: { x: 186, y: 336, width: 30, height: 30 } })]) },
+          BPMNLabelStyle: { Font: { size: 11 } },
         },
       },
     });
