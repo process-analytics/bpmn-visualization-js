@@ -75,11 +75,13 @@ const computeSubProcessKind = (processedSemanticType: BpmnSemanticType, bpmnElem
   }
 };
 
+// specific management for adhoc and transaction sub-processes which are handled with a dedicated ShapeBpmnSubProcessKind
+// process boundary events afterward as we need its parent activity to be available when building it
 const orderedFlowNodeBpmnTypes: BpmnSemanticType[] = [
-  // specific management for adhoc and transaction sub-processes which are handled with a dedicated ShapeBpmnSubProcessKind
-  // process boundary events afterward as we need its parent activity to be available when building it
-  ...(['adHocSubProcess', 'transaction', ShapeBpmnElementKind.EVENT_BOUNDARY] as BpmnSemanticType[]),
-  ...(ShapeUtil.flowNodeKinds().filter(kind => kind != ShapeBpmnElementKind.EVENT_BOUNDARY) as BpmnSemanticType[]),
+  'adHocSubProcess',
+  'transaction',
+  ShapeBpmnElementKind.EVENT_BOUNDARY,
+  ...(ShapeUtil.flowNodeKinds().filter(kind => kind !== ShapeBpmnElementKind.EVENT_BOUNDARY) as BpmnSemanticType[]),
 ];
 
 function getShapeBpmnElementKind(bpmnSemanticType: BpmnSemanticType): ShapeBpmnElementKind {
@@ -292,7 +294,7 @@ export default class ProcessConverter {
       eventDefinitions.set(kind, eventDefinitions.get(kind) + 1);
     }
 
-    return [...eventDefinitions.keys()].map(kind => ({ kind, counter: eventDefinitions.get(kind) })).filter(eventDefinition => eventDefinition.counter > 0);
+    return [...eventDefinitions.entries()].filter(([, counter]) => counter > 0).map(([kind, counter]) => ({ kind, counter }));
   }
 
   private buildShapeBpmnSubProcess(bpmnElement: TSubProcess, parentId: string, subProcessKind: ShapeBpmnSubProcessKind, markers: ShapeBpmnMarkerKind[]): ShapeBpmnSubProcess {

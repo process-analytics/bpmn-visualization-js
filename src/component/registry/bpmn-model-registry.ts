@@ -118,7 +118,9 @@ class SearchableModel {
   private elements = new Map<string, Shape | Edge>();
 
   constructor(bpmnModel: BpmnModel) {
-    for (const shapeOrEdge of [...bpmnModel.pools, ...bpmnModel.lanes, ...bpmnModel.flowNodes, ...bpmnModel.edges]) this.elements.set(shapeOrEdge.bpmnElement.id, shapeOrEdge);
+    for (const shapeOrEdge of [...bpmnModel.pools, ...bpmnModel.lanes, ...bpmnModel.flowNodes, ...bpmnModel.edges]) {
+      this.elements.set(shapeOrEdge.bpmnElement.id, shapeOrEdge);
+    }
   }
 
   elementById(id: string): Shape | Edge | undefined {

@@ -34,7 +34,8 @@ export function createNewStyleUpdater(graph: BpmnGraph): StyleUpdater {
 // The message flow icon is stored in a dedicated Cell, so it must be kept in sync
 const withCellIdsOfMessageFlowIcons = (bpmnElementIds: string | string[]): string[] => {
   const cellIds = ensureIsArray<string>(bpmnElementIds);
-  return [...cellIds, ...cellIds.map(id => messageFlowIconId(id))];
+  cellIds.push(...cellIds.map(id => messageFlowIconId(id)));
+  return cellIds;
 };
 
 export class StyleUpdater {
