@@ -75,10 +75,10 @@ ${svgAsString}
     root.setAttribute('width', w + 'px');
     root.setAttribute('height', h + 'px');
     root.setAttribute('viewBox', (crisp ? '-0.5 -0.5' : '0 0') + ' ' + w + ' ' + h);
-    svgDocument.appendChild(root);
+    svgDocument.append(root);
 
     const group = svgDocument.createElementNS(mxConstants.NS_SVG, 'g');
-    root.appendChild(group);
+    root.append(group);
 
     const svgCanvas = this.createSvgCanvas(group);
     svgCanvas.foEnabled = enableForeignObjectForLabel;
