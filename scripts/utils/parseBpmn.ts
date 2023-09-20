@@ -37,7 +37,7 @@ console.info('Generating BPMN in the "%s" output type', outputType);
 if (!bpmnFilePath) {
   throw new Error('You must provide file path as 1st parameter for example: test/fixtures/bpmn/simple-start-task-end.bpmn ');
 }
-if (['json', 'model'].indexOf(outputType) == -1) {
+if (!['json', 'model'].includes(outputType)) {
   throw new Error('--output parameter must be one of: json | model');
 }
 // eslint-disable-next-line no-console

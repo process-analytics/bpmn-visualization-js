@@ -91,15 +91,13 @@ export class BpmnElementsRegistry implements CssClassesRegistry, ElementsRegistr
 
   getModelElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[]): BpmnSemantic[] {
     return ensureIsArray<BpmnElementKind>(bpmnKinds)
-      .map(kind => this.htmlElementRegistry.getBpmnHtmlElements(kind))
-      .flat()
+      .flatMap(kind => this.htmlElementRegistry.getBpmnHtmlElements(kind))
       .map(htmlElement => this.getRelatedBpmnSemantic(htmlElement));
   }
 
   getElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[]): BpmnElement[] {
     return ensureIsArray<BpmnElementKind>(bpmnKinds)
-      .map(kind => this.htmlElementRegistry.getBpmnHtmlElements(kind))
-      .flat()
+      .flatMap(kind => this.htmlElementRegistry.getBpmnHtmlElements(kind))
       .map(htmlElement => ({ htmlElement, bpmnSemantic: this.getRelatedBpmnSemantic(htmlElement) }));
   }
 

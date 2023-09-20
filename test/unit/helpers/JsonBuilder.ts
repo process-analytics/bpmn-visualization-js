@@ -261,7 +261,7 @@ export function buildDefinitions({ process, messageFlows, globalTask }: BuildDef
     },
   };
 
-  if (Array.isArray(process) && process.filter(p => p.withParticipant).length > 0) {
+  if (Array.isArray(process) && process.some(p => p.withParticipant)) {
     (json.definitions.collaboration as TCollaboration).participant = [];
   }
   for (const [index, processParameter] of (Array.isArray(process) ? process : [process]).entries()) addParticipantProcessAndElements(processParameter, json, index);
