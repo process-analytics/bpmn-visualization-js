@@ -184,10 +184,11 @@ export class BpmnGraph extends mxgraph.mxGraph {
   }
 
   private createMouseWheelZoomListener(performScaling: boolean) {
-    return (event: MouseEvent, up: boolean) => {
-      if (mxEvent.isConsumed(event)) {
+    return (event: Event, up: boolean) => {
+      if (mxEvent.isConsumed(event) || !(event instanceof MouseEvent)) {
         return;
       }
+
       // only the ctrl key
       const isZoomWheelEvent = event.ctrlKey && !event.altKey && !event.shiftKey && !event.metaKey;
       if (isZoomWheelEvent) {
