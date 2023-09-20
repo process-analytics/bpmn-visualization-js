@@ -125,7 +125,9 @@ async function toMatchImageSnapshotCustom(this: MatcherContext, received: Buffer
   const result = toMatchImageSnapshotWithRealSignature.call(this, received, options);
   jestLog('toMatchImageSnapshot executed');
 
-  if (!result.pass) {
+  if (result.pass) {
+    jestLog('Result: success');
+  } else {
     jestLog('Result: failure');
     if (retriesCounter.hasReachMaxRetries(testId)) {
       await saveAndRegisterImages(this, received, options);
@@ -136,8 +138,6 @@ async function toMatchImageSnapshotCustom(this: MatcherContext, received: Buffer
     // For generalization, check options.failureThresholdType for percentage/pixel
     const newMessage = [`${messages[0]} Failure threshold was set to ${options.failureThreshold * 100}%. Execution count: ${executionCount}.`, ...messages.slice(1)].join('\n');
     result.message = () => newMessage;
-  } else {
-    jestLog('Result: success');
   }
 
   return result;

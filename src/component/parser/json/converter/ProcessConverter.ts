@@ -68,7 +68,7 @@ const computeSubProcessKind = (processedSemanticType: BpmnSemanticType, bpmnElem
     case 'transaction':
       return ShapeBpmnSubProcessKind.TRANSACTION;
     default:
-      return !bpmnElement.triggeredByEvent ? ShapeBpmnSubProcessKind.EMBEDDED : ShapeBpmnSubProcessKind.EVENT;
+      return bpmnElement.triggeredByEvent ? ShapeBpmnSubProcessKind.EVENT : ShapeBpmnSubProcessKind.EMBEDDED;
   }
 };
 

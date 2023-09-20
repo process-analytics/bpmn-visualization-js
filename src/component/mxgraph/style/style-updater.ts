@@ -83,12 +83,12 @@ export class StyleUpdater {
 
   resetStyle(bpmnElementIds: string | string[]): void {
     this.graph.batchUpdate(() => {
-      if (!bpmnElementIds) {
-        this.styleManager.resetAllStyles();
-      } else {
+      if (bpmnElementIds) {
         for (const id of withCellIdsOfMessageFlowIcons(bpmnElementIds)) {
           this.styleManager.resetStyleIfIsStored(id);
         }
+      } else {
+        this.styleManager.resetAllStyles();
       }
     });
   }

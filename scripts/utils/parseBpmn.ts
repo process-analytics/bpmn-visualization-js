@@ -57,10 +57,10 @@ result = outputType === 'json' ? prettyString(json) : prettyString(newBpmnJsonPa
 // Error: Couldn't find the `xsel` binary and fallback didn't work. On Debian/Ubuntu you can install xsel with: sudo apt install xsel
 // CI env variable when running on GitHub Actions: https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
 const isRunningOnCIWithLinuxOS = process.env.CI === 'true' && process.platform.startsWith('linux');
-if (!isRunningOnCIWithLinuxOS) {
-  clipboardy.writeSync(result);
-} else {
+if (isRunningOnCIWithLinuxOS) {
   console.warn('No clipboard copy, as it is not supported in this environment');
+} else {
+  clipboardy.writeSync(result);
 }
 
 /* eslint-disable no-console */

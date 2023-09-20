@@ -133,13 +133,13 @@ export const verifyShape = (
 
   const bounds = shape.bounds;
   const expectedBounds = expectedShape.bounds;
-  if (!bounds) {
-    expect(bounds).toBe(expectedBounds);
-  } else {
+  if (bounds) {
     expect(bounds.x).toEqual(expectedBounds.x);
     expect(bounds.y).toEqual(expectedBounds.y);
     expect(bounds.width).toEqual(expectedBounds.width);
     expect(bounds.height).toEqual(expectedBounds.height);
+  } else {
+    expect(bounds).toBe(expectedBounds);
   }
 
   expect(shape.extensions).toEqual(expectedShape.extensions ?? {});
