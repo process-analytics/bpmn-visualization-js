@@ -62,18 +62,22 @@ export abstract class BaseActivityShape extends mxRectangleShape {
         };
         paintParameter.canvas.save(); // ensure we can later restore the configuration
         switch (marker) {
-          case ShapeBpmnMarkerKind.LOOP:
+          case ShapeBpmnMarkerKind.LOOP: {
             this.iconPainter.paintLoopIcon(paintParameter);
             break;
-          case ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL:
+          }
+          case ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL: {
             this.iconPainter.paintSequentialMultiInstanceIcon(paintParameter);
             break;
-          case ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL:
+          }
+          case ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL: {
             this.iconPainter.paintParallelMultiInstanceIcon(paintParameter);
             break;
-          case ShapeBpmnMarkerKind.EXPAND:
+          }
+          case ShapeBpmnMarkerKind.EXPAND: {
             this.iconPainter.paintExpandIcon(paintParameter);
             break;
+          }
         }
         // Restore original configuration to avoid side effects if the iconPainter changed the canvas configuration (colors, ....)
         paintParameter.canvas.restore();
@@ -211,7 +215,7 @@ export class CallActivityShape extends BaseActivityShape {
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this });
 
     switch (mxUtils.getValue(this.style, BpmnStyleIdentifier.GLOBAL_TASK_KIND, undefined)) {
-      case ShapeBpmnElementKind.GLOBAL_TASK_MANUAL:
+      case ShapeBpmnElementKind.GLOBAL_TASK_MANUAL: {
         this.iconPainter.paintHandIcon({
           ...paintParameter,
           ratioFromParent: 0.18,
@@ -219,7 +223,8 @@ export class CallActivityShape extends BaseActivityShape {
         });
 
         break;
-      case ShapeBpmnElementKind.GLOBAL_TASK_SCRIPT:
+      }
+      case ShapeBpmnElementKind.GLOBAL_TASK_SCRIPT: {
         this.iconPainter.paintScriptIcon({
           ...paintParameter,
           ratioFromParent: 0.22,
@@ -227,20 +232,23 @@ export class CallActivityShape extends BaseActivityShape {
         });
 
         break;
-      case ShapeBpmnElementKind.GLOBAL_TASK_USER:
+      }
+      case ShapeBpmnElementKind.GLOBAL_TASK_USER: {
         this.iconPainter.paintPersonIcon({ ...paintParameter, setIconOriginFunct: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(20) });
         break;
-      case ShapeBpmnElementKind.GLOBAL_TASK_BUSINESS_RULE:
+      }
+      case ShapeBpmnElementKind.GLOBAL_TASK_BUSINESS_RULE: {
         this.iconPainter.paintTableIcon({
           ...paintParameter,
           ratioFromParent: 0.6,
           setIconOriginFunct: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeftProportionally(15),
         });
         break;
-      case ShapeBpmnElementKind.GLOBAL_TASK:
-      default:
+      }
+      default: {
         // No symbol for the Call Activity calling a Global Task or calling a Process
         this.iconPainter.paintEmptyIcon();
+      }
     }
   }
 }

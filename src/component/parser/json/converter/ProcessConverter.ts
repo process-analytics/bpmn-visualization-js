@@ -63,12 +63,15 @@ type BpmnSemanticType = keyof TProcess;
 
 const computeSubProcessKind = (processedSemanticType: BpmnSemanticType, bpmnElement: TSubProcess): ShapeBpmnSubProcessKind => {
   switch (processedSemanticType) {
-    case 'adHocSubProcess':
+    case 'adHocSubProcess': {
       return ShapeBpmnSubProcessKind.AD_HOC;
-    case 'transaction':
+    }
+    case 'transaction': {
       return ShapeBpmnSubProcessKind.TRANSACTION;
-    default:
+    }
+    default: {
       return bpmnElement.triggeredByEvent ? ShapeBpmnSubProcessKind.EVENT : ShapeBpmnSubProcessKind.EMBEDDED;
+    }
   }
 };
 
