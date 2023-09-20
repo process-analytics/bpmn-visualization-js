@@ -88,7 +88,7 @@ const computeConfigurationForDevelopmentServerUsage = defaultBrowsers => {
   /** @type {import('jest-playwright-preset/types/global').ServerOptions} */
   const serverOptions = {
     command: `npm run dev`,
-    port: 10001,
+    port: 10_001,
     basePath: '/dev/public/index.html',
     // if default or tcp, the test starts right away whereas the dev server is not available on http
     // for more details, see https://github.com/process-analytics/bpmn-visualization-js/pull/1056
