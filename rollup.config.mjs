@@ -52,7 +52,7 @@ const outputIIFE = {
  * @type {import('rollup').RollupOptions}
  */
 const configIIFE = {
-  input: input,
+  input,
   output: outputIIFE,
   plugins: withCleanup(pluginsBundleIIFE),
 };
