@@ -42,8 +42,8 @@ describe('parse xml to model', () => {
       const model = newBpmnParser().parse(readFileSync('../fixtures/bpmn/xml-parsing/special/simple-start-task-end_truncated.bpmn'));
       expect(model.flowNodes).toHaveLength(2);
       // This element is truncated in the source xml file
-      const activities = model.flowNodes.filter(shape => shape.id == 'BPMNShape_Activity_1');
-      expect(activities[0].bpmnElement.id).toBe('Activity_1');
+      const activity = model.flowNodes.find(shape => shape.id == 'BPMNShape_Activity_1');
+      expect(activity.bpmnElement.id).toBe('Activity_1');
     });
 
     it('Parse a xml file which is not a BPMN diagram', () => {
