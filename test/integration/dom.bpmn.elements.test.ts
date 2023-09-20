@@ -51,7 +51,13 @@ describe('Bpmn Elements registry - retrieve BPMN elements', () => {
         const bpmnElements = bpmnVisualization.bpmnElementsRegistry.getElementsByIds(['StartEvent_1', 'Flow_2']);
         expect(bpmnElements).toHaveLength(2);
 
-        expectStartEventBpmnElement(bpmnElements[0], { id: 'StartEvent_1', name: 'Start Event 1', outgoing: ['Flow_1'], eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE });
+        expectStartEventBpmnElement(bpmnElements[0], {
+          eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
+          id: 'StartEvent_1',
+          name: 'Start Event 1',
+          outgoing: ['Flow_1'],
+          parentId: undefined,
+        });
         expectSequenceFlowBpmnElement(bpmnElements[1], { id: 'Flow_2', source: 'Activity_1', target: 'EndEvent_1' });
       });
 
@@ -74,7 +80,7 @@ describe('Bpmn Elements registry - retrieve BPMN elements', () => {
         const bpmnElements = bpmnVisualization.bpmnElementsRegistry.getElementsByKinds(ShapeBpmnElementKind.TASK);
         expect(bpmnElements).toHaveLength(1);
 
-        expectTaskBpmnElement(bpmnElements[0], { id: 'Activity_1', name: 'Task 1', incoming: ['Flow_1'], outgoing: ['Flow_2'] });
+        expectTaskBpmnElement(bpmnElements[0], { id: 'Activity_1', incoming: ['Flow_1'], name: 'Task 1', outgoing: ['Flow_2'], parentId: undefined });
       });
 
       it('Pass a single kind related to several existing elements', () => {
@@ -119,8 +125,20 @@ describe('Bpmn Elements registry - retrieve BPMN elements', () => {
         const bpmnElements = bpmnVisualization.bpmnElementsRegistry.getElementsByKinds([ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.TASK_SERVICE]);
         expect(bpmnElements).toHaveLength(2);
 
-        expectServiceTaskBpmnElement(bpmnElements[0], { id: 'serviceTask_1_2', name: 'Service Task 1.2', parentId: 'lane_01' });
-        expectServiceTaskBpmnElement(bpmnElements[1], { id: 'serviceTask_2_1', name: 'Service Task 2.1', parentId: 'lane_02' });
+        expectServiceTaskBpmnElement(bpmnElements[0], {
+          id: 'serviceTask_1_2',
+          incoming: ['Flow_1ceafgv'],
+          name: 'Service Task 1.2',
+          outgoing: ['sequenceFlow_lane_1_elt_6'],
+          parentId: 'lane_01',
+        });
+        expectServiceTaskBpmnElement(bpmnElements[1], {
+          id: 'serviceTask_2_1',
+          incoming: ['Flow_0i9h5sw'],
+          name: 'Service Task 2.1',
+          outgoing: ['Flow_1hvyo7b'],
+          parentId: 'lane_02',
+        });
       });
     });
   });

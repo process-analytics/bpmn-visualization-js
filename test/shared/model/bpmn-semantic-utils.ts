@@ -18,22 +18,22 @@ import type { BpmnSemantic, EdgeBpmnSemantic, ShapeBpmnSemantic, BaseBpmnSemanti
 
 import { FlowKind, ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 
-export type ExpectedBaseBpmnElement = Pick<BaseBpmnSemantic, 'id' | 'parentId'> & Partial<Pick<BaseBpmnSemantic, 'name' | 'parentId'>>;
+export type ExpectedBaseBpmnElement = Pick<BaseBpmnSemantic, 'id'> & Partial<Pick<BaseBpmnSemantic, 'name'>>;
 
 export interface ExpectedFlowElement extends ExpectedBaseBpmnElement {
   source: string;
   target: string;
 }
 
-export interface ExpectedFlowNodeElement extends ExpectedBaseBpmnElement {
-  incoming?: string[];
-  outgoing?: string[];
-}
+export type ExpectedFlowNodeElement = ExpectedBaseBpmnElement &
+  Pick<ShapeBpmnSemantic, 'parentId'> & {
+    incoming?: string[];
+    outgoing?: string[];
+  };
 
 const expectBaseElement = (bpmnSemantic: BaseBpmnSemantic, expected: ExpectedBaseBpmnElement): void => {
   expect(bpmnSemantic.id).toEqual(expected.id);
   expect(bpmnSemantic.name).toEqual(expected.name);
-  expect(bpmnSemantic.parentId).toEqual(expected.parentId);
 };
 
 const expectFlow = (bpmnSemantic: EdgeBpmnSemantic, expected: ExpectedFlowElement): void => {
@@ -65,6 +65,7 @@ function expectShape(bpmnSemantic: BpmnSemantic, expected: ExpectedBaseBpmnEleme
 
 function expectedFlowNode(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedFlowNodeElement): void {
   expectShape(bpmnSemantic, expected);
+  expect(bpmnSemantic.parentId).toEqual(expected.parentId);
   expect(bpmnSemantic.incomingIds).toEqual(expected.incoming ?? []);
   expect(bpmnSemantic.outgoingIds).toEqual(expected.outgoing ?? []);
 }
@@ -90,7 +91,7 @@ export function expectBoundaryEvent(bpmnSemantic: ShapeBpmnSemantic, expected: E
   expectEvent(bpmnSemantic, expected);
 }
 
-export function expectParallelGateway(bpmnSemantic: BpmnSemantic, expected: ExpectedBaseBpmnElement): void {
+export function expectParallelGateway(bpmnSemantic: BpmnSemantic, expected: ExpectedFlowNodeElement): void {
   expectShape(bpmnSemantic, expected);
   expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.GATEWAY_PARALLEL);
 }
@@ -110,9 +111,9 @@ export function expectTask(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedFl
   expectedFlowNode(bpmnSemantic, expected);
 }
 
-export function expectServiceTask(bpmnSemantic: BpmnSemantic, expected: ExpectedBaseBpmnElement): void {
-  expectShape(bpmnSemantic, expected);
+export function expectServiceTask(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedFlowNodeElement): void {
   expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.TASK_SERVICE);
+  expectedFlowNode(bpmnSemantic, expected);
 }
 
 export function expectUserTask(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedFlowNodeElement): void {

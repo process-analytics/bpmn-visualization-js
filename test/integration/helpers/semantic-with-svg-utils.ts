@@ -41,8 +41,8 @@ export function expectTaskBpmnElement(bpmnElement: BpmnElement, expected: Expect
   expectSvgTask(bpmnElement.htmlElement);
 }
 
-export function expectServiceTaskBpmnElement(bpmnElement: BpmnElement, expected: ExpectedBaseBpmnElement): void {
-  expectServiceTask(bpmnElement.bpmnSemantic, expected);
+export function expectServiceTaskBpmnElement(bpmnElement: BpmnElement, expected: ExpectedFlowNodeElement): void {
+  expectServiceTask(bpmnElement.bpmnSemantic as ShapeBpmnSemantic, expected);
   expectSvgTask(bpmnElement.htmlElement);
 }
 

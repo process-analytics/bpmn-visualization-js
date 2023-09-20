@@ -46,11 +46,11 @@ describe('Registry API - retrieve Model Bpmn elements', () => {
       expect(modelElements).toHaveLength(1);
 
       expectStartEvent(modelElements[0] as ShapeBpmnSemantic, {
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
         id: 'start_event_message_id',
         name: 'Message Start Event',
         outgoing: ['message_flow_initiating_message_id'],
         parentId: 'participant_1_id',
-        eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
       });
     });
 
