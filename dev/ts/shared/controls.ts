@@ -56,8 +56,8 @@ function showMousePointer(): void {
     border-color: rgba(0,255,0,0.9);
   }
   `;
-  document.head.appendChild(styleElement);
-  document.body.appendChild(box);
+  document.head.append(styleElement);
+  document.body.append(box);
   document.addEventListener(
     'mousemove',
     event => {
