@@ -32,7 +32,7 @@ function download(filename: string, contentType: string, text: string): void {
   document.body.append(downloadLink);
 
   downloadLink.click();
-  document.body.removeChild(downloadLink);
+  downloadLink.remove();
 }
 
 export function downloadAsSvg(svg: string): void {
@@ -76,7 +76,7 @@ export function downloadAsPng(svg: string): void {
       canvasContext.drawImage(img, 0, 0);
       URL.revokeObjectURL(svgUrl);
       const pngInBase64 = canvas.toDataURL('image/png');
-      document.body.removeChild(imgPreview);
+      imgPreview.remove();
       download('diagram.png', '', pngInBase64);
       logDownload('Download completed');
     });
