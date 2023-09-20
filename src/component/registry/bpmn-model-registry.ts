@@ -22,7 +22,7 @@ import type { ModelFilter } from '../options';
 
 import { ShapeBpmnMarkerKind, ShapeUtil } from '../../model/bpmn/internal';
 import { Flow } from '../../model/bpmn/internal/edge/flows';
-import ShapeBpmnElement, { ShapeBpmnSubProcess, ShapeBpmnEvent, ShapeBpmnCallActivity } from '../../model/bpmn/internal/shape/ShapeBpmnElement';
+import ShapeBpmnElement, { ShapeBpmnCallActivity, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 
 import { ModelFiltering } from './bpmn-model-filters';
 
@@ -52,24 +52,27 @@ export class BpmnModelRegistry {
     }
     const bpmnElement = element.bpmnElement;
     const isShape = bpmnElement instanceof ShapeBpmnElement;
-    const semantic: BaseBpmnSemantic = { id: bpmnElementId, isShape: isShape, kind: bpmnElement.kind, name: bpmnElement.name };
-    if (bpmnElement instanceof Flow) {
-      (semantic as EdgeBpmnSemantic).sourceRefId = bpmnElement.sourceRefId;
-      (semantic as EdgeBpmnSemantic).targetRefId = bpmnElement.targetRefId;
-    } else {
-      semantic.parentId = bpmnElement.parentId;
-      (semantic as ShapeBpmnSemantic).incomingIds = bpmnElement.incomingIds;
-      (semantic as ShapeBpmnSemantic).outgoingIds = bpmnElement.outgoingIds;
-      if (bpmnElement instanceof ShapeBpmnEvent) {
-        (semantic as ShapeBpmnSemantic).eventDefinitionKind = bpmnElement.eventDefinitionKind;
-      } else if (bpmnElement instanceof ShapeBpmnSubProcess) {
-        (semantic as ShapeBpmnSemantic).subProcessKind = bpmnElement.subProcessKind;
-      } else if (bpmnElement instanceof ShapeBpmnCallActivity) {
-        (semantic as ShapeBpmnSemantic).callActivityKind = bpmnElement.callActivityKind;
-        (semantic as ShapeBpmnSemantic).callActivityGlobalTaskKind = bpmnElement.globalTaskKind;
-      }
-    }
-    return semantic as BpmnSemantic;
+
+    return {
+      id: bpmnElementId,
+      isShape: isShape,
+      kind: bpmnElement.kind,
+      name: bpmnElement.name,
+      ...(bpmnElement instanceof Flow
+        ? ({
+            sourceRefId: bpmnElement.sourceRefId,
+            targetRefId: bpmnElement.targetRefId,
+          } satisfies Omit<EdgeBpmnSemantic, keyof BaseBpmnSemantic>)
+        : ({
+            callActivityGlobalTaskKind: bpmnElement instanceof ShapeBpmnCallActivity ? bpmnElement.globalTaskKind : undefined,
+            callActivityKind: bpmnElement instanceof ShapeBpmnCallActivity ? bpmnElement.callActivityKind : undefined,
+            eventDefinitionKind: bpmnElement instanceof ShapeBpmnEvent ? bpmnElement.eventDefinitionKind : undefined,
+            incomingIds: bpmnElement.incomingIds,
+            outgoingIds: bpmnElement.outgoingIds,
+            parentId: bpmnElement.parentId,
+            subProcessKind: bpmnElement instanceof ShapeBpmnSubProcess ? bpmnElement.subProcessKind : undefined,
+          } satisfies Omit<ShapeBpmnSemantic, keyof BaseBpmnSemantic>)),
+    };
   }
 }
 

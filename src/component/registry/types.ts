@@ -354,7 +354,6 @@ export interface BaseBpmnSemantic {
   isShape: boolean;
   kind: BpmnElementKind;
   name: string;
-  parentId?: string;
 }
 
 /**
@@ -379,6 +378,7 @@ export interface ShapeBpmnSemantic extends BaseBpmnSemantic {
   eventDefinitionKind?: ShapeBpmnEventDefinitionKind;
   incomingIds: string[];
   outgoingIds: string[];
+  parentId: string;
   /** Set when the {@link BaseBpmnSemantic.kind} relates to a BPMN sub-process. */
   subProcessKind?: ShapeBpmnSubProcessKind;
 }
