@@ -20,10 +20,10 @@ import { FlowKind, ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 
 export type ExpectedBaseBpmnElement = Pick<BaseBpmnSemantic, 'id'> & Partial<Pick<BaseBpmnSemantic, 'name'>>;
 
-export interface ExpectedFlowElement extends ExpectedBaseBpmnElement {
+export type ExpectedFlowElement = ExpectedBaseBpmnElement & {
   source: string;
   target: string;
-}
+};
 
 export type ExpectedFlowNodeElement = ExpectedBaseBpmnElement &
   Pick<ShapeBpmnSemantic, 'parentId'> & {
