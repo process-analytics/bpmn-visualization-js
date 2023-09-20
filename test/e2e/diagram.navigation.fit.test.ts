@@ -28,36 +28,36 @@ import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-util
 import { getBpmnDiagramNames } from '@test/shared/visu/test-utils';
 
 class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
-  override getConfig(param: {
+  override getConfig(parameter: {
     fileName: string;
     buildCustomDiffDir: (config: MatchImageSnapshotOptions, fitType: FitType, margin?: number) => string;
     fitType: FitType;
     margin?: number;
   }): MatchImageSnapshotOptions {
-    const config = super.getConfig(param);
-    config.customSnapshotsDir = FitImageSnapshotConfigurator.buildSnapshotFitDir(config.customSnapshotsDir, param.fitType, true, param.margin ? param.margin : 0);
-    config.customDiffDir = param.buildCustomDiffDir(config, param.fitType, param.margin);
+    const config = super.getConfig(parameter);
+    config.customSnapshotsDir = FitImageSnapshotConfigurator.buildSnapshotFitDirectory(config.customSnapshotsDir, parameter.fitType, true, parameter.margin ? parameter.margin : 0);
+    config.customDiffDir = parameter.buildCustomDiffDir(config, parameter.fitType, parameter.margin);
     return config;
   }
 
-  private static buildSnapshotFitDir(parentDir: string, fitType: FitType, withMargin = false, margin?: number): string {
-    const typeDir = join(parentDir, `type-${fitType}`);
+  private static buildSnapshotFitDirectory(parentDirectory: string, fitType: FitType, withMargin = false, margin?: number): string {
+    const rootFitDirectory = join(parentDirectory, `type-${fitType}`);
 
     if (!withMargin) {
-      return typeDir;
+      return rootFitDirectory;
     }
-    return join(typeDir, `margin-${margin == null || margin < 0 ? 0 : margin}`);
+    return join(rootFitDirectory, `margin-${margin == null || margin < 0 ? 0 : margin}`);
   }
 
-  static buildOnLoadDiffDir(config: MatchImageSnapshotOptions, fitType: FitType, withMargin = false, margin?: number): string {
-    const onLoadDir = join(config.customDiffDir, 'on-load');
-    return FitImageSnapshotConfigurator.buildSnapshotFitDir(onLoadDir, fitType, withMargin, margin);
+  static buildOnLoadDiffDirectory(config: MatchImageSnapshotOptions, fitType: FitType, withMargin = false, margin?: number): string {
+    const onLoadDirectory = join(config.customDiffDir, 'on-load');
+    return FitImageSnapshotConfigurator.buildSnapshotFitDirectory(onLoadDirectory, fitType, withMargin, margin);
   }
 
-  static buildAfterLoadDiffDir(config: MatchImageSnapshotOptions, afterLoadFitType: FitType, onLoadFitType: FitType): string {
-    const afterLoadDir = join(config.customDiffDir, 'after-load');
-    const snapshotFitTypeDir = FitImageSnapshotConfigurator.buildSnapshotFitDir(afterLoadDir, afterLoadFitType);
-    return join(snapshotFitTypeDir, `on-load_type-${onLoadFitType}`);
+  static buildAfterLoadDiffDirectory(config: MatchImageSnapshotOptions, afterLoadFitType: FitType, onLoadFitType: FitType): string {
+    const afterLoadDirectory = join(config.customDiffDir, 'after-load');
+    const snapshotFitDirectory = FitImageSnapshotConfigurator.buildSnapshotFitDirectory(afterLoadDirectory, afterLoadFitType);
+    return join(snapshotFitDirectory, `on-load_type-${onLoadFitType}`);
   }
 }
 
@@ -147,7 +147,7 @@ describe('diagram navigation - fit', () => {
         const config = imageSnapshotConfigurator.getConfig({
           fileName: bpmnDiagramName,
           fitType: onLoadFitType,
-          buildCustomDiffDir: (config, fitType) => FitImageSnapshotConfigurator.buildOnLoadDiffDir(config, fitType),
+          buildCustomDiffDir: (config, fitType) => FitImageSnapshotConfigurator.buildOnLoadDiffDirectory(config, fitType),
         });
         expect(image).toMatchImageSnapshot(config);
       });
@@ -167,7 +167,7 @@ describe('diagram navigation - fit', () => {
         const config = imageSnapshotConfigurator.getConfig({
           fileName: bpmnDiagramName,
           fitType: afterLoadFitType,
-          buildCustomDiffDir: (config, fitType) => FitImageSnapshotConfigurator.buildAfterLoadDiffDir(config, fitType, onLoadFitType),
+          buildCustomDiffDir: (config, fitType) => FitImageSnapshotConfigurator.buildAfterLoadDiffDirectory(config, fitType, onLoadFitType),
         });
         expect(image).toMatchImageSnapshot(config);
       });
@@ -193,7 +193,7 @@ describe('diagram navigation - fit', () => {
             fileName: bpmnDiagramName,
             fitType: onLoadFitType,
             margin,
-            buildCustomDiffDir: (config, fitType, margin) => FitImageSnapshotConfigurator.buildOnLoadDiffDir(config, fitType, true, margin),
+            buildCustomDiffDir: (config, fitType, margin) => FitImageSnapshotConfigurator.buildOnLoadDiffDirectory(config, fitType, true, margin),
           });
           expect(image).toMatchImageSnapshot(config);
         });

@@ -25,27 +25,27 @@ function log(...data) {
   console.info(...data);
 }
 
-const docsOutput = 'build/docs';
+const documentationOutput = 'build/docs';
 
 log('Building bpmn-visualization html documentation');
 
 // clean existing docs
-removeSync(docsOutput);
+removeSync(documentationOutput);
 
 // build html docs
 asciidoctor().convert(readFileSync('docs/users/index.adoc'), {
   base_dir: 'docs/users',
-  to_file: `../../${docsOutput}/index.html`,
+  to_file: `../../${documentationOutput}/index.html`,
   standalone: true,
   mkdirs: true,
   safe: 'unsafe', // needed because we want to generate the HTML outside the directory that stores the source files
 });
 
 // copy images
-ensureDirSync(`${docsOutput}/images`);
+ensureDirSync(`${documentationOutput}/images`);
 
-copySync('docs/users/images', `${docsOutput}/images`);
-copySync('docs/users/architecture/images', `${docsOutput}/images`);
-copySync('dev/public/static/img/favicon.svg', `${docsOutput}/favicon.svg`);
+copySync('docs/users/images', `${documentationOutput}/images`);
+copySync('docs/users/architecture/images', `${documentationOutput}/images`);
+copySync('dev/public/static/img/favicon.svg', `${documentationOutput}/favicon.svg`);
 
-log(`Documentation is now available in ${docsOutput}`);
+log(`Documentation is now available in ${documentationOutput}`);

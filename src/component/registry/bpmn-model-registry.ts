@@ -60,8 +60,8 @@ export class BpmnModelRegistry {
       name: bpmnElement.name,
       ...(bpmnElement instanceof Flow
         ? ({
-            sourceRefId: bpmnElement.sourceRefId,
-            targetRefId: bpmnElement.targetRefId,
+            sourceRefId: bpmnElement.sourceReferenceId,
+            targetRefId: bpmnElement.targetReferenceId,
           } satisfies Omit<EdgeBpmnSemantic, keyof BaseBpmnSemantic>)
         : ({
             callActivityGlobalTaskKind: bpmnElement instanceof ShapeBpmnCallActivity ? bpmnElement.globalTaskKind : undefined,
@@ -120,7 +120,7 @@ class SearchableModel {
     ([] as (Edge | Shape)[])
       .concat(bpmnModel.pools, bpmnModel.lanes, bpmnModel.flowNodes, bpmnModel.edges)
       // use the bpmn element id and not the bpmn shape id
-      .forEach(e => this.elements.set(e.bpmnElement.id, e));
+      .forEach(shapeOrEdge => this.elements.set(shapeOrEdge.bpmnElement.id, shapeOrEdge));
   }
 
   elementById(id: string): Shape | Edge | undefined {

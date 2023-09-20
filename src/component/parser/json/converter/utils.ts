@@ -36,13 +36,13 @@ export class ConvertedElements {
     return this.poolsById.get(id);
   }
   private poolsByProcessRef = new Map<string, ShapeBpmnElement>();
-  findPoolByProcessRef(processRef: string): ShapeBpmnElement {
-    return this.poolsByProcessRef.get(processRef);
+  findPoolByProcessRef(processReference: string): ShapeBpmnElement {
+    return this.poolsByProcessRef.get(processReference);
   }
-  registerPool(pool: ShapeBpmnElement, processRef: string): void {
+  registerPool(pool: ShapeBpmnElement, processReference: string): void {
     this.poolsById.set(pool.id, pool);
-    if (processRef) {
-      this.poolsByProcessRef.set(processRef, pool);
+    if (processReference) {
+      this.poolsByProcessRef.set(processReference, pool);
     }
   }
 

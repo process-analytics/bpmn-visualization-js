@@ -45,10 +45,10 @@ export class ModelFiltering {
     // If there is no shape associated to a Pool, no flow nodes, no lanes and no edges, there is no ShapeBPMNElement associated to the pool id to filter.
     // So we need to throw an error.
     if (filteredPools.length == 0 && filteredLanes.length == 0 && filteredFlowNodes.length == 0 && filteredEdges.length == 0) {
-      let errorMsgSuffix = poolIdsFilter.length > 0 ? ` for ids [${poolIdsFilter}]` : '';
-      const msgSeparator = errorMsgSuffix ? ' and' : '';
-      errorMsgSuffix += poolNamesFilter.length > 0 ? `${msgSeparator} for names [${poolNamesFilter}]` : '';
-      throw new Error('No matching pools' + errorMsgSuffix);
+      let errorMessageSuffix = poolIdsFilter.length > 0 ? ` for ids [${poolIdsFilter}]` : '';
+      const messageSeparator = errorMessageSuffix ? ' and' : '';
+      errorMessageSuffix += poolNamesFilter.length > 0 ? `${messageSeparator} for names [${poolNamesFilter}]` : '';
+      throw new Error('No matching pools' + errorMessageSuffix);
     }
 
     return { lanes: filteredLanes, flowNodes: filteredFlowNodes, pools: filteredPools, edges: filteredEdges };
@@ -114,5 +114,5 @@ function filterFlowNodes(
 }
 
 function filterEdges(edges: Edge[], filteredElementIds: string[]): Edge[] {
-  return edges.filter(edge => filteredElementIds.includes(edge.bpmnElement.sourceRefId) && filteredElementIds.includes(edge.bpmnElement.targetRefId));
+  return edges.filter(edge => filteredElementIds.includes(edge.bpmnElement.sourceReferenceId) && filteredElementIds.includes(edge.bpmnElement.targetReferenceId));
 }

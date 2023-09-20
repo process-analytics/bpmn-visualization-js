@@ -17,12 +17,12 @@ limitations under the License.
 import { BpmnVisualization } from '@lib/component/BpmnVisualization';
 import { readFileSync } from '@test/shared/file-helper';
 
-const additionalXmlAttributeProcessor = (val: string): string => {
-  val = val.replace(/&#174;/g, '®');
-  val = val.replace(/&#9824;/g, '♠');
-  val = val.replace(/&#x00D8;/g, 'Ø');
-  val = val.replace(/&#10741;/g, '⧵');
-  return val;
+const additionalXmlAttributeProcessor = (value: string): string => {
+  value = value.replace(/&#174;/g, '®');
+  value = value.replace(/&#9824;/g, '♠');
+  value = value.replace(/&#x00D8;/g, 'Ø');
+  value = value.replace(/&#10741;/g, '⧵');
+  return value;
 };
 
 describe('From BPMN diagram with entities in attributes', () => {

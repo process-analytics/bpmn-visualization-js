@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { FitOptions, FitType } from '../dev-bundle-index';
+import type { FitOptions, FitType } from '../development-bundle-index';
 
 import {
   documentReady,
@@ -30,7 +30,7 @@ import {
   zoom,
   ZoomType,
   windowAlertStatusKoNotifier,
-} from '../dev-bundle-index';
+} from '../development-bundle-index';
 
 let fitOnLoad = true;
 let fitOptions: FitOptions = {};
@@ -120,8 +120,8 @@ function configureDisplayedFooterContent(): void {
 function preventZoomingPage(): void {
   document.addEventListener(
     'wheel',
-    (e: WheelEvent): void => {
-      if (e.ctrlKey) e.preventDefault(); // prevent whole page zoom
+    (event: WheelEvent): void => {
+      if (event.ctrlKey) event.preventDefault(); // prevent whole page zoom
     },
     { passive: false, capture: true },
   );

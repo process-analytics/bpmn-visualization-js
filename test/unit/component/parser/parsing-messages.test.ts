@@ -17,7 +17,7 @@ limitations under the License.
 import {
   EdgeUnknownBpmnElementWarning,
   GroupUnknownCategoryValueWarning,
-  LaneUnknownFlowNodeRefWarning,
+  LaneUnknownFlowNodeReferenceWarning,
   LabelStyleMissingFontWarning,
   ShapeUnknownBpmnElementWarning,
   BoundaryEventNotAttachedToActivityWarning,
@@ -52,7 +52,7 @@ describe('parsing message collector', () => {
     });
 
     it('unknown flow node ref in lane', () => {
-      parsingMessageCollector.warning(new LaneUnknownFlowNodeRefWarning('lane_id', 'non-existing_flow_node_ref'));
+      parsingMessageCollector.warning(new LaneUnknownFlowNodeReferenceWarning('lane_id', 'non-existing_flow_node_ref'));
       expect(console.warn).toHaveBeenCalledWith('[bv-parser] Unable to assign lane %s as parent: flow node %s is not found', 'non-existing_flow_node_ref', 'lane_id');
     });
 

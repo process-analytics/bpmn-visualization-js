@@ -43,7 +43,7 @@ import { log } from './shared-helpers';
 
 let bpmnVisualization: ThemedBpmnVisualization;
 let loadOptions: LoadOptions = {};
-let statusKoNotifier: (errorMsg: string) => void;
+let statusKoNotifier: (errorMessage: string) => void;
 let bpmnElementIdToCollapse: string;
 let currentTheme: string;
 let style: StyleUpdate;
@@ -177,8 +177,8 @@ function readAndLoadFile(f: File): void {
 /**
  * <b>IMPORTANT</b>: be sure to have call the `startBpmnVisualization` function prior calling this function as it relies on resources that must be initialized first.
  */
-export function handleFileSelect(evt: Event): void {
-  const files = (evt.target as HTMLInputElement).files;
+export function handleFileSelect(event: Event): void {
+  const files = (event.target as HTMLInputElement).files;
   if (files && files.length > 0) {
     const f = files[0];
     readAndLoadFile(f);
@@ -207,17 +207,17 @@ function loadBpmnFromUrl(url: string): void {
 }
 
 export interface BpmnVisualizationDemoConfiguration {
-  statusKoNotifier?: (errorMsg: string) => void;
+  statusKoNotifier?: (errorMessage: string) => void;
   globalOptions: GlobalOptions;
   loadOptions?: LoadOptions;
 }
 
-export function windowAlertStatusKoNotifier(errorMsg: string): void {
-  logErrorAndOpenAlert(errorMsg);
+export function windowAlertStatusKoNotifier(errorMessage: string): void {
+  logErrorAndOpenAlert(errorMessage);
 }
 
-function logOnlyStatusKoNotifier(errorMsg: string): void {
-  logError(errorMsg);
+function logOnlyStatusKoNotifier(errorMessage: string): void {
+  logError(errorMessage);
 }
 
 function getFitOptionsFromParameters(config: BpmnVisualizationDemoConfiguration, parameters: URLSearchParams): FitOptions {

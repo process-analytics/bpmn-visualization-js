@@ -182,7 +182,7 @@ export type ParserOptions = {
    * ```
    * @param val the value of the 'name' attribute to be processed.
    */
-  additionalXmlAttributeProcessor?: (val: string) => string;
+  additionalXmlAttributeProcessor?: (value: string) => string;
 };
 
 /**

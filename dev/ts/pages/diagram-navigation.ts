@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { configureControlsPanel, configureMousePointer, documentReady, fit, FitType, startBpmnVisualization, zoom, ZoomType } from '../dev-bundle-index';
+import { configureControlsPanel, configureMousePointer, documentReady, fit, FitType, startBpmnVisualization, zoom, ZoomType } from '../development-bundle-index';
 
 function configureFitAndZoomButtons(): void {
   Object.values(FitType).forEach(fitType => {
@@ -26,19 +26,19 @@ function configureFitAndZoomButtons(): void {
 }
 
 function configureZoomThrottleInput(parameters: URLSearchParams): HTMLInputElement {
-  const elZoomThrottle = document.getElementById('zoom-throttle') as HTMLInputElement;
+  const zoomThrottleElement = document.getElementById('zoom-throttle') as HTMLInputElement;
   if (parameters.get('zoomThrottle')) {
-    elZoomThrottle.value = parameters.get('zoomThrottle');
+    zoomThrottleElement.value = parameters.get('zoomThrottle');
   }
-  return elZoomThrottle;
+  return zoomThrottleElement;
 }
 
 function configureZoomDebounceInput(parameters: URLSearchParams): HTMLInputElement {
-  const elZoomDebounce = document.getElementById('zoom-debounce') as HTMLInputElement;
+  const zoomDebounceElement = document.getElementById('zoom-debounce') as HTMLInputElement;
   if (parameters.get('zoomDebounce')) {
-    elZoomDebounce.value = parameters.get('zoomDebounce');
+    zoomDebounceElement.value = parameters.get('zoomDebounce');
   }
-  return elZoomDebounce;
+  return zoomDebounceElement;
 }
 
 function start(): void {
@@ -46,8 +46,8 @@ function start(): void {
   configureMousePointer(parameters);
   configureControlsPanel(parameters);
 
-  const elZoomThrottle = configureZoomThrottleInput(parameters);
-  const elZoomDebounce = configureZoomDebounceInput(parameters);
+  const zoomThrottleElement = configureZoomThrottleInput(parameters);
+  const zoomDebounceElement = configureZoomDebounceInput(parameters);
 
   startBpmnVisualization({
     globalOptions: {
@@ -55,8 +55,8 @@ function start(): void {
       navigation: {
         enabled: true,
         zoom: {
-          throttleDelay: Number(elZoomThrottle.value),
-          debounceDelay: Number(elZoomDebounce.value),
+          throttleDelay: Number(zoomThrottleElement.value),
+          debounceDelay: Number(zoomDebounceElement.value),
         },
       },
     },

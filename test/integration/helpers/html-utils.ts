@@ -122,15 +122,15 @@ export class HtmlElementLookup {
     this.expectElement(bpmnId, expectSvgMessageFlow, ['bpmn-type-flow', 'bpmn-message-flow'], checks);
 
     // message flow icon
-    const msgFlowIconSvgGroupElement = this.querySelector<HTMLElement>(this.bpmnQuerySelectors.element(`messageFlowIcon_of_${bpmnId}`));
+    const messageFlowIconSvgGroupElement = this.querySelector<HTMLElement>(this.bpmnQuerySelectors.element(`messageFlowIcon_of_${bpmnId}`));
     if (checks?.hasIcon) {
-      expectSvgMessageFlowIcon(msgFlowIconSvgGroupElement);
+      expectSvgMessageFlowIcon(messageFlowIconSvgGroupElement);
       expectClassAttribute(
-        msgFlowIconSvgGroupElement,
+        messageFlowIconSvgGroupElement,
         computeClassValue(['bpmn-message-flow-icon', checks?.isInitiatingIcon ? 'bpmn-icon-initiating' : 'bpmn-icon-non-initiating'], checks?.additionalClasses),
       );
     } else {
-      expect(msgFlowIconSvgGroupElement).toBeNull();
+      expect(messageFlowIconSvgGroupElement).toBeNull();
     }
   }
 

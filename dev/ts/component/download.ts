@@ -64,7 +64,7 @@ export function downloadAsPng(svg: string): void {
   document.body.appendChild(imgPreview);
 
   const canvas = document.createElement('canvas');
-  const canvasCtx = canvas.getContext('2d');
+  const canvasContext = canvas.getContext('2d');
 
   imgPreview.onload = function () {
     const img = new Image();
@@ -73,7 +73,7 @@ export function downloadAsPng(svg: string): void {
     canvas.height = imgPreview.naturalHeight;
     img.crossOrigin = 'Anonymous';
     img.onload = function () {
-      canvasCtx.drawImage(img, 0, 0);
+      canvasContext.drawImage(img, 0, 0);
       URL.revokeObjectURL(svgUrl);
       const pngInBase64 = canvas.toDataURL('image/png');
       document.body.removeChild(imgPreview);

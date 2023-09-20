@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BpmnElementKind, BpmnSemantic, Overlay, ShapeStyleUpdate, StyleUpdate } from '../dev-bundle-index';
+import type { BpmnElementKind, BpmnSemantic, Overlay, ShapeStyleUpdate, StyleUpdate } from '../development-bundle-index';
 
 import {
   addCssClasses,
@@ -37,7 +37,7 @@ import {
   ShapeBpmnElementKind,
   isChildOfSubProcess,
   isFlowKind,
-} from '../dev-bundle-index';
+} from '../development-bundle-index';
 
 let lastIdentifiedBpmnIds: string[] = [];
 let lastIdentifiedParentBpmnIds: string[] = [];

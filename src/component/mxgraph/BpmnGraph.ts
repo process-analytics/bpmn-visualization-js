@@ -59,15 +59,15 @@ export class BpmnGraph extends mxgraph.mxGraph {
    *
    * This method is inspired from {@link https://github.com/maxGraph/maxGraph/blob/v0.1.0/packages/core/src/view/Graph.ts#L487-L494 maxGraph}.
    *
-   * @param fn the update to be made in the transaction.
+   * @param callbackFunction the update to be made in the transaction.
    *
    * @experimental subject to change, may move to a subclass of `mxGraphModel`
    * @alpha
    */
-  batchUpdate(fn: () => void): void {
+  batchUpdate(callbackFunction: () => void): void {
     this.model.beginUpdate();
     try {
-      fn();
+      callbackFunction();
     } finally {
       this.model.endUpdate();
     }
@@ -172,35 +172,35 @@ export class BpmnGraph extends mxgraph.mxGraph {
 
   // Update the currentZoomLevel when performScaling is false, use the currentZoomLevel to set the scale otherwise
   // Initial implementation inspired by https://github.com/algenty/grafana-flowcharting/blob/0.9.0/src/graph_class.ts#L1254
-  private manageMouseWheelZoomEvent(up: boolean, evt: MouseEvent, performScaling: boolean): void {
+  private manageMouseWheelZoomEvent(up: boolean, event: MouseEvent, performScaling: boolean): void {
     if (!performScaling) {
       this.currentZoomLevel *= up ? zoomFactorIn : zoomFactorOut;
     } else {
-      const [offsetX, offsetY] = this.getEventRelativeCoordinates(evt);
+      const [offsetX, offsetY] = this.getEventRelativeCoordinates(event);
       const [newScale, dx, dy] = this.getScaleAndTranslationDeltas(offsetX, offsetY);
       this.view.scaleAndTranslate(newScale, this.view.translate.x + dx, this.view.translate.y + dy);
-      mxEvent.consume(evt);
+      mxEvent.consume(event);
     }
   }
 
   private createMouseWheelZoomListener(performScaling: boolean) {
     return (event: Event, up: boolean) => {
-      if (mxEvent.isConsumed(event)) {
+      if (mxEvent.isConsumed(event) || !(event instanceof MouseEvent)) {
         return;
       }
-      const evt = event as MouseEvent;
+
       // only the ctrl key
-      const isZoomWheelEvent = evt.ctrlKey && !evt.altKey && !evt.shiftKey && !evt.metaKey;
+      const isZoomWheelEvent = event.ctrlKey && !event.altKey && !event.shiftKey && !event.metaKey;
       if (isZoomWheelEvent) {
-        this.manageMouseWheelZoomEvent(up, evt, performScaling);
+        this.manageMouseWheelZoomEvent(up, event, performScaling);
       }
     };
   }
 
-  private getEventRelativeCoordinates(evt: MouseEvent): [number, number] {
+  private getEventRelativeCoordinates(event: MouseEvent): [number, number] {
     const rect = this.container.getBoundingClientRect();
-    const x = evt.clientX - rect.left;
-    const y = evt.clientY - rect.top;
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
     return [x, y];
   }
 

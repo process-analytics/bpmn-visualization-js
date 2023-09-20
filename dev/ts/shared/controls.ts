@@ -84,8 +84,8 @@ function showMousePointer(): void {
     true,
   );
   function updateButtons(buttons: number): void {
-    for (let i = 0; i < 5; i++) {
-      box.classList.toggle('button-' + i, (buttons & (1 << i)) > 0);
+    for (let index = 0; index < 5; index++) {
+      box.classList.toggle('button-' + index, (buttons & (1 << index)) > 0);
     }
   }
 }
@@ -97,8 +97,8 @@ export function configureMousePointer(parameters: URLSearchParams): void {
 }
 
 export function configureControlsPanel(parameters: URLSearchParams): void {
-  const elControlsPanel = document.getElementById('controls-panel');
+  const controlsPanelElement = document.getElementById('controls-panel');
   if (parameters.get('showControlsPanel') === 'true') {
-    elControlsPanel.classList.remove('hidden');
+    controlsPanelElement.classList.remove('hidden');
   }
 }

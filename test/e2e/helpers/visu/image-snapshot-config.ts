@@ -44,15 +44,15 @@ export class ImageSnapshotConfigurator {
   protected readonly defaultCustomDiffDir: string;
   protected readonly defaultCustomSnapshotsDir: string;
 
-  constructor(imageSnapshotThresholds: MultiBrowserImageSnapshotThresholds, snapshotsSubDirName: string) {
+  constructor(imageSnapshotThresholds: MultiBrowserImageSnapshotThresholds, snapshotsSubDirectoryName: string) {
     this.thresholdConfig = imageSnapshotThresholds.getThresholds();
     this.defaultFailureThreshold = imageSnapshotThresholds.getDefault();
-    this.defaultCustomDiffDir = join(ImageSnapshotConfigurator.getDiffDir(), snapshotsSubDirName);
-    this.defaultCustomSnapshotsDir = join(ImageSnapshotConfigurator.getSnapshotsDir(), snapshotsSubDirName);
+    this.defaultCustomDiffDir = join(ImageSnapshotConfigurator.getDiffDirectory(), snapshotsSubDirectoryName);
+    this.defaultCustomSnapshotsDir = join(ImageSnapshotConfigurator.getSnapshotsDirectory(), snapshotsSubDirectoryName);
   }
 
-  getConfig(param: string | { fileName: string }): MatchImageSnapshotOptions {
-    const fileName = typeof param === 'string' ? param : param.fileName;
+  getConfig(parameter: string | { fileName: string }): MatchImageSnapshotOptions {
+    const fileName = typeof parameter === 'string' ? parameter : parameter.fileName;
     const failureThreshold = this.getFailureThreshold(fileName);
 
     return {
@@ -82,14 +82,14 @@ export class ImageSnapshotConfigurator {
     return failureThreshold;
   }
 
-  static getSnapshotsDir(): string {
+  static getSnapshotsDirectory(): string {
     return join(dirname(expect.getState().testPath), '__image_snapshots__');
   }
 
-  static getDiffDir(): string {
-    const testDirName = dirname(expect.getState().testPath);
+  static getDiffDirectory(): string {
+    const testDirectoryName = dirname(expect.getState().testPath);
     // directory is relative to $ROOT/test/e2e
-    return join(testDirName, '../../build/test-report/e2e/__diff_output__');
+    return join(testDirectoryName, '../../build/test-report/e2e/__diff_output__');
   }
 }
 

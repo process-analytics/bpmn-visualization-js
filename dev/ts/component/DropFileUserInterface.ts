@@ -48,9 +48,9 @@ export class DropFileUserInterface {
     this.addEventsOnDocument(this.outerContainerId, this.containerToFade);
   }
 
-  private preventDefaults(e: Event): void {
-    e.preventDefault();
-    e.stopPropagation();
+  private preventDefaults(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
   }
 
   private preventDefaultsOnEvents(events: string[], container: Element | Window): void {
@@ -152,8 +152,8 @@ export class DropFileUserInterface {
         const dt = event.dataTransfer;
         const files = dt.files;
         dropCallback(files[0]);
-      } catch (e) {
-        const errorMessage = e instanceof Error ? e.message : String(e);
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
         logErrorAndOpenAlert(errorMessage);
       } finally {
         isDocument ? (this as Document).querySelector('#' + outerContainerId).classList.remove('dragging') : (this as HTMLElement).classList.remove('dragging');

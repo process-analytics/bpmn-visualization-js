@@ -93,9 +93,9 @@ export class MxGraphCustomOverlay extends mxgraph.mxCellOverlay {
       if (pts.length % 2 == 1) {
         return pts[Math.floor(pts.length / 2)];
       } else {
-        const idx = pts.length / 2;
-        const p0 = pts[idx - 1];
-        const p1 = pts[idx];
+        const index = pts.length / 2;
+        const p0 = pts[index - 1];
+        const p1 = pts[index];
         return new mxPoint(p0.x + (p1.x - p0.x) / 2, p0.y + (p1.y - p0.y) / 2);
       }
     }

@@ -83,7 +83,7 @@ const computeBaseConfiguration = defaultBrowsers => {
   };
 };
 
-const computeConfigurationForDevServerUsage = defaultBrowsers => {
+const computeConfigurationForDevelopmentServerUsage = defaultBrowsers => {
   log('Computing configuration for dev server usage');
   /** @type {import('jest-playwright-preset/types/global').ServerOptions} */
   const serverOptions = {
@@ -110,7 +110,7 @@ const computeConfigurationForDevServerUsage = defaultBrowsers => {
 const computeConfiguration = options => {
   let configuration;
   if (options.startWebServer ?? true) {
-    configuration = computeConfigurationForDevServerUsage(options.defaultBrowsers);
+    configuration = computeConfigurationForDevelopmentServerUsage(options.defaultBrowsers);
   } else {
     configuration = computeConfigurationForStaticUsage(options.defaultBrowsers);
   }

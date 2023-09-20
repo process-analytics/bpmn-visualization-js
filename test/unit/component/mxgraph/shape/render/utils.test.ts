@@ -25,22 +25,22 @@ function computeAllPermutations(array: string[]): string[][][] {
   const length = permutation.length,
     result = [[permutation.slice()]],
     c = new Array(length).fill(0);
-  let i = 1,
+  let index = 1,
     k,
     p;
 
-  while (i < length) {
-    if (c[i] < i) {
-      k = i % 2 && c[i];
-      p = permutation[i];
-      permutation[i] = permutation[k];
+  while (index < length) {
+    if (c[index] < index) {
+      k = index % 2 && c[index];
+      p = permutation[index];
+      permutation[index] = permutation[k];
       permutation[k] = p;
-      ++c[i];
-      i = 1;
+      ++c[index];
+      index = 1;
       result.push([permutation.slice()]);
     } else {
-      c[i] = 0;
-      ++i;
+      c[index] = 0;
+      ++index;
     }
   }
   return result;

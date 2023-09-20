@@ -280,7 +280,7 @@ describe('parse bpmn as json for group', () => {
 
       const warning0 = expectAsWarning<GroupUnknownCategoryValueWarning>(warnings[0], GroupUnknownCategoryValueWarning);
       expect(warning0.groupBpmnElementId).toBe('Group_0');
-      expect(warning0.categoryValueRef).toBe('unknown_CategoryValue_0');
+      expect(warning0.categoryValueReference).toBe('unknown_CategoryValue_0');
 
       const warning1 = expectAsWarning<ShapeUnknownBpmnElementWarning>(warnings[1], ShapeUnknownBpmnElementWarning);
       expect(warning1.bpmnElementId).toBe('Group_0');

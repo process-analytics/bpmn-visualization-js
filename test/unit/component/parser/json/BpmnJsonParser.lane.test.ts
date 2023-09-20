@@ -19,7 +19,7 @@ import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
 import { expectAsWarning, parseJson, parseJsonAndExpectOnlyLanes, parsingMessageCollector } from '../../../helpers/JsonTestUtils';
 
-import { LaneUnknownFlowNodeRefWarning } from '@lib/component/parser/json/warnings';
+import { LaneUnknownFlowNodeReferenceWarning } from '@lib/component/parser/json/warnings';
 import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 
 describe('parse bpmn as json for lane', () => {
@@ -143,9 +143,9 @@ describe('parse bpmn as json for lane', () => {
       isHorizontal: true,
     });
 
-    const warning = expectAsWarning<LaneUnknownFlowNodeRefWarning>(parsingMessageCollector.getWarnings()[0], LaneUnknownFlowNodeRefWarning);
+    const warning = expectAsWarning<LaneUnknownFlowNodeReferenceWarning>(parsingMessageCollector.getWarnings()[0], LaneUnknownFlowNodeReferenceWarning);
     expect(warning.laneId).toBe('Lane_12u5n6x');
-    expect(warning.flowNodeRef).toBe('event_id_0');
+    expect(warning.flowNodeReference).toBe('event_id_0');
   });
 
   it('json containing one process with a single lane with flowNodeRef as array', () => {

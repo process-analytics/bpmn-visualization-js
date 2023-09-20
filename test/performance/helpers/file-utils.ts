@@ -17,5 +17,5 @@ limitations under the License.
 import { getSimplePlatformName } from '@test/shared/visu/test-utils';
 
 // when running tests in IntelliJ/Webstorm, the working directory is not the project root dir
-const rootDir = process.cwd().endsWith('/test/performance') ? './data' : './test/performance/data';
-export const performanceDataFilePath = `${rootDir}/${getSimplePlatformName()}/data.js`;
+const rootDirectory = process.cwd().endsWith('/test/performance') ? './data' : './test/performance/data';
+export const performanceDataFilePath = `${rootDirectory}/${getSimplePlatformName()}/data.js`;
