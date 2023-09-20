@@ -115,6 +115,6 @@ describe('BpmnVisualization API', () => {
 
 function getLibraryVersionFromPackageJson(): string {
   const json = readFileSync('../../package.json');
-  const package_ = JSON.parse(json);
-  return package_.version;
+  const packageJson = JSON.parse(json);
+  return packageJson.version;
 }

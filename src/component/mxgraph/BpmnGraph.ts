@@ -59,15 +59,15 @@ export class BpmnGraph extends mxgraph.mxGraph {
    *
    * This method is inspired from {@link https://github.com/maxGraph/maxGraph/blob/v0.1.0/packages/core/src/view/Graph.ts#L487-L494 maxGraph}.
    *
-   * @param callBack the update to be made in the transaction.
+   * @param callbackFunction the update to be made in the transaction.
    *
    * @experimental subject to change, may move to a subclass of `mxGraphModel`
    * @alpha
    */
-  batchUpdate(callBack: () => void): void {
+  batchUpdate(callbackFunction: () => void): void {
     this.model.beginUpdate();
     try {
-      callBack();
+      callbackFunction();
     } finally {
       this.model.endUpdate();
     }

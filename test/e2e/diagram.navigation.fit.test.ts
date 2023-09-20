@@ -41,12 +41,12 @@ class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
   }
 
   private static buildSnapshotFitDirectory(parentDirectory: string, fitType: FitType, withMargin = false, margin?: number): string {
-    const typeDirectory = join(parentDirectory, `type-${fitType}`);
+    const rootFitDirectory = join(parentDirectory, `type-${fitType}`);
 
     if (!withMargin) {
-      return typeDirectory;
+      return rootFitDirectory;
     }
-    return join(typeDirectory, `margin-${margin == null || margin < 0 ? 0 : margin}`);
+    return join(rootFitDirectory, `margin-${margin == null || margin < 0 ? 0 : margin}`);
   }
 
   static buildOnLoadDiffDirectory(config: MatchImageSnapshotOptions, fitType: FitType, withMargin = false, margin?: number): string {
@@ -56,8 +56,8 @@ class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
 
   static buildAfterLoadDiffDirectory(config: MatchImageSnapshotOptions, afterLoadFitType: FitType, onLoadFitType: FitType): string {
     const afterLoadDirectory = join(config.customDiffDir, 'after-load');
-    const snapshotFitTypeDirectory = FitImageSnapshotConfigurator.buildSnapshotFitDirectory(afterLoadDirectory, afterLoadFitType);
-    return join(snapshotFitTypeDirectory, `on-load_type-${onLoadFitType}`);
+    const snapshotFitDirectory = FitImageSnapshotConfigurator.buildSnapshotFitDirectory(afterLoadDirectory, afterLoadFitType);
+    return join(snapshotFitDirectory, `on-load_type-${onLoadFitType}`);
   }
 }
 
