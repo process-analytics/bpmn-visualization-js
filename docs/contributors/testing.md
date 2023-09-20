@@ -238,7 +238,10 @@ Html reports are generated for test execution and coverage in
 <a name="web-browsers"></a>
 ### Web Browser choice for end-to-end and bundle tests
 
-Web browsers are installed by `playwright` when running `npm install`. For more details about browsers management, see the [Playwright documentation](https://playwright.dev/docs/browsers#installing-browsers).
+**IMPORTANT**
+- as of version 1.38.0, `playwright` no longer installs browsers when running `npm install` (see [playwright v1.38.0 release-notes](https://github.com/microsoft/playwright/releases/tag/v1.38.0)).
+This means that browsers must be installed manually, and may need to be reinstalled when the Playwright version changes.
+- see the [Playwright documentation](https://playwright.dev/docs/browsers#installing-browsers) for more details about browsers management 
 
 By default, 
 - end-to-end tests use Chromium.

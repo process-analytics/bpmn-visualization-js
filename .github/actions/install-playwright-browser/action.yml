@@ -8,7 +8,7 @@ runs:
   using: 'composite'
   steps:
     - name: Install ${{inputs.browser}}
-      # Only installed browsers not available in the GH runner, or that need a special version modified for playwright
+      # Only install browsers not available in the GH runner, or that need a special version modified for playwright
       if: inputs.browser == 'chromium' || inputs.browser == 'firefox' || inputs.browser == 'webkit'
       shell: bash
       run: npx playwright install ${{inputs.browser}}
