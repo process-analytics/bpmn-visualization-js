@@ -26,7 +26,7 @@ import {
   startBpmnVisualization,
 } from '../development-bundle-index';
 
-const bpmnIdInputElt = document.getElementById('bpmn-id-input') as HTMLInputElement;
+const bpmnIdInputElt = document.querySelector('#bpmn-id-input') as HTMLInputElement;
 
 function addOverlay(overlay: Overlay): void {
   const bpmnId = bpmnIdInputElt.value;
@@ -46,23 +46,23 @@ function getPosition(): OverlayPosition {
 }
 
 function configureAddDefaultOverlay(position: OverlayPosition): void {
-  document.getElementById(position).onclick = () => addOverlay({ position, label: '123' });
+  document.querySelector(`#${position}`).addEventListener('click', () => addOverlay({ position, label: '123' }));
 }
 
 function configureAddOverlayWithCustomFont(): void {
-  document.getElementById('font').onclick = () => addOverlay({ position: getPosition(), label: '7896', style: { font: { color: 'LightSeaGreen', size: 30 } } });
+  document.querySelector('#font').addEventListener('click', () => addOverlay({ position: getPosition(), label: '7896', style: { font: { color: 'LightSeaGreen', size: 30 } } }));
 }
 
 function configureAddOverlayWithCustomFill(): void {
-  document.getElementById('fill').onclick = () => addOverlay({ position: getPosition(), label: '3', style: { fill: { color: 'LightSalmon', opacity: 50 } } });
+  document.querySelector('#fill').addEventListener('click', () => addOverlay({ position: getPosition(), label: '3', style: { fill: { color: 'LightSalmon', opacity: 50 } } }));
 }
 
 function configureAddOverlayWithCustomStroke(): void {
-  document.getElementById('stroke').onclick = () => addOverlay({ position: getPosition(), label: '41', style: { stroke: { color: 'Aquamarine', width: 5 } } });
+  document.querySelector('#stroke').addEventListener('click', () => addOverlay({ position: getPosition(), label: '41', style: { stroke: { color: 'Aquamarine', width: 5 } } }));
 }
 
 function configureRemoveAllOverlays(): void {
-  document.getElementById('clear').onclick = () => removeAllOverlays(bpmnIdInputElt.value);
+  document.querySelector('#clear').addEventListener('click', () => removeAllOverlays(bpmnIdInputElt.value));
 }
 
 function start(): void {
