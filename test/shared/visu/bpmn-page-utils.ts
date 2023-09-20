@@ -193,7 +193,7 @@ export class PageTester {
 
     await this.bpmnPage.expectPageTitle(this.targetedPageConfiguration.targetedPage.expectedPageTitle);
 
-    const waitForSelectorOptions = { timeout: 5_000 };
+    const waitForSelectorOptions = { timeout: 5000 };
     await this.bpmnPage.expectAvailableBpmnContainer(waitForSelectorOptions);
     await this.bpmnPage.expectExistingBpmnElement(waitForSelectorOptions);
 

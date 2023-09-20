@@ -415,7 +415,7 @@ describe('parse bpmn as json for process/pool', () => {
                 id: 'shape_Participant_2',
                 bpmnElement: 'Participant_2',
                 isHorizontal: true,
-                Bounds: { x: 10158, y: 50, width: 1620, height: 430 },
+                Bounds: { x: 10_158, y: 50, width: 1620, height: 430 },
               },
             ],
           },
@@ -445,7 +445,7 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementKind: ShapeBpmnElementKind.POOL,
       isHorizontal: true,
       bounds: {
-        x: 10158,
+        x: 10_158,
         y: 50,
         width: 1620,
         height: 430,
@@ -647,7 +647,7 @@ describe('parse bpmn as json for process/pool', () => {
           documentation: '',
           id: 'Trisotech_Visio-_6',
           name: 'A.1.0',
-          resolution: 96.00000267028808,
+          resolution: 96.000_002_670_288_08,
           BPMNPlane: {
             bpmnElement: 'WFP-6-',
             BPMNShape: [
@@ -663,10 +663,10 @@ describe('parse bpmn as json for process/pool', () => {
                 BPMNLabel: {
                   labelStyle: 'LS1373649849858',
                   Bounds: {
-                    height: 12.804751171875008,
-                    width: 94.93333333333335,
-                    x: 153.67766754457273,
-                    y: 371.3333333333333,
+                    height: 12.804_751_171_875_008,
+                    width: 94.933_333_333_333_35,
+                    x: 153.677_667_544_572_73,
+                    y: 371.333_333_333_333_3,
                   },
                 },
               },
@@ -682,10 +682,10 @@ describe('parse bpmn as json for process/pool', () => {
                 BPMNLabel: {
                   labelStyle: 'LS1373649849858',
                   Bounds: {
-                    height: 12.804751171875008,
-                    width: 72.48293963254594,
-                    x: 263.3333333333333,
-                    y: 344.5818763825664,
+                    height: 12.804_751_171_875_008,
+                    width: 72.482_939_632_545_94,
+                    x: 263.333_333_333_333_3,
+                    y: 344.581_876_382_566_4,
                   },
                 },
               },
@@ -701,10 +701,10 @@ describe('parse bpmn as json for process/pool', () => {
                 BPMNLabel: {
                   labelStyle: 'LS1373649849858',
                   Bounds: {
-                    height: 12.804751171875008,
-                    width: 72.48293963254594,
-                    x: 395.3333333333333,
-                    y: 344.5818763825664,
+                    height: 12.804_751_171_875_008,
+                    width: 72.482_939_632_545_94,
+                    x: 395.333_333_333_333_3,
+                    y: 344.581_876_382_566_4,
                   },
                 },
               },
@@ -720,10 +720,10 @@ describe('parse bpmn as json for process/pool', () => {
                 BPMNLabel: {
                   labelStyle: 'LS1373649849858',
                   Bounds: {
-                    height: 12.804751171875008,
-                    width: 72.48293963254594,
-                    x: 527.3333333333334,
-                    y: 344.5818763825664,
+                    height: 12.804_751_171_875_008,
+                    width: 72.482_939_632_545_94,
+                    x: 527.333_333_333_333_4,
+                    y: 344.581_876_382_566_4,
                   },
                 },
               },
@@ -739,10 +739,10 @@ describe('parse bpmn as json for process/pool', () => {
                 BPMNLabel: {
                   labelStyle: 'LS1373649849858',
                   Bounds: {
-                    height: 12.804751171875008,
-                    width: 94.93333333333335,
-                    x: 616.5963254593177,
-                    y: 372.3333333333333,
+                    height: 12.804_751_171_875_008,
+                    width: 94.933_333_333_333_35,
+                    x: 616.596_325_459_317_7,
+                    y: 372.333_333_333_333_3,
                   },
                 },
               },
