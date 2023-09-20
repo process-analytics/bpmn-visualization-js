@@ -297,7 +297,7 @@ describe('Style Computer', () => {
 
         it(`${subProcessKind} sub-process without label bounds`, () => {
           const shape = newShape(newShapeBpmnSubProcess(subProcessKind, markers), newLabel({ name: 'Arial' }));
-          const additionalTerminalStyle = !markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';verticalAlign=top' : '';
+          const additionalTerminalStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? '' : ';verticalAlign=top';
           expect(computeStyle(shape)).toBe(`subProcess;bpmn.subProcessKind=${subProcessKind}${additionalMarkerStyle};fontFamily=Arial${additionalTerminalStyle}`);
         });
 
@@ -320,7 +320,7 @@ describe('Style Computer', () => {
         it(`${expandKind} call activity without label bounds`, () => {
           const shape = newShape(newShapeBpmnCallActivityCallingProcess(markers), newLabel({ name: 'Arial' }));
           const additionalMarkerStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';bpmn.markers=expand' : '';
-          const additionalTerminalStyle = !markers.includes(ShapeBpmnMarkerKind.EXPAND) ? ';verticalAlign=top' : '';
+          const additionalTerminalStyle = markers.includes(ShapeBpmnMarkerKind.EXPAND) ? '' : ';verticalAlign=top';
           expect(computeStyle(shape)).toBe(`callActivity${additionalMarkerStyle};fontFamily=Arial${additionalTerminalStyle}`);
         });
 

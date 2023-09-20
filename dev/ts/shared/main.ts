@@ -151,9 +151,7 @@ function collapseBpmnElement(bpmnElementId: string): void {
   log('Updating model, bpmnElement to collapse:', bpmnElementId);
   const model = bpmnVisualization.graph.getModel();
   const cell = model.getCell(bpmnElementId);
-  if (!cell) {
-    log('Element not found in the model, do nothing');
-  } else {
+  if (cell) {
     model.beginUpdate();
     try {
       model.setCollapsed(cell, true);
@@ -161,6 +159,8 @@ function collapseBpmnElement(bpmnElementId: string): void {
       model.endUpdate();
     }
     log('Model updated');
+  } else {
+    log('Element not found in the model, do nothing');
   }
 }
 
@@ -249,11 +249,11 @@ function configureStyleFromParameters(parameters: URLSearchParams): void {
   const theme = parameters.get('style.theme');
   logStartup(`Configuring the '${theme}' BPMN theme`);
   const updatedTheme = bpmnVisualization.configureTheme(theme);
-  if (!updatedTheme) {
-    logStartup(`Unknown '${theme}' BPMN theme, skipping configuration`);
-  } else {
+  if (updatedTheme) {
     currentTheme = theme;
     logStartup(`'${theme}' BPMN theme configured`);
+  } else {
+    logStartup(`Unknown '${theme}' BPMN theme, skipping configuration`);
   }
 
   const useSequenceFlowColorsLight = parameters.get('style.seqFlow.light.colors');

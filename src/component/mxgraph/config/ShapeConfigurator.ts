@@ -134,10 +134,10 @@ export default class ShapeConfigurator {
       canvas.pointerEventsValue = this.svgPointerEvents;
       const off = this.getSvgScreenOffset();
 
-      if (off != 0) {
-        this.node.setAttribute('transform', 'translate(' + off + ',' + off + ')');
-      } else {
+      if (off == 0) {
         this.node.removeAttribute('transform');
+      } else {
+        this.node.setAttribute('transform', 'translate(' + off + ',' + off + ')');
       }
 
       // START bpmn-visualization CUSTOMIZATION

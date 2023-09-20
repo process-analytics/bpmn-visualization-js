@@ -94,5 +94,5 @@ export function computeAllBpmnClassNames(style: string, isLabel: boolean): strin
  * @internal
  */
 export function computeBpmnBaseClassName(bpmnElementKind: string): string {
-  return !bpmnElementKind ? '' : 'bpmn-' + bpmnElementKind.replace(/([A-Z])/g, g => '-' + g[0].toLowerCase());
+  return bpmnElementKind ? 'bpmn-' + bpmnElementKind.replace(/([A-Z])/g, g => '-' + g[0].toLowerCase()) : '';
 }

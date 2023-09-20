@@ -30,7 +30,7 @@ export class BpmnCellRenderer extends mxgraph.mxCellRenderer {
       dict = new mxgraph.mxDictionary<mxShape>();
 
       for (const currentOverlay of overlays) {
-        const shape = state.overlays != null ? state.overlays.remove(currentOverlay) : null;
+        const shape = state.overlays == null ? null : state.overlays.remove(currentOverlay);
         if (shape != null) {
           dict.put(currentOverlay, shape);
           continue;

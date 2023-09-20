@@ -128,20 +128,7 @@ export class BpmnGraph extends mxgraph.mxGraph {
 
     const margin = ensurePositiveValue(fitOptions?.margin);
 
-    if (type != FitType.Center) {
-      let ignoreWidth = false;
-      let ignoreHeight = false;
-      switch (type) {
-        case FitType.Horizontal:
-          ignoreHeight = true;
-          break;
-        case FitType.Vertical:
-          ignoreWidth = true;
-          break;
-      }
-
-      this.fit(this.border, false, margin, true, ignoreWidth, ignoreHeight);
-    } else {
+    if (type == FitType.Center) {
       // Inspired from https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxGraph-js.html#mxGraph.fit
       const maxScale = 3;
 
@@ -158,6 +145,19 @@ export class BpmnGraph extends mxgraph.mxGraph {
         (margin + clientWidth - width * scale) / (2 * scale) - bounds.x / this.view.scale,
         (margin + clientHeight - height * scale) / (2 * scale) - bounds.y / this.view.scale,
       );
+    } else {
+      let ignoreWidth = false;
+      let ignoreHeight = false;
+      switch (type) {
+        case FitType.Horizontal:
+          ignoreHeight = true;
+          break;
+        case FitType.Vertical:
+          ignoreWidth = true;
+          break;
+      }
+
+      this.fit(this.border, false, margin, true, ignoreWidth, ignoreHeight);
     }
   }
 
@@ -173,13 +173,13 @@ export class BpmnGraph extends mxgraph.mxGraph {
   // Update the currentZoomLevel when performScaling is false, use the currentZoomLevel to set the scale otherwise
   // Initial implementation inspired by https://github.com/algenty/grafana-flowcharting/blob/0.9.0/src/graph_class.ts#L1254
   private manageMouseWheelZoomEvent(up: boolean, event: MouseEvent, performScaling: boolean): void {
-    if (!performScaling) {
-      this.currentZoomLevel *= up ? zoomFactorIn : zoomFactorOut;
-    } else {
+    if (performScaling) {
       const [offsetX, offsetY] = this.getEventRelativeCoordinates(event);
       const [newScale, dx, dy] = this.getScaleAndTranslationDeltas(offsetX, offsetY);
       this.view.scaleAndTranslate(newScale, this.view.translate.x + dx, this.view.translate.y + dy);
       mxEvent.consume(event);
+    } else {
+      this.currentZoomLevel *= up ? zoomFactorIn : zoomFactorOut;
     }
   }
 
