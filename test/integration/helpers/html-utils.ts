@@ -175,7 +175,7 @@ export class HtmlElementLookup {
 }
 
 function computeClassValue(bpmnClasses: string[], additionalClasses?: string[]): string {
-  return bpmnClasses.concat(additionalClasses).filter(Boolean).join(' ');
+  return [...bpmnClasses, ...additionalClasses].filter(Boolean).join(' ');
 }
 
 export function expectSvgEvent(svgGroupElement: HTMLElement): void {

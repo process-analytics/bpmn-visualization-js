@@ -55,10 +55,13 @@ export function ensureIsArray<T>(elements: (T | string)[] | T | string, acceptEm
 export function filter<T extends string>(arrayToFilter: T[], suffix: string, options?: FilterParameter): T[] {
   let pattern = '';
   if (options?.startingWith) {
+    // eslint-disable-next-line unicorn/prefer-spread -- pattern is a string not an array
     pattern = pattern.concat(`^(${options.startingWith}).*`);
   } else if (options?.notStartingWith) {
+    // eslint-disable-next-line unicorn/prefer-spread -- pattern is a string not an array
     pattern = pattern.concat(`^(?!(${options.notStartingWith})).*`);
   }
+  // eslint-disable-next-line unicorn/prefer-spread -- pattern is a string not an array
   pattern = pattern.concat(`${suffix}$`);
 
   return arrayToFilter.filter(element => (options?.ignoreCase ? new RegExp(pattern, 'i').test(element) : new RegExp(pattern).test(element)));

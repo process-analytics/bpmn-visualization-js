@@ -150,7 +150,7 @@ export default class ShapeConfigurator {
         let allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === mxConstants.DIALECT_STRICTHTML);
         const extraCssClasses = this.state.style[BpmnStyleIdentifier.EXTRA_CSS_CLASSES];
         if (typeof extraCssClasses == 'string') {
-          allBpmnClassNames = allBpmnClassNames.concat(extraCssClasses.split(','));
+          allBpmnClassNames = [...allBpmnClassNames, ...extraCssClasses.split(',')];
         }
 
         this.node.setAttribute('class', allBpmnClassNames.join(' '));

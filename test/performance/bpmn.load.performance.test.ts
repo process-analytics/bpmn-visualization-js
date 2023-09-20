@@ -54,7 +54,7 @@ afterAll(async () => {
       const oldData = JSON.parse(oldDataString.substring('const data = '.length, oldDataString.length)) as ChartData;
       const data = {
         zoom: oldData.zoom,
-        load: oldData.load.concat(metricsArray),
+        load: [...oldData.load, ...metricsArray],
       };
       fs.writeFileSync(performanceDataFilePath, 'const data = ' + JSON.stringify(data));
     } catch (error) {

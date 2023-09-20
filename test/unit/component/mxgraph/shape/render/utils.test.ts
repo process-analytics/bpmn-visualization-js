@@ -23,7 +23,7 @@ function computeAllPermutations(array: string[]): string[][][] {
   const permutation = [...array];
 
   const length = permutation.length,
-    result = [[permutation.slice()]],
+    result = [[[...permutation]]],
     c = new Array(length).fill(0);
   let index = 1,
     k,
@@ -37,7 +37,7 @@ function computeAllPermutations(array: string[]): string[][][] {
       permutation[k] = p;
       ++c[index];
       index = 1;
-      result.push([permutation.slice()]);
+      result.push([[...permutation]]);
     } else {
       c[index] = 0;
       ++index;
