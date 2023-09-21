@@ -19,25 +19,36 @@ There are many ways to contribute:
 For all contributions, please respect the following guidelines:
 
 1. If you've noticed a bug or have a feature request, let us know in the [GitHub Issue tracker](https://github.com/process-analytics/bpmn-visualization-js/issues/new )! So we can confirm the bug or approve your feature, and provide feedback, before starting to code 🙂  
-If you start working on one of the existing [issues](https://github.com/process-analytics/bpmn-visualization-js/issues), please leave a comment below the issue so everyone knows that the issue is taken.
 
-2. Do the changes in your own [fork](CONTRIBUTING.md#fork--create-a-branch) of the code
+2. If you would like to work on one of the existing [issues](https://github.com/process-analytics/bpmn-visualization-js/issues), please read the following carefully first 👇:
+  - Without prior agreement, we only accept external contributions for issues marked with the [PR Accepted](https://github.com/process-analytics/bpmn-visualization-js/issues?q=is%3Aissue+is%3Aopen+label%3A%22PR+accepted%22) label.
+  - Please always leave a comment in the issue to mention that you'd like to work on the subject.
+  - We will check that the description is understood in the same way by you and by us, and that the implementation you envisage can correspond to what we expect.
+  - Finally, we'll assign you to the question, so that everyone knows it's taken and no one else will be working on it in parallel.
+  - By following the above guidelines, we maximize the chances of contributions being accepted and integrated quickly into `bpmn-visualization`.
 
-3. Do not commit changes to files that are irrelevant to your feature or bugfix (eg: `.gitignore`).
+3. If you see an unlabeled problem you'd like to work on, let us know to start discussions and see if we change our minds and finally accept a contribution.
+The following sources can give you an idea of whether your request is likely to be successful:
+  - Project priorities are tracked in [GitHub projects] (https://github.com/orgs/process-analytics/projects).
+  - These projects show which topics are currently being addressed and which have the highest priority
 
-4. Provide [tests](./docs/contributors/development.md#tests) and documentation whenever possible.
+4. Do the changes in your own [fork](CONTRIBUTING.md#fork--create-a-branch) of the code
 
-5. Be sure you have followed the [code style](./docs/contributors/development.md#code-style) for the project.
+5. Do not commit changes to files that are irrelevant to your feature or bugfix (eg: `.gitignore`).
 
-6. Prior opening a Pull Request, ensure the build is fully working by locally running `npm run all` (build, check and
+6. Provide [tests](./docs/contributors/development.md#tests) and documentation whenever possible.
+
+7. Be sure you have followed the [code style](./docs/contributors/development.md#code-style) for the project.
+
+8. Prior to opening a Pull Request, ensure the build is fully working by locally running `npm run all` (build, check and
 test everything)
 
-7. Open a [GitHub Pull Request](./docs/contributors/pull-request.md#open-a-pull-request) with your patches. (**1** pull request = **1** feature or bug)
+9. Open a [GitHub Pull Request](./docs/contributors/pull-request.md#open-a-pull-request) with your patches. (**1** pull request = **1** feature or bug)
    We will review your contribution and respond as quickly as possible. Keep in mind that this is an open source project, and it may take us some time to get back to you. Your patience is very much appreciated.
 
-8. If this is your 1st Pull Request, sign the [Contributor License Agreement](./docs/contributors/pull-request.md#sign-the-contributor-license-agreement)
+10. If this is your 1st Pull Request, sign the [Contributor License Agreement](./docs/contributors/pull-request.md#sign-the-contributor-license-agreement)
 
-9. Be willing to accept criticism and work on improving your code. 
+11. Be willing to accept criticism and work on improving your code. 
 
 **Working on your first Pull Request?** You can learn how from this *free* series [How to Contribute to an Open Source Project on  GitHub](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github)    
 
