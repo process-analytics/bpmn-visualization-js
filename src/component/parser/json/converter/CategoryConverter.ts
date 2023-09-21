@@ -27,7 +27,11 @@ export default class CategoryConverter {
   constructor(private convertedElements: ConvertedElements) {}
 
   deserialize(definitions: TDefinitions): void {
-    for (const category of ensureIsArray<TCategory>(definitions.category))
-      for (const categoryValue of ensureIsArray(category.categoryValue)) this.convertedElements.registerCategoryValue(categoryValue.id, categoryValue.value);
+    const categoryValues = ensureIsArray<TCategory>(definitions.category)
+      .map(category => ensureIsArray(category.categoryValue))
+      .flat();
+    for (const categoryValue of categoryValues) {
+      this.convertedElements.registerCategoryValue(categoryValue.id, categoryValue.value);
+    }
   }
 }
