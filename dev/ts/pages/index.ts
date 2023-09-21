@@ -110,7 +110,7 @@ function configureDisplayedFooterContent(): void {
   const version = getVersion();
   const versionAsString = `bpmn-visualization@${version.lib}`;
   const dependenciesAsString = [...version.dependencies].map(([name, version]) => `${name}@${version}`).join('/');
-  const versionElt = document.querySelector('#footer-content');
+  const versionElt = document.querySelector<HTMLDivElement>('#footer-content');
   versionElt.textContent = `${versionAsString} with ${dependenciesAsString}`;
 }
 
