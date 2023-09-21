@@ -80,8 +80,8 @@ const computeSubProcessKind = (processedSemanticType: BpmnSemanticType, bpmnElem
 const orderedFlowNodeBpmnTypes: BpmnSemanticType[] = [
   'adHocSubProcess',
   'transaction',
-  ShapeBpmnElementKind.EVENT_BOUNDARY,
   ...(ShapeUtil.flowNodeKinds().filter(kind => kind !== ShapeBpmnElementKind.EVENT_BOUNDARY) as BpmnSemanticType[]),
+  ShapeBpmnElementKind.EVENT_BOUNDARY,
 ];
 
 function getShapeBpmnElementKind(bpmnSemanticType: BpmnSemanticType): ShapeBpmnElementKind {
