@@ -236,16 +236,12 @@ export function buildReceivedCellWithCommonAttributes(cell: mxCell): ExpectedCel
   const receivedCell = buildBaseReceivedExpectedCell(cell);
 
   const cellOverlays = bpmnVisualization.graph.getCellOverlays(cell) as MxGraphCustomOverlay[];
-  if (cellOverlays) {
-    receivedCell.overlays = cellOverlays.map(cellOverlay => ({
-      label: cellOverlay.label,
-      horizontalAlign: cellOverlay.align,
-      verticalAlign: cellOverlay.verticalAlign,
-      style: cellOverlay.style,
-    }));
-  } else {
-    receivedCell.overlays = undefined;
-  }
+  receivedCell.overlays = cellOverlays?.map(cellOverlay => ({
+    label: cellOverlay.label,
+    horizontalAlign: cellOverlay.align,
+    verticalAlign: cellOverlay.verticalAlign,
+    style: cellOverlay.style,
+  }));
 
   // The cell of the "message flow icon" is defined as a child of the "message flow" cell
   if (cell.edge) {

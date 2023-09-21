@@ -399,11 +399,7 @@ function addElementsOnProcess(processParameter: BuildProcessParameter, json: Bpm
 }
 
 function getElementOfArray<T>(object: T | T[], index = 0): T {
-  if (Array.isArray(object)) {
-    return object[index];
-  } else {
-    return object;
-  }
+  return Array.isArray(object) ? object[index] : object;
 }
 
 function enrichBpmnElement<T extends TBaseElement | DiagramElement>(currentElement: T | T[], elementToAdd: T): T | T[] {

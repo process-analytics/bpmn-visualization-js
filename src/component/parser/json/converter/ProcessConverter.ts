@@ -350,11 +350,7 @@ export default class ProcessConverter {
     } else {
       const sourceShapeBpmnElement = this.convertedElements.findFlowNode(sequenceFlow.sourceRef);
       if (sourceShapeBpmnElement && ShapeUtil.isWithDefaultSequenceFlow(sourceShapeBpmnElement.kind) && sequenceFlow.conditionExpression) {
-        if (ShapeUtil.isActivity(sourceShapeBpmnElement.kind)) {
-          return SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY;
-        } else {
-          return SequenceFlowKind.CONDITIONAL_FROM_GATEWAY;
-        }
+        return ShapeUtil.isActivity(sourceShapeBpmnElement.kind) ? SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY : SequenceFlowKind.CONDITIONAL_FROM_GATEWAY;
       }
     }
     return SequenceFlowKind.NORMAL;

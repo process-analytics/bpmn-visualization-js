@@ -48,11 +48,7 @@ const json = xmlParser.parse(readFileSync(bpmnFilePath, 'utf-8', __dirname));
 const prettyString = (object: BpmnJsonModel | BpmnModel): string => JSON.stringify(object, null, 2);
 
 let result = '';
-if (outputType === 'json') {
-  result = prettyString(json);
-} else {
-  result = prettyString(newBpmnJsonParser(new ParsingMessageCollector()).parse(json));
-}
+result = outputType === 'json' ? prettyString(json) : prettyString(newBpmnJsonParser(new ParsingMessageCollector()).parse(json));
 
 // copy to clipboard
 // disabling the copy is not officially supported, it currently fails on GitHub actions when running on Ubuntu 20.04. So disabling it only in this case.
