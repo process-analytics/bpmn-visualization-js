@@ -31,6 +31,6 @@ const referenceOrderedMarkers = [
 export function orderActivityMarkers(markers: string[]): string[] {
   const orderedMarkers: string[] = referenceOrderedMarkers.filter(marker => markers.includes(marker));
   // Put extra remaining at the end of the ordered markers, in the order they appear in the original array
-  markers.filter(marker => !orderedMarkers.includes(marker)).forEach(marker => orderedMarkers.push(marker));
+  for (const marker of markers.filter(marker => !orderedMarkers.includes(marker))) orderedMarkers.push(marker);
   return orderedMarkers;
 }

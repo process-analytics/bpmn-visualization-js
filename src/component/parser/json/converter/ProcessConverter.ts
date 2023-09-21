@@ -95,10 +95,10 @@ export default class ProcessConverter {
   ) {}
 
   deserialize(processes: string | TProcess | (string | TProcess)[]): void {
-    ensureIsArray(processes).forEach(process => this.parseProcess(process));
+    for (const process of ensureIsArray(processes)) this.parseProcess(process);
 
     // Need to call this after all processes have been parsed, because to link a call activity to the elements of the called process, we have to parse all processes before.
-    ensureIsArray(processes).forEach(process => this.assignParentOfProcessElementsCalledByCallActivity(process.id));
+    for (const process of ensureIsArray(processes)) this.assignParentOfProcessElementsCalledByCallActivity(process.id);
 
     this.assignIncomingAndOutgoingIdsFromFlows();
   }
@@ -111,9 +111,9 @@ export default class ProcessConverter {
         pool.parentId = callActivity.id;
       }
 
-      this.elementsWithoutParentByProcessId.get(processId).forEach(element => {
+      for (const element of this.elementsWithoutParentByProcessId.get(processId)) {
         element.parentId = callActivity.id;
-      });
+      }
     }
   }
 
@@ -130,10 +130,10 @@ export default class ProcessConverter {
       }
     };
 
-    this.convertedElements.getFlows().forEach(flow => {
+    for (const flow of this.convertedElements.getFlows()) {
       fillShapeBpmnElementAttribute(flow.sourceReferenceId, 'outgoingIds', flow.id);
       fillShapeBpmnElementAttribute(flow.targetReferenceId, 'incomingIds', flow.id);
-    });
+    }
   }
 
   private parseProcess(process: TProcess): void {
@@ -152,7 +152,7 @@ export default class ProcessConverter {
     this.elementsWithoutParentByProcessId.set(process.id, []);
 
     // flow nodes
-    orderedFlowNodeBpmnTypes.forEach(bpmnType => this.buildFlowNodeBpmnElements(process[bpmnType], getShapeBpmnElementKind(bpmnType), parentId, process.id, bpmnType));
+    for (const bpmnType of orderedFlowNodeBpmnTypes) this.buildFlowNodeBpmnElements(process[bpmnType], getShapeBpmnElementKind(bpmnType), parentId, process.id, bpmnType);
     // containers
     this.buildLaneSetBpmnElements(process.laneSet, parentId, process.id);
 
@@ -168,32 +168,8 @@ export default class ProcessConverter {
     processId: string,
     processedSemanticType: BpmnSemanticType,
   ): void {
-    ensureIsArray(bpmnElements).forEach(bpmnElement => {
-      let shapeBpmnElement;
-
-      if (ShapeUtil.isEvent(kind)) {
-        shapeBpmnElement = this.buildShapeBpmnEvent(bpmnElement, kind as BpmnEventKind, parentId);
-      } else if (ShapeUtil.isActivity(kind)) {
-        shapeBpmnElement = this.buildShapeBpmnActivity(bpmnElement, kind, parentId, processedSemanticType);
-      } else if (kind == ShapeBpmnElementKind.GATEWAY_EVENT_BASED) {
-        const eventBasedGatewayBpmnElement = bpmnElement as TEventBasedGateway;
-        shapeBpmnElement = new ShapeBpmnEventBasedGateway(
-          bpmnElement.id,
-          eventBasedGatewayBpmnElement.name,
-          parentId,
-          eventBasedGatewayBpmnElement.instantiate,
-          ShapeBpmnEventBasedGatewayKind[eventBasedGatewayBpmnElement.eventGatewayType],
-        );
-      } else if (kind == ShapeBpmnElementKind.GROUP) {
-        shapeBpmnElement = buildShapeBpmnGroup(this.convertedElements, this.parsingMessageCollector, bpmnElement as TGroup, parentId);
-      } else {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- We know that the 'text' & 'name' fields are not on all types, but it's already tested
-        // @ts-ignore
-        const name = kind === ShapeBpmnElementKind.TEXT_ANNOTATION ? bpmnElement.text : bpmnElement.name;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- We know that the 'instantiate' field is not on all types, but it's already tested
-        // @ts-ignore
-        shapeBpmnElement = new ShapeBpmnElement(bpmnElement.id, name, kind, parentId, bpmnElement.instantiate);
-      }
+    for (const bpmnElement of ensureIsArray(bpmnElements)) {
+      const shapeBpmnElement = this.buildFlowNodeBpmnElement(kind, bpmnElement, parentId, processedSemanticType);
 
       if ('default' in bpmnElement && ShapeUtil.isWithDefaultSequenceFlow(kind)) {
         this.defaultSequenceFlowIds.push(bpmnElement.default);
@@ -205,7 +181,33 @@ export default class ProcessConverter {
           this.elementsWithoutParentByProcessId.get(processId).push(shapeBpmnElement);
         }
       }
-    });
+    }
+  }
+
+  private buildFlowNodeBpmnElement(kind: ShapeBpmnElementKind, bpmnElement: TFlowNode, parentId: string, processedSemanticType: BpmnSemanticType): ShapeBpmnElement {
+    if (ShapeUtil.isEvent(kind)) {
+      return this.buildShapeBpmnEvent(bpmnElement, kind as BpmnEventKind, parentId);
+    } else if (ShapeUtil.isActivity(kind)) {
+      return this.buildShapeBpmnActivity(bpmnElement, kind, parentId, processedSemanticType);
+    } else if (kind == ShapeBpmnElementKind.GATEWAY_EVENT_BASED) {
+      const eventBasedGatewayBpmnElement = bpmnElement as TEventBasedGateway;
+      return new ShapeBpmnEventBasedGateway(
+        eventBasedGatewayBpmnElement.id,
+        eventBasedGatewayBpmnElement.name,
+        parentId,
+        eventBasedGatewayBpmnElement.instantiate,
+        ShapeBpmnEventBasedGatewayKind[eventBasedGatewayBpmnElement.eventGatewayType],
+      );
+    } else if (kind == ShapeBpmnElementKind.GROUP) {
+      return buildShapeBpmnGroup(this.convertedElements, this.parsingMessageCollector, bpmnElement as TGroup, parentId);
+    } else {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- We know that the 'text' & 'name' fields are not on all types, but it's already tested
+      // @ts-ignore
+      const name = kind === ShapeBpmnElementKind.TEXT_ANNOTATION ? bpmnElement.text : bpmnElement.name;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- We know that the 'instantiate' field is not on all types, but it's already tested
+      // @ts-ignore
+      return new ShapeBpmnElement(bpmnElement.id, name, kind, parentId, bpmnElement.instantiate);
+    }
   }
 
   private buildShapeBpmnActivity(bpmnElement: TActivity, kind: ShapeBpmnElementKind, parentId: string, processedSemanticType: BpmnSemanticType): ShapeBpmnActivity {
@@ -272,17 +274,17 @@ export default class ProcessConverter {
   private getEventDefinitions(bpmnElement: TCatchEvent | TThrowEvent): EventDefinition[] {
     const eventDefinitions = new Map<ShapeBpmnEventDefinitionKind, number>();
 
-    eventDefinitionKinds.forEach(eventDefinitionKind => {
+    for (const eventDefinitionKind of eventDefinitionKinds) {
       // sometimes eventDefinition is simple, and therefore it is parsed as empty string "", in that case eventDefinition will be converted to an empty object
       const eventDefinition = bpmnElement[eventDefinitionKind + 'EventDefinition'];
       const counter = ensureIsArray(eventDefinition, true).length;
       eventDefinitions.set(eventDefinitionKind, counter);
-    });
+    }
 
-    ensureIsArray<string>(bpmnElement.eventDefinitionRef).forEach(eventDefinitionReference => {
+    for (const eventDefinitionReference of ensureIsArray<string>(bpmnElement.eventDefinitionRef)) {
       const kind = this.convertedElements.findEventDefinitionOfDefinition(eventDefinitionReference);
       eventDefinitions.set(kind, eventDefinitions.get(kind) + 1);
-    });
+    }
 
     return Array.from(eventDefinitions.keys())
       .map(kind => ({ kind, counter: eventDefinitions.get(kind) }))
@@ -296,11 +298,11 @@ export default class ProcessConverter {
   }
 
   private buildLaneSetBpmnElements(laneSets: TLaneSet[] | TLaneSet, parentId: string, processId: string): void {
-    ensureIsArray(laneSets).forEach(laneSet => this.buildLaneBpmnElements(laneSet.lane, parentId, processId));
+    for (const laneSet of ensureIsArray(laneSets)) this.buildLaneBpmnElements(laneSet.lane, parentId, processId);
   }
 
   private buildLaneBpmnElements(lanes: TLane[] | TLane, parentId: string, processId: string): void {
-    ensureIsArray(lanes).forEach(lane => {
+    for (const lane of ensureIsArray(lanes)) {
       const shapeBpmnElement = new ShapeBpmnElement(lane.id, lane.name, ShapeBpmnElementKind.LANE, parentId);
       this.convertedElements.registerLane(shapeBpmnElement);
       if (!parentId) {
@@ -311,11 +313,11 @@ export default class ProcessConverter {
       if (lane.childLaneSet?.lane) {
         this.buildLaneBpmnElements(lane.childLaneSet.lane, lane.id, processId);
       }
-    });
+    }
   }
 
   private assignParentOfLaneFlowNodes(lane: TLane): void {
-    ensureIsArray<string>(lane.flowNodeRef).forEach(flowNodeReference => {
+    for (const flowNodeReference of ensureIsArray<string>(lane.flowNodeRef)) {
       const shapeBpmnElement = this.convertedElements.findFlowNode(flowNodeReference);
       const laneId = lane.id;
       if (shapeBpmnElement) {
@@ -325,21 +327,21 @@ export default class ProcessConverter {
       } else {
         this.parsingMessageCollector.warning(new LaneUnknownFlowNodeReferenceWarning(laneId, flowNodeReference));
       }
-    });
+    }
   }
 
   private buildSequenceFlows(bpmnElements: TSequenceFlow[] | TSequenceFlow): void {
-    ensureIsArray(bpmnElements).forEach(sequenceFlow => {
+    for (const sequenceFlow of ensureIsArray(bpmnElements)) {
       const kind = this.getSequenceFlowKind(sequenceFlow);
       this.convertedElements.registerSequenceFlow(new SequenceFlow(sequenceFlow.id, sequenceFlow.name, sequenceFlow.sourceRef, sequenceFlow.targetRef, kind));
-    });
+    }
   }
 
   private buildAssociationFlows(bpmnElements: TAssociation[] | TAssociation): void {
-    ensureIsArray(bpmnElements).forEach(association => {
+    for (const association of ensureIsArray(bpmnElements)) {
       const direction = association.associationDirection as unknown as AssociationDirectionKind;
       this.convertedElements.registerAssociationFlow(new AssociationFlow(association.id, undefined, association.sourceRef, association.targetRef, direction));
-    });
+    }
   }
 
   private getSequenceFlowKind(sequenceFlow: TSequenceFlow): SequenceFlowKind {

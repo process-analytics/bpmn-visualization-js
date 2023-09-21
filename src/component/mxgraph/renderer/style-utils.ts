@@ -53,34 +53,32 @@ export function computeAllBpmnClassNames(style: string, isLabel: boolean): strin
   typeClasses.set('bpmn-type-flow', isFlowKind(bpmnElementKind));
   typeClasses.set('bpmn-type-gateway', ShapeUtil.isGateway(bpmnElementKind));
   typeClasses.set('bpmn-type-task', ShapeUtil.isTask(bpmnElementKind));
-  [...typeClasses].filter(([, isType]) => isType).forEach(([className]) => classes.push(className));
+  for (const [className] of [...typeClasses].filter(([, isType]) => isType)) classes.push(className);
 
   classes.push(computeBpmnBaseClassName(bpmnElementKind));
 
-  styleElements
-    .map(entry => {
-      const elements = entry.split('=');
-      return [elements[0], elements[1]];
-    })
-    .forEach(([key, value]) => {
-      switch (key) {
-        case BpmnStyleIdentifier.EVENT_DEFINITION_KIND:
-          classes.push(`bpmn-event-def-${value}`);
-          break;
-        case BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND:
-          classes.push(`bpmn-gateway-kind-${value.toLowerCase()}`);
-          break;
-        case BpmnStyleIdentifier.IS_INITIATING: // message flow icon
-          classes.push(value == 'true' ? 'bpmn-icon-initiating' : 'bpmn-icon-non-initiating');
-          break;
-        case BpmnStyleIdentifier.SUB_PROCESS_KIND:
-          classes.push(`bpmn-sub-process-${value.toLowerCase()}`);
-          break;
-        case BpmnStyleIdentifier.GLOBAL_TASK_KIND:
-          classes.push(computeBpmnBaseClassName(value));
-          break;
-      }
-    });
+  for (const [key, value] of styleElements.map(entry => {
+    const elements = entry.split('=');
+    return [elements[0], elements[1]];
+  })) {
+    switch (key) {
+      case BpmnStyleIdentifier.EVENT_DEFINITION_KIND:
+        classes.push(`bpmn-event-def-${value}`);
+        break;
+      case BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND:
+        classes.push(`bpmn-gateway-kind-${value.toLowerCase()}`);
+        break;
+      case BpmnStyleIdentifier.IS_INITIATING: // message flow icon
+        classes.push(value == 'true' ? 'bpmn-icon-initiating' : 'bpmn-icon-non-initiating');
+        break;
+      case BpmnStyleIdentifier.SUB_PROCESS_KIND:
+        classes.push(`bpmn-sub-process-${value.toLowerCase()}`);
+        break;
+      case BpmnStyleIdentifier.GLOBAL_TASK_KIND:
+        classes.push(computeBpmnBaseClassName(value));
+        break;
+    }
+  }
 
   if (isLabel) {
     classes.push('bpmn-label');

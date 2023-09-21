@@ -264,14 +264,14 @@ export function buildDefinitions({ process, messageFlows, globalTask }: BuildDef
   if (Array.isArray(process) && process.filter(p => p.withParticipant).length > 0) {
     (json.definitions.collaboration as TCollaboration).participant = [];
   }
-  (Array.isArray(process) ? process : [process]).forEach((processParameter, index) => addParticipantProcessAndElements(processParameter, json, index));
+  for (const [index, processParameter] of (Array.isArray(process) ? process : [process]).entries()) addParticipantProcessAndElements(processParameter, json, index);
 
   if (messageFlows) {
-    (Array.isArray(messageFlows) ? messageFlows : [messageFlows]).forEach(messageFlow => addMessageFlow(messageFlow, json));
+    for (const messageFlow of Array.isArray(messageFlows) ? messageFlows : [messageFlows]) addMessageFlow(messageFlow, json);
   }
 
   if (globalTask) {
-    (Array.isArray(globalTask) ? globalTask : [globalTask]).forEach((task, index) => addGlobalTask(task, json, index));
+    for (const [index, task] of (Array.isArray(globalTask) ? globalTask : [globalTask]).entries()) addGlobalTask(task, json, index);
   }
   return json;
 }
@@ -326,47 +326,46 @@ function addElementsOnProcess(processParameter: BuildProcessParameter, json: Bpm
   if (processParameter.lane) {
     addProcessElement(json, 'laneSet', { index: 0, processIndex });
 
-    (Array.isArray(processParameter.lane) ? processParameter.lane : [processParameter.lane]).forEach((laneParameter, index) => {
+    for (const [index, laneParameter] of (Array.isArray(processParameter.lane) ? processParameter.lane : [processParameter.lane]).entries()) {
       addLane(json, laneParameter, index, processIndex);
-    });
+    }
   }
   if (processParameter.task) {
-    (Array.isArray(processParameter.task) ? processParameter.task : [processParameter.task]).forEach(({ bpmnKind = 'task', ...rest }, index) =>
-      addProcessElementWithShape(json, bpmnKind, { ...rest, index, processIndex }, { Bounds: { x: 362, y: 232, width: 36, height: 45 } }),
-    );
+    for (const [index, { bpmnKind = 'task', ...rest }] of (Array.isArray(processParameter.task) ? processParameter.task : [processParameter.task]).entries())
+      addProcessElementWithShape(json, bpmnKind, { ...rest, index, processIndex }, { Bounds: { x: 362, y: 232, width: 36, height: 45 } });
   }
   if (processParameter.gateway) {
-    (Array.isArray(processParameter.gateway) ? processParameter.gateway : [processParameter.gateway]).forEach(({ bpmnKind, ...rest }, index) =>
-      addProcessElementWithShape(json, bpmnKind, { ...rest, index, processIndex }, { Bounds: { x: 567, y: 345, width: 25, height: 25 } }),
-    );
+    for (const [index, { bpmnKind, ...rest }] of (Array.isArray(processParameter.gateway) ? processParameter.gateway : [processParameter.gateway]).entries())
+      addProcessElementWithShape(json, bpmnKind, { ...rest, index, processIndex }, { Bounds: { x: 567, y: 345, width: 25, height: 25 } });
   }
   if (processParameter.callActivity) {
-    (Array.isArray(processParameter.callActivity) ? processParameter.callActivity : [processParameter.callActivity]).forEach(({ id, isExpanded = false, ...rest }, index) =>
-      addProcessElementWithShape(json, 'callActivity', { id, ...rest, index, processIndex }, { Bounds: { x: 346, y: 856, width: 45, height: 56 }, isExpanded }),
-    );
+    for (const [index, { id, isExpanded = false, ...rest }] of (Array.isArray(processParameter.callActivity)
+      ? processParameter.callActivity
+      : [processParameter.callActivity]
+    ).entries())
+      addProcessElementWithShape(json, 'callActivity', { id, ...rest, index, processIndex }, { Bounds: { x: 346, y: 856, width: 45, height: 56 }, isExpanded });
   }
   if (processParameter.subProcess) {
-    (Array.isArray(processParameter.subProcess) ? processParameter.subProcess : [processParameter.subProcess]).forEach(({ isExpanded, ...rest }, index) =>
-      addProcessElementWithShape(json, 'subProcess', { ...rest, index, processIndex }, { Bounds: { x: 67, y: 23, width: 456, height: 123 }, isExpanded }),
-    );
+    for (const [index, { isExpanded, ...rest }] of (Array.isArray(processParameter.subProcess) ? processParameter.subProcess : [processParameter.subProcess]).entries())
+      addProcessElementWithShape(json, 'subProcess', { ...rest, index, processIndex }, { Bounds: { x: 67, y: 23, width: 456, height: 123 }, isExpanded });
   }
   if (processParameter.transaction) {
-    (Array.isArray(processParameter.transaction) ? processParameter.transaction : [processParameter.transaction]).forEach(({ isExpanded, ...rest }, index) =>
-      addProcessElementWithShape(json, 'transaction', { ...rest, index, processIndex }, { Bounds: { x: 167, y: 123, width: 456, height: 123 }, isExpanded }),
-    );
+    for (const [index, { isExpanded, ...rest }] of (Array.isArray(processParameter.transaction) ? processParameter.transaction : [processParameter.transaction]).entries())
+      addProcessElementWithShape(json, 'transaction', { ...rest, index, processIndex }, { Bounds: { x: 167, y: 123, width: 456, height: 123 }, isExpanded });
   }
   if (processParameter.adHocSubProcess) {
-    (Array.isArray(processParameter.adHocSubProcess) ? processParameter.adHocSubProcess : [processParameter.adHocSubProcess]).forEach(({ isExpanded, ...rest }, index) =>
-      addProcessElementWithShape(json, 'adHocSubProcess', { ...rest, index, processIndex }, { Bounds: { x: 267, y: 223, width: 456, height: 123 }, isExpanded }),
-    );
+    for (const [index, { isExpanded, ...rest }] of (Array.isArray(processParameter.adHocSubProcess)
+      ? processParameter.adHocSubProcess
+      : [processParameter.adHocSubProcess]
+    ).entries())
+      addProcessElementWithShape(json, 'adHocSubProcess', { ...rest, index, processIndex }, { Bounds: { x: 267, y: 223, width: 456, height: 123 }, isExpanded });
   }
   if (processParameter.event) {
-    (Array.isArray(processParameter.event) ? processParameter.event : [processParameter.event]).forEach((eventParameter, index) =>
-      addEvent(json, eventParameter, index, processIndex),
-    );
+    for (const [index, eventParameter] of (Array.isArray(processParameter.event) ? processParameter.event : [processParameter.event]).entries())
+      addEvent(json, eventParameter, index, processIndex);
   }
   if (processParameter.sequenceFlow) {
-    (Array.isArray(processParameter.sequenceFlow) ? processParameter.sequenceFlow : [processParameter.sequenceFlow]).forEach((sequenceFlowParameter, index) =>
+    for (const [index, sequenceFlowParameter] of (Array.isArray(processParameter.sequenceFlow) ? processParameter.sequenceFlow : [processParameter.sequenceFlow]).entries())
       addProcessElementWithEdge(
         json,
         'sequenceFlow',
@@ -377,11 +376,10 @@ function addElementsOnProcess(processParameter: BuildProcessParameter, json: Bpm
             { x: 51, y: 78 },
           ],
         },
-      ),
-    );
+      );
   }
   if (processParameter.association) {
-    (Array.isArray(processParameter.association) ? processParameter.association : [processParameter.association]).forEach((associationParameter, index) =>
+    for (const [index, associationParameter] of (Array.isArray(processParameter.association) ? processParameter.association : [processParameter.association]).entries())
       addProcessElementWithEdge(
         json,
         'association',
@@ -392,13 +390,11 @@ function addElementsOnProcess(processParameter: BuildProcessParameter, json: Bpm
             { x: 51, y: 78 },
           ],
         },
-      ),
-    );
+      );
   }
   if (processParameter.textAnnotation) {
-    (Array.isArray(processParameter.textAnnotation) ? processParameter.textAnnotation : [processParameter.textAnnotation]).forEach((textAnnotationParameter, index) =>
-      addProcessElementWithShape(json, 'textAnnotation', { ...textAnnotationParameter, index, processIndex }, { Bounds: { x: 456, y: 23, width: 78, height: 54 } }),
-    );
+    for (const [index, textAnnotationParameter] of (Array.isArray(processParameter.textAnnotation) ? processParameter.textAnnotation : [processParameter.textAnnotation]).entries())
+      addProcessElementWithShape(json, 'textAnnotation', { ...textAnnotationParameter, index, processIndex }, { Bounds: { x: 456, y: 23, width: 78, height: 54 } });
   }
 }
 
