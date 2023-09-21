@@ -29,10 +29,10 @@ For all contributions, please respect the following guidelines:
 
 3. If you see an unlabeled problem you'd like to work on, let us know to start discussions and see if we change our minds and finally accept a contribution.
 The following sources can give you an idea of whether your request is likely to be successful:
-  - Project priorities are tracked in [GitHub projects] (https://github.com/orgs/process-analytics/projects).
-  - These projects show which topics are currently being addressed and which have the highest priority
+  - Project priorities are tracked in [GitHub projects](https://github.com/orgs/process-analytics/projects).
+  - These projects show which topics are currently being addressed and which have the highest priority.
 
-4. Do the changes in your own [fork](CONTRIBUTING.md#fork--create-a-branch) of the code
+4. Do the changes in your own [fork](CONTRIBUTING.md#fork--create-a-branch) of the code.
 
 5. Do not commit changes to files that are irrelevant to your feature or bugfix (eg: `.gitignore`).
 
@@ -41,12 +41,12 @@ The following sources can give you an idea of whether your request is likely to 
 7. Be sure you have followed the [code style](./docs/contributors/development.md#code-style) for the project.
 
 8. Prior to opening a Pull Request, ensure the build is fully working by locally running `npm run all` (build, check and
-test everything)
+test everything).
 
 9. Open a [GitHub Pull Request](./docs/contributors/pull-request.md#open-a-pull-request) with your patches. (**1** pull request = **1** feature or bug)
    We will review your contribution and respond as quickly as possible. Keep in mind that this is an open source project, and it may take us some time to get back to you. Your patience is very much appreciated.
 
-10. If this is your 1st Pull Request, sign the [Contributor License Agreement](./docs/contributors/pull-request.md#sign-the-contributor-license-agreement)
+10. If this is your 1st Pull Request, sign the [Contributor License Agreement](./docs/contributors/pull-request.md#sign-the-contributor-license-agreement).
 
 11. Be willing to accept criticism and work on improving your code. 
 
