@@ -92,7 +92,7 @@ export class CssClassesCache {
    * @return the registered CSS class names
    */
   getClassNames(bpmnElementId: string): string[] {
-    return [...this.classNamesByBpmnId.get(bpmnElementId)] ?? [];
+    return this.classNamesByBpmnId.has(bpmnElementId) ? [...this.classNamesByBpmnId.get(bpmnElementId)] : [];
   }
 
   /**
