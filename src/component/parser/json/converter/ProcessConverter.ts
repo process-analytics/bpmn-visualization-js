@@ -169,31 +169,7 @@ export default class ProcessConverter {
     processedSemanticType: BpmnSemanticType,
   ): void {
     for (const bpmnElement of ensureIsArray(bpmnElements)) {
-      let shapeBpmnElement;
-
-      if (ShapeUtil.isEvent(kind)) {
-        shapeBpmnElement = this.buildShapeBpmnEvent(bpmnElement, kind as BpmnEventKind, parentId);
-      } else if (ShapeUtil.isActivity(kind)) {
-        shapeBpmnElement = this.buildShapeBpmnActivity(bpmnElement, kind, parentId, processedSemanticType);
-      } else if (kind == ShapeBpmnElementKind.GATEWAY_EVENT_BASED) {
-        const eventBasedGatewayBpmnElement = bpmnElement as TEventBasedGateway;
-        shapeBpmnElement = new ShapeBpmnEventBasedGateway(
-          bpmnElement.id,
-          eventBasedGatewayBpmnElement.name,
-          parentId,
-          eventBasedGatewayBpmnElement.instantiate,
-          ShapeBpmnEventBasedGatewayKind[eventBasedGatewayBpmnElement.eventGatewayType],
-        );
-      } else if (kind == ShapeBpmnElementKind.GROUP) {
-        shapeBpmnElement = buildShapeBpmnGroup(this.convertedElements, this.parsingMessageCollector, bpmnElement as TGroup, parentId);
-      } else {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- We know that the 'text' & 'name' fields are not on all types, but it's already tested
-        // @ts-ignore
-        const name = kind === ShapeBpmnElementKind.TEXT_ANNOTATION ? bpmnElement.text : bpmnElement.name;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- We know that the 'instantiate' field is not on all types, but it's already tested
-        // @ts-ignore
-        shapeBpmnElement = new ShapeBpmnElement(bpmnElement.id, name, kind, parentId, bpmnElement.instantiate);
-      }
+      const shapeBpmnElement = this.buildFlowNodeBpmnElement(kind, bpmnElement, parentId, processedSemanticType);
 
       if ('default' in bpmnElement && ShapeUtil.isWithDefaultSequenceFlow(kind)) {
         this.defaultSequenceFlowIds.push(bpmnElement.default);
@@ -205,6 +181,32 @@ export default class ProcessConverter {
           this.elementsWithoutParentByProcessId.get(processId).push(shapeBpmnElement);
         }
       }
+    }
+  }
+
+  private buildFlowNodeBpmnElement(kind: ShapeBpmnElementKind, bpmnElement: TFlowNode, parentId: string, processedSemanticType: BpmnSemanticType): ShapeBpmnElement {
+    if (ShapeUtil.isEvent(kind)) {
+      return this.buildShapeBpmnEvent(bpmnElement, kind as BpmnEventKind, parentId);
+    } else if (ShapeUtil.isActivity(kind)) {
+      return this.buildShapeBpmnActivity(bpmnElement, kind, parentId, processedSemanticType);
+    } else if (kind == ShapeBpmnElementKind.GATEWAY_EVENT_BASED) {
+      const eventBasedGatewayBpmnElement = bpmnElement as TEventBasedGateway;
+      return new ShapeBpmnEventBasedGateway(
+        eventBasedGatewayBpmnElement.id,
+        eventBasedGatewayBpmnElement.name,
+        parentId,
+        eventBasedGatewayBpmnElement.instantiate,
+        ShapeBpmnEventBasedGatewayKind[eventBasedGatewayBpmnElement.eventGatewayType],
+      );
+    } else if (kind == ShapeBpmnElementKind.GROUP) {
+      return buildShapeBpmnGroup(this.convertedElements, this.parsingMessageCollector, bpmnElement as TGroup, parentId);
+    } else {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- We know that the 'text' & 'name' fields are not on all types, but it's already tested
+      // @ts-ignore
+      const name = kind === ShapeBpmnElementKind.TEXT_ANNOTATION ? bpmnElement.text : bpmnElement.name;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- We know that the 'instantiate' field is not on all types, but it's already tested
+      // @ts-ignore
+      return new ShapeBpmnElement(bpmnElement.id, name, kind, parentId, bpmnElement.instantiate);
     }
   }
 
