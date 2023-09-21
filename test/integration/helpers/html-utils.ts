@@ -174,7 +174,7 @@ export class HtmlElementLookup {
   }
 }
 
-function computeClassValue(bpmnClasses: string[], additionalClasses?: string[]): string {
+function computeClassValue(bpmnClasses: string[], additionalClasses: string[] = []): string {
   return [...bpmnClasses, ...additionalClasses].filter(Boolean).join(' ');
 }
 
