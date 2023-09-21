@@ -200,7 +200,7 @@ function resetTextArea(): void {
 
 function configureControls(): void {
   const selectedKindElt = document.querySelector('#bpmn-kinds-select') as HTMLSelectElement;
-  selectedKindElt.onchange = event => updateSelectedBPMNElements((event.target as HTMLSelectElement).value as ShapeBpmnElementKind);
+  selectedKindElt.addEventListener('change', event => updateSelectedBPMNElements((event.target as HTMLSelectElement).value as ShapeBpmnElementKind));
   document.addEventListener('diagramLoaded', () => updateSelectedBPMNElements(selectedKindElt.value as ShapeBpmnElementKind), false);
 
   document.querySelector('#clear-btn').addEventListener('click', function () {
