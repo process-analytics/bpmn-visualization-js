@@ -124,12 +124,20 @@ class OverlaysPageTester extends PageTester {
 
 const pageTester = new OverlaysPageTester({ targetedPage: AvailableTestPages.OVERLAYS, diagramSubfolder: 'overlays' }, page);
 
+function getEdgeDirectory(directory: string): string {
+  return join(directory, `on.edge`);
+}
+
+function getEdgePositionDirectory(directory: string, position: OverlayEdgePosition): string {
+  return join(getEdgeDirectory(directory), `on-position-${position}`);
+}
+
+function getShapeDirectory(directory: string): string {
+  return join(directory, `on.shape`);
+}
+
 describe('BPMN Shapes with overlays', () => {
   const bpmnDiagramName = 'overlays.start.flow.task.gateway';
-
-  function getShapeDirectory(directory: string): string {
-    return join(directory, `on.shape`);
-  }
 
   it.each(overlayShapePositionValues)(`add overlay on StartEvent, Gateway and Task on %s`, async (position: OverlayShapePosition) => {
     await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName);
@@ -186,14 +194,6 @@ describe('BPMN Edges with overlays', () => {
     ],
     ['overlays.edges.sequence.flows.complex.paths', 'sequence', ['Flow_039xs1c', 'Flow_0m2ldux', 'Flow_1r3oti3', 'Flow_1byeukq']],
   ])('diagram %s', (bpmnDiagramName: string, edgeKind: string, bpmnElementIds: string[]) => {
-    function getEdgeDirectory(directory: string): string {
-      return join(directory, `on.edge`);
-    }
-
-    function getEdgePositionDirectory(directory: string, position: OverlayEdgePosition): string {
-      return join(getEdgeDirectory(directory), `on-position-${position}`);
-    }
-
     it.each(overlayEdgePositionValues)(`add overlay on ${edgeKind} flow on %s`, async (position: OverlayEdgePosition) => {
       await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName);
 

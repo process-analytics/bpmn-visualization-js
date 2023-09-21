@@ -21,29 +21,29 @@ import type { IconStyleConfiguration, ShapeConfiguration, Size } from '@lib/comp
 
 import { computeScaledIconSize } from '@lib/component/mxgraph/shape/render/BpmnCanvas';
 
-describe('compute scaled icon size', () => {
-  function newIconStyleConfiguration(strokeWidth = 0): IconStyleConfiguration {
-    return {
-      fillColor: 'do_not_care',
-      isFilled: false,
-      strokeColor: 'do_not_care',
-      strokeWidth: strokeWidth,
-      margin: 0,
-    };
-  }
-  function newShapeConfiguration(w: number, h: number): ShapeConfiguration {
-    return {
-      x: -1, // not relevant here
-      y: -1, // not relevant here
-      width: w,
-      height: h,
-    };
-  }
-  function expectSize(actual: Size, expected: Size): void {
-    expect(actual.width).toEqual(expected.width);
-    expect(actual.height).toEqual(expected.height);
-  }
+function newIconStyleConfiguration(strokeWidth = 0): IconStyleConfiguration {
+  return {
+    fillColor: 'do_not_care',
+    isFilled: false,
+    strokeColor: 'do_not_care',
+    strokeWidth: strokeWidth,
+    margin: 0,
+  };
+}
+function newShapeConfiguration(w: number, h: number): ShapeConfiguration {
+  return {
+    x: -1, // not relevant here
+    y: -1, // not relevant here
+    width: w,
+    height: h,
+  };
+}
+function expectSize(actual: Size, expected: Size): void {
+  expect(actual.width).toEqual(expected.width);
+  expect(actual.height).toEqual(expected.height);
+}
 
+describe('compute scaled icon size', () => {
   describe('parent square dimension', () => {
     it('original square icon', () => {
       const size = computeScaledIconSize({ width: 100, height: 100 }, newIconStyleConfiguration(), newShapeConfiguration(50, 50), 0.25);

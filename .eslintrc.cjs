@@ -47,6 +47,7 @@ module.exports = {
     'unicorn/prefer-dom-node-text-content': 'error',
     'unicorn/prefer-ternary': 'error',
     'unicorn/prefer-logical-operator-over-ternary': 'error',
+    'unicorn/consistent-function-scoping': 'error',
     'import/newline-after-import': ['error', { count: 1 }],
     'import/first': 'error',
     'import/order': [
