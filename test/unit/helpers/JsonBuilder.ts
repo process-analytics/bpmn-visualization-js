@@ -277,7 +277,7 @@ export function buildDefinitions({ process, messageFlows, globalTask }: BuildDef
 }
 
 function addParticipantProcessAndElements(processParameter: BuildProcessParameter, jsonModel: BpmnJsonModel, index: number): void {
-  const id = processParameter.id ? processParameter.id : String(index);
+  const id = processParameter.id ?? String(index);
   if (processParameter.withParticipant) {
     addParticipant(id, jsonModel);
   }
@@ -314,7 +314,7 @@ function addMessageFlow(messageFlowParameter: BuildMessageFlowParameter, jsonMod
 
 const addGlobalTask = ({ id, bpmnKind = 'globalTask', ...rest }: BuildGlobalTaskParameter, jsonModel: BpmnJsonModel, index: number): void => {
   const globalTask: TGlobalTask = {
-    id: id ? id : `${bpmnKind}_id_${index}`,
+    id: id ?? `${bpmnKind}_id_${index}`,
     ...rest,
   };
 
@@ -417,7 +417,7 @@ function enrichBpmnElement<T extends TBaseElement | DiagramElement>(currentEleme
 
 function addLane(jsonModel: BpmnJsonModel, { id, name, ...rest }: BuildLaneParameter, index: number, processIndex: number): void {
   const lane: TLane = {
-    id: id ? id : `lane_id_${processIndex}_${index}`,
+    id: id ?? `lane_id_${processIndex}_${index}`,
     ...rest,
   };
   if (name) {
@@ -453,7 +453,7 @@ function addProcessElementWithEdge(jsonModel: BpmnJsonModel, bpmnKind: keyof TPr
 
 function addProcessElement(jsonModel: BpmnJsonModel, bpmnKind: keyof TProcess, { id, index, processIndex, ...rest }: BuildProcessElementParameter): TFlowNode | TArtifact {
   const processElement: TFlowElement | TArtifact = {
-    id: id ? id : `${bpmnKind}_id_${processIndex}_${index}`,
+    id: id ?? `${bpmnKind}_id_${processIndex}_${index}`,
     ...rest,
   };
 
@@ -500,6 +500,7 @@ function addEventDefinitionsOnDefinition(jsonModel: BpmnJsonModel, buildParamete
     addEventDefinitions(jsonModel.definitions, { ...buildParameter, eventDefinition: { id: 'event_definition_id' } }, { id: 'other_event_definition_id' });
     (event.eventDefinitionRef as string[]) = ['event_definition_id', 'other_event_definition_id'];
   } else {
+    // eslint-disable-next-line unicorn/prefer-logical-operator-over-ternary -- Because if `eventDefinition` is an empty string, the logical operator returns `true` and the ternary returns `false`.
     const eventDefinition = buildParameter.eventDefinition
       ? buildParameter.eventDefinition
       : buildParameter.withMultipleDefinitions
@@ -541,7 +542,7 @@ function buildEvent({
   outgoing?: string | string[];
 }): BPMNTEvent {
   const event: BPMNTEvent = {
-    id: id ? id : `event_id_${processIndex}_${index}`,
+    id: id ?? `event_id_${processIndex}_${index}`,
     name: name,
     incoming,
     outgoing,

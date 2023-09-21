@@ -44,7 +44,7 @@ const computeLaunchOptionsAndBrowsersConfiguration = defaultBrowsers => {
   /** @type {import('playwright-core/types/types').LaunchOptions} */
   const launchOptions = {
     headless: process.env.HEADLESS !== 'false',
-    slowMo: process.env.SLOWMO ? process.env.SLOWMO : 0,
+    slowMo: process.env.SLOWMO ?? 0,
   };
 
   const browsersAndChannelConfig = computeBrowsersAndChannelConfiguration(defaultBrowsers);

@@ -140,7 +140,7 @@ function buildExpectedCell(id: string, expectedModel: ExpectedShapeModelElement)
     styleViewState: buildExpectedShapeCellStyle(expectedModel),
     edge: false,
     vertex: true,
-    parent: { id: parentId ? parentId : getDefaultParentId() },
+    parent: { id: parentId ?? getDefaultParentId() },
     overlays: expectedModel.overlays,
   };
 }

@@ -57,7 +57,7 @@ function buildExpectedCell(id: string, expected: ExpectedCellWithGeometry): Expe
 
   return {
     id,
-    parent: { id: parentId ? parentId : getDefaultParentId() },
+    parent: { id: parentId ?? getDefaultParentId() },
     geometry: expect.objectContaining(expectedObject),
   };
 }

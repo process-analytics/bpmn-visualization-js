@@ -65,7 +65,7 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement |
     styleViewState: buildExpectedEdgeCellStyle(expectedModel),
     edge: true,
     vertex: false,
-    parent: { id: parentId ? parentId : getDefaultParentId() },
+    parent: { id: parentId ?? getDefaultParentId() },
     overlays: expectedModel.overlays,
   };
 
