@@ -29,10 +29,10 @@ function download(filename: string, contentType: string, text: string): void {
   downloadLink.setAttribute('download', filename);
 
   downloadLink.style.display = 'none';
-  document.body.appendChild(downloadLink);
+  document.body.append(downloadLink);
 
   downloadLink.click();
-  document.body.removeChild(downloadLink);
+  downloadLink.remove();
 }
 
 export function downloadAsSvg(svg: string): void {
@@ -61,7 +61,7 @@ export function downloadAsPng(svg: string): void {
   const imgPreview = document.createElement('img');
   imgPreview.setAttribute('style', 'position: absolute; top: -9999px');
   imgPreview.crossOrigin = 'anonymous';
-  document.body.appendChild(imgPreview);
+  document.body.append(imgPreview);
 
   const canvas = document.createElement('canvas');
   const canvasContext = canvas.getContext('2d');
@@ -76,7 +76,7 @@ export function downloadAsPng(svg: string): void {
       canvasContext.drawImage(img, 0, 0);
       URL.revokeObjectURL(svgUrl);
       const pngInBase64 = canvas.toDataURL('image/png');
-      document.body.removeChild(imgPreview);
+      imgPreview.remove();
       download('diagram.png', '', pngInBase64);
       logDownload('Download completed');
     });

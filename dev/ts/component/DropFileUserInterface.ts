@@ -62,10 +62,10 @@ export class DropFileUserInterface {
     p.textContent = 'open BPMN diagram';
     const innerDiv = this.document.createElement('div');
     innerDiv.classList.add('drop-here-text');
-    innerDiv.appendChild(p);
+    innerDiv.append(p);
     const containerDiv = this.document.createElement('div');
     containerDiv.id = this.outerContainerId;
-    containerDiv.appendChild(innerDiv);
+    containerDiv.append(innerDiv);
     containerToBeFaded.parentNode.prepend(containerDiv);
   }
 
@@ -116,8 +116,8 @@ export class DropFileUserInterface {
 }`;
     // endregion
     const style = document.createElement('style');
-    style.appendChild(document.createTextNode(css));
-    this.head.appendChild(style);
+    style.append(document.createTextNode(css));
+    this.head.append(style);
   }
 
   private addEventsOnDropContainer(container: HTMLElement, containerToBeFaded: HTMLElement): void {

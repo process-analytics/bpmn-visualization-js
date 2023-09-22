@@ -48,6 +48,8 @@ module.exports = {
     'unicorn/prefer-ternary': 'error',
     'unicorn/prefer-logical-operator-over-ternary': 'error',
     'unicorn/consistent-function-scoping': 'error',
+    'unicorn/prefer-dom-node-append': 'error',
+    'unicorn/prefer-dom-node-remove': 'error',
     'import/newline-after-import': ['error', { count: 1 }],
     'import/first': 'error',
     'import/order': [
