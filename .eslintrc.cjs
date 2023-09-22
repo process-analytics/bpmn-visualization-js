@@ -50,6 +50,7 @@ module.exports = {
     'unicorn/consistent-function-scoping': 'error',
     'unicorn/prefer-dom-node-append': 'error',
     'unicorn/prefer-dom-node-remove': 'error',
+    'unicorn/no-negated-condition': 'error',
     'import/newline-after-import': ['error', { count: 1 }],
     'import/first': 'error',
     'import/order': [

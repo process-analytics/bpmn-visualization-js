@@ -41,7 +41,7 @@ export function ensureIsArray<T>(elements: (T | string)[] | T | string, acceptEm
   }
 
   return (
-    (!Array.isArray(elements) ? [elements] : elements)
+    (Array.isArray(elements) ? elements : [elements])
       // convert empty elements
       .map(element => convertEmptyStringAndObject(element, acceptEmptyString))
       // remove empty elements
