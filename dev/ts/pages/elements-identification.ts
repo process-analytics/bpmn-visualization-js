@@ -308,19 +308,21 @@ function doTranslate(): void {
   const view = graph.view;
 
   // implementation
-  const process = graph.model.getCell(elementId);
-  if (!process) {
+  const cell = graph.model.getCell(elementId);
+  if (!cell) {
     alert(`Unable to translate. No element exist for id "${elementId}"!`);
     log(`Element does not exist for id "${elementId}", abort`);
     return;
   }
-  log('process.geometry', process.geometry);
+  log('Found element', elementId);
+  const state = view.getState(cell);
+  const cellBounds = state.getCellBounds();
 
   // always work, set the absolute translate
   const paddingTop = 10;
   const paddingLeft = 20;
-  const tx = -process.geometry.x + paddingLeft;
-  const ty = -process.geometry.y + paddingTop;
+  const tx = -cellBounds.x + paddingLeft;
+  const ty = -cellBounds.y + paddingTop;
 
   log('Translate:', tx, ty);
   view.setTranslate(tx, ty);
