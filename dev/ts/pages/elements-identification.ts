@@ -300,7 +300,7 @@ documentReady(() => {
     },
     statusKoNotifier: windowAlertStatusKoNotifier,
   });
-  updateLoadOptions({ type: FitType.Center, margin: 20 });
+  updateLoadOptions({ type: FitType.None, margin: 20 });
   configureControls();
   configureDownloadButtons();
 });
