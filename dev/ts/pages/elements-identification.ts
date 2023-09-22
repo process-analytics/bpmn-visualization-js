@@ -294,9 +294,58 @@ function configureDownloadButtons(): void {
 function doTranslate(): void {
   log('@@@@ translate');
   const bpmnVisualization = getBpmnVisualization();
-  const graphView = bpmnVisualization.graph.view;
+  const graph = bpmnVisualization.graph;
+  const view = graph.view;
 
-  log('graphview', graphView);
+  log('graphview', view);
+
+  // kind of center, inspired of the fit center method
+  // const margin = 0;
+  // when calling several time, loop from the original position to the center position
+  // const bounds = graph.getGraphBounds();
+  // const clientWidth = graph.container.clientWidth - margin;
+  // const clientHeight = graph.container.clientHeight - margin;
+  // const width = bounds.width / view.scale;
+  // const height = bounds.height / view.scale;
+  //
+  // const scale = 1;
+  // view.setTranslate((margin + clientWidth - width * scale) / (2 * scale) - bounds.x / view.scale, (margin + clientHeight - height * scale) / (2 * scale) - bounds.y / view.scale);
+
+  // from the mxGraph.center method
+  // const cx = 0.5;
+  // const cy = 0.5;
+  //
+  // log('graph.getBorder()', graph.getBorder());
+  // const padding = 2 * graph.getBorder();
+  // const cw = graph.container.clientWidth - padding;
+  // const ch = graph.container.clientHeight - padding;
+  // const bounds = graph.getGraphBounds();
+  //
+  // const t = view.translate;
+  // const s = view.scale;
+  //
+  // const horizontal = true;
+  // const vertical = true;
+  // const dx = horizontal ? cw - bounds.width : 0;
+  // const dy = vertical ? ch - bounds.height : 0;
+  //
+  // // only for !hasScrollbars
+  // view.setTranslate(horizontal ? Math.floor(t.x - bounds.x / s + (dx * cx) / s) : t.x, vertical ? Math.floor(t.y - bounds.y / s + (dy * cy) / s) : t.y);
+
+  // implem
+  // get position of Participant_162p67u
+  const process = graph.model.getCell('Participant_162p67u');
+  log('process.geometry', process.geometry);
+
+  // always work, set the absolute translate
+  const paddingTop = 10;
+  const paddingLeft = 20;
+  const tx = -process.geometry.x + paddingLeft;
+  const ty = -process.geometry.y + paddingTop;
+
+  log('translate', tx, ty);
+
+  view.setTranslate(tx, ty);
 }
 
 documentReady(() => {
