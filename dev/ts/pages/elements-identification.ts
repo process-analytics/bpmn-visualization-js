@@ -37,6 +37,7 @@ import {
   ShapeBpmnElementKind,
   isChildOfSubProcess,
   isFlowKind,
+  getBpmnVisualization,
 } from '../development-bundle-index';
 
 let lastIdentifiedBpmnIds: string[] = [];
@@ -285,8 +286,17 @@ function getOverlay(bpmnKind: BpmnElementKind): Overlay {
 }
 
 function configureDownloadButtons(): void {
+  document.querySelector('#btn-translate').addEventListener('click', doTranslate, false);
   document.querySelector('#btn-dl-svg').addEventListener('click', downloadSvg, false);
   document.querySelector('#btn-dl-png').addEventListener('click', downloadPng, false);
+}
+
+function doTranslate(): void {
+  log('@@@@ translate');
+  const bpmnVisualization = getBpmnVisualization();
+  const graphView = bpmnVisualization.graph.view;
+
+  log('graphview', graphView);
 }
 
 documentReady(() => {

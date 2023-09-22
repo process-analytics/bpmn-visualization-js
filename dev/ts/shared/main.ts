@@ -42,6 +42,10 @@ import { fetchBpmnContent, logDownload, logError, logErrorAndOpenAlert, logStart
 import { log } from './shared-helpers';
 
 let bpmnVisualization: ThemedBpmnVisualization;
+// TODO export temp for poc
+export function getBpmnVisualization(): ThemedBpmnVisualization {
+  return bpmnVisualization;
+}
 let loadOptions: LoadOptions = {};
 let statusKoNotifier: (errorMessage: string) => void;
 let bpmnElementIdToCollapse: string;
