@@ -315,18 +315,17 @@ function doTranslate(): void {
     return;
   }
   log('Found element', elementId);
-  // const state = view.getState(cell);
-  // const cellBounds = state.getCellBounds();
+  const state = view.getState(cell);
+  const cellBounds = state.getCellBounds();
 
   // always work, set the absolute translate
-  // const paddingTop = 10;
-  // const paddingLeft = 20;
-  // const tx = -cellBounds.x + paddingLeft;
-  // const ty = -cellBounds.y + paddingTop;
-  //
-  // log('Translate:', tx, ty);
-  // view.setTranslate(tx, ty);
-  graph.scrollCellToVisible(cell, true);
+  const paddingTop = 10;
+  const paddingLeft = 20;
+  const tx = -cellBounds.x + paddingLeft;
+  const ty = -cellBounds.y + paddingTop;
+
+  log('Translate:', tx, ty);
+  view.setTranslate(tx, ty);
   log('Translate completed');
 }
 
