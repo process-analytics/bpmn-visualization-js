@@ -293,13 +293,27 @@ function configureDownloadButtons(): void {
 
 function doTranslate(): void {
   log('Start translating...');
+
+  // Get the id of the element to translate
+  const parameters = new URLSearchParams(window.location.search);
+  const elementId = parameters.get('translate.bpmn.id');
+  if (!elementId) {
+    alert('Unable to translate. Pass the id of the BPMN element to translate using the `translate.bpmn.id` query parameter');
+    log('No id to translate, abort');
+    return;
+  }
+
   const bpmnVisualization = getBpmnVisualization();
   const graph = bpmnVisualization.graph;
   const view = graph.view;
 
   // implementation
-  // get position of Participant_162p67u
-  const process = graph.model.getCell('Participant_162p67u');
+  const process = graph.model.getCell(elementId);
+  if (!process) {
+    alert(`Unable to translate. No element exist for id "${elementId}"!`);
+    log(`Element does not exist for id "${elementId}", abort`);
+    return;
+  }
   log('process.geometry', process.geometry);
 
   // always work, set the absolute translate
