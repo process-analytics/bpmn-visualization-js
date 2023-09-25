@@ -119,9 +119,11 @@ describe('Registry API - retrieve Model Bpmn elements', () => {
         'unknown',
         'conditional_sequence_flow_from_activity_id',
         'another_unknown',
+        'start_event_in_adHoc_sub_process_id',
+        'boundary_event_interrupting_timer_id',
       ]);
 
-      expect(modelElements).toHaveLength(2);
+      expect(modelElements).toHaveLength(4);
 
       expectBoundaryEvent(modelElements[0] as ShapeBpmnSemantic, {
         id: 'boundary_event_non_interrupting_signal_id',
@@ -133,6 +135,47 @@ describe('Registry API - retrieve Model Bpmn elements', () => {
         id: 'conditional_sequence_flow_from_activity_id',
         source: 'task_with_flows_id',
         target: 'gateway_with_flows_id',
+      });
+      expectStartEvent(modelElements[2] as ShapeBpmnSemantic, {
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
+        id: 'start_event_in_adHoc_sub_process_id',
+        name: 'Start Event In AdHoc Sub-Process',
+        outgoing: ['sequence_flow_in_adHoc_sub_process_1_id'],
+        parentId: 'expanded_adHoc_sub_process_id',
+      });
+      expectBoundaryEvent(modelElements[3] as ShapeBpmnSemantic, {
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.TIMER,
+        id: 'boundary_event_interrupting_timer_id',
+        name: 'Interrupting Timer Boundary Intermediate Event',
+        parentId: 'send_task_id',
+      });
+    });
+  });
+
+  describe('Get by ids - diagram including elements without pool', () => {
+    beforeEach(() => {
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
+    });
+
+    test('Pass several existing ids', () => {
+      const bpmnElementsRegistry = bpmnVisualization.bpmnElementsRegistry;
+
+      const modelElements = bpmnElementsRegistry.getModelElementsByIds(['StartEvent_1', 'Flow_1']);
+
+      expect(modelElements).toHaveLength(2);
+
+      expectStartEvent(modelElements[0] as ShapeBpmnSemantic, {
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
+        id: 'StartEvent_1',
+        name: 'Start Event 1',
+        outgoing: ['Flow_1'],
+        parentId: undefined,
+      });
+      expectSequenceFlow(modelElements[1] as EdgeBpmnSemantic, {
+        id: 'Flow_1',
+        name: 'Sequence Flow 1',
+        source: 'StartEvent_1',
+        target: 'Activity_1',
       });
     });
   });

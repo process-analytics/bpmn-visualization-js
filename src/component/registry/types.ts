@@ -378,6 +378,16 @@ export interface ShapeBpmnSemantic extends BaseBpmnSemantic {
   eventDefinitionKind?: ShapeBpmnEventDefinitionKind;
   incomingIds: string[];
   outgoingIds: string[];
+  /**
+   * This is the ID of the direct parent of the current element, which can be a:
+   * - process/participant
+   * - lane
+   * - sub-process or call activity
+   *
+   * For the Boundary events, it is the activity to which the item belongs.
+   *
+   * **Special case**: it can be `undefined` when there is a single process without Participant/Pool. In this case, the direct children of the process have no parent.
+   */
   parentId: string;
   /** Set when the {@link BaseBpmnSemantic.kind} relates to a BPMN sub-process. */
   subProcessKind?: ShapeBpmnSubProcessKind;
