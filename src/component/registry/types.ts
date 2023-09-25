@@ -382,7 +382,8 @@ export interface ShapeBpmnSemantic extends BaseBpmnSemantic {
    * This is the ID of the direct parent of the current element, which can be a:
    * - process/participant
    * - lane
-   * - sub-process or call activity
+   * - sub-process
+   * - call activity
    *
    * For the Boundary events, it is the activity to which the item belongs.
    *
