@@ -58,6 +58,7 @@ module.exports = {
     'unicorn/no-instanceof-array': 'error',
     'unicorn/no-unreadable-array-destructuring': 'error',
     'unicorn/no-useless-length-check': 'error',
+    'unicorn/explicit-length-check': 'error',
     'unicorn/prefer-array-find': 'error',
     'unicorn/prefer-array-flat': 'error',
     'unicorn/prefer-array-flat-map': 'error',
