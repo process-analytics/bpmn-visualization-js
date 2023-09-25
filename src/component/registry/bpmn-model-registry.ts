@@ -34,6 +34,7 @@ export class BpmnModelRegistry {
   private onLoadCallback: () => void;
 
   load(bpmnModel: BpmnModel, modelFilter?: ModelFilter): RenderedModel {
+    // eslint-disable-next-line unicorn/no-array-callback-reference,unicorn/no-array-method-this-argument -- Bad error "Do not use the `this` argument in `Array#filter()`", modelFiltering is not an array.
     const filteredModel = new ModelFiltering().filter(bpmnModel, modelFilter);
 
     this.searchableModel = new SearchableModel(filteredModel);

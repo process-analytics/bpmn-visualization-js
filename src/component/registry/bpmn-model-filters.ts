@@ -28,10 +28,10 @@ export class ModelFiltering {
   filter(bpmnModel: BpmnModel, modelFilter?: ModelFilter): BpmnModel {
     const poolIdsFilter: string[] = [];
     const poolNamesFilter: string[] = [];
-    for (const filter of ensureIsArray(modelFilter?.pools).filter(p => p && Object.keys(p).length))
+    for (const filter of ensureIsArray(modelFilter?.pools).filter(p => p && Object.keys(p).length > 0))
       filter.id ? poolIdsFilter.push(filter.id) : filter.name && poolNamesFilter.push(filter.name);
 
-    if (poolIdsFilter.length == 0 && poolNamesFilter.length == 0) {
+    if (poolIdsFilter.length === 0 && poolNamesFilter.length === 0) {
       return bpmnModel;
     }
 
@@ -43,7 +43,7 @@ export class ModelFiltering {
     // For the NOT displayed Pool, there is no Shape for it, but we need to filter the flow nodes, the lanes and the edges which are in the NOT displayed Pool
     // If there is no shape associated to a Pool, no flow nodes, no lanes and no edges, there is no ShapeBPMNElement associated to the pool id to filter.
     // So we need to throw an error.
-    if (filteredPools.length == 0 && filteredLanes.length == 0 && filteredFlowNodes.length == 0 && filteredEdges.length == 0) {
+    if (filteredPools.length === 0 && filteredLanes.length === 0 && filteredFlowNodes.length === 0 && filteredEdges.length === 0) {
       let errorMessageSuffix = poolIdsFilter.length > 0 ? ` for ids [${poolIdsFilter}]` : '';
       const messageSeparator = errorMessageSuffix ? ' and' : '';
       errorMessageSuffix += poolNamesFilter.length > 0 ? `${messageSeparator} for names [${poolNamesFilter}]` : '';

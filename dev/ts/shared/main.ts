@@ -264,7 +264,7 @@ function configureStyleFromParameters(parameters: URLSearchParams): void {
   // Collect style properties to update them later with the bpmn-visualization API
   logStartup(`Configuring the "Update Style" API from query parameters`);
   // Only create the StyleUpdate object if some parameters are set
-  if (Array.from(parameters.keys()).filter(key => key.startsWith('style.api.')).length > 0) {
+  if (Array.from(parameters.keys()).some(key => key.startsWith('style.api.'))) {
     style = { stroke: {}, font: {}, fill: {} };
 
     parameters.get('style.api.stroke.color') && (style.stroke.color = parameters.get('style.api.stroke.color'));

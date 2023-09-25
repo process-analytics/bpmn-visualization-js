@@ -36,7 +36,7 @@ describe('Special parsing cases', () => {
 
     const bpmnDiagram = json.definitions.BPMNDiagram as BPMNDiagram;
     const shapes = bpmnDiagram.BPMNPlane.BPMNShape as BPMNShape[];
-    const getShape = (id: string): BPMNShape => shapes.filter(s => s.id == id)[0];
+    const getShape = (id: string): BPMNShape => shapes.find(s => s.id == id);
 
     // string instead of number
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -57,7 +57,7 @@ describe('Special parsing cases', () => {
 
     const bpmnDiagram = json.definitions.BPMNDiagram as BPMNDiagram;
     const shapes = bpmnDiagram.BPMNPlane.BPMNShape as BPMNShape[];
-    const getShape = (id: string): BPMNShape => shapes.filter(s => s.id == id)[0];
+    const getShape = (id: string): BPMNShape => shapes.find(s => s.id == id);
 
     // x and y values are string instead of number in the source diagram
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

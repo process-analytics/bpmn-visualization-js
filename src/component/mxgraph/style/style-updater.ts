@@ -58,7 +58,7 @@ export class StyleUpdater {
     const cells = withCellIdsOfMessageFlowIcons(bpmnElementIds)
       .map(id => model.getCell(id))
       .filter(Boolean);
-    if (cells.length == 0) {
+    if (cells.length === 0) {
       // We don't want to create an empty transaction
       return;
     }

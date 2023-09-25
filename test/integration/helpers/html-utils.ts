@@ -149,7 +149,7 @@ export class HtmlElementLookup {
 
   private findSvgElement(bpmnId: string): HTMLElement {
     const bpmnElements = this.bpmnVisualization.bpmnElementsRegistry.getElementsByIds(bpmnId);
-    return bpmnElements.length == 0 ? undefined : bpmnElements[0].htmlElement;
+    return bpmnElements.length === 0 ? undefined : bpmnElements[0].htmlElement;
   }
 
   private expectSvgOverlay(bpmnId: string, overlayLabel?: string): void {
