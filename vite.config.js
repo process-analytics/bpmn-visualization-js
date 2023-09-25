@@ -24,7 +24,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     server: {
-      port: 10001,
+      port: 10_001,
     },
 
     // Configuration to build the demo
@@ -52,7 +52,7 @@ export default defineConfig(({ mode }) => {
       chunkSizeWarningLimit: 838, // mxgraph
     },
     preview: {
-      port: 10002,
+      port: 10_002,
     },
   };
 });

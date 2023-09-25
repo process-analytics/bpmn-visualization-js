@@ -57,10 +57,10 @@ describe('parse bpmn as xml for Camunda Eclipse Plugin 3.0.0', () => {
                 waypoint: [expect.anything(), expect.anything(), expect.anything(), expect.anything()],
                 BPMNLabel: {
                   Bounds: {
-                    height: 6.0,
-                    width: 6.0,
-                    x: 696.0,
-                    y: 338.0,
+                    height: 6,
+                    width: 6,
+                    x: 696,
+                    y: 338,
                   },
                 },
               },

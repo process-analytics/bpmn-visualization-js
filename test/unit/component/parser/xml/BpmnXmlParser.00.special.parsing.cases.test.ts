@@ -41,7 +41,7 @@ describe('Special parsing cases', () => {
     // string instead of number
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore width and y are parsed as string. They have too many decimals
-    expect(getShape('BPMNShape_StartEvent_1').Bounds).toEqual(new Bounds(156.10001, '81.345000000000009', '36.0003450001000002', 36.0000001));
+    expect(getShape('BPMNShape_StartEvent_1').Bounds).toEqual(new Bounds(156.100_01, '81.345000000000009', '36.0003450001000002', 36.000_000_1));
 
     expect(getShape('BPMNShape_Activity_1').Bounds).toEqual(new Bounds(250, 59, 100, 80));
 
@@ -49,7 +49,7 @@ describe('Special parsing cases', () => {
     const endEventShape = getShape('BPMNShape_EndEvent_1');
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore width converted to string to not get a truncated number at runtime
-    expect((endEventShape.BPMNLabel as BPMNLabel).Bounds).toEqual(new Bounds(4.16e25, 1.24000000003e29, '20000000000000000009', 1.4e21));
+    expect((endEventShape.BPMNLabel as BPMNLabel).Bounds).toEqual(new Bounds(4.16e25, 1.240_000_000_03e29, '20000000000000000009', 1.4e21));
   });
 
   it('Parse a diagram with numbers not parsable as number', () => {

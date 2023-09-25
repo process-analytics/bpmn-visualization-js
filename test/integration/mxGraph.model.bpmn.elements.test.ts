@@ -53,7 +53,7 @@ describe('mxGraph model - BPMN elements', () => {
         isStrikeThrough: false,
         isUnderline: false,
         family: 'Arial',
-        size: 11.0,
+        size: 11,
       };
 
       describe('BPMN containers', () => {
@@ -132,7 +132,7 @@ describe('mxGraph model - BPMN elements', () => {
               isStrikeThrough: false,
               isUnderline: false,
               family: 'Arial',
-              size: 11.0,
+              size: 11,
             },
             label: 'Terminate End Event',
             parentId: 'participant_1_id',
@@ -145,7 +145,7 @@ describe('mxGraph model - BPMN elements', () => {
               isStrikeThrough: false,
               isUnderline: false,
               family: 'Arial',
-              size: 11.0,
+              size: 11,
             },
             label: 'Terminate End Event On Top',
             parentId: 'participant_1_id',
@@ -221,7 +221,7 @@ describe('mxGraph model - BPMN elements', () => {
               isStrikeThrough: true,
               isUnderline: false,
               family: 'Arial',
-              size: 11.0,
+              size: 11,
             },
             label: 'Throw None Intermediate Event',
             parentId: 'participant_1_id',
@@ -1233,7 +1233,7 @@ describe('mxGraph model - BPMN elements', () => {
               isStrikeThrough: false,
               isUnderline: true,
               family: 'Arial',
-              size: 11.0,
+              size: 11,
             },
             label: 'Task with Flows',
             parentId: 'participant_1_id',
@@ -1681,12 +1681,12 @@ describe('mxGraph model - BPMN elements', () => {
       expect('StartEvent_1').toBeCellWithParentAndGeometry({
         parentId: defaultParentId,
         geometry: new mxGeometry(
-          156.10001,
+          156.100_01,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           '81.3450000000000090', // 81.345000000000009 in the diagram
           '36.0003450001000002',
-          36.0000001,
+          36.000_000_1,
         ),
       });
 
@@ -1696,7 +1696,7 @@ describe('mxGraph model - BPMN elements', () => {
       });
 
       const geometry = new mxGeometry(412, 81, 36, 36);
-      geometry.offset = new mxPoint(4.16e25, 1.24000000003e29);
+      geometry.offset = new mxPoint(4.16e25, 1.240_000_000_03e29);
       expect('EndEvent_1').toBeCellWithParentAndGeometry({
         parentId: defaultParentId,
         geometry: geometry,

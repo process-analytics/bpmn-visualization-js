@@ -120,7 +120,7 @@ describe('parse xml to model', () => {
           },
         });
         verifyLabel(edge.label, {
-          bounds: { x: 316.359375, y: 211, width: 110, height: 12 },
+          bounds: { x: 316.359_375, y: 211, width: 110, height: 12 },
           extensions: { color: '#000000' },
           font: { isBold: false, isItalic: false, isStrikeThrough: false, isUnderline: false, name: 'Arial', size: 8 },
         });
