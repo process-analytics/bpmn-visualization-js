@@ -76,9 +76,9 @@ const computeSubProcessKind = (processedSemanticType: BpmnSemanticType, bpmnElem
 };
 
 const orderedFlowNodeBpmnTypes: BpmnSemanticType[] = [
+  // specific management for adhoc and transaction sub-processes which are handled with a dedicated ShapeBpmnSubProcessKind
   'adHocSubProcess',
   'transaction',
-  // specific management for adhoc and transaction sub-processes which are handled with a dedicated ShapeBpmnSubProcessKind
   // process boundary events afterward as we need its parent activity to be available when building it
   ...(ShapeUtil.flowNodeKinds().filter(kind => kind !== ShapeBpmnElementKind.EVENT_BOUNDARY) as BpmnSemanticType[]),
   ShapeBpmnElementKind.EVENT_BOUNDARY,
