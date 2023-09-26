@@ -120,24 +120,28 @@ export class ThemedBpmnVisualization extends BpmnVisualization {
       let fillColor;
       let strokeColor;
       switch (kind) {
-        case 'endEvent':
+        case 'endEvent': {
           fillColor = theme.endEventFillColor;
           strokeColor = theme.endEventStrokeColor;
           break;
-        case 'startEvent':
+        }
+        case 'startEvent': {
           fillColor = theme.startEventFillColor;
           strokeColor = theme.startEventStrokeColor;
           break;
+        }
         case 'intermediateCatchEvent':
         case 'intermediateThrowEvent':
-        case 'boundaryEvent':
+        case 'boundaryEvent': {
           fillColor = theme.defaultFillColor;
           strokeColor = theme.catchAndThrowEventStrokeColor ?? theme.defaultStrokeColor;
           break;
-        default:
+        }
+        default: {
           fillColor = theme.defaultFillColor;
           strokeColor = theme.defaultStrokeColor;
           break;
+        }
       }
       const style = styleSheet.styles[kind];
       style['fillColor'] = fillColor;

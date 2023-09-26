@@ -62,21 +62,27 @@ export function computeAllBpmnClassNames(style: string, isLabel: boolean): strin
     return [elements[0], elements[1]];
   })) {
     switch (key) {
-      case BpmnStyleIdentifier.EVENT_DEFINITION_KIND:
+      case BpmnStyleIdentifier.EVENT_DEFINITION_KIND: {
         classes.push(`bpmn-event-def-${value}`);
         break;
-      case BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND:
+      }
+      case BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND: {
         classes.push(`bpmn-gateway-kind-${value.toLowerCase()}`);
         break;
-      case BpmnStyleIdentifier.IS_INITIATING: // message flow icon
+      }
+      case BpmnStyleIdentifier.IS_INITIATING: {
+        // message flow icon
         classes.push(value == 'true' ? 'bpmn-icon-initiating' : 'bpmn-icon-non-initiating');
         break;
-      case BpmnStyleIdentifier.SUB_PROCESS_KIND:
+      }
+      case BpmnStyleIdentifier.SUB_PROCESS_KIND: {
         classes.push(`bpmn-sub-process-${value.toLowerCase()}`);
         break;
-      case BpmnStyleIdentifier.GLOBAL_TASK_KIND:
+      }
+      case BpmnStyleIdentifier.GLOBAL_TASK_KIND: {
         classes.push(computeBpmnBaseClassName(value));
         break;
+      }
     }
   }
 

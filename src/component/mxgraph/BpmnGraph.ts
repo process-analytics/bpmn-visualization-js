@@ -149,12 +149,14 @@ export class BpmnGraph extends mxgraph.mxGraph {
       let ignoreWidth = false;
       let ignoreHeight = false;
       switch (type) {
-        case FitType.Horizontal:
+        case FitType.Horizontal: {
           ignoreHeight = true;
           break;
-        case FitType.Vertical:
+        }
+        case FitType.Vertical: {
           ignoreWidth = true;
           break;
+        }
       }
 
       this.fit(this.border, false, margin, true, ignoreWidth, ignoreHeight);

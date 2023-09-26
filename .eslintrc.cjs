@@ -68,6 +68,9 @@ module.exports = {
     'unicorn/require-array-join-separator': 'error',
     'unicorn/numeric-separators-style': 'error',
     'unicorn/no-zero-fractions': 'error',
+    'unicorn/no-useless-switch-case': 'error',
+    'unicorn/prefer-switch': 'error',
+    'unicorn/switch-case-braces': 'error',
     'import/newline-after-import': ['error', { count: 1 }],
     'import/first': 'error',
     'import/order': [

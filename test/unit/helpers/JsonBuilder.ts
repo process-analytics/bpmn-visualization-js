@@ -565,18 +565,22 @@ function addEvent(
 ): void {
   const event = buildEvent({ id, name, index, processIndex, ...rest });
   switch (eventDefinitionParameter.eventDefinitionOn) {
-    case EventDefinitionOn.BOTH:
+    case EventDefinitionOn.BOTH: {
       addEventDefinitionsOnEvent(event, eventDefinitionParameter);
       addEventDefinitionsOnDefinition(jsonModel, eventDefinitionParameter, event);
       break;
-    case EventDefinitionOn.DEFINITIONS:
+    }
+    case EventDefinitionOn.DEFINITIONS: {
       addEventDefinitionsOnDefinition(jsonModel, eventDefinitionParameter, event);
       break;
-    case EventDefinitionOn.EVENT:
+    }
+    case EventDefinitionOn.EVENT: {
       addEventDefinitionsOnEvent(event, eventDefinitionParameter);
       break;
-    case EventDefinitionOn.NONE:
+    }
+    case EventDefinitionOn.NONE: {
       break;
+    }
   }
 
   addProcessElementWithShape(jsonModel, bpmnKind, { ...event, index, processIndex }, { Bounds: { x: 362, y: 232, width: 36, height: 45 } });

@@ -134,27 +134,35 @@ export class MultiBrowserImageSnapshotThresholds {
     const testedBrowserFamily = getTestedBrowserFamily();
     configLog(`The browser family used for test is ${testedBrowserFamily}`);
     switch (testedBrowserFamily) {
-      case 'chromium':
+      case 'chromium': {
         return this.getChromiumThresholds();
-      case 'firefox':
+      }
+      case 'firefox': {
         return this.getFirefoxThresholds();
-      case 'webkit':
+      }
+      case 'webkit': {
         return this.getWebkitThresholds();
-      default:
+      }
+      default: {
         return new Map<string, ImageSnapshotThresholdConfig>();
+      }
     }
   }
 
   getDefault(): number {
     switch (getTestedBrowserFamily()) {
-      case 'chromium':
+      case 'chromium': {
         return this.chromiumDefault;
-      case 'firefox':
+      }
+      case 'firefox': {
         return this.firefoxDefault;
-      case 'webkit':
+      }
+      case 'webkit': {
         return this.webkitDefault;
-      default:
+      }
+      default: {
         return 0;
+      }
     }
   }
 }

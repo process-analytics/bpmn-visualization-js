@@ -53,11 +53,12 @@ function computeStyleUpdateByKind(bpmnKind: BpmnElementKind): StyleUpdate {
     switch (bpmnKind) {
       case 'messageFlow':
       case 'sequenceFlow':
-      case 'association':
+      case 'association': {
         style.font.color = 'Chocolate';
         style.stroke.color = 'Chocolate';
         style.stroke.width = 4;
         break;
+      }
     }
     return style;
   }
@@ -106,7 +107,7 @@ function computeStyleUpdateByKind(bpmnKind: BpmnElementKind): StyleUpdate {
   } else {
     switch (bpmnKind) {
       case 'group':
-      case 'textAnnotation':
+      case 'textAnnotation': {
         style.font.color = 'Crimson';
         style.font.size = 18;
         style.font.family = 'Verdana';
@@ -116,6 +117,7 @@ function computeStyleUpdateByKind(bpmnKind: BpmnElementKind): StyleUpdate {
         style.stroke.color = 'Chartreuse';
         style.stroke.width = 6;
         break;
+      }
     }
   }
   return style;

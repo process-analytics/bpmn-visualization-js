@@ -121,14 +121,18 @@ export const getStyleValue = (cellStyle: string, key: string, defaultValue: stri
 
 const convertDirection = (direction: GradientDirection): string => {
   switch (direction) {
-    case 'right-to-left':
+    case 'right-to-left': {
       return mxConstants.DIRECTION_WEST;
-    case 'bottom-to-top':
+    }
+    case 'bottom-to-top': {
       return mxConstants.DIRECTION_NORTH;
-    case 'top-to-bottom':
+    }
+    case 'top-to-bottom': {
       return mxConstants.DIRECTION_SOUTH;
-    default:
+    }
+    default: {
       return mxConstants.DIRECTION_EAST;
+    }
   }
 };
 
