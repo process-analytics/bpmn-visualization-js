@@ -1,11 +1,17 @@
-⚠️ Please read the **CONTRIBUTING guide** prior creating a Pull Request. \
-If you haven't done it already, add a comment on the issue so that we can assign it to you. \
-Failure to do so may result in the rejection of the Pull Request.
+<!--
+👋 Hi, thanks for sending a Pull Request to bpmn-visualization! 💖
+Please fill out all fields below and make sure each item is true and [x] checked.
+Otherwise we may not be able to review your PR.
+-->
 
-**Title**
+## PR Checklist
 
-Please follow ["Conventional Commits"](https://www.conventionalcommits.org/en/v1.0.0/) when creating the title.
-
+- [ ] Addresses an existing open issue: closes #000 (if not, explain why).
+- [ ] The issue was marked with the [PR Accepted](https://github.com/process-analytics/bpmn-visualization-js/issues?q=is%3Aissue+is%3Aopen+label%3A%22PR+accepted%22) label.
+- [ ] You have discussed this issue with the maintainers of `bpmn-visualization`, and you are assigned to the issue. 
+- [ ] Steps in the [CONTRIBUTING guide](https://github.com/process-analytics/bpmn-visualization-js/blob/master/CONTRIBUTING.md) were taken.
+- [ ] The PR title follows the ["Conventional Commits"](https://www.conventionalcommits.org/en/v1.0.0/) guidelines.
+<!--
 It must look like `<type>[optional scope]: <lower case description>`
 
 *type* can be (see existing Pull Request for more elements):
@@ -18,17 +24,21 @@ It must look like `<type>[optional scope]: <lower case description>`
 
 If defined, the _optional scope_ must be put in parentheses.
 
-_Note_: The title is used as proposal for the maintainer merging the Pull Request.
+Note: The title is used as proposal for the maintainer merging the Pull Request.
+-->
 
-**Details**
 
-Explain the **details** for making this change: What existing problem does the Pull Request solve? Why is this feature beneficial?
+## Overview
 
-If your contribution has changed the BPMN rendering, add a screenshot.
+<!-- Description of what and why is changed, and how the code change does that. -->
+- Explain the **details** for making this change: What existing problem does the Pull Request solve? Why is this feature beneficial?
+- If your contribution has altered the BPMN rendering or any other visual feature, add screenshots.
+- If the Pull Request includes breaking changes, it must explicitly follow the syntax proposed by [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#specification) (in the PR title and with a quote at this end of this overview).
 
-If the Pull Request includes breaking changes, it must explicitly follow the syntax proposed by [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#specification).
 
-**On automatic closing of ISSUES**
+## Notes
 
-Put `closes #XXXX` (remove backticks to let GitHub create the link) in your comment to auto-close the issue that your PR fixes (if such).
+<!-- Use this paragraph to provide the reviewer with any additional information. -->
+
+N/A
 
