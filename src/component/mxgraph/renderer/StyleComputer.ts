@@ -58,9 +58,8 @@ export default class StyleComputer {
     const fontStyleValues = this.computeFontStyleValues(bpmnCell);
     const labelStyleValues = StyleComputer.computeLabelStyleValues(bpmnCell, labelBounds);
 
-    return styles //
-      .concat(toArrayOfMxGraphStyleEntries([...mainStyleValues, ...fontStyleValues, ...labelStyleValues]))
-      .join(';');
+    styles.push(...toArrayOfMxGraphStyleEntries([...mainStyleValues, ...fontStyleValues, ...labelStyleValues]));
+    return styles.join(';');
   }
 
   private computeShapeStyleValues(shape: Shape): Map<string, string | number> {

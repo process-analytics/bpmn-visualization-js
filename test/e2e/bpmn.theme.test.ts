@@ -57,7 +57,7 @@ describe('BPMN theme', () => {
   );
 
   const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder: 'theme' }, page);
-  const useCases = Array.from(styleOptionsPerUseCase.keys());
+  const useCases = [...styleOptionsPerUseCase.keys()];
 
   it.each(useCases)(`Use case %s`, async (useCase: string) => {
     await pageTester.gotoPageAndLoadBpmnDiagram('01.most.bpmn.types.without.label', {

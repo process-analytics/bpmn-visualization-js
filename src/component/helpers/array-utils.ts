@@ -53,13 +53,14 @@ export function ensureIsArray<T>(elements: (T | string)[] | T | string, acceptEm
  * @internal
  */
 export function filter<T extends string>(arrayToFilter: T[], suffix: string, options?: FilterParameter): T[] {
-  let pattern = '';
+  const patterns: string[] = [];
   if (options?.startingWith) {
-    pattern = pattern.concat(`^(${options.startingWith}).*`);
+    patterns.push(`^(${options.startingWith}).*`);
   } else if (options?.notStartingWith) {
-    pattern = pattern.concat(`^(?!(${options.notStartingWith})).*`);
+    patterns.push(`^(?!(${options.notStartingWith})).*`);
   }
-  pattern = pattern.concat(`${suffix}$`);
+  patterns.push(`${suffix}$`);
+  const pattern = patterns.join('');
 
   return arrayToFilter.filter(element => (options?.ignoreCase ? new RegExp(pattern, 'i').test(element) : new RegExp(pattern).test(element)));
 }

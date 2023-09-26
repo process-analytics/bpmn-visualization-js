@@ -71,6 +71,7 @@ module.exports = {
     'unicorn/no-useless-switch-case': 'error',
     'unicorn/prefer-switch': 'error',
     'unicorn/switch-case-braces': 'error',
+    'unicorn/prefer-spread': 'error',
     'import/newline-after-import': ['error', { count: 1 }],
     'import/first': 'error',
     'import/order': [

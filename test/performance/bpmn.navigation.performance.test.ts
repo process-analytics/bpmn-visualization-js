@@ -78,7 +78,7 @@ afterAll(async () => {
       const oldDataString = fs.readFileSync(performanceDataFilePath, 'utf8');
       const oldData = JSON.parse(oldDataString.substring('const data = '.length, oldDataString.length)) as ChartData;
       const data = {
-        zoom: oldData.zoom.concat(metricsArray),
+        zoom: [...oldData.zoom, ...metricsArray],
         load: oldData.load,
       };
       fs.writeFileSync(performanceDataFilePath, 'const data = ' + JSON.stringify(data));
