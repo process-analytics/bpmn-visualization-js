@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BuildDefinitionParameter } from '../../../helpers/JsonBuilder';
+import type { BuildDefinitionParameter, BuildEventDefinition } from '../../../helpers/JsonBuilder';
 
 import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilder';
 import { expectAsWarning, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector } from '../../../helpers/JsonTestUtils';
@@ -42,7 +42,7 @@ function testMustNotConvertBoundaryEvent(definitionParameter: BuildDefinitionPar
 }
 
 describe('for boundaryEvents', () => {
-  describe.each(eventDefinitionsParameters)(`for %s boundaryEvent`, (eventDefinitionKind: string, expectedEventDefinitionKind: ShapeBpmnEventDefinitionKind) => {
+  describe.each(eventDefinitionsParameters)(`for %s boundaryEvent`, (eventDefinitionKind: BuildEventDefinition, expectedEventDefinitionKind: ShapeBpmnEventDefinitionKind) => {
     if (
       expectedEventDefinitionKind === ShapeBpmnEventDefinitionKind.NONE ||
       expectedEventDefinitionKind === ShapeBpmnEventDefinitionKind.LINK ||
@@ -104,7 +104,7 @@ describe('for boundaryEvents', () => {
                 bpmnElementKind: ShapeBpmnElementKind.EVENT_BOUNDARY,
                 bpmnElementName: undefined,
                 eventDefinitionKind: expectedEventDefinitionKind,
-                isInterrupting: true,
+                isInterrupting,
               },
             );
           });
@@ -127,7 +127,7 @@ describe('for boundaryEvents', () => {
           });
         });
 
-        it(`should NOT convert, when 'boundaryEvent' is ${isInterruptingTitle} & attached to no existing activity, ${titleForEventDefinitionIsAttributeOf}`, () => {
+        it(`should NOT convert, when 'boundaryEvent' is ${isInterruptingTitle} & attached to unexisting activity, ${titleForEventDefinitionIsAttributeOf}`, () => {
           testMustNotConvertBoundaryEvent(
             {
               process: {

@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { OtherBuildEventKind } from '../../../helpers/JsonBuilder';
+import type { BuildEventDefinition, OtherBuildEventKind } from '../../../helpers/JsonBuilder';
 
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
 import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilder';
@@ -25,14 +25,14 @@ import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/model/b
 
 // None intermediateCatchEvent not supported in BPMN specification
 describe.each([
-  [ShapeBpmnElementKind.EVENT_START, ['message', 'timer', 'conditional', 'signal']],
-  [ShapeBpmnElementKind.EVENT_END, ['message', 'error', 'escalation', 'cancel', 'compensate', 'signal', 'terminate']],
-  [ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ['message', 'escalation', 'compensate', 'link', 'signal']],
-])('for none %s', (expectedShapeBpmnElementKind: ShapeBpmnElementKind, allDefinitionKinds: string[]) => {
+  [ShapeBpmnElementKind.EVENT_START, ['message', 'timer', 'conditional', 'signal'] as BuildEventDefinition[]],
+  [ShapeBpmnElementKind.EVENT_END, ['message', 'error', 'escalation', 'cancel', 'compensate', 'signal', 'terminate'] as BuildEventDefinition[]],
+  [ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ['message', 'escalation', 'compensate', 'link', 'signal'] as BuildEventDefinition[]],
+])('for none %s', (expectedShapeBpmnElementKind: ShapeBpmnElementKind, allDefinitionKinds: BuildEventDefinition[]) => {
   executeEventCommonTests(
     {
       bpmnKind: expectedShapeBpmnElementKind as OtherBuildEventKind | 'startEvent',
-      eventDefinitionParameter: { eventDefinitionKind: 'none', eventDefinitionOn: EventDefinitionOn.NONE },
+      eventDefinitionParameter: { eventDefinitionOn: EventDefinitionOn.NONE },
     },
     {
       bpmnElementKind: expectedShapeBpmnElementKind,
