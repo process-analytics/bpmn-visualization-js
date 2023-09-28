@@ -20,9 +20,10 @@ import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilde
 import { expectAsWarning, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector } from '../../../helpers/JsonTestUtils';
 import { getEventShapes } from '../../../helpers/TestUtils';
 
+import { eventDefinitionsParameters, executeEventCommonTests, testMustConvertShapes } from './BpmnJsonParser.event-utils';
+
 import { BoundaryEventNotAttachedToActivityWarning, ShapeUnknownBpmnElementWarning } from '@lib/component/parser/json/warnings';
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
-import { eventDefinitionsParameters, executeEventCommonTests, testMustConvertShapes } from 'test/unit/component/parser/json/BpmnJsonParser.event-utils';
 
 function testMustNotConvertBoundaryEvent(definitionParameter: BuildDefinitionParameter, numberOfExpectedFlowNodes = 1): void {
   const json = buildDefinitions(definitionParameter);
