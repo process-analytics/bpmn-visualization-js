@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import type { ExpectedBoundaryEventShape, ExpectedEventShape, ExpectedShape } from './bpmn-model-expect';
-import type { BuildEventDefinition,BuildEventsParameter } from './JsonBuilder';
+import type { BuildEventDefinition, BuildEventsParameter } from './JsonBuilder';
 
 import { verifyShape } from './bpmn-model-expect';
 import { buildDefinitions, EventDefinitionOn } from './JsonBuilder';
