@@ -1941,21 +1941,6 @@ describe('build json', () => {
         });
       });
 
-      it(`not possible to have eventDefinitionOn=NONE with defined eventDefinitionKind`, () => {
-        expect(() => {
-          buildDefinitions({
-            process: {
-              event: [
-                {
-                  bpmnKind,
-                  eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.NONE },
-                },
-              ],
-            },
-          });
-        }).toThrow("Must use another value than NONE for 'eventDefinitionOn' when 'eventDefinitionKind' is set !!");
-      });
-
       it(`build json of definitions containing one process with ${bpmnKind} (with one messageEventDefinition, name & id)`, () => {
         const json = buildDefinitions({
           process: {
@@ -2420,6 +2405,57 @@ describe('build json', () => {
             },
           },
         });
+      });
+
+      it(`build json of definitions containing one process with none ${bpmnKind}`, () => {
+        const json = buildDefinitions({
+          process: {
+            event: [
+              {
+                bpmnKind,
+                eventDefinitionParameter: { eventDefinitionOn: EventDefinitionOn.NONE },
+              },
+            ],
+          },
+        });
+
+        expect(json).toEqual({
+          definitions: {
+            targetNamespace: '',
+            collaboration: { id: 'collaboration_id_0' },
+            process: {
+              id: '0',
+              [bpmnKind]: {
+                id: 'event_id_0_0',
+              },
+            },
+            BPMNDiagram: {
+              name: 'process 0',
+              BPMNPlane: {
+                BPMNShape: {
+                  id: 'shape_event_id_0_0',
+                  bpmnElement: 'event_id_0_0',
+                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                },
+              },
+            },
+          },
+        });
+      });
+
+      it(`not possible to have eventDefinitionOn=NONE with defined eventDefinitionKind`, () => {
+        expect(() => {
+          buildDefinitions({
+            process: {
+              event: [
+                {
+                  bpmnKind,
+                  eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.NONE },
+                },
+              ],
+            },
+          });
+        }).toThrow("Must use another value than NONE for 'eventDefinitionOn' when 'eventDefinitionKind' is set !!");
       });
 
       it(`incoming and outgoing for ${bpmnKind}`, () => {
