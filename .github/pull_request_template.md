@@ -13,8 +13,9 @@ Note: core contributors are not required to use this template.
 - [ ] You have discussed this issue with the maintainers of `bpmn-visualization`, and you are assigned to the issue. 
 - [ ] Steps in the [CONTRIBUTING guide](https://github.com/process-analytics/bpmn-visualization-js/blob/master/CONTRIBUTING.md) were taken.
 - [ ] The PR title follows the ["Conventional Commits"](https://www.conventionalcommits.org/en/v1.0.0/) guidelines.
+
 <!--
-It must look like `<type>[optional scope]: <lower case description>`
+The PR title must look like `<type>[optional scope]: <lower case description>`
 
 *type* can be (see existing Pull Request for more elements):
 - chore
