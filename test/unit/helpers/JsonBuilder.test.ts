@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BuildEventDefinitionParameter, OtherBuildEventKind, BuildTaskKind, BuildGatewayKind, BpmnGlobalTaskKind } from './JsonBuilder';
+import type { BuildEventDefinitionParameter, BuildTaskKind, BuildGatewayKind, BpmnGlobalTaskKind, BuildNotBoundaryEventKind } from './JsonBuilder';
 
 import { buildDefinitions, EventDefinitionOn } from './JsonBuilder';
 
@@ -2072,9 +2072,9 @@ describe('build json', () => {
     });
   });
 
-  describe.each(['startEvent', 'endEvent', 'intermediateCatchEvent', 'intermediateThrowEvent'] as (OtherBuildEventKind | 'startEvent')[])(
+  describe.each(['startEvent', 'endEvent', 'intermediateCatchEvent', 'intermediateThrowEvent'] as BuildNotBoundaryEventKind[])(
     'build json with %s',
-    (bpmnKind: OtherBuildEventKind | 'startEvent') => {
+    (bpmnKind: BuildNotBoundaryEventKind) => {
       it(`build json of definitions containing one process with ${bpmnKind} (with empty messageEventDefinition with generated id & without name)`, () => {
         const json = buildDefinitions({
           process: {
@@ -2766,6 +2766,190 @@ describe('build json', () => {
               process: {
                 id: '0',
                 startEvent: { id: 'event_id_0_0', cancelActivity: false, messageEventDefinition: {} },
+              },
+              BPMNDiagram: {
+                name: 'process 0',
+                BPMNPlane: {
+                  BPMNShape: {
+                    id: 'shape_event_id_0_0',
+                    bpmnElement: 'event_id_0_0',
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                  },
+                },
+              },
+            },
+          });
+        });
+      }
+
+      if (bpmnKind === 'intermediateCatchEvent') {
+        it('build json of definitions containing one process with intermediateCatchEvent (with one source) when eventDefinitionKind="link"', () => {
+          const json = buildDefinitions({
+            process: {
+              event: [
+                {
+                  bpmnKind: 'intermediateCatchEvent',
+                  eventDefinitionParameter: { eventDefinitionKind: 'link', eventDefinitionOn: EventDefinitionOn.DEFINITIONS },
+                  source: 'event_definition_source_id',
+                },
+              ],
+            },
+          });
+
+          expect(json).toEqual({
+            definitions: {
+              targetNamespace: '',
+              collaboration: { id: 'collaboration_id_0' },
+              linkEventDefinition: { id: 'event_definition_id' },
+              process: {
+                id: '0',
+                intermediateCatchEvent: { id: 'event_id_0_0', source: 'event_definition_source_id', eventDefinitionRef: 'event_definition_id' },
+              },
+              BPMNDiagram: {
+                name: 'process 0',
+                BPMNPlane: {
+                  BPMNShape: {
+                    id: 'shape_event_id_0_0',
+                    bpmnElement: 'event_id_0_0',
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                  },
+                },
+              },
+            },
+          });
+        });
+
+        it('build json of definitions containing one process with intermediateCatchEvent (with several sources) when eventDefinitionKind="link"', () => {
+          const json = buildDefinitions({
+            process: {
+              event: [
+                {
+                  bpmnKind: 'intermediateCatchEvent',
+                  eventDefinitionParameter: { eventDefinitionKind: 'link', eventDefinitionOn: EventDefinitionOn.DEFINITIONS },
+                  source: ['event_definition_source_1_id', 'event_definition_source_2_id'],
+                },
+              ],
+            },
+          });
+
+          expect(json).toEqual({
+            definitions: {
+              targetNamespace: '',
+              collaboration: { id: 'collaboration_id_0' },
+              linkEventDefinition: { id: 'event_definition_id' },
+              process: {
+                id: '0',
+                intermediateCatchEvent: { id: 'event_id_0_0', source: ['event_definition_source_1_id', 'event_definition_source_2_id'], eventDefinitionRef: 'event_definition_id' },
+              },
+              BPMNDiagram: {
+                name: 'process 0',
+                BPMNPlane: {
+                  BPMNShape: {
+                    id: 'shape_event_id_0_0',
+                    bpmnElement: 'event_id_0_0',
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                  },
+                },
+              },
+            },
+          });
+        });
+
+        it('build json of definitions containing one process with intermediateCatchEvent (without source) when eventDefinitionKind!="link"', () => {
+          const json = buildDefinitions({
+            process: {
+              event: [
+                {
+                  bpmnKind: 'intermediateCatchEvent',
+                  eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.DEFINITIONS },
+                  source: 'event_definition_source_id',
+                },
+              ],
+            },
+          });
+
+          expect(json).toEqual({
+            definitions: {
+              targetNamespace: '',
+              collaboration: { id: 'collaboration_id_0' },
+              messageEventDefinition: { id: 'event_definition_id' },
+              process: {
+                id: '0',
+                intermediateCatchEvent: { id: 'event_id_0_0', eventDefinitionRef: 'event_definition_id' },
+              },
+              BPMNDiagram: {
+                name: 'process 0',
+                BPMNPlane: {
+                  BPMNShape: {
+                    id: 'shape_event_id_0_0',
+                    bpmnElement: 'event_id_0_0',
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                  },
+                },
+              },
+            },
+          });
+        });
+      }
+
+      if (bpmnKind === 'intermediateThrowEvent') {
+        it('build json of definitions containing one process with intermediateThrowEvent (with target) when eventDefinitionKind="link"', () => {
+          const json = buildDefinitions({
+            process: {
+              event: [
+                {
+                  bpmnKind: 'intermediateThrowEvent',
+                  eventDefinitionParameter: { eventDefinitionKind: 'link', eventDefinitionOn: EventDefinitionOn.DEFINITIONS },
+                  target: 'event_definition_target_id',
+                },
+              ],
+            },
+          });
+
+          expect(json).toEqual({
+            definitions: {
+              targetNamespace: '',
+              collaboration: { id: 'collaboration_id_0' },
+              linkEventDefinition: { id: 'event_definition_id' },
+              process: {
+                id: '0',
+                intermediateThrowEvent: { id: 'event_id_0_0', target: 'event_definition_target_id', eventDefinitionRef: 'event_definition_id' },
+              },
+              BPMNDiagram: {
+                name: 'process 0',
+                BPMNPlane: {
+                  BPMNShape: {
+                    id: 'shape_event_id_0_0',
+                    bpmnElement: 'event_id_0_0',
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                  },
+                },
+              },
+            },
+          });
+        });
+
+        it('build json of definitions containing one process with intermediateThrowEvent (with no target) when eventDefinitionKind!="link"', () => {
+          const json = buildDefinitions({
+            process: {
+              event: [
+                {
+                  bpmnKind: 'intermediateThrowEvent',
+                  eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.DEFINITIONS },
+                  target: 'event_definition_target_id',
+                },
+              ],
+            },
+          });
+
+          expect(json).toEqual({
+            definitions: {
+              targetNamespace: '',
+              collaboration: { id: 'collaboration_id_0' },
+              messageEventDefinition: { id: 'event_definition_id' },
+              process: {
+                id: '0',
+                intermediateThrowEvent: { id: 'event_id_0_0', eventDefinitionRef: 'event_definition_id' },
               },
               BPMNDiagram: {
                 name: 'process 0',

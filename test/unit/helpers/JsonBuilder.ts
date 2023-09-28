@@ -47,20 +47,32 @@ export enum EventDefinitionOn {
  * If the id field is set, the default id is override.
  * Otherwise, the id has the format: `event_id_${processIndex}_${index}`
  */
-type BuildEventParameter = {
+type CommonBuildEventParameter = {
   eventDefinitionParameter: BuildEventDefinitionParameter;
 } & TFlowNode;
 
 type BuildInterruptingEventParameter = {
   isInterrupting?: boolean;
-} & BuildEventParameter;
+} & CommonBuildEventParameter;
 
-export type BuildEventsParameter = BuildOtherEventParameter | BuildStartEventParameter | BuildBoundaryEventParameter;
+export type BuildEventParameter = BuildNotBoundaryEventParameter | BuildBoundaryEventParameter;
+export type BuildNotBoundaryEventParameter = BuildIntermediateCatchEventParameter | BuildIntermediateThrowEventParameter | BuildEndEventParameter | BuildStartEventParameter;
 
-export type OtherBuildEventKind = 'endEvent' | 'intermediateCatchEvent' | 'intermediateThrowEvent';
-type BuildOtherEventParameter = {
-  bpmnKind: OtherBuildEventKind;
-} & BuildEventParameter;
+export type BuildNotBoundaryEventKind = 'startEvent' | 'endEvent' | 'intermediateCatchEvent' | 'intermediateThrowEvent';
+
+type BuildIntermediateCatchEventParameter = {
+  bpmnKind: 'intermediateCatchEvent';
+  source?: string | string[];
+} & CommonBuildEventParameter;
+
+type BuildIntermediateThrowEventParameter = {
+  bpmnKind: 'intermediateThrowEvent';
+  target?: string;
+} & CommonBuildEventParameter;
+
+type BuildEndEventParameter = {
+  bpmnKind: 'endEvent';
+} & CommonBuildEventParameter;
 
 type BuildStartEventParameter = {
   bpmnKind: 'startEvent';
@@ -151,7 +163,7 @@ export type BuildTextAnnotationParameter = Pick<TTextAnnotation, 'id' | 'text'>;
 export type BuildProcessParameter = {
   lane?: BuildLaneParameter | BuildLaneParameter[];
   task?: BuildTaskParameter | BuildTaskParameter[];
-  event?: BuildEventsParameter | BuildEventsParameter[];
+  event?: BuildEventParameter | BuildEventParameter[];
   gateway?: BuildGatewayParameter | BuildGatewayParameter[];
   callActivity?: BuildCallActivityParameter | BuildCallActivityParameter[];
   subProcess?: BuildSubProcessParameter | BuildSubProcessParameter[];
@@ -534,19 +546,25 @@ function buildEvent({
   name,
   index,
   processIndex,
+  eventDefinitionKind,
   isInterrupting,
   attachedToRef,
   incoming,
   outgoing,
+  source,
+  target,
 }: {
   id: string;
   name: string;
   index: number;
   processIndex: number;
+  eventDefinitionKind?: string;
   isInterrupting?: boolean;
   attachedToRef?: string;
   incoming?: string | string[];
   outgoing?: string | string[];
+  source?: string | string[];
+  target?: string;
 }): BPMNTEvent {
   const event: BPMNTEvent = {
     id: id ?? `event_id_${processIndex}_${index}`,
@@ -561,16 +579,20 @@ function buildEvent({
   if (attachedToRef) {
     event.attachedToRef = attachedToRef;
   }
+
+  if (eventDefinitionKind === ShapeBpmnEventDefinitionKind.LINK) {
+    if (source) {
+      event.source = source;
+    } else if (target) {
+      event.target = target;
+    }
+  }
+
   return event;
 }
 
-function addEvent(
-  jsonModel: BpmnJsonModel,
-  { id, bpmnKind, eventDefinitionParameter, name, ...rest }: BuildOtherEventParameter | BuildStartEventParameter | BuildBoundaryEventParameter,
-  index: number,
-  processIndex: number,
-): void {
-  const event = buildEvent({ id, name, index, processIndex, ...rest });
+function addEvent(jsonModel: BpmnJsonModel, { id, bpmnKind, eventDefinitionParameter, name, ...rest }: BuildEventParameter, index: number, processIndex: number): void {
+  const event = buildEvent({ id, name, index, processIndex, eventDefinitionKind: eventDefinitionParameter.eventDefinitionKind, ...rest });
   switch (eventDefinitionParameter.eventDefinitionOn) {
     case EventDefinitionOn.BOTH: {
       addEventDefinitions(event, eventDefinitionParameter, index, processIndex);
