@@ -2,17 +2,20 @@
 👋 Hi, thanks for sending a Pull Request to bpmn-visualization! 💖
 Please fill out all fields below and make sure each item is true and [x] checked.
 Otherwise we may not be able to review your PR.
+
+Note: core contributors are not required to use this template.
 -->
 
 ## PR Checklist
 
-- [ ] Addresses an existing open issue: closes #000 (if not, explain why).
+- [ ] Addresses an existing open issue: closes #<the_issue_number_here>.
 - [ ] The issue was marked with the [PR Accepted](https://github.com/process-analytics/bpmn-visualization-js/issues?q=is%3Aissue+is%3Aopen+label%3A%22PR+accepted%22) label.
 - [ ] You have discussed this issue with the maintainers of `bpmn-visualization`, and you are assigned to the issue. 
 - [ ] Steps in the [CONTRIBUTING guide](https://github.com/process-analytics/bpmn-visualization-js/blob/master/CONTRIBUTING.md) were taken.
 - [ ] The PR title follows the ["Conventional Commits"](https://www.conventionalcommits.org/en/v1.0.0/) guidelines.
+
 <!--
-It must look like `<type>[optional scope]: <lower case description>`
+The PR title must look like `<type>[optional scope]: <lower case description>`
 
 *type* can be (see existing Pull Request for more elements):
 - chore
