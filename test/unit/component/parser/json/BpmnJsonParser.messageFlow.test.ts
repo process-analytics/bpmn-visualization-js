@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 /** Internal model */
-import type { BuildProcessParameter, BuildEventsParameter, OtherBuildEventKind } from '../../../helpers/JsonBuilder';
+import type { BuildProcessParameter, BuildEventParameter, BuildNotBoundaryEventKind } from '../../../helpers/JsonBuilder';
 import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
 
 import { verifyEdge } from '../../../helpers/bpmn-model-expect';
@@ -35,7 +35,7 @@ function buildProcessParameter(kind: ShapeBpmnElementKind, id: string): BuildPro
     return { id, withParticipant: true };
   } else if (ShapeUtil.isEvent(kind)) {
     const isBoundaryEvent = kind === ShapeBpmnElementKind.EVENT_BOUNDARY;
-    const eventParameter: BuildEventsParameter = isBoundaryEvent
+    const eventParameter: BuildEventParameter = isBoundaryEvent
       ? {
           id,
           bpmnKind: kind as 'boundaryEvent',
@@ -45,7 +45,7 @@ function buildProcessParameter(kind: ShapeBpmnElementKind, id: string): BuildPro
         }
       : {
           id,
-          bpmnKind: kind as OtherBuildEventKind | 'startEvent',
+          bpmnKind: kind as BuildNotBoundaryEventKind,
           eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT },
         };
 

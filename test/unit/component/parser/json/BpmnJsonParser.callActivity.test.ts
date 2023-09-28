@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import type { ExpectedShape } from '../../../helpers/bpmn-model-expect';
-import type { BuildCallActivityParameter, BuildGatewayKind, BuildTaskKind, OtherBuildEventKind, BpmnGlobalTaskKind } from '../../../helpers/JsonBuilder';
+import type { BuildCallActivityParameter, BuildGatewayKind, BuildTaskKind, BuildNotBoundaryEventKind, BpmnGlobalTaskKind } from '../../../helpers/JsonBuilder';
 import type { GlobalTaskKind } from '@lib/model/bpmn/internal';
 import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
 
@@ -215,7 +215,7 @@ describe('parse bpmn as json for callActivity', () => {
                 id: 'process_1',
                 event: {
                   id: `${expectedBpmnElementKind}_id`,
-                  bpmnKind: expectedBpmnElementKind as OtherBuildEventKind | 'startEvent',
+                  bpmnKind: expectedBpmnElementKind as BuildNotBoundaryEventKind,
                   eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT },
                 },
               },

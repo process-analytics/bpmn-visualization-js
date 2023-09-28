@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BuildEventDefinition, OtherBuildEventKind } from '../../../helpers/JsonBuilder';
+import type { BuildEventDefinition, BuildNotBoundaryEventKind } from '../../../helpers/JsonBuilder';
 
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
 import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilder';
@@ -31,7 +31,7 @@ describe.each([
 ])('for none %s', (expectedShapeBpmnElementKind: ShapeBpmnElementKind, allDefinitionKinds: BuildEventDefinition[]) => {
   executeEventCommonTests(
     {
-      bpmnKind: expectedShapeBpmnElementKind as OtherBuildEventKind | 'startEvent',
+      bpmnKind: expectedShapeBpmnElementKind as BuildNotBoundaryEventKind,
       eventDefinitionParameter: { eventDefinitionOn: EventDefinitionOn.NONE },
     },
     {
@@ -49,11 +49,11 @@ describe.each([
           {
             id: `none_${expectedShapeBpmnElementKind}_id`,
             name: `none ${expectedShapeBpmnElementKind}`,
-            bpmnKind: expectedShapeBpmnElementKind as OtherBuildEventKind | 'startEvent',
+            bpmnKind: expectedShapeBpmnElementKind as BuildNotBoundaryEventKind,
             eventDefinitionParameter: { eventDefinitionOn: EventDefinitionOn.NONE },
           },
           {
-            bpmnKind: expectedShapeBpmnElementKind as OtherBuildEventKind | 'startEvent',
+            bpmnKind: expectedShapeBpmnElementKind as BuildNotBoundaryEventKind,
             eventDefinitionParameter: {
               eventDefinitionKind: 'message',
               eventDefinitionOn: EventDefinitionOn.EVENT,
@@ -61,7 +61,7 @@ describe.each([
             },
           },
           {
-            bpmnKind: expectedShapeBpmnElementKind as OtherBuildEventKind | 'startEvent',
+            bpmnKind: expectedShapeBpmnElementKind as BuildNotBoundaryEventKind,
             eventDefinitionParameter: {
               eventDefinitionKind: 'message',
               eventDefinitionOn: EventDefinitionOn.DEFINITIONS,
@@ -69,7 +69,7 @@ describe.each([
             },
           },
           {
-            bpmnKind: expectedShapeBpmnElementKind as OtherBuildEventKind | 'startEvent',
+            bpmnKind: expectedShapeBpmnElementKind as BuildNotBoundaryEventKind,
             eventDefinitionParameter: {
               eventDefinitionKind: 'message',
               eventDefinitionOn: EventDefinitionOn.BOTH,
@@ -79,7 +79,7 @@ describe.each([
 
           ...allDefinitionKinds.map((definitionKind, index) => ({
             id: `${definitionKind}_${expectedShapeBpmnElementKind}_id_${index}`,
-            bpmnKind: expectedShapeBpmnElementKind as OtherBuildEventKind | 'startEvent',
+            bpmnKind: expectedShapeBpmnElementKind as BuildNotBoundaryEventKind,
             eventDefinitionParameter: {
               eventDefinitionKind: definitionKind,
               eventDefinitionOn: EventDefinitionOn.EVENT,
