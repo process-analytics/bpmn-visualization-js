@@ -19,8 +19,7 @@ import type { OtherBuildEventKind } from '../../../helpers/JsonBuilder';
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
 import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilder';
 import { parseJsonAndExpectEvent } from '../../../helpers/JsonTestUtils';
-
-import { executeEventCommonTests } from './BpmnJsonParser.event-utils';
+import { executeEventCommonTests } from '../../../helpers/TestUtils.BpmnJsonParser.event';
 
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
 

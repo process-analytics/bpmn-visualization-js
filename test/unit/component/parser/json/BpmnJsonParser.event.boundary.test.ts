@@ -19,8 +19,7 @@ import type { BuildDefinitionParameter } from '../../../helpers/JsonBuilder';
 import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilder';
 import { expectAsWarning, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector } from '../../../helpers/JsonTestUtils';
 import { getEventShapes } from '../../../helpers/TestUtils';
-
-import { eventDefinitionsParameters, executeEventCommonTests, testMustConvertShapes } from './BpmnJsonParser.event-utils';
+import { eventDefinitionsParameters, executeEventCommonTests, testMustConvertShapes } from '../../../helpers/TestUtils.BpmnJsonParser.event';
 
 import { BoundaryEventNotAttachedToActivityWarning, ShapeUnknownBpmnElementWarning } from '@lib/component/parser/json/warnings';
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';

@@ -18,8 +18,7 @@ import type { OtherBuildEventKind } from '../../../helpers/JsonBuilder';
 import type { TEventDefinition } from '@lib/model/bpmn/json/baseElement/rootElement/eventDefinition';
 
 import { EventDefinitionOn } from '../../../helpers/JsonBuilder';
-
-import { eventDefinitionsParameters, executeEventCommonTests, testMustConvertShapes } from './BpmnJsonParser.event-utils';
+import { eventDefinitionsParameters, executeEventCommonTests, testMustConvertShapes } from '../../../helpers/TestUtils.BpmnJsonParser.event';
 
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
 

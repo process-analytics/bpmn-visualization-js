@@ -14,19 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { ExpectedBoundaryEventShape, ExpectedEventShape, ExpectedShape } from '../../../helpers/bpmn-model-expect';
-import type { BuildEventsParameter } from '../../../helpers/JsonBuilder';
+import type { ExpectedBoundaryEventShape, ExpectedEventShape, ExpectedShape } from './bpmn-model-expect';
+import type { BuildEventsParameter } from './JsonBuilder';
 
-import { verifyShape } from '../../../helpers/bpmn-model-expect';
-import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilder';
-import {
-  expectAsWarning,
-  parseJsonAndExpectEvent,
-  parseJsonAndExpectOnlyEdgesAndFlowNodes,
-  parseJsonAndExpectOnlyFlowNodes,
-  parsingMessageCollector,
-} from '../../../helpers/JsonTestUtils';
-import { getEventShapes } from '../../../helpers/TestUtils';
+import { verifyShape } from './bpmn-model-expect';
+import { buildDefinitions, EventDefinitionOn } from './JsonBuilder';
+import { expectAsWarning, parseJsonAndExpectEvent, parseJsonAndExpectOnlyEdgesAndFlowNodes, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector } from './JsonTestUtils';
+import { getEventShapes } from './TestUtils';
 
 import { ShapeUnknownBpmnElementWarning } from '@lib/component/parser/json/warnings';
 import { ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
