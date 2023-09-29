@@ -127,12 +127,8 @@ describe('build json', () => {
             targetRef: 'target_id_0',
           },
         },
-        terminateEventDefinition: {
-          id: 'event_definition_id',
-        },
-        timerEventDefinition: {
-          id: 'event_definition_id',
-        },
+        terminateEventDefinition: { id: 'terminate_event_definition_id_0_1' },
+        timerEventDefinition: { id: 'timer_event_definition_id_2_0' },
         process: [
           {
             id: 'process_participant_0',
@@ -140,9 +136,9 @@ describe('build json', () => {
               id: 'task_id_0_0',
             },
             endEvent: {
-              eventDefinitionRef: 'event_definition_id',
               id: 'event_id_0_1',
               name: 'endEvent',
+              eventDefinitionRef: 'terminate_event_definition_id_0_1',
             },
             startEvent: {
               cancelActivity: true,
@@ -168,10 +164,10 @@ describe('build json', () => {
           {
             id: 'process_2',
             intermediateCatchEvent: {
-              eventDefinitionRef: 'event_definition_id',
               id: 'event_id_2_0',
               name: 'intermediateCatchEvent',
               timerEventDefinition: '',
+              eventDefinitionRef: 'timer_event_definition_id_2_0',
             },
             callActivity: {
               id: 'callActivity_id_2_0',
@@ -786,14 +782,14 @@ describe('build json', () => {
           definitions: {
             targetNamespace: '',
             collaboration: { id: 'collaboration_id_0' },
-            messageEventDefinition: { id: 'event_definition_id' },
+            messageEventDefinition: { id: 'message_event_definition_id_0_0' },
             process: {
               id: '0',
               task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: true,
-                eventDefinitionRef: 'event_definition_id',
+                eventDefinitionRef: 'message_event_definition_id_0_0',
                 attachedToRef: 'task_id_0_0',
               },
             },
@@ -837,14 +833,14 @@ describe('build json', () => {
           definitions: {
             targetNamespace: '',
             collaboration: { id: 'collaboration_id_0' },
-            messageEventDefinition: [{ id: 'event_definition_1_id' }, { id: 'event_definition_2_id' }],
+            messageEventDefinition: [{ id: 'message_event_definition_id_0_0_1' }, { id: 'message_event_definition_id_0_0_2' }],
             process: {
               id: '0',
               task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: true,
-                eventDefinitionRef: ['event_definition_1_id', 'event_definition_2_id'],
+                eventDefinitionRef: ['message_event_definition_id_0_0_1', 'message_event_definition_id_0_0_2'],
                 attachedToRef: 'task_id_0_0',
               },
             },
@@ -888,15 +884,15 @@ describe('build json', () => {
           definitions: {
             targetNamespace: '',
             collaboration: { id: 'collaboration_id_0' },
-            messageEventDefinition: { id: 'event_definition_id' },
-            signalEventDefinition: { id: 'other_event_definition_id' },
+            messageEventDefinition: { id: 'message_event_definition_id_0_0' },
+            signalEventDefinition: { id: 'signal_event_definition_id_0_0' },
             process: {
               id: '0',
               task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: true,
-                eventDefinitionRef: ['event_definition_id', 'other_event_definition_id'],
+                eventDefinitionRef: ['message_event_definition_id_0_0', 'signal_event_definition_id_0_0'],
                 attachedToRef: 'task_id_0_0',
               },
             },
@@ -940,15 +936,15 @@ describe('build json', () => {
           definitions: {
             targetNamespace: '',
             collaboration: { id: 'collaboration_id_0' },
-            messageEventDefinition: { id: 'other_event_definition_id' },
-            signalEventDefinition: { id: 'event_definition_id' },
+            messageEventDefinition: { id: 'message_event_definition_id_0_0' },
+            signalEventDefinition: { id: 'signal_event_definition_id_0_0' },
             process: {
               id: '0',
               task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: true,
-                eventDefinitionRef: ['event_definition_id', 'other_event_definition_id'],
+                eventDefinitionRef: ['signal_event_definition_id_0_0', 'message_event_definition_id_0_0'],
                 attachedToRef: 'task_id_0_0',
               },
             },
@@ -992,14 +988,14 @@ describe('build json', () => {
           definitions: {
             targetNamespace: '',
             collaboration: { id: 'collaboration_id_0' },
-            messageEventDefinition: [{ id: 'event_definition_1_id' }, { id: 'event_definition_2_id' }],
+            messageEventDefinition: [{ id: 'message_event_definition_id_0_0_1' }, { id: 'message_event_definition_id_0_0_2' }],
             process: {
               id: '0',
               task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: true,
-                eventDefinitionRef: ['event_definition_1_id', 'event_definition_2_id'],
+                eventDefinitionRef: ['message_event_definition_id_0_0_1', 'message_event_definition_id_0_0_2'],
                 messageEventDefinition: ['', {}],
                 attachedToRef: 'task_id_0_0',
               },
@@ -1044,15 +1040,15 @@ describe('build json', () => {
           definitions: {
             targetNamespace: '',
             collaboration: { id: 'collaboration_id_0' },
-            signalEventDefinition: { id: 'other_event_definition_id' },
-            terminateEventDefinition: { id: 'event_definition_id' },
+            signalEventDefinition: { id: 'signal_event_definition_id_0_0' },
+            terminateEventDefinition: { id: 'terminate_event_definition_id_0_0' },
             process: {
               id: '0',
               task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: true,
-                eventDefinitionRef: ['event_definition_id', 'other_event_definition_id'],
+                eventDefinitionRef: ['terminate_event_definition_id_0_0', 'signal_event_definition_id_0_0'],
                 signalEventDefinition: '',
                 terminateEventDefinition: '',
                 attachedToRef: 'task_id_0_0',
@@ -1532,14 +1528,14 @@ describe('build json', () => {
           definitions: {
             targetNamespace: '',
             collaboration: { id: 'collaboration_id_0' },
-            messageEventDefinition: { id: 'event_definition_id' },
+            messageEventDefinition: { id: 'message_event_definition_id_0_0' },
             process: {
               id: '0',
               task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: false,
-                eventDefinitionRef: 'event_definition_id',
+                eventDefinitionRef: 'message_event_definition_id_0_0',
                 attachedToRef: 'task_id_0_0',
               },
             },
@@ -1583,14 +1579,14 @@ describe('build json', () => {
           definitions: {
             targetNamespace: '',
             collaboration: { id: 'collaboration_id_0' },
-            messageEventDefinition: [{ id: 'event_definition_1_id' }, { id: 'event_definition_2_id' }],
+            messageEventDefinition: [{ id: 'message_event_definition_id_0_0_1' }, { id: 'message_event_definition_id_0_0_2' }],
             process: {
               id: '0',
               task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: false,
-                eventDefinitionRef: ['event_definition_1_id', 'event_definition_2_id'],
+                eventDefinitionRef: ['message_event_definition_id_0_0_1', 'message_event_definition_id_0_0_2'],
                 attachedToRef: 'task_id_0_0',
               },
             },
@@ -1634,15 +1630,15 @@ describe('build json', () => {
           definitions: {
             targetNamespace: '',
             collaboration: { id: 'collaboration_id_0' },
-            messageEventDefinition: { id: 'event_definition_id' },
-            signalEventDefinition: { id: 'other_event_definition_id' },
+            messageEventDefinition: { id: 'message_event_definition_id_0_0' },
+            signalEventDefinition: { id: 'signal_event_definition_id_0_0' },
             process: {
               id: '0',
               task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: false,
-                eventDefinitionRef: ['event_definition_id', 'other_event_definition_id'],
+                eventDefinitionRef: ['message_event_definition_id_0_0', 'signal_event_definition_id_0_0'],
                 attachedToRef: 'task_id_0_0',
               },
             },
@@ -1686,15 +1682,15 @@ describe('build json', () => {
           definitions: {
             targetNamespace: '',
             collaboration: { id: 'collaboration_id_0' },
-            messageEventDefinition: { id: 'other_event_definition_id' },
-            signalEventDefinition: { id: 'event_definition_id' },
+            messageEventDefinition: { id: 'message_event_definition_id_0_0' },
+            signalEventDefinition: { id: 'signal_event_definition_id_0_0' },
             process: {
               id: '0',
               task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: false,
-                eventDefinitionRef: ['event_definition_id', 'other_event_definition_id'],
+                eventDefinitionRef: ['signal_event_definition_id_0_0', 'message_event_definition_id_0_0'],
                 attachedToRef: 'task_id_0_0',
               },
             },
@@ -1738,14 +1734,14 @@ describe('build json', () => {
           definitions: {
             targetNamespace: '',
             collaboration: { id: 'collaboration_id_0' },
-            messageEventDefinition: [{ id: 'event_definition_1_id' }, { id: 'event_definition_2_id' }],
+            messageEventDefinition: [{ id: 'message_event_definition_id_0_0_1' }, { id: 'message_event_definition_id_0_0_2' }],
             process: {
               id: '0',
               task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: false,
-                eventDefinitionRef: ['event_definition_1_id', 'event_definition_2_id'],
+                eventDefinitionRef: ['message_event_definition_id_0_0_1', 'message_event_definition_id_0_0_2'],
                 messageEventDefinition: ['', {}],
                 attachedToRef: 'task_id_0_0',
               },
@@ -1790,15 +1786,15 @@ describe('build json', () => {
           definitions: {
             targetNamespace: '',
             collaboration: { id: 'collaboration_id_0' },
-            signalEventDefinition: { id: 'other_event_definition_id' },
-            terminateEventDefinition: { id: 'event_definition_id' },
+            signalEventDefinition: { id: 'signal_event_definition_id_0_0' },
+            terminateEventDefinition: { id: 'terminate_event_definition_id_0_0' },
             process: {
               id: '0',
               task: { id: 'task_id_0_0' },
               boundaryEvent: {
                 id: 'event_id_0_0',
                 cancelActivity: false,
-                eventDefinitionRef: ['event_definition_id', 'other_event_definition_id'],
+                eventDefinitionRef: ['terminate_event_definition_id_0_0', 'signal_event_definition_id_0_0'],
                 signalEventDefinition: '',
                 terminateEventDefinition: '',
                 attachedToRef: 'task_id_0_0',
@@ -2122,12 +2118,12 @@ describe('build json', () => {
           definitions: {
             targetNamespace: '',
             collaboration: { id: 'collaboration_id_0' },
-            messageEventDefinition: { id: 'event_definition_id' },
+            messageEventDefinition: { id: 'message_event_definition_id_0_0' },
             process: {
               id: '0',
               [bpmnKind]: {
                 id: 'event_id_0_0',
-                eventDefinitionRef: 'event_definition_id',
+                eventDefinitionRef: 'message_event_definition_id_0_0',
               },
             },
             BPMNDiagram: {
@@ -2164,12 +2160,12 @@ describe('build json', () => {
           definitions: {
             targetNamespace: '',
             collaboration: { id: 'collaboration_id_0' },
-            messageEventDefinition: [{ id: 'event_definition_1_id' }, { id: 'event_definition_2_id' }],
+            messageEventDefinition: [{ id: 'message_event_definition_id_0_0_1' }, { id: 'message_event_definition_id_0_0_2' }],
             process: {
               id: '0',
               [bpmnKind]: {
                 id: 'event_id_0_0',
-                eventDefinitionRef: ['event_definition_1_id', 'event_definition_2_id'],
+                eventDefinitionRef: ['message_event_definition_id_0_0_1', 'message_event_definition_id_0_0_2'],
               },
             },
             BPMNDiagram: {
@@ -2206,13 +2202,13 @@ describe('build json', () => {
           definitions: {
             targetNamespace: '',
             collaboration: { id: 'collaboration_id_0' },
-            messageEventDefinition: { id: 'event_definition_id' },
-            signalEventDefinition: { id: 'other_event_definition_id' },
+            messageEventDefinition: { id: 'message_event_definition_id_0_0' },
+            signalEventDefinition: { id: 'signal_event_definition_id_0_0' },
             process: {
               id: '0',
               [bpmnKind]: {
                 id: 'event_id_0_0',
-                eventDefinitionRef: ['event_definition_id', 'other_event_definition_id'],
+                eventDefinitionRef: ['message_event_definition_id_0_0', 'signal_event_definition_id_0_0'],
               },
             },
             BPMNDiagram: {
@@ -2249,13 +2245,13 @@ describe('build json', () => {
           definitions: {
             targetNamespace: '',
             collaboration: { id: 'collaboration_id_0' },
-            messageEventDefinition: { id: 'other_event_definition_id' },
-            signalEventDefinition: { id: 'event_definition_id' },
+            messageEventDefinition: { id: 'message_event_definition_id_0_0' },
+            signalEventDefinition: { id: 'signal_event_definition_id_0_0' },
             process: {
               id: '0',
               [bpmnKind]: {
                 id: 'event_id_0_0',
-                eventDefinitionRef: ['event_definition_id', 'other_event_definition_id'],
+                eventDefinitionRef: ['signal_event_definition_id_0_0', 'message_event_definition_id_0_0'],
               },
             },
             BPMNDiagram: {
@@ -2292,12 +2288,12 @@ describe('build json', () => {
           definitions: {
             targetNamespace: '',
             collaboration: { id: 'collaboration_id_0' },
-            messageEventDefinition: [{ id: 'event_definition_1_id' }, { id: 'event_definition_2_id' }],
+            messageEventDefinition: [{ id: 'message_event_definition_id_0_0_1' }, { id: 'message_event_definition_id_0_0_2' }],
             process: {
               id: '0',
               [bpmnKind]: {
                 id: 'event_id_0_0',
-                eventDefinitionRef: ['event_definition_1_id', 'event_definition_2_id'],
+                eventDefinitionRef: ['message_event_definition_id_0_0_1', 'message_event_definition_id_0_0_2'],
                 messageEventDefinition: ['', {}],
               },
             },
@@ -2335,13 +2331,13 @@ describe('build json', () => {
           definitions: {
             targetNamespace: '',
             collaboration: { id: 'collaboration_id_0' },
-            messageEventDefinition: { id: 'event_definition_id' },
-            signalEventDefinition: { id: 'other_event_definition_id' },
+            messageEventDefinition: { id: 'message_event_definition_id_0_0' },
+            signalEventDefinition: { id: 'signal_event_definition_id_0_0' },
             process: {
               id: '0',
               [bpmnKind]: {
                 id: 'event_id_0_0',
-                eventDefinitionRef: ['event_definition_id', 'other_event_definition_id'],
+                eventDefinitionRef: ['message_event_definition_id_0_0', 'signal_event_definition_id_0_0'],
                 messageEventDefinition: '',
                 signalEventDefinition: '',
               },

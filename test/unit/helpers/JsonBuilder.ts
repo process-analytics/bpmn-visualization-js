@@ -514,11 +514,13 @@ function addEventDefinitions(
     addEventDefinition(elementWhereAddDefinition, otherEventDefinitionKind, eventDefinitions[1]);
   } else {
     eventDefinitions = eventDefinition ?? (event || eventDefinitionKind === ShapeBpmnEventDefinitionKind.LINK ? ({} as TEventDefinition) : '');
-    !Array.isArray(eventDefinitions) &&
-      eventDefinitions !== '' &&
+    (event || eventDefinitionKind === ShapeBpmnEventDefinitionKind.LINK) &&
+      typeof eventDefinitions === 'object' &&
       ((eventDefinitions as TEventDefinition).id ??= `${eventDefinitionKind}_event_definition_id_${processIndex}_${index}`);
 
     addEventDefinition(elementWhereAddDefinition, eventDefinitionKind, eventDefinitions);
+
+    // TODO Need to add tests for LINK
   }
 
   if (event) {
