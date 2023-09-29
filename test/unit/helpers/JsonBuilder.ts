@@ -579,6 +579,9 @@ function addEvent(
       break;
     }
     case EventDefinitionOn.NONE: {
+      if (eventDefinitionParameter.eventDefinitionKind) {
+        throw new Error("Must use another value than NONE for 'eventDefinitionOn' when 'eventDefinitionKind' is set !!");
+      }
       break;
     }
   }
