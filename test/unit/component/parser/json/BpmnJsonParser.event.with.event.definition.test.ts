@@ -76,10 +76,12 @@ describe.each([ShapeBpmnElementKind.EVENT_START, ShapeBpmnElementKind.EVENT_END,
             titleForEventDefinitionIsAttributeOf,
           );
 
-          it.each([
-            ['empty string', ''],
-            ['object', { id: `${eventDefinitionKind}EventDefinition_1` }],
-          ])(
+          const eventDefinitionParameters: [[string, string | TEventDefinition]] = [['object', { id: `${eventDefinitionKind}EventDefinition_1` }]];
+          if (eventDefinitionOn === EventDefinitionOn.EVENT) {
+            eventDefinitionParameters.push(['empty string', '']); // Not possible to link an event to an EventDefinition without id, when the EventDefinition is not defined in the event
+          }
+
+          it.each(eventDefinitionParameters)(
             `should convert as Shape, when '${eventDefinitionKind}EventDefinition' is %s, ${titleForEventDefinitionIsAttributeOf}`,
             (title: string, eventDefinition: string | TEventDefinition) => {
               testMustConvertShapes(
