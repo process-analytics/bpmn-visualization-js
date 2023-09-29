@@ -96,6 +96,15 @@ describe('build json', () => {
                 eventDefinitionOn: EventDefinitionOn.NONE,
               },
             },
+            {
+              bpmnKind: 'intermediateCatchEvent',
+              name: 'intermediateCatchEvent',
+              eventDefinitionParameter: {
+                eventDefinitionKind: 'link',
+                eventDefinitionOn: EventDefinitionOn.DEFINITIONS,
+              },
+              source: 'link_event_definition_id_2_1',
+            },
           ],
           gateway: {
             id: 'exclusiveGateway',
@@ -112,6 +121,15 @@ describe('build json', () => {
                 eventDefinitionKind: 'timer',
                 eventDefinitionOn: EventDefinitionOn.BOTH,
               },
+            },
+            {
+              bpmnKind: 'intermediateThrowEvent',
+              name: 'intermediateThrowEvent',
+              eventDefinitionParameter: {
+                eventDefinitionKind: 'link',
+                eventDefinitionOn: EventDefinitionOn.EVENT,
+              },
+              target: 'link_event_definition_id_1_1',
             },
           ],
           callActivity: { calledElement: 'process_participant_0' },
@@ -137,12 +155,11 @@ describe('build json', () => {
         },
         terminateEventDefinition: [{ id: 'terminate_event_definition_id_0_1' }, { id: 'terminate_event_definition_id_0_2' }],
         timerEventDefinition: { id: 'timer_event_definition_id_2_0' },
+        linkEventDefinition: { id: 'link_event_definition_id_1_1' },
         process: [
           {
             id: 'process_participant_0',
-            task: {
-              id: 'task_id_0_0',
-            },
+            task: { id: 'task_id_0_0' },
             endEvent: [
               {
                 id: 'event_id_0_1',
@@ -164,16 +181,18 @@ describe('build json', () => {
           },
           {
             id: 'process_participant_1',
-            exclusiveGateway: {
-              id: 'exclusiveGateway',
-            },
+            exclusiveGateway: { id: 'exclusiveGateway' },
             startEvent: {
               cancelActivity: false,
               id: 'event_id_1_0',
               name: 'startEvent',
             },
-            task: {
-              id: 'task_id_1',
+            task: { id: 'task_id_1' },
+            intermediateCatchEvent: {
+              id: 'event_id_1_1',
+              name: 'intermediateCatchEvent',
+              eventDefinitionRef: 'link_event_definition_id_1_1',
+              source: 'link_event_definition_id_2_1',
             },
           },
           {
@@ -187,6 +206,12 @@ describe('build json', () => {
             callActivity: {
               id: 'callActivity_id_2_0',
               calledElement: 'process_participant_0',
+            },
+            intermediateThrowEvent: {
+              id: 'event_id_2_1',
+              name: 'intermediateThrowEvent',
+              linkEventDefinition: { id: 'link_event_definition_id_2_1' },
+              target: 'link_event_definition_id_1_1',
             },
           },
         ],
@@ -240,6 +265,11 @@ describe('build json', () => {
                 Bounds: { x: 362, y: 232, height: 45, width: 36 },
               },
               {
+                bpmnElement: 'event_id_1_1',
+                id: 'shape_event_id_1_1',
+                Bounds: { x: 362, y: 232, height: 45, width: 36 },
+              },
+              {
                 bpmnElement: 'callActivity_id_2_0',
                 id: 'shape_callActivity_id_2_0',
                 Bounds: { x: 346, y: 856, height: 56, width: 45 },
@@ -248,6 +278,11 @@ describe('build json', () => {
               {
                 bpmnElement: 'event_id_2_0',
                 id: 'shape_event_id_2_0',
+                Bounds: { x: 362, y: 232, height: 45, width: 36 },
+              },
+              {
+                bpmnElement: 'event_id_2_1',
+                id: 'shape_event_id_2_1',
                 Bounds: { x: 362, y: 232, height: 45, width: 36 },
               },
             ],
