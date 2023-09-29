@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { OtherBuildEventKind } from '../../../helpers/JsonBuilder';
+import type { BuildEventDefinition, OtherBuildEventKind } from '../../../helpers/JsonBuilder';
 import type { TEventDefinition } from '@lib/model/bpmn/json/baseElement/rootElement/eventDefinition';
 
 import { EventDefinitionOn } from '../../../helpers/JsonBuilder';
@@ -27,7 +27,7 @@ describe.each([ShapeBpmnElementKind.EVENT_START, ShapeBpmnElementKind.EVENT_END,
   (expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
     describe.each(eventDefinitionsParameters)(
       `for %s ${expectedShapeBpmnElementKind}`,
-      (eventDefinitionKind: string, expectedEventDefinitionKind: ShapeBpmnEventDefinitionKind) => {
+      (eventDefinitionKind: BuildEventDefinition, expectedEventDefinitionKind: ShapeBpmnEventDefinitionKind) => {
         if (
           (expectedShapeBpmnElementKind === ShapeBpmnElementKind.EVENT_START &&
             (expectedEventDefinitionKind === ShapeBpmnEventDefinitionKind.ERROR ||

@@ -69,8 +69,9 @@ type BuildBoundaryEventParameter = {
   attachedToRef: string;
 } & BuildInterruptingEventParameter;
 
+export type BuildEventDefinition = 'message' | 'signal' | 'timer' | 'error' | 'escalation' | 'cancel' | 'compensate' | 'conditional' | 'link' | 'terminate';
 export type BuildEventDefinitionParameter = {
-  eventDefinitionKind?: string;
+  eventDefinitionKind?: BuildEventDefinition;
   eventDefinitionOn: EventDefinitionOn;
   eventDefinition?: BPMNEventDefinition;
   withDifferentDefinition?: boolean;
@@ -486,9 +487,8 @@ function addEventDefinitions(
   { eventDefinitionKind, eventDefinition = '', withDifferentDefinition = false }: BuildEventDefinitionParameter,
   differentEventDefinition: TEventDefinition | string = '',
 ): void {
-  if (eventDefinitionKind !== 'none') {
-    event[`${eventDefinitionKind}EventDefinition`] = eventDefinition;
-  }
+  event[`${eventDefinitionKind}EventDefinition` as keyof BPMNTEvent] = eventDefinition;
+
   if (withDifferentDefinition) {
     const otherEventDefinition = eventDefinitionKind === 'signal' ? 'message' : 'signal';
     event[`${otherEventDefinition}EventDefinition`] = differentEventDefinition;
