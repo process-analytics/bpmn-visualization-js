@@ -491,25 +491,29 @@ function addEventDefinitionsOnDefinition(
   { withMultipleDefinitions, withDifferentDefinition, eventDefinitionKind, eventDefinition }: BuildEventDefinitionParameter,
   event: BPMNTEvent,
 ): void {
-  if (withMultipleDefinitions) {
-    const eventDefinition = [{ id: 'event_definition_1_id' }, { id: 'event_definition_2_id' }];
-    event.eventDefinitionRef = eventDefinition.map(eventDefinition => eventDefinition.id);
+  let eventDefinitions;
 
-    addEventDefinition(definitions, eventDefinitionKind, eventDefinition);
+  if (withMultipleDefinitions) {
+    eventDefinitions = [{ id: 'event_definition_1_id' }, { id: 'event_definition_2_id' }];
+
+    addEventDefinition(definitions, eventDefinitionKind, eventDefinitions);
   } else if (withDifferentDefinition) {
     const otherEventDefinitionKind = eventDefinitionKind === 'signal' ? 'message' : 'signal';
 
-    event.eventDefinitionRef = ['event_definition_id', 'other_event_definition_id'];
+    eventDefinitions = [{ id: 'event_definition_id' }, { id: 'other_event_definition_id' }];
 
-    addEventDefinition(definitions, eventDefinitionKind, { id: event.eventDefinitionRef[0] });
-    addEventDefinition(definitions, otherEventDefinitionKind, { id: event.eventDefinitionRef[1] });
+    addEventDefinition(definitions, eventDefinitionKind, eventDefinitions[0]);
+    addEventDefinition(definitions, otherEventDefinitionKind, eventDefinitions[1]);
   } else {
-    eventDefinition ??= {};
-    (eventDefinition as TEventDefinition).id ??= 'event_definition_id';
-    event.eventDefinitionRef = Array.isArray(eventDefinition) ? (eventDefinition as TEventDefinition[]).map(definition => definition.id) : (eventDefinition as TEventDefinition).id;
+    eventDefinitions = eventDefinition ?? ({} as TEventDefinition);
+    !Array.isArray(eventDefinition) && ((eventDefinitions as TEventDefinition).id ??= 'event_definition_id');
 
-    addEventDefinition(definitions, eventDefinitionKind, eventDefinition);
+    addEventDefinition(definitions, eventDefinitionKind, eventDefinitions);
   }
+
+  event.eventDefinitionRef = Array.isArray(eventDefinitions)
+    ? (eventDefinitions as TEventDefinition[]).map(definition => definition.id)
+    : (eventDefinitions as TEventDefinition).id;
 }
 
 function addEventDefinitionsOnEvent(
