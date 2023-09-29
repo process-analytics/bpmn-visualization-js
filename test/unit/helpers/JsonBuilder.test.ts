@@ -73,6 +73,14 @@ describe('build json', () => {
                 eventDefinitionOn: EventDefinitionOn.DEFINITIONS,
               },
             },
+            {
+              bpmnKind: 'endEvent',
+              name: 'endEvent',
+              eventDefinitionParameter: {
+                eventDefinitionKind: 'terminate',
+                eventDefinitionOn: EventDefinitionOn.DEFINITIONS,
+              },
+            },
           ],
         },
         {
@@ -127,7 +135,7 @@ describe('build json', () => {
             targetRef: 'target_id_0',
           },
         },
-        terminateEventDefinition: { id: 'terminate_event_definition_id_0_1' },
+        terminateEventDefinition: [{ id: 'terminate_event_definition_id_0_1' }, { id: 'terminate_event_definition_id_0_2' }],
         timerEventDefinition: { id: 'timer_event_definition_id_2_0' },
         process: [
           {
@@ -135,16 +143,23 @@ describe('build json', () => {
             task: {
               id: 'task_id_0_0',
             },
-            endEvent: {
-              id: 'event_id_0_1',
-              name: 'endEvent',
-              eventDefinitionRef: 'terminate_event_definition_id_0_1',
-            },
+            endEvent: [
+              {
+                id: 'event_id_0_1',
+                name: 'endEvent',
+                eventDefinitionRef: 'terminate_event_definition_id_0_1',
+              },
+              {
+                id: 'event_id_0_2',
+                name: 'endEvent',
+                eventDefinitionRef: 'terminate_event_definition_id_0_2',
+              },
+            ],
             startEvent: {
-              cancelActivity: true,
               id: 'event_id_0_0',
               messageEventDefinition: '',
               name: 'startEvent',
+              cancelActivity: true,
             },
           },
           {
@@ -197,6 +212,11 @@ describe('build json', () => {
               {
                 bpmnElement: 'event_id_0_1',
                 id: 'shape_event_id_0_1',
+                Bounds: { x: 362, y: 232, height: 45, width: 36 },
+              },
+              {
+                bpmnElement: 'event_id_0_2',
+                id: 'shape_event_id_0_2',
                 Bounds: { x: 362, y: 232, height: 45, width: 36 },
               },
               {
