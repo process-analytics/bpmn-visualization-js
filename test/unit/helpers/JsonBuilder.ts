@@ -486,27 +486,31 @@ function addEventDefinition(event: BPMNTEvent | TDefinitions, eventDefinitionKin
   event[`${eventDefinitionKind}EventDefinition` as keyof typeof event] = eventDefinition;
 }
 
-function addEventDefinitionsOnDefinition(jsonModel: BpmnJsonModel, buildParameter: BuildEventDefinitionParameter, event: BPMNTEvent): void {
+function addEventDefinitionsOnDefinition(
+  jsonModel: BpmnJsonModel,
+  { withMultipleDefinitions, withDifferentDefinition, eventDefinitionKind, eventDefinition }: BuildEventDefinitionParameter,
+  event: BPMNTEvent,
+): void {
   const definitions: TDefinitions = jsonModel.definitions;
 
-  if (buildParameter.withDifferentDefinition) {
-    const otherEventDefinition = buildParameter.eventDefinitionKind === 'signal' ? 'message' : 'signal';
+  if (withMultipleDefinitions) {
+    const eventDefinition = [{ id: 'event_definition_1_id' }, { id: 'event_definition_2_id' }];
+    event.eventDefinitionRef = eventDefinition.map(eventDefinition => eventDefinition.id);
+
+    addEventDefinition(definitions, eventDefinitionKind, eventDefinition);
+  } else if (withDifferentDefinition) {
+    const otherEventDefinition = eventDefinitionKind === 'signal' ? 'message' : 'signal';
 
     event.eventDefinitionRef = ['event_definition_id', 'other_event_definition_id'];
 
-    addEventDefinition(definitions, buildParameter.eventDefinitionKind, { id: event.eventDefinitionRef[0] });
+    addEventDefinition(definitions, eventDefinitionKind, { id: event.eventDefinitionRef[0] });
     addEventDefinition(definitions, otherEventDefinition, { id: event.eventDefinitionRef[1] });
   } else {
-    // eslint-disable-next-line unicorn/prefer-logical-operator-over-ternary -- Because if `eventDefinition` is an empty string, the logical operator returns `true` and the ternary returns `false`.
-    const eventDefinition = buildParameter.eventDefinition
-      ? buildParameter.eventDefinition
-      : buildParameter.withMultipleDefinitions
-      ? [{ id: 'event_definition_1_id' }, { id: 'event_definition_2_id' }]
-      : { id: 'event_definition_id' };
-    addEventDefinition(definitions, buildParameter.eventDefinitionKind, eventDefinition);
-    event.eventDefinitionRef = Array.isArray(eventDefinition)
-      ? eventDefinition.map(eventDefinition => (typeof eventDefinition === 'string' ? eventDefinition : eventDefinition.id))
-      : (event.eventDefinitionRef = (eventDefinition as TEventDefinition).id);
+    eventDefinition ??= {};
+    (eventDefinition as TEventDefinition).id ??= 'event_definition_id';
+    event.eventDefinitionRef = Array.isArray(eventDefinition) ? (eventDefinition as TEventDefinition[]).map(definition => definition.id) : (eventDefinition as TEventDefinition).id;
+
+    addEventDefinition(definitions, eventDefinitionKind, eventDefinition);
   }
 }
 
