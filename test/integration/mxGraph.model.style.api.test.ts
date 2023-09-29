@@ -1078,7 +1078,7 @@ describe('mxGraph model - reset style', () => {
     describe('Reset style - special cases', () => {
       const bpmnElementsRegistry = bpmnVisualization.bpmnElementsRegistry;
 
-      it.each([null, undefined])('Reset style with nullish parameter: %s', (nullishResetParameter: string) => {
+      it.each([null, undefined])('Reset style with a nullish parameter: %s', (nullishResetParameter: string) => {
         // Apply custom style
         const customStyle: StyleUpdate = {
           font: { color: 'blue' },
@@ -1102,7 +1102,7 @@ describe('mxGraph model - reset style', () => {
         });
       });
 
-      it('Reset style with an empty array', () => {
+      it.each(['', []])('Reset style with an empty parameter: %s', (emptyParameter: string | string[]) => {
         // Apply custom style
         const customStyle: StyleUpdate = {
           opacity: 25,
@@ -1110,7 +1110,7 @@ describe('mxGraph model - reset style', () => {
         bpmnElementsRegistry.updateStyle(['startEvent_lane_1', 'sequenceFlow_lane_1_elt_1'], customStyle);
 
         // Reset style. It should have no effect.
-        bpmnElementsRegistry.resetStyle([]);
+        bpmnElementsRegistry.resetStyle(emptyParameter);
 
         // Check that the style has been reset to default values for each element
         expect('startEvent_lane_1').toBeStartEvent({
