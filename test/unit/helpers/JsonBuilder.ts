@@ -487,12 +487,10 @@ function addEventDefinition(event: BPMNTEvent | TDefinitions, eventDefinitionKin
 }
 
 function addEventDefinitionsOnDefinition(
-  jsonModel: BpmnJsonModel,
+  definitions: TDefinitions,
   { withMultipleDefinitions, withDifferentDefinition, eventDefinitionKind, eventDefinition }: BuildEventDefinitionParameter,
   event: BPMNTEvent,
 ): void {
-  const definitions: TDefinitions = jsonModel.definitions;
-
   if (withMultipleDefinitions) {
     const eventDefinition = [{ id: 'event_definition_1_id' }, { id: 'event_definition_2_id' }];
     event.eventDefinitionRef = eventDefinition.map(eventDefinition => eventDefinition.id);
@@ -580,11 +578,11 @@ function addEvent(
   switch (eventDefinitionParameter.eventDefinitionOn) {
     case EventDefinitionOn.BOTH: {
       addEventDefinitionsOnEvent(event, eventDefinitionParameter);
-      addEventDefinitionsOnDefinition(jsonModel, eventDefinitionParameter, event);
+      addEventDefinitionsOnDefinition(jsonModel.definitions, eventDefinitionParameter, event);
       break;
     }
     case EventDefinitionOn.DEFINITIONS: {
-      addEventDefinitionsOnDefinition(jsonModel, eventDefinitionParameter, event);
+      addEventDefinitionsOnDefinition(jsonModel.definitions, eventDefinitionParameter, event);
       break;
     }
     case EventDefinitionOn.EVENT: {
