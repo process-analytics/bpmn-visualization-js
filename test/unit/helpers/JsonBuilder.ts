@@ -518,14 +518,6 @@ function addEventDefinitions(
   }
 }
 
-function addEventDefinitionsOnDefinition(definitions: TDefinitions, eventDefinitionParameter: BuildEventDefinitionParameter, event: BPMNTEvent): void {
-  addEventDefinitions(definitions, eventDefinitionParameter, event);
-}
-
-function addEventDefinitionsOnEvent(event: BPMNTEvent, eventDefinitionParameter: BuildEventDefinitionParameter): void {
-  addEventDefinitions(event, eventDefinitionParameter);
-}
-
 function buildEvent({
   id,
   name,
@@ -570,16 +562,16 @@ function addEvent(
   const event = buildEvent({ id, name, index, processIndex, ...rest });
   switch (eventDefinitionParameter.eventDefinitionOn) {
     case EventDefinitionOn.BOTH: {
-      addEventDefinitionsOnEvent(event, eventDefinitionParameter);
-      addEventDefinitionsOnDefinition(jsonModel.definitions, eventDefinitionParameter, event);
+      addEventDefinitions(event, eventDefinitionParameter);
+      addEventDefinitions(jsonModel.definitions, eventDefinitionParameter, event);
       break;
     }
     case EventDefinitionOn.DEFINITIONS: {
-      addEventDefinitionsOnDefinition(jsonModel.definitions, eventDefinitionParameter, event);
+      addEventDefinitions(jsonModel.definitions, eventDefinitionParameter, event);
       break;
     }
     case EventDefinitionOn.EVENT: {
-      addEventDefinitionsOnEvent(event, eventDefinitionParameter);
+      addEventDefinitions(event, eventDefinitionParameter);
       break;
     }
     case EventDefinitionOn.NONE: {
