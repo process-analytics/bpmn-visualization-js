@@ -26,6 +26,8 @@ import type { BpmnJsonModel, TDefinitions } from '@lib/model/bpmn/json/bpmn20';
 import type { BPMNEdge, BPMNPlane, BPMNShape } from '@lib/model/bpmn/json/bpmndi';
 import type { DiagramElement } from '@lib/model/bpmn/json/di';
 
+import { ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
+
 type BuildProcessElementParameter = (Pick<TFlowNode, 'id' | 'name'> | Pick<TArtifact, 'id'>) & {
   index: number;
   processIndex: number;
@@ -489,24 +491,32 @@ function addEventDefinition(event: BPMNTEvent | TDefinitions, eventDefinitionKin
 function addEventDefinitions(
   elementWhereAddDefinition: TDefinitions | BPMNTEvent,
   { withMultipleDefinitions, withDifferentDefinition, eventDefinitionKind, eventDefinition }: BuildEventDefinitionParameter,
+  index: number,
+  processIndex: number,
   event?: BPMNTEvent,
 ): void {
   let eventDefinitions;
 
   if (withMultipleDefinitions) {
-    eventDefinitions = event ? [{ id: 'event_definition_1_id' }, { id: 'event_definition_2_id' }] : ['', {}];
+    eventDefinitions = event
+      ? [{ id: `${eventDefinitionKind}_event_definition_id_${processIndex}_${index}_1` }, { id: `${eventDefinitionKind}_event_definition_id_${processIndex}_${index}_2` }]
+      : ['', {}];
 
     addEventDefinition(elementWhereAddDefinition, eventDefinitionKind, eventDefinitions);
   } else if (withDifferentDefinition) {
     const otherEventDefinitionKind = eventDefinitionKind === 'signal' ? 'message' : 'signal';
 
-    eventDefinitions = event ? [{ id: 'event_definition_id' }, { id: 'other_event_definition_id' }] : ['', ''];
+    eventDefinitions = event
+      ? [{ id: `${eventDefinitionKind}_event_definition_id_${processIndex}_${index}` }, { id: `${otherEventDefinitionKind}_event_definition_id_${processIndex}_${index}` }]
+      : ['', ''];
 
     addEventDefinition(elementWhereAddDefinition, eventDefinitionKind, eventDefinitions[0]);
     addEventDefinition(elementWhereAddDefinition, otherEventDefinitionKind, eventDefinitions[1]);
   } else {
-    eventDefinitions = eventDefinition ?? (event ? ({} as TEventDefinition) : '');
-    event && !Array.isArray(eventDefinitions) && eventDefinitions !== '' && ((eventDefinitions as TEventDefinition).id ??= 'event_definition_id');
+    eventDefinitions = eventDefinition ?? (event || eventDefinitionKind === ShapeBpmnEventDefinitionKind.LINK ? ({} as TEventDefinition) : '');
+    !Array.isArray(eventDefinitions) &&
+      eventDefinitions !== '' &&
+      ((eventDefinitions as TEventDefinition).id ??= `${eventDefinitionKind}_event_definition_id_${processIndex}_${index}`);
 
     addEventDefinition(elementWhereAddDefinition, eventDefinitionKind, eventDefinitions);
   }
@@ -562,16 +572,16 @@ function addEvent(
   const event = buildEvent({ id, name, index, processIndex, ...rest });
   switch (eventDefinitionParameter.eventDefinitionOn) {
     case EventDefinitionOn.BOTH: {
-      addEventDefinitions(event, eventDefinitionParameter);
-      addEventDefinitions(jsonModel.definitions, eventDefinitionParameter, event);
+      addEventDefinitions(event, eventDefinitionParameter, index, processIndex);
+      addEventDefinitions(jsonModel.definitions, eventDefinitionParameter, index, processIndex, event);
       break;
     }
     case EventDefinitionOn.DEFINITIONS: {
-      addEventDefinitions(jsonModel.definitions, eventDefinitionParameter, event);
+      addEventDefinitions(jsonModel.definitions, eventDefinitionParameter, index, processIndex, event);
       break;
     }
     case EventDefinitionOn.EVENT: {
-      addEventDefinitions(event, eventDefinitionParameter);
+      addEventDefinitions(event, eventDefinitionParameter, index, processIndex);
       break;
     }
     case EventDefinitionOn.NONE: {
