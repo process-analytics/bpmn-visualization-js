@@ -69,7 +69,7 @@ type BuildBoundaryEventParameter = {
   attachedToRef: string;
 } & BuildInterruptingEventParameter;
 
-export type BuildEventDefinition = 'message' | 'signal' | 'timer' | 'error' | 'escalation' | 'cancel' | 'compensate' | 'conditional' | 'link' | 'terminate'; 
+export type BuildEventDefinition = 'message' | 'signal' | 'timer' | 'error' | 'escalation' | 'cancel' | 'compensate' | 'conditional' | 'link' | 'terminate';
 export type BuildEventDefinitionParameter = {
   eventDefinitionKind?: BuildEventDefinition;
   eventDefinitionOn: EventDefinitionOn;
