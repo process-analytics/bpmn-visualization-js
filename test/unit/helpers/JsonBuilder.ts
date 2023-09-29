@@ -499,12 +499,12 @@ function addEventDefinitionsOnDefinition(
 
     addEventDefinition(definitions, eventDefinitionKind, eventDefinition);
   } else if (withDifferentDefinition) {
-    const otherEventDefinition = eventDefinitionKind === 'signal' ? 'message' : 'signal';
+    const otherEventDefinitionKind = eventDefinitionKind === 'signal' ? 'message' : 'signal';
 
     event.eventDefinitionRef = ['event_definition_id', 'other_event_definition_id'];
 
     addEventDefinition(definitions, eventDefinitionKind, { id: event.eventDefinitionRef[0] });
-    addEventDefinition(definitions, otherEventDefinition, { id: event.eventDefinitionRef[1] });
+    addEventDefinition(definitions, otherEventDefinitionKind, { id: event.eventDefinitionRef[1] });
   } else {
     eventDefinition ??= {};
     (eventDefinition as TEventDefinition).id ??= 'event_definition_id';
@@ -514,16 +514,24 @@ function addEventDefinitionsOnDefinition(
   }
 }
 
-function addEventDefinitionsOnEvent(event: TCatchEvent | TThrowEvent | TBoundaryEvent, buildParameter: BuildEventDefinitionParameter): void {
-  if (buildParameter.withMultipleDefinitions) {
-    addEventDefinition(event, buildParameter.eventDefinitionKind, ['', {}]);
-  } else {
-    if (buildParameter.withDifferentDefinition) {
-      const otherEventDefinition = buildParameter.eventDefinitionKind === 'signal' ? 'message' : 'signal';
-      addEventDefinition(event, otherEventDefinition, '');
-    }
+function addEventDefinitionsOnEvent(
+  event: TCatchEvent | TThrowEvent | TBoundaryEvent,
+  { withMultipleDefinitions, withDifferentDefinition, eventDefinitionKind, eventDefinition }: BuildEventDefinitionParameter,
+): void {
+  if (withMultipleDefinitions) {
+    const eventDefinition = ['', {}];
+    addEventDefinition(event, eventDefinitionKind, eventDefinition);
+  } else if (withDifferentDefinition) {
+    const otherEventDefinitionKind = eventDefinitionKind === 'signal' ? 'message' : 'signal';
 
-    addEventDefinition(event, buildParameter.eventDefinitionKind, buildParameter.eventDefinition ?? '');
+    eventDefinition ??= '';
+    const otherEventDefinition = '';
+
+    addEventDefinition(event, eventDefinitionKind, eventDefinition);
+    addEventDefinition(event, otherEventDefinitionKind, otherEventDefinition);
+  } else {
+    eventDefinition ??= '';
+    addEventDefinition(event, eventDefinitionKind, eventDefinition);
   }
 }
 
