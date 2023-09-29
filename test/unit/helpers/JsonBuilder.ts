@@ -486,55 +486,44 @@ function addEventDefinition(event: BPMNTEvent | TDefinitions, eventDefinitionKin
   event[`${eventDefinitionKind}EventDefinition` as keyof typeof event] = eventDefinition;
 }
 
-function addEventDefinitionsOnDefinition(
-  definitions: TDefinitions,
+function addEventDefinitions(
+  elementWhereAddDefinition: TDefinitions | BPMNTEvent,
   { withMultipleDefinitions, withDifferentDefinition, eventDefinitionKind, eventDefinition }: BuildEventDefinitionParameter,
-  event: BPMNTEvent,
+  event?: BPMNTEvent,
 ): void {
   let eventDefinitions;
 
   if (withMultipleDefinitions) {
-    eventDefinitions = [{ id: 'event_definition_1_id' }, { id: 'event_definition_2_id' }];
+    eventDefinitions = event ? [{ id: 'event_definition_1_id' }, { id: 'event_definition_2_id' }] : ['', {}];
 
-    addEventDefinition(definitions, eventDefinitionKind, eventDefinitions);
+    addEventDefinition(elementWhereAddDefinition, eventDefinitionKind, eventDefinitions);
   } else if (withDifferentDefinition) {
     const otherEventDefinitionKind = eventDefinitionKind === 'signal' ? 'message' : 'signal';
 
-    eventDefinitions = [{ id: 'event_definition_id' }, { id: 'other_event_definition_id' }];
+    eventDefinitions = event ? [{ id: 'event_definition_id' }, { id: 'other_event_definition_id' }] : ['', ''];
 
-    addEventDefinition(definitions, eventDefinitionKind, eventDefinitions[0]);
-    addEventDefinition(definitions, otherEventDefinitionKind, eventDefinitions[1]);
+    addEventDefinition(elementWhereAddDefinition, eventDefinitionKind, eventDefinitions[0]);
+    addEventDefinition(elementWhereAddDefinition, otherEventDefinitionKind, eventDefinitions[1]);
   } else {
-    eventDefinitions = eventDefinition ?? ({} as TEventDefinition);
-    !Array.isArray(eventDefinition) && ((eventDefinitions as TEventDefinition).id ??= 'event_definition_id');
+    eventDefinitions = eventDefinition ?? (event ? ({} as TEventDefinition) : '');
+    event && !Array.isArray(eventDefinitions) && eventDefinitions !== '' && ((eventDefinitions as TEventDefinition).id ??= 'event_definition_id');
 
-    addEventDefinition(definitions, eventDefinitionKind, eventDefinitions);
+    addEventDefinition(elementWhereAddDefinition, eventDefinitionKind, eventDefinitions);
   }
 
-  event.eventDefinitionRef = Array.isArray(eventDefinitions)
-    ? (eventDefinitions as TEventDefinition[]).map(definition => definition.id)
-    : (eventDefinitions as TEventDefinition).id;
+  if (event) {
+    event.eventDefinitionRef = Array.isArray(eventDefinitions)
+      ? (eventDefinitions as TEventDefinition[]).map(definition => definition.id)
+      : (eventDefinitions as TEventDefinition).id;
+  }
 }
 
-function addEventDefinitionsOnEvent(
-  event: TCatchEvent | TThrowEvent | TBoundaryEvent,
-  { withMultipleDefinitions, withDifferentDefinition, eventDefinitionKind, eventDefinition }: BuildEventDefinitionParameter,
-): void {
-  if (withMultipleDefinitions) {
-    const eventDefinition = ['', {}];
-    addEventDefinition(event, eventDefinitionKind, eventDefinition);
-  } else if (withDifferentDefinition) {
-    const otherEventDefinitionKind = eventDefinitionKind === 'signal' ? 'message' : 'signal';
+function addEventDefinitionsOnDefinition(definitions: TDefinitions, eventDefinitionParameter: BuildEventDefinitionParameter, event: BPMNTEvent): void {
+  addEventDefinitions(definitions, eventDefinitionParameter, event);
+}
 
-    eventDefinition ??= '';
-    const otherEventDefinition = '';
-
-    addEventDefinition(event, eventDefinitionKind, eventDefinition);
-    addEventDefinition(event, otherEventDefinitionKind, otherEventDefinition);
-  } else {
-    eventDefinition ??= '';
-    addEventDefinition(event, eventDefinitionKind, eventDefinition);
-  }
+function addEventDefinitionsOnEvent(event: BPMNTEvent, eventDefinitionParameter: BuildEventDefinitionParameter): void {
+  addEventDefinitions(event, eventDefinitionParameter);
 }
 
 function buildEvent({
