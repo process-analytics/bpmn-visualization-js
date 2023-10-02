@@ -507,13 +507,16 @@ function addEventDefinition(event: BPMNTEvent | TDefinitions, eventDefinitionKin
 
 function buildEventDefinition(
   eventDefinitionKind: BuildEventDefinition,
+  initialEventId: string,
   processIndex: number,
   index: number,
   source: string | string[],
   target: string,
   idSuffix = '',
 ): TEventDefinition {
-  const eventDefinition: TEventDefinition = { id: `${eventDefinitionKind}_event_definition_id_${processIndex}_${index}${idSuffix}` };
+  const suffixId = initialEventId ?? `event_definition_id_${processIndex}_${index}`;
+
+  const eventDefinition: TEventDefinition = { id: `${eventDefinitionKind}_${suffixId}${idSuffix}` };
 
   if (eventDefinitionKind === ShapeBpmnEventDefinitionKind.LINK) {
     (eventDefinition as TLinkEventDefinition).source = source;
@@ -530,15 +533,18 @@ function buildEventDefinition(
 function addEventDefinitions(
   elementWhereAddDefinition: TDefinitions | BPMNTEvent,
   { withMultipleDefinitions, withDifferentDefinition, eventDefinitionKind, eventDefinition, source, target }: BuildEventDefinitionParameter,
+  initialEventId: string,
   index: number,
   processIndex: number,
   event?: BPMNTEvent,
 ): void {
+  const suffixId = initialEventId ?? `event_definition_id_${processIndex}_${index}`;
+
   let eventDefinitions;
 
   if (withMultipleDefinitions) {
     eventDefinitions = event
-      ? [buildEventDefinition(eventDefinitionKind, processIndex, index, source, target, '_1'), buildEventDefinition(eventDefinitionKind, processIndex, index, source, target, '_2')]
+      ? [buildEventDefinition(eventDefinitionKind, initialEventId, processIndex, index, source, target, '_1'), buildEventDefinition(eventDefinitionKind, processIndex, index, source, target, '_2')]
       : ['', {}];
 
     addEventDefinition(elementWhereAddDefinition, eventDefinitionKind, eventDefinitions);
@@ -546,7 +552,7 @@ function addEventDefinitions(
     const otherEventDefinitionKind = eventDefinitionKind === 'signal' ? 'message' : 'signal';
 
     eventDefinitions = event
-      ? [buildEventDefinition(eventDefinitionKind, processIndex, index, source, target), buildEventDefinition(otherEventDefinitionKind, processIndex, index, source, target)]
+      ? [buildEventDefinition(eventDefinitionKind, initialEventId, processIndex, index, source, target), buildEventDefinition(otherEventDefinitionKind, processIndex, index, source, target)]
       : ['', ''];
 
     addEventDefinition(elementWhereAddDefinition, eventDefinitionKind, eventDefinitions[0]);
@@ -556,7 +562,7 @@ function addEventDefinitions(
       event || eventDefinitionKind === ShapeBpmnEventDefinitionKind.LINK
         ? {
             ...(typeof eventDefinition === 'object' ? eventDefinition : { id: eventDefinition }),
-            ...buildEventDefinition(eventDefinitionKind, processIndex, index, source, target),
+            ...buildEventDefinition(eventDefinitionKind, initialEventId, processIndex, index, source, target),
           }
         : eventDefinition ?? '';
 
@@ -613,16 +619,16 @@ function addEvent(jsonModel: BpmnJsonModel, { id, bpmnKind, eventDefinitionParam
   const event = buildEvent({ id, name, index, processIndex, ...rest });
   switch (eventDefinitionParameter.eventDefinitionOn) {
     case EventDefinitionOn.BOTH: {
-      addEventDefinitions(event, eventDefinitionParameter, index, processIndex);
-      addEventDefinitions(jsonModel.definitions, eventDefinitionParameter, index, processIndex, event);
+      addEventDefinitions(event, eventDefinitionParameter, id, index, processIndex);
+      addEventDefinitions(jsonModel.definitions, eventDefinitionParameter, id, index, processIndex, event);
       break;
     }
     case EventDefinitionOn.DEFINITIONS: {
-      addEventDefinitions(jsonModel.definitions, eventDefinitionParameter, index, processIndex, event);
+      addEventDefinitions(jsonModel.definitions, eventDefinitionParameter, id, index, processIndex, event);
       break;
     }
     case EventDefinitionOn.EVENT: {
-      addEventDefinitions(event, eventDefinitionParameter, index, processIndex);
+      addEventDefinitions(event, eventDefinitionParameter, id, index, processIndex);
       break;
     }
     case EventDefinitionOn.NONE: {
