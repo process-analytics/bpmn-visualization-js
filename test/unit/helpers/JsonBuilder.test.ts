@@ -1841,7 +1841,7 @@ describe('build json', () => {
                   bpmnKind: 'boundaryEvent',
                   isInterrupting: false,
                   eventDefinitionParameter,
-                  attachedToRef: 'task_id_0_0',
+                  attachedToRef: 'task_id_1_0',
                 },
               ],
             },
@@ -1868,7 +1868,7 @@ describe('build json', () => {
                   id: 'event_id_1_0',
                   messageEventDefinition: '',
                   cancelActivity: false,
-                  attachedToRef: 'task_id_0_0',
+                  attachedToRef: 'task_id_1_0',
                 },
               },
             ],
@@ -1884,6 +1884,63 @@ describe('build json', () => {
                   {
                     id: 'shape_event_id_1_0',
                     bpmnElement: 'event_id_1_0',
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                  },
+                ],
+              },
+            },
+          },
+        });
+      });
+
+      it('incoming and outgoing', () => {
+        const json = buildDefinitions({
+          process: {
+            event: [
+              {
+                bpmnKind: 'boundaryEvent',
+                isInterrupting: false,
+                attachedToRef: 'task_id_0_0',
+                name: 'name',
+                id: 'another_id',
+                eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT },
+                incoming: 'incoming_id',
+                outgoing: ['outgoing_id'],
+              },
+            ],
+            task: {},
+          },
+        });
+
+        expect(json).toEqual({
+          definitions: {
+            targetNamespace: '',
+            collaboration: { id: 'collaboration_id_0' },
+            process: {
+              id: '0',
+              task: { id: 'task_id_0_0' },
+              boundaryEvent: {
+                id: 'another_id',
+                cancelActivity: false,
+                attachedToRef: 'task_id_0_0',
+                messageEventDefinition: '',
+                name: 'name',
+                incoming: 'incoming_id',
+                outgoing: ['outgoing_id'],
+              },
+            },
+            BPMNDiagram: {
+              name: 'process 0',
+              BPMNPlane: {
+                BPMNShape: [
+                  {
+                    id: 'shape_task_id_0_0',
+                    bpmnElement: 'task_id_0_0',
+                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                  },
+                  {
+                    id: 'shape_another_id',
+                    bpmnElement: 'another_id',
                     Bounds: { x: 362, y: 232, width: 36, height: 45 },
                   },
                 ],
