@@ -48,14 +48,13 @@ describe('mxGraph model - CSS API', () => {
   });
 
   describe('Remove CSS classes - special cases', () => {
-    const emptyArray: string[] = [];
-    it.each([null, undefined, emptyArray])('Remove CSS classes with parameter: %s', (bpmnElementIds: string) => {
+    it.each([null, undefined, '', []])('Remove CSS classes with parameter: %s', (bpmnElementIds: string | string[]) => {
       // ensure we pass an empty array
       if (bpmnElementIds) {
         // eslint-disable-next-line jest/no-conditional-expect -- here we only validate the test parameter
-        expect(emptyArray).toBeArray();
+        expect(bpmnElementIds).toBeArray();
         // eslint-disable-next-line jest/no-conditional-expect
-        expect(emptyArray).toHaveLength(0);
+        expect(bpmnElementIds).toHaveLength(0);
       }
 
       bpmnElementsRegistry.addCssClasses(['userTask_2_2', 'sequenceFlow_lane_3_elt_3'], ['class1', 'class2']);
@@ -79,7 +78,7 @@ describe('mxGraph model - CSS API', () => {
   });
 
   describe('Remove all CSS classes - special cases', () => {
-    it.each([null, undefined])('Remove all CSS classes with nullish parameter: %s', (nullishResetParameter: string) => {
+    it.each([null, undefined])('Remove all CSS classes with a nullish parameter: %s', (nullishResetParameter: string) => {
       bpmnElementsRegistry.addCssClasses(['userTask_2_2', 'sequenceFlow_lane_3_elt_3'], ['class1', 'class2']);
 
       bpmnElementsRegistry.removeAllCssClasses(nullishResetParameter);
@@ -98,11 +97,11 @@ describe('mxGraph model - CSS API', () => {
       });
     });
 
-    it('Remove all CSS classes with an empty array', () => {
+    it.each(['', []])('Remove all CSS classes with an empty parameter: %s', (emptyParameter: string | string[]) => {
       bpmnElementsRegistry.addCssClasses(['userTask_2_2', 'sequenceFlow_lane_3_elt_3'], ['class#1', 'class#2']);
 
       // should have no effect
-      bpmnElementsRegistry.removeAllCssClasses([]);
+      bpmnElementsRegistry.removeAllCssClasses(emptyParameter);
 
       expect('userTask_2_2').toBeUserTask({
         extraCssClasses: ['class#1', 'class#2'],
