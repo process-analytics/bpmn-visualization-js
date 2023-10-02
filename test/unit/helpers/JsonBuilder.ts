@@ -519,8 +519,6 @@ function addEventDefinitions(
       ((eventDefinitions as TEventDefinition).id ??= `${eventDefinitionKind}_event_definition_id_${processIndex}_${index}`);
 
     addEventDefinition(elementWhereAddDefinition, eventDefinitionKind, eventDefinitions);
-
-    // TODO Need to add tests for LINK
   }
 
   if (event) {
