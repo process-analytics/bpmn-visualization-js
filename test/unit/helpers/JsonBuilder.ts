@@ -482,43 +482,39 @@ function addEdge(jsonModel: BpmnJsonModel, edge: BPMNEdge): void {
   });
 }
 
+function addEventDefinition(event: BPMNTEvent | TDefinitions, eventDefinitionKind: BuildEventDefinition, eventDefinition?: BPMNEventDefinition): void {
+  event[`${eventDefinitionKind}EventDefinition` as keyof typeof event] = eventDefinition;
+}
+
 function addEventDefinitions(
-  event: BPMNTEvent,
-  { eventDefinitionKind, eventDefinition = '', withDifferentDefinition = false }: BuildEventDefinitionParameter,
-  differentEventDefinition: TEventDefinition | string = '',
+  elementWhereAddDefinition: TDefinitions | BPMNTEvent,
+  { withMultipleDefinitions, withDifferentDefinition, eventDefinitionKind, eventDefinition }: BuildEventDefinitionParameter,
+  event?: BPMNTEvent,
 ): void {
-  event[`${eventDefinitionKind}EventDefinition` as keyof BPMNTEvent] = eventDefinition;
+  let eventDefinitions;
 
-  if (withDifferentDefinition) {
-    const otherEventDefinition = eventDefinitionKind === 'signal' ? 'message' : 'signal';
-    event[`${otherEventDefinition}EventDefinition`] = differentEventDefinition;
-  }
-}
+  if (withMultipleDefinitions) {
+    eventDefinitions = event ? [{ id: 'event_definition_1_id' }, { id: 'event_definition_2_id' }] : ['', {}];
 
-function addEventDefinitionsOnDefinition(jsonModel: BpmnJsonModel, buildParameter: BuildEventDefinitionParameter, event: BPMNTEvent): void {
-  if (buildParameter.withDifferentDefinition) {
-    addEventDefinitions(jsonModel.definitions, { ...buildParameter, eventDefinition: { id: 'event_definition_id' } }, { id: 'other_event_definition_id' });
-    (event.eventDefinitionRef as string[]) = ['event_definition_id', 'other_event_definition_id'];
+    addEventDefinition(elementWhereAddDefinition, eventDefinitionKind, eventDefinitions);
+  } else if (withDifferentDefinition) {
+    const otherEventDefinitionKind = eventDefinitionKind === 'signal' ? 'message' : 'signal';
+
+    eventDefinitions = event ? [{ id: 'event_definition_id' }, { id: 'other_event_definition_id' }] : ['', ''];
+
+    addEventDefinition(elementWhereAddDefinition, eventDefinitionKind, eventDefinitions[0]);
+    addEventDefinition(elementWhereAddDefinition, otherEventDefinitionKind, eventDefinitions[1]);
   } else {
-    // eslint-disable-next-line unicorn/prefer-logical-operator-over-ternary -- Because if `eventDefinition` is an empty string, the logical operator returns `true` and the ternary returns `false`.
-    const eventDefinition = buildParameter.eventDefinition
-      ? buildParameter.eventDefinition
-      : buildParameter.withMultipleDefinitions
-      ? [{ id: 'event_definition_1_id' }, { id: 'event_definition_2_id' }]
-      : { id: 'event_definition_id' };
-    addEventDefinitions(jsonModel.definitions, { ...buildParameter, eventDefinition });
-    event.eventDefinitionRef = Array.isArray(eventDefinition)
-      ? eventDefinition.map(eventDefinition => (typeof eventDefinition === 'string' ? eventDefinition : eventDefinition.id))
-      : (event.eventDefinitionRef = (eventDefinition as TEventDefinition).id);
-  }
-}
+    eventDefinitions = eventDefinition ?? (event ? ({} as TEventDefinition) : '');
+    event && !Array.isArray(eventDefinitions) && eventDefinitions !== '' && ((eventDefinitions as TEventDefinition).id ??= 'event_definition_id');
 
-function addEventDefinitionsOnEvent(event: TCatchEvent | TThrowEvent | TBoundaryEvent, buildParameter: BuildEventDefinitionParameter): void {
-  if (buildParameter.withMultipleDefinitions) {
-    const eventDefinition = ['', {}];
-    addEventDefinitions(event, { ...buildParameter, eventDefinition });
-  } else {
-    addEventDefinitions(event, buildParameter);
+    addEventDefinition(elementWhereAddDefinition, eventDefinitionKind, eventDefinitions);
+  }
+
+  if (event) {
+    event.eventDefinitionRef = Array.isArray(eventDefinitions)
+      ? (eventDefinitions as TEventDefinition[]).map(definition => definition.id)
+      : (eventDefinitions as TEventDefinition).id;
   }
 }
 
@@ -566,16 +562,16 @@ function addEvent(
   const event = buildEvent({ id, name, index, processIndex, ...rest });
   switch (eventDefinitionParameter.eventDefinitionOn) {
     case EventDefinitionOn.BOTH: {
-      addEventDefinitionsOnEvent(event, eventDefinitionParameter);
-      addEventDefinitionsOnDefinition(jsonModel, eventDefinitionParameter, event);
+      addEventDefinitions(event, eventDefinitionParameter);
+      addEventDefinitions(jsonModel.definitions, eventDefinitionParameter, event);
       break;
     }
     case EventDefinitionOn.DEFINITIONS: {
-      addEventDefinitionsOnDefinition(jsonModel, eventDefinitionParameter, event);
+      addEventDefinitions(jsonModel.definitions, eventDefinitionParameter, event);
       break;
     }
     case EventDefinitionOn.EVENT: {
-      addEventDefinitionsOnEvent(event, eventDefinitionParameter);
+      addEventDefinitions(event, eventDefinitionParameter);
       break;
     }
     case EventDefinitionOn.NONE: {
