@@ -2835,10 +2835,10 @@ describe('build json', () => {
             definitions: {
               targetNamespace: '',
               collaboration: { id: 'collaboration_id_0' },
-              linkEventDefinition: { id: 'event_definition_id' },
+              linkEventDefinition: { id: 'link_event_definition_id_0_0' },
               process: {
                 id: '0',
-                intermediateCatchEvent: { id: 'event_id_0_0', source: 'event_definition_source_id', eventDefinitionRef: 'event_definition_id' },
+                intermediateCatchEvent: { id: 'event_id_0_0', source: 'event_definition_source_id', eventDefinitionRef: 'link_event_definition_id_0_0' },
               },
               BPMNDiagram: {
                 name: 'process 0',
@@ -2871,10 +2871,14 @@ describe('build json', () => {
             definitions: {
               targetNamespace: '',
               collaboration: { id: 'collaboration_id_0' },
-              linkEventDefinition: { id: 'event_definition_id' },
+              linkEventDefinition: { id: 'link_event_definition_id_0_0' },
               process: {
                 id: '0',
-                intermediateCatchEvent: { id: 'event_id_0_0', source: ['event_definition_source_1_id', 'event_definition_source_2_id'], eventDefinitionRef: 'event_definition_id' },
+                intermediateCatchEvent: {
+                  id: 'event_id_0_0',
+                  source: ['event_definition_source_1_id', 'event_definition_source_2_id'],
+                  eventDefinitionRef: 'link_event_definition_id_0_0',
+                },
               },
               BPMNDiagram: {
                 name: 'process 0',
@@ -2907,10 +2911,10 @@ describe('build json', () => {
             definitions: {
               targetNamespace: '',
               collaboration: { id: 'collaboration_id_0' },
-              messageEventDefinition: { id: 'event_definition_id' },
+              messageEventDefinition: { id: 'message_event_definition_id_0_0' },
               process: {
                 id: '0',
-                intermediateCatchEvent: { id: 'event_id_0_0', eventDefinitionRef: 'event_definition_id' },
+                intermediateCatchEvent: { id: 'event_id_0_0', eventDefinitionRef: 'message_event_definition_id_0_0' },
               },
               BPMNDiagram: {
                 name: 'process 0',
@@ -2945,10 +2949,10 @@ describe('build json', () => {
             definitions: {
               targetNamespace: '',
               collaboration: { id: 'collaboration_id_0' },
-              linkEventDefinition: { id: 'event_definition_id' },
+              linkEventDefinition: { id: 'link_event_definition_id_0_0' },
               process: {
                 id: '0',
-                intermediateThrowEvent: { id: 'event_id_0_0', target: 'event_definition_target_id', eventDefinitionRef: 'event_definition_id' },
+                intermediateThrowEvent: { id: 'event_id_0_0', target: 'event_definition_target_id', eventDefinitionRef: 'link_event_definition_id_0_0' },
               },
               BPMNDiagram: {
                 name: 'process 0',
@@ -2981,10 +2985,10 @@ describe('build json', () => {
             definitions: {
               targetNamespace: '',
               collaboration: { id: 'collaboration_id_0' },
-              messageEventDefinition: { id: 'event_definition_id' },
+              messageEventDefinition: { id: 'message_event_definition_id_0_0' },
               process: {
                 id: '0',
-                intermediateThrowEvent: { id: 'event_id_0_0', eventDefinitionRef: 'event_definition_id' },
+                intermediateThrowEvent: { id: 'event_id_0_0', eventDefinitionRef: 'message_event_definition_id_0_0' },
               },
               BPMNDiagram: {
                 name: 'process 0',
