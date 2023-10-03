@@ -562,6 +562,8 @@ describe('build json', () => {
   });
 
   describe('build json with boundary event', () => {
+    // No link event definition for boundary events
+
     describe('build json with interrupting boundary event', () => {
       it('build json of definitions containing one process with task and interrupting boundary event (with empty messageEventDefinition, name & id)', () => {
         const json = buildDefinitions({
@@ -643,56 +645,6 @@ describe('build json', () => {
                 cancelActivity: true,
                 attachedToRef: 'task_id_0_0',
                 signalEventDefinition: '',
-              },
-            },
-            BPMNDiagram: {
-              name: 'process 0',
-              BPMNPlane: {
-                BPMNShape: [
-                  {
-                    id: 'shape_task_id_0_0',
-                    bpmnElement: 'task_id_0_0',
-                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
-                  },
-                  {
-                    id: 'shape_event_id_0_0',
-                    bpmnElement: 'event_id_0_0',
-                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
-                  },
-                ],
-              },
-            },
-          },
-        });
-      });
-
-      it('build json of definitions containing one process with task and interrupting boundary event (with empty linkEventDefinition)', () => {
-        const json = buildDefinitions({
-          process: {
-            event: [
-              {
-                bpmnKind: 'boundaryEvent',
-                isInterrupting: true,
-                eventDefinitionParameter: { eventDefinitionKind: 'link', eventDefinitionOn: EventDefinitionOn.EVENT },
-                attachedToRef: 'task_id_0_0',
-              },
-            ],
-            task: {},
-          },
-        });
-
-        expect(json).toEqual({
-          definitions: {
-            targetNamespace: '',
-            collaboration: { id: 'collaboration_id_0' },
-            process: {
-              id: '0',
-              task: { id: 'task_id_0_0' },
-              boundaryEvent: {
-                id: 'event_id_0_0',
-                cancelActivity: true,
-                attachedToRef: 'task_id_0_0',
-                linkEventDefinition: { id: 'link_event_definition_id_0_0' },
               },
             },
             BPMNDiagram: {
@@ -1439,56 +1391,6 @@ describe('build json', () => {
                 cancelActivity: false,
                 attachedToRef: 'task_id_0_0',
                 signalEventDefinition: '',
-              },
-            },
-            BPMNDiagram: {
-              name: 'process 0',
-              BPMNPlane: {
-                BPMNShape: [
-                  {
-                    id: 'shape_task_id_0_0',
-                    bpmnElement: 'task_id_0_0',
-                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
-                  },
-                  {
-                    id: 'shape_event_id_0_0',
-                    bpmnElement: 'event_id_0_0',
-                    Bounds: { x: 362, y: 232, width: 36, height: 45 },
-                  },
-                ],
-              },
-            },
-          },
-        });
-      });
-
-      it('build json of definitions containing one process with task and non-interrupting boundary event (with empty linkEventDefinition)', () => {
-        const json = buildDefinitions({
-          process: {
-            event: [
-              {
-                bpmnKind: 'boundaryEvent',
-                isInterrupting: false,
-                eventDefinitionParameter: { eventDefinitionKind: 'link', eventDefinitionOn: EventDefinitionOn.EVENT },
-                attachedToRef: 'task_id_0_0',
-              },
-            ],
-            task: {},
-          },
-        });
-
-        expect(json).toEqual({
-          definitions: {
-            targetNamespace: '',
-            collaboration: { id: 'collaboration_id_0' },
-            process: {
-              id: '0',
-              task: { id: 'task_id_0_0' },
-              boundaryEvent: {
-                id: 'event_id_0_0',
-                cancelActivity: false,
-                attachedToRef: 'task_id_0_0',
-                linkEventDefinition: { id: 'link_event_definition_id_0_0' },
               },
             },
             BPMNDiagram: {
