@@ -505,18 +505,8 @@ function addEventDefinition(event: BPMNTEvent | TDefinitions, eventDefinitionKin
   event[eventDefinitionName] = enrichBpmnElement(event[eventDefinitionName], eventDefinition);
 }
 
-function buildEventDefinition(
-  eventDefinitionKind: BuildEventDefinition,
-  initialEventId: string,
-  processIndex: number,
-  index: number,
-  source: string | string[],
-  target: string,
-  idSuffix = '',
-): TEventDefinition {
-  const suffixId = initialEventId ?? `event_definition_id_${processIndex}_${index}`;
-
-  const eventDefinition: TEventDefinition = { id: `${eventDefinitionKind}_${suffixId}${idSuffix}` };
+function buildEventDefinition(eventDefinitionKind: BuildEventDefinition, idSuffix: string, source: string | string[], target: string): TEventDefinition {
+  const eventDefinition: TEventDefinition = { id: `${eventDefinitionKind}_${idSuffix}` };
 
   if (eventDefinitionKind === ShapeBpmnEventDefinitionKind.LINK) {
     (eventDefinition as TLinkEventDefinition).source = source;
@@ -538,13 +528,12 @@ function addEventDefinitions(
   processIndex: number,
   event?: BPMNTEvent,
 ): void {
-  const suffixId = initialEventId ?? `event_definition_id_${processIndex}_${index}`;
+  const idSuffix = initialEventId ?? `event_definition_id_${processIndex}_${index}`;
 
   let eventDefinitions;
-
   if (withMultipleDefinitions) {
     eventDefinitions = event
-      ? [buildEventDefinition(eventDefinitionKind, initialEventId, processIndex, index, source, target, '_1'), buildEventDefinition(eventDefinitionKind, processIndex, index, source, target, '_2')]
+      ? [buildEventDefinition(eventDefinitionKind, `${idSuffix}_1`, source, target), buildEventDefinition(eventDefinitionKind, `${idSuffix}_2`, source, target)]
       : ['', {}];
 
     addEventDefinition(elementWhereAddDefinition, eventDefinitionKind, eventDefinitions);
@@ -552,7 +541,7 @@ function addEventDefinitions(
     const otherEventDefinitionKind = eventDefinitionKind === 'signal' ? 'message' : 'signal';
 
     eventDefinitions = event
-      ? [buildEventDefinition(eventDefinitionKind, initialEventId, processIndex, index, source, target), buildEventDefinition(otherEventDefinitionKind, processIndex, index, source, target)]
+      ? [buildEventDefinition(eventDefinitionKind, idSuffix, source, target), buildEventDefinition(otherEventDefinitionKind, idSuffix, source, target)]
       : ['', ''];
 
     addEventDefinition(elementWhereAddDefinition, eventDefinitionKind, eventDefinitions[0]);
@@ -562,7 +551,7 @@ function addEventDefinitions(
       event || eventDefinitionKind === ShapeBpmnEventDefinitionKind.LINK
         ? {
             ...(typeof eventDefinition === 'object' ? eventDefinition : { id: eventDefinition }),
-            ...buildEventDefinition(eventDefinitionKind, initialEventId, processIndex, index, source, target),
+            ...buildEventDefinition(eventDefinitionKind, idSuffix, source, target),
           }
         : eventDefinition ?? '';
 
