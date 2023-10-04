@@ -39,6 +39,10 @@ export const BpmnStyleIdentifier = {
   IS_INSTANTIATING: 'bpmn.isInstantiating',
   IS_INTERRUPTING: 'bpmn.isInterrupting',
 
+  // link event
+  LINK_EVENT_SOURCE_IDS: 'bpmn.linkEventSourceIds',
+  LINK_EVENT_TARGET_ID: 'bpmn.linkEventTargetId',
+
   // other identifiers
   EXTRA_CSS_CLASSES: 'bpmn.extra.css.classes',
   MARKERS: 'bpmn.markers',
