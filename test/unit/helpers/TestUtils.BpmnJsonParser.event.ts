@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import type { ExpectedBoundaryEventShape, ExpectedEventShape, ExpectedShape } from './bpmn-model-expect';
-import type { BuildEventDefinition, BuildEventsParameter } from './JsonBuilder';
+import type { BuildEventDefinition, BuildEventParameter } from './JsonBuilder';
 
 import { verifyShape } from './bpmn-model-expect';
 import { buildDefinitions, EventDefinitionOn } from './JsonBuilder';
@@ -33,7 +33,7 @@ export type OmitExpectedEventShape = Omit<ExpectedEventShape, 'shapeId' | 'bpmnE
 
 export const expectedBounds = { x: 362, y: 232, width: 36, height: 45 };
 
-export function testMustConvertShapes(buildEventParameter: BuildEventsParameter | BuildEventsParameter[], omitExpectedShape: OmitExpectedEventShape, processIsArray = false): void {
+export function testMustConvertShapes(buildEventParameter: BuildEventParameter | BuildEventParameter[], omitExpectedShape: OmitExpectedEventShape, processIsArray = false): void {
   const process = { event: buildEventParameter, task: {} };
   const json = buildDefinitions({ process: processIsArray ? [process] : process });
 
@@ -51,7 +51,7 @@ export function testMustConvertShapes(buildEventParameter: BuildEventsParameter 
   }
 }
 
-export function testMustNotConvertEvent(buildEventParameter: BuildEventsParameter): void {
+export function testMustNotConvertEvent(buildEventParameter: BuildEventParameter): void {
   const json = buildDefinitions({ process: { event: buildEventParameter, task: {} } });
 
   const bpmnModel = parseJsonAndExpectOnlyFlowNodes(json, 1, 1);
@@ -62,7 +62,7 @@ export function testMustNotConvertEvent(buildEventParameter: BuildEventsParamete
   expect(warning.bpmnElementId).toBe('event_id_0_0');
 }
 
-export function executeEventCommonTests(buildEventParameter: BuildEventsParameter, omitExpectedShape: OmitExpectedEventShape, titleSuffix: string): void {
+export function executeEventCommonTests(buildEventParameter: BuildEventParameter, omitExpectedShape: OmitExpectedEventShape, titleSuffix: string): void {
   it.each([
     ['object', 'object'],
     ['object', 'array'],

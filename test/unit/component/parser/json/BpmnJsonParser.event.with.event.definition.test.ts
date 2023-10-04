@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BuildEventDefinition, OtherBuildEventKind } from '../../../helpers/JsonBuilder';
+import type { BuildEventDefinition, BuildNotBoundaryEventKind } from '../../../helpers/JsonBuilder';
 import type { TEventDefinition } from '@lib/model/bpmn/json/baseElement/rootElement/eventDefinition';
 
 import { EventDefinitionOn } from '../../../helpers/JsonBuilder';
@@ -67,7 +67,7 @@ describe.each([ShapeBpmnElementKind.EVENT_START, ShapeBpmnElementKind.EVENT_END,
         ];
         describe.each(titlesForEventDefinitionIsAttributeOf)(`when %s`, (titleForEventDefinitionIsAttributeOf: string, eventDefinitionOn: EventDefinitionOn) => {
           executeEventCommonTests(
-            { bpmnKind: expectedShapeBpmnElementKind as OtherBuildEventKind | 'startEvent', eventDefinitionParameter: { eventDefinitionKind, eventDefinitionOn } },
+            { bpmnKind: expectedShapeBpmnElementKind as BuildNotBoundaryEventKind, eventDefinitionParameter: { eventDefinitionKind, eventDefinitionOn } },
             {
               bpmnElementKind: expectedShapeBpmnElementKind,
               bpmnElementName: undefined,
@@ -86,7 +86,7 @@ describe.each([ShapeBpmnElementKind.EVENT_START, ShapeBpmnElementKind.EVENT_END,
             (title: string, eventDefinition: string | TEventDefinition) => {
               testMustConvertShapes(
                 {
-                  bpmnKind: expectedShapeBpmnElementKind as OtherBuildEventKind | 'startEvent',
+                  bpmnKind: expectedShapeBpmnElementKind as BuildNotBoundaryEventKind,
                   eventDefinitionParameter: { eventDefinitionKind, eventDefinitionOn, eventDefinition },
                 },
                 {

@@ -19,7 +19,7 @@ import type { TBaseElement, TLane, TLaneSet, TMessageFlow } from '@lib/model/bpm
 import type { TFlowElement, TFlowNode } from '@lib/model/bpmn/json/baseElement/flowElement';
 import type { TBoundaryEvent, TCatchEvent, TThrowEvent } from '@lib/model/bpmn/json/baseElement/flowNode/event';
 import type { TCollaboration } from '@lib/model/bpmn/json/baseElement/rootElement/collaboration';
-import type { TEventDefinition } from '@lib/model/bpmn/json/baseElement/rootElement/eventDefinition';
+import type { TEventDefinition, TLinkEventDefinition } from '@lib/model/bpmn/json/baseElement/rootElement/eventDefinition';
 import type { TGlobalTask } from '@lib/model/bpmn/json/baseElement/rootElement/globalTask';
 import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
 import type { BpmnJsonModel, TDefinitions } from '@lib/model/bpmn/json/bpmn20';
@@ -47,20 +47,34 @@ export enum EventDefinitionOn {
  * If the id field is set, the default id is override.
  * Otherwise, the id has the format: `event_id_${processIndex}_${index}`
  */
-type BuildEventParameter = {
+type CommonBuildEventParameter = {
   eventDefinitionParameter: BuildEventDefinitionParameter;
 } & TFlowNode;
 
 type BuildInterruptingEventParameter = {
   isInterrupting?: boolean;
-} & BuildEventParameter;
+} & CommonBuildEventParameter;
 
-export type BuildEventsParameter = BuildOtherEventParameter | BuildStartEventParameter | BuildBoundaryEventParameter;
+export type BuildEventParameter = BuildNotBoundaryEventParameter | BuildBoundaryEventParameter;
 
-export type OtherBuildEventKind = 'endEvent' | 'intermediateCatchEvent' | 'intermediateThrowEvent';
-type BuildOtherEventParameter = {
-  bpmnKind: OtherBuildEventKind;
-} & BuildEventParameter;
+/**
+ * All event types, excepted Boundary Event
+ */
+export type BuildNotBoundaryEventParameter = BuildIntermediateCatchEventParameter | BuildIntermediateThrowEventParameter | BuildEndEventParameter | BuildStartEventParameter;
+
+export type BuildNotBoundaryEventKind = 'startEvent' | 'endEvent' | 'intermediateCatchEvent' | 'intermediateThrowEvent';
+
+type BuildIntermediateCatchEventParameter = {
+  bpmnKind: 'intermediateCatchEvent';
+} & CommonBuildEventParameter;
+
+type BuildIntermediateThrowEventParameter = {
+  bpmnKind: 'intermediateThrowEvent';
+} & CommonBuildEventParameter;
+
+type BuildEndEventParameter = {
+  bpmnKind: 'endEvent';
+} & CommonBuildEventParameter;
 
 type BuildStartEventParameter = {
   bpmnKind: 'startEvent';
@@ -78,6 +92,8 @@ export type BuildEventDefinitionParameter = {
   eventDefinition?: BPMNEventDefinition;
   withDifferentDefinition?: boolean;
   withMultipleDefinitions?: boolean;
+  source?: string | string[];
+  target?: string;
 };
 
 export type BuildTaskKind = 'task' | 'businessRuleTask' | 'manualTask' | 'receiveTask' | 'sendTask' | 'serviceTask' | 'scriptTask' | 'userTask';
@@ -151,7 +167,7 @@ export type BuildTextAnnotationParameter = Pick<TTextAnnotation, 'id' | 'text'>;
 export type BuildProcessParameter = {
   lane?: BuildLaneParameter | BuildLaneParameter[];
   task?: BuildTaskParameter | BuildTaskParameter[];
-  event?: BuildEventsParameter | BuildEventsParameter[];
+  event?: BuildEventParameter | BuildEventParameter[];
   gateway?: BuildGatewayParameter | BuildGatewayParameter[];
   callActivity?: BuildCallActivityParameter | BuildCallActivityParameter[];
   subProcess?: BuildSubProcessParameter | BuildSubProcessParameter[];
@@ -489,9 +505,31 @@ function addEventDefinition(event: BPMNTEvent | TDefinitions, eventDefinitionKin
   event[eventDefinitionName] = enrichBpmnElement(event[eventDefinitionName], eventDefinition);
 }
 
+function buildEventDefinition(
+  eventDefinitionKind: BuildEventDefinition,
+  processIndex: number,
+  index: number,
+  source: string | string[],
+  target: string,
+  idSuffix = '',
+): TEventDefinition {
+  const eventDefinition: TEventDefinition = { id: `${eventDefinitionKind}_event_definition_id_${processIndex}_${index}${idSuffix}` };
+
+  if (eventDefinitionKind === ShapeBpmnEventDefinitionKind.LINK) {
+    (eventDefinition as TLinkEventDefinition).source = source;
+    (eventDefinition as TLinkEventDefinition).target = target;
+  } else if (source) {
+    throw new Error("'source' must be used only with Link IntermediateCatchEvent !!");
+  } else if (target) {
+    throw new Error("'target' must be used only with Link IntermediateThrowEvent !!");
+  }
+
+  return eventDefinition;
+}
+
 function addEventDefinitions(
   elementWhereAddDefinition: TDefinitions | BPMNTEvent,
-  { withMultipleDefinitions, withDifferentDefinition, eventDefinitionKind, eventDefinition }: BuildEventDefinitionParameter,
+  { withMultipleDefinitions, withDifferentDefinition, eventDefinitionKind, eventDefinition, source, target }: BuildEventDefinitionParameter,
   index: number,
   processIndex: number,
   event?: BPMNTEvent,
@@ -500,7 +538,7 @@ function addEventDefinitions(
 
   if (withMultipleDefinitions) {
     eventDefinitions = event
-      ? [{ id: `${eventDefinitionKind}_event_definition_id_${processIndex}_${index}_1` }, { id: `${eventDefinitionKind}_event_definition_id_${processIndex}_${index}_2` }]
+      ? [buildEventDefinition(eventDefinitionKind, processIndex, index, source, target, '_1'), buildEventDefinition(eventDefinitionKind, processIndex, index, source, target, '_2')]
       : ['', {}];
 
     addEventDefinition(elementWhereAddDefinition, eventDefinitionKind, eventDefinitions);
@@ -508,16 +546,19 @@ function addEventDefinitions(
     const otherEventDefinitionKind = eventDefinitionKind === 'signal' ? 'message' : 'signal';
 
     eventDefinitions = event
-      ? [{ id: `${eventDefinitionKind}_event_definition_id_${processIndex}_${index}` }, { id: `${otherEventDefinitionKind}_event_definition_id_${processIndex}_${index}` }]
+      ? [buildEventDefinition(eventDefinitionKind, processIndex, index, source, target), buildEventDefinition(otherEventDefinitionKind, processIndex, index, source, target)]
       : ['', ''];
 
     addEventDefinition(elementWhereAddDefinition, eventDefinitionKind, eventDefinitions[0]);
     addEventDefinition(elementWhereAddDefinition, otherEventDefinitionKind, eventDefinitions[1]);
   } else {
-    eventDefinitions = eventDefinition ?? (event || eventDefinitionKind === ShapeBpmnEventDefinitionKind.LINK ? ({} as TEventDefinition) : '');
-    (event || eventDefinitionKind === ShapeBpmnEventDefinitionKind.LINK) &&
-      typeof eventDefinitions === 'object' &&
-      ((eventDefinitions as TEventDefinition).id ??= `${eventDefinitionKind}_event_definition_id_${processIndex}_${index}`);
+    eventDefinitions =
+      event || eventDefinitionKind === ShapeBpmnEventDefinitionKind.LINK
+        ? {
+            ...(typeof eventDefinition === 'object' ? eventDefinition : { id: eventDefinition }),
+            ...buildEventDefinition(eventDefinitionKind, processIndex, index, source, target),
+          }
+        : eventDefinition ?? '';
 
     addEventDefinition(elementWhereAddDefinition, eventDefinitionKind, eventDefinitions);
   }
@@ -543,10 +584,13 @@ function buildEvent({
   name: string;
   index: number;
   processIndex: number;
+  eventDefinitionKind?: string;
   isInterrupting?: boolean;
   attachedToRef?: string;
   incoming?: string | string[];
   outgoing?: string | string[];
+  source?: string | string[];
+  target?: string;
 }): BPMNTEvent {
   const event: BPMNTEvent = {
     id: id ?? `event_id_${processIndex}_${index}`,
@@ -561,15 +605,11 @@ function buildEvent({
   if (attachedToRef) {
     event.attachedToRef = attachedToRef;
   }
+
   return event;
 }
 
-function addEvent(
-  jsonModel: BpmnJsonModel,
-  { id, bpmnKind, eventDefinitionParameter, name, ...rest }: BuildOtherEventParameter | BuildStartEventParameter | BuildBoundaryEventParameter,
-  index: number,
-  processIndex: number,
-): void {
+function addEvent(jsonModel: BpmnJsonModel, { id, bpmnKind, eventDefinitionParameter, name, ...rest }: BuildEventParameter, index: number, processIndex: number): void {
   const event = buildEvent({ id, name, index, processIndex, ...rest });
   switch (eventDefinitionParameter.eventDefinitionOn) {
     case EventDefinitionOn.BOTH: {
