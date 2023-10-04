@@ -24,7 +24,7 @@ function computeAllPermutations(array: string[]): string[][][] {
 
   const length = permutation.length,
     result = [[[...permutation]]],
-    c = new Array(length).fill(0);
+    c = new Array(length).fill(0) as number[];
   let index = 1,
     k: number,
     p;

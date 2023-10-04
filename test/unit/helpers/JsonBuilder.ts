@@ -502,7 +502,7 @@ function addEdge(jsonModel: BpmnJsonModel, edge: BPMNEdge): void {
 
 function addEventDefinition(event: BPMNTEvent | TDefinitions, eventDefinitionKind: BuildEventDefinition, eventDefinition?: BPMNEventDefinition): void {
   const eventDefinitionName = `${eventDefinitionKind}EventDefinition` as keyof typeof event;
-  event[eventDefinitionName] = enrichBpmnElement(event[eventDefinitionName], eventDefinition);
+  event[eventDefinitionName] = enrichBpmnElement(event[eventDefinitionName], eventDefinition) as BPMNEventDefinition;
 }
 
 function buildEventDefinition(eventDefinitionKind: BuildEventDefinition, idSuffix: string, source: string | string[], target: string): TEventDefinition {
