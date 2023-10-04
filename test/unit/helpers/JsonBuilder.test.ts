@@ -2047,7 +2047,7 @@ describe('build json', () => {
         });
       });
 
-      it(`build json of definitions containing one process with ${bpmnKind} (with linkEventDefinition)`, () => {
+      it(`build json of definitions containing one process with ${bpmnKind} (with linkEventDefinition with generated id)`, () => {
         const json = buildDefinitions({
           process: {
             event: [
@@ -2076,6 +2076,44 @@ describe('build json', () => {
                 BPMNShape: {
                   id: 'shape_event_id_0_0',
                   bpmnElement: 'event_id_0_0',
+                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
+                },
+              },
+            },
+          },
+        });
+      });
+
+      it(`build json of definitions containing one process with ${bpmnKind} (with linkEventDefinition with id from event)`, () => {
+        const json = buildDefinitions({
+          process: {
+            event: [
+              {
+                id: 'custom_id',
+                bpmnKind,
+                eventDefinitionParameter: { eventDefinitionKind: 'link', eventDefinitionOn: EventDefinitionOn.EVENT },
+              },
+            ],
+          },
+        });
+
+        expect(json).toEqual({
+          definitions: {
+            targetNamespace: '',
+            collaboration: { id: 'collaboration_id_0' },
+            process: {
+              id: '0',
+              [bpmnKind]: {
+                id: 'custom_id',
+                linkEventDefinition: { id: 'link_custom_id' },
+              },
+            },
+            BPMNDiagram: {
+              name: 'process 0',
+              BPMNPlane: {
+                BPMNShape: {
+                  id: 'shape_custom_id',
+                  bpmnElement: 'custom_id',
                   Bounds: { x: 362, y: 232, width: 36, height: 45 },
                 },
               },
