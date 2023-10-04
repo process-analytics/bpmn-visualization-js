@@ -45,6 +45,10 @@ export class ShapeUtil {
     return ShapeBpmnElementKind.EVENT_START === kind;
   }
 
+  static isCatchEvent(kind: ShapeBpmnElementKind): kind is ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH | ShapeBpmnElementKind.EVENT_BOUNDARY | ShapeBpmnElementKind.EVENT_START {
+    return ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH === kind || ShapeBpmnElementKind.EVENT_BOUNDARY === kind || ShapeBpmnElementKind.EVENT_START === kind;
+  }
+
   static isIntermediateCatchEvent(kind: ShapeBpmnElementKind): kind is ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH {
     return ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH === kind;
   }

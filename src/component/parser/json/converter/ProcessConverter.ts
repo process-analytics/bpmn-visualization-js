@@ -21,7 +21,7 @@ import type { TLane, TLaneSet } from '../../../../model/bpmn/json/baseElement/ba
 import type { TFlowNode, TSequenceFlow } from '../../../../model/bpmn/json/baseElement/flowElement';
 import type { TActivity, TCallActivity, TSubProcess } from '../../../../model/bpmn/json/baseElement/flowNode/activity/activity';
 import type { TReceiveTask } from '../../../../model/bpmn/json/baseElement/flowNode/activity/task';
-import type { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../../../model/bpmn/json/baseElement/flowNode/event';
+import type { TBoundaryEvent, TThrowEvent, TCatchEvent } from '../../../../model/bpmn/json/baseElement/flowNode/event';
 import type { TEventBasedGateway } from '../../../../model/bpmn/json/baseElement/flowNode/gateway';
 import type { TProcess } from '../../../../model/bpmn/json/baseElement/rootElement/rootElement';
 import type { ParsingMessageCollector } from '../../parsing-messages';
@@ -38,6 +38,8 @@ import {
 } from '../../../../model/bpmn/internal';
 import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/flows';
 import ShapeBpmnElement, {
+  ShapeBpmnIntermediateThrowEvent,
+  ShapeBpmnIntermediateCatchEvent,
   ShapeBpmnActivity,
   ShapeBpmnBoundaryEvent,
   ShapeBpmnCallActivity,
@@ -90,6 +92,9 @@ export default class ProcessConverter {
   private defaultSequenceFlowIds: string[] = [];
   private elementsWithoutParentByProcessId = new Map<string, ShapeBpmnElement[]>();
   private callActivitiesCallingProcess = new Map<string, ShapeBpmnElement>();
+  private eventsByEventDefinitionId = new Map<string, ShapeBpmnEvent>();
+  private eventsBySourceEventDefinitionIds = new Map<string | string[], ShapeBpmnIntermediateCatchEvent>();
+  private eventsByTargetEventDefinitionId = new Map<string, ShapeBpmnIntermediateThrowEvent>();
 
   constructor(
     private convertedElements: ConvertedElements,
@@ -103,6 +108,7 @@ export default class ProcessConverter {
     for (const process of ensureIsArray(processes)) this.assignParentOfProcessElementsCalledByCallActivity(process.id);
 
     this.assignIncomingAndOutgoingIdsFromFlows();
+    this.assignSourceAndTargetIdsToEvent();
   }
 
   private assignParentOfProcessElementsCalledByCallActivity(processId: string): void {
@@ -136,6 +142,18 @@ export default class ProcessConverter {
     for (const flow of this.convertedElements.getFlows()) {
       fillShapeBpmnElementAttribute(flow.sourceReferenceId, 'outgoingIds', flow.id);
       fillShapeBpmnElementAttribute(flow.targetReferenceId, 'incomingIds', flow.id);
+    }
+  }
+
+  private assignSourceAndTargetIdsToEvent(): void {
+    for (const [targetEventDefinitionId, event] of this.eventsByTargetEventDefinitionId) {
+      event.targetId = this.eventsByEventDefinitionId.get(targetEventDefinitionId).id;
+    }
+
+    for (const [sourceEventDefinitionIds, event] of this.eventsBySourceEventDefinitionIds) {
+      for (const sourceEventDefinitionId of ensureIsArray<string>(sourceEventDefinitionIds)) {
+        event.sourceIds.push(this.eventsByEventDefinitionId.get(sourceEventDefinitionId).id);
+      }
     }
   }
 
@@ -252,14 +270,55 @@ export default class ProcessConverter {
 
     if (numberOfEventDefinitions == 1) {
       const eventDefinitionKind = [...eventDefinitionsByKind.keys()][0];
-      if (ShapeUtil.isBoundaryEvent(elementKind)) {
-        return this.buildShapeBpmnBoundaryEvent(bpmnElement as TBoundaryEvent, eventDefinitionKind);
+
+      if (ShapeUtil.isCatchEvent(elementKind)) {
+        return this.buildShapeBpmnCatchEvent(bpmnElement as TCatchEvent, elementKind, eventDefinitionKind, parentId);
       }
-      if (ShapeUtil.isStartEvent(elementKind)) {
-        return new ShapeBpmnStartEvent(bpmnElement.id, bpmnElement.name, eventDefinitionKind, parentId, bpmnElement.isInterrupting);
-      }
-      return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventDefinitionKind, parentId);
+      return this.buildShapeBpmnThrowEvent(bpmnElement as TThrowEvent, elementKind, eventDefinitionKind, parentId);
     }
+  }
+
+  private buildShapeBpmnCatchEvent(
+    bpmnElement: TCatchEvent,
+    elementKind: ShapeBpmnElementKind.EVENT_BOUNDARY | ShapeBpmnElementKind.EVENT_START | ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH,
+    eventDefinitionKind: ShapeBpmnEventDefinitionKind,
+    parentId: string,
+  ): ShapeBpmnIntermediateCatchEvent | ShapeBpmnStartEvent | ShapeBpmnBoundaryEvent {
+    let catchShape;
+    if (ShapeUtil.isBoundaryEvent(elementKind)) {
+      catchShape = this.buildShapeBpmnBoundaryEvent(bpmnElement as TBoundaryEvent, eventDefinitionKind);
+    } else if (ShapeUtil.isStartEvent(elementKind)) {
+      catchShape = new ShapeBpmnStartEvent(bpmnElement.id, bpmnElement.name, eventDefinitionKind, parentId, bpmnElement.isInterrupting);
+    } else {
+      catchShape = new ShapeBpmnIntermediateCatchEvent(bpmnElement.id, bpmnElement.name, eventDefinitionKind, parentId);
+    }
+
+    const eventDefinition = bpmnElement[`${eventDefinitionKind}EventDefinition`];
+    if (eventDefinition.source) {
+      this.eventsByEventDefinitionId.set(eventDefinition.id, catchShape);
+      this.eventsBySourceEventDefinitionIds.set(eventDefinition.source, catchShape);
+    }
+
+    return catchShape;
+  }
+
+  private buildShapeBpmnThrowEvent(
+    bpmnElement: TThrowEvent,
+    elementKind: ShapeBpmnElementKind.EVENT_END | ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW,
+    eventDefinitionKind: ShapeBpmnEventDefinitionKind,
+    parentId: string,
+  ): ShapeBpmnIntermediateThrowEvent | ShapeBpmnEvent {
+    const throwShape = ShapeUtil.isIntermediateThrowEvent(elementKind)
+      ? new ShapeBpmnIntermediateThrowEvent(bpmnElement.id, bpmnElement.name, eventDefinitionKind, parentId)
+      : new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventDefinitionKind, parentId);
+
+    const eventDefinition = bpmnElement[`${eventDefinitionKind}EventDefinition`];
+    if (eventDefinition.target) {
+      this.eventsByEventDefinitionId.set(eventDefinition.id, throwShape);
+      this.eventsByTargetEventDefinitionId.set(eventDefinition.target, throwShape);
+    }
+
+    return throwShape;
   }
 
   private buildShapeBpmnBoundaryEvent(bpmnElement: TBoundaryEvent, eventDefinitionKind: ShapeBpmnEventDefinitionKind): ShapeBpmnBoundaryEvent {
