@@ -43,7 +43,7 @@ export class CssClassesRegistryImpl implements CssClassesRegistry {
   }
 
   removeAllCssClasses(bpmnElementIds?: string | string[]): void {
-    if (bpmnElementIds || bpmnElementIds == '') {
+    if (bpmnElementIds || bpmnElementIds === '') {
       for (const bpmnElementId of ensureIsArray<string>(bpmnElementIds)) {
         const isChanged = this.cssClassesCache.removeAllClassNames(bpmnElementId);
         this.updateCellIfChanged(isChanged, bpmnElementId);

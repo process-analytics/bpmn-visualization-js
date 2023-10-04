@@ -36,7 +36,7 @@ let fitOnLoad = true;
 let fitOptions: FitOptions = {};
 
 function configureFitOnLoadCheckBox(): void {
-  const fitOnLoadElt = document.querySelector('#fitOnLoad') as HTMLInputElement;
+  const fitOnLoadElt = document.querySelector('#fitOnLoad')!;
   fitOnLoadElt.addEventListener('change', event => {
     fitOnLoad = (event.target as HTMLInputElement).checked;
     log('Fit on load updated!', fitOnLoad);
@@ -60,7 +60,7 @@ function updateFitConfig(config: FitOptions): void {
 }
 
 function configureFitTypeSelect(): void {
-  const fitTypeSelectedElt = document.querySelector('#fitType-selected') as HTMLSelectElement;
+  const fitTypeSelectedElt = document.querySelector('#fitType-selected')!;
   fitTypeSelectedElt.addEventListener('change', event => {
     updateFitConfig({ type: (event.target as HTMLSelectElement).value as FitType });
     fit(fitOptions);
@@ -74,7 +74,7 @@ function configureFitTypeSelect(): void {
 }
 
 function configureFitMarginInput(): void {
-  const fitMarginElt = document.querySelector('#fit-margin') as HTMLInputElement;
+  const fitMarginElt = document.querySelector('#fit-margin')!;
   fitMarginElt.addEventListener('change', event => {
     updateFitConfig({ margin: Number((event.target as HTMLInputElement).value) });
     fit(fitOptions);
@@ -95,7 +95,7 @@ function configureZoomButtons(): void {
 }
 
 function configureThemeSelect(): void {
-  const themeSelectedElt = document.querySelector('#theme-selected') as HTMLSelectElement;
+  const themeSelectedElt = document.querySelector('#theme-selected')!;
   themeSelectedElt.addEventListener('change', event => {
     switchTheme((event.target as HTMLSelectElement).value);
   });

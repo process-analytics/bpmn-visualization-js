@@ -26,7 +26,7 @@ import {
   startBpmnVisualization,
 } from '../development-bundle-index';
 
-const bpmnIdInputElt = document.querySelector('#bpmn-id-input') as HTMLInputElement;
+const bpmnIdInputElt = document.querySelector('#bpmn-id-input')!;
 
 function addOverlay(overlay: Overlay): void {
   const bpmnId = bpmnIdInputElt.value;
