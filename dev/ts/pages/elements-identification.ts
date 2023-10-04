@@ -185,7 +185,7 @@ function updateSelectedBPMNElements(bpmnKind: ShapeBpmnElementKind): void {
 }
 
 function updateTextArea(elementsByKinds: BpmnSemantic[], bpmnKind: string): void {
-  const textArea = document.querySelector('#elements-result') as HTMLTextAreaElement;
+  const textArea = document.querySelector<HTMLTextAreaElement>('#elements-result');
 
   const textHeader = `Found ${elementsByKinds.length} ${bpmnKind}(s)`;
   log(textHeader);
@@ -196,12 +196,12 @@ function updateTextArea(elementsByKinds: BpmnSemantic[], bpmnKind: string): void
 }
 
 function resetTextArea(): void {
-  const textArea = document.querySelector('#elements-result') as HTMLTextAreaElement;
+  const textArea = document.querySelector<HTMLTextAreaElement>('#elements-result');
   textArea.value = '';
 }
 
 function configureControls(): void {
-  const selectedKindElt = document.querySelector('#bpmn-kinds-select') as HTMLSelectElement;
+  const selectedKindElt = document.querySelector<HTMLSelectElement>('#bpmn-kinds-select');
   selectedKindElt.addEventListener('change', event => updateSelectedBPMNElements((event.target as HTMLSelectElement).value as ShapeBpmnElementKind));
   document.addEventListener('diagramLoaded', () => updateSelectedBPMNElements(selectedKindElt.value as ShapeBpmnElementKind), false);
 
@@ -216,7 +216,7 @@ function configureControls(): void {
   });
 
   // display overlay option
-  const checkboxDisplayOverlaysElt = document.querySelector('#checkbox-display-overlays') as HTMLInputElement;
+  const checkboxDisplayOverlaysElt = document.querySelector<HTMLInputElement>('#checkbox-display-overlays');
   checkboxDisplayOverlaysElt.addEventListener('change', function () {
     isOverlaysDisplayed = this.checked;
     log('Request overlays display:', isOverlaysDisplayed);
@@ -225,7 +225,7 @@ function configureControls(): void {
   checkboxDisplayOverlaysElt.checked = isOverlaysDisplayed;
 
   // use CSS or API to style the BPMN elements
-  const checkboxUseCSSElt = document.querySelector('#checkbox-css-style') as HTMLInputElement;
+  const checkboxUseCSSElt = document.querySelector<HTMLInputElement>('#checkbox-css-style');
   checkboxUseCSSElt.addEventListener('change', function () {
     useCSS = this.checked;
     log('Request CSS style feature:', useCSS);

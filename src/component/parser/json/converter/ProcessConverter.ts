@@ -161,7 +161,8 @@ export default class ProcessConverter {
     this.elementsWithoutParentByProcessId.set(process.id, []);
 
     // flow nodes
-    for (const bpmnType of orderedFlowNodeBpmnTypes) this.buildFlowNodeBpmnElements(process[bpmnType] as FlowNode | FlowNode[], getShapeBpmnElementKind(bpmnType), parentId, process.id, bpmnType);
+    for (const bpmnType of orderedFlowNodeBpmnTypes)
+      this.buildFlowNodeBpmnElements(process[bpmnType] as FlowNode | FlowNode[], getShapeBpmnElementKind(bpmnType), parentId, process.id, bpmnType);
     // containers
     this.buildLaneSetBpmnElements(process.laneSet, parentId, process.id);
 
@@ -210,16 +211,16 @@ export default class ProcessConverter {
     } else if (kind == ShapeBpmnElementKind.GROUP) {
       return buildShapeBpmnGroup(this.convertedElements, this.parsingMessageCollector, bpmnElement as TGroup, parentId);
     } else {
-        let name: string;
-        if (kind === ShapeBpmnElementKind.TEXT_ANNOTATION && 'text' in bpmnElement && typeof bpmnElement.text === 'string') {
-          name = bpmnElement.text;
-        } else if ('name' in bpmnElement) {
-          name = bpmnElement.name;
-        }
-
-        const instantiate = 'instantiate' in bpmnElement ? bpmnElement.instantiate : undefined;
-        return new ShapeBpmnElement(bpmnElement.id, name, kind, parentId, instantiate);
+      let name: string;
+      if (kind === ShapeBpmnElementKind.TEXT_ANNOTATION && 'text' in bpmnElement && typeof bpmnElement.text === 'string') {
+        name = bpmnElement.text;
+      } else if ('name' in bpmnElement) {
+        name = bpmnElement.name;
       }
+
+      const instantiate = 'instantiate' in bpmnElement ? bpmnElement.instantiate : undefined;
+      return new ShapeBpmnElement(bpmnElement.id, name, kind, parentId, instantiate);
+    }
   }
 
   private buildShapeBpmnActivity(bpmnElement: TActivity, kind: ShapeBpmnElementKind, parentId: string, processedSemanticType: BpmnSemanticType): ShapeBpmnActivity {
