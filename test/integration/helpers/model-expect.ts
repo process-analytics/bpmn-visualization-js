@@ -83,8 +83,8 @@ declare global {
       toBeBusinessRuleTask(modelElement: ExpectedShapeModelElement): R;
       toBeStartEvent(modelElement: ExpectedStartEventModelElement): R;
       toBeEndEvent(modelElement: ExpectedEventModelElement): R;
-      toBeIntermediateThrowEvent(modelElement: ExpectedEventModelElement): R;
-      toBeIntermediateCatchEvent(modelElement: ExpectedEventModelElement): R;
+      toBeIntermediateThrowEvent(modelElement: ExpectedIntermediateThrowEventModelElement): R;
+      toBeIntermediateCatchEvent(modelElement: ExpectedIntermediateCatchEventModelElement): R;
       toBeBoundaryEvent(modelElement: ExpectedBoundaryEventModelElement): R;
       toBeEventBasedGateway(modelElement: ExpectedEventBasedGatewayModelElement): R;
       toBeExclusiveGateway(modelElement: ExpectedShapeModelElement): R;
@@ -200,6 +200,18 @@ export type ExpectedShapeModelElement = {
 export type ExpectedEventModelElement = {
   eventDefinitionKind: ShapeBpmnEventDefinitionKind;
 } & ExpectedShapeModelElement;
+export type ExpectedIntermediateCatchEventModelElement = {
+  sourceIds?: string[];
+} & ExpectedEventModelElement;
+export type ExpectedIntermediateThrowEventModelElement = {
+  targetId?: string;
+} & ExpectedEventModelElement;
+export type ExpectedBoundaryEventModelElement = {
+  isInterrupting?: boolean;
+} & ExpectedEventModelElement;
+export type ExpectedStartEventModelElement = {
+  isInterrupting?: boolean;
+} & ExpectedEventModelElement;
 
 export type ExpectedSubProcessModelElement = {
   subProcessKind: ShapeBpmnSubProcessKind;
@@ -219,13 +231,6 @@ export type ExpectedEdgeModelElement = {
 export type ExpectedSequenceFlowModelElement = {
   sequenceFlowKind?: SequenceFlowKind;
 } & ExpectedEdgeModelElement;
-
-export type ExpectedBoundaryEventModelElement = {
-  isInterrupting?: boolean;
-} & ExpectedEventModelElement;
-export type ExpectedStartEventModelElement = {
-  isInterrupting?: boolean;
-} & ExpectedEventModelElement;
 
 export type ExpectedEventBasedGatewayModelElement = {
   gatewayKind?: ShapeBpmnEventBasedGatewayKind;
