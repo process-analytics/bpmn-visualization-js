@@ -26,7 +26,12 @@
   <semantic:timerEventDefinition id="top_timer_definition_id" />
   <semantic:signalEventDefinition id="top_signal_definition_id" />
   <semantic:terminateEventDefinition id="top_terminate_definition_id" />
-  <semantic:linkEventDefinition id="top_link_definition_id" />
+  <semantic:linkEventDefinition id="top_throw_link_definition_id">
+    <semantic:target>top_catch_link_definition_id</semantic:target>
+  </semantic:linkEventDefinition>
+  <semantic:linkEventDefinition id="top_catch_link_definition_id">
+    <semantic:source>top_throw_link_definition_id</semantic:source>
+  </semantic:linkEventDefinition>
   <semantic:errorEventDefinition id="top_error_definition_id" />
   <semantic:compensateEventDefinition id="top_compensate_definition_id" />
   <semantic:cancelEventDefinition id="top_cancel_definition_id" />
@@ -635,7 +640,7 @@
       <semantic:linkEventDefinition />
     </semantic:intermediateThrowEvent>
     <semantic:intermediateThrowEvent id="intermediate_throw_event_link_on_top_id" name="Throw Link Intermediate Event On Top">
-      <semantic:eventDefinitionRef>top_link_definition_id</semantic:eventDefinitionRef>
+      <semantic:eventDefinitionRef>top_throw_link_definition_id</semantic:eventDefinitionRef>
     </semantic:intermediateThrowEvent>
     <semantic:intermediateThrowEvent id="intermediate_throw_event_compensate_id" name="Throw Compensate Intermediate Event">
       <semantic:compensateEventDefinition />
@@ -673,7 +678,7 @@
       <semantic:linkEventDefinition />
     </semantic:intermediateCatchEvent>
     <semantic:intermediateCatchEvent id="intermediate_catch_event_link_on_top_id" name="Catch Link Intermediate Event On Top">
-      <semantic:eventDefinitionRef>top_link_definition_id</semantic:eventDefinitionRef>
+      <semantic:eventDefinitionRef>top_catch_link_definition_id</semantic:eventDefinitionRef>
     </semantic:intermediateCatchEvent>
     <semantic:intermediateCatchEvent id="intermediate_catch_event_conditional_id" name="Catch Conditional Intermediate Event">
       <semantic:conditionalEventDefinition />
