@@ -56,6 +56,10 @@ type BuildInterruptingEventParameter = {
 } & CommonBuildEventParameter;
 
 export type BuildEventParameter = BuildNotBoundaryEventParameter | BuildBoundaryEventParameter;
+
+/**
+ * All event types, excepted Boundary Event
+ */
 export type BuildNotBoundaryEventParameter = BuildIntermediateCatchEventParameter | BuildIntermediateThrowEventParameter | BuildEndEventParameter | BuildStartEventParameter;
 
 export type BuildNotBoundaryEventKind = 'startEvent' | 'endEvent' | 'intermediateCatchEvent' | 'intermediateThrowEvent';
