@@ -16,11 +16,29 @@ limitations under the License.
 
 import type { EdgeBpmnSemantic, ShapeBpmnSemantic } from '@lib/component/registry';
 
-import { associationFlowInModel, laneInModel, messageFlowInModel, poolInModel, sequenceFlowInModel, startEventInModel } from '../../helpers/bpmn-model-utils';
+import {
+  associationFlowInModel,
+  intermediateCatchInModel,
+  intermediateThrowEventInModel,
+  laneInModel,
+  messageFlowInModel,
+  poolInModel,
+  sequenceFlowInModel,
+  startEventInModel,
+} from '../../helpers/bpmn-model-utils';
 
 import { BpmnModelRegistry } from '@lib/component/registry/bpmn-model-registry';
 import { ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
-import { expectAssociationFlow, expectLane, expectMessageFlow, expectPool, expectSequenceFlow, expectStartEvent } from '@test/shared/model/bpmn-semantic-utils';
+import {
+  expectAssociationFlow,
+  expectIntermediateCatchEvent,
+  expectIntermediateThrowEvent,
+  expectLane,
+  expectMessageFlow,
+  expectPool,
+  expectSequenceFlow,
+  expectStartEvent,
+} from '@test/shared/model/bpmn-semantic-utils';
 
 const bpmnModelRegistry = new BpmnModelRegistry();
 
@@ -52,6 +70,7 @@ describe('Bpmn Model registry', () => {
   it('search flowNode', () => {
     bpmnModelRegistry.load(startEventInModel('start event id', 'start event name', { incomingIds: ['incoming_1'], outgoingIds: ['outgoing_1', 'outgoing_2'] }));
     const bpmnSemantic = bpmnModelRegistry.getBpmnSemantic('start event id') as ShapeBpmnSemantic;
+
     expectStartEvent(bpmnSemantic, {
       id: 'start event id',
       name: 'start event name',
@@ -59,6 +78,47 @@ describe('Bpmn Model registry', () => {
       outgoing: ['outgoing_1', 'outgoing_2'],
       parentId: 'parentId',
       eventDefinitionKind: ShapeBpmnEventDefinitionKind.TIMER,
+    });
+  });
+
+  it('search intermediate catch event', () => {
+    bpmnModelRegistry.load(
+      intermediateCatchInModel('intermediate catch event id', 'intermediate catch event name', { incomingIds: ['incoming_1'], outgoingIds: ['outgoing_1', 'outgoing_2'] }, [
+        'sourceId',
+      ]),
+    );
+    const bpmnSemantic = bpmnModelRegistry.getBpmnSemantic('intermediate catch event id') as ShapeBpmnSemantic;
+
+    expectIntermediateCatchEvent(bpmnSemantic, {
+      id: 'intermediate catch event id',
+      name: 'intermediate catch event name',
+      incoming: ['incoming_1'],
+      outgoing: ['outgoing_1', 'outgoing_2'],
+      parentId: 'parentId',
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.LINK,
+      linkEventSourceIds: ['sourceId'],
+    });
+  });
+
+  it('search intermediate throw event', () => {
+    bpmnModelRegistry.load(
+      intermediateThrowEventInModel(
+        'intermediate throw event id',
+        'intermediate throw event name',
+        { incomingIds: ['incoming_1'], outgoingIds: ['outgoing_1', 'outgoing_2'] },
+        'targetId',
+      ),
+    );
+    const bpmnSemantic = bpmnModelRegistry.getBpmnSemantic('intermediate throw event id') as ShapeBpmnSemantic;
+
+    expectIntermediateThrowEvent(bpmnSemantic, {
+      id: 'intermediate throw event id',
+      name: 'intermediate throw event name',
+      incoming: ['incoming_1'],
+      outgoing: ['outgoing_1', 'outgoing_2'],
+      parentId: 'parentId',
+      eventDefinitionKind: ShapeBpmnEventDefinitionKind.LINK,
+      linkEventTargetId: 'targetId',
     });
   });
 

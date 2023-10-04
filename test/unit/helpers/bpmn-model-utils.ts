@@ -27,6 +27,8 @@ import ShapeBpmnElement, {
   ShapeBpmnCallActivity,
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
+  ShapeBpmnIntermediateThrowEvent,
+  ShapeBpmnIntermediateCatchEvent,
 } from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
 
 const newBpmnModel = (): BpmnModel => ({
@@ -73,6 +75,18 @@ export const startEventInModel = (id: string, name: string, extras?: ShapeBpmnEl
   return bpmnModel;
 };
 
+export const intermediateCatchInModel = (id: string, name: string, extras?: ShapeBpmnElementExtraProperties, sourceIds?: string[]): BpmnModel => {
+  const bpmnModel = newBpmnModel();
+  bpmnModel.flowNodes.push(newIntermediateCatchEvent('parentId', id, name, extras, sourceIds));
+  return bpmnModel;
+};
+
+export const intermediateThrowEventInModel = (id: string, name: string, extras?: ShapeBpmnElementExtraProperties, targetId?: string): BpmnModel => {
+  const bpmnModel = newBpmnModel();
+  bpmnModel.flowNodes.push(newIntermediateThrowEvent('parentId', id, name, extras, targetId));
+  return bpmnModel;
+};
+
 export const laneInModel = (id: string, name: string): BpmnModel => {
   const bpmnModel = newBpmnModel();
   bpmnModel.lanes.push(new Shape(buildShapeId(id), new ShapeBpmnElement(id, name, ShapeBpmnElementKind.LANE)));
@@ -99,6 +113,19 @@ export type ShapeBpmnElementExtraProperties = {
 const newStartEvent = (parent: string, id: string, name: string, extras?: ShapeBpmnElementExtraProperties): Shape => {
   return new Shape(buildShapeId(id), withExtras(new ShapeBpmnStartEvent(id, name, ShapeBpmnEventDefinitionKind.TIMER, parent), extras));
 };
+
+const newIntermediateCatchEvent = (parent: string, id: string, name: string, extras?: ShapeBpmnElementExtraProperties, sourceIds: string[] = []): Shape => {
+  const bpmnElement = new ShapeBpmnIntermediateCatchEvent(id, name, ShapeBpmnEventDefinitionKind.LINK, parent);
+  bpmnElement.sourceIds = sourceIds;
+  return new Shape(buildShapeId(id), withExtras(bpmnElement, extras));
+};
+
+const newIntermediateThrowEvent = (parent: string, id: string, name: string, extras?: ShapeBpmnElementExtraProperties, targetId?: string): Shape => {
+  const bpmnElement = new ShapeBpmnIntermediateThrowEvent(id, name, ShapeBpmnEventDefinitionKind.LINK, parent);
+  bpmnElement.targetId = targetId;
+  return new Shape(buildShapeId(id), withExtras(bpmnElement, extras));
+};
+
 const newBoundaryEvent = (parent: string, id: string, name: string): Shape =>
   new Shape(buildShapeId(id), new ShapeBpmnBoundaryEvent(id, name, ShapeBpmnEventDefinitionKind.CANCEL, parent));
 
