@@ -45,6 +45,14 @@ export class ShapeUtil {
     return ShapeBpmnElementKind.EVENT_START === kind;
   }
 
+  static isIntermediateCatchEvent(kind: ShapeBpmnElementKind): kind is ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH {
+    return ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH === kind;
+  }
+
+  static isIntermediateThrowEvent(kind: ShapeBpmnElementKind): kind is ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW {
+    return ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW === kind;
+  }
+
   static isCallActivity(kind: ShapeBpmnElementKind): boolean {
     return ShapeBpmnElementKind.CALL_ACTIVITY === kind;
   }
