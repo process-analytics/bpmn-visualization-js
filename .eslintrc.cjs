@@ -52,6 +52,7 @@ module.exports = {
     'unicorn/prefer-dom-node-append': 'error',
     'unicorn/prefer-dom-node-dataset': 'error',
     'unicorn/prefer-dom-node-remove': 'error',
+    'unicorn/prefer-string-slice': 'error',
     'unicorn/no-negated-condition': 'error',
     'unicorn/no-array-callback-reference': 'error',
     'unicorn/no-array-method-this-argument': 'error',
