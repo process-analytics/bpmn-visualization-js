@@ -376,6 +376,10 @@ export interface ShapeBpmnSemantic extends BaseBpmnSemantic {
   callActivityKind?: ShapeBpmnCallActivityKind;
   /** Set when the {@link BaseBpmnSemantic.kind} relates to a BPMN event. */
   eventDefinitionKind?: ShapeBpmnEventDefinitionKind;
+  /** Set when the {@link BaseBpmnSemantic.kind} relates to a BPMN intermediate catch event with {@link ShapeBpmnSemantic.eventDefinitionKind} set to {@link ShapeBpmnEventDefinitionKind.LINK}. */
+  linkEventSourceIds?: string[];
+  /** Set when the {@link BaseBpmnSemantic.kind} relates to a BPMN intermediate throw event with {@link ShapeBpmnSemantic.eventDefinitionKind} set to {@link ShapeBpmnEventDefinitionKind.LINK}. */
+  linkEventTargetId?: string;
   incomingIds: string[];
   outgoingIds: string[];
   /**
