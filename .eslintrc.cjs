@@ -72,6 +72,7 @@ module.exports = {
     'unicorn/prefer-switch': 'error',
     'unicorn/switch-case-braces': 'error',
     'unicorn/prefer-spread': 'error',
+    'unicorn/text-encoding-identifier-case': 'error',
     'import/newline-after-import': ['error', { count: 1 }],
     'import/first': 'error',
     'import/order': [
