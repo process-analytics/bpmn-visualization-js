@@ -49,6 +49,7 @@ module.exports = {
     'unicorn/prefer-logical-operator-over-ternary': 'error',
     'unicorn/consistent-function-scoping': 'error',
     'unicorn/prefer-dom-node-append': 'error',
+    'unicorn/prefer-dom-node-dataset': 'error',
     'unicorn/prefer-dom-node-remove': 'error',
     'unicorn/no-negated-condition': 'error',
     'unicorn/no-array-callback-reference': 'error',
