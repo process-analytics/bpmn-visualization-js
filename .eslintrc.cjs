@@ -133,6 +133,7 @@ module.exports = {
         '@typescript-eslint/consistent-type-imports': ['error'],
         // We choose to disable it and choose later if we want to enable it. See https://github.com/process-analytics/bpmn-visualization-js/pull/2821.
         '@typescript-eslint/consistent-type-definitions': 'off',
+        '@typescript-eslint/dot-notation': 'error',
 
         'require-await': 'off', // disable the base eslint rule as it can report incorrect errors when '@typescript-eslint/require-await' is enabled (see official documentation)
         '@typescript-eslint/require-await': 'error',
