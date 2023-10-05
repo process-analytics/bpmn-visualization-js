@@ -18,7 +18,7 @@ import type { EdgeBpmnSemantic, ShapeBpmnSemantic } from '@lib/component/registr
 
 import {
   associationFlowInModel,
-  intermediateCatchInModel,
+  intermediateCatchEventInModel,
   intermediateThrowEventInModel,
   laneInModel,
   messageFlowInModel,
@@ -83,7 +83,7 @@ describe('Bpmn Model registry', () => {
 
   it('search intermediate catch event', () => {
     bpmnModelRegistry.load(
-      intermediateCatchInModel('intermediate catch event id', 'intermediate catch event name', { incomingIds: ['incoming_1'], outgoingIds: ['outgoing_1', 'outgoing_2'] }, [
+      intermediateCatchEventInModel('intermediate catch event id', 'intermediate catch event name', { incomingIds: ['incoming_1'], outgoingIds: ['outgoing_1', 'outgoing_2'] }, [
         'sourceId',
       ]),
     );

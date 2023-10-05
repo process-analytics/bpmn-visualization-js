@@ -75,7 +75,7 @@ export const startEventInModel = (id: string, name: string, extras?: ShapeBpmnEl
   return bpmnModel;
 };
 
-export const intermediateCatchInModel = (id: string, name: string, extras?: ShapeBpmnElementExtraProperties, sourceIds?: string[]): BpmnModel => {
+export const intermediateCatchEventInModel = (id: string, name: string, extras?: ShapeBpmnElementExtraProperties, sourceIds?: string[]): BpmnModel => {
   const bpmnModel = newBpmnModel();
   bpmnModel.flowNodes.push(newIntermediateCatchEvent('parentId', id, name, extras, sourceIds));
   return bpmnModel;
