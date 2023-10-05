@@ -14,14 +14,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { GlobalTaskKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
+import type { GlobalTaskKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 import type BpmnModel from '@lib/model/bpmn/internal/BpmnModel';
 import type { Edge, Waypoint } from '@lib/model/bpmn/internal/edge/edge';
 import type Shape from '@lib/model/bpmn/internal/shape/Shape';
+import type { ShapeBpmnIntermediateCatchEvent, ShapeBpmnIntermediateThrowEvent } from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
 import type { EdgeExtensions, LabelExtensions, ShapeExtensions } from '@lib/model/bpmn/internal/types';
 import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
 
-import { FlowKind, MessageVisibleKind, SequenceFlowKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';
+import { FlowKind, MessageVisibleKind, SequenceFlowKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind, ShapeBpmnEventDefinitionKind, ShapeUtil } from '@lib/model/bpmn/internal';
 import { SequenceFlow } from '@lib/model/bpmn/internal/edge/flows';
 import { ShapeBpmnActivity, ShapeBpmnBoundaryEvent, ShapeBpmnCallActivity, ShapeBpmnEvent } from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
 
@@ -51,7 +52,15 @@ export interface ExpectedEventShape extends ExpectedShape {
   eventDefinitionKind: ShapeBpmnEventDefinitionKind;
 }
 
-export interface ExpectedBoundaryEventShape extends ExpectedEventShape {
+export interface ExpectedCatchEventShape extends ExpectedEventShape {
+  sourceIds?: string[];
+}
+
+export interface ExpectedThrowEventShape extends ExpectedEventShape {
+  targetId?: string;
+}
+
+export interface ExpectedBoundaryEventShape extends ExpectedCatchEventShape {
   isInterrupting?: boolean;
 }
 
@@ -94,7 +103,7 @@ export interface ExpectedBounds {
 
 export const verifyShape = (
   shape: Shape,
-  expectedShape: ExpectedShape | ExpectedActivityShape | ExpectedCallActivityShape | ExpectedEventShape | ExpectedBoundaryEventShape,
+  expectedShape: ExpectedShape | ExpectedActivityShape | ExpectedCallActivityShape | ExpectedCatchEventShape | ExpectedThrowEventShape | ExpectedBoundaryEventShape,
 ): void => {
   expect(shape.id).toEqual(expectedShape.shapeId);
   expect(shape.isHorizontal).toEqual(expectedShape.isHorizontal);
@@ -123,7 +132,18 @@ export const verifyShape = (
 
   if ('eventDefinitionKind' in expectedShape) {
     expect(bpmnElement instanceof ShapeBpmnEvent).toBeTruthy();
-    expect((bpmnElement as ShapeBpmnEvent).eventDefinitionKind).toEqual((expectedShape as ExpectedEventShape).eventDefinitionKind);
+
+    const expectedEvent = expectedShape as ExpectedEventShape;
+    const event = bpmnElement as ShapeBpmnEvent;
+    expect(event.eventDefinitionKind).toEqual(expectedEvent.eventDefinitionKind);
+
+    if (expectedEvent.eventDefinitionKind === ShapeBpmnEventDefinitionKind.LINK) {
+      if (ShapeUtil.isIntermediateCatchEvent(expectedShape.bpmnElementKind)) {
+        expect((event as ShapeBpmnIntermediateCatchEvent).sourceIds).toEqual((expectedEvent as ExpectedCatchEventShape).sourceIds ?? []);
+      } else {
+        expect((event as ShapeBpmnIntermediateThrowEvent).targetId).toEqual((expectedEvent as ExpectedThrowEventShape).targetId);
+      }
+    }
   }
 
   if ('isInterrupting' in expectedShape) {
