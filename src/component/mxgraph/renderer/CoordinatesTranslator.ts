@@ -69,7 +69,7 @@ export default class CoordinatesTranslator {
     const points: mxPointType[] = edge.geometry.points;
 
     const p0 = points[0];
-    const pe = points[points.length - 1];
+    const pe = points.at(-1);
 
     if (p0 != null && pe != null) {
       const dx = pe.x - p0.x;

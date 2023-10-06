@@ -48,7 +48,9 @@ module.exports = {
     'unicorn/prefer-ternary': 'error',
     'unicorn/prefer-logical-operator-over-ternary': 'error',
     'unicorn/consistent-function-scoping': 'error',
+    'unicorn/prefer-at': 'error',
     'unicorn/prefer-dom-node-append': 'error',
+    'unicorn/prefer-dom-node-dataset': 'error',
     'unicorn/prefer-dom-node-remove': 'error',
     'unicorn/no-negated-condition': 'error',
     'unicorn/no-array-callback-reference': 'error',
@@ -72,6 +74,7 @@ module.exports = {
     'unicorn/prefer-switch': 'error',
     'unicorn/switch-case-braces': 'error',
     'unicorn/prefer-spread': 'error',
+    'unicorn/text-encoding-identifier-case': 'error',
     'import/newline-after-import': ['error', { count: 1 }],
     'import/first': 'error',
     'import/order': [

@@ -61,7 +61,7 @@ export class BpmnCellRenderer extends mxgraph.mxCellRenderer {
         // START bpmn-visualization CUSTOMIZATION
         if (overlayShape instanceof OverlayBadgeShape) {
           overlayShape.node.classList.add('overlay-badge');
-          overlayShape.node.setAttribute('data-bpmn-id', state.cell.id);
+          overlayShape.node.dataset.bpmnId = state.cell.id;
         }
         // END bpmn-visualization CUSTOMIZATION
 

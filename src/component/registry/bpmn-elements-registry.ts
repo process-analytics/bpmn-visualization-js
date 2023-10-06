@@ -102,7 +102,7 @@ export class BpmnElementsRegistry implements CssClassesRegistry, ElementsRegistr
   }
 
   private getRelatedBpmnSemantic(htmlElement: HTMLElement): BpmnSemantic {
-    return this.bpmnModelRegistry.getBpmnSemantic(htmlElement.getAttribute('data-bpmn-id'));
+    return this.bpmnModelRegistry.getBpmnSemantic(htmlElement.dataset.bpmnId);
   }
 
   addCssClasses(bpmnElementIds: string | string[], classNames: string | string[]): void {
