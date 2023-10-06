@@ -44,7 +44,7 @@ if (!['json', 'model'].includes(outputType)) {
 console.info('Use BPMN diagram located at "%s"', bpmnFilePath);
 
 const xmlParser = new BpmnXmlParser();
-const json = xmlParser.parse(readFileSync(bpmnFilePath, 'utf-8', __dirname));
+const json = xmlParser.parse(readFileSync(bpmnFilePath, 'utf8', __dirname));
 const prettyString = (object: BpmnJsonModel | BpmnModel): string => JSON.stringify(object, null, 2);
 
 let result = '';

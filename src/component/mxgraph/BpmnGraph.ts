@@ -244,6 +244,6 @@ class BpmnGraphView extends mxgraph.mxGraphView {
       return super.getFloatingTerminalPoint(edge, start, end, source);
     }
     const pts = edge.absolutePoints;
-    return source ? pts[1] : pts[pts.length - 2];
+    return source ? pts[1] : pts.at(-2);
   }
 }
