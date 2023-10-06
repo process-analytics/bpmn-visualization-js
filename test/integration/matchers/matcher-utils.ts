@@ -183,7 +183,7 @@ export function buildReceivedResolvedModelCellStyle(cell: mxCell, bv = bpmnVisua
 }
 
 function toBpmnStyle(rawStyle: StyleMap, isEdge: boolean): BpmnCellStyle {
-  const style: BpmnCellStyle = {
+  return {
     opacity: rawStyle.opacity,
     verticalAlign: rawStyle.verticalAlign,
     align: rawStyle.align,
@@ -202,21 +202,22 @@ function toBpmnStyle(rawStyle: StyleMap, isEdge: boolean): BpmnCellStyle {
     markers: rawStyle[BpmnStyleIdentifier.MARKERS]?.split(',').sort(),
     // for message flow icon (value in rawStyle are string)
     'bpmn.isInitiating': rawStyle[BpmnStyleIdentifier.IS_INITIATING] ? rawStyle[BpmnStyleIdentifier.IS_INITIATING] == 'true' : undefined,
-  };
 
-  if (isEdge) {
-    style.startArrow = rawStyle.startArrow;
-    style.endArrow = rawStyle.endArrow;
-    style.endSize = rawStyle.endSize;
-  } else {
-    style.shape = rawStyle.shape;
-    style.horizontal = rawStyle.horizontal;
-    style.swimlaneFillColor = rawStyle.swimlaneFillColor;
-    style.fillOpacity = rawStyle.fillOpacity;
-    style.gradientColor = rawStyle.gradientColor;
-    style.gradientDirection = rawStyle.gradientDirection;
-  }
-  return style;
+    ...(isEdge
+      ? {
+          startArrow: rawStyle.startArrow,
+          endArrow: rawStyle.endArrow,
+          endSize: rawStyle.endSize,
+        }
+      : {
+          shape: rawStyle.shape,
+          horizontal: rawStyle.horizontal,
+          swimlaneFillColor: rawStyle.swimlaneFillColor,
+          fillOpacity: rawStyle.fillOpacity,
+          gradientColor: rawStyle.gradientColor,
+          gradientDirection: rawStyle.gradientDirection,
+        }),
+  };
 }
 
 function buildBaseReceivedExpectedCell(cell: mxCell): ExpectedCell {
