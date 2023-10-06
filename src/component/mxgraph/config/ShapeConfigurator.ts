@@ -154,7 +154,7 @@ export default class ShapeConfigurator {
         }
 
         this.node.setAttribute('class', allBpmnClassNames.join(' '));
-        this.node.setAttribute('data-bpmn-id', this.state.cell.id);
+        this.node.dataset.bpmnId = this.state.cell.id;
       }
       // END bpmn-visualization CUSTOMIZATION
       canvas.minStrokeWidth = this.minSvgStrokeWidth;

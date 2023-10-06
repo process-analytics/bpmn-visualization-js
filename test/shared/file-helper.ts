@@ -17,7 +17,7 @@ limitations under the License.
 import { readdirSync, readFileSync as fsReadFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-export function readFileSync(relativePathToSourceFile: string, encoding: BufferEncoding = 'utf-8', directoryName = __dirname): string {
+export function readFileSync(relativePathToSourceFile: string, encoding: BufferEncoding = 'utf8', directoryName = __dirname): string {
   return fsReadFileSync(join(directoryName, relativePathToSourceFile), { encoding });
 }
 

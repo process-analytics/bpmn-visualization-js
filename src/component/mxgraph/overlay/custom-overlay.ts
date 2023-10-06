@@ -101,7 +101,7 @@ export class MxGraphCustomOverlay extends mxgraph.mxCellOverlay {
     }
     // last point for end position
     else {
-      return pts[pts.length - 1];
+      return pts.at(-1);
     }
   }
 }

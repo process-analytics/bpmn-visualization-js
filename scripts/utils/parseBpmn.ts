@@ -30,7 +30,7 @@ import { readFileSync } from '../../test/shared/file-helper';
 const __dirname = resolvePath();
 const argv = parseArgs(process.argv.slice(2));
 const bpmnFilePath = argv._[0];
-const outputType = argv['output'] || 'json';
+const outputType = argv.output || 'json';
 
 // eslint-disable-next-line no-console
 console.info('Generating BPMN in the "%s" output type', outputType);
@@ -44,7 +44,7 @@ if (!['json', 'model'].includes(outputType)) {
 console.info('Use BPMN diagram located at "%s"', bpmnFilePath);
 
 const xmlParser = new BpmnXmlParser();
-const json = xmlParser.parse(readFileSync(bpmnFilePath, 'utf-8', __dirname));
+const json = xmlParser.parse(readFileSync(bpmnFilePath, 'utf8', __dirname));
 const prettyString = (object: BpmnJsonModel | BpmnModel): string => JSON.stringify(object, null, 2);
 
 let result = '';
