@@ -137,12 +137,12 @@ export default class DiagramConverter {
     if ('background-color' in bpmnShape) {
       shape.extensions.fillColor = bpmnShape['background-color'] as string;
     } else if ('fill' in bpmnShape) {
-      shape.extensions.fillColor = bpmnShape['fill'] as string;
+      shape.extensions.fillColor = bpmnShape.fill as string;
     }
     if ('border-color' in bpmnShape) {
       shape.extensions.strokeColor = bpmnShape['border-color'] as string;
     } else if ('stroke' in bpmnShape) {
-      shape.extensions.strokeColor = bpmnShape['stroke'] as string;
+      shape.extensions.strokeColor = bpmnShape.stroke as string;
     }
   }
 
@@ -182,7 +182,7 @@ export default class DiagramConverter {
     if ('border-color' in bpmnEdge) {
       edge.extensions.strokeColor = bpmnEdge['border-color'] as string;
     } else if ('stroke' in bpmnEdge) {
-      edge.extensions.strokeColor = bpmnEdge['stroke'] as string;
+      edge.extensions.strokeColor = bpmnEdge.stroke as string;
     }
   }
 

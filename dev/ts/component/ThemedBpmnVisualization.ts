@@ -144,43 +144,43 @@ export class ThemedBpmnVisualization extends BpmnVisualization {
         }
       }
       const style = styleSheet.styles[kind];
-      style['fillColor'] = fillColor;
-      style['strokeColor'] = strokeColor;
+      style.fillColor = fillColor;
+      style.strokeColor = strokeColor;
     }
 
     // TASK
     for (const kind of ShapeUtil.taskKinds()) {
       const style = styleSheet.styles[kind];
-      style['fillColor'] = theme.taskAndCallActivityFillColor;
+      style.fillColor = theme.taskAndCallActivityFillColor;
     }
 
     // CALL ACTIVITY
     const callActivityStyle = styleSheet.styles[ShapeBpmnElementKind.CALL_ACTIVITY];
-    callActivityStyle['fillColor'] = theme.taskAndCallActivityFillColor;
+    callActivityStyle.fillColor = theme.taskAndCallActivityFillColor;
 
     // TEXT ANNOTATION
     const textAnnotationStyle = styleSheet.styles[ShapeBpmnElementKind.TEXT_ANNOTATION];
-    textAnnotationStyle['fillColor'] = theme.textAnnotationFillColor ?? StyleDefault.TEXT_ANNOTATION_FILL_COLOR;
+    textAnnotationStyle.fillColor = theme.textAnnotationFillColor ?? StyleDefault.TEXT_ANNOTATION_FILL_COLOR;
 
     // POOL
     const poolStyle = styleSheet.styles[ShapeBpmnElementKind.POOL];
-    poolStyle['fillColor'] = theme.poolFillColor;
-    poolStyle['swimlaneFillColor'] = theme.defaultFillColor;
+    poolStyle.fillColor = theme.poolFillColor;
+    poolStyle.swimlaneFillColor = theme.defaultFillColor;
 
     // LANE
     const laneStyle = styleSheet.styles[ShapeBpmnElementKind.LANE];
-    laneStyle['fillColor'] = theme.laneFillColor;
+    laneStyle.fillColor = theme.laneFillColor;
 
     // DEFAULTS
     const defaultVertexStyle = styleSheet.getDefaultVertexStyle();
-    defaultVertexStyle['fontColor'] = theme.defaultFontColor;
-    defaultVertexStyle['fillColor'] = theme.defaultFillColor;
-    defaultVertexStyle['strokeColor'] = theme.defaultStrokeColor;
+    defaultVertexStyle.fontColor = theme.defaultFontColor;
+    defaultVertexStyle.fillColor = theme.defaultFillColor;
+    defaultVertexStyle.strokeColor = theme.defaultStrokeColor;
 
     const defaultEdgeStyle = styleSheet.getDefaultEdgeStyle();
-    defaultEdgeStyle['fontColor'] = theme.defaultFontColor;
-    defaultEdgeStyle['fillColor'] = theme.defaultFillColor;
-    defaultEdgeStyle['strokeColor'] = theme.flowColor ?? theme.defaultStrokeColor;
+    defaultEdgeStyle.fontColor = theme.defaultFontColor;
+    defaultEdgeStyle.fillColor = theme.defaultFillColor;
+    defaultEdgeStyle.strokeColor = theme.flowColor ?? theme.defaultStrokeColor;
 
     // theme configuration completed
     return true;
