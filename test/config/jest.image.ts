@@ -32,7 +32,7 @@ const toMatchImageSnapshotWithRealSignature = toMatchImageSnapshot as (received:
 function computeRelativePathFromReportToSnapshots(path: string): string {
   path = path.replace(/\\/g, '/');
   const searchedPart = 'build/test-report/e2e/'; // hard coded here, must be kept in sync with the e2e/jest.config.js
-  return './' + path.substring(path.indexOf(searchedPart) + searchedPart.length);
+  return './' + path.slice(Math.max(0, path.indexOf(searchedPart) + searchedPart.length));
 }
 
 // the processing is inspired from jest-image-snapshot, but the management using a class is specific to this implementation

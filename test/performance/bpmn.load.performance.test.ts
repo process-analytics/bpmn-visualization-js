@@ -51,7 +51,7 @@ afterAll(async () => {
   await metricsCollector.destroy().then(() => {
     try {
       const oldDataString = fs.readFileSync(performanceDataFilePath, 'utf8');
-      const oldData = JSON.parse(oldDataString.substring('const data = '.length, oldDataString.length)) as ChartData;
+      const oldData = JSON.parse(oldDataString.slice('const data = '.length, oldDataString.length)) as ChartData;
       const data = {
         zoom: oldData.zoom,
         load: [...oldData.load, ...metricsArray],
