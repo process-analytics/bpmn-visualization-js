@@ -23,11 +23,9 @@ import { MessageVisibleKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, Sh
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/flows';
 import Shape from '../../../model/bpmn/internal/shape/Shape';
 import {
-  ShapeBpmnIntermediateThrowEvent,
   ShapeBpmnActivity,
   ShapeBpmnBoundaryEvent,
   ShapeBpmnCallActivity,
-  ShapeBpmnIntermediateCatchEvent,
   ShapeBpmnEvent,
   ShapeBpmnEventBasedGateway,
   ShapeBpmnStartEvent,
@@ -102,12 +100,6 @@ export default class StyleComputer {
 
     if (bpmnElement instanceof ShapeBpmnBoundaryEvent || (bpmnElement instanceof ShapeBpmnStartEvent && bpmnElement.isInterrupting !== undefined)) {
       styleValues.set(BpmnStyleIdentifier.IS_INTERRUPTING, String(bpmnElement.isInterrupting));
-    }
-
-    if (bpmnElement instanceof ShapeBpmnIntermediateCatchEvent) {
-      styleValues.set(BpmnStyleIdentifier.LINK_EVENT_SOURCE_IDS, String(bpmnElement.sourceIds));
-    } else if (bpmnElement instanceof ShapeBpmnIntermediateThrowEvent) {
-      styleValues.set(BpmnStyleIdentifier.LINK_EVENT_TARGET_ID, bpmnElement.targetId);
     }
   }
 
