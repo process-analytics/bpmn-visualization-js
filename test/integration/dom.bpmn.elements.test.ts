@@ -24,6 +24,7 @@ import {
 } from './helpers/bpmn-visualization-initialization';
 import {
   expectEndEventBpmnElement,
+  expectParallelGatewayBpmnElement,
   expectPoolBpmnElement,
   expectSequenceFlowBpmnElement,
   expectServiceTaskBpmnElement,
@@ -70,6 +71,12 @@ describe('Bpmn Elements registry - retrieve BPMN elements', () => {
       it('Pass existing and non existing ids', () => {
         bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
         const bpmnElements = bpmnVisualization.bpmnElementsRegistry.getElementsByIds(['StartEvent_1', 'unknown', 'Flow_1', 'another_unknown']);
+        expect(bpmnElements).toHaveLength(2);
+      });
+
+      it('Pass duplicated ids', () => {
+        bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
+        const bpmnElements = bpmnVisualization.bpmnElementsRegistry.getElementsByIds(['StartEvent_1', 'Flow_1', 'StartEvent_1', 'Flow_1', 'Flow_1']);
         expect(bpmnElements).toHaveLength(2);
       });
     });
@@ -137,6 +144,30 @@ describe('Bpmn Elements registry - retrieve BPMN elements', () => {
           incoming: ['Flow_0i9h5sw'],
           name: 'Service Task 2.1',
           outgoing: ['Flow_1hvyo7b'],
+          parentId: 'lane_02',
+        });
+      });
+
+      it('Pass duplicated kinds', () => {
+        bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-3-lanes-message-start-end-intermediate-events.bpmn'));
+        const bpmnElements = bpmnVisualization.bpmnElementsRegistry.getElementsByKinds([
+          ShapeBpmnElementKind.TASK,
+          ShapeBpmnElementKind.GATEWAY_PARALLEL,
+          ShapeBpmnElementKind.GATEWAY_PARALLEL,
+          ShapeBpmnElementKind.TASK,
+        ]);
+        expect(bpmnElements).toHaveLength(2);
+
+        expectTaskBpmnElement(bpmnElements[0], {
+          id: 'task_1',
+          incoming: ['sequenceFlow_lane_1_elt_2'],
+          name: 'Task 1',
+          outgoing: ['Flow_1noi0ay'],
+          parentId: 'lane_01',
+        });
+        expectParallelGatewayBpmnElement(bpmnElements[1], {
+          id: 'gateway_02_parallel',
+          name: 'gateway 2',
           parentId: 'lane_02',
         });
       });

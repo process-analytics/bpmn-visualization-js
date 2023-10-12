@@ -91,6 +91,11 @@ export function expectBoundaryEvent(bpmnSemantic: ShapeBpmnSemantic, expected: E
   expectEvent(bpmnSemantic, expected);
 }
 
+export function expectIntermediateCatchEvent(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedEventElement): void {
+  expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH);
+  expectEvent(bpmnSemantic, expected);
+}
+
 export function expectParallelGateway(bpmnSemantic: BpmnSemantic, expected: ExpectedFlowNodeElement): void {
   expectShape(bpmnSemantic, expected);
   expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.GATEWAY_PARALLEL);

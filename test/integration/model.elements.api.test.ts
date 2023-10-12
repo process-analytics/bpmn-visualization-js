@@ -25,10 +25,12 @@ import {
   expectBoundaryEvent,
   expectCallActivity,
   expectEndEvent,
+  expectIntermediateCatchEvent,
   expectParallelGateway,
   expectSequenceFlow,
   expectStartEvent,
   expectSubprocess,
+  expectTask,
   expectUserTask,
 } from '@test/shared/model/bpmn-semantic-utils';
 
@@ -150,6 +152,31 @@ describe('Registry API - retrieve Model Bpmn elements', () => {
         parentId: 'send_task_id',
       });
     });
+
+    test('Pass duplicated ids', () => {
+      const modelElements = bpmnElementsRegistry.getModelElementsByIds([
+        'start_event_none_id',
+        'conditional_sequence_flow_from_gateway_id',
+        'conditional_sequence_flow_from_gateway_id',
+        'start_event_none_id',
+        'conditional_sequence_flow_from_gateway_id',
+      ]);
+
+      expect(modelElements).toHaveLength(2);
+
+      expectStartEvent(modelElements[0] as ShapeBpmnSemantic, {
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
+        id: 'start_event_none_id',
+        name: 'None Start Event',
+        parentId: 'participant_1_id',
+      });
+      expectSequenceFlow(modelElements[1] as EdgeBpmnSemantic, {
+        id: 'conditional_sequence_flow_from_gateway_id',
+        name: '',
+        source: 'gateway_with_flows_id',
+        target: 'task_with_flows_id',
+      });
+    });
   });
 
   describe('Get by ids - diagram including elements without pool', () => {
@@ -232,7 +259,7 @@ describe('Registry API - retrieve Model Bpmn elements', () => {
         eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
         incoming: ['Flow_09zytr1'],
       });
-      expectParallelGateway(modelElements[2] as ShapeBpmnSemantic, { id: 'Gateway_1hq21li', name: 'gateway 2', parentId: 'lane_02' });
+      expectParallelGateway(modelElements[2] as ShapeBpmnSemantic, { id: 'gateway_02_parallel', name: 'gateway 2', parentId: 'lane_02' });
       expectSequenceFlow(modelElements[3] as EdgeBpmnSemantic, { id: 'Flow_1noi0ay', source: 'task_1', target: 'gateway_01' });
       // all remaining are sequence flows
       expectAllElementsWithKind(modelElements.slice(3), FlowKind.SEQUENCE_FLOW);
@@ -240,6 +267,33 @@ describe('Registry API - retrieve Model Bpmn elements', () => {
 
     test.each([null, undefined])('Pass nullish parameter: %s', (nullishResetParameter: BpmnElementKind) => {
       expect(bpmnElementsRegistry.getModelElementsByKinds(nullishResetParameter)).toHaveLength(0);
+    });
+
+    test('Pass duplicated kinds', () => {
+      const modelElements = bpmnElementsRegistry.getModelElementsByKinds([
+        ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH,
+        ShapeBpmnElementKind.TASK,
+        ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH,
+        ShapeBpmnElementKind.TASK,
+      ]);
+
+      expect(modelElements).toHaveLength(2);
+
+      expectIntermediateCatchEvent(modelElements[0] as ShapeBpmnSemantic, {
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
+        id: 'Event_1wihmdr',
+        incoming: ['Flow_08z7uoy'],
+        name: 'message catch intermediate 1',
+        outgoing: ['sequenceFlow_lane_3_elt_3'],
+        parentId: 'lane_03',
+      });
+      expectTask(modelElements[1] as ShapeBpmnSemantic, {
+        id: 'task_1',
+        incoming: ['sequenceFlow_lane_1_elt_2'],
+        name: 'Task 1',
+        outgoing: ['Flow_1noi0ay'],
+        parentId: 'lane_01',
+      });
     });
   });
 });

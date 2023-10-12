@@ -17,9 +17,9 @@ limitations under the License.
 import type { BpmnElement, EdgeBpmnSemantic, ShapeBpmnSemantic } from '@lib/component/registry';
 import type { ExpectedBaseBpmnElement, ExpectedFlowElement, ExpectedFlowNodeElement, ExpectedEventElement } from '@test/shared/model/bpmn-semantic-utils';
 
-import { expectSvgEvent, expectSvgPool, expectSvgSequenceFlow, expectSvgTask } from './html-utils';
+import { expectSvgEvent, expectSvgGateway, expectSvgPool, expectSvgSequenceFlow, expectSvgTask } from './html-utils';
 
-import { expectEndEvent, expectPool, expectSequenceFlow, expectServiceTask, expectStartEvent, expectTask } from '@test/shared/model/bpmn-semantic-utils';
+import { expectEndEvent, expectParallelGateway, expectPool, expectSequenceFlow, expectServiceTask, expectStartEvent, expectTask } from '@test/shared/model/bpmn-semantic-utils';
 
 export function expectStartEventBpmnElement(bpmnElement: BpmnElement, expected: ExpectedEventElement): void {
   expectStartEvent(bpmnElement.bpmnSemantic as ShapeBpmnSemantic, expected);
@@ -44,6 +44,11 @@ export function expectTaskBpmnElement(bpmnElement: BpmnElement, expected: Expect
 export function expectServiceTaskBpmnElement(bpmnElement: BpmnElement, expected: ExpectedFlowNodeElement): void {
   expectServiceTask(bpmnElement.bpmnSemantic as ShapeBpmnSemantic, expected);
   expectSvgTask(bpmnElement.htmlElement);
+}
+
+export function expectParallelGatewayBpmnElement(bpmnElement: BpmnElement, expected: ExpectedFlowNodeElement): void {
+  expectParallelGateway(bpmnElement.bpmnSemantic as ShapeBpmnSemantic, expected);
+  expectSvgGateway(bpmnElement.htmlElement);
 }
 
 export function expectPoolBpmnElement(bpmnElement: BpmnElement, expected: ExpectedBaseBpmnElement): void {

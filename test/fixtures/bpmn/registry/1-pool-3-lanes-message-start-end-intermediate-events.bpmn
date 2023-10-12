@@ -12,7 +12,7 @@
         <bpmn:flowNodeRef>Event_1q818hp</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="lane_02" name="Lane 2">
-        <bpmn:flowNodeRef>Gateway_1hq21li</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>gateway_02_parallel</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>userTask_2_2</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>serviceTask_2_1</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>endEvent_message_1</bpmn:flowNodeRef>
@@ -44,7 +44,7 @@
       <bpmn:incoming>Flow_0ule9dn</bpmn:incoming>
       <bpmn:outgoing>Flow_1ceafgv</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:parallelGateway id="Gateway_1hq21li" name="gateway 2">
+    <bpmn:parallelGateway id="gateway_02_parallel" name="gateway 2">
       <bpmn:incoming>Flow_0sqwsrw</bpmn:incoming>
       <bpmn:incoming>Flow_0g017tm</bpmn:incoming>
       <bpmn:outgoing>Flow_09zytr1</bpmn:outgoing>
@@ -66,9 +66,9 @@
     <bpmn:sequenceFlow id="Flow_1ceafgv" sourceRef="Activity_1s8cug0" targetRef="serviceTask_1_2" />
     <bpmn:sequenceFlow id="sequenceFlow_lane_1_elt_6" sourceRef="serviceTask_1_2" targetRef="endEvent_terminate_1" />
     <bpmn:sequenceFlow id="Flow_1hvyo7b" sourceRef="serviceTask_2_1" targetRef="userTask_2_2" />
-    <bpmn:sequenceFlow id="Flow_09zytr1" sourceRef="Gateway_1hq21li" targetRef="endEvent_message_1" />
+    <bpmn:sequenceFlow id="Flow_09zytr1" sourceRef="gateway_02_parallel" targetRef="endEvent_message_1" />
     <bpmn:sequenceFlow id="Flow_1noi0ay" sourceRef="task_1" targetRef="gateway_01" />
-    <bpmn:sequenceFlow id="Flow_0sqwsrw" sourceRef="userTask_2_2" targetRef="Gateway_1hq21li" />
+    <bpmn:sequenceFlow id="Flow_0sqwsrw" sourceRef="userTask_2_2" targetRef="gateway_02_parallel" />
     <bpmn:task id="task_1" name="Task 1">
       <bpmn:incoming>sequenceFlow_lane_1_elt_2</bpmn:incoming>
       <bpmn:outgoing>Flow_1noi0ay</bpmn:outgoing>
@@ -98,7 +98,7 @@
       <bpmn:outgoing>sequenceFlow_lane_3_elt_3</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_077j2qu" />
     </bpmn:intermediateCatchEvent>
-    <bpmn:sequenceFlow id="Flow_0g017tm" sourceRef="Event_1q818hp" targetRef="Gateway_1hq21li" />
+    <bpmn:sequenceFlow id="Flow_0g017tm" sourceRef="Event_1q818hp" targetRef="gateway_02_parallel" />
     <bpmn:intermediateThrowEvent id="Event_1q818hp" name="message throw intermediate 1">
       <bpmn:incoming>sequenceFlow_lane_3_elt_3</bpmn:incoming>
       <bpmn:outgoing>Flow_0g017tm</bpmn:outgoing>
@@ -203,7 +203,7 @@
       <bpmndi:BPMNShape id="Activity_0tufvfp_di" bpmnElement="Activity_1s8cug0">
         <dc:Bounds x="790" y="70" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_0m423t9_di" bpmnElement="Gateway_1hq21li">
+      <bpmndi:BPMNShape id="gateway_02_parallel_di" bpmnElement="gateway_02_parallel">
         <dc:Bounds x="955" y="245" width="50" height="50" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="954" y="223" width="53" height="14" />
