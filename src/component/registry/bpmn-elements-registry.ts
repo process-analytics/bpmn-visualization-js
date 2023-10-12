@@ -77,7 +77,7 @@ export class BpmnElementsRegistry implements CssClassesRegistry, ElementsRegistr
   }
 
   getModelElementsByIds(bpmnElementIds: string | string[]): BpmnSemantic[] {
-    return ensureIsArray<string>(bpmnElementIds)
+    return filterDuplicates<string>(bpmnElementIds)
       .map(id => this.bpmnModelRegistry.getBpmnSemantic(id))
       .filter(Boolean);
   }
@@ -90,13 +90,13 @@ export class BpmnElementsRegistry implements CssClassesRegistry, ElementsRegistr
   }
 
   getModelElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[]): BpmnSemantic[] {
-    return ensureIsArray<BpmnElementKind>(bpmnKinds)
+    return filterDuplicates<BpmnElementKind>(bpmnKinds)
       .flatMap(kind => this.htmlElementRegistry.getBpmnHtmlElements(kind))
       .map(htmlElement => this.getRelatedBpmnSemantic(htmlElement));
   }
 
   getElementsByKinds(bpmnKinds: BpmnElementKind | BpmnElementKind[]): BpmnElement[] {
-    return ensureIsArray<BpmnElementKind>(bpmnKinds)
+    return filterDuplicates<BpmnElementKind>(bpmnKinds)
       .flatMap(kind => this.htmlElementRegistry.getBpmnHtmlElements(kind))
       .map(htmlElement => ({ htmlElement, bpmnSemantic: this.getRelatedBpmnSemantic(htmlElement) }));
   }
@@ -157,3 +157,5 @@ class HtmlElementRegistry {
     return [...this.container.querySelectorAll<HTMLElement>(selectors)];
   }
 }
+
+const filterDuplicates = <T>(ids: T | T[]): T[] => [...new Set(ensureIsArray<T>(ids))];
