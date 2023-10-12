@@ -44,12 +44,10 @@ import ShapeBpmnElement, {
   ShapeBpmnActivity,
   ShapeBpmnBoundaryEvent,
   ShapeBpmnCallActivity,
-  ShapeBpmnIntermediateCatchEvent,
   ShapeBpmnEvent,
   ShapeBpmnEventBasedGateway,
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
-  ShapeBpmnIntermediateThrowEvent,
 } from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
 
 function toFont(font: ExpectedFont): Font {
@@ -95,18 +93,6 @@ function newShapeBpmnCallActivityCallingGlobalTask(globalTaskKind: GlobalTaskKin
 
 function newShapeBpmnEvent(bpmnElementKind: BpmnEventKind, eventDefinitionKind: ShapeBpmnEventDefinitionKind): ShapeBpmnEvent {
   return new ShapeBpmnEvent('id', 'name', bpmnElementKind, eventDefinitionKind, null);
-}
-
-function newShapeBpmnIntermediateCatchEvent(eventDefinitionKind: ShapeBpmnEventDefinitionKind, sourceIds: string[] = []): ShapeBpmnEvent {
-  const catchEvent = new ShapeBpmnIntermediateCatchEvent('id', 'name', eventDefinitionKind, null);
-  catchEvent.sourceIds = sourceIds;
-  return catchEvent;
-}
-
-function newShapeBpmnIntermediateThrowEvent(eventDefinitionKind: ShapeBpmnEventDefinitionKind, targetId?: string): ShapeBpmnEvent {
-  const throwEvent = new ShapeBpmnIntermediateThrowEvent('id', 'name', eventDefinitionKind, null);
-  throwEvent.targetId = targetId;
-  return throwEvent;
 }
 
 function newShapeBpmnBoundaryEvent(eventDefinitionKind: ShapeBpmnEventDefinitionKind, isInterrupting: boolean): ShapeBpmnBoundaryEvent {
@@ -259,21 +245,6 @@ describe('Style Computer', () => {
     it('intermediate catch conditional', () => {
       const shape = newShape(newShapeBpmnEvent(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, ShapeBpmnEventDefinitionKind.CONDITIONAL), newLabel({ name: 'Ubuntu' }));
       expect(computeStyle(shape)).toBe('intermediateCatchEvent;bpmn.eventDefinitionKind=conditional;fontFamily=Ubuntu');
-    });
-
-    it('intermediate catch link with one source', () => {
-      const shape = newShape(newShapeBpmnIntermediateCatchEvent(ShapeBpmnEventDefinitionKind.LINK, ['source_id']));
-      expect(computeStyle(shape)).toBe('intermediateCatchEvent;bpmn.eventDefinitionKind=link;bpmn.linkEventSourceIds=source_id');
-    });
-
-    it('intermediate catch link with several sources', () => {
-      const shape = newShape(newShapeBpmnIntermediateCatchEvent(ShapeBpmnEventDefinitionKind.LINK, ['source_id_1', 'source_id_2']));
-      expect(computeStyle(shape)).toBe('intermediateCatchEvent;bpmn.eventDefinitionKind=link;bpmn.linkEventSourceIds=source_id_1,source_id_2');
-    });
-
-    it('intermediate throw link', () => {
-      const shape = newShape(newShapeBpmnIntermediateThrowEvent(ShapeBpmnEventDefinitionKind.LINK, 'target_id'));
-      expect(computeStyle(shape)).toBe('intermediateThrowEvent;bpmn.eventDefinitionKind=link;bpmn.linkEventTargetId=target_id');
     });
 
     it('start signal', () => {
