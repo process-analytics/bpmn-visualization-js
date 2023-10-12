@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { ConvertedElements } from './utils';
+import type { ConvertedElements, RegisteredEventDefinition } from './utils';
 import type { AssociationDirectionKind, BpmnEventKind } from '../../../../model/bpmn/internal';
 import type { TAssociation, TGroup, TTextAnnotation } from '../../../../model/bpmn/json/baseElement/artifact';
 import type { TLane, TLaneSet } from '../../../../model/bpmn/json/baseElement/baseElement';
@@ -51,11 +51,6 @@ import { ensureIsArray } from '../../../helpers/array-utils';
 import { BoundaryEventNotAttachedToActivityWarning, LaneUnknownFlowNodeReferenceWarning } from '../warnings';
 
 import { buildShapeBpmnGroup } from './utils';
-
-interface EventDefinition {
-  kind: ShapeBpmnEventDefinitionKind;
-  counter: number;
-}
 
 type FlowNode = TFlowNode | TActivity | TReceiveTask | TEventBasedGateway | TTextAnnotation;
 
@@ -244,8 +239,11 @@ export default class ProcessConverter {
   }
 
   private buildShapeBpmnEvent(bpmnElement: TCatchEvent | TThrowEvent, elementKind: BpmnEventKind, parentId: string): ShapeBpmnEvent | undefined {
-    const eventDefinitions = this.getEventDefinitions(bpmnElement);
-    const numberOfEventDefinitions = eventDefinitions.map(eventDefinition => eventDefinition.counter).reduce((counter, it) => counter + it, 0);
+    const eventDefinitionsByKind = this.getEventDefinitions(bpmnElement);
+
+    const numberOfEventDefinitions = [...eventDefinitionsByKind.entries()]
+      .map(([, registeredEventDefinitions]) => registeredEventDefinitions.length)
+      .reduce((counter, it) => counter + it, 0);
 
     // do we have a None Event?
     if (numberOfEventDefinitions == 0 && ShapeUtil.canHaveNoneEvent(elementKind)) {
@@ -253,7 +251,7 @@ export default class ProcessConverter {
     }
 
     if (numberOfEventDefinitions == 1) {
-      const eventDefinitionKind = eventDefinitions[0].kind;
+      const eventDefinitionKind = [...eventDefinitionsByKind.keys()][0];
       if (ShapeUtil.isBoundaryEvent(elementKind)) {
         return this.buildShapeBpmnBoundaryEvent(bpmnElement as TBoundaryEvent, eventDefinitionKind);
       }
@@ -279,22 +277,25 @@ export default class ProcessConverter {
    *
    * @param bpmnElement The BPMN element from the XML data which represents a BPMN Event
    */
-  private getEventDefinitions(bpmnElement: TCatchEvent | TThrowEvent): EventDefinition[] {
-    const eventDefinitions = new Map<ShapeBpmnEventDefinitionKind, number>();
+  private getEventDefinitions(bpmnElement: TCatchEvent | TThrowEvent): Map<ShapeBpmnEventDefinitionKind, RegisteredEventDefinition[]> {
+    const eventDefinitionsByKind = new Map<ShapeBpmnEventDefinitionKind, RegisteredEventDefinition[]>();
 
     for (const eventDefinitionKind of eventDefinitionKinds) {
       // sometimes eventDefinition is simple, and therefore it is parsed as empty string "", in that case eventDefinition will be converted to an empty object
-      const eventDefinition = bpmnElement[eventDefinitionKind + 'EventDefinition'];
-      const counter = ensureIsArray(eventDefinition, true).length;
-      eventDefinitions.set(eventDefinitionKind, counter);
+      const eventDefinition = bpmnElement[`${eventDefinitionKind}EventDefinition`];
+      eventDefinitionsByKind.set(eventDefinitionKind, ensureIsArray(eventDefinition, true));
     }
 
     for (const eventDefinitionReference of ensureIsArray<string>(bpmnElement.eventDefinitionRef)) {
-      const kind = this.convertedElements.findEventDefinitionOfDefinition(eventDefinitionReference);
-      eventDefinitions.set(kind, eventDefinitions.get(kind) + 1);
+      const eventDefinition = this.convertedElements.findEventDefinitionOfDefinition(eventDefinitionReference);
+      eventDefinitionsByKind.get(eventDefinition.kind).push(eventDefinition);
     }
 
-    return [...eventDefinitions.entries()].filter(([, counter]) => counter > 0).map(([kind, counter]) => ({ kind, counter }));
+    for (const [kind] of [...eventDefinitionsByKind.entries()].filter(([, registeredEventDefinitions]) => registeredEventDefinitions.length === 0)) {
+      eventDefinitionsByKind.delete(kind);
+    }
+
+    return eventDefinitionsByKind;
   }
 
   private buildShapeBpmnSubProcess(bpmnElement: TSubProcess, parentId: string, subProcessKind: ShapeBpmnSubProcessKind, markers: ShapeBpmnMarkerKind[]): ShapeBpmnSubProcess {

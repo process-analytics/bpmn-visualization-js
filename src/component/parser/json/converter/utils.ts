@@ -17,11 +17,16 @@ limitations under the License.
 import type { GlobalTaskKind, ShapeBpmnEventDefinitionKind } from '../../../../model/bpmn/internal';
 import type { Flow, AssociationFlow, MessageFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/flows';
 import type { TGroup } from '../../../../model/bpmn/json/baseElement/artifact';
+import type { TEventDefinition, TLinkEventDefinition } from '../../../../model/bpmn/json/baseElement/rootElement/eventDefinition';
 import type { ParsingMessageCollector } from '../../parsing-messages';
 
 import { ShapeBpmnElementKind } from '../../../../model/bpmn/internal';
 import ShapeBpmnElement from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { GroupUnknownCategoryValueWarning } from '../warnings';
+
+export type RegisteredEventDefinition = (Pick<TEventDefinition, 'id'> & Pick<TLinkEventDefinition, 'source' | 'target'>) & {
+  kind: ShapeBpmnEventDefinitionKind;
+};
 
 /**
  * @internal
@@ -86,11 +91,11 @@ export class ConvertedElements {
     this.associationFlows.set(associationFlow.id, associationFlow);
   }
 
-  private eventDefinitionsOfDefinitions = new Map<string, ShapeBpmnEventDefinitionKind>();
-  findEventDefinitionOfDefinition(id: string): ShapeBpmnEventDefinitionKind {
+  private eventDefinitionsOfDefinitions = new Map<string, RegisteredEventDefinition>();
+  findEventDefinitionOfDefinition(id: string): RegisteredEventDefinition {
     return this.eventDefinitionsOfDefinitions.get(id);
   }
-  registerEventDefinitionsOfDefinition(id: string, eventDefinition: ShapeBpmnEventDefinitionKind): void {
+  registerEventDefinitionsOfDefinition(id: string, eventDefinition: RegisteredEventDefinition): void {
     this.eventDefinitionsOfDefinitions.set(id, eventDefinition);
   }
 
