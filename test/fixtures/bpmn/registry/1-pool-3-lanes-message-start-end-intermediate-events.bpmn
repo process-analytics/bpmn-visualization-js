@@ -93,16 +93,20 @@
       <bpmn:outgoing>Flow_1wwy4bv</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="sequenceFlow_lane_3_elt_3" sourceRef="Event_1wihmdr" targetRef="Event_1q818hp" />
-    <bpmn:intermediateCatchEvent id="Event_1wihmdr" name="message catch intermediate 1">
+    <bpmn:intermediateCatchEvent id="Event_1wihmdr" name="link catch intermediate 1">
       <bpmn:incoming>Flow_08z7uoy</bpmn:incoming>
       <bpmn:outgoing>sequenceFlow_lane_3_elt_3</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_077j2qu" />
+      <bpmn:linkEventDefinition id="LinkEventDefinition_077j2qu">
+        <bpmn:source>LinkEventDefinition_11kxj5k</bpmn:source>
+      </bpmn:linkEventDefinition>
     </bpmn:intermediateCatchEvent>
     <bpmn:sequenceFlow id="Flow_0g017tm" sourceRef="Event_1q818hp" targetRef="gateway_02_parallel" />
-    <bpmn:intermediateThrowEvent id="Event_1q818hp" name="message throw intermediate 1">
+    <bpmn:intermediateThrowEvent id="Event_1q818hp" name="link throw intermediate 1">
       <bpmn:incoming>sequenceFlow_lane_3_elt_3</bpmn:incoming>
       <bpmn:outgoing>Flow_0g017tm</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_11kxj5k" />
+      <bpmn:linkEventDefinition id="LinkEventDefinition_11kxj5k">
+        <bpmn:target>LinkEventDefinition_077j2qu</bpmn:target>
+      </bpmn:linkEventDefinition>
     </bpmn:intermediateThrowEvent>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
