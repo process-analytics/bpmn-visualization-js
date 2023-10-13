@@ -288,7 +288,7 @@ export default class ProcessConverter {
 
   private buildShapeBpmnCatchEvent(
     bpmnElement: TCatchEvent,
-    elementKind: ShapeBpmnElementKind.EVENT_BOUNDARY | ShapeBpmnElementKind.EVENT_START | ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH,
+    elementKind: BpmnEventKind,
     eventDefinitionKind: ShapeBpmnEventDefinitionKind,
     parentId: string,
   ): ShapeBpmnIntermediateCatchEvent | ShapeBpmnStartEvent | ShapeBpmnBoundaryEvent {
@@ -303,7 +303,7 @@ export default class ProcessConverter {
 
   private buildShapeBpmnThrowEvent(
     bpmnElement: TThrowEvent,
-    elementKind: ShapeBpmnElementKind.EVENT_END | ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW,
+    elementKind: BpmnEventKind,
     eventDefinitionKind: ShapeBpmnEventDefinitionKind,
     parentId: string,
   ): ShapeBpmnIntermediateThrowEvent | ShapeBpmnEvent {
