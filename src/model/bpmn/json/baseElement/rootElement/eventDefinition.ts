@@ -17,6 +17,8 @@ limitations under the License.
 import type { TRootElement } from './rootElement';
 import type { TExpression } from '../expression';
 
+export const isTLinkEventDefinition = (eventDefinition: TEventDefinition): eventDefinition is TLinkEventDefinition => 'source' in eventDefinition || 'target' in eventDefinition;
+
 // abstract="true"
 export type TEventDefinition = TRootElement;
 
