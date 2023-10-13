@@ -165,12 +165,15 @@ function collapseBpmnElement(bpmnElementId: string): void {
 }
 
 // callback function for opening | dropping the file to be loaded
-function readAndLoadFile(f: File): void {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => {
-    loadBpmn(reader.result as string);
-  });
-  reader.readAsText(f);
+function readAndLoadFile(file: File): void {
+  file
+    .text()
+    .then(content => {
+      loadBpmn(content);
+    })
+    .catch(error => {
+      throw error;
+    });
 }
 
 // TODO: make File Open Button a self contained component
