@@ -89,26 +89,23 @@ export function expectEndEvent(bpmnSemantic: ShapeBpmnSemantic, expected: Expect
   expectEvent(bpmnSemantic, expected);
 }
 
+export function expectBoundaryEvent(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedEventElement): void {
+  expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.EVENT_BOUNDARY);
+  expectEvent(bpmnSemantic, expected);
+}
+
 export function expectIntermediateCatchEvent(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedIntermediateCatchEventElement): void {
+  expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH);
   expectEvent(bpmnSemantic, expected);
   expect(bpmnSemantic.linkEventSourceIds).toStrictEqual(expected.linkEventSourceIds);
   expect(bpmnSemantic.linkEventTargetId).toBeUndefined();
 }
 
 export function expectIntermediateThrowEvent(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedIntermediateThrowEventElement): void {
+  expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW);
   expectEvent(bpmnSemantic, expected);
   expect(bpmnSemantic.linkEventSourceIds).toBeUndefined();
   expect(bpmnSemantic.linkEventTargetId).toStrictEqual(expected.linkEventTargetId);
-}
-
-export function expectBoundaryEvent(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedEventElement): void {
-  expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.EVENT_BOUNDARY);
-  expectEvent(bpmnSemantic, expected);
-}
-
-export function expectIntermediateCatchEvent(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedEventElement): void {
-  expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH);
-  expectEvent(bpmnSemantic, expected);
 }
 
 export function expectParallelGateway(bpmnSemantic: BpmnSemantic, expected: ExpectedFlowNodeElement): void {
