@@ -26,16 +26,13 @@ import type { ElementHandle, Page } from 'playwright';
 import debugLogger from 'debug';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+// @ts-ignore js file with commonjs export
 import environmentUtils = require('../environment-utils.cjs');
 
 import { delay } from './test-utils';
 
 import { FitType, type LoadOptions, ZoomType } from '@lib/component/options';
 import { BpmnQuerySelectorsForTests } from '@test/shared/query-selectors';
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore js file with commonjs export
 
 const pageCheckLog = debugLogger('bv:test:page-check');
 

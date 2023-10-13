@@ -162,6 +162,7 @@ export default class ShapeConfigurator {
       if (!this.antiAlias) {
         // Rounds all numbers in the SVG output to integers
         canvas.format = function (value: string) {
+          // eslint-disable-next-line unicorn/prefer-number-properties -- mxGraph code
           return Math.round(parseFloat(value));
         };
       }

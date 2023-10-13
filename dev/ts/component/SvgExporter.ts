@@ -177,7 +177,7 @@ class CanvasForExport extends mxSvgCanvas2D {
       let index = 0;
 
       while ((exp == 0 || length < exp) && index < content.length) {
-        const char = content.charCodeAt(index);
+        const char = content.codePointAt(index);
         if (char == 10 || char == 13) {
           if (length > 0) {
             break;
