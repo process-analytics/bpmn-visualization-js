@@ -49,11 +49,11 @@ export class ShapeUtil {
     return ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH === kind || ShapeBpmnElementKind.EVENT_BOUNDARY === kind || ShapeBpmnElementKind.EVENT_START === kind;
   }
 
-  static isIntermediateCatchEvent(kind: ShapeBpmnElementKind): kind is ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH {
+  static isIntermediateCatchEvent(kind: ShapeBpmnElementKind): boolean {
     return ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH === kind;
   }
 
-  static isIntermediateThrowEvent(kind: ShapeBpmnElementKind): kind is ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW {
+  static isIntermediateThrowEvent(kind: ShapeBpmnElementKind): boolean {
     return ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW === kind;
   }
 
