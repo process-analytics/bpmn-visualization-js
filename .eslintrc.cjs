@@ -19,8 +19,9 @@ module.exports = {
   plugins: ['notice', 'unicorn', 'import'],
   parser: '@typescript-eslint/parser', // Specifies the ESLint parser
   extends: [
-    'plugin:prettier/recommended', // Enables eslint-plugin-prettier and eslint-config-prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
     'plugin:import/recommended',
+    'plugin:unicorn/recommended',
+    'plugin:prettier/recommended', // Enables eslint-plugin-prettier and eslint-config-prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
   ],
   parserOptions: {
     ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
@@ -40,47 +41,6 @@ module.exports = {
         },
       },
     ],
-    'unicorn/prevent-abbreviations': 'error',
-    'unicorn/prefer-query-selector': 'error',
-    'unicorn/prefer-add-event-listener': 'error',
-    'unicorn/no-array-for-each': 'error',
-    'unicorn/prefer-dom-node-text-content': 'error',
-    'unicorn/prefer-ternary': 'error',
-    'unicorn/prefer-logical-operator-over-ternary': 'error',
-    'unicorn/consistent-function-scoping': 'error',
-    'unicorn/prefer-at': 'error',
-    'unicorn/prefer-blob-reading-methods': 'error',
-    'unicorn/prefer-code-point': 'error',
-    'unicorn/prefer-dom-node-append': 'error',
-    'unicorn/prefer-dom-node-dataset': 'error',
-    'unicorn/prefer-dom-node-remove': 'error',
-    'unicorn/prefer-number-properties': 'error',
-    'unicorn/prefer-set-has': 'error',
-    'unicorn/prefer-set-size': 'error',
-    'unicorn/prefer-string-slice': 'error',
-    'unicorn/no-negated-condition': 'error',
-    'unicorn/no-array-callback-reference': 'error',
-    'unicorn/no-array-method-this-argument': 'error',
-    'unicorn/no-array-push-push': 'error',
-    'unicorn/no-array-reduce': 'error',
-    'unicorn/no-instanceof-array': 'error',
-    'unicorn/no-unreadable-array-destructuring': 'error',
-    'unicorn/no-useless-length-check': 'error',
-    'unicorn/explicit-length-check': 'error',
-    'unicorn/prefer-array-find': 'error',
-    'unicorn/prefer-array-flat': 'error',
-    'unicorn/prefer-array-flat-map': 'error',
-    'unicorn/prefer-array-index-of': 'error',
-    'unicorn/prefer-array-some': 'error',
-    'unicorn/prefer-includes': 'error',
-    'unicorn/require-array-join-separator': 'error',
-    'unicorn/numeric-separators-style': 'error',
-    'unicorn/no-zero-fractions': 'error',
-    'unicorn/no-useless-switch-case': 'error',
-    'unicorn/prefer-switch': 'error',
-    'unicorn/switch-case-braces': 'error',
-    'unicorn/prefer-spread': 'error',
-    'unicorn/text-encoding-identifier-case': 'error',
     'import/newline-after-import': ['error', { count: 1 }],
     'import/first': 'error',
     'import/order': [
@@ -95,6 +55,12 @@ module.exports = {
         },
       },
     ],
+    'unicorn/prefer-keyboard-event-key': 'off', // 'key' doesn't exist in the used ES version
+    'unicorn/prefer-module': 'off', // We don't want to change a working configuration
+    'unicorn/prefer-string-replace-all': 'off', // String#replaceAll() doesn't exist in the used ES version
+    'unicorn/no-new-array': 'off', // In contradiction with unicorn/new-for-builtins: Use `new Array()` instead of `Array()`
+    'unicorn/no-null': 'off', // We don't know the impact on mxGraph code
+    'unicorn/no-useless-undefined': 'off', // The "undefined" value is useful where we use it and change some mxGraph code
   },
   overrides: [
     // typescript

@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 // Inspired from https://kulshekhar.github.io/ts-jest/docs/getting-started/paths-mapping/
-const fs = require('fs');
+const fs = require('node:fs');
 
 const JSON5 = require('json5');
 const { pathsToModuleNameMapper } = require('ts-jest');
