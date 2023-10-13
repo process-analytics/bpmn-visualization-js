@@ -255,7 +255,6 @@ describe('mxGraph model - BPMN elements', () => {
             eventDefinitionKind: ShapeBpmnEventDefinitionKind.LINK,
             label: 'Throw Link Intermediate Event On Top',
             parentId: 'participant_1_id',
-            targetId: 'intermediate_catch_event_link_on_top_id',
           });
           expect('intermediate_throw_event_compensate_id').toBeIntermediateThrowEvent({
             eventDefinitionKind: ShapeBpmnEventDefinitionKind.COMPENSATION,
@@ -319,7 +318,6 @@ describe('mxGraph model - BPMN elements', () => {
             eventDefinitionKind: ShapeBpmnEventDefinitionKind.LINK,
             label: 'Catch Link Intermediate Event On Top',
             parentId: 'participant_1_id',
-            sourceIds: ['intermediate_throw_event_link_on_top_id'],
           });
           expect('intermediate_catch_event_conditional_id').toBeIntermediateCatchEvent({
             eventDefinitionKind: ShapeBpmnEventDefinitionKind.CONDITIONAL,
