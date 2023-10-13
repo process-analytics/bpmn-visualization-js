@@ -78,7 +78,7 @@ export class ShapeUtil {
   }
 
   static isWithDefaultSequenceFlow(kind: ShapeBpmnElementKind): boolean {
-    return FLOW_NODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS.includes(kind);
+    return FLOW_NODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS.has(kind);
   }
 
   /**
@@ -127,12 +127,12 @@ const GATEWAY_KINDS = filterKind('Gateway');
 const TASK_KINDS = filterKind('Task', { ignoreCase: true, notStartingWith: 'global' });
 
 const ACTIVITY_KINDS = [...TASK_KINDS, ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.SUB_PROCESS];
-const FLOW_NODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS = [
+const FLOW_NODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS = new Set([
   ...ACTIVITY_KINDS,
   ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
   ShapeBpmnElementKind.GATEWAY_INCLUSIVE,
   ShapeBpmnElementKind.GATEWAY_COMPLEX,
-];
+]);
 
 /**
  * Elements that are effectively used in BPMN diagram as base for eventDefinition i.e all {@link ShapeBpmnEventDefinitionKind} elements except {@link ShapeBpmnEventDefinitionKind.NONE}
