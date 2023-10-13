@@ -42,7 +42,7 @@ class RetriesCounter {
   // https://github.com/facebook/jest/blob/v27.4.7/packages/jest-circus/src/run.ts#L46
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- code adapted from jest-circus
   // @ts-ignore
-  private readonly retryTimes = parseInt(global[Symbol.for('RETRY_TIMES')], 10) || 0;
+  private readonly retryTimes = Number.parseInt(global[Symbol.for('RETRY_TIMES')], 10) || 0;
 
   hasReachMaxRetries(testId: unknown): boolean {
     return !this.retryTimes || this.getExecutionCount(testId) > this.retryTimes;
