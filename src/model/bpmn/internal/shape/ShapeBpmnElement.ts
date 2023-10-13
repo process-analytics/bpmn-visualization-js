@@ -100,6 +100,28 @@ export class ShapeBpmnEvent extends ShapeBpmnElement {
 /**
  * @internal
  */
+export class ShapeBpmnIntermediateCatchEvent extends ShapeBpmnEvent {
+  sourceIds?: string[] = [];
+
+  constructor(id: string, name: string, eventDefinitionKind: ShapeBpmnEventDefinitionKind, parentId: string) {
+    super(id, name, ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, eventDefinitionKind, parentId);
+  }
+}
+
+/**
+ * @internal
+ */
+export class ShapeBpmnIntermediateThrowEvent extends ShapeBpmnEvent {
+  targetId?: string;
+
+  constructor(id: string, name: string, eventDefinitionKind: ShapeBpmnEventDefinitionKind, parentId: string) {
+    super(id, name, ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, eventDefinitionKind, parentId);
+  }
+}
+
+/**
+ * @internal
+ */
 export class ShapeBpmnStartEvent extends ShapeBpmnEvent {
   constructor(
     id: string,

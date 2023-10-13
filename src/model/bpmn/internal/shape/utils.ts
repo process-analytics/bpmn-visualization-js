@@ -45,6 +45,18 @@ export class ShapeUtil {
     return ShapeBpmnElementKind.EVENT_START === kind;
   }
 
+  static isCatchEvent(kind: ShapeBpmnElementKind): boolean {
+    return ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH === kind || ShapeBpmnElementKind.EVENT_BOUNDARY === kind || ShapeBpmnElementKind.EVENT_START === kind;
+  }
+
+  static isIntermediateCatchEvent(kind: ShapeBpmnElementKind): boolean {
+    return ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH === kind;
+  }
+
+  static isIntermediateThrowEvent(kind: ShapeBpmnElementKind): boolean {
+    return ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW === kind;
+  }
+
   static isCallActivity(kind: ShapeBpmnElementKind): boolean {
     return ShapeBpmnElementKind.CALL_ACTIVITY === kind;
   }

@@ -38,6 +38,8 @@ import {
 } from '../../../../model/bpmn/internal';
 import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/flows';
 import ShapeBpmnElement, {
+  ShapeBpmnIntermediateThrowEvent,
+  ShapeBpmnIntermediateCatchEvent,
   ShapeBpmnActivity,
   ShapeBpmnBoundaryEvent,
   ShapeBpmnCallActivity,
@@ -90,6 +92,7 @@ export default class ProcessConverter {
   private defaultSequenceFlowIds: string[] = [];
   private elementsWithoutParentByProcessId = new Map<string, ShapeBpmnElement[]>();
   private callActivitiesCallingProcess = new Map<string, ShapeBpmnElement>();
+  private eventsByLinkEventDefinition = new Map<RegisteredEventDefinition, ShapeBpmnIntermediateThrowEvent | ShapeBpmnIntermediateCatchEvent>();
 
   constructor(
     private convertedElements: ConvertedElements,
@@ -103,6 +106,7 @@ export default class ProcessConverter {
     for (const process of ensureIsArray(processes)) this.assignParentOfProcessElementsCalledByCallActivity(process.id);
 
     this.assignIncomingAndOutgoingIdsFromFlows();
+    this.assignSourceAndTargetIdsToLinkEvents();
   }
 
   private assignParentOfProcessElementsCalledByCallActivity(processId: string): void {
@@ -136,6 +140,23 @@ export default class ProcessConverter {
     for (const flow of this.convertedElements.getFlows()) {
       fillShapeBpmnElementAttribute(flow.sourceReferenceId, 'outgoingIds', flow.id);
       fillShapeBpmnElementAttribute(flow.targetReferenceId, 'incomingIds', flow.id);
+    }
+  }
+
+  private assignSourceAndTargetIdsToLinkEvents(): void {
+    const linkEventDefinitions = [...this.eventsByLinkEventDefinition.entries()].filter(([targetEventDefinition]) => targetEventDefinition.id);
+
+    for (const [eventDefinition, bpmnEvent] of this.eventsByLinkEventDefinition) {
+      if (bpmnEvent instanceof ShapeBpmnIntermediateThrowEvent) {
+        const target = linkEventDefinitions.find(([targetEventDefinition]) => eventDefinition.target === targetEventDefinition.id);
+        bpmnEvent.targetId = target?.[1]?.id;
+      } else if (bpmnEvent instanceof ShapeBpmnIntermediateCatchEvent) {
+        bpmnEvent.sourceIds = linkEventDefinitions
+          .filter(([sourceEventDefinition]) =>
+            Array.isArray(eventDefinition.source) ? eventDefinition.source.includes(sourceEventDefinition.id) : eventDefinition.source === sourceEventDefinition.id,
+          )
+          .map(([, sourceEvent]) => sourceEvent.id);
+      }
     }
   }
 
@@ -251,15 +272,45 @@ export default class ProcessConverter {
     }
 
     if (numberOfEventDefinitions == 1) {
-      const eventDefinitionKind = [...eventDefinitionsByKind.keys()][0];
-      if (ShapeUtil.isBoundaryEvent(elementKind)) {
-        return this.buildShapeBpmnBoundaryEvent(bpmnElement as TBoundaryEvent, eventDefinitionKind);
+      const [eventDefinitionKind, eventDefinitions] = [...eventDefinitionsByKind.entries()][0];
+
+      const bpmnEvent = ShapeUtil.isCatchEvent(elementKind)
+        ? this.buildShapeBpmnCatchEvent(bpmnElement as TCatchEvent, elementKind, eventDefinitionKind, parentId)
+        : this.buildShapeBpmnThrowEvent(bpmnElement as TThrowEvent, elementKind, eventDefinitionKind, parentId);
+
+      if (eventDefinitionKind === ShapeBpmnEventDefinitionKind.LINK && (eventDefinitions[0].id || eventDefinitions[0].target || eventDefinitions[0].source)) {
+        this.eventsByLinkEventDefinition.set(eventDefinitions[0], bpmnEvent);
       }
-      if (ShapeUtil.isStartEvent(elementKind)) {
-        return new ShapeBpmnStartEvent(bpmnElement.id, bpmnElement.name, eventDefinitionKind, parentId, bpmnElement.isInterrupting);
-      }
-      return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventDefinitionKind, parentId);
+
+      return bpmnEvent;
     }
+  }
+
+  private buildShapeBpmnCatchEvent(
+    bpmnElement: TCatchEvent,
+    elementKind: BpmnEventKind,
+    eventDefinitionKind: ShapeBpmnEventDefinitionKind,
+    parentId: string,
+  ): ShapeBpmnIntermediateCatchEvent | ShapeBpmnStartEvent | ShapeBpmnBoundaryEvent {
+    if (ShapeUtil.isBoundaryEvent(elementKind)) {
+      return this.buildShapeBpmnBoundaryEvent(bpmnElement as TBoundaryEvent, eventDefinitionKind);
+    }
+    if (ShapeUtil.isStartEvent(elementKind)) {
+      return new ShapeBpmnStartEvent(bpmnElement.id, bpmnElement.name, eventDefinitionKind, parentId, bpmnElement.isInterrupting);
+    }
+    return new ShapeBpmnIntermediateCatchEvent(bpmnElement.id, bpmnElement.name, eventDefinitionKind, parentId);
+  }
+
+  private buildShapeBpmnThrowEvent(
+    bpmnElement: TThrowEvent,
+    elementKind: BpmnEventKind,
+    eventDefinitionKind: ShapeBpmnEventDefinitionKind,
+    parentId: string,
+  ): ShapeBpmnIntermediateThrowEvent | ShapeBpmnEvent {
+    if (ShapeUtil.isIntermediateThrowEvent(elementKind)) {
+      return new ShapeBpmnIntermediateThrowEvent(bpmnElement.id, bpmnElement.name, eventDefinitionKind, parentId);
+    }
+    return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventDefinitionKind, parentId);
   }
 
   private buildShapeBpmnBoundaryEvent(bpmnElement: TBoundaryEvent, eventDefinitionKind: ShapeBpmnEventDefinitionKind): ShapeBpmnBoundaryEvent {
