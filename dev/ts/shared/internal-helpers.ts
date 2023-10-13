@@ -42,7 +42,7 @@ export async function fetchBpmnContent(url: string): Promise<string> {
   log(`Fetching BPMN content from url ${url}`);
   const response = await fetch(url);
   if (!response.ok) {
-    throw Error(`HTTP status ${response.status}`);
+    throw new Error(`HTTP status ${response.status}`);
   }
   return await response.text();
 }

@@ -28,6 +28,7 @@ import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from './kinds';
  * @category BPMN
  * @experimental
  */
+// eslint-disable-next-line unicorn/no-static-only-class -- Breaking change on API
 export class ShapeUtil {
   static isEvent(kind: ShapeBpmnElementKind | string): boolean {
     return isKindOf(EVENT_KINDS, kind);
