@@ -15,11 +15,28 @@ limitations under the License.
 */
 
 import type { BpmnElement, EdgeBpmnSemantic, ShapeBpmnSemantic } from '@lib/component/registry';
-import type { ExpectedBaseBpmnElement, ExpectedFlowElement, ExpectedFlowNodeElement, ExpectedEventElement } from '@test/shared/model/bpmn-semantic-utils';
+import type {
+  ExpectedBaseBpmnElement,
+  ExpectedFlowElement,
+  ExpectedFlowNodeElement,
+  ExpectedEventElement,
+  ExpectedIntermediateThrowEventElement,
+  ExpectedIntermediateCatchEventElement,
+} from '@test/shared/model/bpmn-semantic-utils';
 
 import { expectSvgEvent, expectSvgGateway, expectSvgPool, expectSvgSequenceFlow, expectSvgTask } from './html-utils';
 
-import { expectEndEvent, expectParallelGateway, expectPool, expectSequenceFlow, expectServiceTask, expectStartEvent, expectTask } from '@test/shared/model/bpmn-semantic-utils';
+import {
+  expectEndEvent,
+  expectIntermediateCatchEvent,
+  expectIntermediateThrowEvent,
+  expectParallelGateway,
+  expectPool,
+  expectSequenceFlow,
+  expectServiceTask,
+  expectStartEvent,
+  expectTask,
+} from '@test/shared/model/bpmn-semantic-utils';
 
 export function expectStartEventBpmnElement(bpmnElement: BpmnElement, expected: ExpectedEventElement): void {
   expectStartEvent(bpmnElement.bpmnSemantic as ShapeBpmnSemantic, expected);
@@ -28,6 +45,16 @@ export function expectStartEventBpmnElement(bpmnElement: BpmnElement, expected: 
 
 export function expectEndEventBpmnElement(bpmnElement: BpmnElement, expected: ExpectedEventElement): void {
   expectEndEvent(bpmnElement.bpmnSemantic as ShapeBpmnSemantic, expected);
+  expectSvgEvent(bpmnElement.htmlElement);
+}
+
+export function expectIntermediateCatchEventBpmnElement(bpmnElement: BpmnElement, expected: ExpectedIntermediateCatchEventElement): void {
+  expectIntermediateCatchEvent(bpmnElement.bpmnSemantic as ShapeBpmnSemantic, expected);
+  expectSvgEvent(bpmnElement.htmlElement);
+}
+
+export function expectIntermediateThrowEventBpmnElement(bpmnElement: BpmnElement, expected: ExpectedIntermediateThrowEventElement): void {
+  expectIntermediateThrowEvent(bpmnElement.bpmnSemantic as ShapeBpmnSemantic, expected);
   expectSvgEvent(bpmnElement.htmlElement);
 }
 

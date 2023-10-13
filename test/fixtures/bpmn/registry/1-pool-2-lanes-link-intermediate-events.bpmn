@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0jsncq9" targetNamespace="http://example.bpmn.com/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="14.0.0">
+  <bpmn:collaboration id="Collaboration_03068dc">
+    <bpmn:participant id="Participant_1" name="Pool 1" processRef="Process_0vbjbkf" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_0vbjbkf" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_1e2wb07">
+      <bpmn:lane id="lane_01" name="Lane 1">
+        <bpmn:flowNodeRef>Event_1q818hp</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>startEvent_lane_1</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="lane_02" name="Lane 2">
+        <bpmn:flowNodeRef>Event_1wihmdr</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_0snpz9d</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:sequenceFlow id="sequenceFlow_lane_1_elt_1" sourceRef="startEvent_lane_1" targetRef="Event_1q818hp" />
+    <bpmn:intermediateThrowEvent id="Event_1q818hp" name="link throw intermediate">
+      <bpmn:incoming>sequenceFlow_lane_1_elt_1</bpmn:incoming>
+      <bpmn:linkEventDefinition id="LinkEventDefinition_11kxj5k">
+        <bpmn:target>LinkEventDefinition_077j2qu</bpmn:target>
+      </bpmn:linkEventDefinition>
+    </bpmn:intermediateThrowEvent>
+    <bpmn:startEvent id="startEvent_lane_1" name="start 1">
+      <bpmn:outgoing>sequenceFlow_lane_1_elt_1</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_17xfjtr" />
+    </bpmn:startEvent>
+    <bpmn:intermediateCatchEvent id="Event_1wihmdr" name="link catch intermediate">
+      <bpmn:outgoing>Flow_18jrbeb</bpmn:outgoing>
+      <bpmn:linkEventDefinition id="LinkEventDefinition_077j2qu">
+        <bpmn:source>LinkEventDefinition_11kxj5k</bpmn:source>
+      </bpmn:linkEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:endEvent id="Event_0snpz9d">
+      <bpmn:incoming>Flow_18jrbeb</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_18jrbeb" sourceRef="Event_1wihmdr" targetRef="Event_0snpz9d" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_03068dc">
+      <bpmndi:BPMNShape id="Participant_1_di" bpmnElement="Participant_1" isHorizontal="true">
+        <dc:Bounds x="158" y="50" width="682" height="240" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="lane_01_di" bpmnElement="lane_01" isHorizontal="true">
+        <dc:Bounds x="188" y="50" width="652" height="125" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="lane_02_di" bpmnElement="lane_02" isHorizontal="true">
+        <dc:Bounds x="188" y="175" width="652" height="115" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_14o73vn_di" bpmnElement="Event_1q818hp">
+        <dc:Bounds x="442" y="92" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="431" y="135" width="61" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="startEvent_lane_1_di" bpmnElement="startEvent_lane_1">
+        <dc:Bounds x="262" y="92" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="265" y="135" width="31" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_00seehq_di" bpmnElement="Event_1wihmdr">
+        <dc:Bounds x="442" y="202" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="430" y="245" width="61" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0snpz9d_di" bpmnElement="Event_0snpz9d">
+        <dc:Bounds x="622" y="202" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="sequenceFlow_lane_1_elt_1_di" bpmnElement="sequenceFlow_lane_1_elt_1">
+        <di:waypoint x="298" y="110" />
+        <di:waypoint x="442" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_18jrbeb_di" bpmnElement="Flow_18jrbeb">
+        <di:waypoint x="478" y="220" />
+        <di:waypoint x="622" y="220" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

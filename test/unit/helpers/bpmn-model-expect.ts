@@ -52,15 +52,15 @@ export interface ExpectedEventShape extends ExpectedShape {
   eventDefinitionKind: ShapeBpmnEventDefinitionKind;
 }
 
-export interface ExpectedCatchEventShape extends ExpectedEventShape {
+export interface ExpectedIntermediateCatchEventShape extends ExpectedEventShape {
   sourceIds?: string[];
 }
 
-export interface ExpectedThrowEventShape extends ExpectedEventShape {
+export interface ExpectedIntermediateThrowEventShape extends ExpectedEventShape {
   targetId?: string;
 }
 
-export interface ExpectedBoundaryEventShape extends ExpectedCatchEventShape {
+export interface ExpectedBoundaryEventShape extends ExpectedEventShape {
   isInterrupting?: boolean;
 }
 
@@ -103,7 +103,14 @@ export interface ExpectedBounds {
 
 export const verifyShape = (
   shape: Shape,
-  expectedShape: ExpectedShape | ExpectedActivityShape | ExpectedCallActivityShape | ExpectedCatchEventShape | ExpectedThrowEventShape | ExpectedBoundaryEventShape,
+  expectedShape:
+    | ExpectedShape
+    | ExpectedActivityShape
+    | ExpectedCallActivityShape
+    | ExpectedEventShape
+    | ExpectedIntermediateCatchEventShape
+    | ExpectedIntermediateThrowEventShape
+    | ExpectedBoundaryEventShape,
 ): void => {
   expect(shape.id).toEqual(expectedShape.shapeId);
   expect(shape.isHorizontal).toEqual(expectedShape.isHorizontal);
@@ -139,9 +146,9 @@ export const verifyShape = (
 
     if (expectedEvent.eventDefinitionKind === ShapeBpmnEventDefinitionKind.LINK) {
       if (ShapeUtil.isIntermediateCatchEvent(expectedShape.bpmnElementKind)) {
-        expect((event as ShapeBpmnIntermediateCatchEvent).sourceIds).toEqual((expectedEvent as ExpectedCatchEventShape).sourceIds ?? []);
-      } else {
-        expect((event as ShapeBpmnIntermediateThrowEvent).targetId).toEqual((expectedEvent as ExpectedThrowEventShape).targetId);
+        expect((event as ShapeBpmnIntermediateCatchEvent).sourceIds).toEqual((expectedEvent as ExpectedIntermediateCatchEventShape).sourceIds ?? []);
+      } else if (ShapeUtil.isIntermediateThrowEvent(expectedShape.bpmnElementKind)) {
+        expect((event as ShapeBpmnIntermediateThrowEvent).targetId).toEqual((expectedEvent as ExpectedIntermediateThrowEventShape).targetId);
       }
     }
   }

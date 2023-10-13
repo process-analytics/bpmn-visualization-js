@@ -20,9 +20,15 @@ import type { Edge } from '../../model/bpmn/internal/edge/edge';
 import type Shape from '../../model/bpmn/internal/shape/Shape';
 import type { ModelFilter } from '../options';
 
-import { ShapeBpmnMarkerKind, ShapeUtil } from '../../model/bpmn/internal';
+import { ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind, ShapeUtil } from '../../model/bpmn/internal';
 import { Flow } from '../../model/bpmn/internal/edge/flows';
-import ShapeBpmnElement, { ShapeBpmnCallActivity, ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../model/bpmn/internal/shape/ShapeBpmnElement';
+import ShapeBpmnElement, {
+  ShapeBpmnCallActivity,
+  ShapeBpmnEvent,
+  ShapeBpmnIntermediateCatchEvent,
+  ShapeBpmnIntermediateThrowEvent,
+  ShapeBpmnSubProcess,
+} from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 
 import { ModelFiltering } from './bpmn-model-filters';
 
@@ -68,6 +74,9 @@ export class BpmnModelRegistry {
             callActivityGlobalTaskKind: bpmnElement instanceof ShapeBpmnCallActivity ? bpmnElement.globalTaskKind : undefined,
             callActivityKind: bpmnElement instanceof ShapeBpmnCallActivity ? bpmnElement.callActivityKind : undefined,
             eventDefinitionKind: bpmnElement instanceof ShapeBpmnEvent ? bpmnElement.eventDefinitionKind : undefined,
+            linkEventSourceIds:
+              bpmnElement instanceof ShapeBpmnIntermediateCatchEvent && bpmnElement.eventDefinitionKind == ShapeBpmnEventDefinitionKind.LINK ? bpmnElement.sourceIds : undefined,
+            linkEventTargetId: bpmnElement instanceof ShapeBpmnIntermediateThrowEvent ? bpmnElement.targetId : undefined,
             incomingIds: bpmnElement.incomingIds,
             outgoingIds: bpmnElement.outgoingIds,
             parentId: bpmnElement.parentId,

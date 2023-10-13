@@ -24,6 +24,8 @@ import {
 } from './helpers/bpmn-visualization-initialization';
 import {
   expectEndEventBpmnElement,
+  expectIntermediateCatchEventBpmnElement,
+  expectIntermediateThrowEventBpmnElement,
   expectParallelGatewayBpmnElement,
   expectPoolBpmnElement,
   expectSequenceFlowBpmnElement,
@@ -60,6 +62,30 @@ describe('Bpmn Elements registry - retrieve BPMN elements', () => {
           parentId: undefined,
         });
         expectSequenceFlowBpmnElement(bpmnElements[1], { id: 'Flow_2', source: 'Activity_1', target: 'EndEvent_1' });
+      });
+
+      it('Pass existing link intermediate event ids', () => {
+        bpmnVisualization.load(readFileSync('../fixtures/bpmn/registry/1-pool-2-lanes-link-intermediate-events.bpmn'));
+        const bpmnElements = bpmnVisualization.bpmnElementsRegistry.getElementsByIds(['Event_1wihmdr', 'Event_1q818hp']);
+        expect(bpmnElements).toHaveLength(2);
+
+        expectIntermediateCatchEventBpmnElement(bpmnElements[0], {
+          id: 'Event_1wihmdr',
+          name: 'link catch intermediate',
+          parentId: 'lane_02',
+          eventDefinitionKind: ShapeBpmnEventDefinitionKind.LINK,
+          outgoing: ['Flow_18jrbeb'],
+          linkEventSourceIds: ['Event_1q818hp'],
+        });
+
+        expectIntermediateThrowEventBpmnElement(bpmnElements[1], {
+          id: 'Event_1q818hp',
+          name: 'link throw intermediate',
+          parentId: 'lane_01',
+          eventDefinitionKind: ShapeBpmnEventDefinitionKind.LINK,
+          incoming: ['sequenceFlow_lane_1_elt_1'],
+          linkEventTargetId: 'Event_1wihmdr',
+        });
       });
 
       it('Pass a single non existing id', () => {

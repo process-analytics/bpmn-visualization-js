@@ -26,6 +26,7 @@ import {
   expectCallActivity,
   expectEndEvent,
   expectIntermediateCatchEvent,
+  expectIntermediateThrowEvent,
   expectParallelGateway,
   expectSequenceFlow,
   expectStartEvent,
@@ -107,6 +108,27 @@ describe('Registry API - retrieve Model Bpmn elements', () => {
       });
     });
 
+    test('Pass link event (with source & target) ids', () => {
+      const modelElements = bpmnElementsRegistry.getModelElementsByIds(['intermediate_catch_event_link_on_top_id', 'intermediate_throw_event_link_on_top_id']);
+
+      expect(modelElements).toHaveLength(2);
+
+      expectIntermediateCatchEvent(modelElements[0] as ShapeBpmnSemantic, {
+        id: 'intermediate_catch_event_link_on_top_id',
+        name: 'Catch Link Intermediate Event On Top',
+        parentId: 'participant_1_id',
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.LINK,
+        linkEventSourceIds: ['intermediate_throw_event_link_on_top_id'],
+      });
+      expectIntermediateThrowEvent(modelElements[1] as ShapeBpmnSemantic, {
+        id: 'intermediate_throw_event_link_on_top_id',
+        name: 'Throw Link Intermediate Event On Top',
+        parentId: 'participant_1_id',
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.LINK,
+        linkEventTargetId: 'intermediate_catch_event_link_on_top_id',
+      });
+    });
+
     test('Pass a single non existing id', () => {
       expect(bpmnElementsRegistry.getModelElementsByIds('unknown')).toHaveLength(0);
     });
@@ -139,11 +161,11 @@ describe('Registry API - retrieve Model Bpmn elements', () => {
         target: 'gateway_with_flows_id',
       });
       expectStartEvent(modelElements[2] as ShapeBpmnSemantic, {
-        eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
         id: 'start_event_in_adHoc_sub_process_id',
         name: 'Start Event In AdHoc Sub-Process',
         outgoing: ['sequence_flow_in_adHoc_sub_process_1_id'],
         parentId: 'expanded_adHoc_sub_process_id',
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
       });
       expectBoundaryEvent(modelElements[3] as ShapeBpmnSemantic, {
         eventDefinitionKind: ShapeBpmnEventDefinitionKind.TIMER,

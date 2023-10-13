@@ -22,6 +22,8 @@ import type {
   ExpectedShapeModelElement,
   ExpectedStartEventModelElement,
   ExpectedSubProcessModelElement,
+  ExpectedIntermediateCatchEventModelElement,
+  ExpectedIntermediateThrowEventModelElement,
 } from '../../helpers/model-expect';
 import type { BpmnCellStyle, ExpectedCell } from '../matcher-utils';
 
@@ -97,7 +99,8 @@ function buildExpectedShapeStylePropertyRegexp(
   expectedModel:
     | ExpectedShapeModelElement
     | ExpectedSubProcessModelElement
-    | ExpectedEventModelElement
+    | ExpectedIntermediateCatchEventModelElement
+    | ExpectedIntermediateThrowEventModelElement
     | ExpectedStartEventModelElement
     | ExpectedBoundaryEventModelElement
     | ExpectedEventBasedGatewayModelElement
@@ -126,6 +129,12 @@ function buildExpectedShapeStylePropertyRegexp(
   }
   if ('gatewayKind' in expectedModel) {
     expectedStyle = expectedStyle + `.*bpmn.gatewayKind=${expectedModel.gatewayKind}`;
+  }
+  if ('sourceIds' in expectedModel) {
+    expectedStyle = expectedStyle + `.*bpmn.linkEventSourceIds=${expectedModel.sourceIds}`;
+  }
+  if ('targetId' in expectedModel) {
+    expectedStyle = expectedStyle + `.*bpmn.linkEventTargetId=${expectedModel.targetId}`;
   }
   return expectedStyle + '.*';
 }
@@ -221,11 +230,11 @@ export function toBeEndEvent(this: MatcherContext, received: string, expected: E
   return buildEventMatcher('toBeEndEvent', this, received, { ...expected, kind: ShapeBpmnElementKind.EVENT_END });
 }
 
-export function toBeIntermediateThrowEvent(this: MatcherContext, received: string, expected: ExpectedEventModelElement): CustomMatcherResult {
+export function toBeIntermediateThrowEvent(this: MatcherContext, received: string, expected: ExpectedIntermediateThrowEventModelElement): CustomMatcherResult {
   return buildEventMatcher('toBeIntermediateThrowEvent', this, received, { ...expected, kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW });
 }
 
-export function toBeIntermediateCatchEvent(this: MatcherContext, received: string, expected: ExpectedEventModelElement): CustomMatcherResult {
+export function toBeIntermediateCatchEvent(this: MatcherContext, received: string, expected: ExpectedIntermediateCatchEventModelElement): CustomMatcherResult {
   return buildEventMatcher('toBeIntermediateCatchEvent', this, received, { ...expected, kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH });
 }
 

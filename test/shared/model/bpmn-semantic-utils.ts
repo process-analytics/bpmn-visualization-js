@@ -71,6 +71,8 @@ function expectedFlowNode(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedFlo
 }
 
 export type ExpectedEventElement = ExpectedFlowNodeElement & Pick<ShapeBpmnSemantic, 'eventDefinitionKind'>;
+export type ExpectedIntermediateCatchEventElement = ExpectedEventElement & Pick<ShapeBpmnSemantic, 'linkEventSourceIds'>;
+export type ExpectedIntermediateThrowEventElement = ExpectedEventElement & Pick<ShapeBpmnSemantic, 'linkEventTargetId'>;
 
 function expectEvent(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedEventElement): void {
   expectedFlowNode(bpmnSemantic, expected);
@@ -81,6 +83,7 @@ export function expectStartEvent(bpmnSemantic: ShapeBpmnSemantic, expected: Expe
   expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.EVENT_START);
   expectEvent(bpmnSemantic, expected);
 }
+
 export function expectEndEvent(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedEventElement): void {
   expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.EVENT_END);
   expectEvent(bpmnSemantic, expected);
@@ -91,9 +94,18 @@ export function expectBoundaryEvent(bpmnSemantic: ShapeBpmnSemantic, expected: E
   expectEvent(bpmnSemantic, expected);
 }
 
-export function expectIntermediateCatchEvent(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedEventElement): void {
+export function expectIntermediateCatchEvent(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedIntermediateCatchEventElement): void {
   expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH);
   expectEvent(bpmnSemantic, expected);
+  expect(bpmnSemantic.linkEventSourceIds).toStrictEqual(expected.linkEventSourceIds);
+  expect(bpmnSemantic.linkEventTargetId).toBeUndefined();
+}
+
+export function expectIntermediateThrowEvent(bpmnSemantic: ShapeBpmnSemantic, expected: ExpectedIntermediateThrowEventElement): void {
+  expect(bpmnSemantic.kind).toEqual(ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW);
+  expectEvent(bpmnSemantic, expected);
+  expect(bpmnSemantic.linkEventSourceIds).toBeUndefined();
+  expect(bpmnSemantic.linkEventTargetId).toStrictEqual(expected.linkEventTargetId);
 }
 
 export function expectParallelGateway(bpmnSemantic: BpmnSemantic, expected: ExpectedFlowNodeElement): void {
