@@ -370,17 +370,21 @@ export interface EdgeBpmnSemantic extends BaseBpmnSemantic {
  * @category Custom Behavior
  */
 export interface ShapeBpmnSemantic extends BaseBpmnSemantic {
+  // IMPORTANT: keep properties in alphabetical order for consistency
+
   /** Set when the {@link BaseBpmnSemantic.kind} relates to a BPMN Call Activity calling a global task. */
   callActivityGlobalTaskKind?: GlobalTaskKind;
   /** Set when the {@link BaseBpmnSemantic.kind} relates to a BPMN Call Activity. */
   callActivityKind?: ShapeBpmnCallActivityKind;
   /** Set when the {@link BaseBpmnSemantic.kind} relates to a BPMN event. */
   eventDefinitionKind?: ShapeBpmnEventDefinitionKind;
+  /** IDs of the incoming flows/edges. */
+  incomingIds: string[];
   /** Set when the {@link BaseBpmnSemantic.kind} relates to a BPMN intermediate catch event with {@link ShapeBpmnSemantic.eventDefinitionKind} set to {@link ShapeBpmnEventDefinitionKind.LINK}. */
   linkEventSourceIds?: string[];
   /** Set when the {@link BaseBpmnSemantic.kind} relates to a BPMN intermediate throw event with {@link ShapeBpmnSemantic.eventDefinitionKind} set to {@link ShapeBpmnEventDefinitionKind.LINK}. */
   linkEventTargetId?: string;
-  incomingIds: string[];
+  /** IDs of the outgoing flows/edges. */
   outgoingIds: string[];
   /**
    * This is the ID of the direct parent of the current element, which can be a:
