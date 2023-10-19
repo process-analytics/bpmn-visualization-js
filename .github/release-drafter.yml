@@ -75,6 +75,43 @@ template: |
     - add a link to the RN https://github.com/$OWNER/bpmn-visualization-examples/releases/tag/v0.34.0
   Optional: add link to the live statically.io environment including the tag (not the `master` branch) 
 
+  ## Breaking Changes
+
+  **TODO: keep if releavant and follow the guidelines below**
+
+  - explain why it is introduced
+  - explain the impact (use case, usage, impact a lot of user or only few, ....)
+  - add references to issue or pull request to help users to understand the breaking change
+
+  ### Removal of deprecated API
+
+  - list API
+  - add reference to the version and release notes where it was announced as "deprecated"
+  
+  ## Deprecated APIs
+
+  **TODO: keep if releavant and follow the guidelines below**
+
+  - list the APIs
+  - explain why they are deprecated
+  - provide the new API to use instead. If none exist, mention it
+  - explain in which version it will be removed. We usually keep 3 minor versions prior removal.
+  - ensure that an issue exists to track the removal (one by version is OK) and it is attached to a milestone related to the version 
+
+  ## External Contributions
+
+  **TODO: keep if releavant and follow the guidelines below**
+
+  We are excited to include the following external contributions in this release:
+  <!-- list contributions here -->
+
+  ### Contrib 1  
+
+  Description.
+
+  ℹ️ You can find more details about this contribution in #XXX.
+
+
   # What's Changed
 
   **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$NEXT_PATCH_VERSION
