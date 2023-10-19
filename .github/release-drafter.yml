@@ -79,8 +79,9 @@ template: |
 
   **TODO: keep if releavant and follow the guidelines below**
 
-  - explain the impact (use case)
-  - this includes the removal of deprecated
+  - explain why it is introduced
+  - explain the impact (use case, usage, impact a lot of user or only few, ....)
+  - add references to issue or pull request to help users to understand the breaking change
 
   ### Removal of deprecated API
 
@@ -98,6 +99,8 @@ template: |
   - ensure that an issue exists to track the removal (one by version is OK) and it is attached to a milestone related to the version 
 
   ## External Contributions
+
+  **TODO: keep if releavant and follow the guidelines below**
 
   We are excited to include the following external contributions in this release:
   <!-- list contributions here -->
