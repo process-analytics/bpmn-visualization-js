@@ -112,7 +112,7 @@
     "@rollup/plugin-node-resolve": "~15.2.3",
     "@rollup/plugin-terser": "~0.4.4",
     "@types/debug": "~4.1.9",
-    "@types/jest-image-snapshot": "~6.2.1",
+    "@types/jest-image-snapshot": "~6.2.2",
     "@types/lodash-es": "~4.17.9",
     "@types/minimist": "~1.2.3",
     "@typescript-eslint/eslint-plugin": "~6.8.0",
