@@ -113,7 +113,7 @@
     "@rollup/plugin-terser": "~0.4.4",
     "@types/debug": "~4.1.10",
     "@types/jest-image-snapshot": "~6.2.3",
-    "@types/lodash-es": "~4.17.10",
+    "@types/lodash-es": "~4.17.11",
     "@types/minimist": "~1.2.4",
     "@typescript-eslint/eslint-plugin": "~6.10.0",
     "@typescript-eslint/parser": "~6.10.0",
