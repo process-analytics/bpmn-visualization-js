@@ -60,8 +60,8 @@ function expectedStrokeWidth(kind: ShapeBpmnElementKind): number {
   ].includes(kind)
     ? 2
     : [ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.EVENT_END].includes(kind)
-    ? 5
-    : undefined;
+      ? 5
+      : undefined;
 }
 
 export function buildExpectedShapeCellStyle(expectedModel: ExpectedShapeModelElement): BpmnCellStyle {
