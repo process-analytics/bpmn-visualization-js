@@ -111,7 +111,7 @@
     "@rollup/plugin-commonjs": "~25.0.7",
     "@rollup/plugin-node-resolve": "~15.2.3",
     "@rollup/plugin-terser": "~0.4.4",
-    "@types/debug": "~4.1.10",
+    "@types/debug": "~4.1.12",
     "@types/jest-image-snapshot": "~6.2.3",
     "@types/lodash-es": "~4.17.11",
     "@types/minimist": "~1.2.5",
