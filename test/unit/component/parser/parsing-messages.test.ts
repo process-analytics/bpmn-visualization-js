@@ -75,4 +75,18 @@ describe('parsing message collector', () => {
       );
     });
   });
+
+  describe('disabled logs: no console.warn when warning is registered', () => {
+    const parsingMessageCollector = new ParsingMessageCollector({ disableConsoleLog: true });
+
+    it('unknown edge bpmn element', () => {
+      parsingMessageCollector.warning(new EdgeUnknownBpmnElementWarning('edge-bpmnElement-unknown'));
+      expect(console.warn).not.toHaveBeenCalled();
+    });
+
+    it('missing font in label style', () => {
+      parsingMessageCollector.warning(new LabelStyleMissingFontWarning('BPMNEdge_id_0', 'non-existing_style_id'));
+      expect(console.warn).not.toHaveBeenCalled();
+    });
+  });
 });

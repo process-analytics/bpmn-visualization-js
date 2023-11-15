@@ -41,5 +41,5 @@ class BpmnParser {
  * @internal
  */
 export function newBpmnParser(options?: ParserOptions): BpmnParser {
-  return new BpmnParser(newBpmnJsonParser(new ParsingMessageCollector()), new BpmnXmlParser(options));
+  return new BpmnParser(newBpmnJsonParser(new ParsingMessageCollector(options)), new BpmnXmlParser(options));
 }
