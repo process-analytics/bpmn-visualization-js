@@ -183,6 +183,11 @@ export type ParserOptions = {
    * @param val the value of the 'name' attribute to be processed.
    */
   additionalXmlAttributeProcessor?: (value: string) => string;
+  /**
+   * If `true`, disable the console logs produced by the parser.
+   * @default false
+   */
+  disableConsoleLog?: boolean;
 };
 
 /**

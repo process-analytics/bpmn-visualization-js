@@ -14,6 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { ParserOptions } from '../options';
+
 export interface MessageDetails {
   template: string;
   arguments: string[];
@@ -23,8 +25,15 @@ export abstract class JsonParsingWarning {
   abstract getMessage(): MessageDetails;
 }
 
+export type ParsingMessageCollectorOptions = Pick<ParserOptions, 'disableConsoleLog'>;
+
 export class ParsingMessageCollector {
+  constructor(private options?: ParsingMessageCollectorOptions) {}
+
   warning(warning: JsonParsingWarning): void {
+    if (this.options?.disableConsoleLog) {
+      return;
+    }
     const message = warning.getMessage();
     console.warn(`[bv-parser] ${message.template}`, ...message.arguments);
   }
