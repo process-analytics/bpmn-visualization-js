@@ -21,15 +21,15 @@ import { mxClient } from './mxgraph/initializer';
 const libraryVersion = '0.42.0-post';
 
 /**
- * @internal
+ * Returns the version of `bpmn-visualization` and the version of its dependencies.
+ * @since 0.43.0
  */
-export const version = (): Version => {
+export const getVersion = (): Version => {
   return { lib: libraryVersion, dependencies: new Map([['mxGraph', mxClient.VERSION]]) };
 };
 
 /**
- * Version of `bpmn-visualization` and its dependencies.
- * @category Initialization & Configuration
+ * The version of `bpmn-visualization` and the version of its dependencies.
  */
 export interface Version {
   /** The `bpmn-visualization` version. */

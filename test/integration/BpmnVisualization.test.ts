@@ -65,6 +65,8 @@ describe('BpmnVisualization API', () => {
     });
   });
 
+  // Note: the tests here are duplicated with test/unit/component/version.test.ts
+  // They will be removed when the deprecated `BpmnVisualization.getVersion` method is removed
   describe('Version', () => {
     it('lib version', () => {
       expect(bpmnVisualization.getVersion().lib).toBe(getLibraryVersionFromPackageJson());

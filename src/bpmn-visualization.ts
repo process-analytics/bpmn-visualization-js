@@ -21,7 +21,7 @@ limitations under the License.
 export * from './component/options';
 export { BpmnVisualization } from './component/BpmnVisualization';
 export * from './component/registry';
-export type { Version } from './component/version';
+export * from './component/version';
 export type { Navigation } from './component/navigation';
 export * from './model/bpmn/internal';
 
