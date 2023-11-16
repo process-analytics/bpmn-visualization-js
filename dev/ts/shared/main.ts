@@ -27,7 +27,6 @@ import type {
   Overlay,
   PoolFilter,
   StyleUpdate,
-  Version,
   ZoomType,
 } from '../../../src/bpmn-visualization';
 import type { mxCell } from 'mxgraph';
@@ -352,12 +351,6 @@ export function downloadSvg(): void {
 export function downloadPng(): void {
   logDownload('Trigger PNG Download');
   downloadAsPng(new SvgExporter(bpmnVisualization.graph).exportSvgForPng());
-}
-
-export function getVersion(): Version {
-  const version = bpmnVisualization.getVersion();
-  log('Version:', version);
-  return version;
 }
 
 export function updateStyle(bpmnElementIds: string | string[], style: StyleUpdate): void {
