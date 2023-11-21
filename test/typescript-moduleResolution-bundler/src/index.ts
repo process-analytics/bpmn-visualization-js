@@ -13,6 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
+// eslint-disable-next-line import/no-unresolved -- The bpmn-visualization package may not have been built prior running eslint (it happens when running GitHub Actions)
 import { BpmnVisualization } from 'bpmn-visualization';
 
 const bpmnVisualization = new BpmnVisualization({ container: 'id' });
