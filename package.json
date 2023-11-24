@@ -37,7 +37,12 @@
   "module": "dist/bpmn-visualization.esm.js",
   "types": "dist/not-supported-ts-versions.d.ts",
   "exports": {
-    ".": "./dist/bpmn-visualization.esm.js",
+    ".": {
+      "import": {
+        "types": "./dist/bpmn-visualization.d.ts",
+        "default": "./dist/bpmn-visualization.esm.js"
+      }
+    },
     "./package.json": "./package.json"
   },
   "typesVersions": {
