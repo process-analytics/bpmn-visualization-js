@@ -144,7 +144,7 @@
     "jest-environment-jsdom": "~29.7.0",
     "jest-extended": "~4.0.2",
     "jest-html-reporter": "~3.10.2",
-    "jest-html-reporters": "~3.1.6",
+    "jest-html-reporters": "~3.1.7",
     "jest-image-snapshot": "~6.4.0",
     "jest-playwright-preset": "~4.0.0",
     "jest-sonar": "~0.2.16",
