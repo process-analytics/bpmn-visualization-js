@@ -25,7 +25,7 @@ import { Navigation } from './navigation';
 import { newBpmnParser } from './parser/BpmnParser';
 import { createNewBpmnElementsRegistry } from './registry/bpmn-elements-registry';
 import { BpmnModelRegistry } from './registry/bpmn-model-registry';
-import { version, type Version } from './version';
+import { getVersion, type Version } from './version';
 
 /**
  * Let initialize `bpmn-visualization`. It requires at minimum to pass the HTMLElement in the page where the BPMN diagram is rendered.
@@ -96,7 +96,11 @@ export class BpmnVisualization {
     newBpmnRenderer(this.graph, this.rendererOptions).render(renderedModel, options?.fit);
   }
 
+  /**
+   * Returns the version of `bpmn-visualization` and the version of its dependencies.
+   * @deprecated As of `0.43.0`, use {@link getVersion} instead. This method will be removed in `0.45.0`.
+   */
   getVersion(): Version {
-    return version();
+    return getVersion();
   }
 }

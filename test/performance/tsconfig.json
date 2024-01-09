@@ -2,8 +2,13 @@
   "extends": "../../tsconfig.test",
   "compilerOptions": {
     "diagnostics": true,
+    // The following configuration is required to validate the playwright types. Plawyright 1.40 introduced "Support Symbol.asyncDispose" https://github.com/microsoft/playwright/issues/27141
+    // This is a TypeScript 5.2 feature that requires extra configuration: https://devblogs.microsoft.com/typescript/announcing-typescript-5-2/
+    "target": "es2022",
+    "lib": ["es2022", "esnext.disposable", "dom", "DOM.Iterable"]
   },
   "exclude": [
+    "../typescript-moduleResolution-bundler/**/*",
     "../typescript-support/**/*"
   ]
 }

@@ -13,6 +13,7 @@ on:
       - 'test/config/**/*'
       - 'test/bundles/**/*'
       - 'test/typescript-support/**/*'
+      - 'test/typescript-moduleResolution-bundler/**/*'
       - '.nvmrc'
       - 'package.json'
       - 'package-lock.json'
@@ -31,6 +32,7 @@ on:
       - 'test/config/**/*'
       - 'test/shared/**/*'
       - 'test/typescript-support/**/*'
+      - 'test/typescript-moduleResolution-bundler/**/*'
       - '.nvmrc'
       - 'package.json'
       - 'package-lock.json'
@@ -75,4 +77,11 @@ jobs:
         run: npm install --ignore-scripts --prefer-offline --audit false
       - name: Run typescript-support test
         working-directory: 'test/typescript-support'
+        run: npm test
+      # Check the "exports" field in package.json: project using moduleResolution=bundler in tsconfig.json
+      - name: Setup typescript-moduleResolution-bundler test
+        working-directory: 'test/typescript-moduleResolution-bundler'
+        run: npm install --ignore-scripts --prefer-offline --audit false
+      - name: Run typescript-moduleResolution-bundler test
+        working-directory: 'test/typescript-moduleResolution-bundler'
         run: npm test
