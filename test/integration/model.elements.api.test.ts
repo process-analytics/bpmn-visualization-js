@@ -229,6 +229,24 @@ describe('Registry API - retrieve Model Bpmn elements', () => {
     });
   });
 
+  describe('Get by ids - invalid references in diagram', () => {
+    test('Invalid event definition reference', () => {
+      const bpmnElementsRegistry = bpmnVisualization.bpmnElementsRegistry;
+
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-invalid-event-def-ref.bpmn'));
+      const modelElements = bpmnElementsRegistry.getModelElementsByIds('StartEvent_1');
+
+      expect(modelElements).toHaveLength(1);
+      expectStartEvent(modelElements[0] as ShapeBpmnSemantic, {
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
+        id: 'StartEvent_1',
+        name: 'Start Event with invalid event definition reference',
+        outgoing: ['Flow_1'],
+        parentId: undefined,
+      });
+    });
+  });
+
   describe('Get by kinds', () => {
     const bv = initializeBpmnVisualization(null);
     const bpmnElementsRegistry = bv.bpmnElementsRegistry;
