@@ -339,9 +339,6 @@ export default class ProcessConverter {
 
     for (const eventDefinitionReference of ensureIsArray<string>(bpmnElement.eventDefinitionRef)) {
       const eventDefinition = this.convertedElements.findEventDefinitionOfDefinition(eventDefinitionReference);
-      // TODO need to write a unit test
-      // eventDefinitionsByKind.get(eventDefinition.kind).push(eventDefinition);
-      // fix
       eventDefinition && eventDefinitionsByKind.get(eventDefinition.kind).push(eventDefinition);
     }
 

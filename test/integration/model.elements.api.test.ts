@@ -238,7 +238,7 @@ describe('Registry API - retrieve Model Bpmn elements', () => {
 
       expect(modelElements).toHaveLength(1);
       expectStartEvent(modelElements[0] as ShapeBpmnSemantic, {
-        eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE, // no event definition reference, so use default
         id: 'StartEvent_1',
         name: 'Start Event with invalid event definition reference',
         outgoing: ['Flow_1'],
