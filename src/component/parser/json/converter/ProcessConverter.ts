@@ -339,7 +339,7 @@ export default class ProcessConverter {
 
     for (const eventDefinitionReference of ensureIsArray<string>(bpmnElement.eventDefinitionRef)) {
       const eventDefinition = this.convertedElements.findEventDefinitionOfDefinition(eventDefinitionReference);
-      eventDefinitionsByKind.get(eventDefinition.kind).push(eventDefinition);
+      eventDefinition && eventDefinitionsByKind.get(eventDefinition.kind).push(eventDefinition);
     }
 
     for (const [kind] of [...eventDefinitionsByKind.entries()].filter(([, registeredEventDefinitions]) => registeredEventDefinitions.length === 0)) {
