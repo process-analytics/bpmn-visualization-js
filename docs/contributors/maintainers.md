@@ -141,6 +141,24 @@ For the detailed list of available examples, please check the [examples home pag
 #### Mark the `bpmn-visualization-examples` repository as released
 When all updates have been completed, merge the Pull Request created above.
 
+Then create a GitHub release:
+- Open [GitHub actions](https://github.com/process-analytics/bpmn-visualization-examples/actions/workflows/create-gh-release.yml)
+- Click on the 'Run workflow' dropdown located on the right side of the page
+- Provide parameter value for the `version` input
+- Click on the button 'Run workflow'
+- Make sure job execution was successful by checking the status
+
+
+You should have something like in release [v0.21.2](https://github.com/process-analytics/bpmn-visualization-examples/releases/tag/v0.21.2)
+
+![release process automation overview](./images/release_process_part-10_examples_release-notes.png)
+
+
+___
+⚠️⚠️⚠️ _**Only if the job to create the GitHub release does NOT work!**_  ⚠️⚠️⚠️
+
+##### Manual procedure
+
 Create a new GitHub release by following the [GitHub help](https://help.github.com/en/github/administering-a-repository/managing-releases-in-a-repository#creating-a-release)
 - for `Tag version`, use a value that is the **same as the lib in the vX.Y.Z form**. The git tag will be created when the release will be published.
 - for `Target`
@@ -153,9 +171,8 @@ Create a new GitHub release by following the [GitHub help](https://help.github.c
   - add a link to the live environment for the related tag
   - make GitHub generates the [release notes automatically](https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes)
 
-You should have something like in release [v0.21.2](https://github.com/process-analytics/bpmn-visualization-examples/releases/tag/v0.21.2)
-
-![release process automation overview](./images/release_process_part-10_examples_release-notes.png)
+⚠️⚠️⚠️ _**End of the manual steps**_ ⚠️⚠️⚠️
+___
 
 ___
 ⚠️⚠️⚠️ _**Only if the [notification](https://github.com/process-analytics/bpmn-visualization-js/actions/runs/2191000065) does NOT work!**_  ⚠️⚠️⚠️
