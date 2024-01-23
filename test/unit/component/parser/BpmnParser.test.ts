@@ -33,6 +33,10 @@ describe('parse xml to model', () => {
   describe('error management', () => {
     const parsingErrorMessage = `XML parsing failed. Unable to retrieve 'definitions' from the BPMN source.`;
 
+    it('Parse empty content', () => {
+      expect(() => newBpmnParser().parse('')).toThrow(parsingErrorMessage);
+    });
+
     it('Parse a text file', () => {
       expect(() => newBpmnParser().parse(readFileSync('../fixtures/bpmn/xml-parsing/special/text-only.txt'))).toThrow(parsingErrorMessage);
     });
