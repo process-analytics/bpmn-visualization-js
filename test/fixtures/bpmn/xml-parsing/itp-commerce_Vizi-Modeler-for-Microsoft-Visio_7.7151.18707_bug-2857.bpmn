@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Created by Vizi Modeler  for Microsoft Visio (http://www.itp-commerce.com)-->
+<definitions targetNamespace="http://www.itp-commerce.com" xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:itp="http://www.itp-commerce.com/BPMN2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://www.omg.org/spec/BPMN/20100501" exporter="Vizi Modeler for Microsoft Visio" exporterVersion="7.7151.18707" name="My Diagram" itp:version="1.0" itp:author="yonat" itp:creationDate="9/9/2023 12:14:12 AM" itp:modificationDate="9/17/2023 2:02:06 AM" itp:createdWithVersion="7.7151.18707" itp:conformanceSubClass="Full" id="_79f1a0ed-1f90-4caf-9b19-eb39daaecf52" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:color="http://www.omg.org/spec/BPMN/non-normative/color/1.0">
+  <process id="_e455f64a-5bc7-4b3b-a677-fa2016390629" name="Example Process" processType="None" itp:isMainProcess="true">
+    <startEvent id="_e2f0bc4a-3322-47d0-b498-1a7e7c3bea7f" name="Engineer Troubleshooting">
+      <outgoing>_0a5cddd1-ba79-4a79-a523-f865393d895c</outgoing>
+    </startEvent>
+    <exclusiveGateway id="_7f712f24-9734-4df0-af0b-e8f9d3a62396" name="Does it move?" gatewayDirection="Diverging">
+      <incoming>_0a5cddd1-ba79-4a79-a523-f865393d895c</incoming>
+      <outgoing>_07921065-0775-4224-bbe2-248230479a18</outgoing>
+      <outgoing>_316925d8-db99-456f-8fab-b4b06e8ea139</outgoing>
+    </exclusiveGateway>
+    <exclusiveGateway id="_c15633c7-86a6-4900-80ad-ed39e70ad49d" name="Moves, should it?" gatewayDirection="Diverging">
+      <incoming>_316925d8-db99-456f-8fab-b4b06e8ea139</incoming>
+      <outgoing>_003a851a-471f-4b88-b386-9e9538b4c12c</outgoing>
+      <outgoing>_782252f0-e833-421c-a958-c3da4dc791a1</outgoing>
+    </exclusiveGateway>
+    <exclusiveGateway id="_ff03f209-68f1-4ff6-a677-688ac4893443" name="Doesn’t move, should it?" gatewayDirection="Diverging">
+      <incoming>_07921065-0775-4224-bbe2-248230479a18</incoming>
+      <outgoing>_1a8fd619-0ffc-4e68-88b0-eb09e2bca9b4</outgoing>
+      <outgoing>_1edba66a-70a3-4a01-b084-886e3a1eb2ed</outgoing>
+    </exclusiveGateway>
+    <task id="_16946daa-72b3-42d7-8ad1-5ea5b5004eb4" name="Solution - no problem">
+      <incoming>_782252f0-e833-421c-a958-c3da4dc791a1</incoming>
+    </task>
+    <task id="_ad7e6a77-80c9-4e88-af61-ca708d4269f1" name="Solution – Gaffer Tape">
+      <incoming>_003a851a-471f-4b88-b386-9e9538b4c12c</incoming>
+    </task>
+    <task id="_736e76d2-04bc-4bf7-9a1e-22e41e04a095" name="Solution – WD40">
+      <incoming>_1a8fd619-0ffc-4e68-88b0-eb09e2bca9b4</incoming>
+    </task>
+    <task id="_e4503f67-3673-48fd-8b2a-815cea2f8795" name="Solution – no problem">
+      <incoming>_1edba66a-70a3-4a01-b084-886e3a1eb2ed</incoming>
+    </task>
+    <sequenceFlow id="_0a5cddd1-ba79-4a79-a523-f865393d895c" sourceRef="_e2f0bc4a-3322-47d0-b498-1a7e7c3bea7f" targetRef="_7f712f24-9734-4df0-af0b-e8f9d3a62396">
+    </sequenceFlow>
+    <sequenceFlow id="_07921065-0775-4224-bbe2-248230479a18" name="Does it move&#xD;&#xA;no" sourceRef="_7f712f24-9734-4df0-af0b-e8f9d3a62396" targetRef="_ff03f209-68f1-4ff6-a677-688ac4893443">
+      <conditionExpression>test='Does it move - no'</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_316925d8-db99-456f-8fab-b4b06e8ea139" name="Does it move&#xD;&#xA;yes" sourceRef="_7f712f24-9734-4df0-af0b-e8f9d3a62396" targetRef="_c15633c7-86a6-4900-80ad-ed39e70ad49d">
+      <conditionExpression>test='Does it move - no'</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_1a8fd619-0ffc-4e68-88b0-eb09e2bca9b4" name="Should it move&#xD;&#xA;yes" sourceRef="_ff03f209-68f1-4ff6-a677-688ac4893443" targetRef="_736e76d2-04bc-4bf7-9a1e-22e41e04a095">
+      <conditionExpression>test='Should it move
+        yes'
+      </conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_003a851a-471f-4b88-b386-9e9538b4c12c" name="Should it move&#xD;&#xA;no" sourceRef="_c15633c7-86a6-4900-80ad-ed39e70ad49d" targetRef="_ad7e6a77-80c9-4e88-af61-ca708d4269f1">
+      <conditionExpression>test='Should it move – no'</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_782252f0-e833-421c-a958-c3da4dc791a1" name="Should it move&#xD;&#xA;yes" sourceRef="_c15633c7-86a6-4900-80ad-ed39e70ad49d" targetRef="_16946daa-72b3-42d7-8ad1-5ea5b5004eb4">
+      <conditionExpression>test='Should it move – yes'</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_1edba66a-70a3-4a01-b084-886e3a1eb2ed" name="Should it move&#xD;&#xA;no" sourceRef="_ff03f209-68f1-4ff6-a677-688ac4893443" targetRef="_e4503f67-3673-48fd-8b2a-815cea2f8795">
+      <conditionExpression>test='Should it move
+        yes'
+      </conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram name="My Diagram (1)" resolution="72" id="fsafsasa">
+    <bpmndi:BPMNPlane id="_1" bpmnElement="_e455f64a-5bc7-4b3b-a677-fa2016390629">
+      <bpmndi:BPMNShape id="_BA5FD27D-30DD-4F4F-93B3-A76CC5C4D0D2" bpmnElement="_e2f0bc4a-3322-47d0-b498-1a7e7c3bea7f" itp:label="Engineer Troubleshooting" itp:elementType="startEvent" color:background-color="#F2F2F2" color:border-color="#3F3F3F">
+        <dc:Bounds x="415.2755905511811" y="82.204724409448886" width="17.007874015748033" height="17.007874015748033" />
+        <bpmndi:BPMNLabel labelStyle="_48d532ae-841e-4133-bd67-f56ac81e8ca1" color:color="#3F3F3F">
+          <dc:Bounds x="396.36" y="100.995590551181" width="55.44" height="19.44" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_00F67C55-1CB2-4F9A-AC31-AEA25B38FB7F" bpmnElement="_7f712f24-9734-4df0-af0b-e8f9d3a62396" isMarkerVisible="false" itp:label="Does it move?" itp:elementType="exclusiveGateway" color:background-color="#F2F2F2" color:border-color="#3F3F3F">
+        <dc:Bounds x="402.51968503937007" y="166.53543307086613" width="42.519685039370081" height="31.889763779527563" />
+        <bpmndi:BPMNLabel labelStyle="_48d532ae-841e-4133-bd67-f56ac81e8ca1" color:color="#3F3F3F">
+          <dc:Bounds x="399.96" y="201.075590551181" width="48.24" height="9.36" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_F796B6B4-E15B-40B1-AAC5-C5A3DE4494A7" bpmnElement="_c15633c7-86a6-4900-80ad-ed39e70ad49d" isMarkerVisible="false" itp:label="Moves, should it?" itp:elementType="exclusiveGateway" color:background-color="#F2F2F2" color:border-color="#3F3F3F">
+        <dc:Bounds x="262.20472440944883" y="239.17322834645671" width="42.519685039370081" height="31.889763779527563" />
+        <bpmndi:BPMNLabel labelStyle="_48d532ae-841e-4133-bd67-f56ac81e8ca1" color:color="#3F3F3F">
+          <dc:Bounds x="254.16" y="273.795590551181" width="59.04" height="9.36" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_71610F1A-495C-4A2D-80E1-81EF744B0830" bpmnElement="_ff03f209-68f1-4ff6-a677-688ac4893443" isMarkerVisible="false" itp:label="Doesn’t move, should it?" itp:elementType="exclusiveGateway" color:background-color="#F2F2F2" color:border-color="#3F3F3F">
+        <dc:Bounds x="556.29921259842513" y="239.17322834645671" width="42.519685039370081" height="31.889763779527563" />
+        <bpmndi:BPMNLabel labelStyle="_48d532ae-841e-4133-bd67-f56ac81e8ca1" color:color="#3F3F3F">
+          <dc:Bounds x="536.04" y="273.795590551181" width="82.8" height="9.36" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_795D0D8D-0AE5-4DE0-87CB-4EAB74C3B17D" bpmnElement="_16946daa-72b3-42d7-8ad1-5ea5b5004eb4" itp:label="Solution - no problem" itp:elementType="task" color:background-color="#F2F2F2" color:border-color="#3F3F3F">
+        <dc:Bounds x="160.62987401574804" y="340.15748031496065" width="85.039370078740163" height="42.519685039370081" />
+        <bpmndi:BPMNLabel labelStyle="_48d532ae-841e-4133-bd67-f56ac81e8ca1" color:color="#3F3F3F">
+          <dc:Bounds x="166.68" y="357.315590551181" width="72.72" height="7.92" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_575DFE12-EBF8-4C00-9F42-8B9527AB6D2B" bpmnElement="_ad7e6a77-80c9-4e88-af61-ca708d4269f1" itp:label="Solution – Gaffer Tape" itp:elementType="task" color:background-color="#F2F2F2" color:border-color="#3F3F3F">
+        <dc:Bounds x="327.75590551181108" y="340.15748031496065" width="85.039370078740163" height="42.519685039370081" />
+        <bpmndi:BPMNLabel labelStyle="_48d532ae-841e-4133-bd67-f56ac81e8ca1" color:color="#3F3F3F">
+          <dc:Bounds x="332.64" y="357.315590551181" width="74.88" height="7.92" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_42B1F06C-D6E0-44AE-83D6-C4AE7A110C6D" bpmnElement="_736e76d2-04bc-4bf7-9a1e-22e41e04a095" itp:label="Solution – WD40" itp:elementType="task" color:background-color="#F2F2F2" color:border-color="#3F3F3F">
+        <dc:Bounds x="460.62992125984255" y="340.15748031496065" width="85.039370078740163" height="42.519685039370081" />
+        <bpmndi:BPMNLabel labelStyle="_48d532ae-841e-4133-bd67-f56ac81e8ca1" color:color="#3F3F3F">
+          <dc:Bounds x="475.2" y="357.315590551181" width="56.16" height="7.92" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_55A4384C-7AEB-424C-9F11-0064D086A1BE" bpmnElement="_e4503f67-3673-48fd-8b2a-815cea2f8795" itp:label="Solution – no problem" itp:elementType="task" color:background-color="#F2F2F2" color:border-color="#3F3F3F">
+        <dc:Bounds x="634.251968503937" y="340.15748031496065" width="85.039370078740163" height="42.519685039370081" />
+        <bpmndi:BPMNLabel labelStyle="_48d532ae-841e-4133-bd67-f56ac81e8ca1" color:color="#3F3F3F">
+          <dc:Bounds x="639.72" y="357.315590551181" width="74.16" height="7.92" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="_3D0F724C-6376-4BA9-AE0D-112FA1C941A5" bpmnElement="_0a5cddd1-ba79-4a79-a523-f865393d895c" itp:label="(unnamed)" itp:elementType="sequenceFlow" color:border-color="#404040">
+        <di:waypoint x="423.77952755905511" y="99.212598425196916" />
+        <di:waypoint x="423.77952755905511" y="166.53543307086613" />
+        <bpmndi:BPMNLabel labelStyle="_48d532ae-841e-4133-bd67-f56ac81e8ca1" color:color="#404040">
+          <dc:Bounds x="426.6" y="124.395590551181" width="7.92" height="17.28" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="_7A3B4F0A-FB98-41F2-A77E-DE47B57C3C28" bpmnElement="_07921065-0775-4224-bbe2-248230479a18" itp:label="Does it move&#xD;&#xA;no" itp:elementType="sequenceFlow" color:border-color="#404040">
+        <di:waypoint x="445.03937007874021" y="182.48031496062993" />
+        <di:waypoint x="577.55905511811022" y="182.48031496062993" />
+        <di:waypoint x="577.55905511811022" y="239.17322834645677" />
+        <bpmndi:BPMNLabel labelStyle="_48d532ae-841e-4133-bd67-f56ac81e8ca1" color:color="#404040">
+          <dc:Bounds x="488.16" y="172.995590551181" width="46.08" height="19.44" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="_45049049-69BA-49BC-A96D-C0E9CB49936B" bpmnElement="_316925d8-db99-456f-8fab-b4b06e8ea139" itp:label="Does it move&#xD;&#xA;yes" itp:elementType="sequenceFlow" color:border-color="#404040">
+        <di:waypoint x="402.51968503937013" y="182.48031496062993" />
+        <di:waypoint x="283.46456692913387" y="182.48031496062993" />
+        <di:waypoint x="283.46456692913387" y="239.17322834645677" />
+        <bpmndi:BPMNLabel labelStyle="_48d532ae-841e-4133-bd67-f56ac81e8ca1" color:color="#404040">
+          <dc:Bounds x="319.68" y="172.995590551181" width="46.08" height="19.44" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="_07F8A89B-3C87-45C1-9C35-168DA71B59E8" bpmnElement="_1a8fd619-0ffc-4e68-88b0-eb09e2bca9b4" itp:label="Should it move&#xD;&#xA;yes" itp:elementType="sequenceFlow" color:border-color="#404040">
+        <di:waypoint x="556.29921259842524" y="255.1181102362205" />
+        <di:waypoint x="503.14960629921262" y="255.1181102362205" />
+        <di:waypoint x="503.14960629921262" y="340.15748031496065" />
+        <bpmndi:BPMNLabel labelStyle="_48d532ae-841e-4133-bd67-f56ac81e8ca1" color:color="#404040">
+          <dc:Bounds x="488.16" y="283.515590551181" width="30.24" height="28.8" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="_752529A0-4272-4730-819E-7DBD2E873026" bpmnElement="_003a851a-471f-4b88-b386-9e9538b4c12c" itp:label="Should it move&#xD;&#xA;no" itp:elementType="sequenceFlow" color:border-color="#404040">
+        <di:waypoint x="304.72440944881896" y="255.1181102362205" />
+        <di:waypoint x="370.27559055118115" y="255.1181102362205" />
+        <di:waypoint x="370.27559055118115" y="340.15748031496065" />
+        <bpmndi:BPMNLabel labelStyle="_48d532ae-841e-4133-bd67-f56ac81e8ca1" color:color="#404040">
+          <dc:Bounds x="354.96" y="283.515590551181" width="30.24" height="28.8" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="_B693A9D0-2D74-4A95-BEFB-4E0477B49040" bpmnElement="_782252f0-e833-421c-a958-c3da4dc791a1" itp:label="Should it move&#xD;&#xA;yes" itp:elementType="sequenceFlow" color:border-color="#404040">
+        <di:waypoint x="262.20472440944883" y="255.1181102362205" />
+        <di:waypoint x="203.14955905511812" y="255.1181102362205" />
+        <di:waypoint x="203.14955905511812" y="340.15748031496065" />
+        <bpmndi:BPMNLabel labelStyle="_48d532ae-841e-4133-bd67-f56ac81e8ca1" color:color="#404040">
+          <dc:Bounds x="187.92" y="283.515590551181" width="30.24" height="28.8" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="_8A5FE0E0-EE32-4913-B2C8-DD1E5D74493C" bpmnElement="_1edba66a-70a3-4a01-b084-886e3a1eb2ed" itp:label="Should it move&#xD;&#xA;no" itp:elementType="sequenceFlow" color:border-color="#404040">
+        <di:waypoint x="598.81889763779532" y="255.1181102362205" />
+        <di:waypoint x="676.771653543307" y="255.1181102362205" />
+        <di:waypoint x="676.771653543307" y="340.15748031496065" />
+        <bpmndi:BPMNLabel labelStyle="_48d532ae-841e-4133-bd67-f56ac81e8ca1" color:color="#404040">
+          <dc:Bounds x="661.68" y="283.515590551181" width="30.24" height="28.8" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+    <bpmndi:BPMNLabelStyle id="_48d532ae-841e-4133-bd67-f56ac81e8ca1">
+      <dc:Font name="Calibri" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" />
+    </bpmndi:BPMNLabelStyle>
+  </bpmndi:BPMNDiagram>
+</definitions>
