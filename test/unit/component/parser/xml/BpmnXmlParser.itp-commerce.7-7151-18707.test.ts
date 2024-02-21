@@ -39,12 +39,6 @@ describe('parse bpmn as xml for ipt-commerce Vizi Modeler for Microsoft Visio 7.
 
     // Ensure that coordinates are parsed correctly as number. Fix for https://github.com/process-analytics/bpmn-visualization-js/issues/2857
     const shapeBounds = shapes.find(shape => shape.id === '_BA5FD27D-30DD-4F4F-93B3-A76CC5C4D0D2').Bounds;
-    // <bpmndi:BPMNShape id="_BA5FD27D-30DD-4F4F-93B3-A76CC5C4D0D2" bpmnElement="_e2f0bc4a-3322-47d0-b498-1a7e7c3bea7f" itp:label="Engineer Troubleshooting" itp:elementType="startEvent" color:background-color="#F2F2F2" color:border-color="#3F3F3F">
-    //   <dc:Bounds x="415.2755905511811" y="82.204724409448886" width="17.007874015748033" height="17.007874015748033" />
-    //   <bpmndi:BPMNLabel labelStyle="_48d532ae-841e-4133-bd67-f56ac81e8ca1" color:color="#3F3F3F">
-    //     <dc:Bounds x="396.36" y="100.995590551181" width="55.44" height="19.44" />
-    //   </bpmndi:BPMNLabel>
-    // </bpmndi:BPMNShape>
     expect(shapeBounds).toEqual({
       x: 415.275_590_551_181_1,
       y: 82.204_724_409_448_89,
@@ -52,14 +46,6 @@ describe('parse bpmn as xml for ipt-commerce Vizi Modeler for Microsoft Visio 7.
       height: 17.007_874_015_748_033,
     });
 
-    // <bpmndi:BPMNEdge id="_7A3B4F0A-FB98-41F2-A77E-DE47B57C3C28" bpmnElement="_07921065-0775-4224-bbe2-248230479a18" itp:label="Does it move&#xD;&#xA;no" itp:elementType="sequenceFlow" color:border-color="#404040">
-    //   <di:waypoint x="445.03937007874021" y="182.48031496062993" />
-    //   <di:waypoint x="577.55905511811022" y="182.48031496062993" />
-    //   <di:waypoint x="577.55905511811022" y="239.17322834645677" />
-    //   <bpmndi:BPMNLabel labelStyle="_48d532ae-841e-4133-bd67-f56ac81e8ca1" color:color="#404040">
-    //     <dc:Bounds x="488.16" y="172.995590551181" width="46.08" height="19.44" />
-    //   </bpmndi:BPMNLabel>
-    // </bpmndi:BPMNEdge>
     const edgeWaypoints = edges.find(edge => edge.id === '_7A3B4F0A-FB98-41F2-A77E-DE47B57C3C28').waypoint;
     expect(edgeWaypoints).toEqual([
       { x: 445.039_370_078_740_21, y: 182.480_314_960_629_93 },
