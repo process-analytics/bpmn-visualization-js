@@ -67,8 +67,8 @@ export default class GraphConfigurator {
     const panningHandler = this.graph.panningHandler;
     if (options?.navigation?.enabled) {
       // Pan configuration
-      panningHandler.addListener(mxEvent.PAN_START, this.getPanningHandler('grab'));
-      panningHandler.addListener(mxEvent.PAN_END, this.getPanningHandler('default'));
+      panningHandler.addListener(mxEvent.PAN_START, setContainerCursor(this.graph, 'grab'));
+      panningHandler.addListener(mxEvent.PAN_END, setContainerCursor(this.graph, 'default'));
 
       panningHandler.usePopupTrigger = false; // only use the left button to trigger panning
       // Reimplement the function as we also want to trigger 'panning on cells' (ignoreCell to true) and only on left-click
@@ -87,10 +87,10 @@ export default class GraphConfigurator {
       panningHandler.isForcePanningEvent = (_me: mxMouseEvent): boolean => false;
     }
   }
+}
 
-  private getPanningHandler(cursor: 'grab' | 'default'): () => void {
-    return (): void => {
-      this.graph.isEnabled() && (this.container.style.cursor = cursor);
-    };
-  }
+function setContainerCursor(graph: BpmnGraph, cursor: 'grab' | 'default'): () => void {
+  return (): void => {
+    graph.isEnabled() && (graph.container.style.cursor = cursor);
+  };
 }
