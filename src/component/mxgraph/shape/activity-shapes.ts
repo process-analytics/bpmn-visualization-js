@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BpmnCanvas, PaintParameter, ShapeConfiguration } from './render';
+import type { BpmnCanvas, IconPainter, PaintParameter, ShapeConfiguration } from './render';
 import type { mxAbstractCanvas2D } from 'mxgraph';
 
 import { ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal';
@@ -22,24 +22,15 @@ import { mxRectangleShape, mxUtils } from '../initializer';
 import { BpmnStyleIdentifier, StyleDefault } from '../style';
 import { getBpmnIsInstantiating } from '../style/utils';
 
-import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
 import { orderActivityMarkers } from './render/utils';
-
-function paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): void {
-  IconPainterProvider.get().paintEnvelopeIcon({
-    ...paintParameter,
-    setIconOriginFunct: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeft(),
-    ratioFromParent: 0.2,
-    iconStyleConfig: { ...paintParameter.iconStyleConfig, isFilled: isFilled },
-  });
-}
 
 /**
  * @internal
  */
 export abstract class BaseActivityShape extends mxRectangleShape {
-  protected iconPainter = IconPainterProvider.get();
+  // The actual value is injected at runtime by BpmnCellRenderer
+  protected iconPainter: IconPainter = undefined;
 
   constructor() {
     super(undefined, undefined, undefined); // the configuration is passed with the styles at runtime
@@ -83,6 +74,15 @@ export abstract class BaseActivityShape extends mxRectangleShape {
         paintParameter.canvas.restore();
       }
     }
+  }
+
+  protected paintEnvelopeIcon(paintParameter: PaintParameter, isFilled: boolean): void {
+    this.iconPainter.paintEnvelopeIcon({
+      ...paintParameter,
+      setIconOriginFunct: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopLeft(),
+      ratioFromParent: 0.2,
+      iconStyleConfig: { ...paintParameter.iconStyleConfig, isFilled: isFilled },
+    });
   }
 
   private getMarkerIconOriginFunction(allMarkers: number, markerOrder: number): (canvas: BpmnCanvas) => void {
@@ -143,7 +143,7 @@ export class UserTaskShape extends BaseTaskShape {
 export class ReceiveTaskShape extends BaseTaskShape {
   protected paintTaskIcon(paintParameter: PaintParameter): void {
     if (!getBpmnIsInstantiating(this.style)) {
-      paintEnvelopeIcon(paintParameter, false);
+      this.paintEnvelopeIcon(paintParameter, false);
       return;
     }
 
@@ -179,7 +179,7 @@ export class ReceiveTaskShape extends BaseTaskShape {
  */
 export class SendTaskShape extends BaseTaskShape {
   protected paintTaskIcon(paintParameter: PaintParameter): void {
-    paintEnvelopeIcon(paintParameter, true);
+    this.paintEnvelopeIcon(paintParameter, true);
   }
 }
 

@@ -14,19 +14,20 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { IconPainter } from './render';
 import type { mxAbstractCanvas2D } from 'mxgraph';
 
 import { mxRectangleShape, mxUtils } from '../initializer';
 import { BpmnStyleIdentifier } from '../style';
 
-import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
 
 /**
  * @internal
  */
 export class MessageFlowIconShape extends mxRectangleShape {
-  protected iconPainter = IconPainterProvider.get();
+  // The actual value is injected at runtime by BpmnCellRenderer
+  protected iconPainter: IconPainter = undefined;
 
   override paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const paintParameter = buildPaintParameter({

@@ -24,6 +24,7 @@ import { FitType } from '../options';
 
 import { BpmnCellRenderer } from './BpmnCellRenderer';
 import { mxgraph, mxEvent } from './initializer';
+import { IconPainterProvider } from './shape/render';
 
 const zoomFactorIn = 1.25;
 const zoomFactorOut = 1 / zoomFactorIn;
@@ -51,7 +52,8 @@ export class BpmnGraph extends mxgraph.mxGraph {
   }
 
   override createCellRenderer(): mxCellRenderer {
-    return new BpmnCellRenderer();
+    // in the future, the IconPainter could be configured at library initialization and the provider could be removed
+    return new BpmnCellRenderer(IconPainterProvider.get());
   }
 
   /**
