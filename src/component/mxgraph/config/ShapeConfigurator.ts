@@ -14,6 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { mxShape } from 'mxgraph';
+
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
 import { mxgraph, mxCellRenderer, mxConstants, mxSvgCanvas2D } from '../initializer';
 import { computeAllBpmnClassNamesOfCell } from '../renderer/style-utils';
@@ -36,6 +38,45 @@ import { ComplexGatewayShape, EventBasedGatewayShape, ExclusiveGatewayShape, Inc
 import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { BpmnStyleIdentifier } from '../style';
 
+const registerShapes = (): void => {
+  // Inspired by the default shapes registration done in maxGraph
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- required by the signature of registerShape
+  const shapesToRegister: [string, new (...arguments_: any) => mxShape][] = [
+    // events
+    [ShapeBpmnElementKind.EVENT_END, EndEventShape],
+    [ShapeBpmnElementKind.EVENT_START, EventShape],
+    [ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ThrowIntermediateEventShape],
+    [ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, IntermediateEventShape],
+    [ShapeBpmnElementKind.EVENT_BOUNDARY, IntermediateEventShape],
+    // gateways
+    [ShapeBpmnElementKind.GATEWAY_COMPLEX, ComplexGatewayShape],
+    [ShapeBpmnElementKind.GATEWAY_EVENT_BASED, EventBasedGatewayShape],
+    [ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, ExclusiveGatewayShape],
+    [ShapeBpmnElementKind.GATEWAY_INCLUSIVE, InclusiveGatewayShape],
+    [ShapeBpmnElementKind.GATEWAY_PARALLEL, ParallelGatewayShape],
+    // activities
+    [ShapeBpmnElementKind.SUB_PROCESS, SubProcessShape],
+    [ShapeBpmnElementKind.CALL_ACTIVITY, CallActivityShape],
+    // tasks
+    [ShapeBpmnElementKind.TASK, TaskShape],
+    [ShapeBpmnElementKind.TASK_SERVICE, ServiceTaskShape],
+    [ShapeBpmnElementKind.TASK_USER, UserTaskShape],
+    [ShapeBpmnElementKind.TASK_RECEIVE, ReceiveTaskShape],
+    [ShapeBpmnElementKind.TASK_SEND, SendTaskShape],
+    [ShapeBpmnElementKind.TASK_MANUAL, ManualTaskShape],
+    [ShapeBpmnElementKind.TASK_SCRIPT, ScriptTaskShape],
+    [ShapeBpmnElementKind.TASK_BUSINESS_RULE, BusinessRuleTaskShape],
+    // artifacts
+    [ShapeBpmnElementKind.TEXT_ANNOTATION, TextAnnotationShape],
+    // shapes for flows
+    [BpmnStyleIdentifier.EDGE, BpmnConnector],
+    [BpmnStyleIdentifier.MESSAGE_FLOW_ICON, MessageFlowIconShape],
+  ];
+  for (const [shapeName, shapeClass] of shapesToRegister) {
+    mxCellRenderer.registerShape(shapeName, shapeClass);
+  }
+};
+
 /**
  * @internal
  */
@@ -43,40 +84,7 @@ export default class ShapeConfigurator {
   configureShapes(): void {
     this.initMxSvgCanvasPrototype();
     this.initMxShapePrototype();
-    this.registerShapes();
-  }
-
-  private registerShapes(): void {
-    // events
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_END, EndEventShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_START, EventShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ThrowIntermediateEventShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, IntermediateEventShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.EVENT_BOUNDARY, IntermediateEventShape);
-    // gateways
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_COMPLEX, ComplexGatewayShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_EVENT_BASED, EventBasedGatewayShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, ExclusiveGatewayShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_INCLUSIVE, InclusiveGatewayShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_PARALLEL, ParallelGatewayShape);
-    // activities
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.SUB_PROCESS, SubProcessShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.CALL_ACTIVITY, CallActivityShape);
-    // tasks
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK, TaskShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_SERVICE, ServiceTaskShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_USER, UserTaskShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_RECEIVE, ReceiveTaskShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_SEND, SendTaskShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_MANUAL, ManualTaskShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_SCRIPT, ScriptTaskShape);
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.TASK_BUSINESS_RULE, BusinessRuleTaskShape);
-    // artifacts
-    mxCellRenderer.registerShape(ShapeBpmnElementKind.TEXT_ANNOTATION, TextAnnotationShape);
-
-    // shapes for flows
-    mxCellRenderer.registerShape(BpmnStyleIdentifier.EDGE, BpmnConnector);
-    mxCellRenderer.registerShape(BpmnStyleIdentifier.MESSAGE_FLOW_ICON, MessageFlowIconShape);
+    registerShapes();
   }
 
   private initMxSvgCanvasPrototype(): void {
