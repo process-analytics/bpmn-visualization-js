@@ -51,12 +51,12 @@ export default class StyleComputer {
     if (bpmnCell instanceof Shape) {
       mainStyleValues = this.computeShapeStyleValues(bpmnCell);
     } else {
-      styles.push(...StyleComputer.computeEdgeBaseStyles(bpmnCell));
+      styles.push(...computeEdgeBaseStyles(bpmnCell));
       mainStyleValues = this.computeEdgeStyleValues(bpmnCell);
     }
 
     const fontStyleValues = this.computeFontStyleValues(bpmnCell);
-    const labelStyleValues = StyleComputer.computeLabelStyleValues(bpmnCell, labelBounds);
+    const labelStyleValues = computeLabelStyleValues(bpmnCell, labelBounds);
 
     styles.push(...toArrayOfMxGraphStyleEntries([...mainStyleValues, ...fontStyleValues, ...labelStyleValues]));
     return styles.join(';');
@@ -67,9 +67,9 @@ export default class StyleComputer {
     const bpmnElement = shape.bpmnElement;
 
     if (bpmnElement instanceof ShapeBpmnEvent) {
-      StyleComputer.computeEventShapeStyle(bpmnElement, styleValues);
+      computeEventShapeStyle(bpmnElement, styleValues);
     } else if (bpmnElement instanceof ShapeBpmnActivity) {
-      StyleComputer.computeActivityShapeStyle(bpmnElement, styleValues);
+      computeActivityShapeStyle(bpmnElement, styleValues);
     } else if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
       // mxConstants.STYLE_HORIZONTAL is for the label
       // In BPMN, isHorizontal is for the Shape
@@ -93,43 +93,6 @@ export default class StyleComputer {
     }
 
     return styleValues;
-  }
-
-  private static computeEventShapeStyle(bpmnElement: ShapeBpmnEvent, styleValues: Map<string, string | number>): void {
-    styleValues.set(BpmnStyleIdentifier.EVENT_DEFINITION_KIND, bpmnElement.eventDefinitionKind);
-
-    if (bpmnElement instanceof ShapeBpmnBoundaryEvent || (bpmnElement instanceof ShapeBpmnStartEvent && bpmnElement.isInterrupting !== undefined)) {
-      styleValues.set(BpmnStyleIdentifier.IS_INTERRUPTING, String(bpmnElement.isInterrupting));
-    }
-  }
-
-  private static computeActivityShapeStyle(bpmnElement: ShapeBpmnActivity, styleValues: Map<string, string | number>): void {
-    if (bpmnElement instanceof ShapeBpmnSubProcess) {
-      styleValues.set(BpmnStyleIdentifier.SUB_PROCESS_KIND, bpmnElement.subProcessKind);
-    } else if (bpmnElement.kind === ShapeBpmnElementKind.TASK_RECEIVE) {
-      styleValues.set(BpmnStyleIdentifier.IS_INSTANTIATING, String(bpmnElement.instantiate));
-    } else if (bpmnElement instanceof ShapeBpmnCallActivity) {
-      styleValues.set(BpmnStyleIdentifier.GLOBAL_TASK_KIND, bpmnElement.globalTaskKind);
-    }
-
-    const markers: ShapeBpmnMarkerKind[] = bpmnElement.markers;
-    if (markers.length > 0) {
-      styleValues.set(BpmnStyleIdentifier.MARKERS, markers.join(','));
-    }
-  }
-
-  private static computeEdgeBaseStyles(edge: Edge): string[] {
-    const styles: string[] = [];
-
-    const bpmnElement = edge.bpmnElement;
-    if (bpmnElement instanceof SequenceFlow) {
-      styles.push(bpmnElement.sequenceFlowKind);
-    }
-    if (bpmnElement instanceof AssociationFlow) {
-      styles.push(bpmnElement.associationDirectionKind);
-    }
-
-    return styles;
   }
 
   private computeEdgeStyleValues(edge: Edge): Map<string, string | number> {
@@ -161,40 +124,6 @@ export default class StyleComputer {
     return styleValues;
   }
 
-  private static computeLabelStyleValues(bpmnCell: Shape | Edge, labelBounds: Bounds): Map<string, string | number> {
-    const styleValues = new Map<string, string | number>();
-
-    const bpmnElement = bpmnCell.bpmnElement;
-    if (labelBounds) {
-      styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
-      if (bpmnCell.bpmnElement.kind != ShapeBpmnElementKind.TEXT_ANNOTATION) {
-        styleValues.set(mxConstants.STYLE_ALIGN, mxConstants.ALIGN_CENTER);
-      }
-
-      if (bpmnCell instanceof Shape) {
-        // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
-        styleValues.set(mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
-        // align settings
-        // According to the documentation, "label position" can only take values in left, center, right with default=center
-        // However, there is undocumented behavior when the value is not one of these and this behavior is exactly what we want.
-        // See https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/mxGraphView.js#L1183-L1252
-        styleValues.set(mxConstants.STYLE_LABEL_POSITION, 'ignore');
-        styleValues.set(mxConstants.STYLE_VERTICAL_LABEL_POSITION, mxConstants.ALIGN_MIDDLE);
-      }
-    }
-    // when no label bounds, adjust the default style dynamically
-    else if (
-      bpmnCell instanceof Shape &&
-      (bpmnElement instanceof ShapeBpmnSubProcess ||
-        (bpmnElement instanceof ShapeBpmnCallActivity && bpmnElement.callActivityKind === ShapeBpmnCallActivityKind.CALLING_PROCESS)) &&
-      !bpmnElement.markers.includes(ShapeBpmnMarkerKind.EXPAND)
-    ) {
-      styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
-    }
-
-    return styleValues;
-  }
-
   computeMessageFlowIconStyle(edge: Edge): string {
     const styleValues: [string, string][] = [];
     styleValues.push(['shape', BpmnStyleIdentifier.MESSAGE_FLOW_ICON], [BpmnStyleIdentifier.IS_INITIATING, String(edge.messageVisibleKind === MessageVisibleKind.INITIATING)]);
@@ -204,6 +133,76 @@ export default class StyleComputer {
 
     return toArrayOfMxGraphStyleEntries(styleValues).join(';');
   }
+}
+
+function computeEventShapeStyle(bpmnElement: ShapeBpmnEvent, styleValues: Map<string, string | number>): void {
+  styleValues.set(BpmnStyleIdentifier.EVENT_DEFINITION_KIND, bpmnElement.eventDefinitionKind);
+
+  if (bpmnElement instanceof ShapeBpmnBoundaryEvent || (bpmnElement instanceof ShapeBpmnStartEvent && bpmnElement.isInterrupting !== undefined)) {
+    styleValues.set(BpmnStyleIdentifier.IS_INTERRUPTING, String(bpmnElement.isInterrupting));
+  }
+}
+
+function computeActivityShapeStyle(bpmnElement: ShapeBpmnActivity, styleValues: Map<string, string | number>): void {
+  if (bpmnElement instanceof ShapeBpmnSubProcess) {
+    styleValues.set(BpmnStyleIdentifier.SUB_PROCESS_KIND, bpmnElement.subProcessKind);
+  } else if (bpmnElement.kind === ShapeBpmnElementKind.TASK_RECEIVE) {
+    styleValues.set(BpmnStyleIdentifier.IS_INSTANTIATING, String(bpmnElement.instantiate));
+  } else if (bpmnElement instanceof ShapeBpmnCallActivity) {
+    styleValues.set(BpmnStyleIdentifier.GLOBAL_TASK_KIND, bpmnElement.globalTaskKind);
+  }
+
+  const markers: ShapeBpmnMarkerKind[] = bpmnElement.markers;
+  if (markers.length > 0) {
+    styleValues.set(BpmnStyleIdentifier.MARKERS, markers.join(','));
+  }
+}
+
+function computeEdgeBaseStyles(edge: Edge): string[] {
+  const styles: string[] = [];
+
+  const bpmnElement = edge.bpmnElement;
+  if (bpmnElement instanceof SequenceFlow) {
+    styles.push(bpmnElement.sequenceFlowKind);
+  }
+  if (bpmnElement instanceof AssociationFlow) {
+    styles.push(bpmnElement.associationDirectionKind);
+  }
+
+  return styles;
+}
+
+function computeLabelStyleValues(bpmnCell: Shape | Edge, labelBounds: Bounds): Map<string, string | number> {
+  const styleValues = new Map<string, string | number>();
+
+  const bpmnElement = bpmnCell.bpmnElement;
+  if (labelBounds) {
+    styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
+    if (bpmnCell.bpmnElement.kind != ShapeBpmnElementKind.TEXT_ANNOTATION) {
+      styleValues.set(mxConstants.STYLE_ALIGN, mxConstants.ALIGN_CENTER);
+    }
+
+    if (bpmnCell instanceof Shape) {
+      // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
+      styleValues.set(mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
+      // align settings
+      // According to the documentation, "label position" can only take values in left, center, right with default=center
+      // However, there is undocumented behavior when the value is not one of these and this behavior is exactly what we want.
+      // See https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/mxGraphView.js#L1183-L1252
+      styleValues.set(mxConstants.STYLE_LABEL_POSITION, 'ignore');
+      styleValues.set(mxConstants.STYLE_VERTICAL_LABEL_POSITION, mxConstants.ALIGN_MIDDLE);
+    }
+  }
+  // when no label bounds, adjust the default style dynamically
+  else if (
+    bpmnCell instanceof Shape &&
+    (bpmnElement instanceof ShapeBpmnSubProcess || (bpmnElement instanceof ShapeBpmnCallActivity && bpmnElement.callActivityKind === ShapeBpmnCallActivityKind.CALLING_PROCESS)) &&
+    !bpmnElement.markers.includes(ShapeBpmnMarkerKind.EXPAND)
+  ) {
+    styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
+  }
+
+  return styleValues;
 }
 
 /**

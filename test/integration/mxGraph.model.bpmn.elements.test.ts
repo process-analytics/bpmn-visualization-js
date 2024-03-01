@@ -36,7 +36,7 @@ import {
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
 } from '@lib/bpmn-visualization';
-import { mxgraph, mxConstants, mxPoint } from '@lib/component/mxgraph/initializer';
+import { mxConstants, mxgraph, mxPoint } from '@lib/component/mxgraph/initializer';
 import { readFileSync } from '@test/shared/file-helper';
 
 const mxGeometry = mxgraph.mxGeometry;
@@ -44,8 +44,10 @@ const mxGeometry = mxgraph.mxGeometry;
 describe('mxGraph model - BPMN elements', () => {
   describe('BPMN elements should be available in the mxGraph model', () => {
     describe('Diagram with all the kind of elements', () => {
-      // load BPMN
-      bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-complete-semantic.bpmn'));
+      beforeAll(() => {
+        // load BPMN
+        bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-complete-semantic.bpmn'));
+      });
 
       const expectedBoldFont = {
         isBold: true,
@@ -1517,8 +1519,7 @@ describe('mxGraph model - BPMN elements', () => {
 
     it('Diagram with a not displayed pool (without shape) with elements', () => {
       // load BPMN
-      const bpmnDiagramToFilter = readFileSync('../fixtures/bpmn/bpmn-rendering/pools.04.not.displayed.with.elements.bpmn');
-      bpmnVisualization.load(bpmnDiagramToFilter);
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/bpmn-rendering/pools.04.not.displayed.with.elements.bpmn'));
 
       expectPoolsInModel(0);
 
@@ -1678,28 +1679,29 @@ describe('mxGraph model - BPMN elements', () => {
     it('Parse a diagram with large numbers and large decimals', () => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/simple-start-task-end_large_numbers_and_large_decimals.bpmn'));
 
+      const startEvent1Geometry = new mxGeometry(
+        156.100_010_002_564_63,
+        81.345_000_000_000_01, // 81.345000000000009 in the diagram
+        // eslint-disable-next-line @typescript-eslint/no-loss-of-precision
+        36.000_345_000_100_000_2, // 36.0003450001000002 in the diagram
+        36.000_000_100_354_96,
+      );
+      startEvent1Geometry.offset = new mxPoint(1.899_989_997_435_369_6, 42.654_999_999_999_99);
       expect('StartEvent_1').toBeCellWithParentAndGeometry({
         parentId: defaultParentId,
-        geometry: new mxGeometry(
-          156.100_01,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          '81.3450000000000090', // 81.345000000000009 in the diagram
-          '36.0003450001000002',
-          36.000_000_1,
-        ),
+        geometry: startEvent1Geometry,
       });
 
       expect('Activity_1').toBeCellWithParentAndGeometry({
         parentId: defaultParentId,
-        geometry: new mxGeometry(250, 59, 100, 80),
+        geometry: new mxGeometry(250, 59.795_444_2, 100.678_942_1, 80),
       });
 
-      const geometry = new mxGeometry(412, 81, 36, 36);
-      geometry.offset = new mxPoint(4.16e25, 1.240_000_000_03e29);
+      const endEvent1Geometry = new mxGeometry(412, 81, 36, 36);
+      endEvent1Geometry.offset = new mxPoint(4.16e25, 1.240_000_000_03e29);
       expect('EndEvent_1').toBeCellWithParentAndGeometry({
         parentId: defaultParentId,
-        geometry: geometry,
+        geometry: endEvent1Geometry,
       });
     });
 
@@ -1709,10 +1711,8 @@ describe('mxGraph model - BPMN elements', () => {
       expect('Activity_1').toBeCellWithParentAndGeometry({
         parentId: defaultParentId,
         geometry: new mxGeometry(
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore malformed source, conversion result
-          'not_a_number0', // from 'not_a_number'
-          'not a number too0', // from 'not a number too'
+          Number.NaN, // from 'not_a_number'
+          Number.NaN, // from 'not a number too'
           -100,
           -80,
         ),
