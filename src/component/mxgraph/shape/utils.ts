@@ -24,7 +24,10 @@ export const overrideCreateSvgCanvas = function (shape: mxShape): void {
   // The following is copied from the mxgraph mxShape implementation then converted to TypeScript and enriched for bpmn-visualization
   // It is needed for adding the custom attributes that permits identification of the BPMN elements in the DOM
   shape.createSvgCanvas = function () {
-    const canvas = new mxSvgCanvas2D(this.node, false);
+    // START bpmn-visualization CUSTOMIZATION
+    // use custom canvas implementation
+    const canvas = new SvgCanvas2D(this.node, false);
+    // END bpmn-visualization CUSTOMIZATION
     canvas.strokeTolerance = this.pointerEvents ? this.svgStrokeTolerance : 0;
     canvas.pointerEventsValue = this.svgPointerEvents;
     const off = this.getSvgScreenOffset();
@@ -65,3 +68,19 @@ export const overrideCreateSvgCanvas = function (shape: mxShape): void {
     return canvas;
   };
 };
+
+class SvgCanvas2D extends mxSvgCanvas2D {
+  // getTextCss is only used when creating foreignObject for label, so there is no impact on svg text that we use for Overlays.
+  // Analysis done for mxgraph@4.1.1, still apply to mxgraph@4.2.2
+  override getTextCss(): string {
+    const originalPointerEvents = this.pointerEvents;
+    // Fix for issue https://github.com/process-analytics/bpmn-visualization-js/issues/920
+    // This sets the pointer-events style property to 'none' to prevent to capture click.
+    // This cannot be generalized for all mxgraph use cases. For instance, in an editor mode, we should be able to edit the text by clicking on it.
+    this.pointerEvents = false;
+
+    const textCss = super.getTextCss();
+    this.pointerEvents = originalPointerEvents;
+    return textCss;
+  }
+}

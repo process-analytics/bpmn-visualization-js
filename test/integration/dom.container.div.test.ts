@@ -37,18 +37,18 @@ describe.each`
   it('DOM should contains BPMN elements when loading simple-start-task-end.bpmn', () => {
     bpmnVisualization.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'));
 
-    htmlElementLookup.expectStartEvent('StartEvent_1', ShapeBpmnEventDefinitionKind.NONE);
-    htmlElementLookup.expectTask('Activity_1');
-    htmlElementLookup.expectEndEvent('EndEvent_1', ShapeBpmnEventDefinitionKind.NONE);
+    htmlElementLookup.expectStartEvent('StartEvent_1', ShapeBpmnEventDefinitionKind.NONE, { label: 'Start Event 1' });
+    htmlElementLookup.expectTask('Activity_1', { label: 'Task 1' });
+    htmlElementLookup.expectEndEvent('EndEvent_1', ShapeBpmnEventDefinitionKind.NONE, { label: 'End Event 1' });
   });
 
   it('DOM should contains BPMN elements when loading model-complete-semantic.bpmn', () => {
     bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-complete-semantic.bpmn'));
 
-    htmlElementLookup.expectPool('participant_1_id');
-    htmlElementLookup.expectLane('lane_4_1_id');
+    htmlElementLookup.expectPool('participant_1_id', { label: 'Pool 1' });
+    htmlElementLookup.expectLane('lane_4_1_id', { label: 'Lane with child lanes' });
 
-    htmlElementLookup.expectStartEvent('start_event_signal_id', ShapeBpmnEventDefinitionKind.SIGNAL);
-    htmlElementLookup.expectIntermediateThrowEvent('intermediate_throw_event_message_id', ShapeBpmnEventDefinitionKind.MESSAGE);
+    htmlElementLookup.expectStartEvent('start_event_signal_id', ShapeBpmnEventDefinitionKind.SIGNAL, { label: 'Signal Start Event' });
+    htmlElementLookup.expectIntermediateThrowEvent('intermediate_throw_event_message_id', ShapeBpmnEventDefinitionKind.MESSAGE, { label: 'Throw Message Intermediate Event' });
   });
 });
