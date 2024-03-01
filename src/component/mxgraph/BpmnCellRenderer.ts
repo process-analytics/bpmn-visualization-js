@@ -20,6 +20,7 @@ import type { mxCellState, mxImageShape, mxShape } from 'mxgraph';
 import { mxgraph, mxRectangle } from './initializer';
 import { MxGraphCustomOverlay } from './overlay/custom-overlay';
 import { OverlayBadgeShape } from './overlay/shapes';
+import { overrideCreateSvgCanvas } from './shape/utils';
 
 export class BpmnCellRenderer extends mxgraph.mxCellRenderer {
   constructor(private iconPainter: IconPainter) {
@@ -90,6 +91,12 @@ export class BpmnCellRenderer extends mxgraph.mxCellRenderer {
     if ('iconPainter' in shape) {
       shape.iconPainter = this.iconPainter;
     }
+    overrideCreateSvgCanvas(shape);
     return shape;
+  }
+
+  override createLabel(state: mxCellState, value: string): void {
+    super.createLabel(state, value);
+    overrideCreateSvgCanvas(state.text);
   }
 }
