@@ -14,21 +14,21 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BpmnCanvas, PaintParameter } from './render';
+import type { BpmnCanvas, PaintParameter, IconPainter } from './render';
 import type { mxAbstractCanvas2D } from 'mxgraph';
 
 import { ShapeBpmnEventDefinitionKind } from '../../../model/bpmn/internal';
 import { mxgraph, mxUtils } from '../initializer';
 import { BpmnStyleIdentifier, StyleDefault } from '../style';
 
-import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
 
 /**
  * @internal
  */
 export class EventShape extends mxgraph.mxEllipse {
-  protected iconPainter = IconPainterProvider.get();
+  // The actual value is injected at runtime by BpmnCellRenderer
+  protected iconPainter: IconPainter = undefined;
 
   // refactor: when all/more event types will be supported, we could move to a Record/MappedType
   private iconPainters = new Map<ShapeBpmnEventDefinitionKind, (paintParameter: PaintParameter) => void>([

@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { PaintParameter } from './render';
+import type { IconPainter, PaintParameter } from './render';
 import type { mxAbstractCanvas2D } from 'mxgraph';
 
 import { ShapeBpmnEventBasedGatewayKind } from '../../../model/bpmn/internal';
@@ -22,11 +22,11 @@ import { mxgraph, mxUtils } from '../initializer';
 import { BpmnStyleIdentifier, StyleDefault } from '../style';
 import { getBpmnIsInstantiating } from '../style/utils';
 
-import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
 
 abstract class GatewayShape extends mxgraph.mxRhombus {
-  protected iconPainter = IconPainterProvider.get();
+  // The actual value is injected at runtime by BpmnCellRenderer
+  protected iconPainter: IconPainter = undefined;
 
   protected abstract paintInnerShape(paintParameter: PaintParameter): void;
 

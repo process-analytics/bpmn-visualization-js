@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { IconPainter } from './shape/render';
 import type { mxCellState, mxImageShape, mxShape } from 'mxgraph';
 
 import { mxgraph, mxRectangle } from './initializer';
@@ -21,6 +22,10 @@ import { MxGraphCustomOverlay } from './overlay/custom-overlay';
 import { OverlayBadgeShape } from './overlay/shapes';
 
 export class BpmnCellRenderer extends mxgraph.mxCellRenderer {
+  constructor(private iconPainter: IconPainter) {
+    super();
+  }
+
   override createCellOverlays(state: mxCellState): void {
     const graph = state.view.graph;
     const overlays = graph.getCellOverlays(state.cell);
@@ -78,5 +83,13 @@ export class BpmnCellRenderer extends mxgraph.mxCellRenderer {
     }
 
     state.overlays = dict;
+  }
+
+  override createShape(state: mxCellState): mxShape {
+    const shape = super.createShape(state);
+    if ('iconPainter' in shape) {
+      shape.iconPainter = this.iconPainter;
+    }
+    return shape;
   }
 }
