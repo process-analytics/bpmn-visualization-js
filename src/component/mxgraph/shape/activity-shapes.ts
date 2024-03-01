@@ -100,10 +100,11 @@ export abstract class BaseActivityShape extends mxRectangleShape {
             this.iconPainter.paintExpandIcon(paintParameter);
             break;
           }
-          case ShapeBpmnMarkerKind.ADHOC:
+          case ShapeBpmnMarkerKind.ADHOC: {
             // this.iconPainter.paintAdHocIcon(paintParameter);
             this.iconPainter.paintExpandIcon(paintParameter);
             break;
+          }
         }
         // Restore original configuration to avoid side effects if the iconPainter changed the canvas configuration (colors, ....)
         paintParameter.canvas.restore();
