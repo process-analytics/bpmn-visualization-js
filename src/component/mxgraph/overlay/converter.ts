@@ -19,72 +19,70 @@ import type { Overlay, OverlayFont, OverlayPosition, OverlayFill, OverlayStroke 
 
 import { StyleDefault } from '../style';
 
-export class OverlayConverter {
-  private overlayPositions = new Map<OverlayPosition, MxGraphCustomOverlayPosition>([
-    // Edge
-    ['start', { horizontalAlign: 'left', verticalAlign: 'top' }],
-    ['middle', { horizontalAlign: 'center', verticalAlign: 'top' }],
-    ['end', { horizontalAlign: 'right', verticalAlign: 'top' }],
-    // Shape
-    ['top-left', { horizontalAlign: 'left', verticalAlign: 'top' }],
-    ['top-right', { horizontalAlign: 'right', verticalAlign: 'top' }],
-    ['top-center', { horizontalAlign: 'center', verticalAlign: 'top' }],
-    ['bottom-left', { horizontalAlign: 'left', verticalAlign: 'bottom' }],
-    ['bottom-right', { horizontalAlign: 'right', verticalAlign: 'bottom' }],
-    ['bottom-center', { horizontalAlign: 'center', verticalAlign: 'bottom' }],
-    ['middle-left', { horizontalAlign: 'left', verticalAlign: 'middle' }],
-    ['middle-right', { horizontalAlign: 'right', verticalAlign: 'middle' }],
-  ]);
+const overlayPositions = new Map<OverlayPosition, MxGraphCustomOverlayPosition>([
+  // Edge
+  ['start', { horizontalAlign: 'left', verticalAlign: 'top' }],
+  ['middle', { horizontalAlign: 'center', verticalAlign: 'top' }],
+  ['end', { horizontalAlign: 'right', verticalAlign: 'top' }],
+  // Shape
+  ['top-left', { horizontalAlign: 'left', verticalAlign: 'top' }],
+  ['top-right', { horizontalAlign: 'right', verticalAlign: 'top' }],
+  ['top-center', { horizontalAlign: 'center', verticalAlign: 'top' }],
+  ['bottom-left', { horizontalAlign: 'left', verticalAlign: 'bottom' }],
+  ['bottom-right', { horizontalAlign: 'right', verticalAlign: 'bottom' }],
+  ['bottom-center', { horizontalAlign: 'center', verticalAlign: 'bottom' }],
+  ['middle-left', { horizontalAlign: 'left', verticalAlign: 'middle' }],
+  ['middle-right', { horizontalAlign: 'right', verticalAlign: 'middle' }],
+]);
 
-  convert(overlay: Overlay): MxGraphCustomOverlayOptions {
-    const position = this.convertPosition(overlay);
-    const style = OverlayConverter.convertStyle(overlay);
-    return { position, style };
+const convertPosition = (overlay: Overlay): MxGraphCustomOverlayPosition => overlayPositions.get(overlay.position);
+
+const convertFill = (convertedStyle: MxGraphCustomOverlayStyle, apiFill: OverlayFill): void => {
+  if (apiFill) {
+    convertedStyle.fill.color = apiFill.color ?? convertedStyle.fill.color;
+    convertedStyle.fill.opacity = apiFill.opacity ?? convertedStyle.fill.opacity;
   }
+};
 
-  private convertPosition(overlay: Overlay): MxGraphCustomOverlayPosition {
-    return this.overlayPositions.get(overlay.position);
+const convertStroke = (convertedStyle: MxGraphCustomOverlayStyle, apiStroke: OverlayStroke): void => {
+  if (apiStroke) {
+    convertedStyle.stroke.color = apiStroke.color ?? convertedStyle.stroke.color;
+    convertedStyle.stroke.width = apiStroke.width ?? convertedStyle.stroke.width;
   }
+};
 
-  private static convertStyle(overlay: Overlay): MxGraphCustomOverlayStyle {
-    // recompute the style at each call to ensure we consider default changes that could occur after lib initialization
-    const defaultStyle = {
-      fill: { color: StyleDefault.DEFAULT_OVERLAY_FILL_COLOR.valueOf(), opacity: StyleDefault.DEFAULT_OVERLAY_FILL_OPACITY.valueOf() },
-      stroke: { color: StyleDefault.DEFAULT_OVERLAY_STROKE_COLOR.valueOf(), width: StyleDefault.DEFAULT_OVERLAY_STROKE_WIDTH.valueOf() },
-      font: { color: StyleDefault.DEFAULT_OVERLAY_FONT_COLOR.valueOf(), size: StyleDefault.DEFAULT_OVERLAY_FONT_SIZE.valueOf() },
-    };
+const convertFont = (convertedStyle: MxGraphCustomOverlayStyle, apiFont: OverlayFont): void => {
+  if (apiFont) {
+    convertedStyle.font.color = apiFont.color ?? convertedStyle.font.color;
+    convertedStyle.font.size = apiFont.size ?? convertedStyle.font.size;
+  }
+};
 
-    const style = overlay.style;
-    const convertedStyle = { ...defaultStyle } as MxGraphCustomOverlayStyle;
-    if (!style) {
-      return convertedStyle;
-    }
+const convertStyle = (overlay: Overlay): MxGraphCustomOverlayStyle => {
+  // recompute the style at each call to ensure we consider default changes that could occur after lib initialization
+  const defaultStyle = {
+    fill: { color: StyleDefault.DEFAULT_OVERLAY_FILL_COLOR.valueOf(), opacity: StyleDefault.DEFAULT_OVERLAY_FILL_OPACITY.valueOf() },
+    stroke: { color: StyleDefault.DEFAULT_OVERLAY_STROKE_COLOR.valueOf(), width: StyleDefault.DEFAULT_OVERLAY_STROKE_WIDTH.valueOf() },
+    font: { color: StyleDefault.DEFAULT_OVERLAY_FONT_COLOR.valueOf(), size: StyleDefault.DEFAULT_OVERLAY_FONT_SIZE.valueOf() },
+  };
 
-    this.convertFill(convertedStyle, style.fill);
-    this.convertStroke(convertedStyle, style.stroke);
-    this.convertFont(convertedStyle, style.font);
-
+  const style = overlay.style;
+  const convertedStyle = { ...defaultStyle } as MxGraphCustomOverlayStyle;
+  if (!style) {
     return convertedStyle;
   }
 
-  private static convertFill(convertedStyle: MxGraphCustomOverlayStyle, apiFill: OverlayFill): void {
-    if (apiFill) {
-      convertedStyle.fill.color = apiFill.color ?? convertedStyle.fill.color;
-      convertedStyle.fill.opacity = apiFill.opacity ?? convertedStyle.fill.opacity;
-    }
-  }
+  convertFill(convertedStyle, style.fill);
+  convertStroke(convertedStyle, style.stroke);
+  convertFont(convertedStyle, style.font);
 
-  private static convertStroke(convertedStyle: MxGraphCustomOverlayStyle, apiStroke: OverlayStroke): void {
-    if (apiStroke) {
-      convertedStyle.stroke.color = apiStroke.color ?? convertedStyle.stroke.color;
-      convertedStyle.stroke.width = apiStroke.width ?? convertedStyle.stroke.width;
-    }
-  }
+  return convertedStyle;
+};
 
-  private static convertFont(convertedStyle: MxGraphCustomOverlayStyle, apiFont: OverlayFont): void {
-    if (apiFont) {
-      convertedStyle.font.color = apiFont.color ?? convertedStyle.font.color;
-      convertedStyle.font.size = apiFont.size ?? convertedStyle.font.size;
-    }
+export class OverlayConverter {
+  convert(overlay: Overlay): MxGraphCustomOverlayOptions {
+    const position = convertPosition(overlay);
+    const style = convertStyle(overlay);
+    return { position, style };
   }
 }
