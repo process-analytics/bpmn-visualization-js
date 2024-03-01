@@ -90,9 +90,9 @@ export class EventShape extends mxgraph.mxEllipse {
   override paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, isFilled: this.withFilledIcon });
 
-    EventShape.setDashedOuterShapePattern(paintParameter, mxUtils.getValue(this.style, BpmnStyleIdentifier.IS_INTERRUPTING, undefined));
+    setDashedOuterShapePattern(paintParameter, mxUtils.getValue(this.style, BpmnStyleIdentifier.IS_INTERRUPTING, undefined));
     this.paintOuterShape(paintParameter);
-    EventShape.restoreOriginalOuterShapePattern(paintParameter);
+    restoreOriginalOuterShapePattern(paintParameter);
 
     this.paintInnerShape(paintParameter);
   }
@@ -107,18 +107,18 @@ export class EventShape extends mxgraph.mxEllipse {
       (() => this.iconPainter.paintEmptyIcon());
     paintIcon(paintParameter);
   }
+}
 
-  private static setDashedOuterShapePattern(paintParameter: PaintParameter, isInterrupting: string): void {
-    paintParameter.canvas.save(); // ensure we can later restore the configuration
-    if (isInterrupting === 'false') {
-      paintParameter.canvas.setDashed(true, false);
-      paintParameter.canvas.setDashPattern('3 2');
-    }
+function setDashedOuterShapePattern(paintParameter: PaintParameter, isInterrupting: string): void {
+  paintParameter.canvas.save(); // ensure we can later restore the configuration
+  if (isInterrupting === 'false') {
+    paintParameter.canvas.setDashed(true, false);
+    paintParameter.canvas.setDashPattern('3 2');
   }
+}
 
-  private static restoreOriginalOuterShapePattern(paintParameter: PaintParameter): void {
-    paintParameter.canvas.restore();
-  }
+function restoreOriginalOuterShapePattern(paintParameter: PaintParameter): void {
+  paintParameter.canvas.restore();
 }
 
 /**

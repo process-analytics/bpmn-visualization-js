@@ -32,6 +32,15 @@ const entitiesReplacements: Replacement[] = [
   { regex: /&(quot|#34|#x22);/g, val: '"' },
 ];
 
+const nodesWithNumericAttributes = new Set(
+  ['BPMNShape.Bounds', 'BPMNShape.BPMNLabel.Bounds', 'BPMNEdge.BPMNLabel.Bounds', 'BPMNEdge.waypoint'].map(element => `definitions.BPMNDiagram.BPMNPlane.${element}`),
+);
+const numericAttributes = new Set(['x', 'y', 'width', 'height']);
+
+const isNumeric = (attributeName: string, nodePath: string): boolean => {
+  return nodesWithNumericAttributes.has(nodePath) && numericAttributes.has(attributeName);
+};
+
 /**
  * @internal
  */
@@ -46,10 +55,28 @@ export default class BpmnXmlParser {
     attributeNamePrefix: '', // default to '@_'
     removeNSPrefix: true,
     ignoreAttributes: false,
-    parseAttributeValue: true, // ensure numbers are parsed as number, not as string
-    // entities management
-    processEntities: false, // If you don't have entities in your XML document then it is recommended to disable it for better performance.
-    attributeValueProcessor: (_name: string, value: string) => {
+
+    /**
+     * Ensure numbers and booleans are parsed with their related type and not as string.
+     * See https://github.com/NaturalIntelligence/fast-xml-parser/blob/v4.3.4/docs/v4/2.XMLparseOptions.md#parseattributevalue
+     */
+    parseAttributeValue: true,
+
+    /**
+     * Entities management. The recommendation is: "If you don't have entities in your XML document then it is recommended to disable it for better performance."
+     * See https://github.com/NaturalIntelligence/fast-xml-parser/blob/v4.3.4/docs/v4/2.XMLparseOptions.md#processentities
+     */
+    processEntities: false,
+
+    // See https://github.com/NaturalIntelligence/fast-xml-parser/blob/v4.3.4/docs/v4/2.XMLparseOptions.md#attributevalueprocessor
+    attributeValueProcessor: (name: string, value: string, nodePath: string): unknown => {
+      if (isNumeric(name, nodePath)) {
+        // The strnum lib used by fast-xml-parser is not able to parse all numbers
+        // The only available options are https://github.com/NaturalIntelligence/fast-xml-parser/blob/v4.3.4/docs/v4/2.XMLparseOptions.md#numberparseoptions
+        // This is a fix for https://github.com/process-analytics/bpmn-visualization-js/issues/2857
+        return Number(value);
+      }
+
       return this.processAttribute(value);
     },
   };

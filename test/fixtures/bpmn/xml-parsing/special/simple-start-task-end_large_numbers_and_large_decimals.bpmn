@@ -16,21 +16,27 @@
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
       <bpmndi:BPMNEdge id="BPMNEdge_Flow_1" bpmnElement="Flow_1">
-        <di:waypoint x="192" y="99" />
-        <di:waypoint x="250" y="99" />
+        <di:waypoint x="192" y="99.4" />
+        <di:waypoint x="250.12" y="99.9246" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="258.6546874216876435469813" y="94.549684316846518435138654654687" width="53.1264613658746467887414" height="84.4318764313576846543564684651454646" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_Flow_2" bpmnElement="Flow_2">
-        <di:waypoint x="350" y="99" />
-        <di:waypoint x="412" y="99" />
+        <di:waypoint x="350.010000000545455749847855625445" y="99.000000000048548464923279646" />
+        <di:waypoint x="412.658" y="99.12" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="BPMNShape_StartEvent_1" bpmnElement="StartEvent_1">
-        <dc:Bounds x="156.10001" y="81.345000000000009" width="36.0003450001000002" height="36.0000001" />
+        <dc:Bounds x="156.10001000256464316843136874561354684" y="81.345000000000009" width="36.0003450001000002" height="36.00000010035496143139997251548445" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="158" y="124" width="33" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_Activity_1" bpmnElement="Activity_1">
-        <dc:Bounds x="250" y="59" width="100" height="80" />
+        <dc:Bounds x="250" y="59.7954442" width="100.6789421" height="80" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="251.546168735168735133580035789" y="62.5357631000046898412244767058" width="33.659851435460054800548744548" height="18.245131658435165843221640005446841658416841" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_EndEvent_1" bpmnElement="EndEvent_1">
         <dc:Bounds x="412" y="81" width="36" height="36" />

@@ -108,7 +108,7 @@ export default class DiagramConverter {
   private deserializeShape(bpmnShape: BPMNShape, findShapeElement: (bpmnElement: string) => ShapeBpmnElement): Shape | undefined {
     const bpmnElement = findShapeElement(bpmnShape.bpmnElement);
     if (bpmnElement) {
-      const bounds = DiagramConverter.deserializeBounds(bpmnShape);
+      const bounds = deserializeBounds(bpmnShape);
 
       if (
         (bpmnElement instanceof ShapeBpmnSubProcess ||
@@ -126,30 +126,9 @@ export default class DiagramConverter {
       const bpmnLabel = bpmnShape.BPMNLabel;
       const label = this.deserializeLabel(bpmnLabel, bpmnShape.id);
       const shape = new Shape(bpmnShape.id, bpmnElement, bounds, label, isHorizontal);
-      DiagramConverter.setColorExtensionsOnShape(shape, bpmnShape);
+      setColorExtensionsOnShape(shape, bpmnShape);
 
       return shape;
-    }
-  }
-
-  // 'BPMN in Color' extensions with fallback to bpmn.io colors
-  private static setColorExtensionsOnShape(shape: Shape, bpmnShape: BPMNShape): void {
-    if ('background-color' in bpmnShape) {
-      shape.extensions.fillColor = bpmnShape['background-color'] as string;
-    } else if ('fill' in bpmnShape) {
-      shape.extensions.fillColor = bpmnShape.fill as string;
-    }
-    if ('border-color' in bpmnShape) {
-      shape.extensions.strokeColor = bpmnShape['border-color'] as string;
-    } else if ('stroke' in bpmnShape) {
-      shape.extensions.strokeColor = bpmnShape.stroke as string;
-    }
-  }
-
-  private static deserializeBounds(boundedElement: BPMNShape | BPMNLabel): Bounds {
-    const bounds = boundedElement.Bounds;
-    if (bounds) {
-      return new Bounds(bounds.x, bounds.y, bounds.width, bounds.height);
     }
   }
 
@@ -171,19 +150,10 @@ export default class DiagramConverter {
         const messageVisibleKind = bpmnEdge.messageVisibleKind ? (bpmnEdge.messageVisibleKind as unknown as MessageVisibleKind) : MessageVisibleKind.NONE;
 
         const edge = new Edge(bpmnEdge.id, flow, waypoints, label, messageVisibleKind);
-        DiagramConverter.setColorExtensionsOnEdge(edge, bpmnEdge);
+        setColorExtensionsOnEdge(edge, bpmnEdge);
         return edge;
       })
       .filter(Boolean);
-  }
-
-  // 'BPMN in Color' extensions  with fallback to bpmn.io colors
-  private static setColorExtensionsOnEdge(edge: Edge, bpmnEdge: BPMNEdge): void {
-    if ('border-color' in bpmnEdge) {
-      edge.extensions.strokeColor = bpmnEdge['border-color'] as string;
-    } else if ('stroke' in bpmnEdge) {
-      edge.extensions.strokeColor = bpmnEdge.stroke as string;
-    }
   }
 
   private deserializeWaypoints(waypoints: Point[]): Waypoint[] {
@@ -193,7 +163,7 @@ export default class DiagramConverter {
   private deserializeLabel(bpmnLabel: string | BPMNLabel, id: string): Label {
     if (bpmnLabel && typeof bpmnLabel === 'object') {
       const font = this.findFont(bpmnLabel.labelStyle, id);
-      const bounds = DiagramConverter.deserializeBounds(bpmnLabel);
+      const bounds = deserializeBounds(bpmnLabel);
       const label = new Label(font, bounds);
       if ('color' in bpmnLabel) {
         label.extensions.color = bpmnLabel.color as string;
@@ -216,5 +186,35 @@ export default class DiagramConverter {
     }
 
     return font;
+  }
+}
+
+// 'BPMN in Color' extensions with fallback to bpmn.io colors
+function setColorExtensionsOnShape(shape: Shape, bpmnShape: BPMNShape): void {
+  if ('background-color' in bpmnShape) {
+    shape.extensions.fillColor = bpmnShape['background-color'] as string;
+  } else if ('fill' in bpmnShape) {
+    shape.extensions.fillColor = bpmnShape.fill as string;
+  }
+  if ('border-color' in bpmnShape) {
+    shape.extensions.strokeColor = bpmnShape['border-color'] as string;
+  } else if ('stroke' in bpmnShape) {
+    shape.extensions.strokeColor = bpmnShape.stroke as string;
+  }
+}
+
+function deserializeBounds(boundedElement: BPMNShape | BPMNLabel): Bounds {
+  const bounds = boundedElement.Bounds;
+  if (bounds) {
+    return new Bounds(bounds.x, bounds.y, bounds.width, bounds.height);
+  }
+}
+
+// 'BPMN in Color' extensions  with fallback to bpmn.io colors
+function setColorExtensionsOnEdge(edge: Edge, bpmnEdge: BPMNEdge): void {
+  if ('border-color' in bpmnEdge) {
+    edge.extensions.strokeColor = bpmnEdge['border-color'] as string;
+  } else if ('stroke' in bpmnEdge) {
+    edge.extensions.strokeColor = bpmnEdge.stroke as string;
   }
 }
