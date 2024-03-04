@@ -26,21 +26,18 @@ import { buildPaintParameter } from './render/icon-painter';
 import { orderActivityMarkers } from './render/utils';
 
 function getMarkerIconOriginFunction(numberOfMarkers: number, markerPosition: number): (canvas: BpmnCanvas) => void {
-  let setIconOriginFunction: (canvas: BpmnCanvas) => void;
   // work for 1, 2, 3 and 4 markers
   const middleValue = (numberOfMarkers + 1) / 2;
   if (markerPosition == middleValue) {
-    // TODO return directly the function here to simplify
-    setIconOriginFunction = (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered();
-  } else {
-    const translationFactor = 2 * markerPosition - (numberOfMarkers + 1);
-    setIconOriginFunction = (canvas: BpmnCanvas) => {
-      canvas.setIconOriginForIconBottomCentered();
-      const xTranslation = translationFactor * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN) / 2;
-      canvas.translateIconOrigin(xTranslation, 0);
-    };
+    return (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered();
   }
-  return setIconOriginFunction;
+
+  const translationFactor = 2 * markerPosition - (numberOfMarkers + 1);
+  return (canvas: BpmnCanvas) => {
+    canvas.setIconOriginForIconBottomCentered();
+    const xTranslation = translationFactor * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN) / 2;
+    canvas.translateIconOrigin(xTranslation, 0);
+  };
 }
 
 /**
