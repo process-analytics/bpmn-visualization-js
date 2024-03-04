@@ -17,7 +17,7 @@ limitations under the License.
 import type { mxShape } from 'mxgraph';
 
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
-import { mxCellRenderer, mxConstants, mxSvgCanvas2D } from '../initializer';
+import { mxCellRenderer } from '../initializer';
 import {
   BusinessRuleTaskShape,
   CallActivityShape,
@@ -81,53 +81,6 @@ const registerShapes = (): void => {
  */
 export default class ShapeConfigurator {
   configureShapes(): void {
-    this.initMxSvgCanvasPrototype();
     registerShapes();
-  }
-
-  private initMxSvgCanvasPrototype(): void {
-    // getTextCss is only used when creating foreignObject for label, so there is no impact on svg text that we use for Overlays.
-    // Analysis done for mxgraph@4.1.1, still apply to mxgraph@4.2.2
-    mxSvgCanvas2D.prototype.getTextCss = function () {
-      const s = this.state;
-      const lh = mxConstants.ABSOLUTE_LINE_HEIGHT ? s.fontSize * mxConstants.LINE_HEIGHT + 'px' : mxConstants.LINE_HEIGHT * this.lineHeightCorrection;
-      let css =
-        'display: inline-block; font-size: ' +
-        s.fontSize +
-        'px; ' +
-        'font-family: ' +
-        s.fontFamily +
-        '; color: ' +
-        s.fontColor +
-        '; line-height: ' +
-        lh +
-        // START Fix for issue #920 (https://github.com/process-analytics/bpmn-visualization-js/issues/920)
-        // This cannot be generalized for all mxgraph use cases. For instance, in an editor mode, we should be able to edit the text by clicking on it.
-        // Setting to 'none' prevent to capture click.
-        '; pointer-events: none' +
-        // (this.pointerEvents ? this.pointerEventsValue : 'none') +
-        // END OF Fix for issue #920
-        '; ';
-
-      if ((s.fontStyle & mxConstants.FONT_BOLD) == mxConstants.FONT_BOLD) {
-        css += 'font-weight: bold; ';
-      }
-      if ((s.fontStyle & mxConstants.FONT_ITALIC) == mxConstants.FONT_ITALIC) {
-        css += 'font-style: italic; ';
-      }
-
-      const deco = [];
-      if ((s.fontStyle & mxConstants.FONT_UNDERLINE) == mxConstants.FONT_UNDERLINE) {
-        deco.push('underline');
-      }
-      if ((s.fontStyle & mxConstants.FONT_STRIKETHROUGH) == mxConstants.FONT_STRIKETHROUGH) {
-        deco.push('line-through');
-      }
-      if (deco.length > 0) {
-        css += 'text-decoration: ' + deco.join(' ') + '; ';
-      }
-
-      return css;
-    };
   }
 }

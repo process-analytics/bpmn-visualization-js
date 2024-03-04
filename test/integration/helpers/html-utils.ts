@@ -58,8 +58,8 @@ export class HtmlElementLookup {
     this.expectEventType(bpmnId, 'bpmn-start-event', bpmnEventDefinition, checks);
   }
 
-  expectIntermediateThrowEvent(bpmnId: string, bpmnEventDefinition: ShapeBpmnEventDefinitionKind): void {
-    this.expectEventType(bpmnId, 'bpmn-intermediate-throw-event', bpmnEventDefinition);
+  expectIntermediateThrowEvent(bpmnId: string, bpmnEventDefinition: ShapeBpmnEventDefinitionKind, checks?: RequestedChecks): void {
+    this.expectEventType(bpmnId, 'bpmn-intermediate-throw-event', bpmnEventDefinition, checks);
   }
 
   expectEndEvent(bpmnId: string, bpmnEventDefinition: ShapeBpmnEventDefinitionKind, checks?: RequestedChecks): void {
@@ -74,8 +74,8 @@ export class HtmlElementLookup {
     this.expectElement(bpmnId, expectSvgTask, ['bpmn-type-activity', 'bpmn-type-task', bpmnClass], checks);
   }
 
-  expectTask(bpmnId: string): void {
-    this.expectTaskType(bpmnId, 'bpmn-task');
+  expectTask(bpmnId: string, checks?: RequestedChecks): void {
+    this.expectTaskType(bpmnId, 'bpmn-task', checks);
   }
 
   expectServiceTask(bpmnId: string, checks?: RequestedChecks): void {
@@ -94,8 +94,8 @@ export class HtmlElementLookup {
     this.expectElement(bpmnId, expectSvgLane, ['bpmn-type-container', 'bpmn-lane'], checks);
   }
 
-  expectPool(bpmnId: string): void {
-    this.expectElement(bpmnId, expectSvgPool, ['bpmn-type-container', 'bpmn-pool']);
+  expectPool(bpmnId: string, checks?: RequestedChecks): void {
+    this.expectElement(bpmnId, expectSvgPool, ['bpmn-type-container', 'bpmn-pool'], checks);
   }
 
   // ===========================================================================
@@ -169,6 +169,9 @@ export class HtmlElementLookup {
 
     const labelLastDivElement = this.querySelector<HTMLElement>(this.bpmnQuerySelectors.labelLastDiv(bpmnId));
     expect(labelLastDivElement.innerHTML).toEqual(label);
+    // Validate fix for https://github.com/process-analytics/bpmn-visualization-js/issues/920
+    expect(labelLastDivElement.style.pointerEvents).toBe('none');
+
     const labelSvgGroup = this.querySelector<HTMLElement>(this.bpmnQuerySelectors.labelSvgGroup(bpmnId));
     expectClassAttribute(labelSvgGroup, computeClassValue(bpmnClasses, ['bpmn-label', ...(additionalClasses ?? [])]));
   }
