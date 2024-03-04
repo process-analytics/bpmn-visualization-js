@@ -27,15 +27,15 @@ import { orderActivityMarkers } from './render/utils';
 
 function getMarkerIconOriginFunction(numberOfMarkers: number, markerPosition: number): (canvas: BpmnCanvas) => void {
   // work for 1, 2, 3 and 4 markers
-  const middleValue = (numberOfMarkers + 1) / 2;
-  if (markerPosition == middleValue) {
+
+  // middle marker
+  if (markerPosition == (numberOfMarkers + 1) / 2) {
     return (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered();
   }
 
-  const translationFactor = 2 * markerPosition - (numberOfMarkers + 1);
   return (canvas: BpmnCanvas) => {
     canvas.setIconOriginForIconBottomCentered();
-    const xTranslation = translationFactor * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN) / 2;
+    const xTranslation = ((2 * markerPosition - (numberOfMarkers + 1)) * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN)) / 2;
     canvas.translateIconOrigin(xTranslation, 0);
   };
 }
