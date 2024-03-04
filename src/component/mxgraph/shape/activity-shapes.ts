@@ -25,14 +25,14 @@ import { getBpmnIsInstantiating } from '../style/utils';
 import { buildPaintParameter } from './render/icon-painter';
 import { orderActivityMarkers } from './render/utils';
 
-function getMarkerIconOriginFunction(numberOfMarkers: number, markerOrder: number): (canvas: BpmnCanvas) => void {
+function getMarkerIconOriginFunction(numberOfMarkers: number, markerPosition: number): (canvas: BpmnCanvas) => void {
   let setIconOriginFunction: (canvas: BpmnCanvas) => void;
   if (numberOfMarkers === 1) {
     setIconOriginFunction = (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered();
   } else if (numberOfMarkers === 2) {
     setIconOriginFunction = (canvas: BpmnCanvas) => {
       canvas.setIconOriginForIconBottomCentered();
-      const xTranslation = Math.pow(-1, markerOrder) * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE / 2 + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN);
+      const xTranslation = Math.pow(-1, markerPosition) * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE / 2 + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN);
       canvas.translateIconOrigin(xTranslation, 0);
     };
   }
@@ -41,10 +41,10 @@ function getMarkerIconOriginFunction(numberOfMarkers: number, markerOrder: numbe
   else {
     // TODO in progress generalization for odd number of markers
     const middleValue = (numberOfMarkers + 1) / 2;
-    if (markerOrder == middleValue) {
+    if (markerPosition == middleValue) {
       setIconOriginFunction = (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered();
     } else {
-      const translationFactor = markerOrder < middleValue ? -1 : 1;
+      const translationFactor = markerPosition < middleValue ? -1 : 1;
       setIconOriginFunction = (canvas: BpmnCanvas) => {
         canvas.setIconOriginForIconBottomCentered();
         // TODO compute the number of translation
