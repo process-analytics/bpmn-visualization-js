@@ -23,6 +23,90 @@ import { BpmnStyleIdentifier, MarkerIdentifier, StyleDefault } from '../style';
 
 const arrowDefaultSize = 12;
 
+class MapWithDefault<T> extends Map<T, (style: StyleMap) => void> {
+  override get(key: T): (style: StyleMap) => void {
+    return (
+      super.get(key) ??
+      (() => {
+        // do nothing intentionally, there is no extra style to configure
+      })
+    );
+  }
+}
+
+const specificFlowStyles = new MapWithDefault<FlowKind>([
+  [
+    FlowKind.SEQUENCE_FLOW,
+    (style: StyleMap) => {
+      style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_BLOCK_THIN;
+    },
+  ],
+  [
+    FlowKind.MESSAGE_FLOW,
+    (style: StyleMap) => {
+      style[mxConstants.STYLE_DASHED] = true;
+      style[mxConstants.STYLE_DASH_PATTERN] = '8 5';
+      style[mxConstants.STYLE_STARTARROW] = mxConstants.ARROW_OVAL;
+      style[mxConstants.STYLE_STARTSIZE] = 8;
+      style[mxConstants.STYLE_STARTFILL] = true;
+      style[BpmnStyleIdentifier.EDGE_START_FILL_COLOR] = StyleDefault.MESSAGE_FLOW_MARKER_START_FILL_COLOR;
+      style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_BLOCK_THIN;
+      style[mxConstants.STYLE_ENDFILL] = true;
+      style[BpmnStyleIdentifier.EDGE_END_FILL_COLOR] = StyleDefault.MESSAGE_FLOW_MARKER_END_FILL_COLOR;
+    },
+  ],
+  [
+    FlowKind.ASSOCIATION_FLOW,
+    (style: StyleMap) => {
+      style[mxConstants.STYLE_DASHED] = true;
+      style[mxConstants.STYLE_DASH_PATTERN] = '1 2';
+      // STYLE_ENDARROW and STYLE_STARTARROW are defined in specific AssociationDirectionKind styles when needed
+      style[mxConstants.STYLE_STARTSIZE] = arrowDefaultSize;
+    },
+  ],
+]);
+
+const specificSequenceFlowStyles = new MapWithDefault<SequenceFlowKind>([
+  [
+    SequenceFlowKind.DEFAULT,
+    (style: StyleMap) => {
+      style[mxConstants.STYLE_STARTARROW] = MarkerIdentifier.ARROW_DASH;
+    },
+  ],
+  [
+    SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY,
+    (style: StyleMap) => {
+      style[mxConstants.STYLE_STARTARROW] = mxConstants.ARROW_DIAMOND_THIN;
+      style[mxConstants.STYLE_STARTSIZE] = 18;
+      style[mxConstants.STYLE_STARTFILL] = true;
+      style[BpmnStyleIdentifier.EDGE_START_FILL_COLOR] = StyleDefault.SEQUENCE_FLOW_CONDITIONAL_FROM_ACTIVITY_MARKER_FILL_COLOR;
+    },
+  ],
+]);
+
+const specificAssociationFlowStyles = new MapWithDefault<AssociationDirectionKind>([
+  [
+    AssociationDirectionKind.NONE,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
+    (_style: StyleMap) => {
+      // the style is fully managed by the FlowKind.ASSOCIATION_FLOW style
+    },
+  ],
+  [
+    AssociationDirectionKind.ONE,
+    (style: StyleMap) => {
+      style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_OPEN_THIN;
+    },
+  ],
+  [
+    AssociationDirectionKind.BOTH,
+    (style: StyleMap) => {
+      style[mxConstants.STYLE_STARTARROW] = mxConstants.ARROW_OPEN_THIN;
+      style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_OPEN_THIN;
+    },
+  ],
+]);
+
 /**
  * Configure the styles used for BPMN rendering.
  *
@@ -32,77 +116,6 @@ const arrowDefaultSize = 12;
  * @experimental
  */
 export class StyleConfigurator {
-  private specificFlowStyles = new MapWithDefault<FlowKind>([
-    [
-      FlowKind.SEQUENCE_FLOW,
-      (style: StyleMap) => {
-        style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_BLOCK_THIN;
-      },
-    ],
-    [
-      FlowKind.MESSAGE_FLOW,
-      (style: StyleMap) => {
-        style[mxConstants.STYLE_DASHED] = true;
-        style[mxConstants.STYLE_DASH_PATTERN] = '8 5';
-        style[mxConstants.STYLE_STARTARROW] = mxConstants.ARROW_OVAL;
-        style[mxConstants.STYLE_STARTSIZE] = 8;
-        style[mxConstants.STYLE_STARTFILL] = true;
-        style[BpmnStyleIdentifier.EDGE_START_FILL_COLOR] = StyleDefault.MESSAGE_FLOW_MARKER_START_FILL_COLOR;
-        style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_BLOCK_THIN;
-        style[mxConstants.STYLE_ENDFILL] = true;
-        style[BpmnStyleIdentifier.EDGE_END_FILL_COLOR] = StyleDefault.MESSAGE_FLOW_MARKER_END_FILL_COLOR;
-      },
-    ],
-    [
-      FlowKind.ASSOCIATION_FLOW,
-      (style: StyleMap) => {
-        style[mxConstants.STYLE_DASHED] = true;
-        style[mxConstants.STYLE_DASH_PATTERN] = '1 2';
-        // STYLE_ENDARROW and STYLE_STARTARROW are defined in specific AssociationDirectionKind styles when needed
-        style[mxConstants.STYLE_STARTSIZE] = arrowDefaultSize;
-      },
-    ],
-  ]);
-  private specificSequenceFlowStyles = new MapWithDefault<SequenceFlowKind>([
-    [
-      SequenceFlowKind.DEFAULT,
-      (style: StyleMap) => {
-        style[mxConstants.STYLE_STARTARROW] = MarkerIdentifier.ARROW_DASH;
-      },
-    ],
-    [
-      SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY,
-      (style: StyleMap) => {
-        style[mxConstants.STYLE_STARTARROW] = mxConstants.ARROW_DIAMOND_THIN;
-        style[mxConstants.STYLE_STARTSIZE] = 18;
-        style[mxConstants.STYLE_STARTFILL] = true;
-        style[BpmnStyleIdentifier.EDGE_START_FILL_COLOR] = StyleDefault.SEQUENCE_FLOW_CONDITIONAL_FROM_ACTIVITY_MARKER_FILL_COLOR;
-      },
-    ],
-  ]);
-  private specificAssociationFlowStyles = new MapWithDefault<AssociationDirectionKind>([
-    [
-      AssociationDirectionKind.NONE,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars -- prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
-      (_style: StyleMap) => {
-        // the style is fully managed by the FlowKind.ASSOCIATION_FLOW style
-      },
-    ],
-    [
-      AssociationDirectionKind.ONE,
-      (style: StyleMap) => {
-        style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_OPEN_THIN;
-      },
-    ],
-    [
-      AssociationDirectionKind.BOTH,
-      (style: StyleMap) => {
-        style[mxConstants.STYLE_STARTARROW] = mxConstants.ARROW_OPEN_THIN;
-        style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_OPEN_THIN;
-      },
-    ],
-  ]);
-
   constructor(private graph: BpmnGraph) {}
 
   configureStyles(): void {
@@ -252,9 +265,9 @@ export class StyleConfigurator {
   }
 
   private configureFlowStyles(): void {
-    this.configureEdgeStyles<FlowKind>(Object.values(FlowKind), this.specificFlowStyles);
-    this.configureEdgeStyles<SequenceFlowKind>(Object.values(SequenceFlowKind), this.specificSequenceFlowStyles);
-    this.configureEdgeStyles<AssociationDirectionKind>(Object.values(AssociationDirectionKind), this.specificAssociationFlowStyles);
+    this.configureEdgeStyles<FlowKind>(Object.values(FlowKind), specificFlowStyles);
+    this.configureEdgeStyles<SequenceFlowKind>(Object.values(SequenceFlowKind), specificSequenceFlowStyles);
+    this.configureEdgeStyles<AssociationDirectionKind>(Object.values(AssociationDirectionKind), specificAssociationFlowStyles);
   }
 }
 
@@ -268,15 +281,4 @@ function configureCommonDefaultStyle(style: StyleMap): void {
 
   // only works with html labels (enabled by GraphConfigurator)
   style[mxConstants.STYLE_WHITE_SPACE] = 'wrap';
-}
-
-class MapWithDefault<T> extends Map<T, (style: StyleMap) => void> {
-  override get(key: T): (style: StyleMap) => void {
-    return (
-      super.get(key) ??
-      (() => {
-        // do nothing intentionally, there is no extra style to configure
-      })
-    );
-  }
 }
