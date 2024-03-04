@@ -101,8 +101,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
             break;
           }
           case ShapeBpmnMarkerKind.ADHOC: {
-            // this.iconPainter.paintAdHocIcon(paintParameter);
-            this.iconPainter.paintExpandIcon(paintParameter);
+            this.iconPainter.paintAdHocIcon(paintParameter);
             break;
           }
         }
