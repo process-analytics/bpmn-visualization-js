@@ -27,9 +27,6 @@ import { orderActivityMarkers } from './render/utils';
 
 function getMarkerIconOriginFunction(numberOfMarkers: number, markerPosition: number): (canvas: BpmnCanvas) => void {
   let setIconOriginFunction: (canvas: BpmnCanvas) => void;
-  // if (numberOfMarkers === 1) {
-  //   setIconOriginFunction = (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered();
-  // } else
   if (numberOfMarkers === 2) {
     const translationFactor = Math.pow(-1, markerPosition);
     setIconOriginFunction = (canvas: BpmnCanvas) => {
