@@ -27,7 +27,8 @@ import { orderActivityMarkers } from './render/utils';
 
 function getMarkerIconOriginFunction(numberOfMarkers: number, markerPosition: number): (canvas: BpmnCanvas) => void {
   let setIconOriginFunction: (canvas: BpmnCanvas) => void;
-  if (numberOfMarkers === 2) {
+  // TODO remove this dead code
+  if (numberOfMarkers === -1) {
     const translationFactor = Math.pow(-1, markerPosition);
     setIconOriginFunction = (canvas: BpmnCanvas) => {
       canvas.setIconOriginForIconBottomCentered();
@@ -43,11 +44,11 @@ function getMarkerIconOriginFunction(numberOfMarkers: number, markerPosition: nu
     if (markerPosition == middleValue) {
       setIconOriginFunction = (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered();
     } else {
-      const translationFactor = markerPosition < middleValue ? -1 : 1;
+      const translationFactor = (markerPosition < middleValue ? -1 : 1) * (numberOfMarkers - 1);
       setIconOriginFunction = (canvas: BpmnCanvas) => {
         canvas.setIconOriginForIconBottomCentered();
         // TODO compute the number of translation
-        const xTranslation = translationFactor * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN);
+        const xTranslation = (translationFactor * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN)) / 2;
         canvas.translateIconOrigin(xTranslation, 0);
       };
     }
