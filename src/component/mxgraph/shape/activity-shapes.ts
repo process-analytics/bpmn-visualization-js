@@ -76,6 +76,8 @@ export abstract class BaseActivityShape extends mxRectangleShape {
     const markers = mxUtils.getValue(this.style, BpmnStyleIdentifier.MARKERS, undefined);
     if (markers) {
       const orderedMarkers = orderActivityMarkers(markers.split(','));
+      // TODO removed, this is an extra markers to check the behavior with 4 markers
+      // orderedMarkers.push(ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL);
       for (const [index, marker] of orderedMarkers.entries()) {
         paintParameter = {
           ...paintParameter,
