@@ -32,7 +32,7 @@ function getMarkerIconOriginFunction(numberOfMarkers: number, markerPosition: nu
   } else if (numberOfMarkers === 2) {
     setIconOriginFunction = (canvas: BpmnCanvas) => {
       canvas.setIconOriginForIconBottomCentered();
-      const xTranslation = Math.pow(-1, markerPosition) * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE / 2 + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN);
+      const xTranslation = (Math.pow(-1, markerPosition) * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN)) / 2;
       canvas.translateIconOrigin(xTranslation, 0);
     };
   }
