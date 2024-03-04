@@ -36,7 +36,7 @@ function getMarkerIconOriginFunction(numberOfMarkers: number, markerPosition: nu
       canvas.translateIconOrigin(xTranslation, 0);
     };
   }
-    // Here we suppose that we have 'numberOfMarkers === 3'
+  // Here we suppose that we have 'numberOfMarkers === 3'
   // More markers will be supported when implementing adhoc subprocess or compensation marker
   else {
     // TODO in progress generalization for odd number of markers
