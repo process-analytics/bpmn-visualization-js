@@ -27,14 +27,13 @@ import { orderActivityMarkers } from './render/utils';
 
 function getMarkerIconOriginFunction(numberOfMarkers: number, markerPosition: number): (canvas: BpmnCanvas) => void {
   let setIconOriginFunction: (canvas: BpmnCanvas) => void;
-  // work for 1, 2 and 3 markers
-  // fail for 4 markers
+  // work for 1, 2, 3 and 4 markers
   const middleValue = (numberOfMarkers + 1) / 2;
   if (markerPosition == middleValue) {
     // TODO return directly the function here to simplify
     setIconOriginFunction = (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered();
   } else {
-    const translationFactor = (markerPosition < middleValue ? -1 : 1) * (numberOfMarkers - 1);
+    const translationFactor = 2 * markerPosition - (numberOfMarkers + 1);
     setIconOriginFunction = (canvas: BpmnCanvas) => {
       canvas.setIconOriginForIconBottomCentered();
       const xTranslation = translationFactor * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN) / 2;
@@ -65,8 +64,8 @@ export abstract class BaseActivityShape extends mxRectangleShape {
     const markers = mxUtils.getValue(this.style, BpmnStyleIdentifier.MARKERS, undefined);
     if (markers) {
       const orderedMarkers = orderActivityMarkers(markers.split(','));
-      // TODO removed, this is an extra markers to check the behavior with 4 markers
-      // orderedMarkers.push(ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL);
+      // TODO TMP, this is an extra markers to check the behavior with 4 markers
+      orderedMarkers.push(ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL);
       for (const [index, marker] of orderedMarkers.entries()) {
         paintParameter = {
           ...paintParameter,
