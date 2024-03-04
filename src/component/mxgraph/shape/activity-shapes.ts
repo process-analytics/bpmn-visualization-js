@@ -27,31 +27,19 @@ import { orderActivityMarkers } from './render/utils';
 
 function getMarkerIconOriginFunction(numberOfMarkers: number, markerPosition: number): (canvas: BpmnCanvas) => void {
   let setIconOriginFunction: (canvas: BpmnCanvas) => void;
-  // TODO remove this dead code
-  if (numberOfMarkers === -1) {
-    const translationFactor = Math.pow(-1, markerPosition);
+  // work for 1, 2 and 3 markers
+  // fail for 4 markers
+  const middleValue = (numberOfMarkers + 1) / 2;
+  if (markerPosition == middleValue) {
+    // TODO return directly the function here to simplify
+    setIconOriginFunction = (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered();
+  } else {
+    const translationFactor = (markerPosition < middleValue ? -1 : 1) * (numberOfMarkers - 1);
     setIconOriginFunction = (canvas: BpmnCanvas) => {
       canvas.setIconOriginForIconBottomCentered();
       const xTranslation = translationFactor * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN) / 2;
       canvas.translateIconOrigin(xTranslation, 0);
     };
-  }
-  // Here we suppose that we have 'numberOfMarkers === 3'
-  // More markers will be supported when implementing adhoc subprocess or compensation marker
-  else {
-    // TODO in progress generalization for odd number of markers
-    const middleValue = (numberOfMarkers + 1) / 2;
-    if (markerPosition == middleValue) {
-      setIconOriginFunction = (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered();
-    } else {
-      const translationFactor = (markerPosition < middleValue ? -1 : 1) * (numberOfMarkers - 1);
-      setIconOriginFunction = (canvas: BpmnCanvas) => {
-        canvas.setIconOriginForIconBottomCentered();
-        // TODO compute the number of translation
-        const xTranslation = (translationFactor * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN)) / 2;
-        canvas.translateIconOrigin(xTranslation, 0);
-      };
-    }
   }
   return setIconOriginFunction;
 }
