@@ -27,12 +27,14 @@ import { orderActivityMarkers } from './render/utils';
 
 function getMarkerIconOriginFunction(numberOfMarkers: number, markerPosition: number): (canvas: BpmnCanvas) => void {
   let setIconOriginFunction: (canvas: BpmnCanvas) => void;
-  if (numberOfMarkers === 1) {
-    setIconOriginFunction = (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered();
-  } else if (numberOfMarkers === 2) {
+  // if (numberOfMarkers === 1) {
+  //   setIconOriginFunction = (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered();
+  // } else
+  if (numberOfMarkers === 2) {
+    const translationFactor = Math.pow(-1, markerPosition);
     setIconOriginFunction = (canvas: BpmnCanvas) => {
       canvas.setIconOriginForIconBottomCentered();
-      const xTranslation = (Math.pow(-1, markerPosition) * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN)) / 2;
+      const xTranslation = translationFactor * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN) / 2;
       canvas.translateIconOrigin(xTranslation, 0);
     };
   }
@@ -102,6 +104,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
           }
           case ShapeBpmnMarkerKind.ADHOC: {
             this.iconPainter.paintAdHocIcon(paintParameter);
+            // this.iconPainter.paintExpandIcon(paintParameter);
             break;
           }
         }
