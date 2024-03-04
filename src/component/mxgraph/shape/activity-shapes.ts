@@ -25,6 +25,18 @@ import { getBpmnIsInstantiating } from '../style/utils';
 import { buildPaintParameter } from './render/icon-painter';
 import { orderActivityMarkers } from './render/utils';
 
+function getMarkerIconOriginFunction(allMarkers: number, markerOrder: number): (canvas: BpmnCanvas) => void {
+  return allMarkers === 1
+    ? (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered()
+    : (canvas: BpmnCanvas) => {
+        // Here we suppose that we have 'allMarkers === 2'
+        // More markers will be supported when implementing adhoc subprocess or compensation marker
+        canvas.setIconOriginForIconBottomCentered();
+        const xTranslation = Math.pow(-1, markerOrder) * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE / 2 + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN);
+        canvas.translateIconOrigin(xTranslation, 0);
+      };
+}
+
 /**
  * @internal
  */
@@ -49,7 +61,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
       for (const [index, marker] of orderedMarkers.entries()) {
         paintParameter = {
           ...paintParameter,
-          setIconOriginFunct: this.getMarkerIconOriginFunction(orderedMarkers.length, index + 1),
+          setIconOriginFunct: getMarkerIconOriginFunction(orderedMarkers.length, index + 1),
         };
         paintParameter.canvas.save(); // ensure we can later restore the configuration
         switch (marker) {
@@ -83,19 +95,6 @@ export abstract class BaseActivityShape extends mxRectangleShape {
       ratioFromParent: 0.2,
       iconStyleConfig: { ...paintParameter.iconStyleConfig, isFilled: isFilled },
     });
-  }
-
-  private getMarkerIconOriginFunction(allMarkers: number, markerOrder: number): (canvas: BpmnCanvas) => void {
-    return allMarkers === 1
-      ? (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered()
-      : (canvas: BpmnCanvas) => {
-          // Here we suppose that we have 'allMarkers === 2'
-          // More markers will be supported when implementing adhoc subprocess or compensation marker
-
-          canvas.setIconOriginForIconBottomCentered();
-          const xTranslation = Math.pow(-1, markerOrder) * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE / 2 + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN);
-          canvas.translateIconOrigin(xTranslation, 0);
-        };
   }
 }
 
