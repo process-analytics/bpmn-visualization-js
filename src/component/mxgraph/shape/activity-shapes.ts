@@ -55,7 +55,9 @@ export abstract class BaseActivityShape extends mxRectangleShape {
   override paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     super.paintForeground(c, x, y, w, h);
     // 0 is used for ratioParent as if we pass undefined to builder function the default 0.25 value will be used instead
-    this.paintMarkerIcons(buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, ratioFromParent: 0, iconStrokeWidth: 1.5 }));
+    const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, ratioFromParent: 0, iconStrokeWidth: 1.5 });
+    // paintParameter.iconWidth = 20;
+    this.paintMarkerIcons(paintParameter);
   }
 
   protected paintMarkerIcons(paintParameter: PaintParameter): void {
