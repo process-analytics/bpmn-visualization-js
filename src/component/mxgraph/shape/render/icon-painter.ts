@@ -100,6 +100,7 @@ export class IconPainter {
    * @param setIconOriginFunct      called function to set the origin of the icon. Generally, it calls a method of {@link BpmnCanvas}.
    * @param shapeConfig             dimension and style of the shape where the icon is painted.
    * @param iconStyleConfig         style of the icon.
+   * @param iconWidth               if set, enforce the icon width. Preserve the dimension ratio. Priority over {@link ratioFromParent}. If not set, ....
    * @param originalIconSize        original size of the icon used to compute the scaling/ratio in {@link BpmnCanvas}.
    * @protected
    */
