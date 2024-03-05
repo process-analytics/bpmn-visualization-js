@@ -53,4 +53,6 @@ export interface IconConfiguration {
   ratioFromParent?: number;
   styleConfig: IconStyleConfiguration;
   setIconOriginFunct: (canvas: BpmnCanvas) => void;
+  /** TODO JSDoc (to be consistent with IconPainter) */
+  width?: number;
 }

@@ -34,6 +34,8 @@ export interface PaintParameter {
   iconStyleConfig: IconStyleConfiguration;
   ratioFromParent?: number;
   setIconOriginFunct: (canvas: BpmnCanvas) => void;
+  /** If set, enforce the icon width. Preserve the dimension ratio. Priority over {@link ratioFromParent}. If not set, .... */
+  iconWidth?: number;
 }
 
 /**
@@ -101,15 +103,16 @@ export class IconPainter {
    * @param originalIconSize        original size of the icon used to compute the scaling/ratio in {@link BpmnCanvas}.
    * @protected
    */
-  protected newBpmnCanvas({ canvas, ratioFromParent, setIconOriginFunct, shapeConfig, iconStyleConfig }: PaintParameter, originalIconSize: Size): BpmnCanvas {
+  protected newBpmnCanvas({ canvas, ratioFromParent, setIconOriginFunct, shapeConfig, iconStyleConfig, iconWidth }: PaintParameter, originalIconSize: Size): BpmnCanvas {
     return new BpmnCanvas({
       canvas,
       shapeConfig,
       iconConfig: {
         originalSize: originalIconSize,
-        styleConfig: iconStyleConfig,
         ratioFromParent,
         setIconOriginFunct,
+        styleConfig: iconStyleConfig,
+        width: iconWidth,
       },
     });
   }

@@ -97,8 +97,13 @@ export class BpmnCanvas {
 
     this.iconOriginalSize = iconConfig.originalSize;
 
+    const iconWidth = iconConfig.width;
     const ratioFromShape = iconConfig.ratioFromParent;
-    if (ratioFromShape) {
+    if (iconWidth) {
+      this.scaleX = iconWidth / this.iconOriginalSize.width;
+      this.scaleY = this.scaleX;
+      // console.info('@@@@enforce iconWidth %s with scaling %s', iconWidth, this.scaleX);
+    } else if (ratioFromShape) {
       const scaledIconSize = computeScaledIconSize(this.iconOriginalSize, iconConfig.styleConfig, this.shapeConfiguration, ratioFromShape);
       this.scaleX = scaledIconSize.width / this.iconOriginalSize.width;
       this.scaleY = scaledIconSize.height / this.iconOriginalSize.height;

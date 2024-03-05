@@ -93,17 +93,18 @@ export abstract class BaseActivityShape extends mxRectangleShape {
           case ShapeBpmnMarkerKind.COMPENSATION: {
             // this.iconPainter.paintExpandIcon(paintParameter);
             // TODO don't work, the icon dimensions are too large --> must ensure icon size + when used with loop marker, the marker is filled
-            this.iconPainter.paintDoubleLeftArrowheadsIcon(paintParameter);
-            // this.iconPainter.paintDoubleLeftArrowheadsIcon({
-            //   ...paintParameter,
-            //   // ratioFromParent: 0.3,
-            //   iconStyleConfig: {
-            //     ...paintParameter.iconStyleConfig,
-            //     strokeWidth: 1.5,
-            //     // no impact, still filled
-            //     isFilled: false,
-            //   },
-            // });
+            // this.iconPainter.paintDoubleLeftArrowheadsIcon(paintParameter);
+            this.iconPainter.paintDoubleLeftArrowheadsIcon({
+              ...paintParameter,
+              iconWidth: 16,
+              // ratioFromParent: 0.3,
+              // iconStyleConfig: {
+              //   ...paintParameter.iconStyleConfig,
+              //   strokeWidth: 1.5,
+              //   // no impact, still filled
+              //   isFilled: false,
+              // },
+            });
             break;
           }
         }
