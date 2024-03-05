@@ -62,7 +62,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
     if (markers) {
       const orderedMarkers = orderActivityMarkers(markers.split(','));
       // TODO TMP, this is an extra markers to check the behavior with 4 markers
-      orderedMarkers.push(ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL);
+      orderedMarkers.push(ShapeBpmnMarkerKind.COMPENSATION);
       for (const [index, marker] of orderedMarkers.entries()) {
         paintParameter = {
           ...paintParameter,
@@ -88,7 +88,22 @@ export abstract class BaseActivityShape extends mxRectangleShape {
           }
           case ShapeBpmnMarkerKind.ADHOC: {
             this.iconPainter.paintAdHocIcon(paintParameter);
+            break;
+          }
+          case ShapeBpmnMarkerKind.COMPENSATION: {
             // this.iconPainter.paintExpandIcon(paintParameter);
+            // TODO don't work, the icon dimensions are too large --> must ensure icon size + when used with loop marker, the marker is filled
+            this.iconPainter.paintDoubleLeftArrowheadsIcon(paintParameter);
+            // this.iconPainter.paintDoubleLeftArrowheadsIcon({
+            //   ...paintParameter,
+            //   // ratioFromParent: 0.3,
+            //   iconStyleConfig: {
+            //     ...paintParameter.iconStyleConfig,
+            //     strokeWidth: 1.5,
+            //     // no impact, still filled
+            //     isFilled: false,
+            //   },
+            // });
             break;
           }
         }
