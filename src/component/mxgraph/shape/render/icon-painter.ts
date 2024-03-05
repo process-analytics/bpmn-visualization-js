@@ -313,7 +313,7 @@ export class IconPainter {
   }
 
   /**
-   * This icon is used by `compensation event`.
+   * This icon is used by `compensation event` and the compensation marker.
    */
   paintDoubleLeftArrowheadsIcon(paintParameter: PaintParameter): void {
     const canvas = this.newBpmnCanvas(paintParameter, { height: 53.5, width: 105 });
