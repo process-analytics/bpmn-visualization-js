@@ -36,7 +36,8 @@ function getMarkerIconOriginFunction(numberOfMarkers: number, markerPosition: nu
   return (canvas: BpmnCanvas) => {
     canvas.setIconOriginForIconBottomCentered();
     const xTranslation = ((2 * markerPosition - (numberOfMarkers + 1)) * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN)) / 2;
-    canvas.translateIconOrigin(xTranslation, 0);
+    // must call a function that doesn't apply scaling to the translation as we are using absolute values here
+    canvas.translateIconOriginWithoutScaling(xTranslation, 0);
   };
 }
 
@@ -63,6 +64,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
       const orderedMarkers = orderActivityMarkers(markers.split(','));
       // TODO TMP, this is an extra markers to check the behavior with 4 markers
       orderedMarkers.push(ShapeBpmnMarkerKind.COMPENSATION);
+      // orderedMarkers.push(ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL);
       for (const [index, marker] of orderedMarkers.entries()) {
         paintParameter = {
           ...paintParameter,
@@ -94,6 +96,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
             // this.iconPainter.paintExpandIcon(paintParameter);
             // TODO don't work, the icon dimensions are too large --> must ensure icon size + when used with loop marker, the marker is filled
             // this.iconPainter.paintDoubleLeftArrowheadsIcon(paintParameter);
+            // this.iconPainter.paintAsteriskIcon({
             this.iconPainter.paintDoubleLeftArrowheadsIcon({
               ...paintParameter,
               iconWidth: 16,

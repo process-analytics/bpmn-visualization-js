@@ -180,6 +180,11 @@ export class BpmnCanvas {
     this.iconPaintingOriginY += this.scaleY * dy;
   }
 
+  translateIconOriginWithoutScaling(dx: number, dy: number): void {
+    this.iconPaintingOriginX += dx;
+    this.iconPaintingOriginY += dy;
+  }
+
   private computeScaleFromOriginX(x: number): number {
     return this.iconPaintingOriginX + x * this.scaleX;
   }
