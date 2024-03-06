@@ -562,7 +562,22 @@ export class IconPainter {
   paintLoopIcon(paintParameter: PaintParameter): void {
     // this implementation is adapted from the draw.io BPMN 'Loop'
     // https://github.com/jgraph/drawio/blob/9394fb0f1430d2c869865827b2bbef5639f63478/src/main/webapp/stencils/bpmn.xml#L543
+
+    // FIX side effects: configure paintLoop to not update the iconConfig shared by all markers
+    // This had a side effects on subsequent markers that needed to be filled (for example, compensation marker).
+    // Directly set the fillColor of the underlying mxGraph canvas, like this done in
+    //   - paintParallelMultiInstanceIcon
+    //   - paintSequentialMultiInstanceIcon
+    // As for the multi instance icon, there is no need to make the fill configurable (via iconConfig in PaintParameter) as the
+    // arrow of the loop must always be filled.
+    //
+    // Previous implementation causing issues
+    //     const { iconStyleConfig } = paintParameter;
+    //     iconStyleConfig.fillColor = iconStyleConfig.strokeColor;
+
     const canvas = this.newBpmnCanvas(paintParameter, { width: 22.49, height: 21.62 });
+
+    // New implementation fixing the problem
     const { canvas: mxCanvas, iconStyleConfig } = paintParameter;
     mxCanvas.setFillColor(iconStyleConfig.strokeColor);
 
