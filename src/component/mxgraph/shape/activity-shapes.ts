@@ -26,17 +26,22 @@ import { buildPaintParameter } from './render/icon-painter';
 import { orderActivityMarkers } from './render/utils';
 
 function getMarkerIconOriginFunction(numberOfMarkers: number, markerPosition: number): (canvas: BpmnCanvas) => void {
-  // work for 1, 2, 3 and 4 markers
+  // Tested with 1, 2, 3 and 4 markers
 
-  // middle marker
-  if (markerPosition == (numberOfMarkers + 1) / 2) {
-    return (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered();
-  }
+  // Middle marker - the following code is not needed, the general algorithm works for this case (the computed translation is then 0 on both x and y)
+  // if (markerPosition == (numberOfMarkers + 1) / 2) {
+  //   return (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered();
+  // }
 
+  // General algorithm
+  // it includes the fix for 2 markers
+  // The previous implementation was adding too much spacing: it added SHAPE_ACTIVITY_MARKER_ICON_SIZE instead of SHAPE_ACTIVITY_MARKER_ICON_SIZE / 2
   return (canvas: BpmnCanvas) => {
     canvas.setIconOriginForIconBottomCentered();
     const xTranslation = ((2 * markerPosition - (numberOfMarkers + 1)) * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN)) / 2;
-    // must call a function that doesn't apply scaling to the translation as we are using absolute values here
+    // Here, we must call a function that doesn't apply scaling to the translation as we are passing an absolute translation value.
+    // The "translateIconOriginWithoutScaling" method had been added for the POC. An alternative could be to add a parameter to the existing "translateIconOrigin" method to indicate if the translation must be done.
+    // For example: translateIconOrigin(dx: number, dy: number, useScaling = true): void
     canvas.translateIconOriginWithoutScaling(xTranslation, 0);
   };
 }
