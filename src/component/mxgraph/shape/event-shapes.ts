@@ -102,10 +102,10 @@ export class EventShape extends mxgraph.mxEllipse {
   }
 
   private paintInnerShape(paintParameter: PaintParameter): void {
-    const paintIcon =
-      this.iconPainters.get(mxUtils.getValue(this.style, BpmnStyleIdentifier.EVENT_DEFINITION_KIND, ShapeBpmnEventDefinitionKind.NONE)) ??
-      (() => this.iconPainter.paintEmptyIcon());
-    paintIcon(paintParameter);
+    // REFACTOR proceed with the same pattern as for the activity markers
+    // No need to provide a default function calling "IconPainter.emptyIcon". Do not call the undefined function returned by the Map when there is no entry for the event definition kind.
+    const paintIcon = this.iconPainters.get(mxUtils.getValue(this.style, BpmnStyleIdentifier.EVENT_DEFINITION_KIND, ShapeBpmnEventDefinitionKind.NONE));
+    paintIcon?.(paintParameter);
   }
 }
 

@@ -102,7 +102,8 @@ export abstract class BaseActivityShape extends mxRectangleShape {
         };
         paintParameter.canvas.save(); // ensure we can later restore the configuration
 
-        // inspired from event-shapes that could be updated to not used "IconPainter.emptyIcon" and not called the function if it is not defined
+        // refactoring: management of the painter function --> move from "switch" to "map"
+        // It is inspired from event-shapes
         const markerPainter = this.iconPainters.get(marker as ShapeBpmnMarkerKind);
         markerPainter?.(paintParameter);
 
