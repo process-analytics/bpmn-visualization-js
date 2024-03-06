@@ -118,26 +118,26 @@ class CanvasForExport extends mxSvgCanvas2D {
   }
 
   override getAlternateText(
-    fo: Element,
-    x: number,
-    y: number,
+    _fo: Element,
+    _x: number,
+    _y: number,
     w: number,
-    h: number,
+    _h: number,
     content: string,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    align: string,
+    _align: string,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    valign: string,
+    _valign: string,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    wrap: string,
+    _wrap: string,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    format: string,
+    _format: string,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    overflow: string,
+    _overflow: string,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    clip: string,
+    _clip: string,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    rotation: number,
+    _rotation: number,
   ): string {
     return this.computeTruncatedText(content, w);
   }
