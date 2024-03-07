@@ -151,18 +151,6 @@ export class BpmnCanvas {
   }
 
   /**
-   * Set the icon origin to ensure that, on the shape, the icon is vertically aligned to the bottom and translate to the left from the horizontal center.
-   */
-  setIconOriginForIconOnBottomLeft(
-    bottomMargin: number = StyleDefault.SHAPE_ACTIVITY_BOTTOM_MARGIN,
-    fromCenterMargin: number = StyleDefault.SHAPE_ACTIVITY_FROM_CENTER_MARGIN,
-  ): void {
-    const shape = this.shapeConfiguration;
-    this.iconPaintingOriginX = shape.x + (shape.width - this.iconOriginalSize.width * this.scaleX) / 3 - fromCenterMargin;
-    this.iconPaintingOriginY = shape.y + (shape.height - this.iconOriginalSize.height * this.scaleY - bottomMargin);
-  }
-
-  /**
    * Translate the icon origin using the scale factor associated to the horizontal and vertical directions.
    *
    * The values should be given with using the icon original size (as translated values will be scaled as other values passed to method of this class).
