@@ -44,7 +44,7 @@ describe('parse bpmn as json for callActivity', () => {
         ['array', [callActivityJson]],
       ])(
         `should convert as Shape, when a process contains a ${expandedKind} call activity calling another existing process`,
-        (title, callActivity: BuildCallActivityParameter | BuildCallActivityParameter[]) => {
+        (_title, callActivity: BuildCallActivityParameter | BuildCallActivityParameter[]) => {
           const json: BpmnJsonModel = buildDefinitions({
             process: [
               {
