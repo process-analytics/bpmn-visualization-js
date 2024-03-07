@@ -25,16 +25,25 @@ import { getBpmnIsInstantiating } from '../style/utils';
 import { buildPaintParameter } from './render/icon-painter';
 import { orderActivityMarkers } from './render/utils';
 
-function getMarkerIconOriginFunction(allMarkers: number, markerOrder: number): (canvas: BpmnCanvas) => void {
-  return allMarkers === 1
-    ? (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered()
-    : (canvas: BpmnCanvas) => {
-        // Here we suppose that we have 'allMarkers === 2'
-        // More markers will be supported when implementing adhoc subprocess or compensation marker
-        canvas.setIconOriginForIconBottomCentered();
-        const xTranslation = Math.pow(-1, markerOrder) * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE / 2 + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN);
-        canvas.translateIconOrigin(xTranslation, 0);
-      };
+function getMarkerIconOriginFunction(numberOfMarkers: number, markerPosition: number): (canvas: BpmnCanvas) => void {
+  // Tested with 1, 2, 3 and 4 markers
+
+  // Middle marker - the following code is not needed, the general algorithm works for this case (the computed translation is then 0 on both x and y)
+  // if (markerPosition == (numberOfMarkers + 1) / 2) {
+  //   return (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered();
+  // }
+
+  // General algorithm
+  // it includes the fix for 2 markers
+  // The previous implementation was adding too much spacing: it added SHAPE_ACTIVITY_MARKER_ICON_SIZE instead of SHAPE_ACTIVITY_MARKER_ICON_SIZE / 2
+  return (canvas: BpmnCanvas) => {
+    canvas.setIconOriginForIconBottomCentered();
+    const xTranslation = ((2 * markerPosition - (numberOfMarkers + 1)) * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN)) / 2;
+    // Here, we must call a function that doesn't apply scaling to the translation as we are passing an absolute translation value.
+    // The "translateIconOriginWithoutScaling" method had been added for the POC. An alternative could be to add a parameter to the existing "translateIconOrigin" method to indicate if the translation must be done.
+    // For example: translateIconOrigin(dx: number, dy: number, useScaling = true): void
+    canvas.translateIconOriginWithoutScaling(xTranslation, 0);
+  };
 }
 
 /**
@@ -44,6 +53,29 @@ export abstract class BaseActivityShape extends mxRectangleShape {
   // The actual value is injected at runtime by BpmnCellRenderer
   protected iconPainter: IconPainter = undefined;
 
+  private iconPainters = new Map<ShapeBpmnMarkerKind, (paintParameter: PaintParameter) => void>([
+    [ShapeBpmnMarkerKind.ADHOC, (paintParameter: PaintParameter) => this.iconPainter.paintAdHocIcon(paintParameter)],
+    [
+      ShapeBpmnMarkerKind.COMPENSATION,
+      (paintParameter: PaintParameter) =>
+        this.iconPainter.paintDoubleLeftArrowheadsIcon({
+          ...paintParameter,
+          iconWidth: 16,
+          // ratioFromParent: 0.3,
+          // iconStyleConfig: {
+          //   ...paintParameter.iconStyleConfig,
+          //   strokeWidth: 1.5,
+          //   // no impact, still filled
+          //   isFilled: false,
+          // },
+        }),
+    ],
+    [ShapeBpmnMarkerKind.EXPAND, (paintParameter: PaintParameter) => this.iconPainter.paintExpandIcon(paintParameter)],
+    [ShapeBpmnMarkerKind.LOOP, (paintParameter: PaintParameter) => this.iconPainter.paintLoopIcon(paintParameter)],
+    [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, (paintParameter: PaintParameter) => this.iconPainter.paintSequentialMultiInstanceIcon(paintParameter)],
+    [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, (paintParameter: PaintParameter) => this.iconPainter.paintParallelMultiInstanceIcon(paintParameter)],
+  ]);
+
   constructor() {
     super(undefined, undefined, undefined); // the configuration is passed with the styles at runtime
   }
@@ -51,37 +83,30 @@ export abstract class BaseActivityShape extends mxRectangleShape {
   override paintForeground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     super.paintForeground(c, x, y, w, h);
     // 0 is used for ratioParent as if we pass undefined to builder function the default 0.25 value will be used instead
-    this.paintMarkerIcons(buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, ratioFromParent: 0, iconStrokeWidth: 1.5 }));
+    const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, ratioFromParent: 0, iconStrokeWidth: 1.5 });
+    // paintParameter.iconWidth = 20;
+    this.paintMarkerIcons(paintParameter);
   }
 
   protected paintMarkerIcons(paintParameter: PaintParameter): void {
     const markers = mxUtils.getValue(this.style, BpmnStyleIdentifier.MARKERS, undefined);
     if (markers) {
       const orderedMarkers = orderActivityMarkers(markers.split(','));
+      // TODO TMP, this is an extra markers to check the behavior with 4 markers
+      orderedMarkers.push(ShapeBpmnMarkerKind.COMPENSATION);
+      // orderedMarkers.push(ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL);
       for (const [index, marker] of orderedMarkers.entries()) {
         paintParameter = {
           ...paintParameter,
           setIconOriginFunct: getMarkerIconOriginFunction(orderedMarkers.length, index + 1),
         };
         paintParameter.canvas.save(); // ensure we can later restore the configuration
-        switch (marker) {
-          case ShapeBpmnMarkerKind.LOOP: {
-            this.iconPainter.paintLoopIcon(paintParameter);
-            break;
-          }
-          case ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL: {
-            this.iconPainter.paintSequentialMultiInstanceIcon(paintParameter);
-            break;
-          }
-          case ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL: {
-            this.iconPainter.paintParallelMultiInstanceIcon(paintParameter);
-            break;
-          }
-          case ShapeBpmnMarkerKind.EXPAND: {
-            this.iconPainter.paintExpandIcon(paintParameter);
-            break;
-          }
-        }
+
+        // refactoring: management of the painter function --> move from "switch" to "map"
+        // It is inspired from event-shapes
+        const markerPainter = this.iconPainters.get(marker as ShapeBpmnMarkerKind);
+        markerPainter?.(paintParameter);
+
         // Restore original configuration to avoid side effects if the iconPainter changed the canvas configuration (colors, ....)
         paintParameter.canvas.restore();
       }

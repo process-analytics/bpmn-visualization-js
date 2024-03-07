@@ -10,6 +10,10 @@
     <bpmn:task id="Activity_0a3q4sw">
       <bpmn:standardLoopCharacteristics />
     </bpmn:task>
+    <bpmn:task id="Activity_000" isForCompensation="true"/>
+    <bpmn:task id="Activity_001" isForCompensation="true">
+      <bpmn:multiInstanceLoopCharacteristics isSequential="true" />
+    </bpmn:task>
     <bpmn:callActivity id="Activity_070qpyo" />
     <bpmn:callActivity id="Activity_1ku8gc8">
       <bpmn:multiInstanceLoopCharacteristics />
@@ -28,6 +32,10 @@
       <bpmn:multiInstanceLoopCharacteristics isSequential="true" />
     </bpmn:subProcess>
     <bpmn:subProcess id="Activity_196x0py">
+      <bpmn:standardLoopCharacteristics />
+    </bpmn:subProcess>
+    <bpmn:subProcess id="Activity_100" isForCompensation="true" />
+    <bpmn:subProcess id="Activity_101" isForCompensation="true" >
       <bpmn:standardLoopCharacteristics />
     </bpmn:subProcess>
     <bpmn:adHocSubProcess id="Activity_0ub7tnf" />
@@ -50,6 +58,9 @@
     <bpmn:transaction id="Activity_1o6pvv6">
       <bpmn:multiInstanceLoopCharacteristics isSequential="true" />
     </bpmn:transaction>
+    <bpmn:transaction id="Activity_010" isForCompensation="true">
+      <bpmn:multiInstanceLoopCharacteristics />
+    </bpmn:transaction>
     <bpmn:subProcess id="Activity_0n0b9rq" triggeredByEvent="true">
       <bpmn:multiInstanceLoopCharacteristics />
     </bpmn:subProcess>
@@ -70,6 +81,12 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1vhsh4j_di" bpmnElement="Activity_0a3q4sw">
         <dc:Bounds x="490" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_000_di" bpmnElement="Activity_000">
+        <dc:Bounds x="650" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_001_di" bpmnElement="Activity_001">
+        <dc:Bounds x="800" y="80" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_071vsmx_di" bpmnElement="Activity_070qpyo">
         <dc:Bounds x="170" y="200" width="100" height="80" />
@@ -94,6 +111,12 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0cwkyny_di" bpmnElement="Activity_196x0py">
         <dc:Bounds x="650" y="320" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_100_di" bpmnElement="Activity_100">
+        <dc:Bounds x="800" y="320" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_101_di" bpmnElement="Activity_101">
+        <dc:Bounds x="950" y="320" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1q1ebfs_di" bpmnElement="Activity_0ub7tnf">
         <dc:Bounds x="650" y="560" width="100" height="80" />
@@ -124,6 +147,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1o6pvv6_di" bpmnElement="Activity_1o6pvv6" isExpanded="false">
         <dc:Bounds x="650" y="440" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_010_di" bpmnElement="Activity_010" isExpanded="true">
+        <dc:Bounds x="950" y="440" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0n0b9rq_di" bpmnElement="Activity_0n0b9rq">
         <dc:Bounds x="330" y="440" width="100" height="80" />

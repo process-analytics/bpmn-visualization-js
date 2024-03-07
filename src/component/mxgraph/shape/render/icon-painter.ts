@@ -34,6 +34,8 @@ export interface PaintParameter {
   iconStyleConfig: IconStyleConfiguration;
   ratioFromParent?: number;
   setIconOriginFunct: (canvas: BpmnCanvas) => void;
+  /** If set, enforce the icon width. Preserve the dimension ratio. Priority over {@link ratioFromParent}. If not set, .... */
+  iconWidth?: number;
 }
 
 /**
@@ -98,18 +100,20 @@ export class IconPainter {
    * @param setIconOriginFunct      called function to set the origin of the icon. Generally, it calls a method of {@link BpmnCanvas}.
    * @param shapeConfig             dimension and style of the shape where the icon is painted.
    * @param iconStyleConfig         style of the icon.
+   * @param iconWidth               if set, enforce the icon width. Preserve the dimension ratio. Priority over {@link ratioFromParent}. If not set, ....
    * @param originalIconSize        original size of the icon used to compute the scaling/ratio in {@link BpmnCanvas}.
    * @protected
    */
-  protected newBpmnCanvas({ canvas, ratioFromParent, setIconOriginFunct, shapeConfig, iconStyleConfig }: PaintParameter, originalIconSize: Size): BpmnCanvas {
+  protected newBpmnCanvas({ canvas, ratioFromParent, setIconOriginFunct, shapeConfig, iconStyleConfig, iconWidth }: PaintParameter, originalIconSize: Size): BpmnCanvas {
     return new BpmnCanvas({
       canvas,
       shapeConfig,
       iconConfig: {
         originalSize: originalIconSize,
-        styleConfig: iconStyleConfig,
         ratioFromParent,
         setIconOriginFunct,
+        styleConfig: iconStyleConfig,
+        width: iconWidth,
       },
     });
   }
@@ -313,10 +317,17 @@ export class IconPainter {
   }
 
   /**
-   * This icon is used by `compensation event`.
+   * This icon is used by `compensation event` and the compensation marker.
    */
   paintDoubleLeftArrowheadsIcon(paintParameter: PaintParameter): void {
-    const canvas = this.newBpmnCanvas(paintParameter, { height: 53.5, width: 105 });
+    // min x = 2
+    // max x = 91.4
+    // --> width = 89.4
+    // min y = 0
+    // max y = 53.5
+    // --> height = 53.5
+    // TODO check the impact of changing the width on the compensation event (from 105 to 89.4)
+    const canvas = this.newBpmnCanvas(paintParameter, { height: 53.5, width: 89.4 });
 
     canvas.begin();
     canvas.moveTo(91.4, 0);
@@ -551,9 +562,24 @@ export class IconPainter {
   paintLoopIcon(paintParameter: PaintParameter): void {
     // this implementation is adapted from the draw.io BPMN 'Loop'
     // https://github.com/jgraph/drawio/blob/9394fb0f1430d2c869865827b2bbef5639f63478/src/main/webapp/stencils/bpmn.xml#L543
-    const { iconStyleConfig } = paintParameter;
-    iconStyleConfig.fillColor = iconStyleConfig.strokeColor;
+
+    // FIX side effects: configure paintLoop to not update the iconConfig shared by all markers
+    // This had a side effects on subsequent markers that needed to be filled (for example, compensation marker).
+    // Directly set the fillColor of the underlying mxGraph canvas, like this done in
+    //   - paintParallelMultiInstanceIcon
+    //   - paintSequentialMultiInstanceIcon
+    // As for the multi instance icon, there is no need to make the fill configurable (via iconConfig in PaintParameter) as the
+    // arrow of the loop must always be filled.
+    //
+    // Previous implementation causing issues
+    //     const { iconStyleConfig } = paintParameter;
+    //     iconStyleConfig.fillColor = iconStyleConfig.strokeColor;
+
     const canvas = this.newBpmnCanvas(paintParameter, { width: 22.49, height: 21.62 });
+
+    // New implementation fixing the problem
+    const { canvas: mxCanvas, iconStyleConfig } = paintParameter;
+    mxCanvas.setFillColor(iconStyleConfig.strokeColor);
 
     // Loop
     canvas.begin();
@@ -830,6 +856,11 @@ export class IconPainter {
     canvas.lineTo(16, 6.5);
     canvas.lineTo(8, 0); // extra line to ensure the path is fully closed (otherwise, there is a glitch on the latest corner)
     canvas.stroke();
+  }
+
+  paintAdHocIcon(paintParameter: PaintParameter): void {
+    // TODO implementation
+    this.paintPentagon(paintParameter);
   }
 }
 

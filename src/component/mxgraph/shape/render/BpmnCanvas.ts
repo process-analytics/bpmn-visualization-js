@@ -97,8 +97,11 @@ export class BpmnCanvas {
 
     this.iconOriginalSize = iconConfig.originalSize;
 
+    const iconWidth = iconConfig.width;
     const ratioFromShape = iconConfig.ratioFromParent;
-    if (ratioFromShape) {
+    if (iconWidth) {
+      this.scaleY = this.scaleX = iconWidth / this.iconOriginalSize.width;
+    } else if (ratioFromShape) {
       const scaledIconSize = computeScaledIconSize(this.iconOriginalSize, iconConfig.styleConfig, this.shapeConfiguration, ratioFromShape);
       this.scaleX = scaledIconSize.width / this.iconOriginalSize.width;
       this.scaleY = scaledIconSize.height / this.iconOriginalSize.height;
@@ -161,6 +164,11 @@ export class BpmnCanvas {
   translateIconOrigin(dx: number, dy: number): void {
     this.iconPaintingOriginX += this.scaleX * dx;
     this.iconPaintingOriginY += this.scaleY * dy;
+  }
+
+  translateIconOriginWithoutScaling(dx: number, dy: number): void {
+    this.iconPaintingOriginX += dx;
+    this.iconPaintingOriginY += dy;
   }
 
   private computeScaleFromOriginX(x: number): number {
