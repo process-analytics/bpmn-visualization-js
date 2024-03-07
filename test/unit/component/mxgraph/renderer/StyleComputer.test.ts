@@ -290,7 +290,7 @@ describe('Style Computer', () => {
     describe.each([
       ['expanded', []],
       ['collapsed', [ShapeBpmnMarkerKind.EXPAND]],
-    ])(`%s`, (expandKind: string, markers: ShapeBpmnMarkerKind[]) => {
+    ])(`%s`, (_expandKind: string, markers: ShapeBpmnMarkerKind[]) => {
       describe.each(Object.values(ShapeBpmnSubProcessKind))(`%s`, (subProcessKind: ShapeBpmnSubProcessKind) => {
         markers = getExpectedMarkers(markers, subProcessKind);
         const additionalMarkerStyle = markers.length > 0 ? `;bpmn.markers=${markers.join(',')}` : '';
@@ -361,7 +361,7 @@ describe('Style Computer', () => {
     it.each([
       ['non-instantiating', false],
       ['instantiating', true],
-    ])('%s receive task', (instantiatingKind: string, instantiate: boolean) => {
+    ])('%s receive task', (_instantiatingKind: string, instantiate: boolean) => {
       const shape = newShape(newShapeBpmnActivity(ShapeBpmnElementKind.TASK_RECEIVE, undefined, instantiate), newLabel({ name: 'Arial' }));
       expect(computeStyle(shape)).toBe(`receiveTask;bpmn.isInstantiating=${instantiate};fontFamily=Arial`);
     });
@@ -394,7 +394,7 @@ describe('Style Computer', () => {
       ['vertical', false, '1'],
       ['horizontal', true, '0'],
       ['no isHorizontal value for a', undefined, '1'],
-    ])('%s pool references a Process', (title: string, isHorizontal: boolean, expected: string) => {
+    ])('%s pool references a Process', (_title: string, isHorizontal: boolean, expected: string) => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.POOL), undefined, isHorizontal);
       expect(computeStyle(shape)).toBe(`pool;horizontal=${expected}`);
     });
@@ -405,7 +405,7 @@ describe('Style Computer', () => {
       ['vertical', false, '1'],
       ['horizontal', true, '0'],
       ['no isHorizontal value for a', undefined, '1'],
-    ])('%s lane', (title: string, isHorizontal: boolean, expected: string) => {
+    ])('%s lane', (_title: string, isHorizontal: boolean, expected: string) => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.LANE), undefined, isHorizontal);
       expect(computeStyle(shape)).toBe(`lane;horizontal=${expected}`);
     });

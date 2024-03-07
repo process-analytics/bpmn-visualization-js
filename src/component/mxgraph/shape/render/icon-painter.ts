@@ -406,12 +406,12 @@ export class IconPainter {
    */
   paintAsteriskIcon(paintParameter: PaintParameter): void {
     const canvas = this.newBpmnCanvas(paintParameter, { height: 1, width: 1 });
-    drawVerticalLine(paintParameter, canvas);
+    drawVerticalLine(canvas);
     canvas.fillAndStroke();
-    drawVerticalLine(paintParameter, canvas);
+    drawVerticalLine(canvas);
     canvas.rotateOnIconCenter(60);
     canvas.fillAndStroke();
-    drawVerticalLine(paintParameter, canvas);
+    drawVerticalLine(canvas);
     canvas.rotateOnIconCenter(240);
     canvas.fillAndStroke();
   }
@@ -833,7 +833,7 @@ export class IconPainter {
   }
 }
 
-function drawVerticalLine(paintParameter: PaintParameter, canvas: BpmnCanvas): void {
+function drawVerticalLine(canvas: BpmnCanvas): void {
   canvas.begin();
   canvas.moveTo(0.38, 0);
   canvas.lineTo(0.62, 0);

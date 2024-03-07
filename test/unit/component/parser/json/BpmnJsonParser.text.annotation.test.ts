@@ -36,7 +36,7 @@ describe('parse bpmn as json for text annotation', () => {
     ['array', [processWithArtifactAsObject]],
   ])(
     `should convert as Shape, when a text annotation is an attribute (as object) of 'process' (as %s)`,
-    (title: string, processParameter: BuildProcessParameter | BuildProcessParameter[]) => {
+    (_title: string, processParameter: BuildProcessParameter | BuildProcessParameter[]) => {
       const json = buildDefinitions({ process: processParameter });
 
       const model = parseJsonAndExpectOnlyFlowNodes(json, 1);

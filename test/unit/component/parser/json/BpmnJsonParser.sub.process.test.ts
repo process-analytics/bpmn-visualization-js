@@ -91,7 +91,7 @@ describe('parse bpmn as json for sub-process', () => {
         ['array', [processWithSubProcessAsObject]],
       ])(
         `should convert as Shape, when a ${expandedKind} ${expectedShapeBpmnSubProcessKind} sub-process is an attribute (as object) of 'process' (as %s)`,
-        (title: string, processParameter: BuildProcessParameter | BuildProcessParameter[]) => {
+        (_title: string, processParameter: BuildProcessParameter | BuildProcessParameter[]) => {
           const json = buildDefinitions({ process: processParameter });
 
           const model = parseJsonAndExpectOnlySubProcess(json, expectedShapeBpmnSubProcessKind, 1);

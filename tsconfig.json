@@ -4,11 +4,14 @@
     "outDir": "./build/lib",
     "module": "ES2015",
     "target": "ES2015",
-    "noImplicitAny": true,
     "strictBindCallApply": true,
     "alwaysStrict": true,
     "strictFunctionTypes": true,
+    "noImplicitAny": true,
+    "noImplicitOverride": true,
     "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "skipLibCheck": false,
     "experimentalDecorators": true,
     "moduleResolution": "node",
@@ -16,7 +19,6 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "stripInternal": true,
-    "noImplicitOverride": true,
     // Vitejs requirements https://vitejs.dev/guide/features.html#typescript-compiler-options
     "isolatedModules": true, // https://esbuild.github.io/content-types/#isolated-modules
     "useDefineForClassFields": true,

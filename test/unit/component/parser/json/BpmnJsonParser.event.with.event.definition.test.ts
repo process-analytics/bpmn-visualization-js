@@ -83,7 +83,7 @@ describe.each([ShapeBpmnElementKind.EVENT_START, ShapeBpmnElementKind.EVENT_END,
 
           it.each(eventDefinitionParameters)(
             `should convert as Shape, when '${eventDefinitionKind}EventDefinition' is %s, ${titleForEventDefinitionIsAttributeOf}`,
-            (title: string, eventDefinition: string | TEventDefinition) => {
+            (_title: string, eventDefinition: string | TEventDefinition) => {
               testMustConvertShapes(
                 {
                   bpmnKind: expectedShapeBpmnElementKind as BuildNotBoundaryEventKind,
