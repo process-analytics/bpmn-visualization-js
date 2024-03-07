@@ -35,7 +35,7 @@ describe('parse bpmn as json for sequence flow', () => {
   it.each([
     ['object', processWithSequenceFlowAsObject],
     ['array', [processWithSequenceFlowAsObject]],
-  ])(`should convert as Edge, when a sequence flow is an attribute (as object) of 'process' (as %s)`, (title: string, processJson: TProcess | TProcess[]) => {
+  ])(`should convert as Edge, when a sequence flow is an attribute (as object) of 'process' (as %s)`, (_title: string, processJson: TProcess | TProcess[]) => {
     const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',

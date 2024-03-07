@@ -59,7 +59,7 @@ class RetriesCounter {
 
 const retriesCounter = new RetriesCounter();
 
-async function saveAndRegisterImages(matcherContext: MatcherContext, received: Buffer, options: MatchImageSnapshotOptions): Promise<void> {
+async function saveAndRegisterImages(matcherContext: MatcherContext, options: MatchImageSnapshotOptions): Promise<void> {
   const snapshotIdentifier = options.customSnapshotIdentifier as string;
   // Manage expected and received images
   const baseImagePathWithName = `${options.customDiffDir}/${snapshotIdentifier}`;
@@ -130,7 +130,7 @@ async function toMatchImageSnapshotCustom(this: MatcherContext, received: Buffer
   } else {
     jestLog('Result: failure');
     if (retriesCounter.hasReachMaxRetries(testId)) {
-      await saveAndRegisterImages(this, received, options);
+      await saveAndRegisterImages(this, options);
     }
 
     // Add configured failure threshold in the error message

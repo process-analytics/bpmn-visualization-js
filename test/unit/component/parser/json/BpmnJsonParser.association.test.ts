@@ -37,7 +37,7 @@ describe('parse bpmn as json for association', () => {
     ['array', [processJsonAsObjectWithAssociationJsonAsObject]],
   ])(
     `should convert as Edge, when an association is an attribute (as object) of 'process' (as %s)`,
-    (title: string, processParameter: BuildProcessParameter | BuildProcessParameter[]) => {
+    (_title: string, processParameter: BuildProcessParameter | BuildProcessParameter[]) => {
       const json = buildDefinitions({ process: processParameter });
 
       const model = parseJsonAndExpectOnlyEdges(json, 1);

@@ -48,7 +48,7 @@ describe.each([
     ])(
       `should convert as Shape with ${expectedMarkerKind} marker, when '${bpmnLoopCharacteristicsKind}' is an attribute (as %s) of '${bpmnSemanticType}' and BPMNShape is expanded`,
       (
-        title: string,
+        _title: string,
         loopCharacteristics:
           | string
           | TStandardLoopCharacteristics
@@ -138,7 +138,7 @@ describe.each([
       ['array with object', [{ isSequential }]],
     ])(
       `should convert as Shape with ${expectedMarkerKind} marker, when 'isSequential' is an attribute (as ${isSequential}) of 'multiInstanceLoopCharacteristics' (as %s) of '${bpmnSemanticType}'  and BPMNShape is expanded`,
-      (title: string, loopCharacteristics: TMultiInstanceLoopCharacteristics | TMultiInstanceLoopCharacteristics[]) => {
+      (_title: string, loopCharacteristics: TMultiInstanceLoopCharacteristics | TMultiInstanceLoopCharacteristics[]) => {
         const json: BpmnJsonModel = {
           definitions: {
             targetNamespace: '',

@@ -50,7 +50,7 @@ describe.each([
   it.each([
     ['object', processWithFlowNodeAsObject],
     ['array', [processWithFlowNodeAsObject]],
-  ])(`should convert as Shape, when a ${bpmnKind} is an attribute (as object) of 'process' (as %s)`, (title: string, processJson: TProcess | TProcess[]) => {
+  ])(`should convert as Shape, when a ${bpmnKind} is an attribute (as object) of 'process' (as %s)`, (_title: string, processJson: TProcess | TProcess[]) => {
     const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',

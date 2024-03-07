@@ -19,7 +19,6 @@ import { logErrorAndOpenAlert } from '../shared/internal-helpers';
 export class DropFileUserInterface {
   private document: Document;
   private head: Element;
-  private body: Element;
 
   constructor(
     private window: Window,
@@ -29,7 +28,6 @@ export class DropFileUserInterface {
   ) {
     this.document = window.document;
     this.head = document.head;
-    this.body = document.body;
     this.initializeDragAndDrop();
   }
 

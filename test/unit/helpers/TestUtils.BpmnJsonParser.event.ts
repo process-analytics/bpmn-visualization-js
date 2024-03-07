@@ -78,7 +78,7 @@ export function executeEventCommonTests(buildEventParameter: BuildEventParameter
   it.each([
     ["'name'", 'event name'],
     ["no 'name'", undefined],
-  ])(`should convert as Shape, when '${buildEventParameter.bpmnKind}' has %s, ${titleSuffix}`, (title: string, eventName: string) => {
+  ])(`should convert as Shape, when '${buildEventParameter.bpmnKind}' has %s, ${titleSuffix}`, (_title: string, eventName: string) => {
     testMustConvertShapes({ ...buildEventParameter, name: eventName }, { ...omitExpectedShape, bpmnElementName: eventName });
   });
 
