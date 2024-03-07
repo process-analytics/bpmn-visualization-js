@@ -25,14 +25,14 @@ import { getBpmnIsInstantiating } from '../style/utils';
 import { buildPaintParameter } from './render/icon-painter';
 import { orderActivityMarkers } from './render/utils';
 
-function getMarkerIconOriginFunction(allMarkers: number, markerOrder: number): (canvas: BpmnCanvas) => void {
-  return allMarkers === 1
+function getMarkerIconOriginFunction(numberOfMarkers: number, markerPosition: number): (canvas: BpmnCanvas) => void {
+  return numberOfMarkers === 1
     ? (canvas: BpmnCanvas) => canvas.setIconOriginForIconBottomCentered()
     : (canvas: BpmnCanvas) => {
-        // Here we suppose that we have 'allMarkers === 2'
+        // Here we suppose that we have 'numberOfMarkers === 2'
         // More markers will be supported when implementing adhoc subprocess or compensation marker
         canvas.setIconOriginForIconBottomCentered();
-        const xTranslation = Math.pow(-1, markerOrder) * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE / 2 + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN);
+        const xTranslation = (Math.pow(-1, markerPosition) * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN)) / 2;
         canvas.translateIconOrigin(xTranslation, 0);
       };
 }
