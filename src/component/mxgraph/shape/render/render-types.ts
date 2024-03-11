@@ -48,11 +48,13 @@ export interface Size {
  * @category BPMN Theme
  */
 export interface IconConfiguration {
+  // TODO JSDoc
+  centerVerticallyInIconBounds?: boolean; // TODO name to review
   originalSize: Size;
   /** If `undefined`, no scaling will be done in {@link BpmnCanvas}. */
   ratioFromParent?: number;
   styleConfig: IconStyleConfiguration;
   setIconOriginFunct: (canvas: BpmnCanvas) => void;
   /** TODO JSDoc (to be consistent with IconPainter) */
-  width?: number;
+  width?: number; // TODO name to review
 }

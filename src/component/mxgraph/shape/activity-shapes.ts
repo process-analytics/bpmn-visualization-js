@@ -61,6 +61,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
         this.iconPainter.paintDoubleLeftArrowheadsIcon({
           ...paintParameter,
           iconWidth: 16,
+          centerIconVerticallyInIconBounds: true,
           // ratioFromParent: 0.3,
           // iconStyleConfig: {
           //   ...paintParameter.iconStyleConfig,

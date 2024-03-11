@@ -35,7 +35,12 @@ export interface PaintParameter {
   ratioFromParent?: number;
   setIconOriginFunct: (canvas: BpmnCanvas) => void;
   /** If set, enforce the icon width. Preserve the dimension ratio. Priority over {@link ratioFromParent}. If not set, .... */
-  iconWidth?: number;
+  iconWidth?: number; // TODO name to review
+  /**
+   * If set, center the icon vertically in the icon bounds.
+   * @default false
+   */
+  centerIconVerticallyInIconBounds?: boolean; // TODO name to review
 }
 
 /**
@@ -101,14 +106,19 @@ export class IconPainter {
    * @param shapeConfig             dimension and style of the shape where the icon is painted.
    * @param iconStyleConfig         style of the icon.
    * @param iconWidth               if set, enforce the icon width. Preserve the dimension ratio. Priority over {@link ratioFromParent}. If not set, ....
+   * @param centerIconVerticallyInIconBounds if set, center the icon vertically in the icon bounds. Default is `false`.
    * @param originalIconSize        original size of the icon used to compute the scaling/ratio in {@link BpmnCanvas}.
    * @protected
    */
-  protected newBpmnCanvas({ canvas, ratioFromParent, setIconOriginFunct, shapeConfig, iconStyleConfig, iconWidth }: PaintParameter, originalIconSize: Size): BpmnCanvas {
+  protected newBpmnCanvas(
+    { canvas, ratioFromParent, setIconOriginFunct, shapeConfig, iconStyleConfig, iconWidth, centerIconVerticallyInIconBounds }: PaintParameter,
+    originalIconSize: Size,
+  ): BpmnCanvas {
     return new BpmnCanvas({
       canvas,
       shapeConfig,
       iconConfig: {
+        centerVerticallyInIconBounds: centerIconVerticallyInIconBounds,
         originalSize: originalIconSize,
         ratioFromParent,
         setIconOriginFunct,

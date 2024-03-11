@@ -99,12 +99,14 @@ export class BpmnCanvas {
 
     const iconWidth = iconConfig.width;
     const ratioFromShape = iconConfig.ratioFromParent;
+    const originalIconWidth = this.iconOriginalSize.width;
+    const originalIconHeight = this.iconOriginalSize.height;
     if (iconWidth) {
-      this.scaleY = this.scaleX = iconWidth / this.iconOriginalSize.width;
+      this.scaleY = this.scaleX = iconWidth / originalIconWidth;
     } else if (ratioFromShape) {
       const scaledIconSize = computeScaledIconSize(this.iconOriginalSize, iconConfig.styleConfig, this.shapeConfiguration, ratioFromShape);
-      this.scaleX = scaledIconSize.width / this.iconOriginalSize.width;
-      this.scaleY = scaledIconSize.height / this.iconOriginalSize.height;
+      this.scaleX = scaledIconSize.width / originalIconWidth;
+      this.scaleY = scaledIconSize.height / originalIconHeight;
     } else {
       this.scaleX = 1;
       this.scaleY = 1;
@@ -112,6 +114,12 @@ export class BpmnCanvas {
 
     this.updateCanvasStyle(iconConfig.styleConfig);
     iconConfig.setIconOriginFunct(this);
+
+    const centerVerticallyInIconBounds = iconConfig.centerVerticallyInIconBounds ?? false;
+    if (centerVerticallyInIconBounds && originalIconWidth > originalIconHeight) {
+      const dy = (originalIconWidth - originalIconHeight) / 2;
+      this.translateIconOrigin(0, -dy);
+    }
   }
 
   /**
