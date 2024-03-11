@@ -114,7 +114,6 @@ export class TaskShape extends BaseTaskShape {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars -- prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
   protected paintTaskIcon(_paintParameter: PaintParameter): void {
     // No symbol for the BPMN Task
-    this.iconPainter.paintEmptyIcon();
   }
 }
 
@@ -244,10 +243,8 @@ export class CallActivityShape extends BaseActivityShape {
         });
         break;
       }
-      default: {
-        // No symbol for the Call Activity calling a Global Task or calling a Process
-        this.iconPainter.paintEmptyIcon();
-      }
+      default:
+      // No symbol for the Call Activity calling a Global Task or calling a Process
     }
   }
 }
