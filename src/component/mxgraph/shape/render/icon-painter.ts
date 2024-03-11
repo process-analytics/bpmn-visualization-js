@@ -86,10 +86,6 @@ export function buildPaintParameter({
  * @experimental
  */
 export class IconPainter {
-  paintEmptyIcon(): void {
-    // empty by nature
-  }
-
   /**
    * Utility paint icon methods to easily instantiate a {@link BpmnCanvas} from a {@link PaintParameter}.
    *

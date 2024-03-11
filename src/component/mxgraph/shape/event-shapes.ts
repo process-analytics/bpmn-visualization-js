@@ -102,10 +102,8 @@ export class EventShape extends mxgraph.mxEllipse {
   }
 
   private paintInnerShape(paintParameter: PaintParameter): void {
-    const paintIcon =
-      this.iconPainters.get(mxUtils.getValue(this.style, BpmnStyleIdentifier.EVENT_DEFINITION_KIND, ShapeBpmnEventDefinitionKind.NONE)) ??
-      (() => this.iconPainter.paintEmptyIcon());
-    paintIcon(paintParameter);
+    const paintIcon = this.iconPainters.get(mxUtils.getValue(this.style, BpmnStyleIdentifier.EVENT_DEFINITION_KIND, ShapeBpmnEventDefinitionKind.NONE));
+    paintIcon?.(paintParameter);
   }
 }
 
