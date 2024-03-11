@@ -54,7 +54,15 @@ export abstract class BaseActivityShape extends mxRectangleShape {
   protected iconPainter: IconPainter = undefined;
 
   private iconPainters = new Map<ShapeBpmnMarkerKind, (paintParameter: PaintParameter) => void>([
-    [ShapeBpmnMarkerKind.ADHOC, (paintParameter: PaintParameter) => this.iconPainter.paintAdHocIcon(paintParameter)],
+    [
+      ShapeBpmnMarkerKind.ADHOC,
+      (paintParameter: PaintParameter) =>
+        this.iconPainter.paintAdHocIcon({
+          ...paintParameter,
+          iconWidth: 16, // in the final implementation, introduce a constant for this value as it is used in multiple places
+          centerIconVerticallyInIconBounds: true,
+        }),
+    ],
     [
       ShapeBpmnMarkerKind.COMPENSATION,
       (paintParameter: PaintParameter) =>

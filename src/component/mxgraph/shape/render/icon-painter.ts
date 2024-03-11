@@ -869,8 +869,25 @@ export class IconPainter {
   }
 
   paintAdHocIcon(paintParameter: PaintParameter): void {
-    // TODO implementation
-    this.paintPentagon(paintParameter);
+    const canvas = this.newBpmnCanvas(paintParameter, { width: 50.5, height: 16.06 });
+    const { canvas: mxCanvas, iconStyleConfig } = paintParameter;
+    mxCanvas.setFillColor(iconStyleConfig.strokeColor);
+
+    // conversion of https://thenounproject.com/icon/tilde-651893/ with https://github.com/process-analytics/mxgraph-svg2shape
+    // shape: noun-tilde-651893
+    // width: 50.5
+    // height: 16.06
+    // foreground
+    canvas.begin();
+    canvas.moveTo(47.5, 0);
+    canvas.lineTo(50.5, 0);
+    canvas.curveTo(49.7, 22.3, 32.2, 15.8, 25.9, 12.9);
+    canvas.curveTo(2.4, 2, 2.7, 15.3, 2.7, 15.3);
+    canvas.lineTo(0, 15.3);
+    canvas.curveTo(0, 7.7, 7, -5.8, 27, 3.8);
+    canvas.curveTo(48.9, 14.3, 47.5, 0, 47.5, 0);
+    canvas.close();
+    canvas.fillAndStroke();
   }
 }
 
