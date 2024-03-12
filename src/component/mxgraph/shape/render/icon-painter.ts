@@ -585,11 +585,17 @@ export class IconPainter {
     //     const { iconStyleConfig } = paintParameter;
     //     iconStyleConfig.fillColor = iconStyleConfig.strokeColor;
 
-    const canvas = this.newBpmnCanvas(paintParameter, { width: 22.49, height: 21.62 });
+    // adjust the original icon dimensions to better fit the loop
+    // PROPOSAL: use a different loop icon with a better aspect ratio, see https://github.com/process-analytics/bpmn-visualization-js/issues/475
+    // const canvas = this.newBpmnCanvas(paintParameter, { width: 22.49, height: 21.62 });
+    const canvas = this.newBpmnCanvas(paintParameter, { width: 20, height: 16 });
 
     // New implementation fixing the problem
     const { canvas: mxCanvas, iconStyleConfig } = paintParameter;
     mxCanvas.setFillColor(iconStyleConfig.strokeColor);
+
+    // translate to center the icon in the bounds
+    canvas.translateIconOrigin(0, -5);
 
     // Loop
     canvas.begin();
@@ -604,6 +610,11 @@ export class IconPainter {
     canvas.lineTo(0, 17.08);
     canvas.close();
     canvas.fillAndStroke();
+
+    // uncomment to debug the icon bounds
+    // canvas.setStrokeColor('red');
+    // canvas.rect(0, 5, 20, 16);
+    // canvas.stroke();
   }
 
   /**
