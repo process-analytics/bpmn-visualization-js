@@ -54,31 +54,8 @@ export abstract class BaseActivityShape extends mxRectangleShape {
   protected iconPainter: IconPainter = undefined;
 
   private iconPainters = new Map<ShapeBpmnMarkerKind, (paintParameter: PaintParameter) => void>([
-    [
-      ShapeBpmnMarkerKind.ADHOC,
-      (paintParameter: PaintParameter) =>
-        this.iconPainter.paintAdHocIcon({
-          ...paintParameter,
-          iconWidth: 16, // in the final implementation, introduce a constant for this value as it is used in multiple places
-          centerIconVerticallyInIconBounds: true,
-        }),
-    ],
-    [
-      ShapeBpmnMarkerKind.COMPENSATION,
-      (paintParameter: PaintParameter) =>
-        this.iconPainter.paintDoubleLeftArrowheadsIcon({
-          ...paintParameter,
-          iconWidth: 16,
-          centerIconVerticallyInIconBounds: true,
-          // ratioFromParent: 0.3,
-          // iconStyleConfig: {
-          //   ...paintParameter.iconStyleConfig,
-          //   strokeWidth: 1.5,
-          //   // no impact, still filled
-          //   isFilled: false,
-          // },
-        }),
-    ],
+    [ShapeBpmnMarkerKind.ADHOC, (paintParameter: PaintParameter) => this.iconPainter.paintAdHocIcon(paintParameter)],
+    [ShapeBpmnMarkerKind.COMPENSATION, (paintParameter: PaintParameter) => this.iconPainter.paintDoubleLeftArrowheadsIcon(paintParameter)],
     [ShapeBpmnMarkerKind.EXPAND, (paintParameter: PaintParameter) => this.iconPainter.paintExpandIcon(paintParameter)],
     [ShapeBpmnMarkerKind.LOOP, (paintParameter: PaintParameter) => this.iconPainter.paintLoopIcon(paintParameter)],
     [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, (paintParameter: PaintParameter) => this.iconPainter.paintSequentialMultiInstanceIcon(paintParameter)],
@@ -93,7 +70,8 @@ export abstract class BaseActivityShape extends mxRectangleShape {
     super.paintForeground(c, x, y, w, h);
     // 0 is used for ratioParent as if we pass undefined to builder function the default 0.25 value will be used instead
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, ratioFromParent: 0, iconStrokeWidth: 1.5 });
-    // paintParameter.iconWidth = 20;
+    paintParameter.iconWidth = StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE;
+    paintParameter.centerIconVerticallyInIconBounds = true;
     this.paintMarkerIcons(paintParameter);
   }
 
