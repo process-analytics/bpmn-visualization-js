@@ -38,7 +38,7 @@ function getMarkerIconOriginFunction(numberOfMarkers: number, markerPosition: nu
   // The previous implementation was adding too much spacing: it added SHAPE_ACTIVITY_MARKER_ICON_SIZE instead of SHAPE_ACTIVITY_MARKER_ICON_SIZE / 2
   return (canvas: BpmnCanvas) => {
     canvas.setIconOriginForIconBottomCentered();
-    const xTranslation = ((2 * markerPosition - (numberOfMarkers + 1)) * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_MARGIN)) / 2;
+    const xTranslation = ((2 * markerPosition - (numberOfMarkers + 1)) * (StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_WIDTH + StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SPACING)) / 2;
     // Here, we must call a function that doesn't apply scaling to the translation as we are passing an absolute translation value.
     // The "translateIconOriginWithoutScaling" method had been added for the POC. An alternative could be to add a parameter to the existing "translateIconOrigin" method to indicate if the translation must be done.
     // For example: translateIconOrigin(dx: number, dy: number, useScaling = true): void
@@ -70,7 +70,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
     super.paintForeground(c, x, y, w, h);
     // 0 is used for ratioParent as if we pass undefined to builder function the default 0.25 value will be used instead
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, ratioFromParent: 0, iconStrokeWidth: 1.5 });
-    paintParameter.iconWidth = StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_SIZE;
+    paintParameter.iconWidth = StyleDefault.SHAPE_ACTIVITY_MARKER_ICON_WIDTH;
     paintParameter.centerIconVerticallyInIconBounds = true;
     this.paintMarkerIcons(paintParameter);
   }
