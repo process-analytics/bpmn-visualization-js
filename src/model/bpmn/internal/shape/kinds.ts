@@ -124,8 +124,8 @@ export enum ShapeBpmnMarkerKind {
   COMPENSATION = 'compensation',
   EXPAND = 'expand',
   LOOP = 'loop',
-  MULTI_INSTANCE_PARALLEL = 'parallel multi instance',
-  MULTI_INSTANCE_SEQUENTIAL = 'sequential multi instance',
+  MULTI_INSTANCE_PARALLEL = 'multi-parallel',
+  MULTI_INSTANCE_SEQUENTIAL = 'multi-sequential',
 }
 
 /**
