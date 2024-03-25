@@ -33,10 +33,15 @@ import { BpmnStyleIdentifier } from './identifiers';
 export const StyleDefault = {
   STROKE_WIDTH_THIN: 2,
   STROKE_WIDTH_THICK: 5,
+  /** Margin between the bottom of markers and the bottom of the activity. */
   SHAPE_ACTIVITY_BOTTOM_MARGIN: 7,
+  /** Margin between the top of icon and the top of the activity. */
   SHAPE_ACTIVITY_TOP_MARGIN: 7,
+  /** Margin between the left of icon and the left of the activity. */
   SHAPE_ACTIVITY_LEFT_MARGIN: 7,
+  /** Spacing between 2 markers. */
   SHAPE_ACTIVITY_MARKER_ICON_MARGIN: 5,
+  /** Theoretical width of a marker. Used to position the markers when there are several markers. */
   SHAPE_ACTIVITY_MARKER_ICON_SIZE: 20,
   POOL_LABEL_SIZE: 30, // most of BPMN pool are ok when setting it to 30
   POOL_LABEL_FILL_COLOR: 'none',
