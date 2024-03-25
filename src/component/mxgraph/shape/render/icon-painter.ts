@@ -29,10 +29,18 @@ import { BpmnCanvas } from './BpmnCanvas';
  * @experimental
  */
 export interface PaintParameter {
+  /** Underlying 'Canvas' in charge of performing the paint operations. */
   canvas: mxAbstractCanvas2D;
+  /** The dimension and the style of the shape where the icon is painted. */
   shapeConfig: ShapeConfiguration;
+  /** The style configuration of the icon. */
   iconStyleConfig: IconStyleConfiguration;
+  /**
+   * The actual size of the icon will be computed from the shape dimensions using this ratio. The ratio between the original dimensions of the icon are kept.
+   * If not set, use the dimensions defined in the icon implementation.
+   */
   ratioFromParent?: number;
+  /** The called function to set the origin of the icon. Generally, it calls a method of {@link BpmnCanvas}. */
   setIconOriginFunct: (canvas: BpmnCanvas) => void;
 }
 
