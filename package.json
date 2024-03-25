@@ -97,7 +97,7 @@
     "prepublishOnly": "pinst --disable",
     "postpublish": "pinst --enable",
     "prepare": "run-s prepare:*",
-    "prepare:husky": "husky install",
+    "prepare:husky": "husky",
     "utils-all": "run-s utils:build utils:test:*",
     "utils:build": "rollup --strictDeprecations --config scripts/utils/rollup.config.mjs",
     "utils:test:json": "node ./scripts/utils/dist/utils.mjs test/fixtures/bpmn/simple-start-task-end.bpmn --output json",
