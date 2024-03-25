@@ -132,7 +132,7 @@ export enum ShapeBpmnMarkerKind {
  * @category BPMN
  */
 export enum ShapeBpmnSubProcessKind {
-  AD_HOC = 'adHoc',
+  AD_HOC = 'adhoc',
   EMBEDDED = 'embedded',
   EVENT = 'event',
   TRANSACTION = 'transaction',
