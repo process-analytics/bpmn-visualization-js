@@ -30,19 +30,20 @@ Typescript have been chosen as it's strongly typed and we believe it adds some s
 More information here: [Typescript](development.md#typescript) 
 
 To enforce best practices we use ESLint and husky.
-The latter performs ```eslint --fix``` on pre-commit event to make sure that committed code meets standards.
+The latter performs lint checks on pre-commit event to make sure that committed code meets standards.
 
-### Husky settings for nvm user
+### Husky settings when using Node Version Managers
 
-On commit, if the pre-commit hook generates an `Command not found` error, create a `.huskyrc` file in your home
-directory and add the following content:
+On commit, if you use a Node Version Manager, the pre-commit hook may generate an `Command not found` error.
+If so, create a [startup file](https://typicode.github.io/husky/how-to.html#startup-files) and add the following content (this example is given for Linux or macOS when using nvm):
 ```bash
 # This loads nvm.sh and sets the correct PATH before running hook
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 ```
+
 For more details, see
-- https://typicode.github.io/husky/#/?id=command-not-found
+- https://typicode.github.io/husky/how-to.html#node-version-managers-and-guis
 - https://github.com/typicode/husky/issues/912
 
 
