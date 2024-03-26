@@ -34,7 +34,7 @@ The latter performs lint checks on pre-commit event to make sure that committed 
 
 ### Husky settings when using Node Version Managers
 
-On commit, if you use a Node Manager, the pre-commit hook may generate an `Command not found` error.
+On commit, if you use a Node Version Manager, the pre-commit hook may generate an `Command not found` error.
 If so, create a [startup file](https://typicode.github.io/husky/how-to.html#startup-files) and add the following content (this example is given for Linux or macOS when using nvm):
 ```bash
 # This loads nvm.sh and sets the correct PATH before running hook
