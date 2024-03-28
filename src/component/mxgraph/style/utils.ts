@@ -145,9 +145,9 @@ export const isShapeStyleUpdate = (style: StyleUpdate): style is ShapeStyleUpdat
 };
 
 export function setCssClasses(cellStyle: BPMNCellStyle, cssClasses: string[]): void {
-  // TODO maxgraph@0.1.0 improve logic
-  !cellStyle.bpmn.extra && (cellStyle.bpmn.extra = { css: { classes: undefined } });
-  cellStyle.bpmn.extra.css.classes = cssClasses;
+  // TODO maxgraph@0.1.0 do we need to check if the parameter is not undefined nor empty?
+  // TODO maxgraph@0.1.0 do we need to keep this function
+  cellStyle.bpmn.extraCssClasses = cssClasses;
 }
 
 // FIXME migration maxGraph 0.1.0 - in model.setStyle, the processing is done only if the style parameter is not equal to the style of the cell

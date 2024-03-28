@@ -68,11 +68,7 @@ export interface BPMNCellStyle extends CellStyle {
     associationDirectionKind?: AssociationDirectionKind;
     isInitiating?: boolean;
     // TODO maxgraph@0.1.0 simplify structure a single extraCssClasses
-    extra?: {
-      css: {
-        classes: string[];
-      };
-    };
+    extraCssClasses?: string[];
     edge?: {
       endFillColor?: string;
       startFillColor?: string;

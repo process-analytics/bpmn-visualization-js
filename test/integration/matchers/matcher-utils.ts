@@ -203,7 +203,7 @@ function toBpmnStyle(rawStyle: BPMNCellStyle, isEdge: boolean): BpmnCellStyle {
     fontOpacity: rawStyle.textOpacity,
     // custom bpmn-visualization
     // extraCssClasses: rawStyle[BpmnStyleIdentifier.EXTRA_CSS_CLASSES]?.split(','),
-    extraCssClasses: rawStyle.bpmn?.extra?.css?.classes,
+    extraCssClasses: rawStyle.bpmn?.extraCssClasses,
     // ignore marker order, which is only relevant when rendering the shape (it has its own order algorithm)
     markers: rawStyle.bpmn?.markers?.sort(),
     // for message flow icon (value in rawStyle are string)

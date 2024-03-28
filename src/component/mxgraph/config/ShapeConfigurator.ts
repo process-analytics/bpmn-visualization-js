@@ -173,13 +173,7 @@ export default class ShapeConfigurator {
         // TODO maxgraph@0.1.0 "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided."constants.DIALECT.STRICTHTML
         let allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === 'strictHtml');
         // TODO rebase BpmnCellStateStyle?
-        const extraCssClasses = (this.state.style as BPMNCellStyle).bpmn?.extra?.css?.classes;
-        const cellId = this.state.cell.id;
-        if (cellId == 'serviceTask_1_2') {
-          console.warn('@@@cell id', cellId);
-          console.warn('@@@cell style', cell.style);
-          console.warn('@@@state style', this.state.style);
-        }
+        const extraCssClasses = (this.state.style as BPMNCellStyle).bpmn?.extraCssClasses;
         if (extraCssClasses) {
           allBpmnClassNames = allBpmnClassNames.concat(extraCssClasses);
         }

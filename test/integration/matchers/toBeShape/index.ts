@@ -129,9 +129,7 @@ function buildExpectedShapeStylePropertyRegexp(
     style.bpmn.gatewayKind = expectedModel.gatewayKind;
   }
   if ('extraCssClasses' in expectedModel) {
-    // TODO rebase duplicated with style/utils.ts setCssClasses
-    style.bpmn.extra ??= { css: { classes: undefined } };
-    style.bpmn.extra.css.classes = expectedModel.extraCssClasses;
+    style.bpmn.extraCssClasses = expectedModel.extraCssClasses;
   }
 
   return style;
