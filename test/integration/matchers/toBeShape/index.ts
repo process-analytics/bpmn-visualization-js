@@ -175,69 +175,54 @@ export function toBeLane(this: MatcherContext, received: string, expected: Expec
   return buildContainerMatcher('toBeLane', this, received, { ...expected, kind: ShapeBpmnElementKind.LANE });
 }
 
-export function toBeCallActivity(this: MatcherContext, received: string, expected: ExpectedCallActivityModelElement): CustomMatcherResult {
-  // TODO maxgraph@0.1.0 introduce common code for activity kinds
+function buildActivityMatcher(matcherName: string, matcherContext: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
+  // TODO maxgraph@0.1.0 - review the markers management (sometimes it is undefined by default, sometimes it is an empty array)
   expected.markers ??= [];
-  return buildShapeMatcher('toBeCallActivity', this, received, { ...expected, kind: ShapeBpmnElementKind.CALL_ACTIVITY });
+  return buildShapeMatcher(matcherName, matcherContext, received, expected);
+}
+
+export function toBeCallActivity(this: MatcherContext, received: string, expected: ExpectedCallActivityModelElement): CustomMatcherResult {
+  return buildActivityMatcher('toBeCallActivity', this, received, { ...expected, kind: ShapeBpmnElementKind.CALL_ACTIVITY });
 }
 
 export function toBeSubProcess(this: MatcherContext, received: string, expected: ExpectedSubProcessModelElement): CustomMatcherResult {
-  // TODO rebase review markers management
-  // TODO maxgraph@0.1.0 introduce common code for activity kinds
-  // expected.markers ??= [];
   if (expected.subProcessKind == ShapeBpmnSubProcessKind.AD_HOC) {
     expected.markers ??= [];
     expected.markers.push(ShapeBpmnMarkerKind.ADHOC);
   }
-  return buildShapeMatcher('toBeSubProcess', this, received, { ...expected, kind: ShapeBpmnElementKind.SUB_PROCESS });
+  return buildActivityMatcher('toBeSubProcess', this, received, { ...expected, kind: ShapeBpmnElementKind.SUB_PROCESS });
 }
 
 export function toBeTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  // TODO maxgraph@0.1.0 introduce common code for activity kinds
-  expected.markers ??= [];
-  return buildShapeMatcher('toBeTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK });
+  return buildActivityMatcher('toBeTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK });
 }
 
 export function toBeServiceTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  // TODO maxgraph@0.1.0 introduce common code for activity kinds
-  expected.markers ??= [];
-  return buildShapeMatcher('toBeServiceTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_SERVICE });
+  return buildActivityMatcher('toBeServiceTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_SERVICE });
 }
 
 export function toBeUserTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  // TODO maxgraph@0.1.0 introduce common code for activity kinds
-  expected.markers ??= [];
-  return buildShapeMatcher('toBeUserTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_USER });
+  return buildActivityMatcher('toBeUserTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_USER });
 }
 
 export function toBeReceiveTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  // TODO maxgraph@0.1.0 introduce common code for activity kinds
-  expected.markers ??= [];
-  return buildShapeMatcher('toBeReceiveTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_RECEIVE });
+  return buildActivityMatcher('toBeReceiveTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_RECEIVE });
 }
 
 export function toBeSendTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  // TODO maxgraph@0.1.0 introduce common code for activity kinds
-  expected.markers ??= [];
-  return buildShapeMatcher('toBeSendTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_SEND });
+  return buildActivityMatcher('toBeSendTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_SEND });
 }
 
 export function toBeManualTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  // TODO maxgraph@0.1.0 introduce common code for activity kinds
-  expected.markers ??= [];
-  return buildShapeMatcher('toBeManualTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_MANUAL });
+  return buildActivityMatcher('toBeManualTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_MANUAL });
 }
 
 export function toBeScriptTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  // TODO maxgraph@0.1.0 introduce common code for activity kinds
-  expected.markers ??= [];
-  return buildShapeMatcher('toBeScriptTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_SCRIPT });
+  return buildActivityMatcher('toBeScriptTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_SCRIPT });
 }
 
 export function toBeBusinessRuleTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  // TODO maxgraph@0.1.0 introduce common code for activity kinds
-  expected.markers ??= [];
-  return buildShapeMatcher('toBeBusinessRuleTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_BUSINESS_RULE });
+  return buildActivityMatcher('toBeBusinessRuleTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_BUSINESS_RULE });
 }
 
 function buildEventMatcher(matcherName: string, matcherContext: MatcherContext, received: string, expected: ExpectedStartEventModelElement): CustomMatcherResult {
