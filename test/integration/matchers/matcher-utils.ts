@@ -126,7 +126,9 @@ export function buildCellMatcher<R>(
         `${RECEIVED_LABEL}: ${cellKind} with id '${received}'`,
         expand,
       );
-  return { message: (): string => messagePrefix + messageSuffix, pass };
+  // TODO migration maxGraph@0.1.0 - remove extra message (we must do it in the master branch and improve the IDE integration)
+  const msgExtra = '\nExpected:' + utils.printExpected(expectedCell) + '\nReceived' + utils.printReceived(receivedCell);
+  return { message: (): string => messagePrefix + messageSuffix + msgExtra, pass };
 }
 
 export function getFontStyleValue(expectedFont: ExpectedFont): number {
