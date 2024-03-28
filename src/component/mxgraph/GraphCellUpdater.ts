@@ -26,6 +26,7 @@ import { OverlayConverter } from './overlay/OverlayConverter';
 import { messageFlowIconId } from './BpmnRenderer';
 import { ensureOpacityValue } from '../helpers/validators';
 import type { BPMNCellStyle } from './renderer/StyleComputer';
+import { cloneUtils } from '@maxgraph/core';
 
 /**
  * @internal
@@ -106,7 +107,11 @@ export default class GraphCellUpdater {
       for (const cell of cells) {
         this.styleManager.ensureStyleIsStored(cell);
 
-        let cellStyle = cell.getStyle();
+        // FIXME migration maxGraph 0.1.0 - bug in updateStyle the object must be cloned before being updated
+        // in mxGraph, the style was a string, now it is an object
+        // let cellStyle = cell.getStyle();
+        let cellStyle = cloneUtils.clone(cell.getStyle());
+        // TODO migration maxGraph 0.1.0 - here we shouldn't return a new object, as the existing one is updated in place
         cellStyle = setStyle(cellStyle, 'opacity', styleUpdate.opacity, ensureOpacityValue);
         cellStyle = updateStroke(cellStyle, styleUpdate.stroke);
         cellStyle = updateFont(cellStyle, styleUpdate.font);
