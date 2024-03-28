@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 import type { Cell, CellStyle, GraphDataModel } from '@maxgraph/core';
-import { setCssClasses } from './utils';
+import { getCellStyleClone, setCssClasses } from './utils';
 import type { CssRegistry } from '../../registry/css-registry';
 import type { BPMNCellStyle } from '../renderer/StyleComputer';
 
@@ -62,7 +62,7 @@ export class StyleManager {
   ensureStyleIsStored(cell: Cell): void {
     const cellId = cell.getId();
     if (!this.stylesCache.has(cellId)) {
-      this.stylesCache.set(cellId, cell.getStyle());
+      this.stylesCache.set(cellId, getCellStyleClone(cell));
     }
   }
 }

@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { isShapeStyleUpdate, setCssClasses, setStyle, updateFill, updateFont, updateStroke } from './style/utils';
+import { getCellStyleClone, isShapeStyleUpdate, setCssClasses, setStyle, updateFill, updateFont, updateStroke } from './style/utils';
 import { StyleManager } from './style/StyleManager';
 
 import type { BpmnGraph } from './BpmnGraph';
@@ -60,11 +60,9 @@ export default class GraphCellUpdater {
 
     this.styleManager.ensureStyleIsStored(cell);
 
-    const cellStyle: BPMNCellStyle = cell.getStyle();
-    cell.id == 'serviceTask_1_2' && console.warn('prior calling setCssClasses', cellStyle);
+    const cellStyle: BPMNCellStyle = getCellStyleClone(cell);
     setCssClasses(cellStyle, cssClasses);
 
-    cell.id == 'serviceTask_1_2' && console.warn('prior calling model.setStyle', cssClasses, cellStyle);
     model.setStyle(cell, cellStyle);
   }
 
@@ -107,10 +105,7 @@ export default class GraphCellUpdater {
       for (const cell of cells) {
         this.styleManager.ensureStyleIsStored(cell);
 
-        // FIXME migration maxGraph 0.1.0 - bug in updateStyle the object must be cloned before being updated
-        // in mxGraph, the style was a string, now it is an object
-        // let cellStyle = cell.getStyle();
-        let cellStyle = cloneUtils.clone(cell.getStyle());
+        let cellStyle = getCellStyleClone(cell);
         // TODO migration maxGraph 0.1.0 - here we shouldn't return a new object, as the existing one is updated in place
         cellStyle = setStyle(cellStyle, 'opacity', styleUpdate.opacity, ensureOpacityValue);
         cellStyle = updateStroke(cellStyle, styleUpdate.stroke);
