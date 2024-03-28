@@ -115,6 +115,7 @@ export const updateFont = (cellStyle: CellStyle, font: Font): CellStyle => {
     cellStyle = setStyle(cellStyle, 'fontSize', font.size);
     cellStyle = setStyle(cellStyle, 'fontFamily', font.family);
 
+    // FIMXE migration maxGraph@0.1.0 - the final value is lower by 1 than the expected value
     cellStyle = setStyleFlag(cellStyle, 'fontStyle', FONT.BOLD, font.isBold);
     cellStyle = setStyleFlag(cellStyle, 'fontStyle', FONT.ITALIC, font.isItalic);
     cellStyle = setStyleFlag(cellStyle, 'fontStyle', FONT.UNDERLINE, font.isUnderline);

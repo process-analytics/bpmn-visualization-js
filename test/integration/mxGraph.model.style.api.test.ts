@@ -132,13 +132,20 @@ describe('mxGraph model - update style', () => {
     });
 
     it('Font style already set and no font style as api parameter', () => {
-      const font = {
+      const font: Font = {
         isBold: true,
         isItalic: true,
         isUnderline: true,
         isStrikeThrough: true,
       };
       bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { font });
+      expect('userTask_2_2').toBeUserTask({
+        font,
+        // not under test
+        parentId: 'lane_02',
+        label: 'User Task 2.2',
+      });
+
       // this doesn't change the style as the font property is empty
       bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { font: {} });
 
@@ -158,6 +165,17 @@ describe('mxGraph model - update style', () => {
           isUnderline: true,
           isStrikeThrough: true,
         },
+      });
+      expect('userTask_2_2').toBeUserTask({
+        font: {
+          isBold: true,
+          isItalic: false,
+          isUnderline: false,
+          isStrikeThrough: true,
+        },
+        // not under test
+        parentId: 'lane_02',
+        label: 'User Task 2.2',
       });
       bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { font: { isItalic: false, isUnderline: false } });
 
