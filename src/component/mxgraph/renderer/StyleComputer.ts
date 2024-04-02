@@ -188,7 +188,8 @@ export default class StyleComputer {
     if (font) {
       font.name && (style.fontFamily = font.name);
       font.size && (style.fontSize = font.size);
-      style.fontStyle = getFontStyleValue(font);
+      const fontStyleValue = getFontStyleValue(font);
+      fontStyleValue && (style.fontStyle = fontStyleValue);
     }
 
     if (!this.ignoreBpmnColors) {

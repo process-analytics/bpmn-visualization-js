@@ -190,7 +190,6 @@ describe('Style Computer', () => {
       expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
         baseStyleNames: ['scriptTask'],
         fontFamily: 'Roboto',
-        fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
         bpmn: { kind: ShapeBpmnElementKind.TASK_SCRIPT },
       });
     });
@@ -267,7 +266,6 @@ describe('Style Computer', () => {
         fontFamily: 'Helvetica',
         align: 'center',
         verticalAlign: 'top',
-        fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
         bpmn: { kind: FlowKind.SEQUENCE_FLOW },
       });
     });
@@ -316,7 +314,6 @@ describe('Style Computer', () => {
       expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
         baseStyleNames: ['intermediateCatchEvent'],
         fontFamily: 'Ubuntu',
-        fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
         bpmn: { kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, eventDefinitionKind: ShapeBpmnEventDefinitionKind.CONDITIONAL },
       });
     });
@@ -337,7 +334,6 @@ describe('Style Computer', () => {
       expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
         baseStyleNames: ['boundaryEvent'],
         fontFamily: 'Arial',
-        fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
         bpmn: { kind: ShapeBpmnElementKind.EVENT_BOUNDARY, eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE, isInterrupting: true },
       });
     });
@@ -367,7 +363,6 @@ describe('Style Computer', () => {
       expect(computeStyle(shape)).toStrictEqual(<BPMNCellStyle>{
         baseStyleNames: ['startEvent'],
         fontFamily: 'Arial',
-        fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
         bpmn: { kind: ShapeBpmnElementKind.EVENT_START, eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE, isInterrupting: true },
       });
     });
@@ -405,7 +400,6 @@ describe('Style Computer', () => {
             baseStyleNames: ['subProcess'],
             bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind, markers },
             fontFamily: 'Arial',
-            fontStyle: 0, // TODO decide if we set the fontStyle property to 0 or if we omit it
           };
           !markers.includes(ShapeBpmnMarkerKind.EXPAND) && (expectedStyle.verticalAlign = 'top');
 
@@ -419,7 +413,6 @@ describe('Style Computer', () => {
             baseStyleNames: ['subProcess'],
             bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind, markers },
             fontFamily: 'sans-serif',
-            fontStyle: 0, // TODO decide if we set the fontStyle property to 0 or if we omit it
             labelWidth: 301,
             verticalAlign: 'top',
             // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
@@ -447,7 +440,6 @@ describe('Style Computer', () => {
               markers,
             },
             fontFamily: 'Arial',
-            fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
           };
           !markers.includes(ShapeBpmnMarkerKind.EXPAND) && (expectedStyle.verticalAlign = 'top');
           expect(computeStyle(shape)).toStrictEqual(expectedStyle);
@@ -464,7 +456,6 @@ describe('Style Computer', () => {
               markers,
             },
             fontFamily: 'sans-serif',
-            fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
             labelWidth: 301,
             verticalAlign: 'top',
             // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
@@ -489,7 +480,6 @@ describe('Style Computer', () => {
             baseStyleNames: ['callActivity'],
             bpmn: { kind: ShapeBpmnElementKind.CALL_ACTIVITY, globalTaskKind: globalTaskKind, markers: [] },
             fontFamily: 'Arial',
-            fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
           };
           expect(computeStyle(shape)).toStrictEqual(expectedStyle);
         });
@@ -505,7 +495,6 @@ describe('Style Computer', () => {
               markers: [],
             },
             fontFamily: 'sans-serif',
-            fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
             labelWidth: 301,
             verticalAlign: 'top',
             // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
@@ -527,7 +516,6 @@ describe('Style Computer', () => {
         baseStyleNames: ['receiveTask'],
         bpmn: { kind: ShapeBpmnElementKind.TASK_RECEIVE, isInstantiating: instantiate, markers: [] },
         fontFamily: 'Arial',
-        fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
       });
     });
   });
@@ -548,7 +536,6 @@ describe('Style Computer', () => {
           kind: ShapeBpmnElementKind.TEXT_ANNOTATION,
         },
         fontFamily: 'Segoe UI',
-        fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
         labelWidth: 101,
         verticalAlign: 'top',
         // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
@@ -575,7 +562,6 @@ describe('Style Computer', () => {
           kind: ShapeBpmnElementKind.GROUP,
         },
         fontFamily: 'Roboto',
-        fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
         // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
         labelPosition: <AlignValue>'ignore',
         labelWidth: 101,
@@ -636,7 +622,6 @@ describe('Style Computer', () => {
             baseStyleNames: [bpmnKind],
             bpmn: { kind: bpmnKind, markers: [markerKind] },
             fontFamily: 'Arial',
-            fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
           };
           bpmnKind === ShapeBpmnElementKind.TASK_RECEIVE && (expectedStyle.bpmn.isInstantiating = false);
           expect(computeStyle(shape)).toStrictEqual(expectedStyle);
@@ -705,7 +690,6 @@ describe('Style Computer', () => {
           baseStyleNames: ['eventBasedGateway'],
           bpmn: { kind: ShapeBpmnElementKind.GATEWAY_EVENT_BASED, gatewayKind, isInstantiating: !!instantiate },
           fontFamily: 'Arial',
-          fontStyle: 0, // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
         });
       },
     );
