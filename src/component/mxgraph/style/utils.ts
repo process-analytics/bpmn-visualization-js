@@ -98,10 +98,18 @@ export const setStyle = <T extends string | number>(
   converter: (value: T) => T | undefined = (value: T) => value,
 ): CellStyle => {
   if (value != undefined) {
-    // TODO rebase fix type - can we really ignore ts error?
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    cellStyle[key] = converter(value);
+    const convertedValue = converter(value);
+    // TODO maxgraph@0.1.0 - check condition (seems to be ok according to tests)
+    // if (convertedValue == null || convertedValue == undefined) {
+    if (convertedValue == null) {
+      // remove the property to use the value from the "base styles" which provides the default value
+      delete cellStyle[key];
+    } else {
+      // TODO rebase fix type - can we really ignore ts error?
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      cellStyle[key] = convertedValue;
+    }
   }
   return cellStyle;
 };
