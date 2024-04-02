@@ -106,20 +106,24 @@ export const setStyle = <T extends string | number>(
   return cellStyle;
 };
 
-export const setStyleFlag = (cellStyle: CellStyle, key: NumericCellStateStyleKeys, flag: number, value?: boolean): CellStyle =>
-  value == undefined ? cellStyle : styleUtils.setStyleFlag(cellStyle, key, flag, value);
+export const setStyleFlag = (cellStyle: CellStyle, key: NumericCellStateStyleKeys, flag: number, value?: boolean): CellStyle => {
+  if (value == undefined) return cellStyle;
+
+  // FIXME maxGraph@0.1.0 - potential bug in maxGraph setStyleFlag seems to fail when the fontStyle is undefined
+  // when the property is undefined, setting the flag set the value to 0.
+  // so initialize the value when undefined as a workaround
+  if (cellStyle[key] == undefined) {
+    cellStyle[key] = 0;
+  }
+
+  return styleUtils.setStyleFlag(cellStyle, key, flag, value);
+};
 
 export const updateFont = (cellStyle: CellStyle, font: Font): CellStyle => {
   if (font) {
     cellStyle = setStyle(cellStyle, 'fontColor', font.color, convertDefaultValue);
     cellStyle = setStyle(cellStyle, 'fontSize', font.size);
     cellStyle = setStyle(cellStyle, 'fontFamily', font.family);
-
-    // FIXME maxGraph@0.1.0 - potential bug in maxGraph setStyleFlag seems to fail when the fontStyle is undefined
-    // when the property is undefined, setting the flag set the value to 0.
-    if (!cellStyle.fontStyle) {
-      cellStyle.fontStyle = 0;
-    }
 
     cellStyle = setStyleFlag(cellStyle, 'fontStyle', FONT.BOLD, font.isBold);
     cellStyle = setStyleFlag(cellStyle, 'fontStyle', FONT.ITALIC, font.isItalic);
