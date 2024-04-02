@@ -18,7 +18,7 @@ import { initializeBpmnVisualizationWithContainerId } from './helpers/bpmn-visua
 import { HtmlElementLookup } from './helpers/html-utils';
 import type { ExpectedShapeModelElement, VerticalAlign } from './helpers/model-expect';
 import { bpmnVisualization } from './helpers/model-expect';
-import { buildReceivedResolvedModelCellStyle, buildReceivedViewStateStyle } from './matchers/matcher-utils';
+import { buildReceivedResolvedModelCellStyle, buildReceivedViewStateStyle, getFontStyleValue } from './matchers/matcher-utils';
 import { buildExpectedShapeCellStyle } from './matchers/toBeShape';
 import { readFileSync } from '@test/shared/file-helper';
 import { MessageVisibleKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
@@ -138,6 +138,8 @@ describe('mxGraph model - update style', () => {
         isUnderline: true,
         isStrikeThrough: true,
       };
+      expect(getFontStyleValue(font)).toBe(15);
+
       bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { font });
       expect('userTask_2_2').toBeUserTask({
         font,
