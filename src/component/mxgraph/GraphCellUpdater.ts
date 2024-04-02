@@ -106,7 +106,7 @@ export default class GraphCellUpdater {
         this.styleManager.ensureStyleIsStored(cell);
 
         let cellStyle = getCellStyleClone(cell);
-        // TODO migration maxGraph 0.1.0 - here we shouldn't return a new object, as the existing one is updated in place
+        // TODO maxGraph 0.1.0 - here we shouldn't return a new object, as the existing one is updated in place
         cellStyle = setStyle(cellStyle, 'opacity', styleUpdate.opacity, ensureOpacityValue);
         cellStyle = updateStroke(cellStyle, styleUpdate.stroke);
         cellStyle = updateFont(cellStyle, styleUpdate.font);

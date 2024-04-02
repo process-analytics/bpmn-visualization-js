@@ -157,7 +157,7 @@ export function setCssClasses(cellStyle: BPMNCellStyle, cssClasses: string[]): v
   }
 }
 
-// FIXME migration maxGraph 0.1.0 - in model.setStyle, the processing is done only if the style parameter is not equal to the style of the cell
+// FIXME maxGraph 0.1.0 - in model.setStyle, the processing is done only if the style parameter is not equal to the style of the cell
 // If the style has been get from the cell, then modified, this is the same instance as in the cell, so the 2 objects are equal, so no processing is done
 // in mxGraph, the style was a string, now it is an object. Modifying the returned style didn't modified the string of the style cell, so the 2 objects weren't equal and so processing was done.
 //
