@@ -171,8 +171,8 @@ describe('mxGraph model - update style', () => {
       expect('userTask_2_2').toBeUserTask({
         font: {
           isBold: true,
-          isItalic: false,
-          isUnderline: false,
+          isItalic: true,
+          isUnderline: true,
           isStrikeThrough: true,
         },
         // not under test
