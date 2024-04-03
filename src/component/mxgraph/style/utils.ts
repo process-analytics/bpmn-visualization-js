@@ -99,9 +99,9 @@ export const setStyle = <T extends string | number>(
 ): CellStyle => {
   if (value != undefined) {
     const convertedValue = converter(value);
-    // TODO maxgraph@0.1.0 - check condition (seems to be ok according to tests)
-    // if (convertedValue == null || convertedValue == undefined) {
     if (convertedValue == null) {
+      // TODO maxgraph@0.1.0 - this is required for the effective cell style computation with the fix temporary used in bpmn-visualization
+      // if the value is undefined/or null, the value from the default style is not used!
       // remove the property to use the value from the "base styles" which provides the default value
       delete cellStyle[key];
     } else {
@@ -115,6 +115,8 @@ export const setStyle = <T extends string | number>(
 };
 
 export const setStyleFlag = (cellStyle: CellStyle, key: NumericCellStateStyleKeys, flag: number, value?: boolean): CellStyle => {
+  // TODO maxGraph@0.1.0 - move this comment to the master branch
+  // the mxGraph setStyleFlag function toggle the flag if the value if undefined is passed. In bpmn-visualization, we want to keep the value as it is instead in this case (there is no toggle feature)
   if (value == undefined) return cellStyle;
 
   // FIXME maxGraph@0.1.0 - potential bug in maxGraph setStyleFlag seems to fail when the fontStyle is undefined
