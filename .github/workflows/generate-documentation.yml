@@ -44,7 +44,7 @@ jobs:
         uses: ./.github/actions/custom-surge-preview
         with:
           artifact-name: documentation
-          build-preview-command: npm run docs
+          build-preview-command: bun run docs
           build-preview-dist: build/docs
           github-token: ${{ secrets.GITHUB_TOKEN }}
           surge-token: ${{ secrets.SURGE_TOKEN }}
@@ -57,7 +57,7 @@ jobs:
       - name: Build Setup
         uses: ./.github/actions/build-setup
       - name: Build docs
-        run: npm run docs
+        run: bun run docs
       - name: Upload
         uses: actions/upload-artifact@v4
         with:

@@ -46,7 +46,7 @@ jobs:
           browser: ${{env.browser}}
       - name: Run performance tests
         id: 'run_perf_tests'
-        run: npm run test:perf
+        run: bun run test:perf
       - name: Upload test results
         if: success()
         uses: actions/upload-artifact@v4

@@ -13,7 +13,7 @@ jobs:
       - name: Build Setup
         uses: ./.github/actions/build-setup
       - name: Build Demo
-        run: npm run demo
+        run: bun run demo
       - name: Set ARTIFACT_NAME
         run: echo "ARTIFACT_NAME=demo-${{github.sha}}" >> $GITHUB_ENV
       - name: Upload

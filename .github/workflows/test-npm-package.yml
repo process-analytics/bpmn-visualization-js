@@ -64,7 +64,7 @@ jobs:
         id: 'test_bundles'
         env:
           BROWSERS: ${{env.test-bundles-browser}}
-        run: npm run test:bundles:verbose
+        run: bun run test:bundles:verbose
       - name: Upload bundles test results
         if: ${{ failure() && steps.test_bundles.outcome == 'failure' }}
         uses: actions/upload-artifact@v4

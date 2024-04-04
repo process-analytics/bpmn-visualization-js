@@ -33,7 +33,7 @@ jobs:
         uses: ./.github/actions/custom-surge-preview
         with:
           artifact-name: demo
-          build-preview-command: npm run demo
+          build-preview-command: bun run demo
           build-preview-dist: build/demo
           github-token: ${{ secrets.GITHUB_TOKEN }}
           surge-token: ${{ secrets.SURGE_TOKEN }}
