@@ -23,7 +23,7 @@ import { getDefaultParentId } from '../../helpers/model-expect';
 import type { Cell } from '@maxgraph/core';
 
 export function toBeCell(this: MatcherContext, received: string): CustomMatcherResult {
-  // TODO migration maxGraph@0.1.0 - simplify expression?
+  // TODO maxGraph@0.1.0 - simplify expression?
   const pass = getCell(received) ? true : false;
   return {
     message: () => this.utils.matcherHint(`.${pass ? 'not.' : ''}toBeCell`) + '\n\n' + `Expected cell with id '${received}' ${pass ? 'not ' : ''}to be found in the mxGraph model`,
