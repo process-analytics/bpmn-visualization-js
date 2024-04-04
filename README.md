@@ -35,6 +35,35 @@
 </div>  
 <br>
 
+
+This project is built with bun v1.1.0. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+
+To install Bun: https://bun.sh/docs/installation
+
+```bash
+npm install -g bun
+```
+
+To install dependencies: https://bun.sh/docs/cli/install
+
+```bash
+bun install
+
+```
+
+To configure TypeScript: https://bun.sh/docs/typescript
+
+
+To run dev:
+
+```bash
+bun run dev
+```
+
+
+
+
+
 `bpmn-visualization` is a TypeScript library for visualizing process execution data on [BPMN](https://www.omg.org/spec/BPMN/2.0.2/) diagrams with:
 - additional display options for execution data (highlight some transitions, counters, and more)
 - interactive capacities (mouse hover, click)
