@@ -70,17 +70,12 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement |
   const expectedCell: ExpectedCell = {
     id,
     value: expectedModel.label ?? null, // maxGraph now set to 'null', mxGraph set to 'undefined'
-    // TODO rebase make style work
     styleRawFromModelOrJestExpect: expect.objectContaining(buildExpectedEdgeStylePropertyRegexp(expectedModel)),
     styleResolvedFromModel: buildExpectedEdgeCellStyle(expectedModel),
     styleViewState: buildExpectedEdgeCellStyle(expectedModel),
     edge: true,
     vertex: false,
     parent: { id: parentId ? parentId : getDefaultParentId() }, // TODO maxgraph@0.1.0 use ?? instead (in master branch)
-    // TODO rebase clean commented code
-    // state: {
-    //   style: buildExpectedStateStyle(expectedModel),
-    // },
     overlays: expectedModel.overlays,
   };
 
