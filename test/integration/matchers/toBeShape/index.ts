@@ -134,7 +134,6 @@ function buildExpectedCell(id: string, expectedModel: ExpectedShapeModelElement)
   return {
     id,
     value: expectedModel.label ?? null, // maxGraph now set to 'null', mxGraph set to 'undefined'
-    // TODO rebase make it work
     styleRawFromModelOrJestExpect: expect.objectContaining(buildExpectedShapeStylePropertyRegexp(expectedModel)),
     styleResolvedFromModel: buildExpectedShapeCellStyle(expectedModel),
     styleViewState: buildExpectedShapeCellStyle(expectedModel),
@@ -150,8 +149,6 @@ function buildShapeMatcher(matcherName: string, matcherContext: MatcherContext, 
 }
 
 function buildContainerMatcher(matcherName: string, matcherContext: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  // TODO rebase why do we need this, this seems useles
-  // 'isHorizontal' in expected && (expected.isHorizontal = expected.isHorizontal);
   return buildShapeMatcher(matcherName, matcherContext, received, {
     ...expected,
     // TODO maxgraph@0.1.0 maxGraph "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided." constants.SHAPE.SWIMLANE
