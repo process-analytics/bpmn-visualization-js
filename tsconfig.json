@@ -21,7 +21,8 @@
     // "noPropertyAccessFromIndexSignature": true,
 
     // "bun-types" is the important part
-    "types": ["bun-types"],
+    // "types": ["bun-types"],
+    "types": ["node", "jest", "lodash"],
 
 
 
