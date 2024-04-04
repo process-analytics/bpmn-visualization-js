@@ -154,7 +154,8 @@ class HtmlElementRegistry {
 
   getBpmnHtmlElements(bpmnElementKind: BpmnElementKind): HTMLElement[] {
     const selectors = this.querySelectors.elementsOfKind(computeBpmnBaseClassName(bpmnElementKind));
-    return [...this.container.querySelectorAll<HTMLElement>(selectors)];
+    // eslint-disable-next-line unicorn/prefer-spread
+    return Array.from(this.container.querySelectorAll<HTMLElement>(selectors));
   }
 }
 
