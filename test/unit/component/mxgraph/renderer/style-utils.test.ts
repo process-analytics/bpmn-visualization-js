@@ -44,7 +44,6 @@ describe('compute base css class names of BPMN elements', () => {
 });
 
 describe('compute all css class names based on style input', () => {
-  // TODO rebase adapt test entries
   it.each`
     style                                                                                                                                                 | isLabel  | expectedClassNames
     ${{ bpmn: { kind: ShapeBpmnElementKind.LANE } }}                                                                                                      | ${true}  | ${['bpmn-type-container', 'bpmn-lane', 'bpmn-label']}

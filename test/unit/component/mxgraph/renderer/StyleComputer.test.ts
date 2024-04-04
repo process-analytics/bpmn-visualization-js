@@ -695,7 +695,6 @@ describe('Style Computer', () => {
     );
   });
 
-  // TODO rebase adapt tests for maxGraph
   describe('compute style - colors', () => {
     describe.each([[undefined], [false], [true]])(`Ignore BPMN colors: %s`, (ignoreBpmnColors: boolean) => {
       // 'undefined' RendererOptions tested in other tests in this file
@@ -785,8 +784,7 @@ describe('Style Computer', () => {
           edge.extensions.strokeColor = '#11aabb';
           const expectedStyle = <BPMNCellStyle>{
             bpmn: { isInitiating: false },
-            // TODO maxGraph@0.1.0 force conversion to ShapeValue
-            // TODO rebase decide if we use BpmnStyleIdentifier const instead
+            // TODO maxGraph@0.1.0 force conversion to ShapeValue + decide if we use BpmnStyleIdentifier const instead
             shape: <ShapeValue>'bpmn.messageFlowIcon',
           };
           if (expectAdditionalColorsStyle) {
