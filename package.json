@@ -57,8 +57,8 @@
     "NOTICE"
   ],
   "scripts": {
-    "dev-vite": "bunx --bun vite",
-    "dev": "bun --watch run ./dev/ts/pages/index.ts",
+    "dev": "bunx --bun vite",
+    "dev-bun": "bun --watch run ./dev/ts/pages/index.ts",
     "all": "run-s clean lint lint-check build test",
     "clean": "rimraf build dist",
     "build": "tsc --noEmit",
@@ -91,7 +91,7 @@
     "test:e2e:verbose": "cross-env DEBUG=bv:test:*,pw:browser* bun run test:e2e",
     "test:e2e:coverage": "bun run test:e2e -- --coverage",
     "test:perf": " jest --runInBand --detectOpenHandles --config=./test/performance/jest.config.cjs",
-    "test:perf:verbose": "cross-env DEBUG=bv:test:*,pw:browser* npm bun test:perf",
+    "test:perf:verbose": "cross-env DEBUG=bv:test:*,pw:browser* bun run test:perf",
     "test:perf:compile": "tsc -p test/performance/",
     "test:bundles": "jest --runInBand --detectOpenHandles --config=./test/bundles/jest.config.cjs",
     "test:bundles:verbose": "cross-env DEBUG=bv:*,pw:browser* bun run test:bundles",
