@@ -73,7 +73,7 @@
     "generate-types:add-license-header": "bun run scripts/add-license-header.mjs",
     "prepack": "run-s clean generate-types build-bundles",
     "demo": "run-s demo:*",
-    "demo:build": "tsc --noEmit && bunx --bun vite build",
+    "demo:build": "tsc --noEmit && vite build",
     "demo:prepare": "bun run scripts/prepare-demo-for-publish.mjs",
     "demo-preview": "vite preview",
     "docs": "run-s docs:*",
