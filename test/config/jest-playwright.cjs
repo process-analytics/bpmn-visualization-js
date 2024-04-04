@@ -87,7 +87,7 @@ const computeConfigurationForDevelopmentServerUsage = defaultBrowsers => {
   log('Computing configuration for dev server usage');
   /** @type {import('jest-playwright-preset/types/global').ServerOptions} */
   const serverOptions = {
-    command: `npm run dev`,
+    command: `bun run dev`,
     port: 10_001,
     basePath: '/dev/public/index.html',
     // if default or tcp, the test starts right away whereas the dev server is not available on http
@@ -96,7 +96,7 @@ const computeConfigurationForDevelopmentServerUsage = defaultBrowsers => {
     // high value mainly for GitHub Workflows running on macOS (slow machines) and to build the bundle before start
     launchTimeout: isRunningOnCi() ? 60_000 : 10_000,
     debug: true,
-    usedPortAction: 'ignore', // your tests are executed, we assume that the server is already started
+    usedPortAction: 'ignore', // your tests are executed; we assume that the server is already started
     waitOnScheme: {
       verbose: false,
     },
