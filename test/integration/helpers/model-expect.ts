@@ -153,9 +153,9 @@ export interface ExpectedFont {
   opacity?: Opacity;
 }
 
-// TODO rebase do we keep HorizontalAlign, we could use AlignValue instead
+// TODO maxGraph@0.1.0 do we keep HorizontalAlign, we could use AlignValue instead
 export type HorizontalAlign = 'center' | 'left' | 'right';
-// TODO rebase do we keep VerticalAlign, we could use VAlignValue instead
+// TODO maxGraph@0.1.0 do we keep VerticalAlign, we could use VAlignValue instead
 export type VerticalAlign = 'bottom' | 'middle' | 'top';
 
 type ExpectedModelElement = {

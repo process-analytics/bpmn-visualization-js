@@ -76,7 +76,6 @@ export function buildExpectedShapeCellStyle(expectedModel: ExpectedShapeModelEle
   style.swimlaneFillColor = [ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.LANE].includes(expectedModel.kind) && style.fillColor !== 'none' ? style.fillColor : undefined;
 
   style.fillOpacity = expectedModel.fill?.opacity;
-  // TODO rebase horizontal from number to boolean
   'isSwimLaneLabelHorizontal' in expectedModel && (style.horizontal = expectedModel.isSwimLaneLabelHorizontal);
 
   // ignore marker order, which is only relevant when rendering the shape (it has its own order algorithm)
@@ -113,12 +112,6 @@ function buildExpectedShapeStylePropertyRegexp(
   if (expectedModel.isInstantiating !== undefined) {
     style.bpmn.isInstantiating = expectedModel.isInstantiating;
   }
-  // if (expectedModel.markers?.length > 0) {
-  //   // There is no guaranteed order, so testing the list of markers with a string is not practical. Markers are therefore checked with BpmnStyle.markers.
-  //   // Here, we check only that the markers are placed in the style.
-  //   expectedStyle = expectedStyle + `.*bpmn.markers=*`;
-  // }
-  // TODO rebase ignore markers order
   if (expectedModel.markers) {
     style.bpmn.markers = expectedModel.markers;
   }
