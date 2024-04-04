@@ -27,9 +27,7 @@ import { getFontStyleValue as computeFontStyleValue } from '@lib/component/mxgra
 import { Font } from '@lib/model/bpmn/internal/Label';
 import type { BPMNCellStyle } from '@lib/component/mxgraph/renderer/StyleComputer';
 
-// TODO maxgraph@0.1.0 remove this type
-// TODO should be remove and use BPMNCellStyle instead
-// TODO rebase make it work
+// TODO maxgraph@0.1.0 remove this type and use a single type shared with BPMNCellStyle
 export interface BpmnCellStyle {
   opacity: Opacity;
   verticalAlign?: VerticalAlign;
