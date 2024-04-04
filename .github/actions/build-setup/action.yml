@@ -21,15 +21,10 @@ runs:
       with:
         bun-version: latest
         registry-url: ${{ inputs.registry-url }}
-    - name: Install dependencies
-      uses: bahmutov/npm-install@v1
-      if: inputs.install-dependencies == 'true'
-      env:
-        # Do not install browsers https://playwright.dev/docs/browsers#installing-browsers
-        PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
-      with:
-        install-command: npm ci --ignore-scripts --prefer-offline --audit false
     - name: Install dependecies with Bun
       if: inputs.install-dependencies == 'true'
       shell: bash
       run: bun install
+      env:
+        # Do not install browsers https://playwright.dev/docs/browsers#installing-browsers
+        PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
