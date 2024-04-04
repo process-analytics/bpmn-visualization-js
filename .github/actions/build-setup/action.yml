@@ -16,6 +16,11 @@ runs:
       with:
         node-version-file: '.nvmrc'
         registry-url: ${{ inputs.registry-url }}
+    - name: Setup bun 🔧
+      uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: latest
+        registry-url: ${{ inputs.registry-url }}
     - name: Install dependencies
       uses: bahmutov/npm-install@v1
       if: inputs.install-dependencies == 'true'
@@ -24,3 +29,7 @@ runs:
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
       with:
         install-command: npm ci --ignore-scripts --prefer-offline --audit false
+    - name: Install dependecies with Bun
+      if: inputs.install-dependencies == 'true'
+      shell: bash
+      run: bun install
