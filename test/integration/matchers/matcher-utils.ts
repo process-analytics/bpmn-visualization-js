@@ -132,7 +132,6 @@ export function buildCellMatcher<R>(
 }
 
 export function getFontStyleValue(expectedFont: ExpectedFont): number {
-  // TODO maxgraph@0.1.0 decide if we set the fontStyle property to 0 or if we omit it
   return (
     (expectedFont
       ? computeFontStyleValue(new Font(expectedFont.family, expectedFont.size, expectedFont.isBold, expectedFont.isItalic, expectedFont.isUnderline, expectedFont.isStrikeThrough))
