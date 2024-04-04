@@ -73,7 +73,6 @@ describe('mxGraph model - update style', () => {
       const fill: Fill = { color: 'gold', opacity: 55 };
       bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { stroke, font, opacity, fill });
 
-      // FIXME migration maxgraph@0.1.0 it seems there is an issue in the fontStyle computation, we expect 15 and we got 14
       expect('userTask_2_2').toBeUserTask({
         stroke,
         font,
