@@ -216,9 +216,6 @@ function toBpmnStyle(rawStyle: BPMNCellStyle, isEdge: boolean): BpmnCellStyle {
     style.endSize = rawStyle.endSize;
   } else {
     style.shape = rawStyle.shape;
-    // TODO rebase horizontal check
-    // why is it needed in maxgraph , explain why
-    // stateStyle.horizontal && (expectedStateStyle.horizontal = stateStyle.horizontal);
     style.horizontal = rawStyle.horizontal;
     style.swimlaneFillColor = rawStyle.swimlaneFillColor;
     style.fillOpacity = rawStyle.fillOpacity;
