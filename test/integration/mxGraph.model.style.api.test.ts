@@ -138,6 +138,7 @@ describe('mxGraph model - update style', () => {
         isStrikeThrough: true,
       };
       bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { font });
+      // TODO maxGraph@0.1.0 - add such additional check in the master branch and do it when several style update actions are done
       expect('userTask_2_2').toBeUserTask({
         font,
         // not under test
