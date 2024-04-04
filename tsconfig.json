@@ -1,9 +1,35 @@
 {
   "compilerOptions": {
+    // Enable latest features
+    "lib": ["ESNext", "DOM"],
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleDetection": "force",
+
+    // Bundler mode
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    // "verbatimModuleSyntax": true,
+    "noEmit": true,
+
+    // Best practices
+    // "strict": true,
+    // "skipLibCheck": true,
+    // "noFallthroughCasesInSwitch": true,
+
+    // Some stricter flags
+    // "noPropertyAccessFromIndexSignature": true,
+
+    // "bun-types" is the important part
+    "types": ["bun-types"],
+
+
+
+
     "declaration": false,
     "outDir": "./build/lib",
-    "module": "ES2015",
-    "target": "ES2015",
+    // "module": "ES2015",
+    // "target": "ES2015",
     "strictBindCallApply": true,
     "alwaysStrict": true,
     "strictFunctionTypes": true,
@@ -14,7 +40,7 @@
     "noUnusedParameters": true,
     "skipLibCheck": false,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
+    // "moduleResolution": "node",
     "sourceMap": false,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
