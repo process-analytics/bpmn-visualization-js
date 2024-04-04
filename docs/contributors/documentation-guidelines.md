@@ -29,7 +29,7 @@ displayed directly on GitHub Web.
 
 - From the root folder of the repository, run 
 ```bash
-npm run docs
+bun run docs
 ```
 
 The documentation is accessible in the `build/docs` folder.

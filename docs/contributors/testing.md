@@ -214,18 +214,18 @@ They ensure that the bundles provided in the npm package are working, and they a
 ## Running tests 
 
 See `package.json` for extra available scripts
-- `npm run test`                        *Run all tests*
-- `npm run test:unit`                   *Run unit tests*
-- `npm run test:unit:coverage`          *Run unit tests with coverage*
-- `npm run test:e2e`                    *Run end-to-end tests*.
-- `npm run test:e2e:coverage`           *Run end-to-end tests with coverage*
-- `npm run test:e2e:verbose`            *Run end-to-end tests with debug logs*
-- `npm run test:integration`            *Run integration tests*.
-- `npm run test:integration:coverage`   *Run integration tests with coverage*
-- `npm run test:perf`                   *Run performance tests*
-- `npm run test:perf:verbose`           *Run performance tests with debug logs*
-- `npm run test:bundles`                *Run bundles tests*
-- `npm run test:bundles:verbose`        *Run bundles tests with debug logs*
+- `bun run test`                        *Run all tests*
+- `bun run test:unit`                   *Run unit tests*
+- `bun run test:unit:coverage`          *Run unit tests with coverage*
+- `bun run test:e2e`                    *Run end-to-end tests*.
+- `bun run test:e2e:coverage`           *Run end-to-end tests with coverage*
+- `bun run test:e2e:verbose`            *Run end-to-end tests with debug logs*
+- `bun run test:integration`            *Run integration tests*.
+- `bun run test:integration:coverage`   *Run integration tests with coverage*
+- `bun run test:perf`                   *Run performance tests*
+- `bun run test:perf:verbose`           *Run performance tests with debug logs*
+- `bun run test:bundles`                *Run bundles tests*
+- `bun run test:bundles:verbose`        *Run bundles tests with debug logs*
 
 ### Test reports
 
@@ -250,11 +250,11 @@ By default,
 To use Firefox instead, use a `BROWSERS` environment variable:
 - on Linux or macOS
 ```bash
-BROWSERS=firefox npm run test:e2e
+BROWSERS=firefox bun run test:e2e
 ```
 - on Windows using `cmd` ⚠️ there is no space between `firefox` and `&&`
 ```batch
-set BROWSERS=firefox&& npm run test:e2e
+set BROWSERS=firefox&& bun run test:e2e
 ```
 
 It is also possible to make tests use several browsers, pass the list of browsers separated by a comma when setting the

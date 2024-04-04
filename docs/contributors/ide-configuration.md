@@ -117,12 +117,12 @@ You can run tests directly from IntelliJ - there is no need for any additional c
 
 - create a new `JavaScript Debug` configuration as described in the [Intellij documentation](https://www.jetbrains.com/help/idea/running-and-debugging-typescript.html#ws_ts_debug_client_side_on_external_dev_server)
   - the targeted url is:
-    - For `npm run start` or `npm run watch`: http://localhost:10001/ \
+    - For `bun run start` or `bun run watch`: http://localhost:10001/ \
       It's possible to override the port value with the environment variable _SERVER_PORT_.
-    - For `npm run test:e2e`: http://localhost:10002/
+    - For `bun run test:e2e`: http://localhost:10002/
   - use `Chrome` as browser
   - check `Ensure breakpoints are detected when loading scripts`
-- start the application in development mode by running `npm run start` or `npm run watch`
+- start the application in development mode by running `bun run start` or `bun run watch`
 - select the `JavaScript Debug` configuration and run it with Debug Runner
 - the browser opens, and debug session starts (see [Intellij documentation](https://www.jetbrains.com/help/idea/running-and-debugging-typescript.html#ws_ts_debug_client_side_on_external_dev_server)
   documentation for more details)

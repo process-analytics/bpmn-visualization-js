@@ -40,7 +40,7 @@ The following sources can give you an idea of whether your request is likely to 
 
 7. Be sure you have followed the [code style](./docs/contributors/development.md#code-style) for the project.
 
-8. Prior to opening a Pull Request, ensure the build is fully working by locally running `npm run all` (build, check and
+8. Prior to opening a Pull Request, ensure the build is fully working by locally running `bun run all` (build, check and
 test everything).
 
 9. Open a [GitHub Pull Request](./docs/contributors/pull-request.md#open-a-pull-request) with your patches. (**1** pull request = **1** feature or bug)

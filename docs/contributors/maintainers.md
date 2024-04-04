@@ -116,7 +116,7 @@ Make the new version available for demo.
 - The `Upload` GitHub workflow has built the demo for the new tag, so download the demo artifact directly from the  Actions section on GitHub.
 - Alternatively, if the artifact is not available via GitHub Actions, you can build it locally.
   - Checkout the git tag related to the new version.
-  - Run `npm run demo` which generates it in the `dist` folder.
+  - Run `bun run demo` which generates it in the `dist` folder.
 - Create a new branch in the [bpmn-visualization-examples](https://github.com/process-analytics/bpmn-visualization-examples/demo) repository and add the new demo content (proceed how it has been done for prior versions). 
 - Push to GitHub and create a new Pull Request.
 

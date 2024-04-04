@@ -5,7 +5,7 @@ You should note that there is no need to copy the result from the console as it 
 
 Run in the root of the project:
 
-```npm run utils:build```
+```bun run utils:build```
 
 ## Usage
 
