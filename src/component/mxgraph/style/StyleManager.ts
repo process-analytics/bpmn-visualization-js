@@ -49,7 +49,7 @@ export class StyleManager {
 
   private resetStyle(cellId: string, style: BPMNCellStyle): void {
     const cell = this.model.getCell(cellId);
-    // TODO rebase refactor - inline (can be done in the master branch as well)
+    // TODO maxGraph 0.1.0 - inline (can be done in the master branch as well)
     const cssClasses = this.cssRegistry.getClassNames(cellId);
 
     // no need to copy the style, it is coming from the cache only and is later deleted from the cache

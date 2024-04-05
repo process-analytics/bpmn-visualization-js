@@ -172,7 +172,7 @@ export default class ShapeConfigurator {
         // dialect = strictHtml is set means that current node holds an HTML label
         // TODO maxgraph@0.1.0 "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided."constants.DIALECT.STRICTHTML
         let allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === 'strictHtml');
-        // TODO rebase BpmnCellStateStyle?
+        // TODO maxgraph@0.1.0 - do we need to introduce a BpmnCellStateStyle type (to not have the baseStyleName property)?
         const extraCssClasses = (this.state.style as BPMNCellStyle).bpmn?.extraCssClasses;
         if (extraCssClasses) {
           allBpmnClassNames = allBpmnClassNames.concat(extraCssClasses);

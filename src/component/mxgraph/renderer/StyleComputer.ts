@@ -45,8 +45,8 @@ import type { Font } from '../../../model/bpmn/internal/Label';
 import type { RendererOptions } from '../../options';
 
 // TODO maxgraph@0.1.0 this type should probably be part of the API (so it should be exported)
-// TODO move somewhere else
-// TODO rename for consistent naming BPMNCellStyle --> BpmnCellStyle (apply to other places)
+// TODO maxgraph@0.1.0 move somewhere else
+// TODO maxgraph@0.1.0 rename for consistent naming BPMNCellStyle --> BpmnCellStyle (apply to other places)
 //  a BpmnCellStyle exists in tests. Try to use this one instead
 export interface BPMNCellStyle extends CellStyle {
   // TODO maxgraph@0.1.0 the shape property is defined as 'ShapeValue'. It should be 'ShapeValue | string'
