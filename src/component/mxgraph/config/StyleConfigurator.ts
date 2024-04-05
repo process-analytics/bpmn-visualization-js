@@ -134,14 +134,12 @@ export class StyleConfigurator {
   }
 
   private configureDefaultVertexStyle(): void {
-    // TODO rebase arc style configuration missing in configureDefaultVertexStyle?
-    // It was previously in configureActivityStyles --> move it from here
-    //     const style = this.getStylesheet().getDefaultVertexStyle();
-    //     configureCommonDefaultStyle(style);
-    //
-    //     style[mxConstants.STYLE_ABSOLUTE_ARCSIZE] = true;
-    //     style[mxConstants.STYLE_ARCSIZE] = StyleDefault.SHAPE_ARC_SIZE;
-    configureCommonDefaultStyle(this.getStylesheet().getDefaultVertexStyle() as BPMNCellStyle);
+    const style = this.getStylesheet().getDefaultVertexStyle();
+    configureCommonDefaultStyle(style);
+
+    // TODO maxgraph@0.1.0 arcSize should be a boolean (probably fixed in next versions of maxgraph)
+    style.absoluteArcSize = 1;
+    style.arcSize = <number>StyleDefault.SHAPE_ARC_SIZE;
   }
 
   private configurePoolStyle(): void {
@@ -210,10 +208,6 @@ export class StyleConfigurator {
   private configureGroupStyle(): void {
     const style: BPMNCellStyle = {
       rounded: true,
-      // TODO rebase arc configuration no more in dedicated style
-      absoluteArcSize: 1,
-      // TODO maxgraph@0.1.0 find a way to not force cast
-      arcSize: <number>StyleDefault.SHAPE_ARC_SIZE,
       dashed: true,
       dashPattern: '7 4 1 4',
       // TODO maxgraph@0.1.0 find a way to not force cast
@@ -234,12 +228,6 @@ export class StyleConfigurator {
         // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
         shape: <ShapeValue>(<unknown>kind),
         rounded: true, // required by the BPMN specification
-
-        // TODO rebase arcSize seems to have been moved in another configuration
-        //absoluteArcSize: 1,
-        // TODO maxgraph@0.1.0 find a way to not force cast
-        //arcSize: <number>StyleDefault.SHAPE_ARC_SIZE,
-
         // label style
         verticalAlign: 'middle',
         // TODO maxgraph@0.1.0 find a way to not force cast
