@@ -214,7 +214,6 @@ export class StyleConfigurator {
       strokeWidth: <number>StyleDefault.STROKE_WIDTH_THIN,
       // TODO maxgraph@0.1.0 find a way to not force cast
       fillColor: <string>StyleDefault.GROUP_FILL_COLOR,
-
       // Default label positioning
       align: 'center',
       verticalAlign: 'top',
@@ -228,8 +227,7 @@ export class StyleConfigurator {
         // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
         shape: <ShapeValue>(<unknown>kind),
         rounded: true, // required by the BPMN specification
-        // label style
-        verticalAlign: 'middle',
+        verticalAlign: 'middle', // label style
         // TODO maxgraph@0.1.0 find a way to not force cast
         strokeWidth: <number>(kind == ShapeBpmnElementKind.CALL_ACTIVITY ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN),
       };
@@ -261,13 +259,13 @@ export class StyleConfigurator {
 
     // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
     style.shape = <ShapeValue>BpmnStyleIdentifier.EDGE;
-    style.endSize = 12;
+    style.endSize = arrowDefaultSize;
     style.strokeWidth = 1.5;
     style.rounded = true;
     style.arcSize = 5;
     style.verticalAlign = 'bottom';
     // The end arrow must be redefined in specific style
-    style.endArrow = undefined;
+    delete style.endArrow;
   }
 
   private configureEdgeStyles<T>(styleKinds: T[], specificStyles: Map<T, (style: BPMNCellStyle) => void>): void {
