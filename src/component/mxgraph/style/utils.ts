@@ -105,7 +105,7 @@ export const setStyle = <T extends string | number>(
       // remove the property to use the value from the "base styles" which provides the default value
       delete cellStyle[key];
     } else {
-      // TODO rebase fix type - can we really ignore ts error?
+      // TODO maxgraph@0.1.0 - fix type - can we really ignore ts error?
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       cellStyle[key] = convertedValue;
