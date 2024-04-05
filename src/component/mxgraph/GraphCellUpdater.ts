@@ -105,17 +105,16 @@ export default class GraphCellUpdater {
       for (const cell of cells) {
         this.styleManager.ensureStyleIsStored(cell);
 
-        let cellStyle = getCellStyleClone(cell);
-        // TODO maxGraph 0.1.0 - here we shouldn't return a new object, as the existing one is updated in place
-        cellStyle = setStyle(cellStyle, 'opacity', styleUpdate.opacity, ensureOpacityValue);
-        cellStyle = updateStroke(cellStyle, styleUpdate.stroke);
-        cellStyle = updateFont(cellStyle, styleUpdate.font);
+        const cellStyle = getCellStyleClone(cell);
+        setStyle(cellStyle, 'opacity', styleUpdate.opacity, ensureOpacityValue);
+        updateStroke(cellStyle, styleUpdate.stroke);
+        updateFont(cellStyle, styleUpdate.font);
 
         if (isShapeStyleUpdate(styleUpdate)) {
-          cellStyle = updateFill(cellStyle, styleUpdate.fill);
+          updateFill(cellStyle, styleUpdate.fill);
         }
 
-        // TODO maxgraph@0.1.0 migration --> apply this to the master branch
+        // TODO maxgraph@0.1.0 migration --> apply this to the master branch graph.model --> model
         model.setStyle(cell, cellStyle);
       }
     });

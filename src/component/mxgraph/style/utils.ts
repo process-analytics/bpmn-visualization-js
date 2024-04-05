@@ -81,14 +81,12 @@ export enum FONT {
 
 const convertDefaultValue = (value: string): string | undefined => (value == 'default' ? undefined : value);
 
-// TODO rebase fix update style functions - no need to return the CellStyle
-export const updateStroke = (cellStyle: CellStyle, stroke: Stroke): CellStyle => {
+export const updateStroke = (cellStyle: CellStyle, stroke: Stroke): void => {
   if (stroke) {
-    cellStyle = setStyle(cellStyle, 'strokeColor', stroke.color, convertDefaultValue);
-    cellStyle = setStyle(cellStyle, 'strokeOpacity', stroke.opacity, ensureOpacityValue);
-    cellStyle = setStyle(cellStyle, 'strokeWidth', stroke.width, ensureStrokeWidthValue);
+    setStyle(cellStyle, 'strokeColor', stroke.color, convertDefaultValue);
+    setStyle(cellStyle, 'strokeOpacity', stroke.opacity, ensureOpacityValue);
+    setStyle(cellStyle, 'strokeWidth', stroke.width, ensureStrokeWidthValue);
   }
-  return cellStyle;
 };
 
 export const setStyle = <T extends string | number>(
@@ -96,7 +94,7 @@ export const setStyle = <T extends string | number>(
   key: keyof CellStyle,
   value: T | undefined,
   converter: (value: T) => T | undefined = (value: T) => value,
-): CellStyle => {
+): void => {
   if (value != undefined) {
     const convertedValue = converter(value);
     if (convertedValue == null) {
@@ -111,13 +109,12 @@ export const setStyle = <T extends string | number>(
       cellStyle[key] = convertedValue;
     }
   }
-  return cellStyle;
 };
 
-export const setStyleFlag = (cellStyle: CellStyle, key: NumericCellStateStyleKeys, flag: number, value?: boolean): CellStyle => {
+export const setStyleFlag = (cellStyle: CellStyle, key: NumericCellStateStyleKeys, flag: number, value?: boolean): void => {
   // TODO maxGraph@0.1.0 - move this comment to the master branch
   // the mxGraph setStyleFlag function toggle the flag if the value if undefined is passed. In bpmn-visualization, we want to keep the value as it is instead in this case (there is no toggle feature)
-  if (value == undefined) return cellStyle;
+  if (value == undefined) return;
 
   // FIXME maxGraph@0.1.0 - bug in maxGraph setStyleFlag seems to fail when the fontStyle is undefined
   // when the property is undefined, setting the flag set the value to 0. So initialize the value when undefined as a workaround.
@@ -126,38 +123,35 @@ export const setStyleFlag = (cellStyle: CellStyle, key: NumericCellStateStyleKey
     cellStyle[key] = 0;
   }
 
-  return styleUtils.setStyleFlag(cellStyle, key, flag, value);
+  styleUtils.setStyleFlag(cellStyle, key, flag, value);
 };
 
-export const updateFont = (cellStyle: CellStyle, font: Font): CellStyle => {
+export const updateFont = (cellStyle: CellStyle, font: Font): void => {
   if (font) {
-    cellStyle = setStyle(cellStyle, 'fontColor', font.color, convertDefaultValue);
-    cellStyle = setStyle(cellStyle, 'fontSize', font.size);
-    cellStyle = setStyle(cellStyle, 'fontFamily', font.family);
+    setStyle(cellStyle, 'fontColor', font.color, convertDefaultValue);
+    setStyle(cellStyle, 'fontSize', font.size);
+    setStyle(cellStyle, 'fontFamily', font.family);
 
-    cellStyle = setStyleFlag(cellStyle, 'fontStyle', FONT.BOLD, font.isBold);
-    cellStyle = setStyleFlag(cellStyle, 'fontStyle', FONT.ITALIC, font.isItalic);
-    cellStyle = setStyleFlag(cellStyle, 'fontStyle', FONT.UNDERLINE, font.isUnderline);
-    cellStyle = setStyleFlag(cellStyle, 'fontStyle', FONT.STRIKETHROUGH, font.isStrikeThrough);
+    setStyleFlag(cellStyle, 'fontStyle', FONT.BOLD, font.isBold);
+    setStyleFlag(cellStyle, 'fontStyle', FONT.ITALIC, font.isItalic);
+    setStyleFlag(cellStyle, 'fontStyle', FONT.UNDERLINE, font.isUnderline);
+    setStyleFlag(cellStyle, 'fontStyle', FONT.STRIKETHROUGH, font.isStrikeThrough);
 
-    cellStyle = setStyle(cellStyle, 'textOpacity', font.opacity, ensureOpacityValue);
+    setStyle(cellStyle, 'textOpacity', font.opacity, ensureOpacityValue);
   }
-  return cellStyle;
 };
 
-export const updateFill = (cellStyle: BPMNCellStyle, fill: Fill): CellStyle => {
+export const updateFill = (cellStyle: BPMNCellStyle, fill: Fill): void => {
   if (fill.color) {
-    cellStyle = setStyle(cellStyle, 'fillColor', fill.color, convertDefaultValue);
+    setStyle(cellStyle, 'fillColor', fill.color, convertDefaultValue);
 
     const kind = cellStyle.bpmn.kind;
     if (ShapeUtil.isPoolOrLane(kind)) {
-      cellStyle = setStyle(cellStyle, 'swimlaneFillColor', fill.color, convertDefaultValue);
+      setStyle(cellStyle, 'swimlaneFillColor', fill.color, convertDefaultValue);
     }
   }
 
-  cellStyle = setStyle(cellStyle, 'fillOpacity', fill.opacity, ensureOpacityValue);
-
-  return cellStyle;
+  setStyle(cellStyle, 'fillOpacity', fill.opacity, ensureOpacityValue);
 };
 
 export const isShapeStyleUpdate = (style: StyleUpdate): style is ShapeStyleUpdate => {
