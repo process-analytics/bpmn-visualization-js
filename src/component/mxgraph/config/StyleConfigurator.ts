@@ -48,10 +48,10 @@ export class StyleConfigurator {
         style.dashPattern = '8 5';
         style.startArrow = 'oval';
         style.startSize = 8;
-        style.startFill = true;
+        style.startFill = true; // TODO maxgraph@0.1.0 could be removed when maxGraph fixes https://github.com/maxGraph/maxGraph/pull/157
         style.startFillColor = StyleDefault.MESSAGE_FLOW_MARKER_START_FILL_COLOR;
         style.endArrow = 'blockThin';
-        style.endFill = true;
+        style.endFill = true; // TODO maxgraph@0.1.0 could be removed when maxGraph fixes https://github.com/maxGraph/maxGraph/pull/157
         style.endFillColor = StyleDefault.MESSAGE_FLOW_MARKER_END_FILL_COLOR;
       },
     ],
@@ -78,7 +78,7 @@ export class StyleConfigurator {
       (style: BPMNCellStyle) => {
         style.startArrow = 'diamondThin';
         style.startSize = 18;
-        style.startFill = true;
+        style.startFill = true; // TODO maxgraph@0.1.0 could be removed when maxGraph fixes https://github.com/maxGraph/maxGraph/pull/157
         style.startFillColor = StyleDefault.SEQUENCE_FLOW_CONDITIONAL_FROM_ACTIVITY_MARKER_FILL_COLOR;
       },
     ],
@@ -137,7 +137,7 @@ export class StyleConfigurator {
     const style = this.getStylesheet().getDefaultVertexStyle();
     configureCommonDefaultStyle(style);
 
-    // TODO maxgraph@0.1.0 arcSize should be a boolean (probably fixed in next versions of maxgraph)
+    // TODO maxgraph@0.1.0 arcSize should be a boolean (probably fixed in next versions of maxGraph)
     style.absoluteArcSize = 1;
     style.arcSize = <number>StyleDefault.SHAPE_ARC_SIZE;
   }
