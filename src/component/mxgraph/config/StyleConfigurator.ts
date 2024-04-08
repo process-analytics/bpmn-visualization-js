@@ -49,10 +49,10 @@ export class StyleConfigurator {
         style.startArrow = 'oval';
         style.startSize = 8;
         style.startFill = true;
-        style.bpmn.edge.startFillColor = StyleDefault.MESSAGE_FLOW_MARKER_START_FILL_COLOR;
+        style.startFillColor = StyleDefault.MESSAGE_FLOW_MARKER_START_FILL_COLOR;
         style.endArrow = 'blockThin';
         style.endFill = true;
-        style.bpmn.edge.endFillColor = StyleDefault.MESSAGE_FLOW_MARKER_END_FILL_COLOR;
+        style.endFillColor = StyleDefault.MESSAGE_FLOW_MARKER_END_FILL_COLOR;
       },
     ],
     [
@@ -79,7 +79,7 @@ export class StyleConfigurator {
         style.startArrow = 'diamondThin';
         style.startSize = 18;
         style.startFill = true;
-        style.bpmn.edge.startFillColor = StyleDefault.SEQUENCE_FLOW_CONDITIONAL_FROM_ACTIVITY_MARKER_FILL_COLOR;
+        style.startFillColor = StyleDefault.SEQUENCE_FLOW_CONDITIONAL_FROM_ACTIVITY_MARKER_FILL_COLOR;
       },
     ],
   ]);
@@ -270,8 +270,7 @@ export class StyleConfigurator {
 
   private configureEdgeStyles<T>(styleKinds: T[], specificStyles: Map<T, (style: BPMNCellStyle) => void>): void {
     styleKinds.forEach(kind => {
-      // TODO maxgraph@0.1.0 review if we need to set bpmn.edge (this is not enough for edge.ts)
-      const style: BPMNCellStyle = { bpmn: { edge: {} } };
+      const style: BPMNCellStyle = {};
       specificStyles.get(kind)(style);
       this.graph.getStylesheet().putCellStyle(kind.toString(), style);
     });

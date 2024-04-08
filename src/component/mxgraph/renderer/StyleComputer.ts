@@ -49,6 +49,10 @@ import type { RendererOptions } from '../../options';
 // TODO maxgraph@0.1.0 rename for consistent naming BPMNCellStyle --> BpmnCellStyle (apply to other places)
 //  a BpmnCellStyle exists in tests. Try to use this one instead
 export interface BPMNCellStyle extends CellStyle {
+  // TODO maxgraph@0.1.0 fill markers properties to remove when https://github.com/maxGraph/maxGraph/issues/201 is available
+  endFillColor?: string;
+  // TODO maxgraph@0.1.0 fill markers properties to remove when https://github.com/maxGraph/maxGraph/issues/201 is available
+  startFillColor?: string;
   // TODO maxgraph@0.1.0 the shape property is defined as 'ShapeValue'. It should be 'ShapeValue | string'
   // Omit<CellStyle, 'shape'> {
   // shape?: ShapeValue | string;
@@ -68,10 +72,6 @@ export interface BPMNCellStyle extends CellStyle {
     associationDirectionKind?: AssociationDirectionKind;
     isInitiating?: boolean;
     extraCssClasses?: string[];
-    edge?: {
-      endFillColor?: string;
-      startFillColor?: string;
-    };
   };
 }
 
