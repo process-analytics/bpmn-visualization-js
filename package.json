@@ -157,7 +157,7 @@
     "postcss-cli": "~11.0.0",
     "prettier": "~3.2.5",
     "rimraf": "~5.0.5",
-    "rollup": "~4.13.2",
+    "rollup": "~4.14.1",
     "rollup-plugin-cleanup": "~3.2.1",
     "rollup-plugin-node-externals": "~7.1.1",
     "rollup-plugin-sizes": "~1.0.6",
