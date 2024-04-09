@@ -14,9 +14,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import noticePlugin from "eslint-plugin-notice";
+import importPlugin from "eslint-plugin-import";
+import unicornPlugin from "eslint-plugin-unicorn";
+
 module.exports = {
   root: true,
-  plugins: ['notice', 'unicorn', 'import'],
+  plugins: {
+    notice: noticePlugin,
+    unicorn: unicornPlugin,
+    import: importPlugin
+  },
   parser: '@typescript-eslint/parser', // Specifies the ESLint parser
   extends: [
     'plugin:import/recommended',
