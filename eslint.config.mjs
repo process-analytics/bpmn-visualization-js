@@ -78,6 +78,16 @@ export default [
       'unicorn/no-useless-undefined': 'off', // The "undefined" value is useful where we use it and change some mxGraph code
     'unicorn/prefer-global-this': 'off', // We only target the browser, so it is valid to use the window object. In addition, using 'globalThis' require additional changes in the code/configuration to work.
     },
+    ignores: [
+      '.github/',
+      '.idea/',
+      '/build/',
+      '/config/',
+      '/dist/',
+      'node_modules/',
+      'scripts/utils/dist/',
+      'test/performance/data/',
+    ],
   },
 
   // typescript
