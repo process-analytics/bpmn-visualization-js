@@ -18,20 +18,21 @@ import noticePlugin from "eslint-plugin-notice";
 import importPlugin from "eslint-plugin-import";
 import unicornPlugin from "eslint-plugin-unicorn";
 
+import eslintPluginImport from 'eslint-plugin-import';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
 
 module.exports = {
+  ...eslintPluginImport.configs.recommended, // import/recommended is not working for now with ESLint v9
+  ...unicornPlugin.configs.recommended,
+  ...eslintPluginPrettierRecommended, // Enables eslint-plugin-prettier, eslint-config-prettier and prettier/prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration.
+
   root: true,
   plugins: {
     notice: noticePlugin,
     unicorn: unicornPlugin,
     import: importPlugin
   },
-  extends: [
-    'plugin:import/recommended',
-    'plugin:unicorn/recommended',
-    'plugin:prettier/recommended', // Enables eslint-plugin-prettier and eslint-config-prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
-  ],
   languageOptions: {
     parserOptions: {
       ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
