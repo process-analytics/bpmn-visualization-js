@@ -26,11 +26,10 @@ import tseslint from 'typescript-eslint';
 
 export default [
   {
-    ...eslintPluginImport.configs.recommended, // import/recommended is not working for now with ESLint v9
-    ...unicornPlugin.configs.recommended,
+    // ...eslintPluginImport.configs.recommended, // is not working for now with ESLint v9
+    // ...unicornPlugin.configs.recommended, // is not working for now with ESLint v9
     ...eslintPluginPrettierRecommended, // Enables eslint-plugin-prettier, eslint-config-prettier and prettier/prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration.
 
-    root: true,
     plugins: {
       notice: noticePlugin,
       unicorn: unicornPlugin,
@@ -91,11 +90,11 @@ export default [
 
   // typescript
   { ...eslint.configs.recommended, files: ['**/*.ts', '**/*.tsx'] },
-  tseslint.configs.recommended.map(conf => ({ ...conf, files: ['**/*.ts', '**/*.tsx'] })),
+  ...tseslint.configs.recommended.map(conf => ({ ...conf, files: ['**/*.ts', '**/*.tsx'] })),
   /** @type {import('@typescript-eslint/utils').TSESLint.FlatConfig.ConfigFile} */
   {
     ...tseslint.configs.stylistic,
-    ...eslintPluginImport.configs.typescript, // import/typescript is not working for now with ESLint v9
+    // ...eslintPluginImport.configs.typescript, // is not working for now with ESLint v9
     ...eslintPluginPrettierRecommended, // Enables eslint-plugin-prettier, eslint-config-prettier and prettier/prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration.
 
     files: ['*.ts'],
