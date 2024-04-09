@@ -77,6 +77,16 @@ export default [
       'unicorn/no-null': 'off', // We don't know the impact on mxGraph code
       'unicorn/no-useless-undefined': 'off', // The "undefined" value is useful where we use it and change some mxGraph code
     },
+    ignores: [
+      '.github/',
+      '.idea/',
+      '/build/',
+      '/config/',
+      '/dist/',
+      'node_modules/',
+      'scripts/utils/dist/',
+      'test/performance/data/',
+    ],
   },
 
   // typescript
