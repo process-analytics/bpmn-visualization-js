@@ -1,8 +1,0 @@
-.github/
-.idea/
-/build/
-/config/
-/dist/
-node_modules/
-scripts/utils/dist/
-test/performance/data/
