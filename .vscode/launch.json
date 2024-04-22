@@ -33,6 +33,9 @@
             "name": "test:integration",
             "request": "launch",
             "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+            "env": {
+                "NODE_OPTIONS": "--experimental-vm-modules"
+            },
             "args": [
                 "--runInBand", "--config=./test/integration/jest.config.js"
             ],

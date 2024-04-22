@@ -69,7 +69,7 @@
     "test": "run-s test:unit test:integration test:e2e",
     "test:unit": "jest --runInBand --config=./test/unit/jest.config.js",
     "test:unit:coverage": "npm run test:unit -- --coverage",
-    "test:integration": "jest --runInBand --config=./test/integration/jest.config.js",
+    "test:integration": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --runInBand --config=./test/integration/jest.config.js",
     "test:integration:coverage": "npm run test:integration -- --coverage",
     "test:unit:watch": "npm run test:unit:coverage -- --watchAll",
     "test:e2e": "cross-env JEST_IMAGE_SNAPSHOT_TRACK_OBSOLETE=1 jest --runInBand --detectOpenHandles --config=./test/e2e/jest.config.js",

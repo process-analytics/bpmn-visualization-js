@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig",
   "compilerOptions": {
+    "module": "ES2020",
     "sourceMap": true,
     "baseUrl": ".",
     "paths": {
