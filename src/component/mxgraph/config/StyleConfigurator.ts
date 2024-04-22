@@ -19,7 +19,7 @@ import { BpmnStyleIdentifier, MarkerIdentifier, StyleDefault } from '../style';
 import type { BpmnGraph } from '../BpmnGraph';
 import type { BPMNCellStyle } from '../renderer/StyleComputer';
 import { constants, Perimeter } from '@maxgraph/core';
-import type { ArrowType, ShapeValue, Stylesheet } from '@maxgraph/core';
+import type { ShapeValue, Stylesheet } from '@maxgraph/core';
 
 const arrowDefaultSize = 12;
 
@@ -69,8 +69,7 @@ export class StyleConfigurator {
     [
       SequenceFlowKind.DEFAULT,
       (style: BPMNCellStyle) => {
-        // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
-        style.startArrow = <ArrowType>MarkerIdentifier.ARROW_DASH;
+        style.startArrow = MarkerIdentifier.ARROW_DASH;
       },
     ],
     [
@@ -137,8 +136,8 @@ export class StyleConfigurator {
     const style = this.getStylesheet().getDefaultVertexStyle();
     configureCommonDefaultStyle(style);
 
-    // TODO maxgraph@0.1.0 arcSize should be a boolean (probably fixed in next versions of maxGraph)
-    style.absoluteArcSize = 1;
+    style.absoluteArcSize = true;
+    // TODO maxgraph@0.1.0 find a way to not force cast
     style.arcSize = <number>StyleDefault.SHAPE_ARC_SIZE;
   }
 

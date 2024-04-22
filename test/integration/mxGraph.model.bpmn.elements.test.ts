@@ -35,7 +35,6 @@ import {
   expectTotalShapesInModel,
   getDefaultParentId,
 } from './helpers/model-expect';
-import type { ArrowType } from '@maxgraph/core';
 import { Point, Geometry } from '@maxgraph/core';
 
 describe('mxGraph model - BPMN elements', () => {
@@ -1470,8 +1469,7 @@ describe('mxGraph model - BPMN elements', () => {
       it('sequence flows', () => {
         expect('default_sequence_flow_id').toBeSequenceFlow({
           sequenceFlowKind: SequenceFlowKind.DEFAULT,
-          // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
-          startArrow: <ArrowType>(<unknown>MarkerIdentifier.ARROW_DASH),
+          startArrow: MarkerIdentifier.ARROW_DASH,
           parentId: 'participant_1_id',
           font: expectedBoldFont,
         });
