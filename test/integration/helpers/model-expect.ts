@@ -59,7 +59,7 @@ import {
   toBeTextAnnotation,
   toBeUserTask,
 } from '../matchers';
-import type { ArrowType, Cell, FilterFunction, Geometry, ShapeValue } from '@maxgraph/core';
+import type { StyleArrowValue, Cell, FilterFunction, Geometry, ShapeValue } from '@maxgraph/core';
 import type { ExpectedOverlay } from '../matchers/matcher-utils';
 import { getCell } from '../matchers/matcher-utils';
 import type { BPMNCellStyle } from '@lib/component/mxgraph/renderer/StyleComputer';
@@ -200,8 +200,8 @@ export interface ExpectedCallActivityModelElement extends ExpectedShapeModelElem
 
 export interface ExpectedEdgeModelElement extends ExpectedModelElement {
   kind?: FlowKind;
-  startArrow?: ArrowType;
-  endArrow?: ArrowType;
+  startArrow?: StyleArrowValue;
+  endArrow?: StyleArrowValue;
   messageVisibleKind?: MessageVisibleKind;
 }
 
