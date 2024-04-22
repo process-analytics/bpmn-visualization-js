@@ -40,18 +40,18 @@ const config = {
   //   '^lodash-es$': 'lodash',
   // },
   moduleNameMapper,
-  // https://jestjs.io/docs/configuration#modulefileextensions-arraystring
   extensionsToTreatAsEsm: ['.ts'],
+  // https://jestjs.io/docs/configuration#modulefileextensions-arraystring
   moduleFileExtensions: ['ts', 'js', 'mjs', 'cjs', 'jsx', 'tsx', 'json', 'node'],
   collectCoverageFrom: ['src/**/*.{ts,js}'],
   coveragePathIgnorePatterns: ['/src/model/'],
   coverageReporters: ['lcov', 'text-summary'],
   coverageDirectory: 'build/test-report/integration',
-  // setupFilesAfterEnv: [
-  //   './test/integration/config/mxgraph-config.ts',
-  //   // put at the latest place to see logs that could be displayed by setup files
-  //   './test/integration/config/hide-console-warnings.js',
-  // ],
+  setupFilesAfterEnv: [
+    './test/integration/config/mxgraph-config.ts',
+    // put at the latest place to see logs that could be displayed by setup files
+    './test/integration/config/hide-console-warnings.js',
+  ],
   reporters: [
     'default',
     [
@@ -71,26 +71,5 @@ const config = {
     ],
   ],
 };
-
-// /** @type {import('ts-jest').JestConfigWithTsJest} */
-// const config2 = {
-//   collectCoverageFrom: ['src/**/*.{ts,js}'],
-//   coverageReporters: ['html', 'text-summary'],
-//   extensionsToTreatAsEsm: ['.ts'],
-//   // https://jestjs.io/docs/configuration#modulefileextensions-arraystring
-//   moduleFileExtensions: ['ts', 'js', 'mjs', 'cjs', 'jsx', 'tsx', 'json', 'node'],
-//   setupFilesAfterEnv: ['<rootDir>/config/jest-setup.js'],
-//   testEnvironment: 'jsdom', // let access to the browser objects
-//   testMatch: ['**/test/**/?(*.)+(spec|test).[tj]s?(x)'],
-//   transform: {
-//     '^.+\\.ts?$': [
-//       'ts-jest',
-//       {
-//         useESM: true,
-//         tsconfig: '<rootDir>/tsconfig.test.json',
-//       },
-//     ],
-//   },
-// };
 
 export default config;
