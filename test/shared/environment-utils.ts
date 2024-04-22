@@ -14,8 +14,21 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { jest } from '@jest/globals';
-import { isRunningOnCi } from '@test/shared/environment-utils';
+// TODO duplicated with environment-utils.js
 
-const onCi = isRunningOnCi();
-jest.retryTimes(onCi ? 3 : 0, { logErrorsBeforeRetry: true });
+const isMacOS = (): boolean => {
+  return process.platform.startsWith('darwin');
+};
+
+const isWindowsOS = (): boolean => {
+  return process.platform.startsWith('win');
+};
+
+// running on GitHub Actions: https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
+export const isRunningOnCi = (): boolean => {
+  return process.env.CI === 'true';
+};
+
+export const isRunningOnCISlowOS = (): boolean => {
+  return isRunningOnCi() && (isMacOS() || isWindowsOS());
+};

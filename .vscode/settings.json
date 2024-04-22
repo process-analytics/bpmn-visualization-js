@@ -1,7 +1,7 @@
 {
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.fixAll": true
+      "source.fixAll": "explicit"
     },
     // Jest Extension (https://github.com/jest-community/vscode-jest)
     // The following is to run unit tests
