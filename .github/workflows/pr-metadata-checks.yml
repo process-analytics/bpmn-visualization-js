@@ -11,4 +11,4 @@ jobs:
       pull-requests: write # post comments when the PR title doesn't match the "Conventional Commits" rules
     steps:
       - name: Check Pull Request title
-        uses: bonitasoft/actions/packages/pr-title-conventional-commits@v2
+        uses: bonitasoft/actions/packages/pr-title-conventional-commits@v3
