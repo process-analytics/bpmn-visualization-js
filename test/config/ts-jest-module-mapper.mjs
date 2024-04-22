@@ -31,7 +31,6 @@ try {
   jsonTxt = readFileSync('../../tsconfig.test.json', 'utf8');
 }
 
-// const JSON5 = require('json5');
 import JSON5 from 'json5';
 const tsconfig = JSON5.parse(jsonTxt);
 const compilerOptions = tsconfig.compilerOptions;
