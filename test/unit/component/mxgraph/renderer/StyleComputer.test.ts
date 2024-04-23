@@ -17,7 +17,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { ShapeValue } from '@maxgraph/core';
 import type { BPMNCellStyle } from '@lib/component/mxgraph/renderer/StyleComputer';
 import StyleComputer from '@lib/component/mxgraph/renderer/StyleComputer';
 import Shape from '@lib/model/bpmn/internal/shape/Shape';
@@ -302,8 +301,8 @@ describe('Style Computer', () => {
     const edge = new Edge('id', newMessageFlow(), undefined, undefined, messageVisibleKind);
     expect(styleComputer.computeMessageFlowIconStyle(edge)).toStrictEqual(<BPMNCellStyle>{
       bpmn: { isInitiating: expected },
-      // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
-      shape: <ShapeValue>'bpmn.messageFlowIcon',
+      // TODO maxGraph@0.10.1 decide if we use BpmnStyleIdentifier const instead
+      shape: 'bpmn.messageFlowIcon',
     });
   });
 
@@ -778,8 +777,8 @@ describe('Style Computer', () => {
           edge.extensions.strokeColor = '#11aabb';
           const expectedStyle = <BPMNCellStyle>{
             bpmn: { isInitiating: false },
-            // TODO maxGraph@0.1.0 force conversion to ShapeValue + decide if we use BpmnStyleIdentifier const instead
-            shape: <ShapeValue>'bpmn.messageFlowIcon',
+            // TODO maxGraph@0.10.1 decide if we use BpmnStyleIdentifier const instead
+            shape: 'bpmn.messageFlowIcon',
           };
           if (expectAdditionalColorsStyle) {
             expectedStyle.strokeColor = '#11aabb';
