@@ -18,6 +18,7 @@ import type { EdgeBpmnSemantic, ShapeBpmnSemantic } from '@lib/component/registr
 import { BpmnModelRegistry } from '@lib/component/registry/bpmn-model-registry';
 import { expectAssociationFlow, expectLane, expectMessageFlow, expectPool, expectSequenceFlow, expectStartEvent } from '@test/shared/model/bpmn-semantic-utils';
 import { associationFlowInModel, laneInModel, messageFlowInModel, poolInModel, sequenceFlowInModel, startEventInModel } from '../../helpers/bpmn-model-utils';
+import { jest } from '@jest/globals';
 
 const bpmnModelRegistry = new BpmnModelRegistry();
 
