@@ -67,7 +67,7 @@
     "lint": "eslint \"**/*.{js,mjs,ts}\" --max-warnings 0 --quiet --fix",
     "lint-check": "eslint \"**/*.{js,mjs,ts}\" --max-warnings 0",
     "test": "run-s test:unit test:integration test:e2e",
-    "test:unit": "jest --runInBand --config=./test/unit/jest.config.js",
+    "test:unit": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --runInBand --config=./test/unit/jest.config.js",
     "test:unit:coverage": "npm run test:unit -- --coverage",
     "test:integration": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --runInBand --config=./test/integration/jest.config.js",
     "test:integration:coverage": "npm run test:integration -- --coverage",

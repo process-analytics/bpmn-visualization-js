@@ -9,6 +9,9 @@
             "name": "test:unit",
             "request": "launch",
             "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+            "env": {
+              "NODE_OPTIONS": "--experimental-vm-modules"
+            },
             "args": [
                 "--runInBand", "--config=./test/unit/jest.config.js"
             ],
