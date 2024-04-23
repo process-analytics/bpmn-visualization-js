@@ -16,7 +16,7 @@ limitations under the License.
 
 import { initializeBpmnVisualizationWithContainerId } from './helpers/bpmn-visualization-initialization';
 import { HtmlElementLookup } from './helpers/html-utils';
-import type { ExpectedShapeModelElement, VerticalAlign } from './helpers/model-expect';
+import type { ExpectedShapeModelElement } from './helpers/model-expect';
 import { bpmnVisualization } from './helpers/model-expect';
 import { buildReceivedResolvedModelCellStyle, buildReceivedViewStateStyle } from './matchers/matcher-utils';
 import { buildExpectedShapeCellStyle } from './matchers/toBeShape';
@@ -138,7 +138,7 @@ describe('mxGraph model - update style', () => {
         isStrikeThrough: true,
       };
       bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { font });
-      // TODO maxGraph@0.1.0 - add such additional check in the master branch and do it when several style update actions are done
+      // TODO maxGraph@0.10.1 - add such additional check in the master branch and do it when several style update actions are done (from maxgraph@0.1.0 migration)
       expect('userTask_2_2').toBeUserTask({
         font,
         // not under test
@@ -769,11 +769,11 @@ describe('mxGraph model - update style', () => {
         bv.bpmnElementsRegistry.updateStyle(bpmnElementId, { stroke: { color: strokeColor } });
       }
 
-      const expectedModel = {
+      const expectedModel: ExpectedShapeModelElement = {
         extraCssClasses: ['class-1', 'class-2'],
         kind: ShapeBpmnElementKind.EVENT_END,
         stroke: { color: strokeColor },
-        verticalAlign: <VerticalAlign>'top', // when events have a label
+        verticalAlign: 'top', // when events have a label
       };
       checkModelStyle(bpmnElementId, expectedModel);
       checkViewStateStyle(bpmnElementId, expectedModel);
@@ -1087,10 +1087,10 @@ describe('mxGraph model - reset style', () => {
       }
 
       // Check that the style has been reset to default values for each element
-      const expectedModel = {
+      const expectedModel: ExpectedShapeModelElement = {
         extraCssClasses: ['class-1', 'class-2'],
         kind: ShapeBpmnElementKind.EVENT_END,
-        verticalAlign: 'top' as VerticalAlign, // when events have a label
+        verticalAlign: 'top', // when events have a label
       };
       checkModelStyle(bpmnElementId, expectedModel);
       checkViewStateStyle(bpmnElementId, expectedModel);

@@ -21,7 +21,7 @@ import type ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElem
 import type Bounds from '../../model/bpmn/internal/Bounds';
 import { MessageVisibleKind, ShapeUtil } from '../../model/bpmn/internal';
 import CoordinatesTranslator from './renderer/CoordinatesTranslator';
-import type { BPMNCellStyle } from './renderer/StyleComputer';
+import type { BpmnCellStyle } from './style/types';
 import StyleComputer from './renderer/StyleComputer';
 import type { BpmnGraph } from './BpmnGraph';
 import type { FitOptions, RendererOptions } from '../options';
@@ -83,7 +83,7 @@ export class BpmnRenderer {
       const target = this.getCell(bpmnElement.targetRefId);
       const labelBounds = edge.label?.bounds;
       const style = this.styleComputer.computeStyle(edge, labelBounds);
-      const mxEdge = this.graph.insertEdge(parent, bpmnElement.id, bpmnElement.name, source, target, style);
+      const mxEdge = this.graph.insertEdge({ parent, id: bpmnElement.id, value: bpmnElement.name, source, target, style });
       this.insertWaypoints(edge.waypoints, mxEdge);
 
       if (labelBounds) {
@@ -123,10 +123,9 @@ export class BpmnRenderer {
     return this.graph.getDataModel().getCell(id);
   }
 
-  private insertVertex(parent: Cell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: BPMNCellStyle): Cell {
+  private insertVertex(parent: Cell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: BpmnCellStyle): Cell {
     const vertexCoordinates = this.coordinatesTranslator.computeRelativeCoordinates(parent, new Point(bounds.x, bounds.y));
-    // TODO maxGraph@0.1.0 check insertVertex with single parameter
-    const cell = this.graph.insertVertex(parent, id, value, vertexCoordinates.x, vertexCoordinates.y, bounds.width, bounds.height, style);
+    const cell = this.graph.insertVertex({ parent, id, value, position: [vertexCoordinates.x, vertexCoordinates.y], width: bounds.width, height: bounds.height, style });
 
     if (labelBounds) {
       // label coordinates are relative in the cell referential coordinates

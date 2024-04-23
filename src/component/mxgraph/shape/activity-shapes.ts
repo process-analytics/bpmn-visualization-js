@@ -17,7 +17,7 @@ limitations under the License.
 import type { AbstractCanvas2D } from '@maxgraph/core';
 import { RectangleShape } from '@maxgraph/core';
 
-import type { BPMNCellStyle } from '../renderer/StyleComputer';
+import type { BpmnCellStyle } from '../style/types';
 import { StyleDefault } from '../style';
 import type { BpmnCanvas, PaintParameter, ShapeConfiguration } from './render';
 import { IconPainterProvider } from './render';
@@ -51,7 +51,7 @@ export abstract class BaseActivityShape extends RectangleShape {
   }
 
   protected paintMarkerIcons(paintParameter: PaintParameter): void {
-    const markers = (this.style as BPMNCellStyle).bpmn.markers;
+    const markers = (this.style as BpmnCellStyle).bpmn.markers;
     if (markers) {
       orderActivityMarkers(markers).forEach((marker, idx, allMarkers) => {
         paintParameter = {
@@ -140,7 +140,7 @@ export class UserTaskShape extends BaseTaskShape {
  */
 export class ReceiveTaskShape extends BaseTaskShape {
   protected paintTaskIcon(paintParameter: PaintParameter): void {
-    if (!(this.style as BPMNCellStyle).bpmn.isInstantiating) {
+    if (!(this.style as BpmnCellStyle).bpmn.isInstantiating) {
       paintEnvelopeIcon(paintParameter, false);
       return;
     }
@@ -212,7 +212,7 @@ export class CallActivityShape extends BaseActivityShape {
 
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this });
 
-    switch ((this.style as BPMNCellStyle).bpmn.globalTaskKind) {
+    switch ((this.style as BpmnCellStyle).bpmn.globalTaskKind) {
       case ShapeBpmnElementKind.GLOBAL_TASK_MANUAL:
         this.iconPainter.paintHandIcon({
           ...paintParameter,
@@ -252,7 +252,7 @@ export class CallActivityShape extends BaseActivityShape {
  */
 export class SubProcessShape extends BaseActivityShape {
   override paintBackground(c: AbstractCanvas2D, x: number, y: number, w: number, h: number): void {
-    const subProcessKind = (this.style as BPMNCellStyle).bpmn.subProcessKind;
+    const subProcessKind = (this.style as BpmnCellStyle).bpmn.subProcessKind;
     c.save(); // ensure we can later restore the configuration
     if (subProcessKind === ShapeBpmnSubProcessKind.EVENT) {
       c.setDashed(true, false);

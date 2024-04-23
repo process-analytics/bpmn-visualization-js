@@ -27,6 +27,7 @@ export const BpmnStyleIdentifier = {
   // edge
   EDGE: 'bpmn.edge',
 
+  // TODO maxGraph@0.10.1 - real migration - renamed into SHAPE_MESSAGE_FLOW_ICON?
   // other identifiers
   MESSAGE_FLOW_ICON: 'bpmn.messageFlowIcon',
 };

@@ -132,15 +132,10 @@ export class BpmnGraph extends Graph {
       scale == 0 && (scale = 1);
       this.view.scaleAndTranslate(
         scale,
-        this.NaNToZero((margin + clientWidth - width * scale) / (2 * scale) - bounds.x / this.view.scale),
-        this.NaNToZero((margin + clientHeight - height * scale) / (2 * scale) - bounds.y / this.view.scale),
+        convertNaNToZero((margin + clientWidth - width * scale) / (2 * scale) - bounds.x / this.view.scale),
+        convertNaNToZero((margin + clientHeight - height * scale) / (2 * scale) - bounds.y / this.view.scale),
       );
     }
-  }
-
-  // TODO maxgraph@0.1.0 move somewhere else + find a better name + should be a util function
-  private NaNToZero(value: number): number {
-    return Number.isNaN(value) ? 0 : value;
   }
 
   /**
@@ -214,6 +209,7 @@ export class BpmnGraph extends Graph {
   }
 
   // TODO maxgraph@0.1.0 temp to fix maxGraph style merge issue (should be fixed in maxGraph@0.2.0)
+  // with maxgraph@0.10.1, using the maxGraph implementation impact the results of the integration tests (markers)
   override createStylesheet(): Stylesheet {
     return new BpmnStylesheet();
   }
@@ -234,6 +230,7 @@ class BpmnGraphView extends GraphView {
 }
 
 // TODO maxgraph@0.1.0 temp to fix maxGraph style merge issue (should be fixed in maxGraph@0.2.0)
+// see also utils.ts setStyle which adds another workaround that should be possible to remove with maxGraph@0.10.1
 class BpmnStylesheet extends Stylesheet {
   override getCellStyle(cellStyle: CellStyle, defaultStyle: CellStateStyle): CellStateStyle {
     let style: CellStateStyle;
@@ -267,4 +264,8 @@ class BpmnStylesheet extends Stylesheet {
 
     return style;
   }
+}
+
+function convertNaNToZero(value: number): number {
+  return Number.isNaN(value) ? 0 : value;
 }

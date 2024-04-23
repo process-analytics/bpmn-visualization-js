@@ -25,8 +25,7 @@ import { ensureIsArray } from '../helpers/array-utils';
 import { OverlayConverter } from './overlay/OverlayConverter';
 import { messageFlowIconId } from './BpmnRenderer';
 import { ensureOpacityValue } from '../helpers/validators';
-import type { BPMNCellStyle } from './renderer/StyleComputer';
-import { cloneUtils } from '@maxgraph/core';
+import type { BpmnCellStyle } from './style/types';
 
 /**
  * @internal
@@ -60,7 +59,7 @@ export default class GraphCellUpdater {
 
     this.styleManager.ensureStyleIsStored(cell);
 
-    const cellStyle: BPMNCellStyle = getCellStyleClone(cell);
+    const cellStyle: BpmnCellStyle = getCellStyleClone(cell);
     setCssClasses(cellStyle, cssClasses);
 
     model.setStyle(cell, cellStyle);
@@ -114,7 +113,7 @@ export default class GraphCellUpdater {
           updateFill(cellStyle, styleUpdate.fill);
         }
 
-        // TODO maxgraph@0.1.0 migration --> apply this to the master branch graph.model --> model
+        // TODO maxgraph@0.10.1 migration --> change to apply this to the master branch: graph.model --> model (from maxgraph@0.1.0 migration)
         model.setStyle(cell, cellStyle);
       }
     });

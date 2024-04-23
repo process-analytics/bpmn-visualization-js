@@ -16,7 +16,7 @@ limitations under the License.
 import type { Cell, CellStyle, GraphDataModel } from '@maxgraph/core';
 import { getCellStyleClone, setCssClasses } from './utils';
 import type { CssRegistry } from '../../registry/css-registry';
-import type { BPMNCellStyle } from '../renderer/StyleComputer';
+import type { BpmnCellStyle } from '../style/types';
 
 export class StyleManager {
   private stylesCache: Map<string, CellStyle> = new Map();
@@ -29,7 +29,7 @@ export class StyleManager {
 
   resetAllStyles(): void {
     for (const cellId of this.stylesCache.keys()) {
-      // TODO inline in master branch
+      // TODO maxGraph 0.10.1 - inline in master branch (from maxgraph@0.1.0 migration)
       const style = this.stylesCache.get(cellId);
       this.resetStyle(cellId, style);
     }
@@ -47,9 +47,9 @@ export class StyleManager {
     }
   }
 
-  private resetStyle(cellId: string, style: BPMNCellStyle): void {
+  private resetStyle(cellId: string, style: BpmnCellStyle): void {
     const cell = this.model.getCell(cellId);
-    // TODO maxGraph 0.1.0 - inline (can be done in the master branch as well)
+    // TODO maxGraph 0.10.1 - inline in master branch (from maxgraph@0.1.0 migration)
     const cssClasses = this.cssRegistry.getClassNames(cellId);
 
     // no need to copy the style, it is coming from the cache only and is later deleted from the cache

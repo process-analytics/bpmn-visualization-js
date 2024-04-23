@@ -16,17 +16,17 @@ limitations under the License.
 
 import type { ShapeValue } from '@maxgraph/core';
 
-import type { BpmnCellStyle, ExpectedCell } from '../matcher-utils';
+import type { ComparedBpmnCellStyle, ExpectedCell } from '../matcher-utils';
 import { buildCellMatcher, buildExpectedCellStyleWithCommonAttributes, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
 import { AssociationDirectionKind, FlowKind, MessageVisibleKind, SequenceFlowKind } from '@lib/model/bpmn/internal';
 import type { ExpectedAssociationFlowModelElement, ExpectedEdgeModelElement, ExpectedSequenceFlowModelElement } from '../../helpers/model-expect';
 import { getDefaultParentId } from '../../helpers/model-expect';
 import { BpmnStyleIdentifier } from '@lib/component/mxgraph/style';
-import type { BPMNCellStyle } from '@lib/component/mxgraph/renderer/StyleComputer';
+import type { BpmnCellStyle } from '@lib/component/mxgraph/style/types';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 
-function buildExpectedEdgeCellStyle(expectedModel: ExpectedEdgeModelElement): BpmnCellStyle {
+function buildExpectedEdgeCellStyle(expectedModel: ExpectedEdgeModelElement): ComparedBpmnCellStyle {
   const style = buildExpectedCellStyleWithCommonAttributes(expectedModel);
   style.verticalAlign = expectedModel.verticalAlign ?? 'top';
   style.align = 'center';
@@ -37,7 +37,7 @@ function buildExpectedEdgeCellStyle(expectedModel: ExpectedEdgeModelElement): Bp
   return style;
 }
 
-function buildExpectedMsgFlowIconCellStyle(expectedModel: ExpectedEdgeModelElement): BpmnCellStyle {
+function buildExpectedMsgFlowIconCellStyle(expectedModel: ExpectedEdgeModelElement): ComparedBpmnCellStyle {
   const style = buildExpectedCellStyleWithCommonAttributes(expectedModel);
   style.align = 'center';
   style.verticalAlign = 'middle';
@@ -46,8 +46,8 @@ function buildExpectedMsgFlowIconCellStyle(expectedModel: ExpectedEdgeModelEleme
   return style;
 }
 
-function buildExpectedEdgeStylePropertyRegexp(expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement | ExpectedAssociationFlowModelElement): BPMNCellStyle {
-  const style: BPMNCellStyle = { bpmn: {} };
+function buildExpectedEdgeStylePropertyRegexp(expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement | ExpectedAssociationFlowModelElement): BpmnCellStyle {
+  const style: BpmnCellStyle = { bpmn: {} };
   // TODO maxgraph@0.1.0 share with shape or remove
   style.baseStyleNames = [expectedModel.kind];
   style.bpmn.kind = expectedModel.kind;
@@ -85,7 +85,7 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement |
       {
         id: `messageFlowIcon_of_${id}`,
         value: null, // maxGraph now set to 'null', mxGraph set to 'undefined'
-        styleRawFromModelOrJestExpect: expect.objectContaining(<BPMNCellStyle>{
+        styleRawFromModelOrJestExpect: expect.objectContaining(<BpmnCellStyle>{
           // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
           shape: <ShapeValue>BpmnStyleIdentifier.MESSAGE_FLOW_ICON,
           // TODO maxgraph@0.1.0 duplicated logic to compute the 'isInitiating' property. Update the expectedModel to store a boolean instead of a string

@@ -14,7 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { AlignValue, CellStyle, ShapeValue } from '@maxgraph/core';
+import type { CellStyle } from '@maxgraph/core';
+import { constants } from '@maxgraph/core';
 
 import Shape from '../../../model/bpmn/internal/shape/Shape';
 import type { Edge } from '../../../model/bpmn/internal/edge/edge';
@@ -29,51 +30,11 @@ import {
   ShapeBpmnSubProcess,
 } from '../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { BpmnStyleIdentifier } from '../style';
-import { FONT } from '../style/utils';
-import type {
-  AssociationDirectionKind,
-  FlowKind,
-  GlobalTaskKind,
-  SequenceFlowKind,
-  ShapeBpmnEventBasedGatewayKind,
-  ShapeBpmnEventDefinitionKind,
-  ShapeBpmnSubProcessKind,
-} from '../../../model/bpmn/internal';
 import { MessageVisibleKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeUtil } from '../../../model/bpmn/internal';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/flows';
 import type { Font } from '../../../model/bpmn/internal/Label';
 import type { RendererOptions } from '../../options';
-
-// TODO maxgraph@0.1.0 this type should probably be part of the API (so it should be exported)
-// TODO maxgraph@0.1.0 move somewhere else
-// TODO maxgraph@0.1.0 rename for consistent naming BPMNCellStyle --> BpmnCellStyle (apply to other places)
-//  a BpmnCellStyle exists in tests. Try to use this one instead
-export interface BPMNCellStyle extends CellStyle {
-  // TODO maxgraph@0.1.0 fill markers properties to remove when https://github.com/maxGraph/maxGraph/issues/201 is available
-  endFillColor?: string;
-  // TODO maxgraph@0.1.0 fill markers properties to remove when https://github.com/maxGraph/maxGraph/issues/201 is available
-  startFillColor?: string;
-  // TODO maxgraph@0.1.0 the shape property is defined as 'ShapeValue'. It should be 'ShapeValue | string'
-  // Omit<CellStyle, 'shape'> {
-  // shape?: ShapeValue | string;
-  // TODO maxgraph@0.1.0 make bpmn mandatory?
-  bpmn?: {
-    // TODO maxgraph@0.1.0 sort properties in alphabetical order for clarity (and as done in maxGraph CellStyle) and provide documentation about each property
-    // TODO maxgraph@0.1.0 make kind mandatory?
-    kind?: ShapeBpmnElementKind | FlowKind;
-    isInstantiating?: boolean;
-    gatewayKind?: ShapeBpmnEventBasedGatewayKind;
-    eventDefinitionKind?: ShapeBpmnEventDefinitionKind;
-    isInterrupting?: boolean;
-    subProcessKind?: ShapeBpmnSubProcessKind;
-    globalTaskKind?: GlobalTaskKind;
-    markers?: ShapeBpmnMarkerKind[];
-    sequenceFlowKind?: SequenceFlowKind;
-    associationDirectionKind?: AssociationDirectionKind;
-    isInitiating?: boolean;
-    extraCssClasses?: string[];
-  };
-}
+import type { BpmnCellStyle } from '../style/types';
 
 /**
  * @internal
@@ -85,8 +46,8 @@ export default class StyleComputer {
     this.ignoreBpmnColors = options?.ignoreBpmnColors ?? true;
   }
 
-  computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): BPMNCellStyle {
-    const style: BPMNCellStyle = {
+  computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): BpmnCellStyle {
+    const style: BpmnCellStyle = {
       bpmn: { kind: bpmnCell.bpmnElement.kind },
     };
 
@@ -107,7 +68,7 @@ export default class StyleComputer {
     return { baseStyleNames, ...style, ...fontStyleValues, ...labelStyleValues };
   }
 
-  private enrichStyleWithShapeInfo(style: BPMNCellStyle, shape: Shape): void {
+  private enrichStyleWithShapeInfo(style: BpmnCellStyle, shape: Shape): void {
     const bpmnElement = shape.bpmnElement;
 
     if (bpmnElement instanceof ShapeBpmnEvent) {
@@ -137,7 +98,7 @@ export default class StyleComputer {
     }
   }
 
-  private static computeEventShapeStyle(bpmnElement: ShapeBpmnEvent, style: BPMNCellStyle): void {
+  private static computeEventShapeStyle(bpmnElement: ShapeBpmnEvent, style: BpmnCellStyle): void {
     style.bpmn.eventDefinitionKind = bpmnElement.eventDefinitionKind;
 
     if (bpmnElement instanceof ShapeBpmnBoundaryEvent || (bpmnElement instanceof ShapeBpmnStartEvent && bpmnElement.isInterrupting !== undefined)) {
@@ -145,7 +106,7 @@ export default class StyleComputer {
     }
   }
 
-  private static computeActivityShapeStyle(bpmnElement: ShapeBpmnActivity, style: BPMNCellStyle): void {
+  private static computeActivityShapeStyle(bpmnElement: ShapeBpmnActivity, style: BpmnCellStyle): void {
     if (bpmnElement instanceof ShapeBpmnSubProcess) {
       style.bpmn.subProcessKind = bpmnElement.subProcessKind;
     } else if (bpmnElement.kind === ShapeBpmnElementKind.TASK_RECEIVE) {
@@ -157,7 +118,7 @@ export default class StyleComputer {
     style.bpmn.markers = bpmnElement.markers;
   }
 
-  // TODO maxgraph@0.1.0 switch from static method to function (same in other places of this class) --> TODO in master branch
+  // TODO maxgraph@0.10.1 switch from static method to function (same in other places of this class) --> this has been done in master branch
   // This applies to the current implementation and to all static methods of this class
   private static computeEdgeBaseStyleNames(edge: Edge): string[] {
     const styles: string[] = [];
@@ -173,7 +134,7 @@ export default class StyleComputer {
     return styles;
   }
 
-  private enrichStyleWithEdgeInfo(style: BPMNCellStyle, edge: Edge): void {
+  private enrichStyleWithEdgeInfo(style: BpmnCellStyle, edge: Edge): void {
     if (!this.ignoreBpmnColors) {
       const extensions = edge.extensions;
       extensions.strokeColor && (style.strokeColor = extensions.strokeColor);
@@ -212,14 +173,8 @@ export default class StyleComputer {
       if (bpmnCell instanceof Shape) {
         // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
         style.labelWidth = labelBounds.width + 1;
-        // align settings
-        // According to the documentation, "label position" can only take values in left, center, right with default=center
-        // However, there is undocumented behavior when the value is not one of these and this behavior is exactly what we want.
-        // See https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/mxGraphView.js#L1183-L1252
-        // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
-        style.labelPosition = <AlignValue>'ignore';
+        style.labelPosition = 'ignore';
         style.verticalLabelPosition = 'middle';
-        // end of fixme
       }
     }
     // when no label bounds, adjust the default style dynamically
@@ -235,10 +190,9 @@ export default class StyleComputer {
     return style;
   }
 
-  computeMessageFlowIconStyle(edge: Edge): BPMNCellStyle {
-    const style: BPMNCellStyle = {
-      // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
-      shape: <ShapeValue>BpmnStyleIdentifier.MESSAGE_FLOW_ICON,
+  computeMessageFlowIconStyle(edge: Edge): BpmnCellStyle {
+    const style: BpmnCellStyle = {
+      shape: BpmnStyleIdentifier.MESSAGE_FLOW_ICON,
       bpmn: { isInitiating: edge.messageVisibleKind === MessageVisibleKind.INITIATING },
     };
     if (!this.ignoreBpmnColors) {
@@ -255,16 +209,16 @@ export default class StyleComputer {
 export function getFontStyleValue(font: Font): number {
   let value = 0;
   if (font.isBold) {
-    value += FONT.BOLD;
+    value += constants.FONT.BOLD;
   }
   if (font.isItalic) {
-    value += FONT.ITALIC;
+    value += constants.FONT.ITALIC;
   }
   if (font.isStrikeThrough) {
-    value += FONT.STRIKETHROUGH;
+    value += constants.FONT.STRIKETHROUGH;
   }
   if (font.isUnderline) {
-    value += FONT.UNDERLINE;
+    value += constants.FONT.UNDERLINE;
   }
   return value;
 }

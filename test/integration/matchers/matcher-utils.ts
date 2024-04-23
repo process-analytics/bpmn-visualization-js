@@ -14,25 +14,26 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { Cell, Geometry } from '@maxgraph/core';
+import type { AlignValue, Cell, Geometry, VAlignValue } from '@maxgraph/core';
 
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 
-import type { ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement, HorizontalAlign, VerticalAlign } from '../helpers/model-expect';
+import type { ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement } from '../helpers/model-expect';
 import { bpmnVisualization } from '../helpers/model-expect';
 import type { Opacity } from '@lib/component/registry';
 import type { MxGraphCustomOverlay, MxGraphCustomOverlayStyle } from '@lib/component/mxgraph/overlay/custom-overlay';
 import { getFontStyleValue as computeFontStyleValue } from '@lib/component/mxgraph/renderer/StyleComputer';
 import { Font } from '@lib/model/bpmn/internal/Label';
-import type { BPMNCellStyle } from '@lib/component/mxgraph/renderer/StyleComputer';
+import type { BpmnCellStyle } from '@lib/component/mxgraph/style/types';
 
-// TODO maxgraph@0.1.0 remove this type and use a single type shared with BPMNCellStyle
-// No more need for a dedicated BpmnStyle in the integration tests. Use the one from the sources
-export interface BpmnCellStyle {
+/**
+ * Used in test to compare the expected and received styles.
+ */
+export interface ComparedBpmnCellStyle {
   opacity: Opacity;
-  verticalAlign?: VerticalAlign;
-  align?: HorizontalAlign;
+  verticalAlign?: VAlignValue;
+  align?: AlignValue;
   strokeWidth?: 'default' | number;
   strokeColor: string;
   strokeOpacity: Opacity;
@@ -59,17 +60,17 @@ export interface ExpectedCell {
   value?: string;
   geometry?: Geometry;
   /** the Cell style property or a jest expect using a regexp. */
-  styleRawFromModelOrJestExpect?: BPMNCellStyle;
+  styleRawFromModelOrJestExpect?: BpmnCellStyle;
   /**
    * The style of the Cell in the model where all properties have been resolved by also applying properties coming from the referenced styles.
    *
    * It involves the usage of `graph.getCellStyle`.
    */
-  styleResolvedFromModel?: BpmnCellStyle;
+  styleResolvedFromModel?: ComparedBpmnCellStyle;
   /**
    * Relates to the current style in the state view of the cell which is typically retrieved by calling `view.getState(cell).style` where `view` is `graph.getView()`.
    */
-  styleViewState?: BpmnCellStyle;
+  styleViewState?: ComparedBpmnCellStyle;
   id?: string;
   edge?: boolean;
   vertex?: boolean;
@@ -136,7 +137,7 @@ export function getFontStyleValue(expectedFont: ExpectedFont): number {
   );
 }
 
-export function buildExpectedCellStyleWithCommonAttributes(expectedModelElt: ExpectedEdgeModelElement | ExpectedShapeModelElement): BpmnCellStyle {
+export function buildExpectedCellStyleWithCommonAttributes(expectedModelElt: ExpectedEdgeModelElement | ExpectedShapeModelElement): ComparedBpmnCellStyle {
   const font = expectedModelElt.font;
 
   // Here are the default values as defined in StyleDefault
@@ -169,7 +170,7 @@ export function buildExpectedCellStyleWithCommonAttributes(expectedModelElt: Exp
  * @param cell The Cell to consider to get the style in the state view
  * @param bv The instance of BpmnVisualization under test
  */
-export function buildReceivedViewStateStyle(cell: Cell, bv = bpmnVisualization): BpmnCellStyle {
+export function buildReceivedViewStateStyle(cell: Cell, bv = bpmnVisualization): ComparedBpmnCellStyle {
   return toBpmnStyle(bv.graph.getView().getState(cell).style, cell.edge);
 }
 
@@ -183,12 +184,12 @@ export function buildReceivedViewStateStyle(cell: Cell, bv = bpmnVisualization):
  * @param cell The Cell to consider for the computation of the resolved style.
  * @param bv The instance of BpmnVisualization under test
  */
-export function buildReceivedResolvedModelCellStyle(cell: Cell, bv = bpmnVisualization): BpmnCellStyle {
+export function buildReceivedResolvedModelCellStyle(cell: Cell, bv = bpmnVisualization): ComparedBpmnCellStyle {
   return toBpmnStyle(bv.graph.getCellStyle(cell), cell.edge);
 }
 
-function toBpmnStyle(rawStyle: BPMNCellStyle, isEdge: boolean): BpmnCellStyle {
-  const style: BpmnCellStyle = {
+function toBpmnStyle(rawStyle: BpmnCellStyle, isEdge: boolean): ComparedBpmnCellStyle {
+  const style: ComparedBpmnCellStyle = {
     opacity: rawStyle.opacity,
     verticalAlign: rawStyle.verticalAlign,
     align: rawStyle.align,

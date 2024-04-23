@@ -35,9 +35,8 @@ import {
 import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { BpmnStyleIdentifier } from '../style';
-import { FONT } from '../style/utils';
 import { computeAllBpmnClassNamesOfCell } from '../renderer/style-utils';
-import type { BPMNCellStyle } from '../renderer/StyleComputer';
+import type { BpmnCellStyle } from '../style/types';
 import { MxGraphCustomOverlay } from '../overlay/custom-overlay';
 import { OverlayBadgeShape } from '../overlay/shapes';
 import { BpmnConnector } from '../shape/edges';
@@ -126,18 +125,18 @@ export default class ShapeConfigurator {
         // END OF Fix for issue #920
         '; ';
 
-      if ((s.fontStyle & FONT.BOLD) == FONT.BOLD) {
+      if ((s.fontStyle & constants.FONT.BOLD) == constants.FONT.BOLD) {
         css += 'font-weight: bold; ';
       }
-      if ((s.fontStyle & FONT.ITALIC) == FONT.ITALIC) {
+      if ((s.fontStyle & constants.FONT.ITALIC) == constants.FONT.ITALIC) {
         css += 'font-style: italic; ';
       }
 
       const deco = [];
-      if ((s.fontStyle & FONT.UNDERLINE) == FONT.UNDERLINE) {
+      if ((s.fontStyle & constants.FONT.UNDERLINE) == constants.FONT.UNDERLINE) {
         deco.push('underline');
       }
-      if ((s.fontStyle & FONT.STRIKETHROUGH) == FONT.STRIKETHROUGH) {
+      if ((s.fontStyle & constants.FONT.STRIKETHROUGH) == constants.FONT.STRIKETHROUGH) {
         deco.push('line-through');
       }
       if (deco.length > 0) {
@@ -173,7 +172,7 @@ export default class ShapeConfigurator {
         // TODO maxgraph@0.1.0 "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided."constants.DIALECT.STRICTHTML
         let allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === 'strictHtml');
         // TODO maxgraph@0.1.0 - do we need to introduce a BpmnCellStateStyle type (to not have the baseStyleName property)?
-        const extraCssClasses = (this.state.style as BPMNCellStyle).bpmn?.extraCssClasses;
+        const extraCssClasses = (this.state.style as BpmnCellStyle).bpmn?.extraCssClasses;
         if (extraCssClasses) {
           allBpmnClassNames = allBpmnClassNames.concat(extraCssClasses);
         }
