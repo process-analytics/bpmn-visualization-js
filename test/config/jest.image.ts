@@ -56,7 +56,7 @@ class RetriesCounter {
 
 const retriesCounter = new RetriesCounter();
 
-function saveAndRegisterImages(matcherContext: MatcherContext, received: Buffer, options: MatchImageSnapshotOptions): void {
+async function saveAndRegisterImages(matcherContext: MatcherContext, received: Buffer, options: MatchImageSnapshotOptions): Promise<void> {
   const snapshotIdentifier = <string>options.customSnapshotIdentifier;
   // Manage expected and received images
   const baseImagePathWithName = `${options.customDiffDir}/${snapshotIdentifier}`;
@@ -79,35 +79,32 @@ function saveAndRegisterImages(matcherContext: MatcherContext, received: Buffer,
     matchers: {}, // required by the jest-html-reporters getJestGlobalData function even if not used
   };
 
-  addAttach({
-    attach: computeRelativePathFromReportToSnapshots(`${baseImagePathWithName}-diff.png`),
-    description: 'diff',
-    bufferFormat: 'png',
-    context,
-  })
-    .then(() =>
-      addAttach({
-        attach: computeRelativePathFromReportToSnapshots(expectedImagePath),
-        description: 'expected',
-        bufferFormat: 'png',
-        context,
-      }),
-    )
-    .then(() => {
-      addAttach({
-        attach: computeRelativePathFromReportToSnapshots(receivedImagePath),
-        description: 'received',
-        bufferFormat: 'png',
-        context,
-      });
-    })
-    .catch(e =>
-      console.error(
-        `Error while attaching images to test ${snapshotIdentifier}.` +
-          `The 'jest-html-reporters' reporter is probably not in use. For instance, this occurs when running tests with the IntelliJ/Webstorm Jest runner.`,
-        e,
-      ),
+  try {
+    await addAttach({
+      attach: computeRelativePathFromReportToSnapshots(`${baseImagePathWithName}-diff.png`),
+      description: 'diff',
+      bufferFormat: 'png',
+      context,
+    });
+    await addAttach({
+      attach: computeRelativePathFromReportToSnapshots(expectedImagePath),
+      description: 'expected',
+      bufferFormat: 'png',
+      context,
+    });
+    await addAttach({
+      attach: computeRelativePathFromReportToSnapshots(receivedImagePath),
+      description: 'received',
+      bufferFormat: 'png',
+      context,
+    });
+  } catch (e) {
+    console.error(
+      `Error while attaching images to test ${snapshotIdentifier}.` +
+        `The 'jest-html-reporters' reporter is probably not in use. For instance, this occurs when running tests with the IntelliJ/Webstorm Jest runner.`,
+      e,
     );
+  }
 }
 
 // Improve jest-image-snapshot outputs to facilitate debug
