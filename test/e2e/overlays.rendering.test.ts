@@ -190,6 +190,8 @@ describe('BPMN Shapes with overlays', () => {
       customSnapshotIdentifier: `add.overlay.on.position.${position}`,
       customSnapshotsDir: getShapeDir(config.customSnapshotsDir),
       customDiffDir: getShapeDir(config.customDiffDir),
+      // TODO migration maxgraph 0.10.1 - to fix in the master branch - set customReceivedDir (see other test files)
+      // customReceivedDir: getShapeDir(config.customReceivedDir),
     });
   });
 

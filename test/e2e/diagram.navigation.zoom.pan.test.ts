@@ -208,6 +208,15 @@ describe('diagram navigation - zoom with buttons and mouse', () => {
     await doZoomWithButton(secondZoom, xTimes);
 
     const image = await page.screenshot({ fullPage: true });
+    // TODO migration maxgraph 0.10.1 - to fix in the master branch - set customReceivedDir
+    // to be done in all function of this file
+    // create a copy of "config" then set the value
+    // const config = {...imageSnapshotConfigurator.getConfig(bpmnDiagramName)};
+    // config.customSnapshotIdentifier = 'initial.zoom';
+    // config.customDiffDir = join(config.customDiffDir, `zoom-mouse-then-button-${firstZoom}-then-${secondZoom}`);
+    // config.customReceivedDir = config.customDiffDir;
+    // then pass the config object
+
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image).toMatchImageSnapshot({
       ...config,
