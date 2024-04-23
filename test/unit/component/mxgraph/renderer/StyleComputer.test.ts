@@ -17,7 +17,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { AlignValue, ShapeValue } from '@maxgraph/core';
+import type { ShapeValue } from '@maxgraph/core';
 import type { BPMNCellStyle } from '@lib/component/mxgraph/renderer/StyleComputer';
 import StyleComputer from '@lib/component/mxgraph/renderer/StyleComputer';
 import Shape from '@lib/model/bpmn/internal/shape/Shape';
@@ -201,8 +201,7 @@ describe('Style Computer', () => {
         align: 'center',
         verticalAlign: 'top',
         labelWidth: 81,
-        // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
-        labelPosition: <AlignValue>'ignore',
+        labelPosition: 'ignore',
         verticalLabelPosition: 'middle',
         bpmn: { kind: ShapeBpmnElementKind.CALL_ACTIVITY },
       });
@@ -415,8 +414,7 @@ describe('Style Computer', () => {
             fontFamily: 'sans-serif',
             labelWidth: 301,
             verticalAlign: 'top',
-            // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
-            labelPosition: <AlignValue>'ignore',
+            labelPosition: 'ignore',
             verticalLabelPosition: 'middle',
           });
         });
@@ -458,8 +456,7 @@ describe('Style Computer', () => {
             fontFamily: 'sans-serif',
             labelWidth: 301,
             verticalAlign: 'top',
-            // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
-            labelPosition: <AlignValue>'ignore',
+            labelPosition: 'ignore',
             verticalLabelPosition: 'middle',
           });
         });
@@ -497,8 +494,7 @@ describe('Style Computer', () => {
             fontFamily: 'sans-serif',
             labelWidth: 301,
             verticalAlign: 'top',
-            // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
-            labelPosition: <AlignValue>'ignore',
+            labelPosition: 'ignore',
             verticalLabelPosition: 'middle',
           });
         });
@@ -538,8 +534,7 @@ describe('Style Computer', () => {
         fontFamily: 'Segoe UI',
         labelWidth: 101,
         verticalAlign: 'top',
-        // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
-        labelPosition: <AlignValue>'ignore',
+        labelPosition: 'ignore',
         verticalLabelPosition: 'middle',
       });
     });
@@ -562,8 +557,7 @@ describe('Style Computer', () => {
           kind: ShapeBpmnElementKind.GROUP,
         },
         fontFamily: 'Roboto',
-        // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
-        labelPosition: <AlignValue>'ignore',
+        labelPosition: 'ignore',
         labelWidth: 101,
         verticalAlign: 'top',
         verticalLabelPosition: 'middle',

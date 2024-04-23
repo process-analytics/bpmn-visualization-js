@@ -212,14 +212,8 @@ export default class StyleComputer {
       if (bpmnCell instanceof Shape) {
         // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
         style.labelWidth = labelBounds.width + 1;
-        // align settings
-        // According to the documentation, "label position" can only take values in left, center, right with default=center
-        // However, there is undocumented behavior when the value is not one of these and this behavior is exactly what we want.
-        // See https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/mxGraphView.js#L1183-L1252
-        // TODO maxgraph@0.1.0 remove forcing type when bumping maxGraph (fixed in version 0.2.1)
-        style.labelPosition = <AlignValue>'ignore';
+        style.labelPosition = 'ignore';
         style.verticalLabelPosition = 'middle';
-        // end of fixme
       }
     }
     // when no label bounds, adjust the default style dynamically
