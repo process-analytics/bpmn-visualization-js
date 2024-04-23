@@ -32,8 +32,11 @@ class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
     margin?: number;
   }): MatchImageSnapshotOptions {
     const config = super.getConfig(param);
+    // TODO migration maxgraph 0.10.1 - to fix in the master branch - we may make a copy of the original configuration
     config.customSnapshotsDir = FitImageSnapshotConfigurator.buildSnapshotFitDir(config.customSnapshotsDir, param.fitType, true, param.margin ? param.margin : 0);
     config.customDiffDir = param.buildCustomDiffDir(config, param.fitType, param.margin);
+    // TODO migration maxgraph 0.10.1 - to fix in the master branch
+    config.customReceivedDir = config.customDiffDir;
     return config;
   }
 
