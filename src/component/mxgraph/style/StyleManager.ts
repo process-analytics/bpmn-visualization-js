@@ -29,7 +29,7 @@ export class StyleManager {
 
   resetAllStyles(): void {
     for (const cellId of this.stylesCache.keys()) {
-      // TODO inline in master branch
+      // TODO maxGraph 0.1.0 - inline in master branch
       const style = this.stylesCache.get(cellId);
       this.resetStyle(cellId, style);
     }
