@@ -37,7 +37,7 @@
                 "NODE_OPTIONS": "--experimental-vm-modules"
             },
             "args": [
-                "--runInBand", "--config=./test/integration/jest.config.mjs"
+                "--runInBand", "--config=./test/integration/jest.config.js"
             ],
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",

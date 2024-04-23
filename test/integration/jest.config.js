@@ -14,10 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { moduleNameMapper } from '../config/ts-jest-module-mapper.mjs';
+const { moduleNameMapper } = require('../config/ts-jest');
 
 /** @type {import('ts-jest').JestConfigWithTsJest} */
-const config = {
+module.exports = {
   rootDir: '../..',
   roots: ['./test/integration'],
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
@@ -31,14 +31,6 @@ const config = {
       },
     ],
   },
-  // moduleNameMapper: {
-  //   ...moduleNameMapper,
-  //   // Hack to use lodash instead of lodash-es in integration tests.
-  //   // This is only to resolve the import, otherwise Jest fails to parse the lodash-es files.
-  //   // For more details, see https://github.com/process-analytics/bpmn-visualization-js/pull/2678
-  //   // The lodash code is not called in integration tests, so changing the lodash implementation in used in not an issue.
-  //   '^lodash-es$': 'lodash',
-  // },
   moduleNameMapper,
   extensionsToTreatAsEsm: ['.ts'],
   // https://jestjs.io/docs/configuration#modulefileextensions-arraystring
@@ -71,5 +63,3 @@ const config = {
     ],
   ],
 };
-
-export default config;
