@@ -137,6 +137,7 @@ export class StyleConfigurator {
     configureCommonDefaultStyle(style);
 
     style.absoluteArcSize = true;
+    // TODO maxgraph@0.1.0 find a way to not force cast
     style.arcSize = <number>StyleDefault.SHAPE_ARC_SIZE;
   }
 
