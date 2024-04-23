@@ -59,6 +59,7 @@ export class ImageSnapshotConfigurator {
       customSnapshotIdentifier: fileName,
       customSnapshotsDir: this.defaultCustomSnapshotsDir,
       customDiffDir: this.defaultCustomDiffDir,
+      // TODO migration maxgraph 0.10.1 - to fix in the master branch - we may remove this line and enforce the use of withCustomReceivedDir everywhere
       customReceivedDir: this.defaultCustomDiffDir,
     };
   }
@@ -156,3 +157,7 @@ export class MultiBrowserImageSnapshotThresholds {
     }
   }
 }
+
+// TODO migration maxgraph 0.10.1 - to fix in the master branch - we may make a copy of the original configuration
+// TODO find a better name: consolidate configuration?
+export const withCustomReceivedDir = (options: MatchImageSnapshotOptions): MatchImageSnapshotOptions => ({ ...options, customReceivedDir: options.customDiffDir });
