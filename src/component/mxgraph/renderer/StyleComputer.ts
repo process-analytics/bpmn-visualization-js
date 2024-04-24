@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { AlignValue, CellStyle, ShapeValue } from '@maxgraph/core';
+import type { CellStyle, ShapeValue } from '@maxgraph/core';
 
 import Shape from '../../../model/bpmn/internal/shape/Shape';
 import type { Edge } from '../../../model/bpmn/internal/edge/edge';
@@ -49,13 +49,6 @@ import type { RendererOptions } from '../../options';
 // TODO maxgraph@0.1.0 rename for consistent naming BPMNCellStyle --> BpmnCellStyle (apply to other places)
 //  a BpmnCellStyle exists in tests. Try to use this one instead
 export interface BPMNCellStyle extends CellStyle {
-  // TODO maxgraph@0.1.0 fill markers properties to remove when https://github.com/maxGraph/maxGraph/issues/201 is available
-  endFillColor?: string;
-  // TODO maxgraph@0.1.0 fill markers properties to remove when https://github.com/maxGraph/maxGraph/issues/201 is available
-  startFillColor?: string;
-  // TODO maxgraph@0.1.0 the shape property is defined as 'ShapeValue'. It should be 'ShapeValue | string'
-  // Omit<CellStyle, 'shape'> {
-  // shape?: ShapeValue | string;
   // TODO maxgraph@0.1.0 make bpmn mandatory?
   bpmn?: {
     // TODO maxgraph@0.1.0 sort properties in alphabetical order for clarity (and as done in maxGraph CellStyle) and provide documentation about each property
