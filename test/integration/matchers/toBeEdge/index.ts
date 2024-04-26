@@ -22,7 +22,7 @@ import { AssociationDirectionKind, FlowKind, MessageVisibleKind, SequenceFlowKin
 import type { ExpectedAssociationFlowModelElement, ExpectedEdgeModelElement, ExpectedSequenceFlowModelElement } from '../../helpers/model-expect';
 import { getDefaultParentId } from '../../helpers/model-expect';
 import { BpmnStyleIdentifier } from '@lib/component/mxgraph/style';
-import type { BPMNCellStyle } from '@lib/component/mxgraph/style/types';
+import type { BpmnCellStyle } from '@lib/component/mxgraph/style/types';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 
@@ -46,8 +46,8 @@ function buildExpectedMsgFlowIconCellStyle(expectedModel: ExpectedEdgeModelEleme
   return style;
 }
 
-function buildExpectedEdgeStylePropertyRegexp(expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement | ExpectedAssociationFlowModelElement): BPMNCellStyle {
-  const style: BPMNCellStyle = { bpmn: {} };
+function buildExpectedEdgeStylePropertyRegexp(expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement | ExpectedAssociationFlowModelElement): BpmnCellStyle {
+  const style: BpmnCellStyle = { bpmn: {} };
   // TODO maxgraph@0.1.0 share with shape or remove
   style.baseStyleNames = [expectedModel.kind];
   style.bpmn.kind = expectedModel.kind;
@@ -85,7 +85,7 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement |
       {
         id: `messageFlowIcon_of_${id}`,
         value: null, // maxGraph now set to 'null', mxGraph set to 'undefined'
-        styleRawFromModelOrJestExpect: expect.objectContaining(<BPMNCellStyle>{
+        styleRawFromModelOrJestExpect: expect.objectContaining(<BpmnCellStyle>{
           // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
           shape: <ShapeValue>BpmnStyleIdentifier.MESSAGE_FLOW_ICON,
           // TODO maxgraph@0.1.0 duplicated logic to compute the 'isInitiating' property. Update the expectedModel to store a boolean instead of a string

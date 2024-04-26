@@ -25,7 +25,7 @@ import type { Opacity } from '@lib/component/registry';
 import type { MxGraphCustomOverlay, MxGraphCustomOverlayStyle } from '@lib/component/mxgraph/overlay/custom-overlay';
 import { getFontStyleValue as computeFontStyleValue } from '@lib/component/mxgraph/renderer/StyleComputer';
 import { Font } from '@lib/model/bpmn/internal/Label';
-import type { BPMNCellStyle } from '@lib/component/mxgraph/style/types';
+import type { BpmnCellStyle } from '@lib/component/mxgraph/style/types';
 
 /**
  * Used in test to compare the expected and received styles.
@@ -60,7 +60,7 @@ export interface ExpectedCell {
   value?: string;
   geometry?: Geometry;
   /** the Cell style property or a jest expect using a regexp. */
-  styleRawFromModelOrJestExpect?: BPMNCellStyle;
+  styleRawFromModelOrJestExpect?: BpmnCellStyle;
   /**
    * The style of the Cell in the model where all properties have been resolved by also applying properties coming from the referenced styles.
    *
@@ -188,7 +188,7 @@ export function buildReceivedResolvedModelCellStyle(cell: Cell, bv = bpmnVisuali
   return toBpmnStyle(bv.graph.getCellStyle(cell), cell.edge);
 }
 
-function toBpmnStyle(rawStyle: BPMNCellStyle, isEdge: boolean): ComparedBpmnCellStyle {
+function toBpmnStyle(rawStyle: BpmnCellStyle, isEdge: boolean): ComparedBpmnCellStyle {
   const style: ComparedBpmnCellStyle = {
     opacity: rawStyle.opacity,
     verticalAlign: rawStyle.verticalAlign,

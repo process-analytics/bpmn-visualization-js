@@ -36,7 +36,7 @@ import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { BpmnStyleIdentifier } from '../style';
 import { computeAllBpmnClassNamesOfCell } from '../renderer/style-utils';
-import type { BPMNCellStyle } from '../style/types';
+import type { BpmnCellStyle } from '../style/types';
 import { MxGraphCustomOverlay } from '../overlay/custom-overlay';
 import { OverlayBadgeShape } from '../overlay/shapes';
 import { BpmnConnector } from '../shape/edges';
@@ -172,7 +172,7 @@ export default class ShapeConfigurator {
         // TODO maxgraph@0.1.0 "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided."constants.DIALECT.STRICTHTML
         let allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === 'strictHtml');
         // TODO maxgraph@0.1.0 - do we need to introduce a BpmnCellStateStyle type (to not have the baseStyleName property)?
-        const extraCssClasses = (this.state.style as BPMNCellStyle).bpmn?.extraCssClasses;
+        const extraCssClasses = (this.state.style as BpmnCellStyle).bpmn?.extraCssClasses;
         if (extraCssClasses) {
           allBpmnClassNames = allBpmnClassNames.concat(extraCssClasses);
         }
