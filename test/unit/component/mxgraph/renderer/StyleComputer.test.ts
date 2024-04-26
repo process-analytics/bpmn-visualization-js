@@ -299,7 +299,6 @@ describe('Style Computer', () => {
     const edge = new Edge('id', newMessageFlow(), undefined, undefined, messageVisibleKind);
     expect(styleComputer.computeMessageFlowIconStyle(edge)).toStrictEqual(<BpmnCellStyle>{
       bpmn: { isInitiating: expected },
-      // TODO maxGraph@0.10.1 decide if we use BpmnStyleIdentifier const instead
       shape: 'bpmn.messageFlowIcon',
     });
   });
@@ -775,7 +774,6 @@ describe('Style Computer', () => {
           edge.extensions.strokeColor = '#11aabb';
           const expectedStyle = <BpmnCellStyle>{
             bpmn: { isInitiating: false },
-            // TODO maxGraph@0.10.1 decide if we use BpmnStyleIdentifier const instead
             shape: 'bpmn.messageFlowIcon',
           };
           if (expectAdditionalColorsStyle) {
