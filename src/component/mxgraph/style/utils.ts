@@ -108,13 +108,6 @@ export const setStyleFlag = (cellStyle: CellStyle, key: NumericCellStateStyleKey
   // the mxGraph setStyleFlag function toggle the flag if the value if undefined is passed. In bpmn-visualization, we want to keep the value as it is instead in this case (there is no toggle feature)
   if (value == undefined) return;
 
-  // FIXME maxGraph@0.1.0 - bug in maxGraph setStyleFlag seems to fail when the fontStyle is undefined
-  // when the property is undefined, setting the flag set the value to 0. So initialize the value when undefined as a workaround.
-  // to remove when https://github.com/maxGraph/maxGraph/pull/377 is fixed
-  if (cellStyle[key] == undefined) {
-    cellStyle[key] = 0;
-  }
-
   styleUtils.setStyleFlag(cellStyle, key, flag, value);
 };
 
