@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { CellStyle, ShapeValue } from '@maxgraph/core';
+import type { CellStyle } from '@maxgraph/core';
 import { constants } from '@maxgraph/core';
 
 import Shape from '../../../model/bpmn/internal/shape/Shape';
@@ -192,8 +192,7 @@ export default class StyleComputer {
 
   computeMessageFlowIconStyle(edge: Edge): BPMNCellStyle {
     const style: BPMNCellStyle = {
-      // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
-      shape: <ShapeValue>BpmnStyleIdentifier.MESSAGE_FLOW_ICON,
+      shape: BpmnStyleIdentifier.MESSAGE_FLOW_ICON,
       bpmn: { isInitiating: edge.messageVisibleKind === MessageVisibleKind.INITIATING },
     };
     if (!this.ignoreBpmnColors) {
