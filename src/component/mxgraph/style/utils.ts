@@ -104,7 +104,7 @@ export const setStyle = <T extends string | number>(
 };
 
 export const setStyleFlag = (cellStyle: CellStyle, key: NumericCellStateStyleKeys, flag: number, value?: boolean): void => {
-  // TODO maxGraph@0.1.0 - move this comment to the master branch
+  // TODO maxGraph@0.10.1 - move this comment to the master branch (from maxgraph@0.1.0 migration)
   // the mxGraph setStyleFlag function toggle the flag if the value if undefined is passed. In bpmn-visualization, we want to keep the value as it is instead in this case (there is no toggle feature)
   if (value == undefined) return;
 
