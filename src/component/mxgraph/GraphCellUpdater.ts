@@ -25,7 +25,7 @@ import { ensureIsArray } from '../helpers/array-utils';
 import { OverlayConverter } from './overlay/OverlayConverter';
 import { messageFlowIconId } from './BpmnRenderer';
 import { ensureOpacityValue } from '../helpers/validators';
-import type { BPMNCellStyle } from './style/types';
+import type { BpmnCellStyle } from './style/types';
 
 /**
  * @internal
@@ -59,7 +59,7 @@ export default class GraphCellUpdater {
 
     this.styleManager.ensureStyleIsStored(cell);
 
-    const cellStyle: BPMNCellStyle = getCellStyleClone(cell);
+    const cellStyle: BpmnCellStyle = getCellStyleClone(cell);
     setCssClasses(cellStyle, cssClasses);
 
     model.setStyle(cell, cellStyle);

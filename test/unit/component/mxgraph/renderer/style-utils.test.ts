@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BPMNCellStyle } from '@lib/component/mxgraph/style/types';
+import type { BpmnCellStyle } from '@lib/component/mxgraph/style/types';
 import { FlowKind, ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventDefinitionKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';
 import { computeBpmnBaseClassName, computeAllBpmnClassNames } from '@lib/component/mxgraph/renderer/style-utils';
 
@@ -73,7 +73,7 @@ describe('compute all css class names based on style input', () => {
   `(
     // TODO maxgraph@0.1.0 find a way to correctly display the style object
     'style="$style" / isLabel=$isLabel',
-    ({ style, isLabel, expectedClassNames }: { style: BPMNCellStyle; isLabel: boolean; expectedClassNames: string[] }) => {
+    ({ style, isLabel, expectedClassNames }: { style: BpmnCellStyle; isLabel: boolean; expectedClassNames: string[] }) => {
       expect(computeAllBpmnClassNames(style, isLabel)).toEqual(expectedClassNames);
     },
   );

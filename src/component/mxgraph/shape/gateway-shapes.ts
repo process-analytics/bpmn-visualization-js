@@ -22,7 +22,7 @@ import { StyleDefault } from '../style';
 import type { PaintParameter } from './render';
 import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
-import type { BPMNCellStyle } from '../style/types';
+import type { BpmnCellStyle } from '../style/types';
 
 abstract class GatewayShape extends RhombusShape {
   protected iconPainter = IconPainterProvider.get();
@@ -104,7 +104,7 @@ export class EventBasedGatewayShape extends GatewayShape {
       ...paintParameter,
       ratioFromParent: 0.55,
     });
-    if (!(this.style as BPMNCellStyle).bpmn.isInstantiating) {
+    if (!(this.style as BpmnCellStyle).bpmn.isInstantiating) {
       this.iconPainter.paintCircleIcon({
         ...paintParameter,
         ratioFromParent: 0.45,
@@ -116,7 +116,7 @@ export class EventBasedGatewayShape extends GatewayShape {
       ...paintParameter,
       ratioFromParent: 0.3,
     };
-    if ((this.style as BPMNCellStyle).bpmn.gatewayKind == ShapeBpmnEventBasedGatewayKind.Parallel) {
+    if ((this.style as BpmnCellStyle).bpmn.gatewayKind == ShapeBpmnEventBasedGatewayKind.Parallel) {
       this.iconPainter.paintPlusCrossIcon(innerIconPaintParameter);
     } else {
       this.iconPainter.paintPentagon(innerIconPaintParameter);

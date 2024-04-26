@@ -29,7 +29,7 @@ import { getDefaultParentId } from '../../helpers/model-expect';
 import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
-import type { BPMNCellStyle } from '@lib/component/mxgraph/style/types';
+import type { BpmnCellStyle } from '@lib/component/mxgraph/style/types';
 
 function expectedStrokeWidth(kind: ShapeBpmnElementKind): number {
   return [
@@ -94,8 +94,8 @@ function buildExpectedShapeStylePropertyRegexp(
     | ExpectedBoundaryEventModelElement
     | ExpectedEventBasedGatewayModelElement
     | ExpectedCallActivityModelElement,
-): BPMNCellStyle {
-  const style: BPMNCellStyle = { bpmn: {} };
+): BpmnCellStyle {
+  const style: BpmnCellStyle = { bpmn: {} };
   // TODO maxgraph@0.1.0 share with edge
   style.baseStyleNames = [expectedModel.kind];
   style.bpmn.kind = expectedModel.kind;
