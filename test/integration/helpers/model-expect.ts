@@ -59,7 +59,7 @@ import {
   toBeTextAnnotation,
   toBeUserTask,
 } from '../matchers';
-import type { StyleArrowValue, Cell, FilterFunction, Geometry, ShapeValue } from '@maxgraph/core';
+import type { AlignValue, StyleArrowValue, Cell, FilterFunction, Geometry, ShapeValue, VAlignValue } from '@maxgraph/core';
 import type { ExpectedOverlay } from '../matchers/matcher-utils';
 import { getCell } from '../matchers/matcher-utils';
 import type { BpmnCellStyle } from '@lib/component/mxgraph/style/types';
@@ -153,19 +153,14 @@ export interface ExpectedFont {
   opacity?: Opacity;
 }
 
-// TODO maxGraph@0.1.0 do we keep HorizontalAlign, we could use AlignValue instead
-export type HorizontalAlign = 'center' | 'left' | 'right';
-// TODO maxGraph@0.1.0 do we keep VerticalAlign, we could use VAlignValue instead
-export type VerticalAlign = 'bottom' | 'middle' | 'top';
-
 type ExpectedModelElement = {
-  align?: HorizontalAlign;
+  align?: AlignValue;
   font?: ExpectedFont;
   label?: string;
   overlays?: ExpectedOverlay[];
   parentId?: string;
   stroke?: Stroke;
-  verticalAlign?: VerticalAlign;
+  verticalAlign?: VAlignValue;
   opacity?: number;
   // custom bpmn-visualization
   extraCssClasses?: string[];
