@@ -90,7 +90,7 @@ export const setStyle = <T extends string | number>(
   if (value != undefined) {
     const convertedValue = converter(value);
     if (convertedValue == null) {
-      // TODO maxgraph@0.1.0 - this is required for the effective cell style computation with the fix temporary used in bpmn-visualization
+      // TODO maxgraph@0.1.0 - this is required for the effective cell style computation with the fix temporary used in bpmn-visualization (BpmnStylesheet)
       // if the value is undefined/or null, the value from the default style is not used!
       // remove the property to use the value from the "base styles" which provides the default value
       delete cellStyle[key];
