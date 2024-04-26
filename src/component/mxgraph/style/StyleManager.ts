@@ -29,7 +29,7 @@ export class StyleManager {
 
   resetAllStyles(): void {
     for (const cellId of this.stylesCache.keys()) {
-      // TODO maxGraph 0.1.0 - inline in master branch
+      // TODO maxGraph 0.10.1 - inline in master branch (from maxgraph@0.1.0 migration)
       const style = this.stylesCache.get(cellId);
       this.resetStyle(cellId, style);
     }
@@ -49,7 +49,7 @@ export class StyleManager {
 
   private resetStyle(cellId: string, style: BPMNCellStyle): void {
     const cell = this.model.getCell(cellId);
-    // TODO maxGraph 0.1.0 - inline (can be done in the master branch as well)
+    // TODO maxGraph 0.10.1 - inline in master branch (from maxgraph@0.1.0 migration)
     const cssClasses = this.cssRegistry.getClassNames(cellId);
 
     // no need to copy the style, it is coming from the cache only and is later deleted from the cache
