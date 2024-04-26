@@ -17,7 +17,7 @@ limitations under the License.
 import type { Point, AbstractCanvas2D } from '@maxgraph/core';
 import { SvgCanvas2D, ConnectorShape } from '@maxgraph/core';
 
-import type { BPMNCellStyle } from '../renderer/StyleComputer';
+import type { BPMNCellStyle } from '../style/types';
 
 // TODO maxgraph@0.1.0 remove the BpmnConnector class to use the new support of endFillColor and starFillColor provided by https://github.com/maxGraph/maxGraph/issues/201
 export class BpmnConnector extends ConnectorShape {

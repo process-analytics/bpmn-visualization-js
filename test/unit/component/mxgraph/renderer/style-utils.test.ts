@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BPMNCellStyle } from '../../../../../src/component/mxgraph/renderer/StyleComputer';
+import type { BPMNCellStyle } from '@lib/component/mxgraph/style/types';
 import { FlowKind, ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind, ShapeBpmnEventDefinitionKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';
 import { computeBpmnBaseClassName, computeAllBpmnClassNames } from '@lib/component/mxgraph/renderer/style-utils';
 

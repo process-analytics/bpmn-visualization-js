@@ -21,7 +21,7 @@ import type ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElem
 import type Bounds from '../../model/bpmn/internal/Bounds';
 import { MessageVisibleKind, ShapeUtil } from '../../model/bpmn/internal';
 import CoordinatesTranslator from './renderer/CoordinatesTranslator';
-import type { BPMNCellStyle } from './renderer/StyleComputer';
+import type { BPMNCellStyle } from './style/types';
 import StyleComputer from './renderer/StyleComputer';
 import type { BpmnGraph } from './BpmnGraph';
 import type { FitOptions, RendererOptions } from '../options';

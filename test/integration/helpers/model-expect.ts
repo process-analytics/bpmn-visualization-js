@@ -62,7 +62,7 @@ import {
 import type { StyleArrowValue, Cell, FilterFunction, Geometry, ShapeValue } from '@maxgraph/core';
 import type { ExpectedOverlay } from '../matchers/matcher-utils';
 import { getCell } from '../matchers/matcher-utils';
-import type { BPMNCellStyle } from '@lib/component/mxgraph/renderer/StyleComputer';
+import type { BPMNCellStyle } from '@lib/component/mxgraph/style/types';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
