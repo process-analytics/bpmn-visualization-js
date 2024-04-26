@@ -21,7 +21,7 @@ import type ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElem
 import type Bounds from '../../model/bpmn/internal/Bounds';
 import { MessageVisibleKind, ShapeUtil } from '../../model/bpmn/internal';
 import CoordinatesTranslator from './renderer/CoordinatesTranslator';
-import type { BPMNCellStyle } from './style/types';
+import type { BpmnCellStyle } from './style/types';
 import StyleComputer from './renderer/StyleComputer';
 import type { BpmnGraph } from './BpmnGraph';
 import type { FitOptions, RendererOptions } from '../options';
@@ -123,7 +123,7 @@ export class BpmnRenderer {
     return this.graph.getDataModel().getCell(id);
   }
 
-  private insertVertex(parent: Cell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: BPMNCellStyle): Cell {
+  private insertVertex(parent: Cell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: BpmnCellStyle): Cell {
     const vertexCoordinates = this.coordinatesTranslator.computeRelativeCoordinates(parent, new Point(bounds.x, bounds.y));
     const cell = this.graph.insertVertex({ parent, id, value, position: [vertexCoordinates.x, vertexCoordinates.y], width: bounds.width, height: bounds.height, style });
 

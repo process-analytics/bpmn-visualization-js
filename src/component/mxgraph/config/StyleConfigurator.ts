@@ -17,7 +17,7 @@ limitations under the License.
 import { AssociationDirectionKind, FlowKind, SequenceFlowKind, ShapeBpmnElementKind, ShapeUtil } from '../../../model/bpmn/internal';
 import { BpmnStyleIdentifier, MarkerIdentifier, StyleDefault } from '../style';
 import type { BpmnGraph } from '../BpmnGraph';
-import type { BPMNCellStyle } from '../style/types';
+import type { BpmnCellStyle } from '../style/types';
 import { constants, Perimeter } from '@maxgraph/core';
 import type { Stylesheet } from '@maxgraph/core';
 
@@ -37,13 +37,13 @@ export class StyleConfigurator {
   private specificFlowStyles = new MapWithDefault<FlowKind>([
     [
       FlowKind.SEQUENCE_FLOW,
-      (style: BPMNCellStyle) => {
+      (style: BpmnCellStyle) => {
         style.endArrow = 'blockThin';
       },
     ],
     [
       FlowKind.MESSAGE_FLOW,
-      (style: BPMNCellStyle) => {
+      (style: BpmnCellStyle) => {
         style.dashed = true;
         style.dashPattern = '8 5';
         style.startArrow = 'oval';
@@ -57,7 +57,7 @@ export class StyleConfigurator {
     ],
     [
       FlowKind.ASSOCIATION_FLOW,
-      (style: BPMNCellStyle) => {
+      (style: BpmnCellStyle) => {
         style.dashed = true;
         style.dashPattern = '1 2';
         // endArrow  and startArrow are defined in specific AssociationDirectionKind styles when needed
@@ -68,13 +68,13 @@ export class StyleConfigurator {
   private specificSequenceFlowStyles = new MapWithDefault<SequenceFlowKind>([
     [
       SequenceFlowKind.DEFAULT,
-      (style: BPMNCellStyle) => {
+      (style: BpmnCellStyle) => {
         style.startArrow = MarkerIdentifier.ARROW_DASH;
       },
     ],
     [
       SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY,
-      (style: BPMNCellStyle) => {
+      (style: BpmnCellStyle) => {
         style.startArrow = 'diamondThin';
         style.startSize = 18;
         style.startFill = true; // TODO maxgraph@0.1.0 could be removed when maxGraph fixes https://github.com/maxGraph/maxGraph/pull/157
@@ -86,19 +86,19 @@ export class StyleConfigurator {
     [
       AssociationDirectionKind.NONE,
       // eslint-disable-next-line @typescript-eslint/no-unused-vars -- prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
-      (_style: BPMNCellStyle) => {
+      (_style: BpmnCellStyle) => {
         // the style is fully managed by the FlowKind.ASSOCIATION_FLOW style
       },
     ],
     [
       AssociationDirectionKind.ONE,
-      (style: BPMNCellStyle) => {
+      (style: BpmnCellStyle) => {
         style.endArrow = 'openThin';
       },
     ],
     [
       AssociationDirectionKind.BOTH,
-      (style: BPMNCellStyle) => {
+      (style: BpmnCellStyle) => {
         style.endArrow = 'openThin';
         style.startArrow = 'openThin';
       },
@@ -128,7 +128,7 @@ export class StyleConfigurator {
     return this.graph.getStylesheet();
   }
 
-  private putCellStyle(name: ShapeBpmnElementKind, style: BPMNCellStyle): void {
+  private putCellStyle(name: ShapeBpmnElementKind, style: BpmnCellStyle): void {
     this.getStylesheet().putCellStyle(name, style);
   }
 
@@ -141,7 +141,7 @@ export class StyleConfigurator {
   }
 
   private configurePoolStyle(): void {
-    const style: BPMNCellStyle = {
+    const style: BpmnCellStyle = {
       shape: constants.SHAPE.SWIMLANE,
       // label style
       verticalAlign: 'middle',
@@ -154,7 +154,7 @@ export class StyleConfigurator {
   }
 
   private configureLaneStyle(): void {
-    const style: BPMNCellStyle = {
+    const style: BpmnCellStyle = {
       shape: constants.SHAPE.SWIMLANE,
       // label style
       verticalAlign: 'middle',
@@ -169,7 +169,7 @@ export class StyleConfigurator {
 
   private configureEventStyles(): void {
     ShapeUtil.eventKinds().forEach(kind => {
-      const style: BPMNCellStyle = {
+      const style: BpmnCellStyle = {
         shape: kind,
         // TODO maxgraph@0.10.1 decide if we use the function or the string to set the perimeter
         perimeter: Perimeter.EllipsePerimeter,
@@ -181,7 +181,7 @@ export class StyleConfigurator {
   }
 
   private configureTextAnnotationStyle(): void {
-    const style: BPMNCellStyle = {
+    const style: BpmnCellStyle = {
       shape: ShapeBpmnElementKind.TEXT_ANNOTATION,
       // label style
       verticalAlign: 'middle',
@@ -194,7 +194,7 @@ export class StyleConfigurator {
   }
 
   private configureGroupStyle(): void {
-    const style: BPMNCellStyle = {
+    const style: BpmnCellStyle = {
       rounded: true,
       dashed: true,
       dashPattern: '7 4 1 4',
@@ -209,7 +209,7 @@ export class StyleConfigurator {
 
   private configureActivityStyles(): void {
     ShapeUtil.activityKinds().forEach(kind => {
-      const style: BPMNCellStyle = {
+      const style: BpmnCellStyle = {
         shape: kind,
         rounded: true, // required by the BPMN specification
         verticalAlign: 'middle', // label style
@@ -221,7 +221,7 @@ export class StyleConfigurator {
 
   private configureGatewayStyles(): void {
     ShapeUtil.gatewayKinds().forEach(kind => {
-      const style: BPMNCellStyle = {
+      const style: BpmnCellStyle = {
         shape: kind,
         // TODO maxgraph@0.10.1 decide if we use the function or the string to set the perimeter
         perimeter: Perimeter.RhombusPerimeter,
@@ -237,7 +237,7 @@ export class StyleConfigurator {
   }
 
   private configureDefaultEdgeStyle(): void {
-    const style = this.getStylesheet().getDefaultEdgeStyle() as BPMNCellStyle;
+    const style = this.getStylesheet().getDefaultEdgeStyle() as BpmnCellStyle;
     configureCommonDefaultStyle(style);
 
     style.shape = BpmnStyleIdentifier.EDGE;
@@ -251,9 +251,9 @@ export class StyleConfigurator {
     delete style.endArrow;
   }
 
-  private configureEdgeStyles<T>(styleKinds: T[], specificStyles: Map<T, (style: BPMNCellStyle) => void>): void {
+  private configureEdgeStyles<T>(styleKinds: T[], specificStyles: Map<T, (style: BpmnCellStyle) => void>): void {
     styleKinds.forEach(kind => {
-      const style: BPMNCellStyle = {};
+      const style: BpmnCellStyle = {};
       specificStyles.get(kind)(style);
       this.graph.getStylesheet().putCellStyle(kind.toString(), style);
     });
@@ -266,7 +266,7 @@ export class StyleConfigurator {
   }
 }
 
-function configureCommonDefaultStyle(style: BPMNCellStyle): void {
+function configureCommonDefaultStyle(style: BpmnCellStyle): void {
   style.fontFamily = StyleDefault.DEFAULT_FONT_FAMILY;
   style.fontSize = StyleDefault.DEFAULT_FONT_SIZE;
   style.fontColor = StyleDefault.DEFAULT_FONT_COLOR;
@@ -278,8 +278,8 @@ function configureCommonDefaultStyle(style: BPMNCellStyle): void {
   style.whiteSpace = 'wrap';
 }
 
-class MapWithDefault<T> extends Map<T, (style: BPMNCellStyle) => void> {
-  override get(key: T): (style: BPMNCellStyle) => void {
+class MapWithDefault<T> extends Map<T, (style: BpmnCellStyle) => void> {
+  override get(key: T): (style: BpmnCellStyle) => void {
     return (
       super.get(key) ??
       (() => {

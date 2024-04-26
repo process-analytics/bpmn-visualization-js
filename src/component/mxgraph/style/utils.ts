@@ -18,7 +18,7 @@ import type { Cell, CellStyle, NumericCellStateStyleKeys } from '@maxgraph/core'
 import { constants } from '@maxgraph/core';
 import { styleUtils } from '@maxgraph/core';
 
-import type { BPMNCellStyle } from './types';
+import type { BpmnCellStyle } from './types';
 import { ensureOpacityValue, ensureStrokeWidthValue } from '../../helpers/validators';
 import type { Fill, Font, ShapeStyleUpdate, Stroke, StyleUpdate } from '../../registry';
 import { ShapeUtil } from '../../../model/bpmn/internal';
@@ -126,7 +126,7 @@ export const updateFont = (cellStyle: CellStyle, font: Font): void => {
   }
 };
 
-export const updateFill = (cellStyle: BPMNCellStyle, fill: Fill): void => {
+export const updateFill = (cellStyle: BpmnCellStyle, fill: Fill): void => {
   if (fill.color) {
     setStyle(cellStyle, 'fillColor', fill.color, convertDefaultValue);
 
@@ -143,7 +143,7 @@ export const isShapeStyleUpdate = (style: StyleUpdate): style is ShapeStyleUpdat
   return style && typeof style === 'object' && 'fill' in style;
 };
 
-export function setCssClasses(cellStyle: BPMNCellStyle, cssClasses: string[]): void {
+export function setCssClasses(cellStyle: BpmnCellStyle, cssClasses: string[]): void {
   if (cssClasses.length > 0) {
     cellStyle.bpmn.extraCssClasses = cssClasses;
   } else {

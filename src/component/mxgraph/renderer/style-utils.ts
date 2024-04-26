@@ -17,7 +17,7 @@ limitations under the License.
 import type { Cell } from '@maxgraph/core';
 
 import { FlowKind, ShapeUtil } from '../../../model/bpmn/internal';
-import type { BPMNCellStyle } from '../style/types';
+import type { BpmnCellStyle } from '../style/types';
 
 /**
  * Compute the all class names associated to a cell in a hyphen case form.
@@ -27,7 +27,7 @@ import type { BPMNCellStyle } from '../style/types';
  * @internal
  */
 export function computeAllBpmnClassNamesOfCell(cell: Cell, isLabel: boolean): string[] {
-  return computeAllBpmnClassNames(cell.style as BPMNCellStyle, isLabel);
+  return computeAllBpmnClassNames(cell.style as BpmnCellStyle, isLabel);
 }
 
 /**
@@ -37,7 +37,7 @@ export function computeAllBpmnClassNamesOfCell(cell: Cell, isLabel: boolean): st
  * @param isLabel the boolean that indicates if class must be computed for label.
  * @internal exported for testing purpose
  */
-export function computeAllBpmnClassNames(style: BPMNCellStyle, isLabel: boolean): string[] {
+export function computeAllBpmnClassNames(style: BpmnCellStyle, isLabel: boolean): string[] {
   const classes: string[] = [];
 
   // if kind is not set, check shape: bpmn.message-flow-icon --> message-flow-icon

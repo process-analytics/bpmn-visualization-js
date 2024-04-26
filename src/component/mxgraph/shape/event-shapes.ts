@@ -21,7 +21,7 @@ import { ShapeBpmnEventDefinitionKind } from '../../../model/bpmn/internal';
 import type { BpmnCanvas, PaintParameter } from './render';
 import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
-import type { BPMNCellStyle } from '../style/types';
+import type { BpmnCellStyle } from '../style/types';
 import { StyleDefault } from '../style';
 
 /**
@@ -90,7 +90,7 @@ export class EventShape extends EllipseShape {
   override paintVertexShape(c: AbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, isFilled: this.withFilledIcon });
 
-    EventShape.setDashedOuterShapePattern(paintParameter, (this.style as BPMNCellStyle).bpmn.isInterrupting);
+    EventShape.setDashedOuterShapePattern(paintParameter, (this.style as BpmnCellStyle).bpmn.isInterrupting);
     this.paintOuterShape(paintParameter);
     EventShape.restoreOriginalOuterShapePattern(paintParameter);
 
@@ -102,7 +102,7 @@ export class EventShape extends EllipseShape {
   }
 
   private paintInnerShape(paintParameter: PaintParameter): void {
-    const paintIcon = this.iconPainters.get((this.style as BPMNCellStyle).bpmn.eventDefinitionKind) || (() => this.iconPainter.paintEmptyIcon());
+    const paintIcon = this.iconPainters.get((this.style as BpmnCellStyle).bpmn.eventDefinitionKind) || (() => this.iconPainter.paintEmptyIcon());
     paintIcon(paintParameter);
   }
 

@@ -34,7 +34,7 @@ import { MessageVisibleKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, Sh
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/flows';
 import type { Font } from '../../../model/bpmn/internal/Label';
 import type { RendererOptions } from '../../options';
-import type { BPMNCellStyle } from '../style/types';
+import type { BpmnCellStyle } from '../style/types';
 
 /**
  * @internal
@@ -46,8 +46,8 @@ export default class StyleComputer {
     this.ignoreBpmnColors = options?.ignoreBpmnColors ?? true;
   }
 
-  computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): BPMNCellStyle {
-    const style: BPMNCellStyle = {
+  computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): BpmnCellStyle {
+    const style: BpmnCellStyle = {
       bpmn: { kind: bpmnCell.bpmnElement.kind },
     };
 
@@ -68,7 +68,7 @@ export default class StyleComputer {
     return { baseStyleNames, ...style, ...fontStyleValues, ...labelStyleValues };
   }
 
-  private enrichStyleWithShapeInfo(style: BPMNCellStyle, shape: Shape): void {
+  private enrichStyleWithShapeInfo(style: BpmnCellStyle, shape: Shape): void {
     const bpmnElement = shape.bpmnElement;
 
     if (bpmnElement instanceof ShapeBpmnEvent) {
@@ -98,7 +98,7 @@ export default class StyleComputer {
     }
   }
 
-  private static computeEventShapeStyle(bpmnElement: ShapeBpmnEvent, style: BPMNCellStyle): void {
+  private static computeEventShapeStyle(bpmnElement: ShapeBpmnEvent, style: BpmnCellStyle): void {
     style.bpmn.eventDefinitionKind = bpmnElement.eventDefinitionKind;
 
     if (bpmnElement instanceof ShapeBpmnBoundaryEvent || (bpmnElement instanceof ShapeBpmnStartEvent && bpmnElement.isInterrupting !== undefined)) {
@@ -106,7 +106,7 @@ export default class StyleComputer {
     }
   }
 
-  private static computeActivityShapeStyle(bpmnElement: ShapeBpmnActivity, style: BPMNCellStyle): void {
+  private static computeActivityShapeStyle(bpmnElement: ShapeBpmnActivity, style: BpmnCellStyle): void {
     if (bpmnElement instanceof ShapeBpmnSubProcess) {
       style.bpmn.subProcessKind = bpmnElement.subProcessKind;
     } else if (bpmnElement.kind === ShapeBpmnElementKind.TASK_RECEIVE) {
@@ -134,7 +134,7 @@ export default class StyleComputer {
     return styles;
   }
 
-  private enrichStyleWithEdgeInfo(style: BPMNCellStyle, edge: Edge): void {
+  private enrichStyleWithEdgeInfo(style: BpmnCellStyle, edge: Edge): void {
     if (!this.ignoreBpmnColors) {
       const extensions = edge.extensions;
       extensions.strokeColor && (style.strokeColor = extensions.strokeColor);
@@ -190,8 +190,8 @@ export default class StyleComputer {
     return style;
   }
 
-  computeMessageFlowIconStyle(edge: Edge): BPMNCellStyle {
-    const style: BPMNCellStyle = {
+  computeMessageFlowIconStyle(edge: Edge): BpmnCellStyle {
+    const style: BpmnCellStyle = {
       shape: BpmnStyleIdentifier.MESSAGE_FLOW_ICON,
       bpmn: { isInitiating: edge.messageVisibleKind === MessageVisibleKind.INITIATING },
     };
