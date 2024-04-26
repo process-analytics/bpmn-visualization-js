@@ -83,6 +83,7 @@ export class BpmnRenderer {
       const target = this.getCell(bpmnElement.targetRefId);
       const labelBounds = edge.label?.bounds;
       const style = this.styleComputer.computeStyle(edge, labelBounds);
+      // TODO maxGraph@0.10.1 use insertEdge with single parameter
       const mxEdge = this.graph.insertEdge(parent, bpmnElement.id, bpmnElement.name, source, target, style);
       this.insertWaypoints(edge.waypoints, mxEdge);
 
@@ -125,7 +126,7 @@ export class BpmnRenderer {
 
   private insertVertex(parent: Cell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: BPMNCellStyle): Cell {
     const vertexCoordinates = this.coordinatesTranslator.computeRelativeCoordinates(parent, new Point(bounds.x, bounds.y));
-    // TODO maxGraph@0.1.0 check insertVertex with single parameter
+    // TODO maxGraph@0.10.1 use insertVertex with single parameter
     const cell = this.graph.insertVertex(parent, id, value, vertexCoordinates.x, vertexCoordinates.y, bounds.width, bounds.height, style);
 
     if (labelBounds) {
