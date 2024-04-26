@@ -16,7 +16,7 @@ limitations under the License.
 
 import type { ShapeValue } from '@maxgraph/core';
 
-import type { BpmnCellStyle, ExpectedCell } from '../matcher-utils';
+import type { ComparedBpmnCellStyle, ExpectedCell } from '../matcher-utils';
 import { buildCellMatcher, buildExpectedCellStyleWithCommonAttributes, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
 import { AssociationDirectionKind, FlowKind, MessageVisibleKind, SequenceFlowKind } from '@lib/model/bpmn/internal';
 import type { ExpectedAssociationFlowModelElement, ExpectedEdgeModelElement, ExpectedSequenceFlowModelElement } from '../../helpers/model-expect';
@@ -26,7 +26,7 @@ import type { BPMNCellStyle } from '@lib/component/mxgraph/style/types';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 
-function buildExpectedEdgeCellStyle(expectedModel: ExpectedEdgeModelElement): BpmnCellStyle {
+function buildExpectedEdgeCellStyle(expectedModel: ExpectedEdgeModelElement): ComparedBpmnCellStyle {
   const style = buildExpectedCellStyleWithCommonAttributes(expectedModel);
   style.verticalAlign = expectedModel.verticalAlign ?? 'top';
   style.align = 'center';
@@ -37,7 +37,7 @@ function buildExpectedEdgeCellStyle(expectedModel: ExpectedEdgeModelElement): Bp
   return style;
 }
 
-function buildExpectedMsgFlowIconCellStyle(expectedModel: ExpectedEdgeModelElement): BpmnCellStyle {
+function buildExpectedMsgFlowIconCellStyle(expectedModel: ExpectedEdgeModelElement): ComparedBpmnCellStyle {
   const style = buildExpectedCellStyleWithCommonAttributes(expectedModel);
   style.align = 'center';
   style.verticalAlign = 'middle';
