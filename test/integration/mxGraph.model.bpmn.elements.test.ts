@@ -1700,7 +1700,7 @@ describe('mxGraph model - BPMN elements', () => {
     });
 
     it('Parse a diagram with numbers not parsable as number', () => {
-      // TODO maxgraph@0.1.0 change in maxGraph, throw 'Error: Invalid x supplied'. bpmn-visualization should handle it
+      // TODO maxgraph@0.10.1 change in maxGraph, throw 'Error: Invalid x supplied'. bpmn-visualization should handle it - wait for new rebase on master (the code changed in recent version)
       // capture the error and rethrow it with a convenient
       // OR validate the values during parsing
 
