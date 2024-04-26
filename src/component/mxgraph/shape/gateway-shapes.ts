@@ -22,7 +22,7 @@ import { StyleDefault } from '../style';
 import type { PaintParameter } from './render';
 import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
-import type { BPMNCellStyle } from '../renderer/StyleComputer';
+import type { BPMNCellStyle } from '../style/types';
 
 abstract class GatewayShape extends RhombusShape {
   protected iconPainter = IconPainterProvider.get();

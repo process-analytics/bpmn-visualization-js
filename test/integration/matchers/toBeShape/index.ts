@@ -29,7 +29,7 @@ import { getDefaultParentId } from '../../helpers/model-expect';
 import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
-import type { BPMNCellStyle } from '@lib/component/mxgraph/renderer/StyleComputer';
+import type { BPMNCellStyle } from '@lib/component/mxgraph/style/types';
 
 function expectedStrokeWidth(kind: ShapeBpmnElementKind): number {
   return [

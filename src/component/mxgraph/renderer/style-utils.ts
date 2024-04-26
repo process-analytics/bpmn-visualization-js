@@ -17,7 +17,7 @@ limitations under the License.
 import type { Cell } from '@maxgraph/core';
 
 import { FlowKind, ShapeUtil } from '../../../model/bpmn/internal';
-import type { BPMNCellStyle } from './StyleComputer';
+import type { BPMNCellStyle } from '../style/types';
 
 /**
  * Compute the all class names associated to a cell in a hyphen case form.

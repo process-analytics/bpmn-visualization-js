@@ -16,7 +16,7 @@ limitations under the License.
 
 import { IconPainterProvider } from './render';
 import { buildPaintParameter } from './render/icon-painter';
-import type { BPMNCellStyle } from '../renderer/StyleComputer';
+import type { BPMNCellStyle } from '../style/types';
 import { RectangleShape } from '@maxgraph/core';
 import type { AbstractCanvas2D, Rectangle } from '@maxgraph/core';
 

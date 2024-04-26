@@ -25,7 +25,7 @@ import { ensureIsArray } from '../helpers/array-utils';
 import { OverlayConverter } from './overlay/OverlayConverter';
 import { messageFlowIconId } from './BpmnRenderer';
 import { ensureOpacityValue } from '../helpers/validators';
-import type { BPMNCellStyle } from './renderer/StyleComputer';
+import type { BPMNCellStyle } from './style/types';
 
 /**
  * @internal

@@ -25,7 +25,7 @@ import type { Opacity } from '@lib/component/registry';
 import type { MxGraphCustomOverlay, MxGraphCustomOverlayStyle } from '@lib/component/mxgraph/overlay/custom-overlay';
 import { getFontStyleValue as computeFontStyleValue } from '@lib/component/mxgraph/renderer/StyleComputer';
 import { Font } from '@lib/model/bpmn/internal/Label';
-import type { BPMNCellStyle } from '@lib/component/mxgraph/renderer/StyleComputer';
+import type { BPMNCellStyle } from '@lib/component/mxgraph/style/types';
 
 // TODO maxgraph@0.1.0 remove this type and use a single type shared with BPMNCellStyle
 // No more need for a dedicated BpmnStyle in the integration tests. Use the one from the sources
