@@ -144,13 +144,10 @@ export const isShapeStyleUpdate = (style: StyleUpdate): style is ShapeStyleUpdat
 };
 
 export function setCssClasses(cellStyle: BPMNCellStyle, cssClasses: string[]): void {
-  // TODO maxgraph@0.1.0 do we need to check if the parameter is not undefined - test pass without checking undefined
   if (cssClasses.length > 0) {
     cellStyle.bpmn.extraCssClasses = cssClasses;
   } else {
-    // TODO maxgraph@0.1.0 - this is needed to make the integration tests pass - do we really do to it for a real usage?
-    cellStyle.bpmn.extraCssClasses = undefined;
-    // delete cellStyle.bpmn.extraCssClasses;
+    delete cellStyle.bpmn.extraCssClasses;
   }
 }
 
