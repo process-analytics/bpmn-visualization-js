@@ -14,12 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { Cell, Geometry } from '@maxgraph/core';
+import type { AlignValue, Cell, Geometry, VAlignValue } from '@maxgraph/core';
 
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 
-import type { ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement, HorizontalAlign, VerticalAlign } from '../helpers/model-expect';
+import type { ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement } from '../helpers/model-expect';
 import { bpmnVisualization } from '../helpers/model-expect';
 import type { Opacity } from '@lib/component/registry';
 import type { MxGraphCustomOverlay, MxGraphCustomOverlayStyle } from '@lib/component/mxgraph/overlay/custom-overlay';
@@ -32,8 +32,8 @@ import type { BpmnCellStyle } from '@lib/component/mxgraph/style/types';
  */
 export interface ComparedBpmnCellStyle {
   opacity: Opacity;
-  verticalAlign?: VerticalAlign;
-  align?: HorizontalAlign;
+  verticalAlign?: VAlignValue;
+  align?: AlignValue;
   strokeWidth?: 'default' | number;
   strokeColor: string;
   strokeOpacity: Opacity;
