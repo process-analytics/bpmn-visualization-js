@@ -18,7 +18,7 @@ import type { Cell, CellStyle, NumericCellStateStyleKeys } from '@maxgraph/core'
 import { constants } from '@maxgraph/core';
 import { styleUtils } from '@maxgraph/core';
 
-import type { BPMNCellStyle } from '../renderer/StyleComputer';
+import type { BPMNCellStyle } from './types';
 import { ensureOpacityValue, ensureStrokeWidthValue } from '../../helpers/validators';
 import type { Fill, Font, ShapeStyleUpdate, Stroke, StyleUpdate } from '../../registry';
 import { ShapeUtil } from '../../../model/bpmn/internal';

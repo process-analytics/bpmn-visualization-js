@@ -30,41 +30,11 @@ import {
   ShapeBpmnSubProcess,
 } from '../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { BpmnStyleIdentifier } from '../style';
-import type {
-  AssociationDirectionKind,
-  FlowKind,
-  GlobalTaskKind,
-  SequenceFlowKind,
-  ShapeBpmnEventBasedGatewayKind,
-  ShapeBpmnEventDefinitionKind,
-  ShapeBpmnSubProcessKind,
-} from '../../../model/bpmn/internal';
 import { MessageVisibleKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeUtil } from '../../../model/bpmn/internal';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/flows';
 import type { Font } from '../../../model/bpmn/internal/Label';
 import type { RendererOptions } from '../../options';
-
-// TODO maxgraph@0.1.0 this type should probably be part of the API (so it should be exported)
-// TODO maxgraph@0.1.0 move somewhere else
-// TODO maxgraph@0.1.0 rename for consistent naming BPMNCellStyle --> BpmnCellStyle (apply to other places)
-//  a BpmnCellStyle exists in tests. Try to use this one instead
-export interface BPMNCellStyle extends CellStyle {
-  // TODO maxgraph@0.1.0 sort properties in alphabetical order for clarity (and as done in maxGraph CellStyle) and provide documentation about each property
-  bpmn?: {
-    kind?: ShapeBpmnElementKind | FlowKind;
-    isInstantiating?: boolean;
-    gatewayKind?: ShapeBpmnEventBasedGatewayKind;
-    eventDefinitionKind?: ShapeBpmnEventDefinitionKind;
-    isInterrupting?: boolean;
-    subProcessKind?: ShapeBpmnSubProcessKind;
-    globalTaskKind?: GlobalTaskKind;
-    markers?: ShapeBpmnMarkerKind[];
-    sequenceFlowKind?: SequenceFlowKind;
-    associationDirectionKind?: AssociationDirectionKind;
-    isInitiating?: boolean;
-    extraCssClasses?: string[];
-  };
-}
+import type { BPMNCellStyle } from '../style/types';
 
 /**
  * @internal

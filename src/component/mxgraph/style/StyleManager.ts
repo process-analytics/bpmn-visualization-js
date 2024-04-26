@@ -16,7 +16,7 @@ limitations under the License.
 import type { Cell, CellStyle, GraphDataModel } from '@maxgraph/core';
 import { getCellStyleClone, setCssClasses } from './utils';
 import type { CssRegistry } from '../../registry/css-registry';
-import type { BPMNCellStyle } from '../renderer/StyleComputer';
+import type { BPMNCellStyle } from '../style/types';
 
 export class StyleManager {
   private stylesCache: Map<string, CellStyle> = new Map();

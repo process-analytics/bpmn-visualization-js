@@ -17,7 +17,7 @@ limitations under the License.
 import type { AbstractCanvas2D } from '@maxgraph/core';
 import { RectangleShape } from '@maxgraph/core';
 
-import type { BPMNCellStyle } from '../renderer/StyleComputer';
+import type { BPMNCellStyle } from '../style/types';
 import { StyleDefault } from '../style';
 import type { BpmnCanvas, PaintParameter, ShapeConfiguration } from './render';
 import { IconPainterProvider } from './render';
