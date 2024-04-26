@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { ExpectedCell, BpmnCellStyle } from '../matcher-utils';
+import type { ExpectedCell, ComparedBpmnCellStyle } from '../matcher-utils';
 import { buildCellMatcher, buildExpectedCellStyleWithCommonAttributes, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
 import type {
   ExpectedBoundaryEventModelElement,
@@ -59,7 +59,7 @@ function expectedStrokeWidth(kind: ShapeBpmnElementKind): number {
     : undefined;
 }
 
-export function buildExpectedShapeCellStyle(expectedModel: ExpectedShapeModelElement): BpmnCellStyle {
+export function buildExpectedShapeCellStyle(expectedModel: ExpectedShapeModelElement): ComparedBpmnCellStyle {
   const style = buildExpectedCellStyleWithCommonAttributes(expectedModel);
   // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
   // expectedStateStyle.shape = <ShapeValue>(<unknown>(!expectedModel.styleShape ? expectedModel.kind : expectedModel.styleShape));
