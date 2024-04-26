@@ -16,7 +16,7 @@ limitations under the License.
 
 import type { Cell, CellStyle, NumericCellStateStyleKeys } from '@maxgraph/core';
 import { constants } from '@maxgraph/core';
-import { cloneUtils, styleUtils } from '@maxgraph/core';
+import { styleUtils } from '@maxgraph/core';
 
 import type { BPMNCellStyle } from '../renderer/StyleComputer';
 import { ensureOpacityValue, ensureStrokeWidthValue } from '../../helpers/validators';
