@@ -154,10 +154,9 @@ export function setCssClasses(cellStyle: BPMNCellStyle, cssClasses: string[]): v
   }
 }
 
-// FIXME maxGraph 0.1.0 - in model.setStyle, the processing is done only if the style parameter is not equal to the style of the cell
+// In model.setStyle, the processing is done only if the style parameter is not equal to the style of the cell
 // If the style has been get from the cell, then modified, this is the same instance as in the cell, so the 2 objects are equal, so no processing is done
-// in mxGraph, the style was a string, now it is an object. Modifying the returned style didn't modified the string of the style cell, so the 2 objects weren't equal and so processing was done.
+// in mxGraph, the style was a string, now it is an object. Modifying the returned style didn't modify the string of the style cell, so the 2 objects weren't equal and so processing was done.
 //
-// See https://github.com/maxGraph/maxGraph/issues/326 (the method modified the style of the cell, so the 2 objects are equal, no processing is done)
-// https://github.com/maxGraph/maxGraph/pull/380 provides an dedicated method in Cell
-export const getCellStyleClone = (cell: Cell): CellStyle => cloneUtils.clone(cell.getStyle());
+// See https://github.com/maxGraph/maxGraph/issues/326
+export const getCellStyleClone = (cell: Cell): CellStyle => cell.getClonedStyle();
