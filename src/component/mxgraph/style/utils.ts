@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import type { Cell, CellStyle, NumericCellStateStyleKeys } from '@maxgraph/core';
+import { constants } from '@maxgraph/core';
 import { cloneUtils, styleUtils } from '@maxgraph/core';
 
 import type { BPMNCellStyle } from '../renderer/StyleComputer';
@@ -70,15 +71,6 @@ export const StyleDefault = {
   MESSAGE_FLOW_MARKER_END_FILL_COLOR: 'White',
 };
 
-// TODO maxgraph@0.1.0 maxGraph "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided." constants.FONT
-// to remove when https://github.com/maxGraph/maxGraph/issues/205 is fixed
-export enum FONT {
-  BOLD = 1,
-  ITALIC = 2,
-  UNDERLINE = 4,
-  STRIKETHROUGH = 8,
-}
-
 const convertDefaultValue = (value: string): string | undefined => (value == 'default' ? undefined : value);
 
 export const updateStroke = (cellStyle: CellStyle, stroke: Stroke): void => {
@@ -132,10 +124,10 @@ export const updateFont = (cellStyle: CellStyle, font: Font): void => {
     setStyle(cellStyle, 'fontSize', font.size);
     setStyle(cellStyle, 'fontFamily', font.family);
 
-    setStyleFlag(cellStyle, 'fontStyle', FONT.BOLD, font.isBold);
-    setStyleFlag(cellStyle, 'fontStyle', FONT.ITALIC, font.isItalic);
-    setStyleFlag(cellStyle, 'fontStyle', FONT.UNDERLINE, font.isUnderline);
-    setStyleFlag(cellStyle, 'fontStyle', FONT.STRIKETHROUGH, font.isStrikeThrough);
+    setStyleFlag(cellStyle, 'fontStyle', constants.FONT.BOLD, font.isBold);
+    setStyleFlag(cellStyle, 'fontStyle', constants.FONT.ITALIC, font.isItalic);
+    setStyleFlag(cellStyle, 'fontStyle', constants.FONT.UNDERLINE, font.isUnderline);
+    setStyleFlag(cellStyle, 'fontStyle', constants.FONT.STRIKETHROUGH, font.isStrikeThrough);
 
     setStyle(cellStyle, 'textOpacity', font.opacity, ensureOpacityValue);
   }
