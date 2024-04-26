@@ -209,6 +209,7 @@ export class BpmnGraph extends Graph {
   }
 
   // TODO maxgraph@0.1.0 temp to fix maxGraph style merge issue (should be fixed in maxGraph@0.2.0)
+  // with maxgraph@0.10.1, using the maxGraph implementation impact the results of the integration tests (markers)
   override createStylesheet(): Stylesheet {
     return new BpmnStylesheet();
   }
