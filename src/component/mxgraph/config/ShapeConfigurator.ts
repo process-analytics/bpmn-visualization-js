@@ -35,7 +35,6 @@ import {
 import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { BpmnStyleIdentifier } from '../style';
-import { FONT } from '../style/utils';
 import { computeAllBpmnClassNamesOfCell } from '../renderer/style-utils';
 import type { BPMNCellStyle } from '../renderer/StyleComputer';
 import { MxGraphCustomOverlay } from '../overlay/custom-overlay';
@@ -126,18 +125,18 @@ export default class ShapeConfigurator {
         // END OF Fix for issue #920
         '; ';
 
-      if ((s.fontStyle & FONT.BOLD) == FONT.BOLD) {
+      if ((s.fontStyle & constants.FONT.BOLD) == constants.FONT.BOLD) {
         css += 'font-weight: bold; ';
       }
-      if ((s.fontStyle & FONT.ITALIC) == FONT.ITALIC) {
+      if ((s.fontStyle & constants.FONT.ITALIC) == constants.FONT.ITALIC) {
         css += 'font-style: italic; ';
       }
 
       const deco = [];
-      if ((s.fontStyle & FONT.UNDERLINE) == FONT.UNDERLINE) {
+      if ((s.fontStyle & constants.FONT.UNDERLINE) == constants.FONT.UNDERLINE) {
         deco.push('underline');
       }
-      if ((s.fontStyle & FONT.STRIKETHROUGH) == FONT.STRIKETHROUGH) {
+      if ((s.fontStyle & constants.FONT.STRIKETHROUGH) == constants.FONT.STRIKETHROUGH) {
         deco.push('line-through');
       }
       if (deco.length > 0) {
