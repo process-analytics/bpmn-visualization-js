@@ -230,6 +230,7 @@ class BpmnGraphView extends GraphView {
 }
 
 // TODO maxgraph@0.1.0 temp to fix maxGraph style merge issue (should be fixed in maxGraph@0.2.0)
+// see also utils.ts setStyle which adds another workaround that should be possible to remove with maxGraph@0.10.1
 class BpmnStylesheet extends Stylesheet {
   override getCellStyle(cellStyle: CellStyle, defaultStyle: CellStateStyle): CellStateStyle {
     let style: CellStateStyle;
