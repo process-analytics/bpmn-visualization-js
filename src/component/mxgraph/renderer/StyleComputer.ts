@@ -118,7 +118,7 @@ export default class StyleComputer {
     style.bpmn.markers = bpmnElement.markers;
   }
 
-  // TODO maxgraph@0.1.0 switch from static method to function (same in other places of this class) --> this has been done in master branch
+  // TODO maxgraph@0.10.1 switch from static method to function (same in other places of this class) --> this has been done in master branch
   // This applies to the current implementation and to all static methods of this class
   private static computeEdgeBaseStyleNames(edge: Edge): string[] {
     const styles: string[] = [];

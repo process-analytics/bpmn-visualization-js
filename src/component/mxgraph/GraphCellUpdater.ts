@@ -113,7 +113,7 @@ export default class GraphCellUpdater {
           updateFill(cellStyle, styleUpdate.fill);
         }
 
-        // TODO maxgraph@0.1.0 migration --> apply this to the master branch graph.model --> model
+        // TODO maxgraph@0.10.1 migration --> change to apply this to the master branch: graph.model --> model (from maxgraph@0.1.0 migration)
         model.setStyle(cell, cellStyle);
       }
     });
