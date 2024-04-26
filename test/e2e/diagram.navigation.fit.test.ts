@@ -22,6 +22,7 @@ import { FitType } from '@lib/component/options';
 import { getBpmnDiagramNames } from '@test/shared/visu/test-utils';
 import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
 import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
+import { withCustomReceivedDir } from './helpers/visu/image-snapshot-config';
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 
 class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
@@ -32,12 +33,10 @@ class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
     margin?: number;
   }): MatchImageSnapshotOptions {
     const config = super.getConfig(param);
-    // TODO migration maxgraph 0.10.1 - to fix in the master branch - we may make a copy of the original configuration
     config.customSnapshotsDir = FitImageSnapshotConfigurator.buildSnapshotFitDir(config.customSnapshotsDir, param.fitType, true, param.margin ? param.margin : 0);
     config.customDiffDir = param.buildCustomDiffDir(config, param.fitType, param.margin);
-    // TODO migration maxgraph 0.10.1 - to fix in the master branch
-    config.customReceivedDir = config.customDiffDir;
-    return config;
+    // TODO migration maxgraph 0.10.1 - to fix in the master branch - we may make a copy of the original configuration
+    return withCustomReceivedDir(config);
   }
 
   private static buildSnapshotFitDir(parentDir: string, fitType: FitType, withMargin = false, margin?: number): string {

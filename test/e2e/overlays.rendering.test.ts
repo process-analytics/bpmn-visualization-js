@@ -24,6 +24,7 @@ import { overlayEdgePositionValues, overlayShapePositionValues } from '@test/sha
 import type { Point } from '@test/shared/visu/bpmn-page-utils';
 import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
 import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
+import { withCustomReceivedDir } from './helpers/visu/image-snapshot-config';
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 import debugLogger from 'debug';
 
@@ -185,14 +186,15 @@ describe('BPMN Shapes with overlays', () => {
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-    expect(image).toMatchImageSnapshot({
-      ...config,
-      customSnapshotIdentifier: `add.overlay.on.position.${position}`,
-      customSnapshotsDir: getShapeDir(config.customSnapshotsDir),
-      customDiffDir: getShapeDir(config.customDiffDir),
-      // TODO migration maxgraph 0.10.1 - to fix in the master branch - set customReceivedDir (see other test files)
-      // customReceivedDir: getShapeDir(config.customReceivedDir),
-    });
+    expect(image).toMatchImageSnapshot(
+      // TODO migration maxgraph 0.10.1 - to fix in the master branch - set customReceivedDir
+      withCustomReceivedDir({
+        ...config,
+        customSnapshotIdentifier: `add.overlay.on.position.${position}`,
+        customSnapshotsDir: getShapeDir(config.customSnapshotsDir),
+        customDiffDir: getShapeDir(config.customDiffDir),
+      }),
+    );
   });
 
   it(`remove all overlays of Shape`, async () => {
@@ -203,12 +205,15 @@ describe('BPMN Shapes with overlays', () => {
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-    expect(image).toMatchImageSnapshot({
-      ...config,
-      customSnapshotIdentifier: 'remove.all.overlays.of.shape',
-      customSnapshotsDir: getShapeDir(config.customSnapshotsDir),
-      customDiffDir: getShapeDir(config.customDiffDir),
-    });
+    expect(image).toMatchImageSnapshot(
+      // TODO migration maxgraph 0.10.1 - to fix in the master branch - set customReceivedDir
+      withCustomReceivedDir({
+        ...config,
+        customSnapshotIdentifier: 'remove.all.overlays.of.shape',
+        customSnapshotsDir: getShapeDir(config.customSnapshotsDir),
+        customDiffDir: getShapeDir(config.customDiffDir),
+      }),
+    );
   });
 });
 
@@ -250,12 +255,15 @@ describe('BPMN Edges with overlays', () => {
 
       const image = await page.screenshot({ fullPage: true });
       const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-      expect(image).toMatchImageSnapshot({
-        ...config,
-        customSnapshotIdentifier: `add.overlay.on.${edgeKind}.flow`,
-        customSnapshotsDir: getEdgePositionDir(config.customSnapshotsDir, position),
-        customDiffDir: getEdgePositionDir(config.customDiffDir, position),
-      });
+      expect(image).toMatchImageSnapshot(
+        // TODO migration maxgraph 0.10.1 - to fix in the master branch - set customReceivedDir
+        withCustomReceivedDir({
+          ...config,
+          customSnapshotIdentifier: `add.overlay.on.${edgeKind}.flow`,
+          customSnapshotsDir: getEdgePositionDir(config.customSnapshotsDir, position),
+          customDiffDir: getEdgePositionDir(config.customDiffDir, position),
+        }),
+      );
     });
 
     it(`remove all overlays of ${edgeKind} flow`, async () => {
@@ -267,12 +275,15 @@ describe('BPMN Edges with overlays', () => {
 
       const image = await page.screenshot({ fullPage: true });
       const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-      expect(image).toMatchImageSnapshot({
-        ...config,
-        customSnapshotIdentifier: `remove.all.overlays.of.${edgeKind}.flow`,
-        customSnapshotsDir: getEdgeDir(config.customSnapshotsDir),
-        customDiffDir: getEdgeDir(config.customDiffDir),
-      });
+      expect(image).toMatchImageSnapshot(
+        // TODO migration maxgraph 0.10.1 - to fix in the master branch - set customReceivedDir
+        withCustomReceivedDir({
+          ...config,
+          customSnapshotIdentifier: `remove.all.overlays.of.${edgeKind}.flow`,
+          customSnapshotsDir: getEdgeDir(config.customSnapshotsDir),
+          customDiffDir: getEdgeDir(config.customDiffDir),
+        }),
+      );
     });
   });
 });
@@ -476,11 +487,14 @@ describe('Overlay style', () => {
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(style);
-    expect(image).toMatchImageSnapshot({
-      ...config,
-      customSnapshotIdentifier: `add.overlay.with.custom.${style}`,
-      customSnapshotsDir: join(config.customSnapshotsDir, snapshotPath),
-      customDiffDir: join(config.customDiffDir, snapshotPath),
-    });
+    expect(image).toMatchImageSnapshot(
+      // TODO migration maxgraph 0.10.1 - to fix in the master branch - set customReceivedDir
+      withCustomReceivedDir({
+        ...config,
+        customSnapshotIdentifier: `add.overlay.with.custom.${style}`,
+        customSnapshotsDir: join(config.customSnapshotsDir, snapshotPath),
+        customDiffDir: join(config.customDiffDir, snapshotPath),
+      }),
+    );
   });
 });

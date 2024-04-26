@@ -156,3 +156,6 @@ export class MultiBrowserImageSnapshotThresholds {
     }
   }
 }
+
+// TODO migration maxgraph 0.10.1 - to fix in the master branch - we may make a copy of the original configuration
+export const withCustomReceivedDir = (options: MatchImageSnapshotOptions): MatchImageSnapshotOptions => ({ ...options, customReceivedDir: options.customDiffDir });
