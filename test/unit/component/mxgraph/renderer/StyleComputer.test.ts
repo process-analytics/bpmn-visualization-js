@@ -127,8 +127,6 @@ function newAssociationFlow(kind: AssociationDirectionKind): AssociationFlow {
   return new AssociationFlow('id', 'name', undefined, undefined, kind);
 }
 
-// TODO maxgraph@0.1.0 order properties alphabetically in expected style
-
 describe('Style Computer', () => {
   // use a shared instance to check that there is no state stored in the implementation
   const styleComputer = new StyleComputer();
