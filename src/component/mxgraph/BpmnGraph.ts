@@ -132,15 +132,10 @@ export class BpmnGraph extends Graph {
       scale == 0 && (scale = 1);
       this.view.scaleAndTranslate(
         scale,
-        this.NaNToZero((margin + clientWidth - width * scale) / (2 * scale) - bounds.x / this.view.scale),
-        this.NaNToZero((margin + clientHeight - height * scale) / (2 * scale) - bounds.y / this.view.scale),
+        convertNaNToZero((margin + clientWidth - width * scale) / (2 * scale) - bounds.x / this.view.scale),
+        convertNaNToZero((margin + clientHeight - height * scale) / (2 * scale) - bounds.y / this.view.scale),
       );
     }
-  }
-
-  // TODO maxgraph@0.1.0 move somewhere else + find a better name + should be a util function
-  private NaNToZero(value: number): number {
-    return Number.isNaN(value) ? 0 : value;
   }
 
   /**
@@ -267,4 +262,8 @@ class BpmnStylesheet extends Stylesheet {
 
     return style;
   }
+}
+
+function convertNaNToZero(value: number): number {
+  return Number.isNaN(value) ? 0 : value;
 }
