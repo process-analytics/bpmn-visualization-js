@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import type { CellStyle, ShapeValue } from '@maxgraph/core';
+import { constants } from '@maxgraph/core';
 
 import Shape from '../../../model/bpmn/internal/shape/Shape';
 import type { Edge } from '../../../model/bpmn/internal/edge/edge';
@@ -29,7 +30,6 @@ import {
   ShapeBpmnSubProcess,
 } from '../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { BpmnStyleIdentifier } from '../style';
-import { FONT } from '../style/utils';
 import type {
   AssociationDirectionKind,
   FlowKind,
@@ -242,16 +242,16 @@ export default class StyleComputer {
 export function getFontStyleValue(font: Font): number {
   let value = 0;
   if (font.isBold) {
-    value += FONT.BOLD;
+    value += constants.FONT.BOLD;
   }
   if (font.isItalic) {
-    value += FONT.ITALIC;
+    value += constants.FONT.ITALIC;
   }
   if (font.isStrikeThrough) {
-    value += FONT.STRIKETHROUGH;
+    value += constants.FONT.STRIKETHROUGH;
   }
   if (font.isUnderline) {
-    value += FONT.UNDERLINE;
+    value += constants.FONT.UNDERLINE;
   }
   return value;
 }
