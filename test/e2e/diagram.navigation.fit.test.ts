@@ -17,7 +17,7 @@ limitations under the License.
 import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
 import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 
-import { join } from 'node:path';
+import path from 'node:path';
 
 import 'jest-playwright-preset';
 
@@ -41,23 +41,23 @@ class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
   }
 
   private static buildSnapshotFitDirectory(parentDirectory: string, fitType: FitType, withMargin = false, margin?: number): string {
-    const rootFitDirectory = join(parentDirectory, `type-${fitType}`);
+    const rootFitDirectory = path.join(parentDirectory, `type-${fitType}`);
 
     if (!withMargin) {
       return rootFitDirectory;
     }
-    return join(rootFitDirectory, `margin-${margin == null || margin < 0 ? 0 : margin}`);
+    return path.join(rootFitDirectory, `margin-${margin == null || margin < 0 ? 0 : margin}`);
   }
 
   static buildOnLoadDiffDirectory(config: MatchImageSnapshotOptions, fitType: FitType, withMargin = false, margin?: number): string {
-    const onLoadDirectory = join(config.customDiffDir, 'on-load');
+    const onLoadDirectory = path.join(config.customDiffDir, 'on-load');
     return FitImageSnapshotConfigurator.buildSnapshotFitDirectory(onLoadDirectory, fitType, withMargin, margin);
   }
 
   static buildAfterLoadDiffDirectory(config: MatchImageSnapshotOptions, afterLoadFitType: FitType, onLoadFitType: FitType): string {
-    const afterLoadDirectory = join(config.customDiffDir, 'after-load');
+    const afterLoadDirectory = path.join(config.customDiffDir, 'after-load');
     const snapshotFitDirectory = FitImageSnapshotConfigurator.buildSnapshotFitDirectory(afterLoadDirectory, afterLoadFitType);
-    return join(snapshotFitDirectory, `on-load_type-${onLoadFitType}`);
+    return path.join(snapshotFitDirectory, `on-load_type-${onLoadFitType}`);
   }
 }
 

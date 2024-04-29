@@ -18,7 +18,7 @@ import 'jest-playwright-preset';
 import type { TargetedPageConfiguration } from '@test/shared/visu/bpmn-page-utils';
 import type { Page } from 'playwright';
 
-import { resolve } from 'node:path';
+import path from 'node:path';
 
 import { BpmnPageSvgTester } from '@test/shared/visu/bpmn-page-utils';
 
@@ -53,7 +53,7 @@ class BpmnStaticPageSvgTester extends BpmnPageSvgTester {
     super({ ...targetedPageConfiguration, diagramSubfolder: 'none' }, page);
   }
   override async gotoPageAndLoadBpmnDiagram(): Promise<void> {
-    const url = `file://${resolve(__dirname, `static/${this.targetedPageConfiguration.targetedPage.pageFileName}.html`)}`;
+    const url = `file://${path.resolve(__dirname, `static/${this.targetedPageConfiguration.targetedPage.pageFileName}.html`)}`;
     await super.doGotoPageAndLoadBpmnDiagram(url, false);
   }
 }

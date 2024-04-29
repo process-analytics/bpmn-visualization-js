@@ -17,7 +17,7 @@ limitations under the License.
 import type BpmnModel from '../../src/model/bpmn/internal/BpmnModel';
 import type { BpmnJsonModel } from '../../src/model/bpmn/json/bpmn20';
 
-import { resolve as resolvePath } from 'node:path';
+import path from 'node:path';
 
 import clipboardy from 'clipboardy';
 import parseArgs from 'minimist';
@@ -27,7 +27,7 @@ import { ParsingMessageCollector } from '../../src/component/parser/parsing-mess
 import BpmnXmlParser from '../../src/component/parser/xml/BpmnXmlParser';
 import { readFileSync } from '../../test/shared/file-helper';
 
-const __dirname = resolvePath();
+const __dirname = path.resolve();
 const argv = parseArgs(process.argv.slice(2));
 const bpmnFilePath = argv._[0];
 const outputType = argv.output || 'json';

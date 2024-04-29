@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { resolve } from 'node:path';
+import path from 'node:path';
 
 import { defineConfig } from 'vite';
 
@@ -33,8 +33,8 @@ export default defineConfig(({ mode }) => {
       assetsDir: 'build/demo/dev/public/assets',
       rollupOptions: {
         input: {
-          index: resolve(__dirname, 'dev/public/index.html'),
-          'elements-identification': resolve(__dirname, 'dev/public/elements-identification.html'),
+          index: path.resolve(__dirname, 'dev/public/index.html'),
+          'elements-identification': path.resolve(__dirname, 'dev/public/elements-identification.html'),
         },
         // No hash in asset names. We make the demo publicly available via the examples repository and served by statically.io
         // New versions are accessed using tags. The master branch is cached by statically.io and updated once a day.

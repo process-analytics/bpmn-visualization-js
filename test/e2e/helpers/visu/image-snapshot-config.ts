@@ -16,7 +16,7 @@ limitations under the License.
 
 import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 
-import { dirname, join } from 'node:path';
+import path from 'node:path';
 
 import { configLog, getSimplePlatformName, getTestedBrowserFamily } from '@test/shared/visu/test-utils';
 
@@ -47,8 +47,8 @@ export class ImageSnapshotConfigurator {
   constructor(imageSnapshotThresholds: MultiBrowserImageSnapshotThresholds, snapshotsSubDirectoryName: string) {
     this.thresholdConfig = imageSnapshotThresholds.getThresholds();
     this.defaultFailureThreshold = imageSnapshotThresholds.getDefault();
-    this.defaultCustomDiffDir = join(ImageSnapshotConfigurator.getDiffDirectory(), snapshotsSubDirectoryName);
-    this.defaultCustomSnapshotsDir = join(ImageSnapshotConfigurator.getSnapshotsDirectory(), snapshotsSubDirectoryName);
+    this.defaultCustomDiffDir = path.join(ImageSnapshotConfigurator.getDiffDirectory(), snapshotsSubDirectoryName);
+    this.defaultCustomSnapshotsDir = path.join(ImageSnapshotConfigurator.getSnapshotsDirectory(), snapshotsSubDirectoryName);
   }
 
   getConfig(parameter: string | { fileName: string }): MatchImageSnapshotOptions {
@@ -83,13 +83,13 @@ export class ImageSnapshotConfigurator {
   }
 
   static getSnapshotsDirectory(): string {
-    return join(dirname(expect.getState().testPath), '__image_snapshots__');
+    return path.join(path.dirname(expect.getState().testPath), '__image_snapshots__');
   }
 
   static getDiffDirectory(): string {
-    const testDirectoryName = dirname(expect.getState().testPath);
+    const testDirectoryName = path.dirname(expect.getState().testPath);
     // directory is relative to $ROOT/test/e2e
-    return join(testDirectoryName, '../../build/test-report/e2e/__diff_output__');
+    return path.join(testDirectoryName, '../../build/test-report/e2e/__diff_output__');
   }
 }
 
