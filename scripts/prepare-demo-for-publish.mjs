@@ -26,7 +26,7 @@ const updateAssetsLoadingFile = filePath => {
 };
 
 const demoRootDirectory = './build/demo';
-const htmlPagesPath = join(demoRootDirectory, 'dev/public');
+const htmlPagesPath = path.join(demoRootDirectory, 'dev/public');
 const pages = readdirSync(htmlPagesPath);
 for (const page of pages.filter(file => path.extname(file).toLowerCase() === '.html')) {
   // eslint-disable-next-line no-console
