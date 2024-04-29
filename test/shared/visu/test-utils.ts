@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { join } from 'node:path';
+import path from 'node:path';
 
 import debugLogger from 'debug';
 import 'jest-playwright-preset';
@@ -49,7 +49,7 @@ export function delay(time: number): Promise<unknown> {
 }
 
 export function getBpmnDiagramNames(directoryName: string): string[] {
-  return findFiles(join('../fixtures/bpmn/', directoryName))
+  return findFiles(path.join('../fixtures/bpmn/', directoryName))
     .filter(filename => filename.endsWith('.bpmn'))
     .map(filename => filename.split('.').slice(0, -1).join('.'));
 }

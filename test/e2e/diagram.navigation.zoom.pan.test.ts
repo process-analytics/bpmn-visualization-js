@@ -17,7 +17,7 @@ limitations under the License.
 import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
 import type { Point } from '@test/shared/visu/bpmn-page-utils';
 
-import { join } from 'node:path';
+import path from 'node:path';
 
 import debugLogger from 'debug';
 import 'jest-playwright-preset';
@@ -122,7 +122,7 @@ describe('diagram navigation - zoom and pan with mouse', () => {
     expect(image).toMatchImageSnapshot({
       ...config,
       customSnapshotIdentifier: 'initial.zoom',
-      customDiffDir: join(config.customDiffDir, `mouse-zoom-in-out-${xTimes}-times`),
+      customDiffDir: path.join(config.customDiffDir, `mouse-zoom-in-out-${xTimes}-times`),
     });
   });
 });
@@ -166,7 +166,7 @@ describe('diagram navigation - zoom with buttons', () => {
     expect(image).toMatchImageSnapshot({
       ...config,
       customSnapshotIdentifier: 'initial.zoom',
-      customDiffDir: join(config.customDiffDir, `button-zoom-in-out-${xTimes}-times`),
+      customDiffDir: path.join(config.customDiffDir, `button-zoom-in-out-${xTimes}-times`),
     });
   });
 });
@@ -208,7 +208,7 @@ describe('diagram navigation - zoom with buttons and mouse', () => {
     expect(image).toMatchImageSnapshot({
       ...config,
       customSnapshotIdentifier: 'initial.zoom',
-      customDiffDir: join(config.customDiffDir, `zoom-button-then-mouse-${firstZoom}-then-${secondZoom}`),
+      customDiffDir: path.join(config.customDiffDir, `zoom-button-then-mouse-${firstZoom}-then-${secondZoom}`),
     });
   });
 
@@ -225,7 +225,7 @@ describe('diagram navigation - zoom with buttons and mouse', () => {
     expect(image).toMatchImageSnapshot({
       ...config,
       customSnapshotIdentifier: 'initial.zoom',
-      customDiffDir: join(config.customDiffDir, `zoom-mouse-then-button-${firstZoom}-then-${secondZoom}`),
+      customDiffDir: path.join(config.customDiffDir, `zoom-mouse-then-button-${firstZoom}-then-${secondZoom}`),
     });
   });
 });

@@ -19,7 +19,7 @@ import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot
 import type { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '@lib/component/registry';
 import type { Point } from '@test/shared/visu/bpmn-page-utils';
 
-import { join } from 'node:path';
+import path from 'node:path';
 
 import debugLogger from 'debug';
 
@@ -125,15 +125,15 @@ class OverlaysPageTester extends PageTester {
 const pageTester = new OverlaysPageTester({ targetedPage: AvailableTestPages.OVERLAYS, diagramSubfolder: 'overlays' }, page);
 
 function getEdgeDirectory(directory: string): string {
-  return join(directory, `on.edge`);
+  return path.join(directory, `on.edge`);
 }
 
 function getEdgePositionDirectory(directory: string, position: OverlayEdgePosition): string {
-  return join(getEdgeDirectory(directory), `on-position-${position}`);
+  return path.join(getEdgeDirectory(directory), `on-position-${position}`);
 }
 
 function getShapeDirectory(directory: string): string {
-  return join(directory, `on.shape`);
+  return path.join(directory, `on.shape`);
 }
 
 describe('BPMN Shapes with overlays', () => {
@@ -365,8 +365,8 @@ describe('Overlay style', () => {
     expect(image).toMatchImageSnapshot({
       ...config,
       customSnapshotIdentifier: `add.overlay.with.custom.${style}`,
-      customSnapshotsDir: join(config.customSnapshotsDir, snapshotPath),
-      customDiffDir: join(config.customDiffDir, snapshotPath),
+      customSnapshotsDir: path.join(config.customSnapshotsDir, snapshotPath),
+      customDiffDir: path.join(config.customDiffDir, snapshotPath),
     });
   });
 });

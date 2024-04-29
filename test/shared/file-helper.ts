@@ -15,13 +15,13 @@ limitations under the License.
 */
 
 import { readdirSync, readFileSync as fsReadFileSync } from 'node:fs';
-import { join } from 'node:path';
+import path from 'node:path';
 
 export function readFileSync(relativePathToSourceFile: string, encoding: BufferEncoding = 'utf8', directoryName = __dirname): string {
-  return fsReadFileSync(join(directoryName, relativePathToSourceFile), { encoding });
+  return fsReadFileSync(path.join(directoryName, relativePathToSourceFile), { encoding });
 }
 
 /** Returns the files in the given directory. The function doesn't do any recursion in sub directories. */
 export function findFiles(relativePathToSourceDirectory: string): string[] {
-  return readdirSync(join(__dirname, relativePathToSourceDirectory));
+  return readdirSync(path.join(__dirname, relativePathToSourceDirectory));
 }
