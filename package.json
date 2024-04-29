@@ -111,7 +111,7 @@
     "strnum": "1.0.5"
   },
   "devDependencies": {
-    "@asciidoctor/core": "~3.0.3",
+    "@asciidoctor/core": "~3.0.4",
     "@microsoft/api-extractor": "~7.43.1",
     "@rollup/plugin-commonjs": "~25.0.7",
     "@rollup/plugin-node-resolve": "~15.2.3",
