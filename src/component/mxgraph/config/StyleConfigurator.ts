@@ -172,6 +172,8 @@ export class StyleConfigurator {
       const style: BpmnCellStyle = {
         shape: kind,
         // TODO maxgraph@0.10.1 decide if we use the function or the string to set the perimeter
+        // this will reduce adherence to the maxGraph implementation and only use configuration string
+        // be also aware of https://github.com/process-analytics/bpmn-visualization-js/pull/2814#issuecomment-1692971602
         perimeter: Perimeter.EllipsePerimeter,
         strokeWidth: kind == ShapeBpmnElementKind.EVENT_END ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN,
         verticalLabelPosition: 'bottom',
