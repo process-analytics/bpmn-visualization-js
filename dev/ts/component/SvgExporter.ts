@@ -44,11 +44,10 @@ export class SvgExporter {
     return this.doSvgExport(isFirefox);
   }
 
+  // TODO maxgraph@0.10.2 migration - generate empty content
   private doSvgExport(enableForeignObjectForLabel: boolean): string {
     const svgDocument = this.computeSvg({ scale: 1, border: 25, enableForeignObjectForLabel: enableForeignObjectForLabel });
-    // TODO maxgraph@0.1.0 migration - fix type
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    console.warn('svgDocument', svgDocument);
     const svgAsString = xmlUtils.getXml(svgDocument);
     return `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -56,7 +55,7 @@ ${svgAsString}
 `;
   }
 
-  private computeSvg(svgExportOptions: SvgExportOptions): XMLDocument {
+  private computeSvg(svgExportOptions: SvgExportOptions): Element {
     const scale = svgExportOptions.scale ?? 1;
     const border = svgExportOptions.border ?? 0;
     const crisp = svgExportOptions.crisp ?? true;
@@ -100,7 +99,7 @@ ${svgAsString}
     imgExport.includeOverlays = true;
 
     imgExport.drawState(this.graph.getView().getState(this.graph.model.root), svgCanvas);
-    return svgDoc;
+    return root;
   }
 
   createSvgCanvas(node: SVGElement): SvgCanvas2D {
@@ -170,10 +169,7 @@ class CanvasForExport extends SvgCanvas2D {
 
     try {
       this.htmlConverter.innerHTML = str;
-      // TODO maxgraph@0.1.0 migration - fix type
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      str = domUtils.extractTextWithWhitespace(this.htmlConverter.childNodes);
+      str = domUtils.extractTextWithWhitespace(<Element[]>Array.from(this.htmlConverter.childNodes));
 
       // Workaround for substring breaking double byte UTF
       const exp = Math.ceil((2 * w) / this.state.fontSize);
