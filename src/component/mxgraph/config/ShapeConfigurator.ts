@@ -36,7 +36,7 @@ import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { BpmnStyleIdentifier } from '../style';
 import { computeAllBpmnClassNamesOfCell } from '../renderer/style-utils';
-import type { BpmnCellStyle } from '../style/types';
+import type { BpmnCellStateStyle } from '../style/types';
 import { MxGraphCustomOverlay } from '../overlay/custom-overlay';
 import { OverlayBadgeShape } from '../overlay/shapes';
 import { BpmnConnector } from '../shape/edges';
@@ -60,19 +60,19 @@ export default class ShapeConfigurator {
     CellRenderer.registerShape(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, IntermediateEventShape);
     CellRenderer.registerShape(ShapeBpmnElementKind.EVENT_BOUNDARY, IntermediateEventShape);
     // gateways
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.1.0 fix CellRenderer.registerShape call
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.10.2 fix CellRenderer.registerShape call (from maxgraph@0.1.0)
     // @ts-ignore
     CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_COMPLEX, ComplexGatewayShape);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.1.0 fix CellRenderer.registerShape call
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.10.2 fix CellRenderer.registerShape call (from maxgraph@0.1.0)
     // @ts-ignore
     CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_EVENT_BASED, EventBasedGatewayShape);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.1.0 fix CellRenderer.registerShape call
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.10.2 fix CellRenderer.registerShape call (from maxgraph@0.1.0)
     // @ts-ignore
     CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, ExclusiveGatewayShape);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.1.0 fix CellRenderer.registerShape call
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.10.2 fix CellRenderer.registerShape call (from maxgraph@0.1.0)
     // @ts-ignore
     CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_INCLUSIVE, InclusiveGatewayShape);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.1.0 fix CellRenderer.registerShape call
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.10.2 fix CellRenderer.registerShape call (from maxgraph@0.1.0)
     // @ts-ignore
     CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_PARALLEL, ParallelGatewayShape);
     // activities
@@ -88,15 +88,15 @@ export default class ShapeConfigurator {
     CellRenderer.registerShape(ShapeBpmnElementKind.TASK_SCRIPT, ScriptTaskShape);
     CellRenderer.registerShape(ShapeBpmnElementKind.TASK_BUSINESS_RULE, BusinessRuleTaskShape);
     // artifacts
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.1.0 fix CellRenderer.registerShape call
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.10.2 fix CellRenderer.registerShape call (from maxgraph@0.1.0)
     // @ts-ignore
     CellRenderer.registerShape(ShapeBpmnElementKind.TEXT_ANNOTATION, TextAnnotationShape);
 
     // shapes for flows
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.1.0 fix CellRenderer.registerShape call
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.10.2 fix CellRenderer.registerShape call (from maxgraph@0.1.0)
     // @ts-ignore
     CellRenderer.registerShape(BpmnStyleIdentifier.EDGE, BpmnConnector);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.1.0 fix CellRenderer.registerShape call
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.10.2 fix CellRenderer.registerShape call (from maxgraph@0.1.0)
     // @ts-ignore
     CellRenderer.registerShape(BpmnStyleIdentifier.MESSAGE_FLOW_ICON, MessageFlowIconShape);
   }
@@ -169,10 +169,8 @@ export default class ShapeConfigurator {
         // 'this.state.cell.style' = the style applied to the cell: 1st element: style name = bpmn shape name
         const cell = this.state.cell;
         // dialect = strictHtml is set means that current node holds an HTML label
-        // TODO maxgraph@0.1.0 "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided."constants.DIALECT.STRICTHTML
-        let allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === 'strictHtml');
-        // TODO maxgraph@0.1.0 - do we need to introduce a BpmnCellStateStyle type (to not have the baseStyleName property)?
-        const extraCssClasses = (this.state.style as BpmnCellStyle).bpmn?.extraCssClasses;
+        let allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === constants.DIALECT.STRICTHTML);
+        const extraCssClasses = (this.state.style as BpmnCellStateStyle).bpmn?.extraCssClasses;
         if (extraCssClasses) {
           allBpmnClassNames = allBpmnClassNames.concat(extraCssClasses);
         }

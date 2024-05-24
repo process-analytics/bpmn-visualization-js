@@ -18,8 +18,8 @@ import type { FitOptions, ZoomConfiguration } from '../options';
 import { FitType } from '../options';
 import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/validators';
 import { debounce, throttle } from 'lodash-es';
-import type { CellState, CellStateStyle, CellStyle, Point } from '@maxgraph/core';
-import { eventUtils, Graph, GraphView, InternalEvent, Stylesheet } from '@maxgraph/core';
+import type { CellState, Point } from '@maxgraph/core';
+import { eventUtils, Graph, GraphView, InternalEvent, PanningHandler } from '@maxgraph/core';
 
 const zoomFactorIn = 1.25;
 const zoomFactorOut = 1 / zoomFactorIn;
@@ -31,9 +31,8 @@ export class BpmnGraph extends Graph {
    * @internal
    */
   constructor(container: HTMLElement) {
-    // TODO maxGraph@0.1.0 - only set the plugins we need
-    // require a version that doesn't generate errors when plugins are not found (is ok in v0.8.0)
-    super(container);
+    // TODO maxGraph@0.10.2 - validate the list of maxGraph plugins we need to use
+    super(container, undefined, [PanningHandler]);
     this.zoomFactor = zoomFactorIn;
     if (this.container) {
       // ensure we don't have a select text cursor on label hover, see #294
@@ -207,12 +206,6 @@ export class BpmnGraph extends Graph {
     const factor = scale / this.view.scale;
     return [factor, scale];
   }
-
-  // TODO maxgraph@0.1.0 temp to fix maxGraph style merge issue (should be fixed in maxGraph@0.2.0)
-  // with maxgraph@0.10.1, using the maxGraph implementation impact the results of the integration tests (markers)
-  override createStylesheet(): Stylesheet {
-    return new BpmnStylesheet();
-  }
 }
 
 class BpmnGraphView extends GraphView {
@@ -226,43 +219,6 @@ class BpmnGraphView extends GraphView {
     }
     const pts = edge.absolutePoints;
     return source ? pts[1] : pts[pts.length - 2];
-  }
-}
-
-// TODO maxgraph@0.1.0 temp to fix maxGraph style merge issue (should be fixed in maxGraph@0.2.0)
-// see also utils.ts setStyle which adds another workaround that should be possible to remove with maxGraph@0.10.1
-class BpmnStylesheet extends Stylesheet {
-  override getCellStyle(cellStyle: CellStyle, defaultStyle: CellStateStyle): CellStateStyle {
-    let style: CellStateStyle;
-
-    if (cellStyle.baseStyleNames && cellStyle.baseStyleNames.length > 0) {
-      // creates style with the given baseStyleNames. (merges from left to right)
-      style = cellStyle.baseStyleNames.reduce(
-        (acc, styleName) => {
-          return (acc = {
-            ...acc,
-            ...this.styles.get(styleName),
-          });
-        },
-        // here is the change
-        // {},
-        { ...defaultStyle },
-        // END of here is the change
-      );
-    } else if (cellStyle.baseStyleNames && cellStyle.baseStyleNames.length === 0) {
-      // baseStyleNames is explicitly an empty array, so don't use any default styles.
-      style = {};
-    } else {
-      style = { ...defaultStyle };
-    }
-
-    // Merges cellStyle into style
-    style = {
-      ...style,
-      ...cellStyle,
-    };
-
-    return style;
   }
 }
 
