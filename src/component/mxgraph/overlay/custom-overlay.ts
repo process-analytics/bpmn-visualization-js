@@ -39,10 +39,6 @@ export class MxGraphCustomOverlay extends CellOverlay {
 
   constructor(public label: string, options: MxGraphCustomOverlayOptions) {
     super(null, '', options.position.horizontalAlign, options.position.verticalAlign, new Point(), 'default');
-    // FIXME maxgraph@0.1.0 constructor doesn't set some properties
-    this.align = options.position.horizontalAlign;
-    this.verticalAlign = options.position.verticalAlign;
-    // end of fixme
     this.style = options.style;
   }
 
