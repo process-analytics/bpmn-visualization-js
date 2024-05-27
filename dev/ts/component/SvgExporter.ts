@@ -44,7 +44,7 @@ export class SvgExporter {
     return this.doSvgExport(isFirefox);
   }
 
-  // TODO maxgraph@0.10.2 migration - generate empty content
+  // TODO maxgraph@0.10.2 migration - generate empty content - should be fixed with https://github.com/maxGraph/maxGraph/pull/425
   private doSvgExport(enableForeignObjectForLabel: boolean): string {
     const svgDocument = this.computeSvg({ scale: 1, border: 25, enableForeignObjectForLabel: enableForeignObjectForLabel });
 
@@ -55,7 +55,7 @@ export class SvgExporter {
     const root = xmlDoc.createElement('data');
     xmlDoc.appendChild(root);
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore -- TODO maxgraph@0.10.2 migration - wrong type in maxGraph XmlCanvas2D constructor, should be Element in constructor
+    // @ts-ignore -- TODO maxgraph@0.10.2 migration - wrong type in maxGraph XmlCanvas2D constructor, should be Element in constructor - see https://github.com/maxGraph/maxGraph/pull/423
     const xmlCanvas = new XmlCanvas2D(root);
     const imgExport = new ImageExport();
     imgExport.includeOverlays = true;
