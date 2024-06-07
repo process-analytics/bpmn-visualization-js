@@ -1,18 +1,18 @@
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2020 Bonitasoft S.A.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 /**
  * Options to configure the `bpmn-visualization` initialization.
@@ -23,6 +23,10 @@ export interface GlobalOptions {
   container: string | HTMLElement;
   /** Configure the BPMN diagram navigation (panning and zoom). */
   navigation?: NavigationConfiguration;
+  /** Configure the BPMN parser. */
+  parser?: ParserOptions;
+  /** Configure how the BPMN diagram and its elements are rendered. */
+  renderer?: RendererOptions;
 }
 
 /**
@@ -32,6 +36,8 @@ export interface GlobalOptions {
 export interface NavigationConfiguration {
   /**
    * Enable the navigation with the mouse wheel or with gesture/pinch on touch devices.
+   *
+   * **IMPORTANT**: the navigation API is not affected by this value. Navigation actions performed with the API always have an effect.
    * @default false
    */
   enabled: boolean;
@@ -155,3 +161,49 @@ export enum ZoomType {
   In = 'in',
   Out = 'out',
 }
+
+/**
+ * Configure the BPMN parser.
+ * @category Initialization & Configuration
+ */
+export type ParserOptions = {
+  /**
+   * Apply additional processing to the XML attributes in the BPMN source.
+   *
+   * When defined, this function is called after the `bpmn-visualization` attribute processing.
+   * You can use it to perform extra entities decoding. This can be done by using libraries like {@link https://www.npmjs.com/package/entities}.
+   * ```ts
+   * import { decodeXML } from 'entities';
+   * const parserOptions: ParserOptions = {
+   *   parser: {
+   *     additionalXmlAttributeProcessor: (val: string) => { return decodeXML(val) }
+   *   }
+   * }
+   * ```
+   * @param val the value of the 'name' attribute to be processed.
+   */
+  additionalXmlAttributeProcessor?: (value: string) => string;
+  /**
+   * If `true`, disable the console logs produced by the parser.
+   * @default false
+   */
+  disableConsoleLog?: boolean;
+};
+
+/**
+ * Global configuration for the rendering of the BPMN elements.
+ *
+ * @category Initialization & Configuration
+ * @since 0.35.0
+ */
+export type RendererOptions = {
+  /**
+   * If set to `false`, support the "BPMN in Color" specification with a fallback with bpmn.io colors. For more details about the support, see
+   * {@link https://github.com/process-analytics/bpmn-visualization-js/pull/2614}.
+   *
+   * Otherwise, disable the support.
+   *
+   * @default true
+   */
+  ignoreBpmnColors?: boolean;
+};

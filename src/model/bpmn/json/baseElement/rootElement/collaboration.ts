@@ -1,31 +1,32 @@
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2020 Bonitasoft S.A.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 import type { TRootElement } from './rootElement';
-import type { TCallConversation, TConversation, TConversationAssociation, TConversationLink, TConversationNode, TSubConversation } from '../conversation';
-import type { TMessageFlow, TMessageFlowAssociation } from '../baseElement';
-import type { TParticipant, TParticipantAssociation } from '../participant';
 import type { TArtifact, TAssociation, TGroup, TTextAnnotation } from '../artifact';
+import type { TMessageFlow, TMessageFlowAssociation } from '../baseElement';
+import type { TCallConversation, TConversation, TConversationAssociation, TConversationLink, TConversationNode, TSubConversation } from '../conversation';
 import type { TCorrelationKey } from '../correlation';
-import type { TFlowElement, TSequenceFlow } from '../flowElement';
-import type { TCallChoreography, TChoreographyTask, TSubChoreography } from '../flowNode/choreographyActivity';
-import type { TAdHocSubProcess, TCallActivity, TSubProcess, TTransaction } from '../flowNode/activity/activity';
 import type { TDataObject, TDataObjectReference, TDataStoreReference } from '../data';
+import type { TFlowElement, TSequenceFlow } from '../flowElement';
+import type { TAdHocSubProcess, TCallActivity, TSubProcess, TTransaction } from '../flowNode/activity/activity';
+import type { TBusinessRuleTask, TManualTask, TReceiveTask, TScriptTask, TSendTask, TServiceTask, TTask, TUserTask } from '../flowNode/activity/task';
+import type { TCallChoreography, TChoreographyTask, TSubChoreography } from '../flowNode/choreographyActivity';
 import type { TBoundaryEvent, TEndEvent, TEvent, TImplicitThrowEvent, TIntermediateCatchEvent, TIntermediateThrowEvent, TStartEvent } from '../flowNode/event';
 import type { TComplexGateway, TEventBasedGateway, TExclusiveGateway, TInclusiveGateway, TParallelGateway } from '../flowNode/gateway';
-import type { TBusinessRuleTask, TManualTask, TReceiveTask, TScriptTask, TSendTask, TServiceTask, TTask, TUserTask } from '../flowNode/activity/task';
+import type { TParticipant, TParticipantAssociation } from '../participant';
 
 export interface TCollaboration extends TRootElement {
   participant?: TParticipant | TParticipant[];

@@ -1,26 +1,30 @@
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2020 Bonitasoft S.A.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import type { FitOptions, ZoomConfiguration } from '../options';
-import { FitType } from '../options';
+import type { mxCellRenderer, mxCellState, mxGraphView, mxPoint } from 'mxgraph';
+
+import { debounce, throttle } from 'lodash-es';
+
 import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/validators';
-import debounce from 'lodash.debounce';
-import throttle from 'lodash.throttle';
-import { mxgraph } from './initializer';
-import type { mxCellState, mxGraphView, mxPoint } from 'mxgraph';
+import { FitType } from '../options';
+
+import { BpmnCellRenderer } from './BpmnCellRenderer';
+import { mxgraph, mxEvent } from './initializer';
+import { IconPainterProvider } from './shape/render';
 
 const zoomFactorIn = 1.25;
 const zoomFactorOut = 1 / zoomFactorIn;
@@ -45,6 +49,30 @@ export class BpmnGraph extends mxgraph.mxGraph {
    */
   override createGraphView(): mxGraphView {
     return new BpmnGraphView(this);
+  }
+
+  override createCellRenderer(): mxCellRenderer {
+    // in the future, the IconPainter could be configured at library initialization and the provider could be removed
+    return new BpmnCellRenderer(IconPainterProvider.get());
+  }
+
+  /**
+   * Shortcut for an update of the model within a transaction.
+   *
+   * This method is inspired from {@link https://github.com/maxGraph/maxGraph/blob/v0.1.0/packages/core/src/view/Graph.ts#L487-L494 maxGraph}.
+   *
+   * @param callbackFunction the update to be made in the transaction.
+   *
+   * @experimental subject to change, may move to a subclass of `mxGraphModel`
+   * @alpha
+   */
+  batchUpdate(callbackFunction: () => void): void {
+    this.model.beginUpdate();
+    try {
+      callbackFunction();
+    } finally {
+      this.model.endUpdate();
+    }
   }
 
   /**
@@ -102,20 +130,7 @@ export class BpmnGraph extends mxgraph.mxGraph {
 
     const margin = ensurePositiveValue(fitOptions?.margin);
 
-    if (type != FitType.Center) {
-      let ignoreWidth = false;
-      let ignoreHeight = false;
-      switch (type) {
-        case FitType.Horizontal:
-          ignoreHeight = true;
-          break;
-        case FitType.Vertical:
-          ignoreWidth = true;
-          break;
-      }
-
-      this.fit(this.border, false, margin, true, ignoreWidth, ignoreHeight);
-    } else {
+    if (type == FitType.Center) {
       // Inspired from https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxGraph-js.html#mxGraph.fit
       const maxScale = 3;
 
@@ -132,6 +147,21 @@ export class BpmnGraph extends mxgraph.mxGraph {
         (margin + clientWidth - width * scale) / (2 * scale) - bounds.x / this.view.scale,
         (margin + clientHeight - height * scale) / (2 * scale) - bounds.y / this.view.scale,
       );
+    } else {
+      let ignoreWidth = false;
+      let ignoreHeight = false;
+      switch (type) {
+        case FitType.Horizontal: {
+          ignoreHeight = true;
+          break;
+        }
+        case FitType.Vertical: {
+          ignoreWidth = true;
+          break;
+        }
+      }
+
+      this.fit(this.border, false, margin, true, ignoreWidth, ignoreHeight);
     }
   }
 
@@ -140,41 +170,41 @@ export class BpmnGraph extends mxgraph.mxGraph {
    */
   registerMouseWheelZoomListeners(config: ZoomConfiguration): void {
     config = ensureValidZoomConfiguration(config);
-    mxgraph.mxEvent.addMouseWheelListener(debounce(this.createMouseWheelZoomListener(true), config.debounceDelay), this.container);
-    mxgraph.mxEvent.addMouseWheelListener(throttle(this.createMouseWheelZoomListener(false), config.throttleDelay), this.container);
+    mxEvent.addMouseWheelListener(debounce(this.createMouseWheelZoomListener(true), config.debounceDelay), this.container);
+    mxEvent.addMouseWheelListener(throttle(this.createMouseWheelZoomListener(false), config.throttleDelay), this.container);
   }
 
   // Update the currentZoomLevel when performScaling is false, use the currentZoomLevel to set the scale otherwise
   // Initial implementation inspired by https://github.com/algenty/grafana-flowcharting/blob/0.9.0/src/graph_class.ts#L1254
-  private manageMouseWheelZoomEvent(up: boolean, evt: MouseEvent, performScaling: boolean): void {
-    if (!performScaling) {
-      this.currentZoomLevel *= up ? zoomFactorIn : zoomFactorOut;
-    } else {
-      const [offsetX, offsetY] = this.getEventRelativeCoordinates(evt);
+  private manageMouseWheelZoomEvent(up: boolean, event: MouseEvent, performScaling: boolean): void {
+    if (performScaling) {
+      const [offsetX, offsetY] = this.getEventRelativeCoordinates(event);
       const [newScale, dx, dy] = this.getScaleAndTranslationDeltas(offsetX, offsetY);
       this.view.scaleAndTranslate(newScale, this.view.translate.x + dx, this.view.translate.y + dy);
-      mxgraph.mxEvent.consume(evt);
+      mxEvent.consume(event);
+    } else {
+      this.currentZoomLevel *= up ? zoomFactorIn : zoomFactorOut;
     }
   }
 
   private createMouseWheelZoomListener(performScaling: boolean) {
     return (event: Event, up: boolean) => {
-      if (mxgraph.mxEvent.isConsumed(event)) {
+      if (mxEvent.isConsumed(event) || !(event instanceof MouseEvent)) {
         return;
       }
-      const evt = event as MouseEvent;
+
       // only the ctrl key
-      const isZoomWheelEvent = evt.ctrlKey && !evt.altKey && !evt.shiftKey && !evt.metaKey;
+      const isZoomWheelEvent = event.ctrlKey && !event.altKey && !event.shiftKey && !event.metaKey;
       if (isZoomWheelEvent) {
-        this.manageMouseWheelZoomEvent(up, evt, performScaling);
+        this.manageMouseWheelZoomEvent(up, event, performScaling);
       }
     };
   }
 
-  private getEventRelativeCoordinates(evt: MouseEvent): [number, number] {
+  private getEventRelativeCoordinates(event: MouseEvent): [number, number] {
     const rect = this.container.getBoundingClientRect();
-    const x = evt.clientX - rect.left;
-    const y = evt.clientY - rect.top;
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
     return [x, y];
   }
 
@@ -216,6 +246,6 @@ class BpmnGraphView extends mxgraph.mxGraphView {
       return super.getFloatingTerminalPoint(edge, start, end, source);
     }
     const pts = edge.absolutePoints;
-    return source ? pts[1] : pts[pts.length - 2];
+    return source ? pts[1] : pts.at(-2);
   }
 }

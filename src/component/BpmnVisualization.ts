@@ -1,30 +1,31 @@
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2020 Bonitasoft S.A.
 
-import GraphConfigurator from './mxgraph/GraphConfigurator';
-import { newBpmnRenderer } from './mxgraph/BpmnRenderer';
-import { newBpmnParser } from './parser/BpmnParser';
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 import type { BpmnGraph } from './mxgraph/BpmnGraph';
-import type { FitOptions, GlobalOptions, LoadOptions } from './options';
+import type { GlobalOptions, LoadOptions, ParserOptions, RendererOptions } from './options';
 import type { BpmnElementsRegistry } from './registry';
-import { newBpmnElementsRegistry } from './registry/bpmn-elements-registry';
-import { BpmnModelRegistry } from './registry/bpmn-model-registry';
+
 import { htmlElement } from './helpers/dom-utils';
+import { newBpmnRenderer } from './mxgraph/BpmnRenderer';
+import GraphConfigurator from './mxgraph/GraphConfigurator';
 import { Navigation } from './navigation';
-import { version, type Version } from './version';
+import { newBpmnParser } from './parser/BpmnParser';
+import { createNewBpmnElementsRegistry } from './registry/bpmn-elements-registry';
+import { BpmnModelRegistry } from './registry/bpmn-model-registry';
+import { getVersion, type Version } from './version';
 
 /**
  * Let initialize `bpmn-visualization`. It requires at minimum to pass the HTMLElement in the page where the BPMN diagram is rendered.
@@ -67,14 +68,20 @@ export class BpmnVisualization {
 
   private readonly bpmnModelRegistry: BpmnModelRegistry;
 
+  private readonly parserOptions: ParserOptions;
+
+  private readonly rendererOptions: RendererOptions;
+
   constructor(options: GlobalOptions) {
+    this.rendererOptions = options?.renderer;
     // mxgraph configuration
     const configurator = new GraphConfigurator(htmlElement(options?.container));
     this.graph = configurator.configure(options);
     // other configurations
     this.navigation = new Navigation(this.graph);
     this.bpmnModelRegistry = new BpmnModelRegistry();
-    this.bpmnElementsRegistry = newBpmnElementsRegistry(this.bpmnModelRegistry, this.graph);
+    this.bpmnElementsRegistry = createNewBpmnElementsRegistry(this.bpmnModelRegistry, this.graph);
+    this.parserOptions = options?.parser;
   }
 
   /**
@@ -84,19 +91,16 @@ export class BpmnVisualization {
    * @throws `Error` when loading fails. This is generally due to a parsing error caused by a malformed BPMN content
    */
   load(xml: string, options?: LoadOptions): void {
-    const bpmnModel = newBpmnParser().parse(xml);
+    const bpmnModel = newBpmnParser(this.parserOptions).parse(xml);
     const renderedModel = this.bpmnModelRegistry.load(bpmnModel, options?.modelFilter);
-    newBpmnRenderer(this.graph).render(renderedModel, options?.fit);
+    newBpmnRenderer(this.graph, this.rendererOptions).render(renderedModel, options?.fit);
   }
 
   /**
-   * @deprecated Starting from version `0.24.0`, use `navigation.fit` instead. This method may be removed in version `0.27.0`.
+   * Returns the version of `bpmn-visualization` and the version of its dependencies.
+   * @deprecated As of `0.43.0`, use {@link getVersion} instead. This method will be removed in `0.45.0`.
    */
-  fit(options?: FitOptions): void {
-    this.navigation.fit(options);
-  }
-
   getVersion(): Version {
-    return version();
+    return getVersion();
   }
 }

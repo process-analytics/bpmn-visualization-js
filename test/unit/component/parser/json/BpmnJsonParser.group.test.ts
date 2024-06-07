@@ -1,19 +1,22 @@
-/**
- * Copyright 2021 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2021 Bonitasoft S.A.
 
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
+
+import { verifyShape } from '../../../helpers/bpmn-model-expect';
 import {
   expectAsWarning,
   parseJsonAndExpectOnlyFlowNodes,
@@ -22,13 +25,24 @@ import {
   parseJsonAndExpectOnlyWarnings,
   parsingMessageCollector,
 } from '../../../helpers/JsonTestUtils';
-import { verifyShape } from '../../../helpers/bpmn-model-expect';
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal';
-import { GroupUnknownCategoryValueWarning, ShapeUnknownBpmnElementWarning } from '../../../../../src/component/parser/json/warnings';
+
+import { GroupUnknownCategoryValueWarning, ShapeUnknownBpmnElementWarning } from '@lib/component/parser/json/warnings';
+import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
+
+function expectWarnings(): void {
+  const warnings = parsingMessageCollector.getWarnings();
+
+  const warning0 = expectAsWarning<GroupUnknownCategoryValueWarning>(warnings[0], GroupUnknownCategoryValueWarning);
+  expect(warning0.groupBpmnElementId).toBe('Group_0');
+  expect(warning0.categoryValueReference).toBe('unknown_CategoryValue_0');
+
+  const warning1 = expectAsWarning<ShapeUnknownBpmnElementWarning>(warnings[1], ShapeUnknownBpmnElementWarning);
+  expect(warning1.bpmnElementId).toBe('Group_0');
+}
 
 describe('parse bpmn as json for group', () => {
   it('Single Group with label in process', () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
@@ -68,7 +82,6 @@ describe('parse bpmn as json for group', () => {
       bpmnElementId: 'Group_0',
       bpmnElementName: 'Group 0 label',
       bpmnElementKind: ShapeBpmnElementKind.GROUP,
-      parentId: undefined,
       bounds: {
         x: 160,
         y: 110,
@@ -79,7 +92,7 @@ describe('parse bpmn as json for group', () => {
   });
 
   it('Several Groups with or without label in process', () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
@@ -144,7 +157,6 @@ describe('parse bpmn as json for group', () => {
       bpmnElementId: 'Group_0',
       bpmnElementName: 'Another Group 0 label',
       bpmnElementKind: ShapeBpmnElementKind.GROUP,
-      parentId: undefined,
       bounds: {
         x: 160,
         y: 110,
@@ -157,7 +169,6 @@ describe('parse bpmn as json for group', () => {
       bpmnElementId: 'Group_1',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.GROUP,
-      parentId: undefined,
       bounds: {
         x: 1160,
         y: 1110,
@@ -168,7 +179,7 @@ describe('parse bpmn as json for group', () => {
   });
 
   it('Single Group with label in collaboration', () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         collaboration: {
@@ -244,7 +255,7 @@ describe('parse bpmn as json for group', () => {
 
   describe('Robustness', () => {
     it('Single Group in process without matching categoryValueRef', () => {
-      const json = {
+      const json: BpmnJsonModel = {
         definitions: {
           targetNamespace: '',
           process: {
@@ -275,19 +286,8 @@ describe('parse bpmn as json for group', () => {
       expectWarnings();
     });
 
-    function expectWarnings(): void {
-      const warnings = parsingMessageCollector.getWarnings();
-
-      const warning0 = expectAsWarning<GroupUnknownCategoryValueWarning>(warnings[0], GroupUnknownCategoryValueWarning);
-      expect(warning0.groupBpmnElementId).toBe('Group_0');
-      expect(warning0.categoryValueRef).toBe('unknown_CategoryValue_0');
-
-      const warning1 = expectAsWarning<ShapeUnknownBpmnElementWarning>(warnings[1], ShapeUnknownBpmnElementWarning);
-      expect(warning1.bpmnElementId).toBe('Group_0');
-    }
-
     it('Single Group in collaboration without matching categoryValueRef', () => {
-      const json = {
+      const json: BpmnJsonModel = {
         definitions: {
           targetNamespace: '',
           collaboration: {

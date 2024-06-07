@@ -1,34 +1,37 @@
-/**
- * Copyright 2022 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2022 Bonitasoft S.A.
 
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import type BpmnModel from '../../model/bpmn/internal/BpmnModel';
 import type { Edge } from '../../model/bpmn/internal/edge/edge';
 import type Shape from '../../model/bpmn/internal/shape/Shape';
-import type BpmnModel from '../../model/bpmn/internal/BpmnModel';
 import type { ModelFilter } from '../options';
+
 import { ensureIsArray } from '../helpers/array-utils';
 
+/**
+ * @internal
+ */
 export class ModelFiltering {
   filter(bpmnModel: BpmnModel, modelFilter?: ModelFilter): BpmnModel {
     const poolIdsFilter: string[] = [];
     const poolNamesFilter: string[] = [];
-    ensureIsArray(modelFilter?.pools)
-      .filter(p => p && Object.keys(p).length)
-      .forEach(filter => (filter.id ? poolIdsFilter.push(filter.id) : filter.name && poolNamesFilter.push(filter.name)));
+    for (const filter of ensureIsArray(modelFilter?.pools).filter(p => p && Object.keys(p).length > 0))
+      filter.id ? poolIdsFilter.push(filter.id) : filter.name && poolNamesFilter.push(filter.name);
 
-    if (poolIdsFilter.length == 0 && poolNamesFilter.length == 0) {
+    if (poolIdsFilter.length === 0 && poolNamesFilter.length === 0) {
       return bpmnModel;
     }
 
@@ -40,11 +43,11 @@ export class ModelFiltering {
     // For the NOT displayed Pool, there is no Shape for it, but we need to filter the flow nodes, the lanes and the edges which are in the NOT displayed Pool
     // If there is no shape associated to a Pool, no flow nodes, no lanes and no edges, there is no ShapeBPMNElement associated to the pool id to filter.
     // So we need to throw an error.
-    if (filteredPools.length == 0 && filteredLanes.length == 0 && filteredFlowNodes.length == 0 && filteredEdges.length == 0) {
-      let errorMsgSuffix = poolIdsFilter.length > 0 ? ` for ids [${poolIdsFilter}]` : '';
-      const msgSeparator = errorMsgSuffix ? ' and' : '';
-      errorMsgSuffix += poolNamesFilter.length > 0 ? `${msgSeparator} for names [${poolNamesFilter}]` : '';
-      throw new Error('No matching pools' + errorMsgSuffix);
+    if (filteredPools.length === 0 && filteredLanes.length === 0 && filteredFlowNodes.length === 0 && filteredEdges.length === 0) {
+      let errorMessageSuffix = poolIdsFilter.length > 0 ? ` for ids [${poolIdsFilter}]` : '';
+      const messageSeparator = errorMessageSuffix ? ' and' : '';
+      errorMessageSuffix += poolNamesFilter.length > 0 ? `${messageSeparator} for names [${poolNamesFilter}]` : '';
+      throw new Error('No matching pools' + errorMessageSuffix);
     }
 
     return { lanes: filteredLanes, flowNodes: filteredFlowNodes, pools: filteredPools, edges: filteredEdges };
@@ -110,5 +113,5 @@ function filterFlowNodes(
 }
 
 function filterEdges(edges: Edge[], filteredElementIds: string[]): Edge[] {
-  return edges.filter(edge => filteredElementIds.includes(edge.bpmnElement.sourceRefId) && filteredElementIds.includes(edge.bpmnElement.targetRefId));
+  return edges.filter(edge => filteredElementIds.includes(edge.bpmnElement.sourceReferenceId) && filteredElementIds.includes(edge.bpmnElement.targetReferenceId));
 }

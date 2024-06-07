@@ -9,8 +9,9 @@ on:
       - '.github/actions/build-setup/**/*'
       - '.github/workflows/generate-documentation.yml'
       - 'docs/users/**'
-      - 'scripts/docs.js'
+      - 'scripts/generate-users-documentation.mjs'
       - 'src/**'
+      - '.nvmrc'
       - 'package.json'
       - 'package-lock.json'
       - 'typedoc.json'
@@ -24,8 +25,9 @@ on:
       - '.github/actions/custom-surge-preview/**/*'
       - '.github/workflows/generate-documentation.yml'
       - 'docs/users/**'
-      - 'scripts/docs.js'
+      - 'scripts/generate-users-documentation.mjs'
       - 'src/**'
+      - '.nvmrc'
       - 'package.json'
       - 'package-lock.json'
       - 'typedoc.json'
@@ -33,14 +35,15 @@ on:
 jobs:
   doc_preview: # keep unique across jobs using surge preview (preview url and PR comment id)
     if: github.event_name == 'pull_request'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     permissions:
       pull-requests: write # surge-preview: PR comments
     steps:
-      - uses: actions/checkout@v3 # access to the local action
+      - uses: actions/checkout@v4 # access to the local action
       - name: surge preview
         uses: ./.github/actions/custom-surge-preview
         with:
+          artifact-name: documentation
           build-preview-command: npm run docs
           build-preview-dist: build/docs
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -48,35 +51,35 @@ jobs:
 
   generate_doc:
     if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&  github.event.ref == 'refs/heads/master'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Build Setup
         uses: ./.github/actions/build-setup
       - name: Build docs
         run: npm run docs
       - name: Upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: documentation-${{github.sha}}
           path: build/docs
 
   push_to_gh_pages:
     if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&  github.event.ref == 'refs/heads/master'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: generate_doc
     permissions:
       contents: write # Push to gh-pages
     steps:
       - name: Download
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: documentation-${{github.sha}}
       - name: Push to gh-pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./
           keep_files: true
-          user_name: 'process-analytics-bot'
-          user_email: '62586190+process-analytics-bot@users.noreply.github.com'
+          user_name: ${{ vars.PA_BOT_EMAIL }}
+          user_email: ${{ vars.PA_BOT_EMAIL }}

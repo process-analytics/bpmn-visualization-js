@@ -1,23 +1,26 @@
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2020 Bonitasoft S.A.
 
-import { BpmnCanvas } from './BpmnCanvas';
-import { StyleUtils } from '../../style';
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 import type { IconStyleConfiguration, ShapeConfiguration, Size } from './render-types';
 import type { mxAbstractCanvas2D, mxShape } from 'mxgraph';
+
+import { mxConstants, mxUtils } from '../../initializer';
+import { StyleDefault } from '../../style';
+
+import { BpmnCanvas } from './BpmnCanvas';
 
 /**
  * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
@@ -26,10 +29,18 @@ import type { mxAbstractCanvas2D, mxShape } from 'mxgraph';
  * @experimental
  */
 export interface PaintParameter {
+  /** Underlying 'Canvas' in charge of performing the paint operations. */
   canvas: mxAbstractCanvas2D;
+  /** The dimension and the style of the shape where the icon is painted. */
   shapeConfig: ShapeConfiguration;
+  /** The style configuration of the icon. */
   iconStyleConfig: IconStyleConfiguration;
+  /**
+   * The actual size of the icon will be computed from the shape dimensions using this ratio. The ratio between the original dimensions of the icon are kept.
+   * If not set, use the dimensions defined in the icon implementation.
+   */
   ratioFromParent?: number;
+  /** The called function to set the origin of the icon. Generally, it calls a method of {@link BpmnCanvas}. */
   setIconOriginFunct: (canvas: BpmnCanvas) => void;
 }
 
@@ -57,10 +68,10 @@ export function buildPaintParameter({
   isFilled?: boolean;
   iconStrokeWidth?: number;
 }): PaintParameter {
-  const shapeStrokeWidth = shape.strokewidth || StyleUtils.getStrokeWidth(shape.style);
-  const fillColor = shape.fill || StyleUtils.getFillColor(shape.style);
-  const strokeColor = shape.stroke || StyleUtils.getStrokeColor(shape.style);
-  const margin = StyleUtils.getMargin(shape.style);
+  const shapeStrokeWidth = shape.strokewidth || mxUtils.getValue(shape.style, mxConstants.STYLE_STROKEWIDTH, StyleDefault.STROKE_WIDTH_THIN);
+  const fillColor = shape.fill || mxUtils.getValue(shape.style, mxConstants.STYLE_FILLCOLOR, StyleDefault.DEFAULT_FILL_COLOR);
+  const strokeColor = shape.stroke || mxUtils.getValue(shape.style, mxConstants.STYLE_STROKECOLOR, StyleDefault.DEFAULT_STROKE_COLOR);
+  const margin = mxUtils.getValue(shape.style, mxConstants.STYLE_MARGIN, StyleDefault.DEFAULT_MARGIN);
   ratioFromParent ??= 0.25;
   isFilled ??= false;
   iconStrokeWidth ??= 0;
@@ -83,10 +94,6 @@ export function buildPaintParameter({
  * @experimental
  */
 export class IconPainter {
-  paintEmptyIcon(): void {
-    // empty by nature
-  }
-
   /**
    * Utility paint icon methods to easily instantiate a {@link BpmnCanvas} from a {@link PaintParameter}.
    *
@@ -399,6 +406,21 @@ export class IconPainter {
   }
 
   /**
+   * This icon is used by `complex gateway`.
+   */
+  paintAsteriskIcon(paintParameter: PaintParameter): void {
+    const canvas = this.newBpmnCanvas(paintParameter, { height: 1, width: 1 });
+    drawVerticalLine(canvas);
+    canvas.fillAndStroke();
+    drawVerticalLine(canvas);
+    canvas.rotateOnIconCenter(60);
+    canvas.fillAndStroke();
+    drawVerticalLine(canvas);
+    canvas.rotateOnIconCenter(240);
+    canvas.fillAndStroke();
+  }
+
+  /**
    * This icon is used by `user task`.
    */
   paintPersonIcon(paintParameter: PaintParameter): void {
@@ -495,106 +517,11 @@ export class IconPainter {
     const canvas = this.newBpmnCanvas(paintParameter, { height: 100, width: 100 });
 
     // background
-    IconPainter.paintGearIconBackground(canvas);
+    paintGearIconBackground(canvas);
 
     // foreground
     canvas.translateIconOrigin(14, 14);
-    IconPainter.paintGearIconForeground(canvas);
-  }
-
-  private static paintGearIconBackground(canvas: BpmnCanvas): void {
-    canvas.begin();
-    canvas.moveTo(2.06, 24.62);
-    canvas.lineTo(10.17, 30.95);
-    canvas.lineTo(9.29, 37.73);
-    canvas.lineTo(0, 41.42);
-    canvas.lineTo(2.95, 54.24);
-    canvas.lineTo(13.41, 52.92);
-    canvas.lineTo(17.39, 58.52);
-    canvas.lineTo(13.56, 67.66);
-    canvas.lineTo(24.47, 74.44);
-    canvas.lineTo(30.81, 66.33);
-    canvas.lineTo(37.88, 67.21);
-    canvas.lineTo(41.57, 76.5);
-    canvas.lineTo(54.24, 73.55);
-    canvas.lineTo(53.06, 62.94);
-    canvas.lineTo(58.52, 58.52);
-    canvas.lineTo(67.21, 63.09);
-    canvas.lineTo(74.58, 51.88);
-    canvas.lineTo(66.03, 45.25);
-    canvas.lineTo(66.92, 38.62);
-    canvas.lineTo(76.5, 34.93);
-    canvas.lineTo(73.7, 22.26);
-    canvas.lineTo(62.64, 23.44);
-    canvas.lineTo(58.81, 18.42);
-    canvas.lineTo(62.79, 8.7);
-    canvas.lineTo(51.74, 2.21);
-    canvas.lineTo(44.81, 10.47);
-    canvas.lineTo(38.03, 9.43);
-    canvas.lineTo(33.75, 0);
-    canvas.lineTo(21.52, 3.24);
-    canvas.lineTo(22.7, 13.56);
-    canvas.lineTo(18.13, 17.54);
-    canvas.lineTo(8.7, 13.56);
-    canvas.close();
-
-    const arcStartX = 24.8;
-    const arcStartY = 39;
-    IconPainter.paintGearInnerCircle(canvas, arcStartX, arcStartY);
-  }
-
-  private static paintGearIconForeground(canvas: BpmnCanvas): void {
-    canvas.begin();
-    canvas.moveTo(16.46, 41.42);
-    canvas.lineTo(24.57, 47.75);
-    canvas.lineTo(23.69, 54.53);
-    canvas.lineTo(14.4, 58.22);
-    canvas.lineTo(17.35, 71.04);
-    canvas.lineTo(27.81, 69.72);
-    canvas.lineTo(31.79, 75.32);
-    canvas.lineTo(27.96, 84.46);
-    canvas.lineTo(38.87, 91.24);
-    canvas.lineTo(45.21, 83.13);
-    canvas.lineTo(52.28, 84.01);
-    canvas.lineTo(55.97, 93.3);
-    canvas.lineTo(68.64, 90.35);
-    canvas.lineTo(67.46, 79.74);
-    canvas.lineTo(72.92, 75.32);
-    canvas.lineTo(81.61, 79.89);
-    canvas.lineTo(88.98, 68.68);
-    canvas.lineTo(80.43, 62.05);
-    canvas.lineTo(81.32, 55.42);
-    canvas.lineTo(90.9, 51.73);
-    canvas.lineTo(88.1, 39.06);
-    canvas.lineTo(77.04, 40.24);
-    canvas.lineTo(73.21, 35.22);
-    canvas.lineTo(77.19, 25.5);
-    canvas.lineTo(66.14, 19.01);
-    canvas.lineTo(59.21, 27.27);
-    canvas.lineTo(52.43, 26.23);
-    canvas.lineTo(48.15, 16.8);
-    canvas.lineTo(35.92, 20.04);
-    canvas.lineTo(37.1, 30.36);
-    canvas.lineTo(32.53, 34.34);
-    canvas.lineTo(23.1, 30.36);
-    canvas.close();
-
-    const arcStartX = 39.2;
-    const arcStartY = 55.8;
-    IconPainter.paintGearInnerCircle(canvas, arcStartX, arcStartY);
-
-    // fill the inner circle to mask the background
-    canvas.begin();
-    IconPainter.paintGearInnerCircle(canvas, arcStartX, arcStartY);
-  }
-
-  private static paintGearInnerCircle(canvas: BpmnCanvas, arcStartX: number, arcStartY: number): void {
-    const arcRay = 13.5;
-    canvas.moveTo(arcStartX, arcStartY);
-    canvas.arcTo(arcRay, arcRay, 0, 1, 1, arcStartX + 2 * arcRay, arcStartY);
-    canvas.arcTo(arcRay, arcRay, 0, 0, 1, arcStartX, arcStartY);
-    canvas.close();
-    canvas.fillAndStroke();
+    paintGearIconForeground(canvas);
   }
 
   /**
@@ -908,6 +835,110 @@ export class IconPainter {
     canvas.lineTo(8, 0); // extra line to ensure the path is fully closed (otherwise, there is a glitch on the latest corner)
     canvas.stroke();
   }
+}
+
+function drawVerticalLine(canvas: BpmnCanvas): void {
+  canvas.begin();
+  canvas.moveTo(0.38, 0);
+  canvas.lineTo(0.62, 0);
+  canvas.lineTo(0.62, 1);
+  canvas.lineTo(0.38, 1);
+  canvas.close();
+}
+
+function paintGearIconBackground(canvas: BpmnCanvas): void {
+  canvas.begin();
+  canvas.moveTo(2.06, 24.62);
+  canvas.lineTo(10.17, 30.95);
+  canvas.lineTo(9.29, 37.73);
+  canvas.lineTo(0, 41.42);
+  canvas.lineTo(2.95, 54.24);
+  canvas.lineTo(13.41, 52.92);
+  canvas.lineTo(17.39, 58.52);
+  canvas.lineTo(13.56, 67.66);
+  canvas.lineTo(24.47, 74.44);
+  canvas.lineTo(30.81, 66.33);
+  canvas.lineTo(37.88, 67.21);
+  canvas.lineTo(41.57, 76.5);
+  canvas.lineTo(54.24, 73.55);
+  canvas.lineTo(53.06, 62.94);
+  canvas.lineTo(58.52, 58.52);
+  canvas.lineTo(67.21, 63.09);
+  canvas.lineTo(74.58, 51.88);
+  canvas.lineTo(66.03, 45.25);
+  canvas.lineTo(66.92, 38.62);
+  canvas.lineTo(76.5, 34.93);
+  canvas.lineTo(73.7, 22.26);
+  canvas.lineTo(62.64, 23.44);
+  canvas.lineTo(58.81, 18.42);
+  canvas.lineTo(62.79, 8.7);
+  canvas.lineTo(51.74, 2.21);
+  canvas.lineTo(44.81, 10.47);
+  canvas.lineTo(38.03, 9.43);
+  canvas.lineTo(33.75, 0);
+  canvas.lineTo(21.52, 3.24);
+  canvas.lineTo(22.7, 13.56);
+  canvas.lineTo(18.13, 17.54);
+  canvas.lineTo(8.7, 13.56);
+  canvas.close();
+
+  const arcStartX = 24.8;
+  const arcStartY = 39;
+  paintGearInnerCircle(canvas, arcStartX, arcStartY);
+}
+
+function paintGearIconForeground(canvas: BpmnCanvas): void {
+  canvas.begin();
+  canvas.moveTo(16.46, 41.42);
+  canvas.lineTo(24.57, 47.75);
+  canvas.lineTo(23.69, 54.53);
+  canvas.lineTo(14.4, 58.22);
+  canvas.lineTo(17.35, 71.04);
+  canvas.lineTo(27.81, 69.72);
+  canvas.lineTo(31.79, 75.32);
+  canvas.lineTo(27.96, 84.46);
+  canvas.lineTo(38.87, 91.24);
+  canvas.lineTo(45.21, 83.13);
+  canvas.lineTo(52.28, 84.01);
+  canvas.lineTo(55.97, 93.3);
+  canvas.lineTo(68.64, 90.35);
+  canvas.lineTo(67.46, 79.74);
+  canvas.lineTo(72.92, 75.32);
+  canvas.lineTo(81.61, 79.89);
+  canvas.lineTo(88.98, 68.68);
+  canvas.lineTo(80.43, 62.05);
+  canvas.lineTo(81.32, 55.42);
+  canvas.lineTo(90.9, 51.73);
+  canvas.lineTo(88.1, 39.06);
+  canvas.lineTo(77.04, 40.24);
+  canvas.lineTo(73.21, 35.22);
+  canvas.lineTo(77.19, 25.5);
+  canvas.lineTo(66.14, 19.01);
+  canvas.lineTo(59.21, 27.27);
+  canvas.lineTo(52.43, 26.23);
+  canvas.lineTo(48.15, 16.8);
+  canvas.lineTo(35.92, 20.04);
+  canvas.lineTo(37.1, 30.36);
+  canvas.lineTo(32.53, 34.34);
+  canvas.lineTo(23.1, 30.36);
+  canvas.close();
+
+  const arcStartX = 39.2;
+  const arcStartY = 55.8;
+  paintGearInnerCircle(canvas, arcStartX, arcStartY);
+
+  // fill the inner circle to mask the background
+  canvas.begin();
+  paintGearInnerCircle(canvas, arcStartX, arcStartY);
+}
+
+function paintGearInnerCircle(canvas: BpmnCanvas, arcStartX: number, arcStartY: number): void {
+  const arcRay = 13.5;
+  canvas.moveTo(arcStartX, arcStartY);
+  canvas.arcTo(arcRay, arcRay, 0, 1, 1, arcStartX + 2 * arcRay, arcStartY);
+  canvas.arcTo(arcRay, arcRay, 0, 0, 1, arcStartX, arcStartY);
+  canvas.close();
+  canvas.fillAndStroke();
 }
 
 /**

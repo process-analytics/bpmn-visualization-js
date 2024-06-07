@@ -1,18 +1,18 @@
-/**
- * Copyright 2021 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2021 Bonitasoft S.A.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 /**
  * @internal
@@ -35,13 +35,13 @@ function convertEmptyStringAndObject<T>(element: string | T, acceptEmptyString: 
 /**
  * @internal
  */
-export function ensureIsArray<T>(elements: (T | string)[] | T | string, acceptEmptyString = false): Array<T> {
+export function ensureIsArray<T>(elements: (T | string)[] | T | string, acceptEmptyString = false): T[] {
   if (elements === undefined || elements === null) {
     return [];
   }
 
   return (
-    (!Array.isArray(elements) ? [elements] : elements)
+    (Array.isArray(elements) ? elements : [elements])
       // convert empty elements
       .map(element => convertEmptyStringAndObject(element, acceptEmptyString))
       // remove empty elements
@@ -52,14 +52,15 @@ export function ensureIsArray<T>(elements: (T | string)[] | T | string, acceptEm
 /**
  * @internal
  */
-export function filter<T extends string>(arrayToFilter: Array<T>, suffix: string, options?: FilterParameter): Array<T> {
-  let pattern = '';
+export function filter<T extends string>(arrayToFilter: T[], suffix: string, options?: FilterParameter): T[] {
+  const patterns: string[] = [];
   if (options?.startingWith) {
-    pattern = pattern.concat(`^(${options.startingWith}).*`);
+    patterns.push(`^(${options.startingWith}).*`);
   } else if (options?.notStartingWith) {
-    pattern = pattern.concat(`^(?!(${options.notStartingWith})).*`);
+    patterns.push(`^(?!(${options.notStartingWith})).*`);
   }
-  pattern = pattern.concat(`${suffix}$`);
+  patterns.push(`${suffix}$`);
+  const pattern = patterns.join('');
 
   return arrayToFilter.filter(element => (options?.ignoreCase ? new RegExp(pattern, 'i').test(element) : new RegExp(pattern).test(element)));
 }

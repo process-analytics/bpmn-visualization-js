@@ -10,12 +10,18 @@ on:
       - 'config/**/*'
       - 'scripts/**/*'
       - 'src/**/*'
-      - 'test/**/*'
+      - 'test/*' # root folder
+      - 'test/config/**/*'
+      - 'test/fixtures/**/*'
+      - 'test/integration/**/*'
+      - 'test/performance/**/*' # performance tests are built here
+      - 'test/shared/**/*'
+      - 'test/unit/**/*'
+      - '.eslintrc.js'
+      - '.nvmrc'
+      - '.prettierrc.js'
       - 'package.json'
       - 'package-lock.json'
-      - 'postcss.config.js'
-      - 'rollup.config.js'
-      - 'tailwind.config.js'
       - 'tsconfig.json'
   pull_request:
     branches:
@@ -26,12 +32,18 @@ on:
       - 'config/**/*'
       - 'scripts/**/*'
       - 'src/**/*'
-      - 'test/**/*'
+      - 'test/*' # root folder
+      - 'test/config/**/*'
+      - 'test/fixtures/**/*'
+      - 'test/integration/**/*'
+      - 'test/performance/**/*' # performance tests are built here
+      - 'test/shared/**/*'
+      - 'test/unit/**/*'
+      - '.eslintrc.js'
+      - '.nvmrc'
+      - '.prettierrc.js'
       - 'package.json'
       - 'package-lock.json'
-      - 'postcss.config.js'
-      - 'rollup.config.js'
-      - 'tailwind.config.js'
       - 'tsconfig.json'
 
 jobs:
@@ -43,19 +55,19 @@ jobs:
       matrix:
         # syntax inspired from https://github.community/t5/GitHub-Actions/Using-a-matrix-defined-input-for-a-custom-action/m-p/32032/highlight/true#M988
         os:
-          - { name: ubuntu-20.04, coverage: '-- --coverage' }
-          - { name: macos-12 }
-          - { name: windows-2019 }
+          - { name: ubuntu-22.04, coverage: '-- --coverage' }
+          - { name: macos-13 }
+          - { name: windows-2022 }
     permissions:
       # SonarCloud: checks and pull-requests
       checks: write
       pull-requests: write
     steps:
       - name: Checkout with shallow clone
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         if: ${{ !contains(matrix.os.coverage, 'coverage') }}
       - name: Checkout without shallow clone
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         if: ${{ contains(matrix.os.coverage, 'coverage') }}
         with:
           # Disabling shallow clone is recommended for improving relevancy of SonarCloud reporting
@@ -71,7 +83,7 @@ jobs:
         run: npm run test:unit ${{ matrix.os.coverage }}
       - name: Upload unit test results
         if: ${{ failure() && steps.test_unit.outcome == 'failure' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: unit-test-results-${{matrix.os.name}}-${{github.sha}}
           path: build/test-report/unit
@@ -80,7 +92,7 @@ jobs:
         run: npm run test:integration ${{ matrix.os.coverage }}
       - name: Upload integration test results
         if: ${{ failure() && steps.test_integration.outcome == 'failure' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: integration-test-results-${{matrix.os.name}}-${{github.sha}}
           path: build/test-report/integration
@@ -94,50 +106,7 @@ jobs:
       # No need to run the analysis from all environments
       - name: SonarCloud Scan
         if: ${{ success() && contains(matrix.os.coverage, 'coverage') && env.SONAR_TOKEN != '' }}
-        uses: SonarSource/sonarcloud-github-action@v1.6
+        uses: SonarSource/sonarcloud-github-action@v2.2.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-
-  test_bundles:
-    needs: build
-    runs-on: ${{ matrix.os }}
-    strategy:
-      # don't cancel running jobs even if one fails
-      fail-fast: false
-      matrix:
-        os: [macos-12, ubuntu-20.04, windows-2019]
-        browser: [chromium, firefox, chrome]
-        include:
-          # only test WebKit on macOS
-          - os: macos-12
-            browser: webkit
-          # only test Edge on Windows
-          - os: windows-2019
-            browser: msedge
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Build Setup
-        uses: ./.github/actions/build-setup
-      # Ensure we can build working bundles
-      - name: Build bundles
-        run: npm run build-bundles
-      # install OS dependencies required by browsers on the GitHub runner
-      # to be sure that the browser is correctly installed: https://github.com/microsoft/playwright/issues/5801
-      - name: Install ${{matrix.browser}} and its dependencies only
-        run: |
-          npx playwright install ${{matrix.browser}}
-          npx playwright install-deps ${{matrix.browser}}
-      - name: Test bundles
-        id: 'test_bundles'
-        env:
-          BROWSERS: ${{matrix.browser}}
-        run: npm run test:bundles:verbose
-      - name: Upload bundles test results
-        if: ${{ failure() && steps.test_bundles.outcome == 'failure' }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: bundles-${{matrix.browser}}-test-results-${{matrix.os}}-${{github.sha}}
-          path: build/test-report/bundles

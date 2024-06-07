@@ -90,7 +90,7 @@ For instance, it can be retrieved from a local file, by pulling a REST API, made
 
 Once the integration gets the BPMN diagram input source, it just has to pass it to `bpmn-visualization` which is then in charge of rendering the diagram.
 
-
+[[default-bpmn-theme]]
 ==== Default BPMN Theme
 
 By default, the rendering uses the following settings:
@@ -127,6 +127,21 @@ For more details, see the https://cdn.statically.io/gh/process-analytics/bpmn-vi
 image::images/bpmn-theme-custom-colors.png[Custom BPMN Theme]
 
 _Custom BPMN Theme_
+
+
+==== `BPMN in Color` Support
+
+As of version 0.35.0, `bpmn-visualization` supports the https://github.com/bpmn-miwg/bpmn-in-color[BPMN in Color Specification] with a fallback to the
+https://github.com/bpmn-io/bpmn-moddle/blob/ea7fa6a94c55f49fe1da1f019dc9a40d62967252/resources/bpmn-io/json/bioc.json[bpmn.io specific BPMN extensions for colors] (a.k.a `bioc`).
+
+This specification is used to define stroke and fill colors for BPMN elements when modeling the diagram. These colors can then be used when displaying the diagram.
+
+This support is disabled by default to match the <<default-bpmn-theme, deliberately neutral colors>> of the default BPMN theme.
+It can be enabled when initializing the library.
+
+image::images/bpmn-in-color-C.1.0.png[C.1.0 with "BPMN in Color"]
+
+_miwg-test-suite C.1.0 reference diagram using "BPMN in Color"_
 
 
 [[diagram-navigation]]
@@ -209,10 +224,11 @@ _Display popovers on over or click_
 
 === Style
 
-The style of BPMN elements can be modified at runtime allowing to mark, hide, change appearance of one or several specific elements. For instance, this feature can be used to mark
-a task as in error, warn that an activity has been started for a while and seems stuck, ... 
+The style of BPMN elements can be modified at runtime, making it possible to mark, hide or modify the appearance of one or more specific elements. +
+This can be done by applying CSS classes or defining style properties using a dedicated API.
 
-This example shows how to see which path in a process is the current running activity.
+These features can be used to mark a task as being in error, warn that an activity has been running for some time and appears to be blocked, etc. +
+The following example shows how to see which path in a process is the currently running activity.
 
 [.thumb]
 image::images/custom-behavior-path-highlighting.gif[]

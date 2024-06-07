@@ -7,9 +7,9 @@ on:
 
 jobs:
   upload_demo_archive:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Build Setup
         uses: ./.github/actions/build-setup
       - name: Build Demo
@@ -17,11 +17,11 @@ jobs:
       - name: Set ARTIFACT_NAME
         run: echo "ARTIFACT_NAME=demo-${{github.sha}}" >> $GITHUB_ENV
       - name: Upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.ARTIFACT_NAME }}
           path: build/demo/dev/public
-      - name: Notify bpmn-visualization-examples repository of new BPMN visualization version
+      - name: Notify bpmn-visualization-examples repository of new bpmn-visualization version
         uses: ./.github/actions/notify-PA-repo-of-new-version
         with:
           PA_REPOSITORY: 'bpmn-visualization-examples'

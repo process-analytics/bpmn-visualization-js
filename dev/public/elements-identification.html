@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>BPMN Visualization - Elements Identification</title>
+    <title>bpmn-visualization - Elements Identification</title>
     <link rel="icon" type="image/svg+xml" href="./static/img/favicon.svg">
     <style>
       #main-container {
@@ -12,7 +12,7 @@
         right: 10px;
         position: absolute;
       }
-      #bpmn-container {
+      .bpmn-container {
         top: 0;
         bottom: 0;
         left: 0;
@@ -57,6 +57,16 @@
       .detection.bpmn-type-container > path:nth-child(4) {
         fill: palevioletred;
       }
+      /* group */
+      .detection.bpmn-group > rect  {
+        fill: #ffbaba;
+      }
+      /* text annotation */
+      .detection.bpmn-text-annotation > rect,
+      .detection.bpmn-text-annotation > path  {
+        stroke: aquamarine;
+      }
+
       /* sequence flow arrow */
       .bpmn-sequence-flow.detection > path:nth-child(3),
       /* sequence flow arrow for conditional */
@@ -82,7 +92,9 @@
         /* message flow line */
       .bpmn-message-flow.detection > path:nth-child(2),
         /* message flow arrow */
-      .bpmn-message-flow.detection> path:nth-child(4) {
+      .bpmn-message-flow.detection> path:nth-child(4),
+        /* association line */
+      .bpmn-association.detection> path:nth-child(2){
         stroke: var(--color-flow);
         stroke-width: 4px;
       }
@@ -120,7 +132,7 @@
         color: var(--color-flow) !important;
       }
     </style>
-    <script src="./static/js/elements-identification.js" type="module"></script>
+    <script src="../ts/pages/elements-identification.ts" type="module"></script>
 </head>
 <body>
     <div id="controls">
@@ -129,23 +141,38 @@
         <option value="userTask">User Task</option>
         <option value="scriptTask">Script Task</option>
         <option value="serviceTask">Service Task</option>
+        <option value="receiveTask">Receive Task</option>
+        <option value="sendTask">Send Task</option>
+        <option value="manualTask">Manual Task</option>
+        <option value="businessRuleTask">Business Rule Task</option>
         <option value="startEvent">Start Event</option>
         <option value="endEvent">End Event</option>
         <option value="intermediateCatchEvent">Catch Event</option>
         <option value="intermediateThrowEvent">Throw Event</option>
+        <option value="boundaryEvent">Boundary Event</option>
         <option value="exclusiveGateway">Exclusive Gateway</option>
         <option value="inclusiveGateway">Inclusive Gateway</option>
         <option value="parallelGateway">Parallel Gateway</option>
+        <option value="eventBasedGateway">Event Based Gateway</option>
+        <option value="complexGateway">Complex Gateway</option>
         <option value="lane">Lane</option>
         <option value="pool">Pool</option>
+        <option value="callActivity">Call Activity</option>
+        <option value="subProcess">Sub-Process</option>
+        <option value="group">Group</option>
+        <option value="textAnnotation">Text Annotation</option>
         <option value="messageFlow">Message Flow</option>
         <option value="sequenceFlow">Sequence Flow</option>
+        <option value="association">Association</option>
       </select>
       <button id="clear-btn">Clear</button>
       <textarea id="elements-result"></textarea>
     </div>
     <div id="display-options" style="margin-top: 1em;">
       <label for="checkbox-display-overlays">Display overlays</label><input id="checkbox-display-overlays" type="checkbox" />
+
+      <label for="checkbox-css-style" title="To style the BPMN elements, check if you want to use CSS; otherwise not, if you want to use the API" class="tooltip">Use CSS style</label>
+      <input id="checkbox-css-style" type="checkbox" />
     </div>
     <div id="download-controls" style="margin-top: 1em;">
       <button id="btn-dl-svg">Download SVG</button>
@@ -153,7 +180,7 @@
     </div>
 
     <div id="main-container">
-      <div id="bpmn-container"></div>
+      <div class="bpmn-container"></div>
     </div>
 </body>
 </html>

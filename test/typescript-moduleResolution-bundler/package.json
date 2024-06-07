@@ -1,0 +1,13 @@
+{
+  "name": "check-typescript-module_resolution-bundler",
+  "private": true,
+  "scripts": {
+    "test": "tsc --version && tsc"
+  },
+  "dependencies": {
+    "bpmn-visualization": "../../"
+  },
+  "devDependencies": {
+    "typescript": "5.2.2"
+  }
+}

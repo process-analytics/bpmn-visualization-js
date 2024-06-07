@@ -10,8 +10,14 @@ on:
       - master
     paths:
       - '.github/actions/build-setup/**/*'
+      - '.github/actions/install-playwright-browser/**/*'
       - '.github/workflows/test-performance.yml'
+      - 'test/*' # root folder
+      - 'test/config/**/*'
+      - 'test/fixtures/performance/**/*'
       - 'test/performance/**/*'
+      - 'test/shared/**/*'
+      - '.nvmrc'
 
 jobs:
   test_performance:
@@ -20,32 +26,30 @@ jobs:
       # we want to run the full build on all os: don't cancel running jobs even if one fails
       fail-fast: false
       matrix:
-        # disable windows-2019 in a first implementation as it always fails. Require more investigations.
+        # disable windows-2022 in a first implementation as it always fails. Require more investigations.
         # node:internal/process/promises:279
         #            triggerUncaughtException(err, true /* fromPromise */);
         #            ^
         # cdpSession.detach: Browser closed.
-        os: [macos-12, ubuntu-20.04]
+        os: [macos-13, ubuntu-22.04]
     env:
       # Performance tests rely on chromium API
       browser: chromium
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Build Setup
         uses: ./.github/actions/build-setup
-      # install OS dependencies required by browsers on the GitHub runner
-      # to be sure that the browser is correctly installed: https://github.com/microsoft/playwright/issues/5801
-      - name: Install ${{env.browser}} and its dependencies only
-        run: |
-          npx playwright install ${{env.browser}}
-          npx playwright install-deps ${{env.browser}}
+      - name: Install ${{env.browser}}
+        uses: ./.github/actions/install-playwright-browser
+        with:
+          browser: ${{env.browser}}
       - name: Run performance tests
         id: 'run_perf_tests'
         run: npm run test:perf
       - name: Upload test results
         if: success()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: perf-test-results-${{matrix.os}}-${{github.sha}}
           path: |

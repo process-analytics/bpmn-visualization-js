@@ -1,28 +1,25 @@
-/**
- * Copyright 2021 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2021 Bonitasoft S.A.
 
-import { mxgraph } from '../initializer';
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 import type { mxAbstractCanvas2D, mxPoint } from 'mxgraph';
+
+import { mxgraph, mxSvgCanvas2D, mxUtils } from '../initializer';
 import { BpmnStyleIdentifier } from '../style';
 
 export class BpmnConnector extends mxgraph.mxConnector {
-  constructor(points: mxPoint[], stroke: string, strokewidth?: number) {
-    super(points, stroke, strokewidth);
-  }
-
   override paintEdgeShape(c: mxAbstractCanvas2D, pts: mxPoint[]): void {
     // The indirection via functions for markers is needed in
     // order to apply the offsets before painting the line and
@@ -37,12 +34,12 @@ export class BpmnConnector extends mxgraph.mxConnector {
     c.setDashed(false, false);
 
     if (sourceMarker != null) {
-      c.setFillColor(mxgraph.mxUtils.getValue(this.style, BpmnStyleIdentifier.EDGE_START_FILL_COLOR, this.stroke));
+      c.setFillColor(mxUtils.getValue(this.style, BpmnStyleIdentifier.EDGE_START_FILL_COLOR, this.stroke));
       sourceMarker();
     }
 
     if (targetMarker != null) {
-      c.setFillColor(mxgraph.mxUtils.getValue(this.style, BpmnStyleIdentifier.EDGE_END_FILL_COLOR, this.stroke));
+      c.setFillColor(mxUtils.getValue(this.style, BpmnStyleIdentifier.EDGE_END_FILL_COLOR, this.stroke));
       targetMarker();
     }
   }
@@ -50,19 +47,19 @@ export class BpmnConnector extends mxgraph.mxConnector {
   // taken from mxPolyline, required as we cannot call mxPolyline method here (parent of the parent)
   // we only support non STYLE_CURVED here (is possible with parent class)
   private paintEdgeLine(c: mxAbstractCanvas2D, pts: mxPoint[]): void {
-    const prev = getPointerEventsValue(c);
+    const previous = getPointerEventsValue(c);
     setPointerEventsValue(c, 'stroke');
     this.paintLine(c, pts, this.isRounded);
-    setPointerEventsValue(c, prev);
+    setPointerEventsValue(c, previous);
   }
 }
 
 function getPointerEventsValue(c: mxAbstractCanvas2D): string {
-  return c instanceof mxgraph.mxSvgCanvas2D ? c.pointerEventsValue : null;
+  return c instanceof mxSvgCanvas2D ? c.pointerEventsValue : null;
 }
 
 function setPointerEventsValue(c: mxAbstractCanvas2D, value: string): void {
-  if (c instanceof mxgraph.mxSvgCanvas2D) {
+  if (c instanceof mxSvgCanvas2D) {
     c.pointerEventsValue = value;
   }
 }

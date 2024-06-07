@@ -1,18 +1,18 @@
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2020 Bonitasoft S.A.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 // IMPORTANT: this script is run by npm when calling 'npm version'
 // We are not installing node dependencies when running the GitHub workflow '.github/workflows/release.yml'
@@ -60,8 +60,8 @@ function readFileContent(path) {
 
 function getCurrentVersion() {
   const json = readFileContent('./package.json');
-  const pkg = JSON.parse(json);
-  return pkg.version;
+  const packageJson = JSON.parse(json);
+  return packageJson.version;
 }
 
 function addOrRemoveVersionSuffix(version) {
@@ -70,9 +70,9 @@ function addOrRemoveVersionSuffix(version) {
 
 function updateVersionInNpmFile(path, newVersion) {
   const json = readFileContent(path);
-  const pkg = JSON.parse(json);
-  pkg.version = newVersion;
-  writeFileSync(path, JSON.stringify(pkg, null, 2) + '\n');
+  const packageJson = JSON.parse(json);
+  packageJson.version = newVersion;
+  writeFileSync(path, JSON.stringify(packageJson, null, 2) + '\n');
 }
 
 function updateVersionInSonarFile(newVersion) {
@@ -87,6 +87,6 @@ function updateVersionInSourceFile(newVersion) {
   const path = 'src/component/version.ts';
   const content = readFileContent(path);
   // replace the 1st occurrence, is ok as the constant appears only once in the file
-  const updatedContent = content.replace(/const libVersion =.*/, `const libVersion = '${newVersion}';`);
+  const updatedContent = content.replace(/const libraryVersion =.*/, `const libraryVersion = '${newVersion}';`);
   writeFileSync(path, updatedContent);
 }

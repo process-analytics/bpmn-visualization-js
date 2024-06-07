@@ -1,126 +1,78 @@
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2020 Bonitasoft S.A.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 import 'jest-playwright-preset';
-import type { Page } from 'playwright';
-import { getBpmnDiagramNames } from './helpers/test-utils';
-import type { StyleOptions } from './helpers/visu/bpmn-page-utils';
-import { AvailableTestPages, PageTester } from './helpers/visu/bpmn-page-utils';
 import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
+import type { StyleOptions } from '@test/shared/visu/bpmn-page-utils';
+
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
+
+import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
+import { getBpmnDiagramNames } from '@test/shared/visu/test-utils';
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
-    // chromium: max on macOS - the local diff was 0.00516920660650344%
     // threshold for webkit is taken from macOS only
-    super({ chromium: 0.006 / 100, firefox: 0.02 / 100, webkit: 0.12 / 100 });
+    super({ chromium: 0.16 / 100, firefox: 0.09 / 100, webkit: 0.14 / 100 });
   }
 
   protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     // if no dedicated information, set minimal threshold to make test pass on GitHub Workflow
     // linux threshold are set for Ubuntu
     return new Map<string, ImageSnapshotThresholdConfig>([
-      [
-        'flows.message.02.labels.and.complex.paths',
-        {
-          macos: 0.05 / 100, // 0.04335117590119619%
-          windows: 0.13 / 100, // 0.12203782032372823%
-        },
-      ],
-      [
-        'group.01.in.process.with.label',
-        {
-          macos: 0.02 / 100, // 0.01749142091445055%
-          windows: 0.03 / 100, // 0.028794961672506947%
-        },
-      ],
-      [
-        'group.02.in.collaboration.with.label',
-        {
-          macos: 0.02 / 100, // 0.01128137033959975%
-          windows: 0.04 / 100, // 0.03137680045437463%
-        },
-      ],
+      // start with diagram including labels
       [
         'labels.01.general',
         {
-          macos: 0.6 / 100, // 0.5929886180884969%
-          windows: 0.423 / 100, // 0.41473463002763555%
+          macos: 0.8 / 100, // 0.7941577314545922%
+          windows: 0.52 / 100, // 0.5122398889742197%
         },
       ],
       [
         'labels.02.position.and.line.breaks',
         {
-          linux: 0.05 / 100, // 0.04820572362378428%
-          macos: 0.96 / 100, // 0.9536040534832702%
+          macos: 0.97 / 100, // 0.9608986974041889%
           windows: 0.63 / 100, // 0.6249408985672167%
         },
       ],
       [
         'labels.03.default.position',
         {
-          linux: 0.02 / 100, // 0.012776491483779129%
-          macos: 0.37 / 100, // 0.36428234685847993%
-          windows: 0.32 / 100, // 0.3125578154609565%
+          macos: 0.38 / 100, // 0.37323579648680383%
+          windows: 0.33 / 100, // 0.3203254635281927%
         },
       ],
       [
         'labels.04.fonts',
         {
-          macos: 0.18 / 100, // 0.17224316335068268%
-          windows: 0.21 / 100, // 0.2083830906789208%
+          macos: 0.2 / 100, // 0.1880729042500584%
+          windows: 0.22 / 100, // 0.2109362424737582%
+        },
+      ],
+      [
+        'labels.05.default.position.activities',
+        {
+          macos: 0.35 / 100, // 0.3364682783477235%
+          windows: 0.47 / 100, // 0.46907051252580434%
         },
       ],
       [
         'pools.01.labels.and.lanes',
         {
-          macos: 0.09 / 100, // 0.08291308761130267%
           windows: 0.23 / 100, // 0.21990738071808735%
-        },
-      ],
-      [
-        'pools.02.vertical.with.lanes',
-        {
-          macos: 0.13 / 100, // 0.12482014769641389%
-          windows: 0.14 / 100, // 0.13308164928160784%
-        },
-      ],
-      [
-        'pools.03.black.box',
-        {
-          macos: 0.095 / 100, // 0.0935782032063015%
-          windows: 0.12 / 100, // 0.1184446265753869%
-        },
-      ],
-      // tests without labels
-      [
-        'gateways',
-        {
-          macos: 0.000006, // 0.0005804554357724534%
-        },
-      ],
-      [
-        'events',
-        {
-          macos: 0.00001, // 0.000988153090064614%
-        },
-      ],
-      [
-        'call.activities',
-        {
-          macos: 0.000005, // 0.0004123713869708112%
         },
       ],
     ]);
@@ -131,7 +83,6 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'flows.message.02.labels.and.complex.paths',
         {
-          linux: 0.09 / 100, // 0.08377044926310973%
           macos: 0.13 / 100, // 0.12624011437493143%
           windows: 0.73 / 100, // 0.7275118149390969%
         },
@@ -151,10 +102,10 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'labels.01.general',
         {
-          linux: 0.23 / 100, // 0.22239085167347072%
-          macos: 0.82 / 100, // 0.818150021840347%
-          // very high value due to font rendering discrepancies with chromium rendering
-          windows: 11.55 / 10, // 11.549215850525563%
+          // high values due to font rendering discrepancies with chromium rendering
+          linux: 1.15 / 100, // 1.1412952972301604%
+          macos: 1.72 / 100, // 1.7113512021706412%
+          windows: 12.85 / 100, // 12.8418857562695% - different word wrapping, see https://github.com/process-analytics/bpmn-visualization-js/pull/2790#issuecomment-1680765999
         },
       ],
       [
@@ -186,9 +137,17 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         },
       ],
       [
+        'labels.05.default.position.activities',
+        {
+          linux: 0.46 / 100, // 0.45753886693361556%
+          macos: 0.7 / 100, // 0.6908428450721038%
+          // high value due to font rendering discrepancies with chromium rendering
+          windows: 2.87 / 100, // 2.869412475926314%
+        },
+      ],
+      [
         'pools.01.labels.and.lanes',
         {
-          macos: 0.09 / 100, // 0.08552532456441721%
           windows: 0.56 / 100, // 0.5571042176931162%
         },
       ],
@@ -202,34 +161,8 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'pools.03.black.box',
         {
-          linux: 0.08 / 100, // 0.07283646777227482%
           macos: 0.14 / 100, // 0.13474247576623632%
           windows: 0.66 / 100, // 0.6566433292574891%
-        },
-      ],
-      // tests without labels
-      [
-        'associations.and.annotations.01.general',
-        {
-          linux: 0.074 / 100, // 0.07377888682271738%
-          macos: 0.074 / 100, // 0.07377888682271738%
-          windows: 0.074 / 100, // 0.07377888682271738%
-        },
-      ],
-      [
-        'markers.01.positioning',
-        {
-          linux: 0.00022, // 0.02063400006822036%
-          macos: 0.00021, // 0.02063400006822036%
-          windows: 0.00021, // 0.02063400006822036%
-        },
-      ],
-      [
-        'markers.02.different.tasks.sizes',
-        {
-          linux: 0.00026, // 0.02578305330844799%
-          macos: 0.00026, // 0.02578305330844799%
-          windows: 0.00026, // 0.02578305330844799%
         },
       ],
     ]);
@@ -246,8 +179,8 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'labels.01.general',
         {
-          // TODO possible rendering issue so high threshold value
-          macos: 1.25 / 100, // 1.2428419116196077%
+          // high value due to font rendering discrepancies with chromium rendering
+          macos: 1.79 / 100, // 1.7833883910028492%
         },
       ],
       [
@@ -266,7 +199,13 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'labels.04.fonts',
         {
-          macos: 0.61 / 100, // 0.6044319789370367%
+          macos: 0.71 / 100, // 0.703880504764276%
+        },
+      ],
+      [
+        'labels.05.default.position.activities',
+        {
+          macos: 1.2 / 100, // 1.192492604936246%
         },
       ],
       [
@@ -287,13 +226,6 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           macos: 0.36 / 100, // 0.3576987596416892%
         },
       ],
-      // tests without labels
-      [
-        'events',
-        {
-          macos: 0.0014, // 0.1397832014147449%
-        },
-      ],
     ]);
   }
 }
@@ -311,7 +243,7 @@ describe('BPMN rendering', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new ImageSnapshotThresholds(), 'bpmn-rendering');
 
   const diagramSubfolder = 'bpmn-rendering';
-  const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder }, <Page>page);
+  const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder }, page);
   const bpmnDiagramNames = getBpmnDiagramNames(diagramSubfolder);
 
   describe('BPMN diagram files are present', () => {

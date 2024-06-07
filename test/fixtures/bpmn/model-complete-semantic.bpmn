@@ -15,7 +15,7 @@
                           targetRef="start_event_message_2_1_id" messageRef="message_id" />
     <semantic:messageFlow id="message_flow_non_initiating_message_id" name="Message Flow with non-initiating message" sourceRef="boundary_event_interrupting_message_id"
                           targetRef="start_event_message_2_1_id" messageRef="message_id" />
-    <semantic:messageFlow id="message_flow_no_visible_id" name="Message Flow without message" sourceRef="start_event_message_2_1_id" targetRef="shape_task_with_flows_id" />
+    <semantic:messageFlow id="message_flow_no_visible_id" name="Message Flow without message" sourceRef="task_with_flows_id" targetRef="start_event_message_2_1_id" />
 
     <!-- Groups -->
     <semantic:group id="Group_0_in_collaboration" categoryValueRef="CategoryValue_0" />
@@ -26,7 +26,12 @@
   <semantic:timerEventDefinition id="top_timer_definition_id" />
   <semantic:signalEventDefinition id="top_signal_definition_id" />
   <semantic:terminateEventDefinition id="top_terminate_definition_id" />
-  <semantic:linkEventDefinition id="top_link_definition_id" />
+  <semantic:linkEventDefinition id="top_throw_link_definition_id">
+    <semantic:target>top_catch_link_definition_id</semantic:target>
+  </semantic:linkEventDefinition>
+  <semantic:linkEventDefinition id="top_catch_link_definition_id">
+    <semantic:source>top_throw_link_definition_id</semantic:source>
+  </semantic:linkEventDefinition>
   <semantic:errorEventDefinition id="top_error_definition_id" />
   <semantic:compensateEventDefinition id="top_compensate_definition_id" />
   <semantic:cancelEventDefinition id="top_cancel_definition_id" />
@@ -403,6 +408,98 @@
     <semantic:subProcess id="collapsed_event_sub_process_with_parallel_multi_instance_id" name="Collapsed Event Sub-Process With Parallel Multi-instance" triggeredByEvent="true">
       <semantic:multiInstanceLoopCharacteristics />
     </semantic:subProcess>
+    <!-- END OF Event Sub-Process -->
+
+    <!-- Transaction Sub-Process -->
+    <!-- Expanded -->
+    <semantic:transaction id="expanded_transaction_sub_process_id" name="Expanded Transaction Sub-Process">
+      <semantic:startEvent id="start_event_in_transaction_sub_process_id" name="Start Event In Transaction Sub-Process">
+        <semantic:outgoing>sequence_flow_in_transaction_sub_process_1_id</semantic:outgoing>
+      </semantic:startEvent>
+      <semantic:task id="task_in_transaction_sub_process_id" name="Task In Transaction Sub-Process">
+        <semantic:incoming>sequence_flow_in_transaction_sub_process_1_id</semantic:incoming>
+        <semantic:outgoing>sequence_flow_in_transaction_sub_process_2_id</semantic:outgoing>
+      </semantic:task>
+      <semantic:sequenceFlow id="sequence_flow_in_transaction_sub_process_1_id" sourceRef="start_event_in_transaction_sub_process_id" targetRef="task_in_transaction_sub_process_id" />
+      <semantic:endEvent id="end_event_in_transaction_sub_process_id" name="End Event In Transaction Sub-Process">
+        <semantic:incoming>sequence_flow_in_transaction_sub_process_2_id</semantic:incoming>
+      </semantic:endEvent>
+      <semantic:sequenceFlow id="sequence_flow_in_transaction_sub_process_2_id" sourceRef="task_in_transaction_sub_process_id" targetRef="end_event_in_transaction_sub_process_id" />
+    </semantic:transaction>
+    <semantic:transaction id="expanded_transaction_sub_process_with_loop_id" name="Expanded Transaction Sub-Process With Loop">
+      <semantic:standardLoopCharacteristics />
+    </semantic:transaction>
+    <semantic:transaction id="expanded_transaction_sub_process_with_sequential_multi_instance_id" name="Expanded Transaction Sub-Process With Sequential Multi-instance">
+      <semantic:multiInstanceLoopCharacteristics isSequential="true" />
+    </semantic:transaction>
+    <semantic:transaction id="expanded_transaction_sub_process_with_parallel_multi_instance_id" name="Expanded Transaction Sub-Process With Parallel Multi-instance">
+      <semantic:multiInstanceLoopCharacteristics />
+    </semantic:transaction>
+
+    <!-- Collapsed -->
+    <semantic:transaction id="collapsed_transaction_sub_process_id" name="Collapsed Transaction Sub-Process">
+      <semantic:task id="task_in_collapsed_transaction_sub_process_id" name="Task In Collapsed Sub-Process" />
+    </semantic:transaction>
+    <semantic:boundaryEvent id="message_boundary_event_attached_to_collapsed_transaction_sub_process_id" name="Interrupting Message Boundary Event attached to collapsed Transaction Sub-Process"
+                            attachedToRef="collapsed_transaction_sub_process_id">
+      <semantic:messageEventDefinition />
+    </semantic:boundaryEvent>
+    <semantic:transaction id="collapsed_transaction_sub_process_with_loop_id" name="Collapsed Transaction Sub-Process With Loop">
+      <semantic:standardLoopCharacteristics />
+    </semantic:transaction>
+    <semantic:transaction id="collapsed_transaction_sub_process_with_sequential_multi_instance_id" name="Collapsed Transaction Sub-Process With Sequential Multi-instance">
+      <semantic:multiInstanceLoopCharacteristics isSequential="true" />
+    </semantic:transaction>
+    <semantic:transaction id="collapsed_transaction_sub_process_with_parallel_multi_instance_id" name="Collapsed Transaction Sub-Process With Parallel Multi-instance">
+      <semantic:multiInstanceLoopCharacteristics />
+    </semantic:transaction>
+    <!-- END OF Transaction Sub-Process -->
+
+    <!-- Ad-Hoc Sub-Process -->
+    <!-- Expanded -->
+    <semantic:adHocSubProcess id="expanded_adHoc_sub_process_id" name="Expanded AdHoc Sub-Process">
+      <semantic:startEvent id="start_event_in_adHoc_sub_process_id" name="Start Event In AdHoc Sub-Process">
+        <semantic:outgoing>sequence_flow_in_adHoc_sub_process_1_id</semantic:outgoing>
+      </semantic:startEvent>
+      <semantic:task id="task_in_adHoc_sub_process_id" name="Task In AdHoc Sub-Process">
+        <semantic:incoming>sequence_flow_in_adHoc_sub_process_1_id</semantic:incoming>
+        <semantic:outgoing>sequence_flow_in_adHoc_sub_process_2_id</semantic:outgoing>
+      </semantic:task>
+      <semantic:sequenceFlow id="sequence_flow_in_adHoc_sub_process_1_id" sourceRef="start_event_in_adHoc_sub_process_id" targetRef="task_in_adHoc_sub_process_id" />
+      <semantic:endEvent id="end_event_in_adHoc_sub_process_id" name="End Event In AdHoc Sub-Process">
+        <semantic:incoming>sequence_flow_in_adHoc_sub_process_2_id</semantic:incoming>
+      </semantic:endEvent>
+      <semantic:sequenceFlow id="sequence_flow_in_adHoc_sub_process_2_id" sourceRef="task_in_adHoc_sub_process_id" targetRef="end_event_in_adHoc_sub_process_id" />
+    </semantic:adHocSubProcess>
+    <semantic:adHocSubProcess id="expanded_adHoc_sub_process_with_loop_id" name="Expanded AdHoc Sub-Process With Loop">
+      <semantic:standardLoopCharacteristics />
+    </semantic:adHocSubProcess>
+    <semantic:adHocSubProcess id="expanded_adHoc_sub_process_with_sequential_multi_instance_id" name="Expanded AdHoc Sub-Process With Sequential Multi-instance">
+      <semantic:multiInstanceLoopCharacteristics isSequential="true" />
+    </semantic:adHocSubProcess>
+    <semantic:adHocSubProcess id="expanded_adHoc_sub_process_with_parallel_multi_instance_id" name="Expanded AdHoc Sub-Process With Parallel Multi-instance">
+      <semantic:multiInstanceLoopCharacteristics />
+    </semantic:adHocSubProcess>
+
+    <!-- Collapsed -->
+    <semantic:adHocSubProcess id="collapsed_adHoc_sub_process_id" name="Collapsed AdHoc Sub-Process">
+      <semantic:task id="task_in_collapsed_adHoc_sub_process_id" name="Task In Collapsed Sub-Process" />
+    </semantic:adHocSubProcess>
+    <semantic:boundaryEvent id="message_boundary_event_attached_to_collapsed_adHoc_sub_process_id" name="Interrupting Message Boundary Event attached to collapsed AdHoc Sub-Process"
+                            attachedToRef="collapsed_adHoc_sub_process_id">
+      <semantic:messageEventDefinition />
+    </semantic:boundaryEvent>
+    <semantic:adHocSubProcess id="collapsed_adHoc_sub_process_with_loop_id" name="Collapsed AdHoc Sub-Process With Loop">
+      <semantic:standardLoopCharacteristics />
+    </semantic:adHocSubProcess>
+    <semantic:adHocSubProcess id="collapsed_adHoc_sub_process_with_sequential_multi_instance_id" name="Collapsed AdHoc Sub-Process With Sequential Multi-instance">
+      <semantic:multiInstanceLoopCharacteristics isSequential="true" />
+    </semantic:adHocSubProcess>
+    <semantic:adHocSubProcess id="collapsed_adHoc_sub_process_with_parallel_multi_instance_id" name="Collapsed AdHoc Sub-Process With Parallel Multi-instance">
+      <semantic:multiInstanceLoopCharacteristics />
+    </semantic:adHocSubProcess>
+    <!-- END OF Ad-Hoc Sub-Process -->
+
 
     <!-- Event -->
     <!-- Start Event -->
@@ -543,7 +640,7 @@
       <semantic:linkEventDefinition />
     </semantic:intermediateThrowEvent>
     <semantic:intermediateThrowEvent id="intermediate_throw_event_link_on_top_id" name="Throw Link Intermediate Event On Top">
-      <semantic:eventDefinitionRef>top_link_definition_id</semantic:eventDefinitionRef>
+      <semantic:eventDefinitionRef>top_throw_link_definition_id</semantic:eventDefinitionRef>
     </semantic:intermediateThrowEvent>
     <semantic:intermediateThrowEvent id="intermediate_throw_event_compensate_id" name="Throw Compensate Intermediate Event">
       <semantic:compensateEventDefinition />
@@ -581,7 +678,7 @@
       <semantic:linkEventDefinition />
     </semantic:intermediateCatchEvent>
     <semantic:intermediateCatchEvent id="intermediate_catch_event_link_on_top_id" name="Catch Link Intermediate Event On Top">
-      <semantic:eventDefinitionRef>top_link_definition_id</semantic:eventDefinitionRef>
+      <semantic:eventDefinitionRef>top_catch_link_definition_id</semantic:eventDefinitionRef>
     </semantic:intermediateCatchEvent>
     <semantic:intermediateCatchEvent id="intermediate_catch_event_conditional_id" name="Catch Conditional Intermediate Event">
       <semantic:conditionalEventDefinition />
@@ -647,6 +744,7 @@
     <semantic:eventBasedGateway id="gateway_event_based_id" name="Event-Based Gateway" />
     <semantic:eventBasedGateway id="gateway_event_based_instantiate_id" name="Event-Based Gateway Instantiate" instantiate="true" />
     <semantic:eventBasedGateway id="gateway_event_based_instantiate_parallel_id" name="Event-Based Gateway Instantiate Parallel" instantiate="true" eventGatewayType="Parallel" />
+    <semantic:complexGateway id="complex_gateway_id" name="Complex Gateway" />
 
     <!-- Artifact -->
     <semantic:textAnnotation id="text_annotation_id">
@@ -999,7 +1097,7 @@
       </bpmndi:BPMNShape>
 
       <!-- Collapsed -->
-      <!-- Expanded with elements -->
+      <!-- Collapsed with elements -->
       <bpmndi:BPMNShape id="shape_collapsed_embedded_sub_process_id" bpmnElement="collapsed_embedded_sub_process_id" isExpanded="false">
         <dc:Bounds x="5220" y="1095" width="140" height="90" />
       </bpmndi:BPMNShape>
@@ -1012,7 +1110,7 @@
           <dc:Bounds x="5396" y="1120" width="79" height="80" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <!-- END OF "Expanded with elements" -->
+      <!-- END OF "Collapsed with elements" -->
 
       <bpmndi:BPMNShape id="shape_collapsed_embedded_sub_process_with_loop_id" bpmnElement="collapsed_embedded_sub_process_with_loop_id" isExpanded="false">
         <dc:Bounds x="4970" y="1095" width="140" height="90" />
@@ -1023,6 +1121,7 @@
       <bpmndi:BPMNShape id="shape_collapsed_embedded_sub_process_with_parallel_multi_instance_id" bpmnElement="collapsed_embedded_sub_process_with_parallel_multi_instance_id" isExpanded="false">
         <dc:Bounds x="4530" y="1095" width="140" height="90" />
       </bpmndi:BPMNShape>
+      <!-- END OF Embedded Sub-Process -->
 
       <!-- Event Sub-Process -->
       <!-- Expanded -->
@@ -1208,6 +1307,143 @@
       <bpmndi:BPMNShape id="shape_collapsed_event_sub_process_with_parallel_multi_instance_id" bpmnElement="collapsed_event_sub_process_with_parallel_multi_instance_id" isExpanded="false">
         <dc:Bounds x="4530" y="865" width="140" height="90" />
       </bpmndi:BPMNShape>
+
+      <!-- Transaction Sub-Process -->
+      <!-- Expanded -->
+      <!-- Expanded with elements -->
+      <bpmndi:BPMNShape id="shape_expanded_transaction_sub_process_id" bpmnElement="expanded_transaction_sub_process_id" isExpanded="true">
+        <dc:Bounds x="3955" y="2060" width="370" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="edge_sequence_flow_in_transaction_sub_process_1_id" bpmnElement="sequence_flow_in_transaction_sub_process_1_id">
+        <di:waypoint x="4031" y="2160" />
+        <di:waypoint x="4085" y="2160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_sequence_flow_in_transaction_sub_process_2_id" bpmnElement="sequence_flow_in_transaction_sub_process_2_id">
+        <di:waypoint x="4185" y="2160" />
+        <di:waypoint x="4247" y="2160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="shape_start_event_in_transaction_sub_process_id" bpmnElement="start_event_in_transaction_sub_process_id">
+        <dc:Bounds x="3995" y="2142" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3980" y="2185" width="67" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_task_in_transaction_sub_process_id" bpmnElement="task_in_transaction_sub_process_id">
+        <dc:Bounds x="4085" y="2120" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_end_event_in_transaction_sub_process_id" bpmnElement="end_event_in_transaction_sub_process_id">
+        <dc:Bounds x="4247" y="2142" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="4234" y="2185" width="63" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <!-- END OF "Expanded with elements" -->
+
+      <bpmndi:BPMNShape id="shape_expanded_transaction_sub_process_with_loop_id" bpmnElement="expanded_transaction_sub_process_with_loop_id" isExpanded="true">
+        <dc:Bounds x="3565" y="2060" width="370" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_expanded_transaction_sub_process_with_sequential_multi_instance_id" bpmnElement="expanded_transaction_sub_process_with_sequential_multi_instance_id" isExpanded="true">
+        <dc:Bounds x="3170" y="2060" width="370" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_expanded_transaction_sub_process_with_parallel_multi_instance_id" bpmnElement="expanded_transaction_sub_process_with_parallel_multi_instance_id" isExpanded="true">
+        <dc:Bounds x="2775" y="2060" width="370" height="200" />
+      </bpmndi:BPMNShape>
+
+      <!-- Collapsed -->
+      <!-- Collapsed with elements -->
+      <bpmndi:BPMNShape id="shape_collapsed_transaction_sub_process_id" bpmnElement="collapsed_transaction_sub_process_id" isExpanded="false">
+        <dc:Bounds x="5220" y="2115" width="140" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_task_in_collapsed_transaction_sub_process_id" bpmnElement="task_in_collapsed_transaction_sub_process_id">
+        <dc:Bounds x="5240" y="2120" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_message_boundary_event_attached_to_collapsed_transaction_sub_process_id" bpmnElement="message_boundary_event_attached_to_collapsed_transaction_sub_process_id">
+        <dc:Bounds x="5344" y="2170" width="32" height="32" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="5396" y="2140" width="79" height="80" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <!-- END OF "Collapsed with elements" -->
+
+      <bpmndi:BPMNShape id="shape_collapsed_transaction_sub_process_with_loop_id" bpmnElement="collapsed_transaction_sub_process_with_loop_id" isExpanded="false">
+        <dc:Bounds x="4970" y="2115" width="140" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_collapsed_transaction_sub_process_with_sequential_multi_instance_id" bpmnElement="collapsed_transaction_sub_process_with_sequential_multi_instance_id" isExpanded="false">
+        <dc:Bounds x="4730" y="2115" width="140" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_collapsed_transaction_sub_process_with_parallel_multi_instance_id" bpmnElement="collapsed_transaction_sub_process_with_parallel_multi_instance_id" isExpanded="false">
+        <dc:Bounds x="4530" y="2115" width="140" height="90" />
+      </bpmndi:BPMNShape>
+      <!-- END OF Transaction Sub-Process -->
+
+      <!-- Ad-Hoc Sub-Process -->
+      <!-- Expanded -->
+      <!-- Expanded with elements -->
+      <bpmndi:BPMNShape id="shape_expanded_adHoc_sub_process_id" bpmnElement="expanded_adHoc_sub_process_id" isExpanded="true">
+        <dc:Bounds x="3955" y="2360" width="370" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="edge_sequence_flow_in_adHoc_sub_process_1_id" bpmnElement="sequence_flow_in_adHoc_sub_process_1_id">
+        <di:waypoint x="4031" y="2460" />
+        <di:waypoint x="4085" y="2460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_sequence_flow_in_adHoc_sub_process_2_id" bpmnElement="sequence_flow_in_adHoc_sub_process_2_id">
+        <di:waypoint x="4185" y="2460" />
+        <di:waypoint x="4247" y="2460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="shape_start_event_in_adHoc_sub_process_id" bpmnElement="start_event_in_adHoc_sub_process_id">
+        <dc:Bounds x="3995" y="2442" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3980" y="2485" width="67" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_task_in_adHoc_sub_process_id" bpmnElement="task_in_adHoc_sub_process_id">
+        <dc:Bounds x="4085" y="2420" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_end_event_in_adHoc_sub_process_id" bpmnElement="end_event_in_adHoc_sub_process_id">
+        <dc:Bounds x="4247" y="2442" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="4234" y="2485" width="63" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <!-- END OF "Expanded with elements" -->
+
+      <bpmndi:BPMNShape id="shape_expanded_adHoc_sub_process_with_loop_id" bpmnElement="expanded_adHoc_sub_process_with_loop_id" isExpanded="true">
+        <dc:Bounds x="3565" y="2360" width="370" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_expanded_adHoc_sub_process_with_sequential_multi_instance_id" bpmnElement="expanded_adHoc_sub_process_with_sequential_multi_instance_id" isExpanded="true">
+        <dc:Bounds x="3170" y="2360" width="370" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_expanded_adHoc_sub_process_with_parallel_multi_instance_id" bpmnElement="expanded_adHoc_sub_process_with_parallel_multi_instance_id" isExpanded="true">
+        <dc:Bounds x="2775" y="2360" width="370" height="200" />
+      </bpmndi:BPMNShape>
+
+      <!-- Collapsed -->
+      <!-- Collapsed with elements -->
+      <bpmndi:BPMNShape id="shape_collapsed_adHoc_sub_process_id" bpmnElement="collapsed_adHoc_sub_process_id" isExpanded="false">
+        <dc:Bounds x="5220" y="2415" width="140" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_task_in_collapsed_adHoc_sub_process_id" bpmnElement="task_in_collapsed_adHoc_sub_process_id">
+        <dc:Bounds x="5240" y="2420" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_message_boundary_event_attached_to_collapsed_adHoc_sub_process_id" bpmnElement="message_boundary_event_attached_to_collapsed_adHoc_sub_process_id">
+        <dc:Bounds x="5344" y="2470" width="32" height="32" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="5396" y="2440" width="79" height="80" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <!-- END OF "Collapsed with elements" -->
+
+      <bpmndi:BPMNShape id="shape_collapsed_adHoc_sub_process_with_loop_id" bpmnElement="collapsed_adHoc_sub_process_with_loop_id" isExpanded="false">
+        <dc:Bounds x="4970" y="2415" width="140" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_collapsed_adHoc_sub_process_with_sequential_multi_instance_id" bpmnElement="collapsed_adHoc_sub_process_with_sequential_multi_instance_id" isExpanded="false">
+        <dc:Bounds x="4730" y="2415" width="140" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_collapsed_adHoc_sub_process_with_parallel_multi_instance_id" bpmnElement="collapsed_adHoc_sub_process_with_parallel_multi_instance_id" isExpanded="false">
+        <dc:Bounds x="4530" y="2415" width="140" height="90" />
+      </bpmndi:BPMNShape>
+      <!-- END OF Ad-Hoc Sub-Process -->
+
 
       <!-- Event -->
       <!-- Start Event -->
@@ -1685,6 +1921,12 @@
           <dc:Bounds x="2525" y="1250" width="90" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_complex_gateway_id" bpmnElement="complex_gateway_id">
+        <dc:Bounds x="2545" y="1320" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2525" y="1370" width="90" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
 
       <!-- Artifact -->
       <bpmndi:BPMNShape id="shape_text_annotation_id" bpmnElement="text_annotation_id">
@@ -1728,9 +1970,33 @@
         <di:waypoint x="1118" y="1090" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="edge_message_flow_initiating_message_id" bpmnElement="message_flow_initiating_message_id" messageVisibleKind="initiating" />
-      <bpmndi:BPMNEdge id="edge_message_flow_non_initiating_message_id" bpmnElement="message_flow_non_initiating_message_id" messageVisibleKind="non_initiating" />
-      <bpmndi:BPMNEdge id="edge_message_flow_no_visible_id" bpmnElement="message_flow_no_visible_id" />
+      <bpmndi:BPMNEdge id="edge_message_flow_initiating_message_id" bpmnElement="message_flow_initiating_message_id" messageVisibleKind="initiating">
+        <di:waypoint x="725" y="1700" />
+        <di:waypoint x="680" y="1700" />
+        <di:waypoint x="680" y="190" />
+        <di:waypoint x="725" y="190" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="594" y="960" width="72" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_message_flow_non_initiating_message_id" bpmnElement="message_flow_non_initiating_message_id" messageVisibleKind="non_initiating">
+        <di:waypoint x="2444" y="1656" />
+        <di:waypoint x="2515" y="1656" />
+        <di:waypoint x="2515" y="1370" />
+        <di:waypoint x="1550" y="1370" />
+        <di:waypoint x="1550" y="390" />
+        <di:waypoint x="790" y="390" />
+        <di:waypoint x="790" y="190" />
+        <di:waypoint x="755" y="190" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1515" y="859" width="88" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_message_flow_no_visible_id" bpmnElement="message_flow_no_visible_id">
+        <di:waypoint x="1018" y="1080" />
+        <di:waypoint x="740" y="1080" />
+        <di:waypoint x="740" y="205" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="edge_association_id" bpmnElement="association_id">
         <di:waypoint x="1069" y="1106" />
         <di:waypoint x="1080" y="1210" />

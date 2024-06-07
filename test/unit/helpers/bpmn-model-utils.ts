@@ -1,32 +1,35 @@
-/**
- * Copyright 2022 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2022 Bonitasoft S.A.
 
-import type BpmnModel from '../../../src/model/bpmn/internal/BpmnModel';
-import { Edge } from '../../../src/model/bpmn/internal/edge/edge';
-import { MessageFlow, SequenceFlow } from '../../../src/model/bpmn/internal/edge/flows';
-import Shape from '../../../src/model/bpmn/internal/shape/Shape';
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import type BpmnModel from '@lib/model/bpmn/internal/BpmnModel';
+
+import { ensureIsArray } from '@lib/component/helpers/array-utils';
+import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';
+import { Edge } from '@lib/model/bpmn/internal/edge/edge';
+import { AssociationFlow, MessageFlow, SequenceFlow } from '@lib/model/bpmn/internal/edge/flows';
+import Shape from '@lib/model/bpmn/internal/shape/Shape';
 import ShapeBpmnElement, {
   ShapeBpmnActivity,
   ShapeBpmnBoundaryEvent,
   ShapeBpmnCallActivity,
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
-} from '../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../src/model/bpmn/internal';
-import { ensureIsArray } from '../../../src/component/helpers/array-utils';
+  ShapeBpmnIntermediateThrowEvent,
+  ShapeBpmnIntermediateCatchEvent,
+} from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
 
 const newBpmnModel = (): BpmnModel => ({
   edges: [],
@@ -44,17 +47,43 @@ export const buildEdgeId = (bpmnElementId: string): string => {
 
 const newSequenceFlow = (id: string, name: string, source: string, target: string): Edge => new Edge(buildEdgeId(id), new SequenceFlow(id, name, source, target));
 
-const newMessageFlow = (id: string, name: string, source: string, target: string): Edge => new Edge(buildEdgeId(id), new MessageFlow(id, name, source, target));
-
-export const sequenceFlowInModel = (id: string, name: string): BpmnModel => {
+const flowInModel = (factoryFunction: (id: string, name: string, source: string, target: string) => Edge, id: string, name: string, source: string, target: string): BpmnModel => {
   const bpmnModel = newBpmnModel();
-  bpmnModel.edges.push(newSequenceFlow(id, name, undefined, undefined));
+  bpmnModel.edges.push(factoryFunction(id, name, source, target));
   return bpmnModel;
 };
 
-export const startEventInModel = (id: string, name: string): BpmnModel => {
+export const sequenceFlowInModel = (id: string, name: string, source: string, target: string): BpmnModel => {
+  return flowInModel(newSequenceFlow, id, name, source, target);
+};
+
+const newMessageFlow = (id: string, name: string, source: string, target: string): Edge => new Edge(buildEdgeId(id), new MessageFlow(id, name, source, target));
+
+export const messageFlowInModel = (id: string, name: string, source: string, target: string): BpmnModel => {
+  return flowInModel(newMessageFlow, id, name, source, target);
+};
+
+const newAssociationFlow = (id: string, name: string, source: string, target: string): Edge => new Edge(buildEdgeId(id), new AssociationFlow(id, name, source, target));
+
+export const associationFlowInModel = (id: string, name: string, source: string, target: string): BpmnModel => {
+  return flowInModel(newAssociationFlow, id, name, source, target);
+};
+
+export const startEventInModel = (id: string, name: string, extras?: ShapeBpmnElementExtraProperties): BpmnModel => {
   const bpmnModel = newBpmnModel();
-  bpmnModel.flowNodes.push(newStartEvent('parentId', id, name));
+  bpmnModel.flowNodes.push(newStartEvent('parentId', id, name, extras));
+  return bpmnModel;
+};
+
+export const intermediateCatchEventInModel = (id: string, name: string, extras?: ShapeBpmnElementExtraProperties, sourceIds?: string[]): BpmnModel => {
+  const bpmnModel = newBpmnModel();
+  bpmnModel.flowNodes.push(newIntermediateCatchEvent('parentId', id, name, extras, sourceIds));
+  return bpmnModel;
+};
+
+export const intermediateThrowEventInModel = (id: string, name: string, extras?: ShapeBpmnElementExtraProperties, targetId?: string): BpmnModel => {
+  const bpmnModel = newBpmnModel();
+  bpmnModel.flowNodes.push(newIntermediateThrowEvent('parentId', id, name, extras, targetId));
   return bpmnModel;
 };
 
@@ -70,8 +99,33 @@ export const poolInModel = (id: string, name: string): BpmnModel => {
   return bpmnModel;
 };
 
-const newStartEvent = (parent: string, id: string, name: string): Shape =>
-  new Shape(buildShapeId(id), new ShapeBpmnStartEvent(id, name, ShapeBpmnEventDefinitionKind.TIMER, parent));
+const withExtras = (bpmnElement: ShapeBpmnElement, extras?: ShapeBpmnElementExtraProperties): ShapeBpmnElement => {
+  bpmnElement.incomingIds = extras?.incomingIds ?? [];
+  bpmnElement.outgoingIds = extras?.outgoingIds ?? [];
+  return bpmnElement;
+};
+
+export type ShapeBpmnElementExtraProperties = {
+  incomingIds?: string[];
+  outgoingIds?: string[];
+};
+
+const newStartEvent = (parent: string, id: string, name: string, extras?: ShapeBpmnElementExtraProperties): Shape => {
+  return new Shape(buildShapeId(id), withExtras(new ShapeBpmnStartEvent(id, name, ShapeBpmnEventDefinitionKind.TIMER, parent), extras));
+};
+
+const newIntermediateCatchEvent = (parent: string, id: string, name: string, extras?: ShapeBpmnElementExtraProperties, sourceIds: string[] = []): Shape => {
+  const bpmnElement = new ShapeBpmnIntermediateCatchEvent(id, name, ShapeBpmnEventDefinitionKind.LINK, parent);
+  bpmnElement.sourceIds = sourceIds;
+  return new Shape(buildShapeId(id), withExtras(bpmnElement, extras));
+};
+
+const newIntermediateThrowEvent = (parent: string, id: string, name: string, extras?: ShapeBpmnElementExtraProperties, targetId?: string): Shape => {
+  const bpmnElement = new ShapeBpmnIntermediateThrowEvent(id, name, ShapeBpmnEventDefinitionKind.LINK, parent);
+  bpmnElement.targetId = targetId;
+  return new Shape(buildShapeId(id), withExtras(bpmnElement, extras));
+};
+
 const newBoundaryEvent = (parent: string, id: string, name: string): Shape =>
   new Shape(buildShapeId(id), new ShapeBpmnBoundaryEvent(id, name, ShapeBpmnEventDefinitionKind.CANCEL, parent));
 
@@ -126,15 +180,15 @@ export const toBpmnModel = (model: BpmnModelTestRepresentation): BpmnModel => {
   const bpmnModel = newBpmnModel();
   const pools = ensureIsArray(model.pools);
 
-  pools.forEach(pool => {
+  for (const pool of pools) {
     if (pool.isDisplayed !== false) {
       addNewPool(bpmnModel, pool.id, pool.name);
     }
     addContainerElements(bpmnModel, pool);
-  });
+  }
 
   if (model.messageFlows) {
-    ensureIsArray(model.messageFlows).forEach(messageFlow => bpmnModel.edges.push(newMessageFlow(messageFlow.id, messageFlow.name, messageFlow.source, messageFlow.target)));
+    for (const messageFlow of ensureIsArray(model.messageFlows)) bpmnModel.edges.push(newMessageFlow(messageFlow.id, messageFlow.name, messageFlow.source, messageFlow.target));
   }
 
   if (model.elementsWithoutPool) {

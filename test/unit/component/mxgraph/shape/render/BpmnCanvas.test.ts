@@ -1,47 +1,49 @@
 /**
  * @jest-environment jsdom
  */
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-import type { IconStyleConfiguration, ShapeConfiguration, Size } from '../../../../../../src/component/mxgraph/shape/render';
-import { computeScaledIconSize } from '../../../../../../src/component/mxgraph/shape/render/BpmnCanvas';
+/*
+Copyright 2020 Bonitasoft S.A.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import type { IconStyleConfiguration, ShapeConfiguration, Size } from '@lib/component/mxgraph/shape/render';
+
+import { computeScaledIconSize } from '@lib/component/mxgraph/shape/render/BpmnCanvas';
+
+function newIconStyleConfiguration(strokeWidth = 0): IconStyleConfiguration {
+  return {
+    fillColor: 'do_not_care',
+    isFilled: false,
+    strokeColor: 'do_not_care',
+    strokeWidth: strokeWidth,
+    margin: 0,
+  };
+}
+function newShapeConfiguration(w: number, h: number): ShapeConfiguration {
+  return {
+    x: -1, // not relevant here
+    y: -1, // not relevant here
+    width: w,
+    height: h,
+  };
+}
+function expectSize(actual: Size, expected: Size): void {
+  expect(actual.width).toEqual(expected.width);
+  expect(actual.height).toEqual(expected.height);
+}
 
 describe('compute scaled icon size', () => {
-  function newIconStyleConfiguration(strokeWidth = 0): IconStyleConfiguration {
-    return {
-      fillColor: 'do_not_care',
-      isFilled: false,
-      strokeColor: 'do_not_care',
-      strokeWidth: strokeWidth,
-      margin: 0,
-    };
-  }
-  function newShapeConfiguration(w: number, h: number): ShapeConfiguration {
-    return {
-      x: -1, // not relevant here
-      y: -1, // not relevant here
-      width: w,
-      height: h,
-    };
-  }
-  function expectSize(actual: Size, expected: Size): void {
-    expect(actual.width).toEqual(expected.width);
-    expect(actual.height).toEqual(expected.height);
-  }
-
   describe('parent square dimension', () => {
     it('original square icon', () => {
       const size = computeScaledIconSize({ width: 100, height: 100 }, newIconStyleConfiguration(), newShapeConfiguration(50, 50), 0.25);

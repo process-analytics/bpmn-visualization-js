@@ -129,6 +129,11 @@ the BPMN elements are rendered with their final shapes.
 ^.^|
 .^|
 
+.^|Ad-Hoc Sub-Process
+^.^|icon:flask[]
+^.^| The `ad-hoc` marker is not displayed
+.^|
+
 .^|Embedded Sub-Process
 ^.^|icon:check-circle-o[]
 ^.^|
@@ -139,6 +144,11 @@ the BPMN elements are rendered with their final shapes.
 ^.^|
 .^|Collapsed sub-process : + 
 - Missing start event icon
+
+.^|Transaction Sub-Process
+^.^|icon:check-circle-o[]
+^.^|
+.^|
 |===
 
 [cols="1,1,1,4", options="header"]
@@ -573,6 +583,11 @@ The event definition can be defined on the event or on the definitions.
 ^.^|icon:check-circle-o[]
 ^.^|image:images/icons/gateway_event_based.svg[Event-Based icon,30] image:images/icons/gateway_event_based_exclusive.svg[Exclusive Event-Based icon,30] image:images/icons/gateway_event_based_parallel.svg[Parallel Event-Based icon,30]
 .^|Support the `event gateway type` (Exclusive and Parallel) and the `instantiate` status
+
+.^|Complex
+^.^|icon:check-circle-o[]
+^.^|image:images/icons/gateway_complex.svg[Complex icon,30]
+.^|Icon may be subject to change +
 |===
 
 

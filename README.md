@@ -1,6 +1,6 @@
-<h1 align="center">BPMN Visualization</h1>
+<h1 align="center">bpmn-visualization TypeScript library</h1>
 <div align="center">
-    <p align="center"> <img title="BPMN Visualization" src="docs/users/images/custom-behavior-path-highlighting.gif" alt="BPMN Visualization example"></p>
+    <p align="center"><img title="bpmn-visualization" src="docs/users/images/custom-behavior-path-highlighting.gif" alt="Examples of the bpmn-visualization TypeScript library"></p>
     <p align="center"> 
         <a href="https://npmjs.org/package/bpmn-visualization">
           <img alt="npm package" src="https://img.shields.io/npm/v/bpmn-visualization.svg?color=orange"> 
@@ -81,31 +81,30 @@ Planned features:
 
 ## 🌏 Browsers Support
 
-| <img src="https://www.google.com/chrome/static/images/chrome-logo.svg" alt="Chrome" width="18px" height="18px" /> Chrome | <img src="https://user-media-prod-cdn.itsre-sumo.mozilla.net/uploads/products/2020-04-14-08-36-13-8dda6f.png" alt="Firefox" width="18px" height="18px" /> Firefox | <img src="https://upload.wikimedia.org/wikipedia/commons/5/52/Safari_browser_logo.svg" alt="Safari" width="18px" height="18px" /> Safari | <img src="https://avatars0.githubusercontent.com/u/11354582?s=200&v=4" alt="Edge" width="18px" height="18px" /> Edge |
+| <img src="https://www.google.com/chrome/static/images/chrome-logo.svg" alt="Chrome" width="18px" height="18px" /> Chrome | <img src="http://blog.mozilla.org/design/files/2019/10/Fx-Browser-icon-fullColor.svg" alt="Firefox" height="18px" /> Firefox | <img src="https://upload.wikimedia.org/wikipedia/commons/5/52/Safari_browser_logo.svg" alt="Safari" width="18px" height="18px" /> Safari | <img src="https://avatars0.githubusercontent.com/u/11354582?s=200&v=4" alt="Edge" width="18px" height="18px" /> Edge |
 | :---------: | :---------: | :---------: | :---------: |
 |  ✔️ |  ✔️ |  ✔️ |  ✔️ |
 
 **Notes**:
 - Chromium based browsers should work (automatic tests are run with Chromium canary releases). In particular, the following
-browsers are known working with `bpmn-visualization@0.26.0`:
-  - Brave 1.42.97
-  - Chromium 104.0.5112.102
-  - Opera 90.0.4480.54
+desktop browsers are known working with `bpmn-visualization@0.42.0`:
+  - Brave 1.59.120
+  - Chromium 119.0.6045.9
+  - Opera 103.0.4928.34
 - Support Chromium Edge but not Legacy Edge
-- The library may work with the other browsers. They must at least support ES6.
+- The library may work with the other browsers. They must at least support ES2015.
 
 
 ## ♻️ Usage
 The library is available from [NPM](https://npmjs.org/package/bpmn-visualization). \
 We support various module formats such as:
-- [IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE): `dist/bpmn-visualization.js`
 - [ESM](https://dev.to/iggredible/what-the-heck-are-cjs-amd-umd-and-esm-ikm): `dist/bpmn-visualization.esm.js`
-- [CommonJS](https://www.typescriptlang.org/docs/handbook/2/modules.html#commonjs): `dist/bpmn-visualization.cjs.js`
-  
+- [IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE): `dist/bpmn-visualization.js` and its minified companion `dist/bpmn-visualization.min.js`
 
-### 📌 Project usage
 
-Install `bpmn-visualization` in the project:
+### 📌 Usage in applications and projects
+
+Install `bpmn-visualization`:
 ```shell script
 npm i bpmn-visualization
 ```
@@ -114,10 +113,10 @@ Then use this snippet to load your BPMN diagram in a page:
 ```javascript
 import { BpmnVisualization } from 'bpmn-visualization';
 
-let bpmnContent; // your BPMN 2.0 XML content
 // initialize `bpmn-visualization` and load the BPMN diagram
 // 'bpmn-container' is the id of the HTMLElement that renders the BPMN Diagram
 const bpmnVisualization = new BpmnVisualization({ container: 'bpmn-container' });
+let bpmnContent; // your BPMN 2.0 XML content
 bpmnVisualization.load(bpmnContent);
 ```
 
@@ -129,35 +128,19 @@ You can set the BPMN content using one of the following ways:
 
 #### 📜 TypeScript Support
 
-`bpmn-visualization` provides type definitions, so the integration should work out of the box in TypeScript projects.
+The `bpmn-visualization` npm package includes type definitions, so the integration works out of the box in TypeScript projects.
+`bpmn-visualization` requires **TypeScript 4.0** or greater. Past versions had the following requirements:
+  * 0.21.0 to 0.27.1: TypeScript 4.5
+  * 0.17.1 to 0.20.1: TypeScript 4.3
 
-Depending on the build system used by the TypeScript project, it may get the following type errors:
-- error TS2688: Cannot find type definition file for 'typed-mxgraph'
-- error TS7016: Could not find a declaration file for module 'mxgraph'
-
-In this case, declare the `typed-mxgraph` types in the `tsconfig.json` as in the following (see the [typeRoots](https://www.typescriptlang.org/tsconfig#typeRoots) documentation for more explanations) 👇
-
-```json
-{
-  "compilerOptions": {
-    "typeRoots": [
-      "node_modules/@types",
-      "node_modules/@typed-mxgraph"
-    ]
-  }
-}
-```
+ℹ️ If you are looking for examples of projects integrating `bpmn-visualization` with TypeScript, see the `bpmn-visualization-examples` [repository](https://github.com/process-analytics/bpmn-visualization-examples/#bpmn-visualization-usage-in-projects).
 
 ---
 **NOTE**
 
-This is also mandatory for users who want to extend the `mxGraph` integration.
+Prior version 0.27.0, `bpmn-visualization` required extra configuration for TypeScript projects as explained in the [v0.26.2 README](https://github.com/process-analytics/bpmn-visualization-js/tree/v0.26.2#-typescript-support).
 
 ---
-
-Alternatively, you can set [`skipLibCheck`](https://www.typescriptlang.org/tsconfig#skipLibCheck) to `true` in the `tsconfig.json` file, but this limits the definition checks.
-
-ℹ️ For more details, see the TypeScript projects in the [bpmn-visualization-examples repository](https://github.com/process-analytics/bpmn-visualization-examples/#bpmn-visualization-usage-in-projects).
 
 
 ### 💠 Browser usage
@@ -172,10 +155,10 @@ In the HTML page:
 <div id="bpmn-container"></div>
 ...
 <script>
-  let bpmnContent; // your BPMN 2.0 XML content
   // initialize `bpmn-visualization` and load the BPMN diagram
   // 'bpmn-container' is the id of the HTMLElement that renders the BPMN Diagram
   const bpmnVisualization = new bpmnvisu.BpmnVisualization({ container: 'bpmn-container'});
+  let bpmnContent; // your BPMN 2.0 XML content
   bpmnVisualization.load(bpmnContent);
 </script>
 ```
@@ -190,8 +173,7 @@ The User documentation (with the feature list & the public API) is available in 
 💡 Want to know more about `bpmn-visualization` usage and extensibility? Have a look at the
 [__⏩ live examples site__](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html).
 
-For more technical details and how-to, go to the [bpmn-visualization-examples](https://github.com/process-analytics/bpmn-visualization-examples/)
-repository.
+For more technical details and how-to, go to the `bpmn-visualization-examples` [repository](https://github.com/process-analytics/bpmn-visualization-examples/).
 
 
 ## 🔧 Contributing
@@ -200,7 +182,7 @@ To contribute to `bpmn-visualization`, fork and clone this repository locally an
 Please write tests for your code before opening a pull-request:
 
 ```sh
-npm run test  # run all unit & e2e tests
+npm test  # run all tests
 ```
 
 You can find more detail in our [Contributing guide](CONTRIBUTING.md). Participation in this open source project is subject to a [Code of Conduct](CODE_OF_CONDUCT.md).

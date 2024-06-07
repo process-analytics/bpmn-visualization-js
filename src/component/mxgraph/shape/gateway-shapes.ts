@@ -1,28 +1,32 @@
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2020 Bonitasoft S.A.
 
-import { StyleDefault, StyleUtils } from '../style';
-import type { PaintParameter } from './render';
-import { IconPainterProvider } from './render';
-import { buildPaintParameter } from './render/icon-painter';
-import { mxgraph } from '../initializer';
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import type { IconPainter, PaintParameter } from './render';
 import type { mxAbstractCanvas2D } from 'mxgraph';
 
+import { ShapeBpmnEventBasedGatewayKind } from '../../../model/bpmn/internal';
+import { mxgraph, mxUtils } from '../initializer';
+import { BpmnStyleIdentifier, StyleDefault } from '../style';
+import { getBpmnIsInstantiating } from '../style/utils';
+
+import { buildPaintParameter } from './render/icon-painter';
+
 abstract class GatewayShape extends mxgraph.mxRhombus {
-  protected iconPainter = IconPainterProvider.get();
+  // The actual value is injected at runtime by BpmnCellRenderer
+  protected iconPainter: IconPainter = undefined;
 
   protected abstract paintInnerShape(paintParameter: PaintParameter): void;
 
@@ -79,6 +83,19 @@ export class InclusiveGatewayShape extends GatewayShape {
 /**
  * @internal
  */
+export class ComplexGatewayShape extends GatewayShape {
+  protected paintInnerShape(paintParameter: PaintParameter): void {
+    this.iconPainter.paintAsteriskIcon({
+      ...paintParameter,
+      iconStyleConfig: { ...paintParameter.iconStyleConfig, isFilled: true },
+      ratioFromParent: 0.5,
+    });
+  }
+}
+
+/**
+ * @internal
+ */
 export class EventBasedGatewayShape extends GatewayShape {
   protected paintInnerShape(paintParameter: PaintParameter): void {
     paintParameter = { ...paintParameter, iconStyleConfig: { ...paintParameter.iconStyleConfig, strokeWidth: 1 } };
@@ -88,7 +105,7 @@ export class EventBasedGatewayShape extends GatewayShape {
       ...paintParameter,
       ratioFromParent: 0.55,
     });
-    if (!StyleUtils.getBpmnIsInstantiating(this.style)) {
+    if (!getBpmnIsInstantiating(this.style)) {
       this.iconPainter.paintCircleIcon({
         ...paintParameter,
         ratioFromParent: 0.45,
@@ -100,7 +117,7 @@ export class EventBasedGatewayShape extends GatewayShape {
       ...paintParameter,
       ratioFromParent: 0.3,
     };
-    if (StyleUtils.getBpmnIsParallelEventBasedGateway(this.style)) {
+    if (mxUtils.getValue(this.style, BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND, ShapeBpmnEventBasedGatewayKind.Exclusive) == ShapeBpmnEventBasedGatewayKind.Parallel) {
       this.iconPainter.paintPlusCrossIcon(innerIconPaintParameter);
     } else {
       this.iconPainter.paintPentagon(innerIconPaintParameter);

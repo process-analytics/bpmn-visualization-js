@@ -1,38 +1,63 @@
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2020 Bonitasoft S.A.
 
-import { ShapeBpmnElementKind, ShapeUtil } from '../../../../../src/model/bpmn/internal';
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 /** Internal model */
-import { Waypoint } from '../../../../../src/model/bpmn/internal/edge/edge';
-import { MessageVisibleKind } from '../../../../../src/model/bpmn/internal/edge/kinds';
+import type { BuildProcessParameter, BuildEventParameter, BuildNotBoundaryEventKind } from '../../../helpers/JsonBuilder';
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
+
+import { verifyEdge } from '../../../helpers/bpmn-model-expect';
+import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilder';
+import { parseJson, parseJsonAndExpectOnlyEdges } from '../../../helpers/JsonTestUtils';
 
 /** Json model */
-import type { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
-import * as bpmndi from '../../../../../src/model/bpmn/json/BPMNDI';
+import { ShapeBpmnElementKind, ShapeUtil } from '@lib/model/bpmn/internal';
+import { Waypoint } from '@lib/model/bpmn/internal/edge/edge';
+import { MessageVisibleKind } from '@lib/model/bpmn/internal/edge/kinds';
+import * as bpmndi from '@lib/model/bpmn/json/bpmndi';
 
 /** Test utils */
-import { parseJson, parseJsonAndExpectOnlyEdges } from '../../../helpers/JsonTestUtils';
-import type { BuildProcessParameter, BuildEventsParameter, OtherBuildEventKind } from '../../../helpers/JsonBuilder';
-import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilder';
-import { verifyEdge } from '../../../helpers/bpmn-model-expect';
+
+function buildProcessParameter(kind: ShapeBpmnElementKind, id: string): BuildProcessParameter {
+  if (kind === ShapeBpmnElementKind.POOL) {
+    return { id, withParticipant: true };
+  } else if (ShapeUtil.isEvent(kind)) {
+    const isBoundaryEvent = kind === ShapeBpmnElementKind.EVENT_BOUNDARY;
+    const eventParameter: BuildEventParameter = isBoundaryEvent
+      ? {
+          id,
+          bpmnKind: kind as 'boundaryEvent',
+          isInterrupting: true,
+          attachedToRef: 'task_id_0',
+          eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT },
+        }
+      : {
+          id,
+          bpmnKind: kind as BuildNotBoundaryEventKind,
+          eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT },
+        };
+
+    return { withParticipant: true, event: eventParameter, task: isBoundaryEvent ? { id: 'task_id_0' } : undefined };
+  } else {
+    return { withParticipant: true, task: { id } };
+  }
+}
 
 describe('parse bpmn as json for message flow', () => {
   it(`should convert as Edge, when an message flow is an attribute (as object) of 'collaboration' (as object)`, () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         collaboration: {
@@ -72,7 +97,7 @@ describe('parse bpmn as json for message flow', () => {
   });
 
   it(`should convert as Edge, when an message flow (with/without name) is an attribute (as array) of 'collaboration'`, () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         collaboration: {
@@ -134,7 +159,7 @@ describe('parse bpmn as json for message flow', () => {
   });
 
   it(`should convert as Edge, when an message flow (with one & several waypoints) is an attribute (as array) of 'collaboration'`, () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         collaboration: {
@@ -209,7 +234,7 @@ describe('parse bpmn as json for message flow', () => {
   });
 
   it(`should convert as Edge, when none/initiating/non-initiating message flows are an attribute (as array) of 'collaboration'`, () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         collaboration: {
@@ -348,29 +373,4 @@ describe('parse bpmn as json for message flow', () => {
       });
     });
   });
-
-  function buildProcessParameter(kind: ShapeBpmnElementKind, id: string): BuildProcessParameter {
-    if (kind === ShapeBpmnElementKind.POOL) {
-      return { id, withParticipant: true };
-    } else if (ShapeUtil.isEvent(kind)) {
-      const isBoundaryEvent = kind === ShapeBpmnElementKind.EVENT_BOUNDARY;
-      const eventParameter: BuildEventsParameter = isBoundaryEvent
-        ? {
-            id,
-            bpmnKind: kind as 'boundaryEvent',
-            isInterrupting: true,
-            attachedToRef: 'task_id_0',
-            eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT },
-          }
-        : {
-            id,
-            bpmnKind: kind as OtherBuildEventKind | 'startEvent',
-            eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT },
-          };
-
-      return { withParticipant: true, event: eventParameter, task: isBoundaryEvent ? { id: 'task_id_0' } : undefined };
-    } else {
-      return { withParticipant: true, task: { id } };
-    }
-  }
 });

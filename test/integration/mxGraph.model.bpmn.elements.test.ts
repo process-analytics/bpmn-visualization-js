@@ -1,18 +1,30 @@
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2020 Bonitasoft S.A.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import type { ExpectedShapeModelElement } from './helpers/model-expect';
+
+import {
+  bpmnVisualization,
+  expectEdgesInModel,
+  expectPoolsInModel,
+  expectShapesInModel,
+  expectTotalEdgesInModel,
+  expectTotalShapesInModel,
+  getDefaultParentId,
+} from './helpers/model-expect';
 
 import {
   MarkerIdentifier,
@@ -23,46 +35,48 @@ import {
   ShapeBpmnEventDefinitionKind,
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
-} from '../../src/bpmn-visualization';
-import { readFileSync } from '../helpers/file-helper';
-import type { ExpectedShapeModelElement } from './helpers/model-expect';
-import { bpmnVisualization, expectEdgesInModel, expectPoolsInModel, expectTotalEdgesInModel, expectShapesInModel, expectTotalShapesInModel } from './helpers/model-expect';
-import { mxgraph } from '../../src/component/mxgraph/initializer';
+} from '@lib/bpmn-visualization';
+import { mxConstants, mxgraph, mxPoint } from '@lib/component/mxgraph/initializer';
+import { readFileSync } from '@test/shared/file-helper';
+
+const mxGeometry = mxgraph.mxGeometry;
 
 describe('mxGraph model - BPMN elements', () => {
   describe('BPMN elements should be available in the mxGraph model', () => {
     describe('Diagram with all the kind of elements', () => {
-      // load BPMN
-      bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-complete-semantic.bpmn'));
+      beforeAll(() => {
+        // load BPMN
+        bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-complete-semantic.bpmn'));
+      });
 
       const expectedBoldFont = {
         isBold: true,
         isItalic: false,
         isStrikeThrough: false,
         isUnderline: false,
-        name: 'Arial',
-        size: 11.0,
+        family: 'Arial',
+        size: 11,
       };
 
       describe('BPMN containers', () => {
-        const minimalPoolModelElement: ExpectedShapeModelElement = { isHorizontal: true };
-        it('pool', async () => {
-          expect('participant_1_id').toBePool({ ...minimalPoolModelElement, label: 'Pool 1' });
-          expect('participant_2_id').toBePool(minimalPoolModelElement);
-          expect('participant_3_id').toBePool({ ...minimalPoolModelElement, label: 'Black Box Process' });
-          expect('participant_4_id').toBePool({ ...minimalPoolModelElement, label: 'Pool containing sublanes' });
+        const baseShapeModelElement: ExpectedShapeModelElement = { isSwimLaneLabelHorizontal: false };
+        it('pool', () => {
+          expect('participant_1_id').toBePool({ ...baseShapeModelElement, label: 'Pool 1' });
+          expect('participant_2_id').toBePool(baseShapeModelElement);
+          expect('participant_3_id').toBePool({ ...baseShapeModelElement, label: 'Black Box Process' });
+          expect('participant_4_id').toBePool({ ...baseShapeModelElement, label: 'Pool containing sublanes' });
         });
 
-        it('lane', async () => {
-          expect('lane_4_1_id').toBeLane({ ...minimalPoolModelElement, label: 'Lane with child lanes', parentId: 'participant_4_id' });
-          expect('lane_4_1_1_id').toBeLane({ ...minimalPoolModelElement, label: 'Child Lane 1', parentId: 'lane_4_1_id' });
-          expect('lane_4_1_2_id').toBeLane({ ...minimalPoolModelElement, label: 'Child Lane 2', parentId: 'lane_4_1_id' });
-          expect('lane_4_2_id').toBeLane({ ...minimalPoolModelElement, label: 'Solo Lane', parentId: 'participant_4_id' });
+        it('lane', () => {
+          expect('lane_4_1_id').toBeLane({ ...baseShapeModelElement, label: 'Lane with child lanes', parentId: 'participant_4_id' });
+          expect('lane_4_1_1_id').toBeLane({ ...baseShapeModelElement, label: 'Child Lane 1', parentId: 'lane_4_1_id' });
+          expect('lane_4_1_2_id').toBeLane({ ...baseShapeModelElement, label: 'Child Lane 2', parentId: 'lane_4_1_id' });
+          expect('lane_4_2_id').toBeLane({ ...baseShapeModelElement, label: 'Solo Lane', parentId: 'participant_4_id' });
         });
       });
 
       describe('BPMN events', () => {
-        it('start event', async () => {
+        it('start event', () => {
           expect('start_event_none_id').toBeStartEvent({
             eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
             font: expectedBoldFont,
@@ -111,7 +125,7 @@ describe('mxGraph model - BPMN elements', () => {
           });
         });
 
-        it('end event', async () => {
+        it('end event', () => {
           expect('end_event_terminate_id').toBeEndEvent({
             eventDefinitionKind: ShapeBpmnEventDefinitionKind.TERMINATE,
             font: {
@@ -119,8 +133,8 @@ describe('mxGraph model - BPMN elements', () => {
               isItalic: true,
               isStrikeThrough: false,
               isUnderline: false,
-              name: 'Arial',
-              size: 11.0,
+              family: 'Arial',
+              size: 11,
             },
             label: 'Terminate End Event',
             parentId: 'participant_1_id',
@@ -132,8 +146,8 @@ describe('mxGraph model - BPMN elements', () => {
               isItalic: true,
               isStrikeThrough: false,
               isUnderline: false,
-              name: 'Arial',
-              size: 11.0,
+              family: 'Arial',
+              size: 11,
             },
             label: 'Terminate End Event On Top',
             parentId: 'participant_1_id',
@@ -200,7 +214,7 @@ describe('mxGraph model - BPMN elements', () => {
           });
         });
 
-        it('throw intermediate event', async () => {
+        it('throw intermediate event', () => {
           expect('intermediate_throw_event_none_id').toBeIntermediateThrowEvent({
             eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
             font: {
@@ -208,8 +222,8 @@ describe('mxGraph model - BPMN elements', () => {
               isItalic: false,
               isStrikeThrough: true,
               isUnderline: false,
-              name: 'Arial',
-              size: 11.0,
+              family: 'Arial',
+              size: 11,
             },
             label: 'Throw None Intermediate Event',
             parentId: 'participant_1_id',
@@ -266,7 +280,7 @@ describe('mxGraph model - BPMN elements', () => {
           });
         });
 
-        it('catch intermediate event', async () => {
+        it('catch intermediate event', () => {
           expect('intermediate_catch_event_message_id').toBeIntermediateCatchEvent({
             eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
             label: 'Catch Message Intermediate Event',
@@ -319,7 +333,7 @@ describe('mxGraph model - BPMN elements', () => {
           });
         });
 
-        it('boundary event: interrupting', async () => {
+        it('boundary event: interrupting', () => {
           expect('boundary_event_interrupting_message_id').toBeBoundaryEvent({
             eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
             isInterrupting: true,
@@ -418,7 +432,7 @@ describe('mxGraph model - BPMN elements', () => {
           });
         });
 
-        it('boundary event: non-interrupting', async () => {
+        it('boundary event: non-interrupting', () => {
           expect('boundary_event_non_interrupting_message_id').toBeBoundaryEvent({
             eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
             isInterrupting: false,
@@ -483,7 +497,7 @@ describe('mxGraph model - BPMN elements', () => {
       });
 
       describe('Sub-Processes', () => {
-        it('Expanded embedded subprocess', async () => {
+        it('Expanded embedded subprocess', () => {
           expect('expanded_embedded_sub_process_id').toBeSubProcess({
             subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
             label: 'Expanded Embedded Sub-Process',
@@ -513,7 +527,7 @@ describe('mxGraph model - BPMN elements', () => {
           });
         });
 
-        it('Collapsed embedded subprocess', async () => {
+        it('Collapsed embedded subprocess', () => {
           expect('collapsed_embedded_sub_process_id').toBeSubProcess({
             subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED,
             label: 'Collapsed Embedded Sub-Process',
@@ -540,7 +554,7 @@ describe('mxGraph model - BPMN elements', () => {
           });
         });
 
-        it('Expanded event subprocess', async () => {
+        it('Expanded event subprocess', () => {
           expect('expanded_event_sub_process_id').toBeSubProcess({
             subProcessKind: ShapeBpmnSubProcessKind.EVENT,
             label: 'Expanded Event Sub-Process',
@@ -570,7 +584,7 @@ describe('mxGraph model - BPMN elements', () => {
           });
         });
 
-        it('Collapsed event subprocess', async () => {
+        it('Collapsed event subprocess', () => {
           expect('collapsed_event_sub_process_id').toBeSubProcess({
             subProcessKind: ShapeBpmnSubProcessKind.EVENT,
             label: 'Collapsed Event Sub-Process',
@@ -597,24 +611,20 @@ describe('mxGraph model - BPMN elements', () => {
           });
         });
 
-        it('Elements in expanded subprocess', async () => {
-          expect('start_event_in_sub_process_id').toBeShape({
-            kind: ShapeBpmnElementKind.EVENT_START,
+        it('Elements in expanded subprocess', () => {
+          expect('start_event_in_sub_process_id').toBeStartEvent({
+            eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
             label: 'Start Event In Sub-Process',
             parentId: 'expanded_embedded_sub_process_id',
-            verticalAlign: 'top',
           });
-          expect('task_in_sub_process_id').toBeShape({
-            kind: ShapeBpmnElementKind.TASK,
+          expect('task_in_sub_process_id').toBeTask({
             label: 'Task In Sub-Process',
             parentId: 'expanded_embedded_sub_process_id',
-            verticalAlign: 'middle',
           });
-          expect('end_event_in_sub_process_id').toBeShape({
-            kind: ShapeBpmnElementKind.EVENT_END,
+          expect('end_event_in_sub_process_id').toBeEndEvent({
+            eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
             label: 'End Event In Sub-Process',
             parentId: 'expanded_embedded_sub_process_id',
-            verticalAlign: 'top',
           });
           expect('sequence_flow_in_sub_process_1_id').toBeSequenceFlow({
             parentId: 'expanded_embedded_sub_process_id',
@@ -626,7 +636,7 @@ describe('mxGraph model - BPMN elements', () => {
           });
         });
 
-        it('Elements of collapsed Sub Process', async () => {
+        it('Elements of collapsed Sub Process', () => {
           expect('message_boundary_event_attached_to_collapsed_embedded_sub_process_id').toBeBoundaryEvent({
             eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
             label: 'Interrupting Message Boundary Event attached to collapsed Sub-Process',
@@ -637,7 +647,7 @@ describe('mxGraph model - BPMN elements', () => {
         });
 
         describe('Start Event in Event Sub Process', () => {
-          it('Interrupting Start Event', async () => {
+          it('Interrupting Start Event', () => {
             expect('start_event_interrupting_message_id').toBeStartEvent({
               eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
               label: 'Interrupting Message Start Event In Sub-Process',
@@ -724,7 +734,7 @@ describe('mxGraph model - BPMN elements', () => {
             });
           });
 
-          it('Non-interrupting Start Event', async () => {
+          it('Non-interrupting Start Event', () => {
             expect('start_event_non_interrupting_message_id').toBeStartEvent({
               eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
               label: 'Non-interrupting Message Start Event In Sub-Process',
@@ -787,11 +797,231 @@ describe('mxGraph model - BPMN elements', () => {
             });
           });
         });
+
+        describe('Transaction Sub Process', () => {
+          describe('Expanded', () => {
+            test('Without marker', () => {
+              expect('expanded_transaction_sub_process_id').toBeSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.TRANSACTION,
+                label: 'Expanded Transaction Sub-Process',
+                parentId: 'participant_1_id',
+                verticalAlign: 'top',
+              });
+            });
+            test('With loop', () => {
+              expect('expanded_transaction_sub_process_with_loop_id').toBeSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.TRANSACTION,
+                label: 'Expanded Transaction Sub-Process With Loop',
+                markers: [ShapeBpmnMarkerKind.LOOP],
+                parentId: 'participant_1_id',
+                verticalAlign: 'top',
+              });
+            });
+            test('With multi instance sequential', () => {
+              expect('expanded_transaction_sub_process_with_sequential_multi_instance_id').toBeSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.TRANSACTION,
+                label: 'Expanded Transaction Sub-Process With Sequential Multi-instance',
+                markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
+                parentId: 'participant_1_id',
+                verticalAlign: 'top',
+              });
+            });
+            test('With multi instance parallel', () => {
+              expect('expanded_transaction_sub_process_with_parallel_multi_instance_id').toBeSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.TRANSACTION,
+                label: 'Expanded Transaction Sub-Process With Parallel Multi-instance',
+                markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+                parentId: 'participant_1_id',
+                verticalAlign: 'top',
+              });
+            });
+          });
+
+          describe('Collapsed', () => {
+            test('Without marker', () => {
+              expect('collapsed_transaction_sub_process_id').toBeSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.TRANSACTION,
+                label: 'Collapsed Transaction Sub-Process',
+                markers: [ShapeBpmnMarkerKind.EXPAND],
+                parentId: 'participant_1_id',
+              });
+            });
+            test('With loop', () => {
+              expect('collapsed_transaction_sub_process_with_loop_id').toBeSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.TRANSACTION,
+                label: 'Collapsed Transaction Sub-Process With Loop',
+                markers: [ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.EXPAND],
+                parentId: 'participant_1_id',
+              });
+            });
+            test('With multi instance sequential', () => {
+              expect('collapsed_transaction_sub_process_with_sequential_multi_instance_id').toBeSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.TRANSACTION,
+                label: 'Collapsed Transaction Sub-Process With Sequential Multi-instance',
+                markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.EXPAND],
+                parentId: 'participant_1_id',
+              });
+            });
+            test('With multi instance parallel', () => {
+              expect('collapsed_transaction_sub_process_with_parallel_multi_instance_id').toBeSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.TRANSACTION,
+                label: 'Collapsed Transaction Sub-Process With Parallel Multi-instance',
+                markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.EXPAND],
+                parentId: 'participant_1_id',
+              });
+            });
+          });
+
+          test('Elements in expanded Sub Process', () => {
+            expect('start_event_in_transaction_sub_process_id').toBeStartEvent({
+              eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
+              label: 'Start Event In Transaction Sub-Process',
+              parentId: 'expanded_transaction_sub_process_id',
+            });
+            expect('task_in_transaction_sub_process_id').toBeTask({
+              label: 'Task In Transaction Sub-Process',
+              parentId: 'expanded_transaction_sub_process_id',
+            });
+            expect('end_event_in_transaction_sub_process_id').toBeEndEvent({
+              eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
+              label: 'End Event In Transaction Sub-Process',
+              parentId: 'expanded_transaction_sub_process_id',
+            });
+            expect('sequence_flow_in_transaction_sub_process_1_id').toBeSequenceFlow({
+              parentId: 'expanded_transaction_sub_process_id',
+              verticalAlign: 'bottom',
+            });
+            expect('sequence_flow_in_transaction_sub_process_2_id').toBeSequenceFlow({
+              parentId: 'expanded_transaction_sub_process_id',
+              verticalAlign: 'bottom',
+            });
+          });
+
+          test('Elements of collapsed Sub Process', () => {
+            expect('message_boundary_event_attached_to_collapsed_transaction_sub_process_id').toBeBoundaryEvent({
+              eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
+              label: 'Interrupting Message Boundary Event attached to collapsed Transaction Sub-Process',
+              parentId: 'collapsed_transaction_sub_process_id',
+              isInterrupting: true,
+            });
+            expect('task_in_collapsed_transaction_sub_process_id').not.toBeCell();
+          });
+        });
+
+        describe('AdHoc Sub Process', () => {
+          describe('Expanded', () => {
+            test('Without marker', () => {
+              expect('expanded_adHoc_sub_process_id').toBeSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.AD_HOC,
+                label: 'Expanded AdHoc Sub-Process',
+                parentId: 'participant_1_id',
+                verticalAlign: 'top',
+              });
+            });
+            test('With loop', () => {
+              expect('expanded_adHoc_sub_process_with_loop_id').toBeSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.AD_HOC,
+                label: 'Expanded AdHoc Sub-Process With Loop',
+                markers: [ShapeBpmnMarkerKind.LOOP],
+                parentId: 'participant_1_id',
+                verticalAlign: 'top',
+              });
+            });
+            test('With multi instance sequential', () => {
+              expect('expanded_adHoc_sub_process_with_sequential_multi_instance_id').toBeSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.AD_HOC,
+                label: 'Expanded AdHoc Sub-Process With Sequential Multi-instance',
+                markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL],
+                parentId: 'participant_1_id',
+                verticalAlign: 'top',
+              });
+            });
+            test('With multi instance parallel', () => {
+              expect('expanded_adHoc_sub_process_with_parallel_multi_instance_id').toBeSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.AD_HOC,
+                label: 'Expanded AdHoc Sub-Process With Parallel Multi-instance',
+                markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL],
+                parentId: 'participant_1_id',
+                verticalAlign: 'top',
+              });
+            });
+          });
+
+          describe('Collapsed', () => {
+            test('Without marker', () => {
+              expect('collapsed_adHoc_sub_process_id').toBeSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.AD_HOC,
+                label: 'Collapsed AdHoc Sub-Process',
+                markers: [ShapeBpmnMarkerKind.EXPAND],
+                parentId: 'participant_1_id',
+              });
+            });
+            test('With loop', () => {
+              expect('collapsed_adHoc_sub_process_with_loop_id').toBeSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.AD_HOC,
+                label: 'Collapsed AdHoc Sub-Process With Loop',
+                markers: [ShapeBpmnMarkerKind.LOOP, ShapeBpmnMarkerKind.EXPAND],
+                parentId: 'participant_1_id',
+              });
+            });
+            test('With multi instance sequential', () => {
+              expect('collapsed_adHoc_sub_process_with_sequential_multi_instance_id').toBeSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.AD_HOC,
+                label: 'Collapsed AdHoc Sub-Process With Sequential Multi-instance',
+                markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, ShapeBpmnMarkerKind.EXPAND],
+                parentId: 'participant_1_id',
+              });
+            });
+            test('With multi instance parallel', () => {
+              expect('collapsed_adHoc_sub_process_with_parallel_multi_instance_id').toBeSubProcess({
+                subProcessKind: ShapeBpmnSubProcessKind.AD_HOC,
+                label: 'Collapsed AdHoc Sub-Process With Parallel Multi-instance',
+                markers: [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, ShapeBpmnMarkerKind.EXPAND],
+                parentId: 'participant_1_id',
+              });
+            });
+          });
+
+          test('Elements in expanded Sub Process', () => {
+            expect('start_event_in_adHoc_sub_process_id').toBeStartEvent({
+              eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
+              label: 'Start Event In AdHoc Sub-Process',
+              parentId: 'expanded_adHoc_sub_process_id',
+            });
+            expect('task_in_adHoc_sub_process_id').toBeTask({
+              label: 'Task In AdHoc Sub-Process',
+              parentId: 'expanded_adHoc_sub_process_id',
+            });
+            expect('end_event_in_adHoc_sub_process_id').toBeEndEvent({
+              eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
+              label: 'End Event In AdHoc Sub-Process',
+              parentId: 'expanded_adHoc_sub_process_id',
+            });
+            expect('sequence_flow_in_adHoc_sub_process_1_id').toBeSequenceFlow({
+              parentId: 'expanded_adHoc_sub_process_id',
+              verticalAlign: 'bottom',
+            });
+            expect('sequence_flow_in_adHoc_sub_process_2_id').toBeSequenceFlow({
+              parentId: 'expanded_adHoc_sub_process_id',
+              verticalAlign: 'bottom',
+            });
+          });
+
+          test('Elements of collapsed Sub Process', () => {
+            expect('message_boundary_event_attached_to_collapsed_adHoc_sub_process_id').toBeBoundaryEvent({
+              eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
+              label: 'Interrupting Message Boundary Event attached to collapsed AdHoc Sub-Process',
+              parentId: 'collapsed_adHoc_sub_process_id',
+              isInterrupting: true,
+            });
+            expect('task_in_collapsed_adHoc_sub_process_id').not.toBeCell();
+          });
+        });
       });
 
       describe('Call Activities', () => {
         describe('Call Activity calling process', () => {
-          it('Expanded', async () => {
+          it('Expanded', () => {
             expect('expanded_call_activity_id').toBeCallActivity({
               label: 'Expanded Call Activity',
               parentId: 'participant_1_id',
@@ -817,10 +1047,11 @@ describe('mxGraph model - BPMN elements', () => {
             });
           });
 
-          it('Collapsed', async () => {
+          it('Collapsed', () => {
             expect('collapsed_call_activity_id').toBeCallActivity({
               label: 'Collapsed Call Activity',
               parentId: 'participant_1_id',
+              markers: [ShapeBpmnMarkerKind.EXPAND],
               verticalAlign: 'top',
             });
             expect('collapsed_call_activity_with_loop_id').toBeCallActivity({
@@ -842,7 +1073,7 @@ describe('mxGraph model - BPMN elements', () => {
         });
 
         describe('Call Activity calling Global Tasks', () => {
-          it('Calling Global Task', async () => {
+          it('Calling Global Task', () => {
             expect('call_activity_calling_global_task_id').toBeCallActivity({
               label: 'Call Activity Calling Global Task',
               parentId: 'participant_1_id',
@@ -869,7 +1100,7 @@ describe('mxGraph model - BPMN elements', () => {
             });
           });
 
-          it('Calling Global Business Rule Task', async () => {
+          it('Calling Global Business Rule Task', () => {
             expect('call_activity_calling_global_business_rule_task_id').toBeCallActivity({
               label: 'Call Activity Calling Global Business Rule Task',
               parentId: 'participant_1_id',
@@ -896,7 +1127,7 @@ describe('mxGraph model - BPMN elements', () => {
             });
           });
 
-          it('Calling Global Manual Task', async () => {
+          it('Calling Global Manual Task', () => {
             expect('call_activity_calling_global_manual_task_id').toBeCallActivity({
               label: 'Call Activity Calling Global Manual Task',
               parentId: 'participant_1_id',
@@ -923,7 +1154,7 @@ describe('mxGraph model - BPMN elements', () => {
             });
           });
 
-          it('Calling Global Script Task', async () => {
+          it('Calling Global Script Task', () => {
             expect('call_activity_calling_global_script_task_id').toBeCallActivity({
               label: 'Call Activity Calling Global Script Task',
               parentId: 'participant_1_id',
@@ -950,7 +1181,7 @@ describe('mxGraph model - BPMN elements', () => {
             });
           });
 
-          it('Calling Global User Task', async () => {
+          it('Calling Global User Task', () => {
             expect('call_activity_calling_global_user_task_id').toBeCallActivity({
               label: 'Call Activity Calling Global User Task',
               parentId: 'participant_1_id',
@@ -980,7 +1211,7 @@ describe('mxGraph model - BPMN elements', () => {
       });
 
       describe('Tasks', () => {
-        it('Abstract Task', async () => {
+        it('Abstract Task', () => {
           expect('task_id').toBeTask({ label: 'Task', parentId: 'participant_1_id' });
           expect('task_with_loop_id').toBeTask({
             label: 'Task With Loop',
@@ -1003,8 +1234,8 @@ describe('mxGraph model - BPMN elements', () => {
               isItalic: false,
               isStrikeThrough: false,
               isUnderline: true,
-              name: 'Arial',
-              size: 11.0,
+              family: 'Arial',
+              size: 11,
             },
             label: 'Task with Flows',
             parentId: 'participant_1_id',
@@ -1012,7 +1243,7 @@ describe('mxGraph model - BPMN elements', () => {
           });
         });
 
-        it('Service Task', async () => {
+        it('Service Task', () => {
           expect('service_task_id').toBeServiceTask({
             font: expectedBoldFont,
             label: 'Service Task',
@@ -1036,7 +1267,7 @@ describe('mxGraph model - BPMN elements', () => {
           });
         });
 
-        it('User Task', async () => {
+        it('User Task', () => {
           expect('user_task_id').toBeUserTask({ font: expectedBoldFont, label: 'User Task', parentId: 'participant_1_id', verticalAlign: 'top' });
           expect('user_task_with_loop_id').toBeUserTask({
             label: 'User Task With Loop',
@@ -1055,7 +1286,7 @@ describe('mxGraph model - BPMN elements', () => {
           });
         });
 
-        it('Receive Task: Non instantiating', async () => {
+        it('Receive Task: Non instantiating', () => {
           expect('receive_task_non_instantiating_id').toBeReceiveTask({
             label: 'Non-instantiating Receive Task',
             isInstantiating: false,
@@ -1081,7 +1312,7 @@ describe('mxGraph model - BPMN elements', () => {
           });
         });
 
-        it('Receive Task: Instantiating', async () => {
+        it('Receive Task: Instantiating', () => {
           expect('receive_task_instantiating_id').toBeReceiveTask({
             label: 'Instantiating Receive Task',
             isInstantiating: true,
@@ -1107,7 +1338,7 @@ describe('mxGraph model - BPMN elements', () => {
           });
         });
 
-        it('Send Task', async () => {
+        it('Send Task', () => {
           expect('send_task_id').toBeSendTask({ font: expectedBoldFont, label: 'Send Task', parentId: 'participant_1_id', verticalAlign: 'top' });
           expect('send_task_with_loop_id').toBeSendTask({
             label: 'Send Task With Loop',
@@ -1126,7 +1357,7 @@ describe('mxGraph model - BPMN elements', () => {
           });
         });
 
-        it('Manual Task', async () => {
+        it('Manual Task', () => {
           expect('manual_task_id').toBeManualTask({
             font: expectedBoldFont,
             label: 'Manual Task',
@@ -1150,7 +1381,7 @@ describe('mxGraph model - BPMN elements', () => {
           });
         });
 
-        it('Script Task', async () => {
+        it('Script Task', () => {
           expect('script_task_id').toBeScriptTask({
             font: expectedBoldFont,
             label: 'Script Task',
@@ -1174,7 +1405,7 @@ describe('mxGraph model - BPMN elements', () => {
           });
         });
 
-        it('Business Rule Task', async () => {
+        it('Business Rule Task', () => {
           expect('business_rule_task_id').toBeBusinessRuleTask({
             font: expectedBoldFont,
             label: 'Business Rule Task',
@@ -1199,18 +1430,16 @@ describe('mxGraph model - BPMN elements', () => {
         });
       });
 
-      it('text annotations', async () => {
-        expect('text_annotation_id').toBeShape({
-          kind: ShapeBpmnElementKind.TEXT_ANNOTATION,
+      it('text annotations', () => {
+        expect('text_annotation_id').toBeTextAnnotation({
           label: 'Annotation',
           parentId: 'participant_1_id',
           align: 'left',
         });
       });
 
-      it('groups', async () => {
-        expect('Group_0_in_collaboration').toBeShape({
-          kind: ShapeBpmnElementKind.GROUP,
+      it('groups', () => {
+        expect('Group_0_in_collaboration').toBeGroup({
           label: 'Group in collaboration',
           styleShape: 'rectangle',
           verticalAlign: 'top',
@@ -1218,10 +1447,10 @@ describe('mxGraph model - BPMN elements', () => {
         });
       });
 
-      it('gateways', async () => {
-        expect('inclusive_gateway_id').toBeShape({ kind: ShapeBpmnElementKind.GATEWAY_INCLUSIVE, label: 'Inclusive Gateway', parentId: 'participant_1_id', verticalAlign: 'top' });
-        expect('parallel_gateway_id').toBeShape({ kind: ShapeBpmnElementKind.GATEWAY_PARALLEL, label: 'Parallel Gateway', parentId: 'participant_1_id', verticalAlign: 'top' });
-        expect('exclusive_gateway_id').toBeShape({ kind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, label: 'Exclusive Gateway', parentId: 'participant_1_id', verticalAlign: 'top' });
+      it('gateways', () => {
+        expect('inclusive_gateway_id').toBeInclusiveGateway({ label: 'Inclusive Gateway', parentId: 'participant_1_id' });
+        expect('parallel_gateway_id').toBeParallelGateway({ label: 'Parallel Gateway', parentId: 'participant_1_id' });
+        expect('exclusive_gateway_id').toBeExclusiveGateway({ label: 'Exclusive Gateway', parentId: 'participant_1_id' });
         expect('gateway_event_based_id').toBeEventBasedGateway({
           label: 'Event-Based Gateway',
           parentId: 'participant_1_id',
@@ -1243,7 +1472,7 @@ describe('mxGraph model - BPMN elements', () => {
         });
       });
 
-      it('sequence flows', async () => {
+      it('sequence flows', () => {
         expect('default_sequence_flow_id').toBeSequenceFlow({
           sequenceFlowKind: SequenceFlowKind.DEFAULT,
           startArrow: MarkerIdentifier.ARROW_DASH,
@@ -1257,7 +1486,7 @@ describe('mxGraph model - BPMN elements', () => {
         });
         expect('conditional_sequence_flow_from_activity_id').toBeSequenceFlow({
           sequenceFlowKind: SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY,
-          startArrow: mxgraph.mxConstants.ARROW_DIAMOND_THIN,
+          startArrow: mxConstants.ARROW_DIAMOND_THIN,
           parentId: 'participant_1_id',
           verticalAlign: 'bottom',
         });
@@ -1269,50 +1498,53 @@ describe('mxGraph model - BPMN elements', () => {
         });
       });
 
-      it('message flows', async () => {
+      it('message flows', () => {
         expect('message_flow_initiating_message_id').toBeMessageFlow({
           label: 'Message Flow with initiating message',
           messageVisibleKind: MessageVisibleKind.INITIATING,
-          verticalAlign: 'bottom',
+          verticalAlign: 'top',
         });
         expect('message_flow_non_initiating_message_id').toBeMessageFlow({
           label: 'Message Flow with non-initiating message',
           messageVisibleKind: MessageVisibleKind.NON_INITIATING,
-          verticalAlign: 'bottom',
+          verticalAlign: 'top',
         });
         expect('message_flow_no_visible_id').toBeMessageFlow({ label: 'Message Flow without message', messageVisibleKind: MessageVisibleKind.NONE, verticalAlign: 'bottom' });
       });
 
-      it('associations', async () => {
+      it('associations', () => {
         expect('association_id').toBeAssociationFlow({ parentId: 'participant_1_id', verticalAlign: 'bottom' });
       });
     });
 
     it('Diagram with a not displayed pool (without shape) with elements', () => {
       // load BPMN
-      const bpmnDiagramToFilter = readFileSync('../fixtures/bpmn/bpmn-rendering/pools.04.not.displayed.with.elements.bpmn');
-      bpmnVisualization.load(bpmnDiagramToFilter);
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/bpmn-rendering/pools.04.not.displayed.with.elements.bpmn'));
 
       expectPoolsInModel(0);
 
+      // Shapes
+      expectTotalShapesInModel(3);
       expect('start_event_1').toBeStartEvent({
         eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
-        parentId: '1', // id generated by mxGraph as the parent is not in the mxGraph model
+        parentId: getDefaultParentId(),
         verticalAlign: 'middle',
       });
-      expect('task_1').toBeTask({ parentId: '1' });
-      expectShapesInModel('participant_1', 3);
-      // the children of the pool
-      expectTotalShapesInModel(3);
+      expect('task_1').toBeTask({ parentId: getDefaultParentId() });
+      expect('end_event_1').toBeEndEvent({
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
+        parentId: getDefaultParentId(),
+        verticalAlign: 'middle',
+      });
 
-      // only check one sequence flow in details
-      expect('sequence_flow_1').toBeSequenceFlow({ parentId: '1', verticalAlign: 'bottom' });
-      expectEdgesInModel('participant_1', 2);
+      // Edges
       expectTotalEdgesInModel(2);
+      expect('sequence_flow_1').toBeSequenceFlow({ parentId: getDefaultParentId(), verticalAlign: 'bottom' });
+      expect('sequence_flow_2').toBeSequenceFlow({ parentId: getDefaultParentId(), verticalAlign: 'bottom' });
     });
   });
 
-  it('BPMN elements should not be available in the mxGraph model, if they are attached to not existing elements', async () => {
+  it('BPMN elements should not be available in the mxGraph model, if they are attached to not existing elements', () => {
     bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-badly-attached-elements.bpmn'));
 
     // model is OK
@@ -1329,17 +1561,17 @@ describe('mxGraph model - BPMN elements', () => {
     expect('boundary_event_non_interrupting_escalation_id').not.toBeCell();
   });
 
-  it('BPMN element shape should have coordinates relative to the pool when no lane', async () => {
+  it('BPMN element shape should have coordinates relative to the pool when no lane', () => {
     bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-coordinates-relative-to-pool.bpmn'));
 
     expect('Participant_1').toBeCellWithParentAndGeometry({
       // unchanged as this is a pool, coordinates are the ones from the bpmn source
-      geometry: new mxgraph.mxGeometry(160, 80, 900, 180),
+      geometry: new mxGeometry(160, 80, 900, 180),
     });
 
     expect('StartEvent_1').toBeCellWithParentAndGeometry({
       parentId: 'Participant_1',
-      geometry: new mxgraph.mxGeometry(
+      geometry: new mxGeometry(
         150, // absolute coordinates: parent 160, cell 310
         80, // absolute coordinates: parent 80, cell 160
         40, // unchanged as no transformation on size
@@ -1347,37 +1579,37 @@ describe('mxGraph model - BPMN elements', () => {
       ),
     });
 
-    const sequenceFlowMxGeometry = new mxgraph.mxGeometry(0, 0, 0, 0);
-    sequenceFlowMxGeometry.points = [
-      new mxgraph.mxPoint(190, 100), // absolute coordinates: parent x="160" y="80", cell x="350" y="180"
-      new mxgraph.mxPoint(350, 100), // absolute coordinates: parent x="160" y="80", cell x="510" y="180"
+    const sequenceFlowGeometry = new mxGeometry(0, 0, 0, 0);
+    sequenceFlowGeometry.points = [
+      new mxPoint(190, 100), // absolute coordinates: parent x="160" y="80", cell x="350" y="180"
+      new mxPoint(350, 100), // absolute coordinates: parent x="160" y="80", cell x="510" y="180"
     ];
     expect('SequenceFlow_id').toBeCellWithParentAndGeometry({
       parentId: 'Participant_1',
-      geometry: sequenceFlowMxGeometry,
+      geometry: sequenceFlowGeometry,
     });
 
-    const messageFlowMxGeometry = new mxgraph.mxGeometry(0, 0, 0, 0);
-    messageFlowMxGeometry.points = [
-      new mxgraph.mxPoint(334, 260), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="260"
-      new mxgraph.mxPoint(334, 342), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="342"
+    const messageFlowGeometry = new mxGeometry(0, 0, 0, 0);
+    messageFlowGeometry.points = [
+      new mxPoint(334, 260), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="260"
+      new mxPoint(334, 342), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="342"
     ];
     expect('MessageFlow_1').toBeCellWithParentAndGeometry({
-      geometry: messageFlowMxGeometry,
+      geometry: messageFlowGeometry,
     });
   });
 
-  it('lanes and BPMN element shapes should have coordinates relative to the pool or the lane', async () => {
+  it('lanes and BPMN element shapes should have coordinates relative to the pool or the lane', () => {
     bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-coordinates-relative-to-pool-or-lane.bpmn'));
 
     expect('Participant_1').toBeCellWithParentAndGeometry({
       // unchanged as this is a pool, coordinates are the ones from the bpmn source
-      geometry: new mxgraph.mxGeometry(160, 80, 900, 400),
+      geometry: new mxGeometry(160, 80, 900, 400),
     });
 
     expect('Lane_1_1').toBeCellWithParentAndGeometry({
       parentId: 'Participant_1',
-      geometry: new mxgraph.mxGeometry(
+      geometry: new mxGeometry(
         30, // absolute coordinates: parent 160, cell 190
         0, // absolute coordinates: parent 80, cell 80
         870, // unchanged as no transformation on size
@@ -1387,7 +1619,7 @@ describe('mxGraph model - BPMN elements', () => {
 
     expect('StartEvent_1').toBeCellWithParentAndGeometry({
       parentId: 'Lane_1_1',
-      geometry: new mxgraph.mxGeometry(
+      geometry: new mxGeometry(
         120, // absolute coordinates: parent 190, cell 310
         80, // absolute coordinates: parent 80, cell 160
         40, // unchanged as no transformation on size
@@ -1397,7 +1629,7 @@ describe('mxGraph model - BPMN elements', () => {
 
     expect('Lane_1_847987').not.toBeCellWithParentAndGeometry({
       parentId: 'Participant_1',
-      geometry: new mxgraph.mxGeometry(
+      geometry: new mxGeometry(
         30, // absolute coordinates: parent 160, cell 190
         200, // absolute coordinates: parent 80, cell 280
         870, // unchanged as no transformation on size
@@ -1405,70 +1637,71 @@ describe('mxGraph model - BPMN elements', () => {
       ),
     });
 
-    const sequenceFlowMxGeometry = new mxgraph.mxGeometry(0, 0, 0, 0);
-    sequenceFlowMxGeometry.points = [
-      new mxgraph.mxPoint(160, 100), // absolute coordinates: parent x="190" y="80", cell x="350" y="180"
-      new mxgraph.mxPoint(320, 100), // absolute coordinates: parent x="190" y="80", cell x="510" y="180"
+    const sequenceFlowGeometry = new mxGeometry(0, 0, 0, 0);
+    sequenceFlowGeometry.points = [
+      new mxPoint(160, 100), // absolute coordinates: parent x="190" y="80", cell x="350" y="180"
+      new mxPoint(320, 100), // absolute coordinates: parent x="190" y="80", cell x="510" y="180"
     ];
     expect('SequenceFlow_id').toBeCellWithParentAndGeometry({
       parentId: 'Lane_1_1',
-      geometry: sequenceFlowMxGeometry,
+      geometry: sequenceFlowGeometry,
     });
 
-    const messageFlowMxGeometry = new mxgraph.mxGeometry(0, 0, 0, 0);
-    messageFlowMxGeometry.points = [
-      new mxgraph.mxPoint(334, 480), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="480"
-      new mxgraph.mxPoint(334, 632), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="632"
+    const messageFlowGeometry = new mxGeometry(0, 0, 0, 0);
+    messageFlowGeometry.points = [
+      new mxPoint(334, 480), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="480"
+      new mxPoint(334, 632), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="632"
     ];
     expect('MessageFlow_1').toBeCellWithParentAndGeometry({
-      geometry: messageFlowMxGeometry,
+      geometry: messageFlowGeometry,
     });
   });
 
-  it('vertical pool, with vertical lanes & sub-lanes', async () => {
+  it('vertical pool, with vertical lanes & sub-lanes', () => {
     bpmnVisualization.load(readFileSync('../fixtures/bpmn/model-vertical-pool-lanes-sub_lanes.bpmn'));
 
     // pool
-    const minimalPoolModelElement: ExpectedShapeModelElement = { isHorizontal: false };
-    expect('Participant_Vertical_With_Lanes').toBePool({ ...minimalPoolModelElement, label: 'Vertical Pool With Lanes' });
+    const baseShapeModelElement: ExpectedShapeModelElement = { isSwimLaneLabelHorizontal: true };
+    expect('Participant_Vertical_With_Lanes').toBePool({ ...baseShapeModelElement, label: 'Vertical Pool With Lanes' });
 
     // lane
-    expect('Lane_Vertical_3').toBeLane({ ...minimalPoolModelElement, parentId: 'Participant_Vertical_With_Lanes' });
-    expect('Lane_Vertical_1').toBeLane({ ...minimalPoolModelElement, label: 'Lane', parentId: 'Participant_Vertical_With_Lanes' });
-    expect('Lane_Vertical_With_Sub_Lane').toBeLane({ ...minimalPoolModelElement, label: 'Lane with Sub-Lanes', parentId: 'Participant_Vertical_With_Lanes' });
-    expect('SubLane_Vertical_1').toBeLane({ ...minimalPoolModelElement, label: 'Sub-Lane 1', parentId: 'Lane_Vertical_With_Sub_Lane' });
-    expect('SubLane_Vertical_2').toBeLane({ ...minimalPoolModelElement, label: 'Sub-Lane 2', parentId: 'Lane_Vertical_With_Sub_Lane' });
+    expect('Lane_Vertical_3').toBeLane({ ...baseShapeModelElement, parentId: 'Participant_Vertical_With_Lanes' });
+    expect('Lane_Vertical_1').toBeLane({ ...baseShapeModelElement, label: 'Lane', parentId: 'Participant_Vertical_With_Lanes' });
+    expect('Lane_Vertical_With_Sub_Lane').toBeLane({ ...baseShapeModelElement, label: 'Lane with Sub-Lanes', parentId: 'Participant_Vertical_With_Lanes' });
+    expect('SubLane_Vertical_1').toBeLane({ ...baseShapeModelElement, label: 'Sub-Lane 1', parentId: 'Lane_Vertical_With_Sub_Lane' });
+    expect('SubLane_Vertical_2').toBeLane({ ...baseShapeModelElement, label: 'Sub-Lane 2', parentId: 'Lane_Vertical_With_Sub_Lane' });
   });
 
   describe('Special cases', () => {
-    // There is no pool in the diagram so in the mxGraph model, the parent of cells is the default cell. mxGraph geometry and BPMN coordinates are the same.
-    const defaultParentId = '1';
+    // There is no pool in the diagram so in the mxGraph model, the parent of cells is the default cell. The mxGraph geometry and BPMN coordinates are the same.
+    const defaultParentId = getDefaultParentId();
 
     it('Parse a diagram with large numbers and large decimals', () => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/simple-start-task-end_large_numbers_and_large_decimals.bpmn'));
 
+      const startEvent1Geometry = new mxGeometry(
+        156.100_010_002_564_63,
+        81.345_000_000_000_01, // 81.345000000000009 in the diagram
+        // eslint-disable-next-line @typescript-eslint/no-loss-of-precision
+        36.000_345_000_100_000_2, // 36.0003450001000002 in the diagram
+        36.000_000_100_354_96,
+      );
+      startEvent1Geometry.offset = new mxPoint(1.899_989_997_435_369_6, 42.654_999_999_999_99);
       expect('StartEvent_1').toBeCellWithParentAndGeometry({
         parentId: defaultParentId,
-        geometry: new mxgraph.mxGeometry(
-          156.10001,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          '81.3450000000000090', // 81.345000000000009 in the diagram
-          '36.0003450001000002',
-          36.0000001,
-        ),
+        geometry: startEvent1Geometry,
       });
 
       expect('Activity_1').toBeCellWithParentAndGeometry({
         parentId: defaultParentId,
-        geometry: new mxgraph.mxGeometry(250, 59, 100, 80),
+        geometry: new mxGeometry(250, 59.795_444_2, 100.678_942_1, 80),
       });
 
-      const mxGeometry = new mxgraph.mxGeometry(412, 81, 36, 36);
-      mxGeometry.offset = new mxgraph.mxPoint(4.16e25, 1.24000000003e29);
+      const endEvent1Geometry = new mxGeometry(412, 81, 36, 36);
+      endEvent1Geometry.offset = new mxPoint(4.16e25, 1.240_000_000_03e29);
       expect('EndEvent_1').toBeCellWithParentAndGeometry({
         parentId: defaultParentId,
-        geometry: mxGeometry,
+        geometry: endEvent1Geometry,
       });
     });
 
@@ -1477,11 +1710,9 @@ describe('mxGraph model - BPMN elements', () => {
 
       expect('Activity_1').toBeCellWithParentAndGeometry({
         parentId: defaultParentId,
-        geometry: new mxgraph.mxGeometry(
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore malformed source, conversion result
-          'not_a_number0', // from 'not_a_number'
-          'not a number too0', // from 'not a number too'
+        geometry: new mxGeometry(
+          Number.NaN, // from 'not_a_number'
+          Number.NaN, // from 'not a number too'
           -100,
           -80,
         ),
@@ -1542,20 +1773,22 @@ describe('mxGraph model - BPMN elements', () => {
 
       expectPoolsInModel(0);
 
+      // Shapes
+      expectTotalShapesInModel(3);
       expect('start_event_1').toBeStartEvent({
         eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
-        parentId: '1', // id generated by mxGraph as the parent is not in the mxGraph model
-        verticalAlign: 'middle',
+        parentId: getDefaultParentId(),
       });
-      expect('task_1').toBeTask({ parentId: '1' });
-      expectShapesInModel('participant_1', 3);
-      // the children of the pool
-      expectTotalShapesInModel(3);
+      expect('task_1').toBeTask({ parentId: getDefaultParentId() });
+      expect('end_event_1').toBeEndEvent({
+        eventDefinitionKind: ShapeBpmnEventDefinitionKind.NONE,
+        parentId: getDefaultParentId(),
+      });
 
-      // only check one sequence flow in details
-      expect('sequence_flow_1').toBeSequenceFlow({ parentId: '1', verticalAlign: 'bottom' });
-      expectEdgesInModel('participant_1', 2);
+      // Edges
       expectTotalEdgesInModel(2);
+      expect('sequence_flow_1').toBeSequenceFlow({ parentId: getDefaultParentId(), verticalAlign: 'bottom' });
+      expect('sequence_flow_2').toBeSequenceFlow({ parentId: getDefaultParentId(), verticalAlign: 'bottom' });
     });
   });
 });

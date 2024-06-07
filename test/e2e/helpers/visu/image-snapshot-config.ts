@@ -1,21 +1,24 @@
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-import { dirname, join } from 'node:path';
+/*
+Copyright 2020 Bonitasoft S.A.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
-import { configLog, getSimplePlatformName, getTestedBrowserFamily } from '../test-utils';
+
+import path from 'node:path';
+
+import { configLog, getSimplePlatformName, getTestedBrowserFamily } from '@test/shared/visu/test-utils';
 
 export interface ImageSnapshotThresholdConfig {
   linux?: number;
@@ -25,7 +28,7 @@ export interface ImageSnapshotThresholdConfig {
 }
 
 const defaultImageSnapshotConfig: MatchImageSnapshotOptions = {
-  diffDirection: 'vertical',
+  onlyDiff: true,
   // locally and on CI, see diff images folder directly
   dumpDiffToConsole: false,
   // use SSIM to limit false positive
@@ -41,15 +44,15 @@ export class ImageSnapshotConfigurator {
   protected readonly defaultCustomDiffDir: string;
   protected readonly defaultCustomSnapshotsDir: string;
 
-  constructor(imageSnapshotThresholds: MultiBrowserImageSnapshotThresholds, snapshotsSubDirName: string) {
+  constructor(imageSnapshotThresholds: MultiBrowserImageSnapshotThresholds, snapshotsSubDirectoryName: string) {
     this.thresholdConfig = imageSnapshotThresholds.getThresholds();
     this.defaultFailureThreshold = imageSnapshotThresholds.getDefault();
-    this.defaultCustomDiffDir = join(ImageSnapshotConfigurator.getDiffDir(), snapshotsSubDirName);
-    this.defaultCustomSnapshotsDir = join(ImageSnapshotConfigurator.getSnapshotsDir(), snapshotsSubDirName);
+    this.defaultCustomDiffDir = path.join(ImageSnapshotConfigurator.getDiffDirectory(), snapshotsSubDirectoryName);
+    this.defaultCustomSnapshotsDir = path.join(ImageSnapshotConfigurator.getSnapshotsDirectory(), snapshotsSubDirectoryName);
   }
 
-  getConfig(param: string | { fileName: string }): MatchImageSnapshotOptions {
-    const fileName = typeof param === 'string' ? param : param.fileName;
+  getConfig(parameter: string | { fileName: string }): MatchImageSnapshotOptions {
+    const fileName = typeof parameter === 'string' ? parameter : parameter.fileName;
     const failureThreshold = this.getFailureThreshold(fileName);
 
     return {
@@ -70,7 +73,7 @@ export class ImageSnapshotConfigurator {
       configLog(`Using dedicated image snapshot threshold for '${fileName}'`);
       const simplePlatformName = getSimplePlatformName();
       configLog(`Simple platform name: ${simplePlatformName}`);
-      failureThreshold = config[simplePlatformName] || failureThreshold;
+      failureThreshold = config[simplePlatformName] ?? failureThreshold;
     } else {
       configLog(`Using default image snapshot threshold for '${fileName}'`);
     }
@@ -79,14 +82,14 @@ export class ImageSnapshotConfigurator {
     return failureThreshold;
   }
 
-  static getSnapshotsDir(): string {
-    return join(dirname(expect.getState().testPath), '__image_snapshots__');
+  static getSnapshotsDirectory(): string {
+    return path.join(path.dirname(expect.getState().testPath), '__image_snapshots__');
   }
 
-  static getDiffDir(): string {
-    const testDirName = dirname(expect.getState().testPath);
+  static getDiffDirectory(): string {
+    const testDirectoryName = path.dirname(expect.getState().testPath);
     // directory is relative to $ROOT/test/e2e
-    return join(testDirName, '../../build/test-report/e2e/__diff_output__');
+    return path.join(testDirectoryName, '../../build/test-report/e2e/__diff_output__');
   }
 }
 
@@ -131,27 +134,35 @@ export class MultiBrowserImageSnapshotThresholds {
     const testedBrowserFamily = getTestedBrowserFamily();
     configLog(`The browser family used for test is ${testedBrowserFamily}`);
     switch (testedBrowserFamily) {
-      case 'chromium':
+      case 'chromium': {
         return this.getChromiumThresholds();
-      case 'firefox':
+      }
+      case 'firefox': {
         return this.getFirefoxThresholds();
-      case 'webkit':
+      }
+      case 'webkit': {
         return this.getWebkitThresholds();
-      default:
+      }
+      default: {
         return new Map<string, ImageSnapshotThresholdConfig>();
+      }
     }
   }
 
   getDefault(): number {
     switch (getTestedBrowserFamily()) {
-      case 'chromium':
+      case 'chromium': {
         return this.chromiumDefault;
-      case 'firefox':
+      }
+      case 'firefox': {
         return this.firefoxDefault;
-      case 'webkit':
+      }
+      case 'webkit': {
         return this.webkitDefault;
-      default:
+      }
+      default: {
         return 0;
+      }
     }
   }
 }

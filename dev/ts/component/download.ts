@@ -1,19 +1,20 @@
-/**
- * Copyright 2021 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-import { logDownload } from '../utils/internal-helpers';
+/*
+Copyright 2021 Bonitasoft S.A.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import { logDownload } from '../shared/internal-helpers';
 
 // inspired from https://ourcodeworld.com/articles/read/189/how-to-create-a-file-and-generate-a-download-with-javascript-in-the-browser-without-a-server
 function download(filename: string, contentType: string, text: string): void {
@@ -28,10 +29,10 @@ function download(filename: string, contentType: string, text: string): void {
   downloadLink.setAttribute('download', filename);
 
   downloadLink.style.display = 'none';
-  document.body.appendChild(downloadLink);
+  document.body.append(downloadLink);
 
   downloadLink.click();
-  document.body.removeChild(downloadLink);
+  downloadLink.remove();
 }
 
 export function downloadAsSvg(svg: string): void {
@@ -60,26 +61,26 @@ export function downloadAsPng(svg: string): void {
   const imgPreview = document.createElement('img');
   imgPreview.setAttribute('style', 'position: absolute; top: -9999px');
   imgPreview.crossOrigin = 'anonymous';
-  document.body.appendChild(imgPreview);
+  document.body.append(imgPreview);
 
   const canvas = document.createElement('canvas');
-  const canvasCtx = canvas.getContext('2d');
+  const canvasContext = canvas.getContext('2d');
 
-  imgPreview.onload = function () {
+  imgPreview.addEventListener('load', function () {
     const img = new Image();
     // B.2.0 not fully exported with client width/height, so use natural width/height
     canvas.width = imgPreview.naturalWidth;
     canvas.height = imgPreview.naturalHeight;
     img.crossOrigin = 'Anonymous';
-    img.onload = function () {
-      canvasCtx.drawImage(img, 0, 0);
+    img.addEventListener('load', function () {
+      canvasContext.drawImage(img, 0, 0);
       URL.revokeObjectURL(svgUrl);
       const pngInBase64 = canvas.toDataURL('image/png');
-      document.body.removeChild(imgPreview);
+      imgPreview.remove();
       download('diagram.png', '', pngInBase64);
       logDownload('Download completed');
-    };
+    });
     img.src = imgPreview.src;
-  };
+  });
   imgPreview.src = svgUrl;
 }

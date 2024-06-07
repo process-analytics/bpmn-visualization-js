@@ -1,32 +1,32 @@
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2020 Bonitasoft S.A.
 
-import { parseJsonAndExpectOnlyEdgesAndFlowNodes } from '../../../helpers/JsonTestUtils';
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
+
 import { verifyEdge } from '../../../helpers/bpmn-model-expect';
+import { parseJsonAndExpectOnlyEdgesAndFlowNodes } from '../../../helpers/JsonTestUtils';
 
-import { SequenceFlowKind } from '../../../../../src/model/bpmn/internal';
-import { Waypoint } from '../../../../../src/model/bpmn/internal/edge/edge';
-import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
+import { SequenceFlowKind } from '@lib/model/bpmn/internal';
+import { Waypoint } from '@lib/model/bpmn/internal/edge/edge';
 
 describe('parse bpmn as json for default sequence flow', () => {
   it.each([
     ['exclusiveGateway'],
     ['inclusiveGateway'],
-    // To uncomment when we support complex gateway
-    // ['complexGateway'],
+    ['complexGateway'],
     ['task'],
     ['userTask'],
     ['serviceTask'],
@@ -38,7 +38,7 @@ describe('parse bpmn as json for default sequence flow', () => {
     ['callActivity'],
     ['subProcess'],
   ])(`should convert as Edge, when an sequence flow (defined as default in %s) is an attribute (as object) of 'process' (as object)`, sourceKind => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
@@ -48,6 +48,7 @@ describe('parse bpmn as json for default sequence flow', () => {
             sourceRef: 'source_id_0',
             targetRef: 'targetRef_RLk',
           },
+          [sourceKind]: { id: 'source_id_0', default: 'sequenceFlow_id_0' },
         },
         BPMNDiagram: {
           id: 'BpmnDiagram_1',
@@ -67,7 +68,6 @@ describe('parse bpmn as json for default sequence flow', () => {
         },
       },
     };
-    (json.definitions.process as TProcess)[`${sourceKind}`] = { id: 'source_id_0', default: 'sequenceFlow_id_0' };
 
     const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
 
@@ -83,11 +83,14 @@ describe('parse bpmn as json for default sequence flow', () => {
   });
 
   it(`should NOT convert, when an sequence flow (defined as default) is an attribute of 'process' and attached to a flow node where is NOT possible in BPMN Semantic`, () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
           id: 'Process_1',
+          // Enforcement of the 'default' property in case the XML BPMN content is malformed
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           parallelGateway: { id: 'gateway_id_0', default: 'sequenceFlow_id_0' },
           sequenceFlow: {
             id: 'sequenceFlow_id_0',

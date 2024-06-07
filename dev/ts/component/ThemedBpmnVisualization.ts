@@ -1,21 +1,22 @@
-/**
- * Copyright 2022 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2022 Bonitasoft S.A.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 import { BpmnVisualization, FlowKind, ShapeBpmnElementKind, ShapeUtil, StyleConfigurator, StyleDefault } from '../../../src/bpmn-visualization';
-import { logStartup } from '../utils/internal-helpers';
-import { mxgraph } from '../../../src/component/mxgraph/initializer';
+import { mxConstants } from '../../../src/component/mxgraph/initializer';
+import { logStartup } from '../shared/internal-helpers';
 
 interface Theme {
   defaultFillColor: string;
@@ -115,67 +116,71 @@ export class ThemedBpmnVisualization extends BpmnVisualization {
     const styleSheet = this.graph.getStylesheet();
 
     // EVENT
-    ShapeUtil.eventKinds().forEach(kind => {
+    for (const kind of ShapeUtil.eventKinds()) {
       let fillColor;
       let strokeColor;
       switch (kind) {
-        case 'endEvent':
+        case 'endEvent': {
           fillColor = theme.endEventFillColor;
           strokeColor = theme.endEventStrokeColor;
           break;
-        case 'startEvent':
+        }
+        case 'startEvent': {
           fillColor = theme.startEventFillColor;
           strokeColor = theme.startEventStrokeColor;
           break;
+        }
         case 'intermediateCatchEvent':
         case 'intermediateThrowEvent':
-        case 'boundaryEvent':
+        case 'boundaryEvent': {
           fillColor = theme.defaultFillColor;
           strokeColor = theme.catchAndThrowEventStrokeColor ?? theme.defaultStrokeColor;
           break;
-        default:
+        }
+        default: {
           fillColor = theme.defaultFillColor;
           strokeColor = theme.defaultStrokeColor;
           break;
+        }
       }
       const style = styleSheet.styles[kind];
-      style['fillColor'] = fillColor;
-      style['strokeColor'] = strokeColor;
-    });
+      style.fillColor = fillColor;
+      style.strokeColor = strokeColor;
+    }
 
     // TASK
-    ShapeUtil.taskKinds().forEach(kind => {
+    for (const kind of ShapeUtil.taskKinds()) {
       const style = styleSheet.styles[kind];
-      style['fillColor'] = theme.taskAndCallActivityFillColor;
-    });
+      style.fillColor = theme.taskAndCallActivityFillColor;
+    }
 
     // CALL ACTIVITY
     const callActivityStyle = styleSheet.styles[ShapeBpmnElementKind.CALL_ACTIVITY];
-    callActivityStyle['fillColor'] = theme.taskAndCallActivityFillColor;
+    callActivityStyle.fillColor = theme.taskAndCallActivityFillColor;
 
     // TEXT ANNOTATION
     const textAnnotationStyle = styleSheet.styles[ShapeBpmnElementKind.TEXT_ANNOTATION];
-    textAnnotationStyle['fillColor'] = theme.textAnnotationFillColor ?? StyleDefault.TEXT_ANNOTATION_FILL_COLOR;
+    textAnnotationStyle.fillColor = theme.textAnnotationFillColor ?? StyleDefault.TEXT_ANNOTATION_FILL_COLOR;
 
     // POOL
     const poolStyle = styleSheet.styles[ShapeBpmnElementKind.POOL];
-    poolStyle['fillColor'] = theme.poolFillColor;
-    poolStyle['swimlaneFillColor'] = theme.defaultFillColor;
+    poolStyle.fillColor = theme.poolFillColor;
+    poolStyle.swimlaneFillColor = theme.defaultFillColor;
 
     // LANE
     const laneStyle = styleSheet.styles[ShapeBpmnElementKind.LANE];
-    laneStyle['fillColor'] = theme.laneFillColor;
+    laneStyle.fillColor = theme.laneFillColor;
 
     // DEFAULTS
     const defaultVertexStyle = styleSheet.getDefaultVertexStyle();
-    defaultVertexStyle['fontColor'] = theme.defaultFontColor;
-    defaultVertexStyle['fillColor'] = theme.defaultFillColor;
-    defaultVertexStyle['strokeColor'] = theme.defaultStrokeColor;
+    defaultVertexStyle.fontColor = theme.defaultFontColor;
+    defaultVertexStyle.fillColor = theme.defaultFillColor;
+    defaultVertexStyle.strokeColor = theme.defaultStrokeColor;
 
     const defaultEdgeStyle = styleSheet.getDefaultEdgeStyle();
-    defaultEdgeStyle['fontColor'] = theme.defaultFontColor;
-    defaultEdgeStyle['fillColor'] = theme.defaultFillColor;
-    defaultEdgeStyle['strokeColor'] = theme.flowColor ?? theme.defaultStrokeColor;
+    defaultEdgeStyle.fontColor = theme.defaultFontColor;
+    defaultEdgeStyle.fillColor = theme.defaultFillColor;
+    defaultEdgeStyle.strokeColor = theme.flowColor ?? theme.defaultStrokeColor;
 
     // theme configuration completed
     return true;
@@ -188,8 +193,8 @@ export class ThemedBpmnVisualization extends BpmnVisualization {
 
     // directly access the 'styles' map to update values. Using stylesheet.getCellStyle returns a copy of the style
     const seqFlowStyle = stylesheet.styles[FlowKind.SEQUENCE_FLOW];
-    seqFlowStyle[mxgraph.mxConstants.STYLE_STROKECOLOR] = color;
-    seqFlowStyle[mxgraph.mxConstants.STYLE_FILLCOLOR] = color;
+    seqFlowStyle[mxConstants.STYLE_STROKECOLOR] = color;
+    seqFlowStyle[mxConstants.STYLE_FILLCOLOR] = color;
 
     logStartup('Sequence flows style updated');
   }

@@ -1,31 +1,37 @@
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2020 Bonitasoft S.A.
 
-import 'jest-playwright-preset';
-import { join } from 'node:path';
-import type { Page } from 'playwright';
-import type { Point } from './helpers/visu/bpmn-page-utils';
-import { AvailableTestPages, PageTester } from './helpers/visu/bpmn-page-utils';
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
+import type { Point } from '@test/shared/visu/bpmn-page-utils';
+
+import path from 'node:path';
+
+import debugLogger from 'debug';
+import 'jest-playwright-preset';
+
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
-import { ZoomType } from '../../src/component/options';
+
+import { ZoomType } from '@lib/component/options';
+import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
+
+const log = debugLogger('bv:test:e2e:navigation:zoom-pan');
 
 class MouseNavigationImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
-    super({ chromium: 0.0005 / 100, firefox: 0.04 / 100, webkit: 0 });
+    super({ chromium: 0.003 / 100, firefox: 0.04 / 100, webkit: 0 });
   }
 
   // if no dedicated information, set minimal threshold to make test pass on GitHub Workflow
@@ -35,12 +41,11 @@ class MouseNavigationImageSnapshotThresholds extends MultiBrowserImageSnapshotTh
       [
         'simple.2.start.events.1.task',
         {
-          macos: 0.001 / 100, // 0.0009247488045871499%
+          macos: 0.02 / 100, // 0.015022037589296211%
         },
       ],
     ]);
   }
-
   protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
@@ -53,7 +58,7 @@ class MouseNavigationImageSnapshotThresholds extends MultiBrowserImageSnapshotTh
   }
 }
 
-const pageTester = new PageTester({ targetedPage: AvailableTestPages.DIAGRAM_NAVIGATION, diagramSubfolder: 'navigation' }, <Page>page);
+const pageTester = new PageTester({ targetedPage: AvailableTestPages.DIAGRAM_NAVIGATION, diagramSubfolder: 'navigation' }, page);
 const bpmnDiagramName = 'simple.2.start.events.1.task';
 
 describe('diagram navigation - zoom and pan with mouse', () => {
@@ -62,23 +67,40 @@ describe('diagram navigation - zoom and pan with mouse', () => {
   let containerCenter: Point;
 
   beforeEach(async () => {
+    log("Start test: '%s' (test file path: '%s')", expect.getState().currentTestName, expect.getState().testPath);
+
     await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName);
     containerCenter = await pageTester.getContainerCenter();
   });
+  afterEach(() => {
+    log("End test: '%s' (test file path: '%s')", expect.getState().currentTestName, expect.getState().testPath);
+  });
 
   it('mouse panning', async () => {
+    log('Starting mouse panning checks');
+    log('Doing mouse panning');
     await pageTester.mousePanning({ originPoint: containerCenter, destinationPoint: { x: containerCenter.x + 150, y: containerCenter.y + 40 } });
+    log('Mouse panning done');
 
+    log('Checking image match');
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image).toMatchImageSnapshot({
       ...config,
       customSnapshotIdentifier: 'mouse.panning',
     });
+    log('Image match OK');
   });
 
-  describe.each([ZoomType.In, ZoomType.Out])(`ctrl + mouse: zoom %s`, (zoomType: ZoomType) => {
-    it.each([1, 3])('zoom %s times', async (xTimes: number) => {
+  describe.each([ZoomType.In, ZoomType.Out])(`ctrl + mouse: zoom [%s]`, (zoomType: ZoomType) => {
+    beforeEach(() => {
+      log("Start test: '%s' (test file path: '%s')", expect.getState().currentTestName, expect.getState().testPath);
+    });
+    afterEach(() => {
+      log("End test: '%s' (test file path: '%s')", expect.getState().currentTestName, expect.getState().testPath);
+    });
+
+    it.each([1, 3])('zoom [%s times]', async (xTimes: number) => {
       await pageTester.mouseZoom({ x: containerCenter.x + 200, y: containerCenter.y }, zoomType, xTimes);
 
       const image = await page.screenshot({ fullPage: true });
@@ -100,13 +122,13 @@ describe('diagram navigation - zoom and pan with mouse', () => {
     expect(image).toMatchImageSnapshot({
       ...config,
       customSnapshotIdentifier: 'initial.zoom',
-      customDiffDir: join(config.customDiffDir, `mouse-zoom-in-out-${xTimes}-times`),
+      customDiffDir: path.join(config.customDiffDir, `mouse-zoom-in-out-${xTimes}-times`),
     });
   });
 });
 
 async function doZoomWithButton(zoomType: ZoomType, xTimes = 1): Promise<void> {
-  for (let i = 0; i < xTimes; i++) {
+  for (let index = 0; index < xTimes; index++) {
     await pageTester.clickOnButton(`zoom-${zoomType}`);
   }
 }
@@ -114,7 +136,7 @@ async function doZoomWithButton(zoomType: ZoomType, xTimes = 1): Promise<void> {
 describe('diagram navigation - zoom with buttons', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
     new MultiBrowserImageSnapshotThresholds({
-      chromium: 0.03 / 100, // max 0.029310570733620533%
+      chromium: 0.04 / 100, // max 0.03513530712989654%
       firefox: 0.03 / 100, // max 0.029286409410644865%
       webkit: 0.034 / 100, // max 0.03302199927066596%
     }),
@@ -144,7 +166,7 @@ describe('diagram navigation - zoom with buttons', () => {
     expect(image).toMatchImageSnapshot({
       ...config,
       customSnapshotIdentifier: 'initial.zoom',
-      customDiffDir: join(config.customDiffDir, `button-zoom-in-out-${xTimes}-times`),
+      customDiffDir: path.join(config.customDiffDir, `button-zoom-in-out-${xTimes}-times`),
     });
   });
 });
@@ -152,7 +174,7 @@ describe('diagram navigation - zoom with buttons', () => {
 describe('diagram navigation - zoom with buttons and mouse', () => {
   const imageSnapshotConfigurator = new ImageSnapshotConfigurator(
     new MultiBrowserImageSnapshotThresholds({
-      chromium: 0.03 / 100, // max 0.029310570733620533%
+      chromium: 0.04 / 100, // max 0.03513530712989654%
       firefox: 0.03 / 100, // max 0.029286409410644865%
       webkit: 0.035 / 100, // max 0.03302199927066596%
     }),
@@ -186,7 +208,7 @@ describe('diagram navigation - zoom with buttons and mouse', () => {
     expect(image).toMatchImageSnapshot({
       ...config,
       customSnapshotIdentifier: 'initial.zoom',
-      customDiffDir: join(config.customDiffDir, `zoom-button-then-mouse-${firstZoom}-then-${secondZoom}`),
+      customDiffDir: path.join(config.customDiffDir, `zoom-button-then-mouse-${firstZoom}-then-${secondZoom}`),
     });
   });
 
@@ -203,7 +225,7 @@ describe('diagram navigation - zoom with buttons and mouse', () => {
     expect(image).toMatchImageSnapshot({
       ...config,
       customSnapshotIdentifier: 'initial.zoom',
-      customDiffDir: join(config.customDiffDir, `zoom-mouse-then-button-${firstZoom}-then-${secondZoom}`),
+      customDiffDir: path.join(config.customDiffDir, `zoom-mouse-then-button-${firstZoom}-then-${secondZoom}`),
     });
   });
 });

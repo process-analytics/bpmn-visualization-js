@@ -1,26 +1,27 @@
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2020 Bonitasoft S.A.
 
-import { StyleConfigurator } from './config/StyleConfigurator';
-import ShapeConfigurator from './config/ShapeConfigurator';
-import MarkerConfigurator from './config/MarkerConfigurator';
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 import type { GlobalOptions } from '../options';
-import { BpmnGraph } from './BpmnGraph';
-import { mxgraph } from './initializer';
 import type { mxMouseEvent } from 'mxgraph';
+
+import { BpmnGraph } from './BpmnGraph';
+import MarkerConfigurator from './config/MarkerConfigurator';
+import ShapeConfigurator from './config/ShapeConfigurator';
+import { StyleConfigurator } from './config/StyleConfigurator';
+import { mxEvent } from './initializer';
 
 /**
  * Configure the BpmnMxGraph graph that can be used by the lib
@@ -66,13 +67,13 @@ export default class GraphConfigurator {
     const panningHandler = this.graph.panningHandler;
     if (options?.navigation?.enabled) {
       // Pan configuration
-      panningHandler.addListener(mxgraph.mxEvent.PAN_START, this.getPanningHandler('grab'));
-      panningHandler.addListener(mxgraph.mxEvent.PAN_END, this.getPanningHandler('default'));
+      panningHandler.addListener(mxEvent.PAN_START, setContainerCursor(this.graph, 'grab'));
+      panningHandler.addListener(mxEvent.PAN_END, setContainerCursor(this.graph, 'default'));
 
-      this.graph.panningHandler.usePopupTrigger = false; // only use the left button to trigger panning
+      panningHandler.usePopupTrigger = false; // only use the left button to trigger panning
       // Reimplement the function as we also want to trigger 'panning on cells' (ignoreCell to true) and only on left-click
       // The mxGraph standard implementation doesn't ignore right click in this case, so do it by ourselves
-      panningHandler.isForcePanningEvent = (me): boolean => mxgraph.mxEvent.isLeftMouseButton(me.getEvent()) || mxgraph.mxEvent.isMultiTouchEvent(me.getEvent());
+      panningHandler.isForcePanningEvent = (me): boolean => mxEvent.isLeftMouseButton(me.getEvent()) || mxEvent.isMultiTouchEvent(me.getEvent());
       this.graph.setPanning(true);
 
       // Zoom configuration
@@ -86,10 +87,10 @@ export default class GraphConfigurator {
       panningHandler.isForcePanningEvent = (_me: mxMouseEvent): boolean => false;
     }
   }
+}
 
-  private getPanningHandler(cursor: 'grab' | 'default'): () => void {
-    return (): void => {
-      this.graph.isEnabled() && (this.container.style.cursor = cursor);
-    };
-  }
+function setContainerCursor(graph: BpmnGraph, cursor: 'grab' | 'default'): () => void {
+  return (): void => {
+    graph.isEnabled() && (graph.container.style.cursor = cursor);
+  };
 }

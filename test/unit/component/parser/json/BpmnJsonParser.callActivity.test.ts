@@ -1,27 +1,31 @@
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2020 Bonitasoft S.A.
 
-import type { BuildCallActivityParameter, BuildGatewayKind, BuildTaskKind, OtherBuildEventKind } from '../../../helpers/JsonBuilder';
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import type { ExpectedShape } from '../../../helpers/bpmn-model-expect';
+import type { BuildCallActivityParameter, BuildGatewayKind, BuildTaskKind, BuildNotBoundaryEventKind, BpmnGlobalTaskKind } from '../../../helpers/JsonBuilder';
+import type { GlobalTaskKind } from '@lib/model/bpmn/internal';
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
+
+import { verifyEdge, verifyShape } from '../../../helpers/bpmn-model-expect';
 import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilder';
 import { parseJsonAndExpect, parseJsonAndExpectOnlyEdgesAndFlowNodes, parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtils';
-import { verifyEdge, verifyShape } from '../../../helpers/bpmn-model-expect';
 
-import type { GlobalTaskKind } from '../../../../../src/model/bpmn/internal';
-import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '../../../../../src/model/bpmn/internal';
-import type { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
+import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind } from '@lib/model/bpmn/internal';
+
+const expectedBounds = { x: 346, y: 856, width: 45, height: 56 };
 
 describe('parse bpmn as json for callActivity', () => {
   describe('parse bpmn as json for callActivity calling process', () => {
@@ -40,7 +44,7 @@ describe('parse bpmn as json for callActivity', () => {
         ['array', [callActivityJson]],
       ])(
         `should convert as Shape, when a process contains a ${expandedKind} call activity calling another existing process`,
-        (title, callActivity: BuildCallActivityParameter | BuildCallActivityParameter[]) => {
+        (_title, callActivity: BuildCallActivityParameter | BuildCallActivityParameter[]) => {
           const json: BpmnJsonModel = buildDefinitions({
             process: [
               {
@@ -55,13 +59,12 @@ describe('parse bpmn as json for callActivity', () => {
 
           verifyShape(model.flowNodes[0], {
             shapeId: 'shape_call_activity_id_0',
-            parentId: undefined,
             bpmnElementId: 'call_activity_id_0',
             bpmnElementName: 'call activity name',
             bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
             bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
             bpmnElementMarkers: expectedBpmnElementMarkers,
-            bounds: { x: 346, y: 856, width: 45, height: 56 },
+            bounds: expectedBounds,
           });
         },
       );
@@ -81,13 +84,12 @@ describe('parse bpmn as json for callActivity', () => {
 
         verifyShape(model.flowNodes[0], {
           shapeId: `shape_call_activity_id_0`,
-          parentId: undefined,
           bpmnElementId: `call_activity_id_0`,
           bpmnElementName: 'call activity name',
           bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
           bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
           bpmnElementMarkers: expectedBpmnElementMarkers,
-          bounds: { x: 346, y: 856, width: 45, height: 56 },
+          bounds: expectedBounds,
         });
       });
 
@@ -106,13 +108,12 @@ describe('parse bpmn as json for callActivity', () => {
 
         verifyShape(model.flowNodes[0], {
           shapeId: `shape_call_activity_id_1`,
-          parentId: undefined,
           bpmnElementId: `call_activity_id_1`,
           bpmnElementName: undefined,
           bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
           bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
           bpmnElementMarkers: expectedBpmnElementMarkers,
-          bounds: { x: 346, y: 856, width: 45, height: 56 },
+          bounds: expectedBounds,
         });
       });
 
@@ -135,13 +136,12 @@ describe('parse bpmn as json for callActivity', () => {
 
         verifyShape(model.flowNodes[0], {
           shapeId: 'shape_call_activity_id_0',
-          parentId: undefined,
           bpmnElementId: 'call_activity_id_0',
           bpmnElementName: undefined,
           bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
           bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
           bpmnElementMarkers: expectedBpmnElementMarkers,
-          bounds: { x: 346, y: 856, width: 45, height: 56 },
+          bounds: expectedBounds,
         });
       });
 
@@ -165,13 +165,12 @@ describe('parse bpmn as json for callActivity', () => {
         expect(model.pools[0].bpmnElement.parentId).toBe('call_activity_id_0');
         verifyShape(model.flowNodes[0], {
           shapeId: 'shape_call_activity_id_0',
-          parentId: undefined,
           bpmnElementId: 'call_activity_id_0',
           bpmnElementName: undefined,
           bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
           bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
           bpmnElementMarkers: expectedBpmnElementMarkers,
-          bounds: { x: 346, y: 856, width: 45, height: 56 },
+          bounds: expectedBounds,
         });
       });
 
@@ -198,13 +197,12 @@ describe('parse bpmn as json for callActivity', () => {
         expect(model.lanes[0].bpmnElement.parentId).toBe('call_activity_id_0');
         verifyShape(model.flowNodes[0], {
           shapeId: 'shape_call_activity_id_0',
-          parentId: undefined,
           bpmnElementId: 'call_activity_id_0',
           bpmnElementName: undefined,
           bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
           bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
           bpmnElementMarkers: expectedBpmnElementMarkers,
-          bounds: { x: 346, y: 856, width: 45, height: 56 },
+          bounds: expectedBounds,
         });
       });
 
@@ -217,7 +215,7 @@ describe('parse bpmn as json for callActivity', () => {
                 id: 'process_1',
                 event: {
                   id: `${expectedBpmnElementKind}_id`,
-                  bpmnKind: expectedBpmnElementKind as OtherBuildEventKind | 'startEvent',
+                  bpmnKind: expectedBpmnElementKind as BuildNotBoundaryEventKind,
                   eventDefinitionParameter: { eventDefinitionKind: 'message', eventDefinitionOn: EventDefinitionOn.EVENT },
                 },
               },
@@ -237,13 +235,12 @@ describe('parse bpmn as json for callActivity', () => {
           expect(model.flowNodes[0].bpmnElement.parentId).toBe('call_activity_id_0');
           verifyShape(model.flowNodes[1], {
             shapeId: 'shape_call_activity_id_0',
-            parentId: undefined,
             bpmnElementId: 'call_activity_id_0',
             bpmnElementName: undefined,
             bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
             bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
             bpmnElementMarkers: expectedBpmnElementMarkers,
-            bounds: { x: 346, y: 856, width: 45, height: 56 },
+            bounds: expectedBounds,
           });
         },
       );
@@ -283,13 +280,12 @@ describe('parse bpmn as json for callActivity', () => {
         expect(model.flowNodes[0].bpmnElement.parentId).toBe('call_activity_id_0');
         verifyShape(model.flowNodes[1], {
           shapeId: 'shape_call_activity_id_0',
-          parentId: undefined,
           bpmnElementId: 'call_activity_id_0',
           bpmnElementName: undefined,
           bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
           bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
           bpmnElementMarkers: expectedBpmnElementMarkers,
-          bounds: { x: 346, y: 856, width: 45, height: 56 },
+          bounds: expectedBounds,
         });
       });
 
@@ -321,13 +317,12 @@ describe('parse bpmn as json for callActivity', () => {
           expect(model.flowNodes[0].bpmnElement.parentId).toBe('call_activity_id_0');
           verifyShape(model.flowNodes[1], {
             shapeId: 'shape_call_activity_id_0',
-            parentId: undefined,
             bpmnElementId: 'call_activity_id_0',
             bpmnElementName: undefined,
             bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
             bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
             bpmnElementMarkers: expectedBpmnElementMarkers,
-            bounds: { x: 346, y: 856, width: 45, height: 56 },
+            bounds: expectedBounds,
           });
         },
       );
@@ -355,13 +350,12 @@ describe('parse bpmn as json for callActivity', () => {
         expect(model.flowNodes[0].bpmnElement.parentId).toBe('call_activity_id_0');
         verifyShape(model.flowNodes[1], {
           shapeId: 'shape_call_activity_id_0',
-          parentId: undefined,
           bpmnElementId: 'call_activity_id_0',
           bpmnElementName: undefined,
           bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
           bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
           bpmnElementMarkers: expectedBpmnElementMarkers,
-          bounds: { x: 346, y: 856, width: 45, height: 56 },
+          bounds: expectedBounds,
         });
       });
 
@@ -395,13 +389,12 @@ describe('parse bpmn as json for callActivity', () => {
         expect(model.flowNodes[1].bpmnElement.parentId).toBe('call_activity_id_0');
         verifyShape(model.flowNodes[2], {
           shapeId: 'shape_call_activity_id_0',
-          parentId: undefined,
           bpmnElementId: 'call_activity_id_0',
           bpmnElementName: undefined,
           bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
           bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
           bpmnElementMarkers: expectedBpmnElementMarkers,
-          bounds: { x: 346, y: 856, width: 45, height: 56 },
+          bounds: expectedBounds,
         });
       });
 
@@ -424,13 +417,12 @@ describe('parse bpmn as json for callActivity', () => {
 
         verifyShape(model.flowNodes[0], {
           shapeId: 'shape_call_activity_id_0',
-          parentId: undefined,
           bpmnElementId: 'call_activity_id_0',
           bpmnElementName: undefined,
           bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
           bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
           bpmnElementMarkers: expectedBpmnElementMarkers,
-          bounds: { x: 346, y: 856, width: 45, height: 56 },
+          bounds: expectedBounds,
         });
 
         verifyEdge(model.edges[0], {
@@ -463,67 +455,323 @@ describe('parse bpmn as json for callActivity', () => {
 
         verifyShape(model.flowNodes[0], {
           shapeId: 'shape_call_activity_id_0',
-          parentId: undefined,
           bpmnElementId: 'call_activity_id_0',
           bpmnElementName: undefined,
           bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
           bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
           bpmnElementMarkers: expectedBpmnElementMarkers,
-          bounds: { x: 346, y: 856, width: 45, height: 56 },
+          bounds: expectedBounds,
+        });
+      });
+
+      describe(`incoming/outgoing management for ${expandedKind} call activity`, () => {
+        it.each`
+          title       | inputAttribute | expectedAttribute
+          ${'string'} | ${'incoming'}  | ${'bpmnElementIncomingIds'}
+          ${'array'}  | ${'incoming'}  | ${'bpmnElementIncomingIds'}
+          ${'string'} | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
+          ${'array'}  | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
+        `(
+          `should convert as Shape without $inputAttribute attribute calculated from ${expandedKind} call activity attribute as $title`,
+          ({ title, inputAttribute, expectedAttribute }: { title: string; inputAttribute: 'incoming' | 'outgoing'; expectedAttribute: keyof ExpectedShape }) => {
+            const json = buildDefinitions({
+              process: [
+                { id: 'process_1' },
+                {
+                  id: 'process_2',
+                  callActivity: {
+                    id: `call_activity_id_0`,
+                    [inputAttribute]: title === 'array' ? [`flow_${inputAttribute}_1`, `flow_${inputAttribute}_2`] : `flow_${inputAttribute}_1`,
+                    calledElement: 'process_1',
+                    isExpanded,
+                  },
+                },
+              ],
+            });
+
+            const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+
+            verifyShape(model.flowNodes[0], {
+              shapeId: `shape_call_activity_id_0`,
+              bpmnElementId: `call_activity_id_0`,
+              bpmnElementName: undefined,
+              bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
+              bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
+              bpmnElementMarkers: expectedBpmnElementMarkers,
+              bounds: expectedBounds,
+              [expectedAttribute]: [], // nothing inferred from flows
+            });
+          },
+        );
+
+        it.each`
+          title         | flowKind          | expectedAttribute
+          ${'incoming'} | ${'sequenceFlow'} | ${'bpmnElementIncomingIds'}
+          ${'outgoing'} | ${'sequenceFlow'} | ${'bpmnElementOutgoingIds'}
+          ${'incoming'} | ${'association'}  | ${'bpmnElementIncomingIds'}
+          ${'outgoing'} | ${'association'}  | ${'bpmnElementOutgoingIds'}
+        `(
+          `should convert as Shape with $title attribute calculated from $flowKind`,
+          ({ title, flowKind, expectedAttribute }: { title: string; flowKind: 'sequenceFlow' | 'association'; expectedAttribute: keyof ExpectedShape }) => {
+            const json = buildDefinitions({
+              process: [
+                { id: 'process_1' },
+                {
+                  id: 'process_2',
+                  callActivity: { id: `call_activity_id_0`, calledElement: 'process_1', isExpanded },
+                  [flowKind]: {
+                    id: `flow_${title}`,
+                    sourceRef: title === 'incoming' ? 'unknown' : 'call_activity_id_0',
+                    targetRef: title === 'incoming' ? 'call_activity_id_0' : 'unknown',
+                  },
+                },
+              ],
+            });
+
+            const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
+
+            verifyShape(model.flowNodes[0], {
+              shapeId: `shape_call_activity_id_0`,
+              bpmnElementId: `call_activity_id_0`,
+              bpmnElementName: undefined,
+              bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
+              bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
+              bpmnElementMarkers: expectedBpmnElementMarkers,
+              bounds: expectedBounds,
+              [expectedAttribute]: [`flow_${title}`],
+            });
+          },
+        );
+
+        it.each`
+          title         | expectedAttribute
+          ${'incoming'} | ${'bpmnElementIncomingIds'}
+          ${'outgoing'} | ${'bpmnElementOutgoingIds'}
+        `(
+          `should convert as Shape with $title attribute calculated from message flow`,
+          ({ title, expectedAttribute }: { title: string; expectedAttribute: keyof ExpectedShape }) => {
+            const json = buildDefinitions({
+              process: [
+                { id: 'process_1' },
+                {
+                  id: 'process_2',
+                  callActivity: { id: `call_activity_id_0`, calledElement: 'process_1', isExpanded },
+                },
+              ],
+              messageFlows: {
+                id: `flow_${title}`,
+                sourceRef: title === 'incoming' ? 'unknown' : 'call_activity_id_0',
+                targetRef: title === 'incoming' ? 'call_activity_id_0' : 'unknown',
+              },
+            });
+            json.definitions.globalTask = { id: 'task_id' };
+
+            const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
+
+            verifyShape(model.flowNodes[0], {
+              shapeId: `shape_call_activity_id_0`,
+              bpmnElementId: `call_activity_id_0`,
+              bpmnElementName: undefined,
+              bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
+              bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
+              bpmnElementMarkers: expectedBpmnElementMarkers,
+              bounds: expectedBounds,
+              [expectedAttribute]: [`flow_${title}`],
+            });
+          },
+        );
+
+        it(`should convert as Shape with incoming/outgoing attributes only calculated from flows`, () => {
+          const json = buildDefinitions({
+            process: [
+              { id: 'process_1' },
+              {
+                id: 'process_2',
+                callActivity: { id: `call_activity_id_0`, incoming: 'flow_in_1', outgoing: ['flow_out_1', 'flow_out_2'], calledElement: 'process_1', isExpanded },
+                sequenceFlow: [
+                  { id: 'flow_in_1', sourceRef: 'unknown', targetRef: 'call_activity_id_0' },
+                  { id: 'flow_out_2', sourceRef: 'call_activity_id_0', targetRef: 'unknown' },
+                ],
+                association: [{ id: 'flow_out_3', sourceRef: 'call_activity_id_0', targetRef: 'unknown' }],
+              },
+            ],
+            messageFlows: { id: 'flow_in_2', sourceRef: 'unknown', targetRef: 'call_activity_id_0' },
+          });
+
+          const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 4, 1);
+
+          verifyShape(model.flowNodes[0], {
+            shapeId: `shape_call_activity_id_0`,
+            bpmnElementId: `call_activity_id_0`,
+            bpmnElementName: undefined,
+            bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
+            bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_PROCESS,
+            bpmnElementMarkers: expectedBpmnElementMarkers,
+            bounds: expectedBounds,
+            bpmnElementIncomingIds: ['flow_in_2', 'flow_in_1'],
+            bpmnElementOutgoingIds: ['flow_out_2', 'flow_out_3'], // 'flow_out_1' is in 'outgoing' but is not inferred from the actual flows
+          });
         });
       });
     });
   });
 
   describe('parse bpmn as json for callActivity calling global task', () => {
-    it.each([['globalTask'], ['globalBusinessRuleTask'], ['globalManualTask'], ['globalScriptTask'], ['globalUserTask']])(
+    it.each(['globalTask', 'globalBusinessRuleTask', 'globalManualTask', 'globalScriptTask', 'globalUserTask'] as BpmnGlobalTaskKind[])(
       `should convert, when a call activity (calling %s) is an attribute of 'process'`,
-      (globalTaskKind: string) => {
-        const json = {
-          definitions: {
-            targetNamespace: '',
-            process: {
-              id: 'process 1',
-              callActivity: {
-                id: `call_activity_id_0`,
-                name: `call activity name`,
-                calledElement: 'task_id',
-              },
-            },
-            BPMNDiagram: {
-              name: 'process 0',
-              BPMNPlane: {
-                BPMNShape: {
-                  id: `shape_call_activity_id_0`,
-                  bpmnElement: `call_activity_id_0`,
-                  Bounds: { x: 362, y: 232, width: 36, height: 45 },
-                },
-              },
-            },
+      (bpmnKind: BpmnGlobalTaskKind) => {
+        const json = buildDefinitions({
+          process: {
+            callActivity: { id: `call_activity_id_0`, name: 'call activity name', calledElement: 'task_id' },
           },
-        };
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        json.definitions[globalTaskKind] = { id: 'task_id' };
+          globalTask: { id: 'task_id', bpmnKind },
+        });
 
         const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
         verifyShape(model.flowNodes[0], {
           shapeId: `shape_call_activity_id_0`,
-          parentId: undefined,
           bpmnElementId: `call_activity_id_0`,
           bpmnElementName: `call activity name`,
           bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
           bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK,
-          bpmnElementGlobalTaskKind: globalTaskKind as GlobalTaskKind,
-          bounds: {
-            x: 362,
-            y: 232,
-            width: 36,
-            height: 45,
-          },
+          bpmnElementGlobalTaskKind: bpmnKind as GlobalTaskKind,
+          bounds: expectedBounds,
         });
       },
     );
+
+    describe(`incoming/outgoing management for call activity calling global task`, () => {
+      it.each`
+        title       | inputAttribute | expectedAttribute
+        ${'string'} | ${'incoming'}  | ${'bpmnElementIncomingIds'}
+        ${'array'}  | ${'incoming'}  | ${'bpmnElementIncomingIds'}
+        ${'string'} | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
+        ${'array'}  | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
+      `(
+        `should convert as Shape without $inputAttribute attribute calculated from call activity attribute as $title`,
+        ({ title, inputAttribute, expectedAttribute }: { title: string; inputAttribute: 'incoming' | 'outgoing'; expectedAttribute: keyof ExpectedShape }) => {
+          const json = buildDefinitions({
+            process: {
+              callActivity: {
+                id: `call_activity_id_0`,
+                [inputAttribute]: title === 'array' ? [`flow_${inputAttribute}_1`, `flow_${inputAttribute}_2`] : `flow_${inputAttribute}_1`,
+                calledElement: 'task_id',
+              },
+            },
+            globalTask: { id: 'task_id' },
+          });
+
+          const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+
+          verifyShape(model.flowNodes[0], {
+            shapeId: `shape_call_activity_id_0`,
+            bpmnElementId: `call_activity_id_0`,
+            bpmnElementName: undefined,
+            bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
+            bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK,
+            bpmnElementGlobalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK,
+            bounds: expectedBounds,
+            [expectedAttribute]: [], // nothing inferred from flows
+          });
+        },
+      );
+
+      it.each`
+        title         | flowKind          | expectedAttribute
+        ${'incoming'} | ${'sequenceFlow'} | ${'bpmnElementIncomingIds'}
+        ${'outgoing'} | ${'sequenceFlow'} | ${'bpmnElementOutgoingIds'}
+        ${'incoming'} | ${'association'}  | ${'bpmnElementIncomingIds'}
+        ${'outgoing'} | ${'association'}  | ${'bpmnElementOutgoingIds'}
+      `(
+        `should convert as Shape with $title attribute calculated from $flowKind`,
+        ({ title, flowKind, expectedAttribute }: { title: string; flowKind: 'sequenceFlow' | 'association'; expectedAttribute: keyof ExpectedShape }) => {
+          const json = buildDefinitions({
+            process: {
+              callActivity: { id: `call_activity_id_0`, calledElement: 'task_id' },
+              [flowKind]: {
+                id: `flow_${title}`,
+                sourceRef: title === 'incoming' ? 'unknown' : 'call_activity_id_0',
+                targetRef: title === 'incoming' ? 'call_activity_id_0' : 'unknown',
+              },
+            },
+            globalTask: { id: 'task_id' },
+          });
+
+          const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
+
+          verifyShape(model.flowNodes[0], {
+            shapeId: `shape_call_activity_id_0`,
+            bpmnElementId: `call_activity_id_0`,
+            bpmnElementName: undefined,
+            bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
+            bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK,
+            bpmnElementGlobalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK,
+            bounds: expectedBounds,
+            [expectedAttribute]: [`flow_${title}`],
+          });
+        },
+      );
+
+      it.each`
+        title         | expectedAttribute
+        ${'incoming'} | ${'bpmnElementIncomingIds'}
+        ${'outgoing'} | ${'bpmnElementOutgoingIds'}
+      `(`should convert as Shape with $title attribute calculated from message flow`, ({ title, expectedAttribute }: { title: string; expectedAttribute: keyof ExpectedShape }) => {
+        const json = buildDefinitions({
+          process: {
+            callActivity: { id: `call_activity_id_0`, calledElement: 'task_id' },
+          },
+          messageFlows: {
+            id: `flow_${title}`,
+            sourceRef: title === 'incoming' ? 'unknown' : 'call_activity_id_0',
+            targetRef: title === 'incoming' ? 'call_activity_id_0' : 'unknown',
+          },
+          globalTask: { id: 'task_id' },
+        });
+
+        const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
+
+        verifyShape(model.flowNodes[0], {
+          shapeId: `shape_call_activity_id_0`,
+          bpmnElementId: `call_activity_id_0`,
+          bpmnElementName: undefined,
+          bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
+          bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK,
+          bpmnElementGlobalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK,
+          bounds: expectedBounds,
+          [expectedAttribute]: [`flow_${title}`],
+        });
+      });
+
+      it(`should convert as Shape with incoming/outgoing attributes only calculated from flows`, () => {
+        const json = buildDefinitions({
+          process: {
+            callActivity: { id: `call_activity_id_0`, incoming: 'flow_in_1', outgoing: ['flow_out_1', 'flow_out_2'], calledElement: 'task_id' },
+            sequenceFlow: [
+              { id: 'flow_in_1', sourceRef: 'unknown', targetRef: 'call_activity_id_0' },
+              { id: 'flow_out_2', sourceRef: 'call_activity_id_0', targetRef: 'unknown' },
+            ],
+            association: [{ id: 'flow_out_3', sourceRef: 'call_activity_id_0', targetRef: 'unknown' }],
+          },
+          messageFlows: { id: 'flow_in_2', sourceRef: 'unknown', targetRef: 'call_activity_id_0' },
+          globalTask: { id: 'task_id' },
+        });
+
+        const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 4, 1);
+
+        verifyShape(model.flowNodes[0], {
+          shapeId: `shape_call_activity_id_0`,
+          bpmnElementId: `call_activity_id_0`,
+          bpmnElementName: undefined,
+          bpmnElementKind: ShapeBpmnElementKind.CALL_ACTIVITY,
+          bpmnElementCallActivityKind: ShapeBpmnCallActivityKind.CALLING_GLOBAL_TASK,
+          bpmnElementGlobalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK,
+          bounds: expectedBounds,
+          bpmnElementIncomingIds: ['flow_in_2', 'flow_in_1'],
+          bpmnElementOutgoingIds: ['flow_out_2', 'flow_out_3'], // 'flow_out_1' is in 'outgoing' but is not inferred from the actual flows
+        });
+      });
+    });
   });
 });

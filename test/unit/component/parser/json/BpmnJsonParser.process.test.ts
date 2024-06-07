@@ -1,24 +1,27 @@
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2020 Bonitasoft S.A.
 
-import { parseJsonAndExpect, parseJsonAndExpectOnlyPools, parseJsonAndExpectOnlyPoolsAndFlowNodes, parseJsonAndExpectOnlyPoolsAndLanes } from '../../../helpers/JsonTestUtils';
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import type { ExpectedShape } from '../../../helpers/bpmn-model-expect';
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
+
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
+import { buildDefinitions } from '../../../helpers/JsonBuilder';
+import { parseJsonAndExpect, parseJsonAndExpectOnlyPools, parseJsonAndExpectOnlyPoolsAndFlowNodes, parseJsonAndExpectOnlyPoolsAndLanes } from '../../../helpers/JsonTestUtils';
 
-import { ShapeBpmnElementKind } from '../../../../../src/model/bpmn/internal';
-import type { BpmnJsonModel } from '../../../../../src/model/bpmn/json/BPMN20';
+import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 
 describe('parse bpmn as json for process/pool', () => {
   describe.each([
@@ -59,7 +62,6 @@ describe('parse bpmn as json for process/pool', () => {
         bpmnElementId: 'Participant_1',
         bpmnElementName: undefined,
         bpmnElementKind: ShapeBpmnElementKind.POOL,
-        parentId: undefined,
         bounds: {
           x: 158,
           y: 50,
@@ -71,7 +73,7 @@ describe('parse bpmn as json for process/pool', () => {
     });
 
     it(`json containing one ${title} participant without related process`, () => {
-      const json = {
+      const json: BpmnJsonModel = {
         definitions: {
           targetNamespace: '',
           collaboration: {
@@ -100,7 +102,6 @@ describe('parse bpmn as json for process/pool', () => {
         bpmnElementId: 'Participant_1',
         bpmnElementName: 'Participant without process ref',
         bpmnElementKind: ShapeBpmnElementKind.POOL,
-        parentId: undefined,
         isHorizontal: isHorizontal,
         bounds: {
           x: 158,
@@ -145,7 +146,6 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_1',
       bpmnElementName: undefined,
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      parentId: undefined,
       bounds: {
         x: 158,
         y: 50,
@@ -157,7 +157,7 @@ describe('parse bpmn as json for process/pool', () => {
   });
 
   it('json containing one participant without name and the related process has a name', () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         collaboration: {
@@ -191,7 +191,6 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_1',
       bpmnElementName: 'Process 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      parentId: undefined,
       isHorizontal: true,
       bounds: {
         x: 158,
@@ -202,8 +201,8 @@ describe('parse bpmn as json for process/pool', () => {
     });
   });
 
-  it('json containing one participant referencing a process (with a single lane without flowNodeRef)', () => {
-    const json = {
+  it('json containing one participant referencing a process (with a single laneSet without flowNodeRef)', () => {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         collaboration: {
@@ -213,7 +212,7 @@ describe('parse bpmn as json for process/pool', () => {
           id: 'Process_0vbjbkf',
           name: 'RequestLoan',
           isExecutable: false,
-          lane: { id: 'Lane_12u5n6x' },
+          laneSet: { lane: { id: 'Lane_12u5n6x' } },
         },
         BPMNDiagram: {
           BPMNPlane: {
@@ -243,7 +242,6 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_0nuvj8r',
       bpmnElementName: 'Pool 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      parentId: undefined,
       isHorizontal: true,
       bounds: {
         x: 158,
@@ -270,8 +268,8 @@ describe('parse bpmn as json for process/pool', () => {
     });
   });
 
-  it('json containing several participants referencing processes (with lane or laneset)', () => {
-    const json = {
+  it('json containing several participants referencing processes (with laneSet)', () => {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         collaboration: {
@@ -285,7 +283,9 @@ describe('parse bpmn as json for process/pool', () => {
             id: 'Process_1',
             name: 'process 1',
             isExecutable: false,
-            lane: { id: 'Lane_1_1' },
+            laneSet: {
+              lane: { id: 'Lane_1_1' },
+            },
           },
           {
             id: 'Process_2',
@@ -335,7 +335,6 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_1',
       bpmnElementName: 'Pool 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      parentId: undefined,
       isHorizontal: true,
       bounds: {
         x: 158,
@@ -349,7 +348,6 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_2',
       bpmnElementName: 'Pool 2',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      parentId: undefined,
       isHorizontal: true,
       bounds: {
         x: 158,
@@ -390,7 +388,7 @@ describe('parse bpmn as json for process/pool', () => {
   });
 
   it('json containing participants with and without processRef (black box pool)', () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         collaboration: {
@@ -417,7 +415,7 @@ describe('parse bpmn as json for process/pool', () => {
                 id: 'shape_Participant_2',
                 bpmnElement: 'Participant_2',
                 isHorizontal: true,
-                Bounds: { x: 10158, y: 50, width: 1620, height: 430 },
+                Bounds: { x: 10_158, y: 50, width: 1620, height: 430 },
               },
             ],
           },
@@ -432,7 +430,6 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_1',
       bpmnElementName: 'Pool 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      parentId: undefined,
       isHorizontal: true,
       bounds: {
         x: 158,
@@ -446,10 +443,9 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_2',
       bpmnElementName: 'Pool 2 without processRef',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      parentId: undefined,
       isHorizontal: true,
       bounds: {
-        x: 10158,
+        x: 10_158,
         y: 50,
         width: 1620,
         height: 430,
@@ -458,7 +454,7 @@ describe('parse bpmn as json for process/pool', () => {
   });
 
   it('json containing one participant referencing a process (with flowNode and without lane)', () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         collaboration: {
@@ -501,7 +497,6 @@ describe('parse bpmn as json for process/pool', () => {
       bpmnElementId: 'Participant_1',
       bpmnElementName: 'Pool 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
-      parentId: undefined,
       isHorizontal: true,
       bounds: {
         x: 158,
@@ -528,7 +523,7 @@ describe('parse bpmn as json for process/pool', () => {
   });
 
   it('json containing one participant referencing a process (without displaying the participant/pool, but with displaying process elements)', () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         collaboration: {
@@ -574,7 +569,7 @@ describe('parse bpmn as json for process/pool', () => {
 
   it('json containing no participant, but one process (with bpmn elements)', () => {
     // json generated from https://github.com/bpmn-miwg/bpmn-miwg-test-suite/blob/b1569235563b58d7216caa880c447bafee3e23cf/Reference/A.1.0.bpmn
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         id: '_1373649849716',
         name: 'A.1.0',
@@ -652,7 +647,7 @@ describe('parse bpmn as json for process/pool', () => {
           documentation: '',
           id: 'Trisotech_Visio-_6',
           name: 'A.1.0',
-          resolution: 96.00000267028808,
+          resolution: 96.000_002_670_288_08,
           BPMNPlane: {
             bpmnElement: 'WFP-6-',
             BPMNShape: [
@@ -668,10 +663,10 @@ describe('parse bpmn as json for process/pool', () => {
                 BPMNLabel: {
                   labelStyle: 'LS1373649849858',
                   Bounds: {
-                    height: 12.804751171875008,
-                    width: 94.93333333333335,
-                    x: 153.67766754457273,
-                    y: 371.3333333333333,
+                    height: 12.804_751_171_875_008,
+                    width: 94.933_333_333_333_35,
+                    x: 153.677_667_544_572_73,
+                    y: 371.333_333_333_333_3,
                   },
                 },
               },
@@ -687,10 +682,10 @@ describe('parse bpmn as json for process/pool', () => {
                 BPMNLabel: {
                   labelStyle: 'LS1373649849858',
                   Bounds: {
-                    height: 12.804751171875008,
-                    width: 72.48293963254594,
-                    x: 263.3333333333333,
-                    y: 344.5818763825664,
+                    height: 12.804_751_171_875_008,
+                    width: 72.482_939_632_545_94,
+                    x: 263.333_333_333_333_3,
+                    y: 344.581_876_382_566_4,
                   },
                 },
               },
@@ -706,10 +701,10 @@ describe('parse bpmn as json for process/pool', () => {
                 BPMNLabel: {
                   labelStyle: 'LS1373649849858',
                   Bounds: {
-                    height: 12.804751171875008,
-                    width: 72.48293963254594,
-                    x: 395.3333333333333,
-                    y: 344.5818763825664,
+                    height: 12.804_751_171_875_008,
+                    width: 72.482_939_632_545_94,
+                    x: 395.333_333_333_333_3,
+                    y: 344.581_876_382_566_4,
                   },
                 },
               },
@@ -725,10 +720,10 @@ describe('parse bpmn as json for process/pool', () => {
                 BPMNLabel: {
                   labelStyle: 'LS1373649849858',
                   Bounds: {
-                    height: 12.804751171875008,
-                    width: 72.48293963254594,
-                    x: 527.3333333333334,
-                    y: 344.5818763825664,
+                    height: 12.804_751_171_875_008,
+                    width: 72.482_939_632_545_94,
+                    x: 527.333_333_333_333_4,
+                    y: 344.581_876_382_566_4,
                   },
                 },
               },
@@ -744,10 +739,10 @@ describe('parse bpmn as json for process/pool', () => {
                 BPMNLabel: {
                   labelStyle: 'LS1373649849858',
                   Bounds: {
-                    height: 12.804751171875008,
-                    width: 94.93333333333335,
-                    x: 616.5963254593177,
-                    y: 372.3333333333333,
+                    height: 12.804_751_171_875_008,
+                    width: 94.933_333_333_333_35,
+                    x: 616.596_325_459_317_7,
+                    y: 372.333_333_333_333_3,
                   },
                 },
               },
@@ -840,6 +835,62 @@ describe('parse bpmn as json for process/pool', () => {
 
     const model = parseJsonAndExpect(json, 0, 0, 5, 4);
 
-    model.flowNodes.map(flowNode => flowNode.bpmnElement).forEach(bpmnElement => expect(bpmnElement.parentId).toBeUndefined());
+    for (const bpmnElement of model.flowNodes.map(flowNode => flowNode.bpmnElement)) expect(bpmnElement.parentId).toBeUndefined();
+  });
+
+  describe(`incoming/outgoing management for participant referencing a process`, () => {
+    const expectedBounds = { x: 567, y: 345, width: 36, height: 45 };
+
+    it.each`
+      title         | expectedAttribute
+      ${'incoming'} | ${'bpmnElementIncomingIds'}
+      ${'outgoing'} | ${'bpmnElementOutgoingIds'}
+    `(`should convert as Shape with $title attribute calculated from message flow`, ({ title, expectedAttribute }: { title: string; expectedAttribute: keyof ExpectedShape }) => {
+      const json = buildDefinitions({
+        process: { withParticipant: true, id: 'process_O' },
+        messageFlows: {
+          id: `flow_${title}`,
+          sourceRef: title === 'incoming' ? 'unknown' : 'process_O',
+          targetRef: title === 'incoming' ? 'process_O' : 'unknown',
+        },
+      });
+
+      const model = parseJsonAndExpect(json, 1, 0, 0, 1);
+
+      verifyShape(model.pools[0], {
+        shapeId: 'shape_process_O',
+        bpmnElementId: 'process_O',
+        bpmnElementName: undefined,
+        bpmnElementKind: ShapeBpmnElementKind.POOL,
+        bounds: expectedBounds,
+        isHorizontal: true,
+        [expectedAttribute]: [`flow_${title}`],
+      });
+    });
+
+    it(`should convert as Shape with incoming/outgoing attributes calculated from message flows`, () => {
+      const json = buildDefinitions({
+        process: { withParticipant: true, id: 'process_O' },
+        messageFlows: [
+          { id: 'flow_in_1', sourceRef: 'unknown', targetRef: 'process_O' },
+          { id: 'flow_in_2', sourceRef: 'unknown', targetRef: 'process_O' },
+          { id: 'flow_out_2', sourceRef: 'process_O', targetRef: 'unknown' },
+          { id: 'flow_out_3', sourceRef: 'process_O', targetRef: 'unknown' },
+        ],
+      });
+
+      const model = parseJsonAndExpect(json, 1, 0, 0, 4);
+
+      verifyShape(model.pools[0], {
+        shapeId: 'shape_process_O',
+        bpmnElementId: 'process_O',
+        bpmnElementName: undefined,
+        bpmnElementKind: ShapeBpmnElementKind.POOL,
+        bounds: expectedBounds,
+        isHorizontal: true,
+        bpmnElementIncomingIds: ['flow_in_1', 'flow_in_2'],
+        bpmnElementOutgoingIds: ['flow_out_2', 'flow_out_3'],
+      });
+    });
   });
 });

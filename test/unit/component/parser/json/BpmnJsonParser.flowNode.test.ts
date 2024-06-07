@@ -1,25 +1,29 @@
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2020 Bonitasoft S.A.
 
-import { parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtils';
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import type { ExpectedShape } from '../../../helpers/bpmn-model-expect';
+import type { ShapeBpmnEventBasedGateway } from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
+import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
+
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
+import { buildDefinitions } from '../../../helpers/JsonBuilder';
+import { parseJsonAndExpectOnlyEdgesAndFlowNodes, parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtils';
 
-import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
-import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind } from '../../../../../src/model/bpmn/internal';
-import type { ShapeBpmnEventBasedGateway } from '../../../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
+import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind, ShapeUtil } from '@lib/model/bpmn/internal';
 
 describe.each([
   ['task', ShapeBpmnElementKind.TASK],
@@ -34,19 +38,20 @@ describe.each([
   ['inclusiveGateway', ShapeBpmnElementKind.GATEWAY_INCLUSIVE],
   ['parallelGateway', ShapeBpmnElementKind.GATEWAY_PARALLEL],
   ['eventBasedGateway', ShapeBpmnElementKind.GATEWAY_EVENT_BASED],
-  // ['complexGateway', ShapeBpmnElementKind.GATEWAY_COMPLEX],
-])('parse bpmn as json for %s', (bpmnKind: string, expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
-  const processWithFlowNodeAsObject = {} as TProcess;
-  processWithFlowNodeAsObject[`${bpmnKind}`] = {
-    id: `${bpmnKind}_id_0`,
-    name: `${bpmnKind} name`,
+  ['complexGateway', ShapeBpmnElementKind.GATEWAY_COMPLEX],
+] as [keyof TProcess, ShapeBpmnElementKind][])('parse bpmn as json for %s', (bpmnKind: keyof TProcess, expectedShapeBpmnElementKind: ShapeBpmnElementKind) => {
+  const processWithFlowNodeAsObject: TProcess = {
+    [bpmnKind]: {
+      id: `${bpmnKind}_id_0`,
+      name: `${bpmnKind} name`,
+    },
   };
 
   it.each([
     ['object', processWithFlowNodeAsObject],
     ['array', [processWithFlowNodeAsObject]],
-  ])(`should convert as Shape, when a ${bpmnKind} is an attribute (as object) of 'process' (as %s)`, (title: string, processJson: TProcess) => {
-    const json = {
+  ])(`should convert as Shape, when a ${bpmnKind} is an attribute (as object) of 'process' (as %s)`, (_title: string, processJson: TProcess | TProcess[]) => {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: processJson,
@@ -70,20 +75,17 @@ describe.each([
       bpmnElementId: `${bpmnKind}_id_0`,
       bpmnElementName: `${bpmnKind} name`,
       bpmnElementKind: expectedShapeBpmnElementKind,
-      bounds: {
-        x: 362,
-        y: 232,
-        width: 36,
-        height: 45,
-      },
+      bounds: { x: 362, y: 232, width: 36, height: 45 },
     });
   });
 
   it(`should convert as Shape, when a ${bpmnKind} (with/without name) is an attribute (as array) of 'process'`, () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
-        process: {},
+        process: {
+          [bpmnKind]: [{ id: `${bpmnKind}_id_0`, name: `${bpmnKind} name` }, { id: `${bpmnKind}_id_1` }],
+        },
         BPMNDiagram: {
           name: 'process 0',
           BPMNPlane: {
@@ -103,15 +105,6 @@ describe.each([
         },
       },
     };
-    (json.definitions.process as TProcess)[`${bpmnKind}`] = [
-      {
-        id: `${bpmnKind}_id_0`,
-        name: `${bpmnKind} name`,
-      },
-      {
-        id: `${bpmnKind}_id_1`,
-      },
-    ];
 
     const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
 
@@ -143,10 +136,12 @@ describe.each([
 
   if (expectedShapeBpmnElementKind === ShapeBpmnElementKind.TASK_RECEIVE) {
     it(`should convert as Shape, when a ${bpmnKind} (with/without instantiate) is an attribute (as array) of 'process'`, () => {
-      const json = {
+      const json: BpmnJsonModel = {
         definitions: {
           targetNamespace: '',
-          process: {},
+          process: {
+            [bpmnKind]: [{ id: `${bpmnKind}_id_0` }, { id: `${bpmnKind}_id_1`, instantiate: true }],
+          },
           BPMNDiagram: {
             name: 'process 0',
             BPMNPlane: {
@@ -166,15 +161,6 @@ describe.each([
           },
         },
       };
-      (json.definitions.process as TProcess)[`${bpmnKind}`] = [
-        {
-          id: `${bpmnKind}_id_0`,
-        },
-        {
-          id: `${bpmnKind}_id_1`,
-          instantiate: true,
-        },
-      ];
 
       const model = parseJsonAndExpectOnlyFlowNodes(json, 2);
 
@@ -210,10 +196,19 @@ describe.each([
 
   if (expectedShapeBpmnElementKind === ShapeBpmnElementKind.GATEWAY_EVENT_BASED) {
     it(`should convert as Shape, when a ${bpmnKind} (with/without instantiate) is an attribute (as array) of 'process'`, () => {
-      const json = {
+      const json: BpmnJsonModel = {
         definitions: {
           targetNamespace: '',
-          process: {},
+          process: {
+            [bpmnKind]: [
+              { id: `${bpmnKind}_id_1` },
+              { id: `${bpmnKind}_id_2`, eventGatewayType: 'Exclusive' },
+              { id: `${bpmnKind}_id_3`, eventGatewayType: 'Parallel' }, // forbidden by the BPMN spec, only valid when 'instantiate: true'
+              { id: `${bpmnKind}_id_11`, instantiate: true },
+              { id: `${bpmnKind}_id_12`, instantiate: true, eventGatewayType: 'Exclusive' },
+              { id: `${bpmnKind}_id_13`, instantiate: true, eventGatewayType: 'Parallel' },
+            ],
+          },
           BPMNDiagram: {
             name: 'process 0',
             BPMNPlane: {
@@ -253,33 +248,6 @@ describe.each([
           },
         },
       };
-      (json.definitions.process as TProcess)[`${bpmnKind}`] = [
-        {
-          id: `${bpmnKind}_id_1`,
-        },
-        {
-          id: `${bpmnKind}_id_2`,
-          eventGatewayType: 'Exclusive',
-        },
-        {
-          id: `${bpmnKind}_id_3`,
-          eventGatewayType: 'Parallel', // forbidden by the BPMN spec, only valid when 'instantiate: true'
-        },
-        {
-          id: `${bpmnKind}_id_11`,
-          instantiate: true,
-        },
-        {
-          id: `${bpmnKind}_id_12`,
-          instantiate: true,
-          eventGatewayType: 'Exclusive',
-        },
-        {
-          id: `${bpmnKind}_id_13`,
-          instantiate: true,
-          eventGatewayType: 'Parallel',
-        },
-      ];
 
       const model = parseJsonAndExpectOnlyFlowNodes(json, 6);
 
@@ -382,4 +350,129 @@ describe.each([
       expect(currentEventBasedGateway.gatewayKind).toEqual(ShapeBpmnEventBasedGatewayKind.Parallel);
     });
   }
+
+  describe(`incoming/outgoing management for ${bpmnKind}`, () => {
+    const isTask = ShapeUtil.isTask(bpmnKind);
+    const flowNodeParameterKind = isTask ? 'task' : 'gateway';
+    const expectedBounds = isTask ? { x: 362, y: 232, width: 36, height: 45 } : { x: 567, y: 345, width: 25, height: 25 };
+
+    it.each`
+      title       | inputAttribute | expectedAttribute
+      ${'string'} | ${'incoming'}  | ${'bpmnElementIncomingIds'}
+      ${'array'}  | ${'incoming'}  | ${'bpmnElementIncomingIds'}
+      ${'string'} | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
+      ${'array'}  | ${'outgoing'}  | ${'bpmnElementOutgoingIds'}
+    `(
+      `should convert as Shape without $inputAttribute attribute calculated from ${bpmnKind} attribute as $title`,
+      ({ title, inputAttribute, expectedAttribute }: { title: string; inputAttribute: 'incoming' | 'outgoing'; expectedAttribute: keyof ExpectedShape }) => {
+        const json = buildDefinitions({
+          process: {
+            [flowNodeParameterKind]: {
+              id: `${bpmnKind}_id_0`,
+              bpmnKind,
+              [inputAttribute]: title === 'array' ? [`flow_${inputAttribute}_1`, `flow_${inputAttribute}_2`] : `flow_${inputAttribute}_1`,
+            },
+          },
+        });
+
+        const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
+
+        verifyShape(model.flowNodes[0], {
+          shapeId: `shape_${bpmnKind}_id_0`,
+          bpmnElementId: `${bpmnKind}_id_0`,
+          bpmnElementName: undefined,
+          bpmnElementKind: expectedShapeBpmnElementKind,
+          bounds: expectedBounds,
+          [expectedAttribute]: [], // nothing inferred from flows
+        });
+      },
+    );
+
+    it.each`
+      title         | flowKind          | expectedAttribute
+      ${'incoming'} | ${'sequenceFlow'} | ${'bpmnElementIncomingIds'}
+      ${'outgoing'} | ${'sequenceFlow'} | ${'bpmnElementOutgoingIds'}
+      ${'incoming'} | ${'association'}  | ${'bpmnElementIncomingIds'}
+      ${'outgoing'} | ${'association'}  | ${'bpmnElementOutgoingIds'}
+    `(
+      `should convert as Shape with $title attribute calculated from $flowKind`,
+      ({ title, flowKind, expectedAttribute }: { title: string; flowKind: 'sequenceFlow' | 'association'; expectedAttribute: keyof ExpectedShape }) => {
+        const json = buildDefinitions({
+          process: {
+            [flowNodeParameterKind]: { id: `${bpmnKind}_id_0`, bpmnKind },
+            [flowKind]: {
+              id: `flow_${title}`,
+              sourceRef: title === 'incoming' ? 'unknown' : `${bpmnKind}_id_0`,
+              targetRef: title === 'incoming' ? `${bpmnKind}_id_0` : 'unknown',
+            },
+          },
+        });
+
+        const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
+
+        verifyShape(model.flowNodes[0], {
+          shapeId: `shape_${bpmnKind}_id_0`,
+          bpmnElementId: `${bpmnKind}_id_0`,
+          bpmnElementName: undefined,
+          bpmnElementKind: expectedShapeBpmnElementKind,
+          bounds: expectedBounds,
+          [expectedAttribute]: [`flow_${title}`], // only inferred from flows
+        });
+      },
+    );
+
+    it.each`
+      title         | expectedAttribute
+      ${'incoming'} | ${'bpmnElementIncomingIds'}
+      ${'outgoing'} | ${'bpmnElementOutgoingIds'}
+    `(`should convert as Shape with $title attribute calculated from message flow`, ({ title, expectedAttribute }: { title: string; expectedAttribute: keyof ExpectedShape }) => {
+      const json = buildDefinitions({
+        process: {
+          [flowNodeParameterKind]: { id: `${bpmnKind}_id_0`, bpmnKind },
+        },
+        messageFlows: {
+          id: `flow_${title}`,
+          sourceRef: title === 'incoming' ? 'unknown' : `${bpmnKind}_id_0`,
+          targetRef: title === 'incoming' ? `${bpmnKind}_id_0` : 'unknown',
+        },
+      });
+
+      const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 1, 1);
+
+      verifyShape(model.flowNodes[0], {
+        shapeId: `shape_${bpmnKind}_id_0`,
+        bpmnElementId: `${bpmnKind}_id_0`,
+        bpmnElementName: undefined,
+        bpmnElementKind: expectedShapeBpmnElementKind,
+        bounds: expectedBounds,
+        [expectedAttribute]: [`flow_${title}`],
+      });
+    });
+
+    it(`should convert as Shape with incoming/outgoing attributes only calculated from flows`, () => {
+      const json = buildDefinitions({
+        process: {
+          [flowNodeParameterKind]: { id: `${bpmnKind}_id_0`, bpmnKind, incoming: 'flow_in_1', outgoing: ['flow_out_1', 'flow_out_2'] },
+          sequenceFlow: [
+            { id: 'flow_in_1', sourceRef: 'unknown', targetRef: 'call_activity_id_0' },
+            { id: 'flow_out_2', sourceRef: 'call_activity_id_0', targetRef: 'unknown' },
+          ],
+          association: [{ id: 'flow_out_3', sourceRef: `${bpmnKind}_id_0`, targetRef: 'unknown' }],
+        },
+        messageFlows: { id: 'flow_in_2', sourceRef: 'unknown', targetRef: `${bpmnKind}_id_0` },
+      });
+
+      const model = parseJsonAndExpectOnlyEdgesAndFlowNodes(json, 4, 1);
+
+      verifyShape(model.flowNodes[0], {
+        shapeId: `shape_${bpmnKind}_id_0`,
+        bpmnElementId: `${bpmnKind}_id_0`,
+        bpmnElementName: undefined,
+        bpmnElementKind: expectedShapeBpmnElementKind,
+        bounds: expectedBounds,
+        bpmnElementIncomingIds: ['flow_in_2'], // 'flow_in_1' is in 'incoming' but is not inferred from the actual flows
+        bpmnElementOutgoingIds: ['flow_out_3'], // 'flow_out_1' and 'flow_out_2' are in 'outgoing' but are not inferred from the actual flows
+      });
+    });
+  });
 });
