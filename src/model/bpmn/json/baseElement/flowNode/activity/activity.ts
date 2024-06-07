@@ -1,30 +1,31 @@
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-import type { TInputOutputSpecification } from '../../input-output';
+/*
+Copyright 2020 Bonitasoft S.A.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import type { TBusinessRuleTask, TManualTask, TReceiveTask, TScriptTask, TSendTask, TServiceTask, TTask, TUserTask } from './task';
+import type { TArtifact, TAssociation, TGroup, TTextAnnotation } from '../../artifact';
 import type { TLaneSet, TProperty } from '../../baseElement';
 import type { TDataInputAssociation, TDataObject, TDataObjectReference, TDataOutputAssociation, TDataStoreReference } from '../../data';
-import type { THumanPerformer, TPerformer, TPotentialOwner, TResourceRole } from '../../resource';
-import type { TLoopCharacteristics, TMultiInstanceLoopCharacteristics, TStandardLoopCharacteristics } from '../../loopCharacteristics';
 import type { TExpression } from '../../expression';
-import type { TArtifact, TAssociation, TGroup, TTextAnnotation } from '../../artifact';
 import type { TFlowElement, TFlowNode, TSequenceFlow } from '../../flowElement';
+import type { TInputOutputSpecification } from '../../input-output';
+import type { TLoopCharacteristics, TMultiInstanceLoopCharacteristics, TStandardLoopCharacteristics } from '../../loopCharacteristics';
+import type { THumanPerformer, TPerformer, TPotentialOwner, TResourceRole } from '../../resource';
 import type { TCallChoreography, TChoreographyTask, TSubChoreography } from '../choreographyActivity';
 import type { TBoundaryEvent, TEndEvent, TEvent, TImplicitThrowEvent, TIntermediateCatchEvent, TIntermediateThrowEvent, TStartEvent } from '../event';
 import type { TComplexGateway, TEventBasedGateway, TExclusiveGateway, TInclusiveGateway, TParallelGateway } from '../gateway';
-import type { TBusinessRuleTask, TManualTask, TReceiveTask, TScriptTask, TSendTask, TServiceTask, TTask, TUserTask } from './task';
 
 // abstract="true"
 export interface TActivity extends TFlowNode {

@@ -6,29 +6,41 @@ on:
       - master
     paths:
       - '.github/actions/build-setup/**/*'
+      - '.github/actions/install-playwright-browser/**/*'
       - '.github/workflows/test-e2e.yml'
       - 'src/**/*'
-      - 'test/**/*'
+      - 'test/*' # root folder
+      - 'test/config/**/*'
+      - 'test/fixtures/**/*'
+      - 'test/e2e/**/*'
+      - 'test/shared/**/*'
+      - '.nvmrc'
       - 'package.json'
       - 'package-lock.json'
-      - 'postcss.config.js'
-      - 'rollup.config.js'
+      - 'postcss.config.cjs'
       - 'tailwind.config.js'
       - 'tsconfig.json'
+      - 'vite.config.js'
   pull_request:
     branches:
       - master
     paths:
       - '.github/actions/build-setup/**/*'
+      - '.github/actions/install-playwright-browser/**/*'
       - '.github/workflows/test-e2e.yml'
       - 'src/**/*'
-      - 'test/**/*'
+      - 'test/*' # root folder
+      - 'test/config/**/*'
+      - 'test/fixtures/**/*'
+      - 'test/e2e/**/*'
+      - 'test/shared/**/*'
+      - '.nvmrc'
       - 'package.json'
       - 'package-lock.json'
-      - 'postcss.config.js'
-      - 'rollup.config.js'
+      - 'postcss.config.cjs'
       - 'tailwind.config.js'
       - 'tsconfig.json'
+      - 'vite.config.js'
 
 jobs:
   test_e2e:
@@ -37,26 +49,24 @@ jobs:
       # we want to run the full build on all os: don't cancel running jobs even if one fails
       fail-fast: false
       matrix:
-        os: [macos-12, ubuntu-20.04, windows-2019]
+        os: [macos-13, ubuntu-22.04, windows-2022]
         browser: [chromium, firefox, chrome]
         include:
           # only test WebKit on macOS
-          - os: macos-12
+          - os: macos-13
             browser: webkit
           # only test Edge on Windows
-          - os: windows-2019
+          - os: windows-2022
             browser: msedge
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Build Setup
         uses: ./.github/actions/build-setup
-      # install OS dependencies required by browsers on the GitHub runner
-      # to be sure that the browser is correctly installed: https://github.com/microsoft/playwright/issues/5801
-      - name: Install ${{matrix.browser}} and its dependencies only
-        run: |
-          npx playwright install ${{matrix.browser}}
-          npx playwright install-deps ${{matrix.browser}}
+      - name: Install ${{matrix.browser}}
+        uses: ./.github/actions/install-playwright-browser
+        with:
+          browser: ${{matrix.browser}}
       - name: Test Application End to End
         id: 'test_e2e'
         env:
@@ -64,7 +74,7 @@ jobs:
         run: npm run test:e2e:verbose
       - name: Upload e2e test results
         if: ${{ failure() && steps.test_e2e.outcome == 'failure' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: e2e-${{matrix.browser}}-test-results-${{matrix.os}}-${{github.sha}}
           path: build/test-report/e2e

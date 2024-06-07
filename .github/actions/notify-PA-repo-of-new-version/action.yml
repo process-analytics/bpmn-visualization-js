@@ -1,4 +1,4 @@
-name: 'Notify PA repository of new BPMN visualization version'
+name: 'Notify PA repository of new bpmn-visualization version'
 description: 'You can customize the parameters to link to the event and the repository to notify.
 To use on tag branch.'
 inputs:

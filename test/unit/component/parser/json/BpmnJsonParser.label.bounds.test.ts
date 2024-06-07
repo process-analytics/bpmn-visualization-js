@@ -1,34 +1,36 @@
 /**
  * @jest-environment jsdom
  */
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2020 Bonitasoft S.A.
 
-import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
+
 import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes, verifyLabelBounds } from '../../../helpers/JsonTestUtils';
 import { shapeBpmnElementKindForLabelTests } from '../../../helpers/TestUtils';
 
 describe('parse bpmn as json for label bounds', () => {
   describe.each(shapeBpmnElementKindForLabelTests)('parse bpmn as json for label bounds on %s', sourceKind => {
     it(`should convert as Shape, when a BPMNShape (attached to ${sourceKind} & with bounds with all attributes) is an attribute (as object) of 'BPMNPlane' (as object)`, () => {
-      const json = {
+      const json: BpmnJsonModel = {
         definitions: {
           targetNamespace: '',
           process: {
             id: 'Process_1',
+            [sourceKind]: { id: 'source_id_0', name: `${sourceKind}_id_0` },
           },
           BPMNDiagram: {
             id: 'BpmnDiagram_1',
@@ -47,7 +49,6 @@ describe('parse bpmn as json for label bounds', () => {
           },
         },
       };
-      (json.definitions.process as TProcess)[`${sourceKind}`] = { id: 'source_id_0', name: `${sourceKind}_id_0` };
 
       const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
@@ -55,10 +56,12 @@ describe('parse bpmn as json for label bounds', () => {
     });
 
     it(`should convert as Shape, when a BPMNShape (attached to ${sourceKind} & without bounds) is an attribute (as object) of 'BPMNPlane' (as object)`, () => {
-      const json = {
+      const json: BpmnJsonModel = {
         definitions: {
           targetNamespace: '',
-          process: {},
+          process: {
+            [sourceKind]: { id: 'source_id_0', name: `${sourceKind}_id_0` },
+          },
           BPMNDiagram: {
             id: 'BpmnDiagram_1',
             BPMNPlane: {
@@ -75,7 +78,6 @@ describe('parse bpmn as json for label bounds', () => {
           },
         },
       };
-      (json.definitions.process as TProcess)[`${sourceKind}`] = { id: 'source_id_0', name: `${sourceKind}_id_0` };
 
       const model = parseJsonAndExpectOnlyFlowNodes(json, 1);
 
@@ -84,7 +86,7 @@ describe('parse bpmn as json for label bounds', () => {
   });
 
   it(`should convert as Edge, when a BPMNEdge (with bounds with all attributes) is an attribute (as object) of 'BPMNPlane' (as object)`, () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
@@ -118,7 +120,7 @@ describe('parse bpmn as json for label bounds', () => {
   });
 
   it(`should convert as Edge, when a BPMNEdge (without bounds) is an attribute (as object) of 'BPMNPlane' (as object)`, () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {

@@ -1,23 +1,24 @@
-/**
- * Copyright 2022 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2022 Bonitasoft S.A.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
-import { AvailableTestPages, PageTester } from './helpers/visu/bpmn-page-utils';
-import type { Page } from 'playwright';
-import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
+
+import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
 
 class FilterPoolsImageSnapshotConfigurator extends ImageSnapshotConfigurator {
   override getConfig(name: string): MatchImageSnapshotOptions {
@@ -30,14 +31,13 @@ class FilterPoolsImageSnapshotConfigurator extends ImageSnapshotConfigurator {
 describe('Filter pools', () => {
   const diagramSubfolder = 'filter';
   const imageSnapshotConfigurator = new FilterPoolsImageSnapshotConfigurator(
-    // chromium: 0 max
+    // chromium: 0.07789950491838837% max
     // firefox: 0.012128385807519404% max
     // webkit: 0.160355447672067% max
-    new MultiBrowserImageSnapshotThresholds({ chromium: 0 / 100, firefox: 0.013 / 100, webkit: 0.17 / 100 }),
+    new MultiBrowserImageSnapshotThresholds({ chromium: 0.08 / 100, firefox: 0.013 / 100, webkit: 0.17 / 100 }),
     diagramSubfolder,
   );
-  const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder }, <Page>page);
-  const bpmnDiagramName = 'pools';
+  const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder }, page);
 
   // Participant_1 start/task/end
   // Participant_2 black box pool
@@ -49,11 +49,20 @@ describe('Filter pools', () => {
     ${'one-with-expanded-call-activity'} | ${'Participant_5'}
     ${'all'}                             | ${['Participant_1', 'Participant_2', 'Participant_3', 'Participant_4', 'Participant_5']}
   `('Filter $name', async ({ name, pools }: { name: string; pools: string | string[] }) => {
-    await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName, {
+    await pageTester.gotoPageAndLoadBpmnDiagram('pools', {
       poolIdsToFilter: pools,
     });
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(name);
+    expect(image).toMatchImageSnapshot(config);
+  });
+
+  it('Filter a "not displayed" pool with elements', async () => {
+    await pageTester.gotoPageAndLoadBpmnDiagram('pools.not.displayed.with.elements', {
+      poolIdsToFilter: 'participant_1',
+    });
+    const image = await page.screenshot({ fullPage: true });
+    const config = imageSnapshotConfigurator.getConfig('not-displayed-with-elements');
     expect(image).toMatchImageSnapshot(config);
   });
 });

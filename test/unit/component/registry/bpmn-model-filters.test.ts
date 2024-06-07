@@ -1,28 +1,29 @@
-/**
- * Copyright 2022 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2022 Bonitasoft S.A.
 
-import { ModelFiltering } from '../../../../src/component/registry/bpmn-model-filters';
-import { ShapeBpmnElementKind } from '../../../../src/model/bpmn/internal';
-import type Shape from '../../../../src/model/bpmn/internal/shape/Shape';
-import type { Edge } from '../../../../src/model/bpmn/internal/edge/edge';
-import type { ModelFilter } from '../../../../src/component/options';
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-import { buildEdgeId, buildShapeId, poolInModel, toBpmnModel } from '../../helpers/bpmn-model-utils';
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 import type { ExpectedEdge, ExpectedShape } from '../../helpers/bpmn-model-expect';
+import type { ModelFilter } from '@lib/component/options';
+import type { Edge } from '@lib/model/bpmn/internal/edge/edge';
+import type Shape from '@lib/model/bpmn/internal/shape/Shape';
+
 import { verifyEdge as baseVerifyEdge, verifyShape as baseVerifyShape } from '../../helpers/bpmn-model-expect';
+import { buildEdgeId, buildShapeId, poolInModel, toBpmnModel } from '../../helpers/bpmn-model-utils';
+
+import { ModelFiltering } from '@lib/component/registry/bpmn-model-filters';
+import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 
 // use a single instance to detect any side effects
 const modelFiltering = new ModelFiltering();
@@ -60,6 +61,7 @@ describe('Bpmn Model filters', () => {
           },
         },
       });
+      // eslint-disable-next-line unicorn/no-array-callback-reference,unicorn/no-array-method-this-argument -- Bad error "Do not use the `this` argument in `Array#filter()`", modelFiltering is not an array.
       const bpmnModel = modelFiltering.filter(originalBpmnModel, modelFilter);
       expect(bpmnModel).toStrictEqual(originalBpmnModel);
     });
@@ -93,7 +95,7 @@ describe('Bpmn Model filters', () => {
     it('Filter model that does not have participant', () => {
       // generated from node ./scripts/utils/dist/utils.mjs test/fixtures/bpmn/simple-start-task-end.bpmn --output model
       const originalBpmnModel = toBpmnModel({
-        process: {
+        elementsWithoutPool: {
           id: 'process_id',
           startEvents: {
             id: 'startEvent_1',
@@ -115,10 +117,11 @@ describe('Bpmn Model filters', () => {
       expect(originalBpmnModel.pools).toHaveLength(0);
       expect(originalBpmnModel.lanes).toHaveLength(0);
       expect(() =>
+        // eslint-disable-next-line unicorn/no-array-callback-reference,unicorn/no-array-method-this-argument -- Bad error "Do not use the `this` argument in `Array#filter()`", modelFiltering is not an array.
         modelFiltering.filter(originalBpmnModel, {
           pools: { id: 'process_id' },
         }),
-      ).toThrow('It is not possible to filter pools of the BPMN model because it does not contain any pool');
+      ).toThrow('No matching pools for ids [process_id]');
     });
   });
 
@@ -136,6 +139,7 @@ describe('Bpmn Model filters', () => {
       });
 
       const poolFilter = propertyName === 'id' ? { id: 'participant_id_1' } : { name: 'Participant 1' };
+      // eslint-disable-next-line unicorn/no-array-callback-reference,unicorn/no-array-method-this-argument -- Bad error "Do not use the `this` argument in `Array#filter()`", modelFiltering is not an array.
       const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: poolFilter });
 
       expect(bpmnModel).toStrictEqual(originalBpmnModel);
@@ -159,6 +163,7 @@ describe('Bpmn Model filters', () => {
       expect(originalBpmnModel.flowNodes).toHaveLength(2);
 
       const poolFilter = propertyName === 'id' ? { id: 'participant_id_1' } : { name: 'Participant 1' };
+      // eslint-disable-next-line unicorn/no-array-callback-reference,unicorn/no-array-method-this-argument -- Bad error "Do not use the `this` argument in `Array#filter()`", modelFiltering is not an array.
       const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: poolFilter });
 
       expect(bpmnModel).toStrictEqual(originalBpmnModel);
@@ -205,6 +210,7 @@ describe('Bpmn Model filters', () => {
           },
         ],
       });
+      // eslint-disable-next-line unicorn/no-array-callback-reference,unicorn/no-array-method-this-argument -- Bad error "Do not use the `this` argument in `Array#filter()`", modelFiltering is not an array.
       const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_2' } });
 
       expect(bpmnModel.pools).toHaveLength(1);
@@ -277,6 +283,7 @@ describe('Bpmn Model filters', () => {
       expect(originalBpmnModel.edges).toHaveLength(2);
 
       const poolFilter = propertyName === 'id' ? [{ id: 'participant_id_1' }, { id: 'participant_id_2' }] : [{ name: 'Participant 1' }, { name: 'Participant 2' }];
+      // eslint-disable-next-line unicorn/no-array-callback-reference,unicorn/no-array-method-this-argument -- Bad error "Do not use the `this` argument in `Array#filter()`", modelFiltering is not an array.
       const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: poolFilter });
 
       expect(bpmnModel.pools).toHaveLength(2);
@@ -306,6 +313,7 @@ describe('Bpmn Model filters', () => {
         propertyName === 'id'
           ? [{ id: 'not exist_0' }, { id: 'participant_id_1' }, { id: 'not exist_1' }, { id: 'not exist_2' }]
           : [{ name: 'not exist_0' }, { name: 'Participant 1' }, { name: 'not exist_1' }, { name: 'not exist_2' }];
+      // eslint-disable-next-line unicorn/no-array-callback-reference,unicorn/no-array-method-this-argument -- Bad error "Do not use the `this` argument in `Array#filter()`", modelFiltering is not an array.
       const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: poolFilter });
 
       expect(bpmnModel.pools).toHaveLength(1);
@@ -329,6 +337,7 @@ describe('Bpmn Model filters', () => {
       },
     });
 
+    // eslint-disable-next-line unicorn/no-array-callback-reference,unicorn/no-array-method-this-argument -- Bad error "Do not use the `this` argument in `Array#filter()`", modelFiltering is not an array.
     expect(modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1', name: 'not exist_1' } })).toStrictEqual(originalBpmnModel);
   });
 
@@ -349,6 +358,7 @@ describe('Bpmn Model filters', () => {
         },
       });
 
+      // eslint-disable-next-line unicorn/no-array-callback-reference,unicorn/no-array-method-this-argument -- Bad error "Do not use the `this` argument in `Array#filter()`", modelFiltering is not an array.
       expect(modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } })).toStrictEqual(originalBpmnModel);
     });
 
@@ -368,6 +378,7 @@ describe('Bpmn Model filters', () => {
         },
       });
 
+      // eslint-disable-next-line unicorn/no-array-callback-reference,unicorn/no-array-method-this-argument -- Bad error "Do not use the `this` argument in `Array#filter()`", modelFiltering is not an array.
       expect(modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } })).toStrictEqual(originalBpmnModel);
     });
 
@@ -399,6 +410,7 @@ describe('Bpmn Model filters', () => {
         },
       });
 
+      // eslint-disable-next-line unicorn/no-array-callback-reference,unicorn/no-array-method-this-argument -- Bad error "Do not use the `this` argument in `Array#filter()`", modelFiltering is not an array.
       expect(modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } })).toStrictEqual(originalBpmnModel);
     });
 
@@ -432,6 +444,7 @@ describe('Bpmn Model filters', () => {
         },
       });
 
+      // eslint-disable-next-line unicorn/no-array-callback-reference,unicorn/no-array-method-this-argument -- Bad error "Do not use the `this` argument in `Array#filter()`", modelFiltering is not an array.
       expect(modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } })).toStrictEqual(originalBpmnModel);
     });
 
@@ -460,6 +473,7 @@ describe('Bpmn Model filters', () => {
         },
       });
 
+      // eslint-disable-next-line unicorn/no-array-callback-reference,unicorn/no-array-method-this-argument -- Bad error "Do not use the `this` argument in `Array#filter()`", modelFiltering is not an array.
       expect(modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } })).toStrictEqual(originalBpmnModel);
     });
   });
@@ -482,6 +496,7 @@ describe('Bpmn Model filters', () => {
       ],
     });
 
+    // eslint-disable-next-line unicorn/no-array-callback-reference,unicorn/no-array-method-this-argument -- Bad error "Do not use the `this` argument in `Array#filter()`", modelFiltering is not an array.
     const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: [{ id: 'participant_id_1' }, { name: 'Participant 2' }] });
     expect(bpmnModel.pools).toHaveLength(2);
     verifyShape(bpmnModel.pools[0], {
@@ -510,12 +525,59 @@ describe('Bpmn Model filters', () => {
       ],
     });
 
+    // eslint-disable-next-line unicorn/no-array-callback-reference,unicorn/no-array-method-this-argument -- Bad error "Do not use the `this` argument in `Array#filter()`", modelFiltering is not an array.
     const bpmnModel = modelFiltering.filter(originalBpmnModel, { pools: [{ id: 'participant_id_1' }, { name: 'Participant 1' }] });
     expect(bpmnModel.pools).toHaveLength(1);
     verifyShape(bpmnModel.pools[0], {
       bpmnElementId: 'participant_id_1',
       bpmnElementName: 'Participant 1',
       bpmnElementKind: ShapeBpmnElementKind.POOL,
+    });
+  });
+
+  it('Filter a black box pool', () => {
+    const originalBpmnModel = toBpmnModel({
+      pools: {
+        // the black box pool = a pool without elements
+        id: 'participant_id_1',
+        name: 'Participant 1',
+      },
+    });
+
+    // eslint-disable-next-line unicorn/no-array-callback-reference,unicorn/no-array-method-this-argument -- Bad error "Do not use the `this` argument in `Array#filter()`", modelFiltering is not an array.
+    expect(modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } })).toStrictEqual(originalBpmnModel);
+  });
+
+  it('Filter a "not displayed" pool containing BPMN elements', () => {
+    const originalBpmnModel = toBpmnModel({
+      pools: {
+        id: 'participant_id_1',
+        name: 'Participant 1',
+        isDisplayed: false,
+        tasks: {
+          id: 'task_1',
+          name: 'Task 1',
+        },
+        startEvents: {
+          id: 'start_event_1',
+        },
+        sequenceFlows: {
+          id: 'sequence_flow_1',
+          source: 'start_event_1',
+          target: 'task_1',
+        },
+        lanes: {
+          id: 'lane_1',
+        },
+      },
+    });
+
+    // eslint-disable-next-line unicorn/no-array-callback-reference,unicorn/no-array-method-this-argument -- Bad error "Do not use the `this` argument in `Array#filter()`", modelFiltering is not an array.
+    expect(modelFiltering.filter(originalBpmnModel, { pools: { id: 'participant_id_1' } })).toStrictEqual({
+      pools: [],
+      lanes: originalBpmnModel.lanes,
+      flowNodes: originalBpmnModel.flowNodes,
+      edges: originalBpmnModel.edges,
     });
   });
 });

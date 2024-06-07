@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:color="http://www.omg.org/spec/BPMN/non-normative/color/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_091fder" targetNamespace="http://example.com/schema/bpmn">
+  <bpmn:process id="Process_0ghb04w" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1sc1zif">
+      <bpmn:outgoing>Flow_0bxrkvy</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Activity_0xnf3yu" name="label in green">
+      <bpmn:incoming>Flow_0bxrkvy</bpmn:incoming>
+      <bpmn:outgoing>Flow_1hx9ajq</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_0bxrkvy" sourceRef="StartEvent_1sc1zif" targetRef="Activity_0xnf3yu" />
+    <bpmn:exclusiveGateway id="Gateway_0kxy5al" name="label in blue">
+      <bpmn:incoming>Flow_1hx9ajq</bpmn:incoming>
+      <bpmn:outgoing>Flow_103f0ry</bpmn:outgoing>
+      <bpmn:outgoing>Flow_117pbz0</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1hx9ajq" sourceRef="Activity_0xnf3yu" targetRef="Gateway_0kxy5al" />
+    <bpmn:task id="Activity_1a7bmbn" name="label with default color">
+      <bpmn:incoming>Flow_103f0ry</bpmn:incoming>
+      <bpmn:outgoing>Flow_0zoqfe0</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_103f0ry" sourceRef="Gateway_0kxy5al" targetRef="Activity_1a7bmbn" />
+    <bpmn:endEvent id="Event_0favhof" name="label with default color">
+      <bpmn:incoming>Flow_0zoqfe0</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0zoqfe0" sourceRef="Activity_1a7bmbn" targetRef="Event_0favhof" />
+    <bpmn:task id="Activity_0argpxd" name="label in orange">
+      <bpmn:incoming>Flow_117pbz0</bpmn:incoming>
+      <bpmn:outgoing>Flow_1ms7sac</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_117pbz0" name="label in orange" sourceRef="Gateway_0kxy5al" targetRef="Activity_0argpxd" />
+    <bpmn:endEvent id="Event_12uio05" name="label in red">
+      <bpmn:incoming>Flow_1ms7sac</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1ms7sac" sourceRef="Activity_0argpxd" targetRef="Event_12uio05" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0ghb04w">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1sc1zif">
+        <dc:Bounds x="152" y="162" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0xnf3yu_di" bpmnElement="Activity_0xnf3yu">
+        <dc:Bounds x="240" y="140" width="100" height="80" />
+        <bpmndi:BPMNLabel color:color="#25af65"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0kxy5al_di" bpmnElement="Gateway_0kxy5al" isMarkerVisible="true">
+        <dc:Bounds x="395" y="155" width="50" height="50" />
+        <bpmndi:BPMNLabel color:color="#55a3f3">
+          <dc:Bounds x="391" y="125" width="59" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1a7bmbn_di" bpmnElement="Activity_1a7bmbn">
+        <dc:Bounds x="500" y="140" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0favhof_di" bpmnElement="Event_0favhof">
+        <dc:Bounds x="662" y="162" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="640" y="205" width="82" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0argpxd_di" bpmnElement="Activity_0argpxd">
+        <dc:Bounds x="500" y="250" width="100" height="80" />
+        <bpmndi:BPMNLabel color:color="#FF6600" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_12uio05_di" bpmnElement="Event_12uio05">
+        <dc:Bounds x="662" y="272" width="36" height="36" />
+        <bpmndi:BPMNLabel color:color="#FF0000">
+          <dc:Bounds x="653" y="315" width="54" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0bxrkvy_di" bpmnElement="Flow_0bxrkvy">
+        <di:waypoint x="188" y="180" />
+        <di:waypoint x="240" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1hx9ajq_di" bpmnElement="Flow_1hx9ajq">
+        <di:waypoint x="340" y="180" />
+        <di:waypoint x="395" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_103f0ry_di" bpmnElement="Flow_103f0ry">
+        <di:waypoint x="445" y="180" />
+        <di:waypoint x="500" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0zoqfe0_di" bpmnElement="Flow_0zoqfe0">
+        <di:waypoint x="600" y="180" />
+        <di:waypoint x="662" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_117pbz0_di" bpmnElement="Flow_117pbz0">
+        <di:waypoint x="420" y="205" />
+        <di:waypoint x="420" y="290" />
+        <di:waypoint x="500" y="290" />
+        <bpmndi:BPMNLabel color:color="#FF6600">
+          <dc:Bounds x="391" y="300" width="59" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ms7sac_di" bpmnElement="Flow_1ms7sac">
+        <di:waypoint x="600" y="290" />
+        <di:waypoint x="662" y="290" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

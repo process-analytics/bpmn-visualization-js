@@ -1,20 +1,22 @@
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-import type { BpmnVisualization, ShapeBpmnEventDefinitionKind } from '../../../src/bpmn-visualization';
-import { BpmnQuerySelectorsForTests } from '../../helpers/query-selectors';
+/*
+Copyright 2020 Bonitasoft S.A.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import type { BpmnVisualization, ShapeBpmnEventDefinitionKind } from '@lib/bpmn-visualization';
+
+import { BpmnQuerySelectorsForTests } from '@test/shared/query-selectors';
 
 /* eslint-disable jest/no-standalone-expect */
 
@@ -30,15 +32,18 @@ export interface MessageFlowRequestedChecks extends RequestedChecks {
 }
 
 export class HtmlElementLookup {
-  private bpmnQuerySelectors: BpmnQuerySelectorsForTests;
+  private bpmnQuerySelectors = new BpmnQuerySelectorsForTests();
 
-  constructor(private bpmnVisualization: BpmnVisualization) {
-    this.bpmnQuerySelectors = new BpmnQuerySelectorsForTests(bpmnVisualization.graph.container.id);
-  }
+  constructor(private bpmnVisualization: BpmnVisualization) {}
 
   expectNoElement(bpmnId: string): void {
     const svgGroupElement = this.findSvgElement(bpmnId);
     expect(svgGroupElement).toBeUndefined();
+  }
+
+  // replicate what we do in HtmlElementRegistry: query selector on the BPMN container element directly
+  private querySelector<E extends Element>(selector: string): E | null {
+    return this.bpmnVisualization.graph.container.querySelector<E>(selector);
   }
 
   // ===========================================================================
@@ -53,8 +58,8 @@ export class HtmlElementLookup {
     this.expectEventType(bpmnId, 'bpmn-start-event', bpmnEventDefinition, checks);
   }
 
-  expectIntermediateThrowEvent(bpmnId: string, bpmnEventDefinition: ShapeBpmnEventDefinitionKind): void {
-    this.expectEventType(bpmnId, 'bpmn-intermediate-throw-event', bpmnEventDefinition);
+  expectIntermediateThrowEvent(bpmnId: string, bpmnEventDefinition: ShapeBpmnEventDefinitionKind, checks?: RequestedChecks): void {
+    this.expectEventType(bpmnId, 'bpmn-intermediate-throw-event', bpmnEventDefinition, checks);
   }
 
   expectEndEvent(bpmnId: string, bpmnEventDefinition: ShapeBpmnEventDefinitionKind, checks?: RequestedChecks): void {
@@ -69,8 +74,8 @@ export class HtmlElementLookup {
     this.expectElement(bpmnId, expectSvgTask, ['bpmn-type-activity', 'bpmn-type-task', bpmnClass], checks);
   }
 
-  expectTask(bpmnId: string): void {
-    this.expectTaskType(bpmnId, 'bpmn-task');
+  expectTask(bpmnId: string, checks?: RequestedChecks): void {
+    this.expectTaskType(bpmnId, 'bpmn-task', checks);
   }
 
   expectServiceTask(bpmnId: string, checks?: RequestedChecks): void {
@@ -89,8 +94,8 @@ export class HtmlElementLookup {
     this.expectElement(bpmnId, expectSvgLane, ['bpmn-type-container', 'bpmn-lane'], checks);
   }
 
-  expectPool(bpmnId: string): void {
-    this.expectElement(bpmnId, expectSvgPool, ['bpmn-type-container', 'bpmn-pool']);
+  expectPool(bpmnId: string, checks?: RequestedChecks): void {
+    this.expectElement(bpmnId, expectSvgPool, ['bpmn-type-container', 'bpmn-pool'], checks);
   }
 
   // ===========================================================================
@@ -117,15 +122,15 @@ export class HtmlElementLookup {
     this.expectElement(bpmnId, expectSvgMessageFlow, ['bpmn-type-flow', 'bpmn-message-flow'], checks);
 
     // message flow icon
-    const msgFlowIconSvgGroupElement = document.querySelector<HTMLElement>(this.bpmnQuerySelectors.element(`messageFlowIcon_of_${bpmnId}`));
+    const messageFlowIconSvgGroupElement = this.querySelector<HTMLElement>(this.bpmnQuerySelectors.element(`messageFlowIcon_of_${bpmnId}`));
     if (checks?.hasIcon) {
-      expectSvgMessageFlowIcon(msgFlowIconSvgGroupElement);
+      expectSvgMessageFlowIcon(messageFlowIconSvgGroupElement);
       expectClassAttribute(
-        msgFlowIconSvgGroupElement,
+        messageFlowIconSvgGroupElement,
         computeClassValue(['bpmn-message-flow-icon', checks?.isInitiatingIcon ? 'bpmn-icon-initiating' : 'bpmn-icon-non-initiating'], checks?.additionalClasses),
       );
     } else {
-      expect(msgFlowIconSvgGroupElement).toBeNull();
+      expect(messageFlowIconSvgGroupElement).toBeNull();
     }
   }
 
@@ -144,11 +149,11 @@ export class HtmlElementLookup {
 
   private findSvgElement(bpmnId: string): HTMLElement {
     const bpmnElements = this.bpmnVisualization.bpmnElementsRegistry.getElementsByIds(bpmnId);
-    return bpmnElements.length == 0 ? undefined : bpmnElements[0].htmlElement;
+    return bpmnElements.length === 0 ? undefined : bpmnElements[0].htmlElement;
   }
 
   private expectSvgOverlay(bpmnId: string, overlayLabel?: string): void {
-    const overlayGroupElement = document.querySelector<SVGGElement>(this.bpmnQuerySelectors.overlays(bpmnId));
+    const overlayGroupElement = this.querySelector<SVGGElement>(this.bpmnQuerySelectors.overlays(bpmnId));
     if (overlayLabel) {
       expect(overlayGroupElement.querySelector('g > text').innerHTML).toEqual(overlayLabel);
       expectClassAttribute(overlayGroupElement, 'overlay-badge');
@@ -161,15 +166,19 @@ export class HtmlElementLookup {
     if (!label) {
       return;
     }
-    const labelLastDivElement = document.querySelector<HTMLElement>(this.bpmnQuerySelectors.labelLastDiv(bpmnId));
+
+    const labelLastDivElement = this.querySelector<HTMLElement>(this.bpmnQuerySelectors.labelLastDiv(bpmnId));
     expect(labelLastDivElement.innerHTML).toEqual(label);
-    const labelSvgGroup = document.querySelector<HTMLElement>(this.bpmnQuerySelectors.labelSvgGroup(bpmnId));
+    // Validate fix for https://github.com/process-analytics/bpmn-visualization-js/issues/920
+    expect(labelLastDivElement.style.pointerEvents).toBe('none');
+
+    const labelSvgGroup = this.querySelector<HTMLElement>(this.bpmnQuerySelectors.labelSvgGroup(bpmnId));
     expectClassAttribute(labelSvgGroup, computeClassValue(bpmnClasses, ['bpmn-label', ...(additionalClasses ?? [])]));
   }
 }
 
-function computeClassValue(bpmnClasses: string[], additionalClasses?: string[]): string {
-  return bpmnClasses.concat(additionalClasses).filter(Boolean).join(' ');
+function computeClassValue(bpmnClasses: string[], additionalClasses: string[] = []): string {
+  return [...bpmnClasses, ...additionalClasses].filter(Boolean).join(' ');
 }
 
 export function expectSvgEvent(svgGroupElement: HTMLElement): void {

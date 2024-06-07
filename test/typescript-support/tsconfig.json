@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "module": "ES2015",
+    "target": "ES2015",
+    "lib": [
+      "ES2015",
+      "DOM"
+    ],
+    "moduleResolution": "Node",
+    "strict": true,
+    "noEmit": true,
+    // By default, all visible ”@types” packages are included in your compilation. Packages in node_modules/@types of any enclosing folder are considered visible. For example, that
+    // means packages within ./node_modules/@types/, ../node_modules/@types/, ../../node_modules/@types/, and so on.
+    // ../../node_modules/@types includes types used to develop bpmn-visualization. We only want to check types used by bpmn-visualization when it is included in other projects/applications.
+    // So, we don't want development types to be part of the tests, especially because some of them may require a newer TypeScript version.
+    "typeRoots": [],
+  },
+  "include": [
+    "src/**/*"
+  ],
+}

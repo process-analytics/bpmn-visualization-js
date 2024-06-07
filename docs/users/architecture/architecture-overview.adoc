@@ -1,8 +1,9 @@
-=== Architecture Overview
+== Architecture Overview
 
-`bpmn-visualization` consists on 2 main modules:
+`bpmn-visualization` consists on 3 main modules:
 
-* parsing: read a BPMN source (xml string) and convert it into its own <<bpmn-internal-model,internal Model>>.
-* rendering: display the BPMN diagrams represented by the internal Model, using the https://jgraph.github.io/mxgraph/[mxGraph library]
+* the *BPMN parser*: read a BPMN source (xml string) and convert it into its own <<bpmn-internal-model,internal Model>>.
+* the *BPMN renderer*: display the BPMN diagrams represented by the internal Model, using the https://jgraph.github.io/mxgraph/[mxGraph library]
+* the *interactions component*: interact with the BPMN elements (diagram navigation, add custom listeners to dynamically enrich and/or modify the model style, ...)
 
-image::images/architecture/architecture_overview.svg[]
+image::images/architecture/architecture-overview.svg[]

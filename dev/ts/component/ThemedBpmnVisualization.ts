@@ -1,51 +1,58 @@
-/**
- * Copyright 2022 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-import { BpmnVisualization, FlowKind, ShapeBpmnElementKind, ShapeUtil, StyleConfigurator } from '../../../src/bpmn-visualization';
-import { logStartup } from '../utils/internal-helpers';
-import { mxgraph } from '../../../src/component/mxgraph/initializer';
+/*
+Copyright 2022 Bonitasoft S.A.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import { BpmnVisualization, FlowKind, ShapeBpmnElementKind, ShapeUtil, StyleConfigurator, StyleDefault } from '../../../src/bpmn-visualization';
+import { mxConstants } from '../../../src/component/mxgraph/initializer';
+import { logStartup } from '../shared/internal-helpers';
 
 interface Theme {
-  defaultStrokeColor: string;
-  defaultFontColor: string;
   defaultFillColor: string;
+  defaultFontColor: string;
+  defaultStrokeColor: string;
+
+  flowColor?: string;
+
+  catchAndThrowEventStrokeColor?: string;
   endEventFillColor: string;
   endEventStrokeColor: string;
   startEventFillColor: string;
   startEventStrokeColor: string;
-  taskFillColor: string;
+
+  taskAndCallActivityFillColor: string;
+  textAnnotationFillColor?: string;
+
   laneFillColor: string;
   poolFillColor: string;
-
-  catchAndThrowEventStrokeColor?: string;
-  flowColor?: string;
 }
 
 const themes = new Map<string, Theme>([
   [
     'dark',
     {
-      defaultStrokeColor: '#c0ddeb',
-      defaultFontColor: 'white',
       defaultFillColor: '#334352',
+      defaultFontColor: 'white',
+      defaultStrokeColor: '#c0ddeb',
 
       endEventFillColor: 'pink',
       endEventStrokeColor: 'FireBrick',
       startEventFillColor: 'DarkSeaGreen',
       startEventStrokeColor: 'DarkGreen',
-      taskFillColor: '#5c8599',
+
+      taskAndCallActivityFillColor: '#5c8599',
+
       laneFillColor: '#2b3742',
       poolFillColor: '#232b33',
     },
@@ -53,19 +60,42 @@ const themes = new Map<string, Theme>([
   [
     'brown',
     {
-      defaultStrokeColor: '#414666',
       defaultFillColor: '#ede7e1',
       defaultFontColor: '#414666',
+      defaultStrokeColor: '#414666',
 
       flowColor: '#666666',
+
+      catchAndThrowEventStrokeColor: '#377f87',
       endEventFillColor: 'pink',
       endEventStrokeColor: 'FireBrick',
       startEventFillColor: 'DarkSeaGreen',
       startEventStrokeColor: 'DarkGreen',
-      taskFillColor: '#dadce8',
+
+      taskAndCallActivityFillColor: '#dadce8',
+
       laneFillColor: '#d4c3b2',
       poolFillColor: '#d1b9a1',
-      catchAndThrowEventStrokeColor: '#377f87',
+    },
+  ],
+  [
+    'light-blue',
+    {
+      defaultFillColor: '#ffffff',
+      defaultFontColor: '#002395',
+      defaultStrokeColor: '#002395',
+
+      endEventFillColor: '#f9dadc',
+      endEventStrokeColor: '#e20613',
+      startEventFillColor: '#ffffff',
+      startEventStrokeColor: '#05d99e',
+
+      // use rgba to be able to set alpha
+      taskAndCallActivityFillColor: 'rgba(132,158,253,0.1)',
+      textAnnotationFillColor: 'rgba(237,237,245,0.5)',
+
+      laneFillColor: '#edeef5',
+      poolFillColor: '#dbefff',
     },
   ],
 ]);
@@ -85,66 +115,72 @@ export class ThemedBpmnVisualization extends BpmnVisualization {
     // we are not using mxgraph constants here to show another way to configure the style
     const styleSheet = this.graph.getStylesheet();
 
-    // EVENTS
-    ShapeUtil.eventKinds().forEach(kind => {
+    // EVENT
+    for (const kind of ShapeUtil.eventKinds()) {
       let fillColor;
       let strokeColor;
       switch (kind) {
-        case 'endEvent':
+        case 'endEvent': {
           fillColor = theme.endEventFillColor;
           strokeColor = theme.endEventStrokeColor;
           break;
-        case 'startEvent':
+        }
+        case 'startEvent': {
           fillColor = theme.startEventFillColor;
           strokeColor = theme.startEventStrokeColor;
           break;
+        }
         case 'intermediateCatchEvent':
         case 'intermediateThrowEvent':
-        case 'boundaryEvent':
+        case 'boundaryEvent': {
           fillColor = theme.defaultFillColor;
           strokeColor = theme.catchAndThrowEventStrokeColor ?? theme.defaultStrokeColor;
           break;
-        default:
+        }
+        default: {
           fillColor = theme.defaultFillColor;
           strokeColor = theme.defaultStrokeColor;
           break;
+        }
       }
       const style = styleSheet.styles[kind];
-      style['fillColor'] = fillColor;
-      style['strokeColor'] = strokeColor;
-    });
+      style.fillColor = fillColor;
+      style.strokeColor = strokeColor;
+    }
 
-    // TASKS
-    ShapeUtil.taskKinds().forEach(kind => {
+    // TASK
+    for (const kind of ShapeUtil.taskKinds()) {
       const style = styleSheet.styles[kind];
-      style['fillColor'] = theme.taskFillColor;
-      style['fontColor'] = theme.defaultFontColor; // TODO extra config
-    });
+      style.fillColor = theme.taskAndCallActivityFillColor;
+    }
 
-    // CALL ACTIVITIES
+    // CALL ACTIVITY
     const callActivityStyle = styleSheet.styles[ShapeBpmnElementKind.CALL_ACTIVITY];
-    callActivityStyle['fillColor'] = theme.taskFillColor;
-    callActivityStyle['fontColor'] = theme.defaultFontColor;
+    callActivityStyle.fillColor = theme.taskAndCallActivityFillColor;
+
+    // TEXT ANNOTATION
+    const textAnnotationStyle = styleSheet.styles[ShapeBpmnElementKind.TEXT_ANNOTATION];
+    textAnnotationStyle.fillColor = theme.textAnnotationFillColor ?? StyleDefault.TEXT_ANNOTATION_FILL_COLOR;
 
     // POOL
     const poolStyle = styleSheet.styles[ShapeBpmnElementKind.POOL];
-    poolStyle['fillColor'] = theme.poolFillColor;
-    poolStyle['swimlaneFillColor'] = theme.defaultFillColor;
+    poolStyle.fillColor = theme.poolFillColor;
+    poolStyle.swimlaneFillColor = theme.defaultFillColor;
 
     // LANE
     const laneStyle = styleSheet.styles[ShapeBpmnElementKind.LANE];
-    laneStyle['fillColor'] = theme.laneFillColor;
+    laneStyle.fillColor = theme.laneFillColor;
 
     // DEFAULTS
     const defaultVertexStyle = styleSheet.getDefaultVertexStyle();
-    defaultVertexStyle['fontColor'] = theme.defaultFontColor;
-    defaultVertexStyle['fillColor'] = theme.defaultFillColor;
-    defaultVertexStyle['strokeColor'] = theme.defaultStrokeColor;
+    defaultVertexStyle.fontColor = theme.defaultFontColor;
+    defaultVertexStyle.fillColor = theme.defaultFillColor;
+    defaultVertexStyle.strokeColor = theme.defaultStrokeColor;
 
     const defaultEdgeStyle = styleSheet.getDefaultEdgeStyle();
-    defaultEdgeStyle['fontColor'] = theme.defaultFontColor;
-    defaultEdgeStyle['fillColor'] = theme.defaultFillColor;
-    defaultEdgeStyle['strokeColor'] = theme.flowColor ?? theme.defaultStrokeColor;
+    defaultEdgeStyle.fontColor = theme.defaultFontColor;
+    defaultEdgeStyle.fillColor = theme.defaultFillColor;
+    defaultEdgeStyle.strokeColor = theme.flowColor ?? theme.defaultStrokeColor;
 
     // theme configuration completed
     return true;
@@ -157,8 +193,8 @@ export class ThemedBpmnVisualization extends BpmnVisualization {
 
     // directly access the 'styles' map to update values. Using stylesheet.getCellStyle returns a copy of the style
     const seqFlowStyle = stylesheet.styles[FlowKind.SEQUENCE_FLOW];
-    seqFlowStyle[mxgraph.mxConstants.STYLE_STROKECOLOR] = color;
-    seqFlowStyle[mxgraph.mxConstants.STYLE_FILLCOLOR] = color;
+    seqFlowStyle[mxConstants.STYLE_STROKECOLOR] = color;
+    seqFlowStyle[mxConstants.STYLE_FILLCOLOR] = color;
 
     logStartup('Sequence flows style updated');
   }

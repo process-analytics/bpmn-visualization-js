@@ -1,22 +1,23 @@
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2020 Bonitasoft S.A.
 
-import { StyleDefault } from '../../style';
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 import type { IconConfiguration, IconStyleConfiguration, ShapeConfiguration, Size } from './render-types';
 import type { mxAbstractCanvas2D } from 'mxgraph';
+
+import { StyleDefault } from '../../style';
 
 /**
  * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
@@ -146,18 +147,6 @@ export class BpmnCanvas {
   setIconOriginForIconBottomCentered(bottomMargin: number = StyleDefault.SHAPE_ACTIVITY_BOTTOM_MARGIN): void {
     const shape = this.shapeConfiguration;
     this.iconPaintingOriginX = shape.x + (shape.width - this.iconOriginalSize.width * this.scaleX) / 2;
-    this.iconPaintingOriginY = shape.y + (shape.height - this.iconOriginalSize.height * this.scaleY - bottomMargin);
-  }
-
-  /**
-   * Set the icon origin to ensure that, on the shape, the icon is vertically aligned to the bottom and translate to the left from the horizontal center.
-   */
-  setIconOriginForIconOnBottomLeft(
-    bottomMargin: number = StyleDefault.SHAPE_ACTIVITY_BOTTOM_MARGIN,
-    fromCenterMargin: number = StyleDefault.SHAPE_ACTIVITY_FROM_CENTER_MARGIN,
-  ): void {
-    const shape = this.shapeConfiguration;
-    this.iconPaintingOriginX = shape.x + (shape.width - this.iconOriginalSize.width * this.scaleX) / 3 - fromCenterMargin;
     this.iconPaintingOriginY = shape.y + (shape.height - this.iconOriginalSize.height * this.scaleY - bottomMargin);
   }
 

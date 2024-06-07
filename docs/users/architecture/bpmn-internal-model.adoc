@@ -1,5 +1,5 @@
 [[bpmn-internal-model]]
-=== BPMN Internal Model
+== BPMN Internal Model
 
 Our internal model is based on the https://www.omg.org/spec/BPMN/2.0.2/PDF[BPMN specification].
 

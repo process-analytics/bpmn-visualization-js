@@ -1,4 +1,4 @@
-== Architecture and Development
+= Architecture and Development
 :icons: font
 
 include::architecture-overview.adoc[]

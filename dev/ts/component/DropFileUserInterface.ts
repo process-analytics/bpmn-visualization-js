@@ -1,53 +1,58 @@
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-import { logErrorAndOpenAlert } from '../utils/internal-helpers';
+/*
+Copyright 2020 Bonitasoft S.A.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import { logErrorAndOpenAlert } from '../shared/internal-helpers';
 
 export class DropFileUserInterface {
   private document: Document;
   private head: Element;
-  private body: Element;
 
-  constructor(private window: Window, private outerContainerId: string, private containerToFadeId: string, private dropCallback: (file: File) => void) {
+  constructor(
+    private window: Window,
+    private outerContainerId: string,
+    private containerToFade: HTMLElement,
+    private dropCallback: (file: File) => void,
+  ) {
     this.document = window.document;
     this.head = document.head;
-    this.body = document.body;
     this.initializeDragAndDrop();
   }
 
   private initializeDragAndDrop(): void {
-    const containerToBeFaded = document.getElementById(this.containerToFadeId);
-    this.addDomElements(containerToBeFaded);
+    // Add a special CSS class to the container to identify it. It doesn't always have an id, so we cannot use CSS selector involving its id
+    this.containerToFade.classList.add('faded-container');
+    this.addDomElements(this.containerToFade);
     this.addStyle();
 
-    const dropContainer = document.getElementById(this.outerContainerId);
+    const dropContainer = document.querySelector<HTMLDivElement>(`#${this.outerContainerId}`);
     // prevent loading file by the browser
     this.preventDefaultsOnEvents(['dragover', 'drop'], this.window);
     this.preventDefaultsOnEvents(['dragover', 'dragleave', 'drop'], dropContainer);
 
-    this.addEventsOnDropContainer(dropContainer, containerToBeFaded);
-    this.addEventsOnDocument(this.outerContainerId, containerToBeFaded);
+    this.addEventsOnDropContainer(dropContainer, this.containerToFade);
+    this.addEventsOnDocument(this.outerContainerId, this.containerToFade);
   }
 
-  private preventDefaults(e: Event): void {
-    e.preventDefault();
-    e.stopPropagation();
+  private preventDefaults(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
   }
 
   private preventDefaultsOnEvents(events: string[], container: Element | Window): void {
-    events.forEach(eventName => container.addEventListener(eventName, this.preventDefaults, false));
+    for (const eventName of events) container.addEventListener(eventName, this.preventDefaults.bind(this), false);
   }
 
   private addDomElements(containerToBeFaded: HTMLElement): void {
@@ -55,20 +60,20 @@ export class DropFileUserInterface {
     p.textContent = 'open BPMN diagram';
     const innerDiv = this.document.createElement('div');
     innerDiv.classList.add('drop-here-text');
-    innerDiv.appendChild(p);
+    innerDiv.append(p);
     const containerDiv = this.document.createElement('div');
     containerDiv.id = this.outerContainerId;
-    containerDiv.appendChild(innerDiv);
+    containerDiv.append(innerDiv);
     containerToBeFaded.parentNode.prepend(containerDiv);
   }
 
   private addStyle(): void {
     // region CSS
     const css = `
-#${this.containerToFadeId} {
+.faded-container {
     opacity: 1;
 }
-#${this.containerToFadeId}.faded {
+.faded-container.faded {
     opacity: 0.1;
 }
 #${this.outerContainerId} {
@@ -109,8 +114,8 @@ export class DropFileUserInterface {
 }`;
     // endregion
     const style = document.createElement('style');
-    style.appendChild(document.createTextNode(css));
-    this.head.appendChild(style);
+    style.append(document.createTextNode(css));
+    this.head.append(style);
   }
 
   private addEventsOnDropContainer(container: HTMLElement, containerToBeFaded: HTMLElement): void {
@@ -127,14 +132,14 @@ export class DropFileUserInterface {
 
   private getAddClassCallback(containerToBeFaded: HTMLElement, isDocument: boolean, outerContainerId?: string) {
     return function (this: Document | HTMLElement): void {
-      isDocument ? (<Document>this).querySelector('#' + outerContainerId).classList.add('dragging') : (<HTMLElement>this).classList.add('dragging');
+      isDocument ? (this as Document).querySelector('#' + outerContainerId).classList.add('dragging') : (this as HTMLElement).classList.add('dragging');
       containerToBeFaded.classList.add('faded');
     };
   }
 
   private getRemoveClassCallback(containerToBeFaded: HTMLElement, isDocument: boolean, outerContainerId?: string) {
     return function (this: Document | HTMLElement): void {
-      isDocument ? (<Document>this).querySelector('#' + outerContainerId).classList.remove('dragging') : (<HTMLElement>this).classList.remove('dragging');
+      isDocument ? (this as Document).querySelector('#' + outerContainerId).classList.remove('dragging') : (this as HTMLElement).classList.remove('dragging');
       containerToBeFaded.classList.remove('faded');
     };
   }
@@ -145,10 +150,11 @@ export class DropFileUserInterface {
         const dt = event.dataTransfer;
         const files = dt.files;
         dropCallback(files[0]);
-      } catch (e) {
-        logErrorAndOpenAlert(e);
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        logErrorAndOpenAlert(errorMessage);
       } finally {
-        isDocument ? (<Document>this).querySelector('#' + outerContainerId).classList.remove('dragging') : (<HTMLElement>this).classList.remove('dragging');
+        isDocument ? (this as Document).querySelector('#' + outerContainerId).classList.remove('dragging') : (this as HTMLElement).classList.remove('dragging');
         containerToBeFaded.classList.remove('faded');
       }
     };

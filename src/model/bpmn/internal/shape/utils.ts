@@ -1,22 +1,24 @@
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2020 Bonitasoft S.A.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import type { FilterParameter } from '../../../../component/helpers/array-utils';
+
+import { filter } from '../../../../component/helpers/array-utils';
 
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from './kinds';
-import type { FilterParameter } from '../../../../component/helpers/array-utils';
-import { filter } from '../../../../component/helpers/array-utils';
 
 /**
  * Utils to simplify the management of {@link ShapeBpmnElementKind}.
@@ -26,6 +28,7 @@ import { filter } from '../../../../component/helpers/array-utils';
  * @category BPMN
  * @experimental
  */
+// eslint-disable-next-line unicorn/no-static-only-class -- Breaking change on API
 export class ShapeUtil {
   static isEvent(kind: ShapeBpmnElementKind | string): boolean {
     return isKindOf(EVENT_KINDS, kind);
@@ -41,6 +44,18 @@ export class ShapeUtil {
 
   static isStartEvent(kind: ShapeBpmnElementKind): boolean {
     return ShapeBpmnElementKind.EVENT_START === kind;
+  }
+
+  static isCatchEvent(kind: ShapeBpmnElementKind): boolean {
+    return ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH === kind || ShapeBpmnElementKind.EVENT_BOUNDARY === kind || ShapeBpmnElementKind.EVENT_START === kind;
+  }
+
+  static isIntermediateCatchEvent(kind: ShapeBpmnElementKind): boolean {
+    return ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH === kind;
+  }
+
+  static isIntermediateThrowEvent(kind: ShapeBpmnElementKind): boolean {
+    return ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW === kind;
   }
 
   static isCallActivity(kind: ShapeBpmnElementKind): boolean {
@@ -64,7 +79,7 @@ export class ShapeUtil {
   }
 
   static isWithDefaultSequenceFlow(kind: ShapeBpmnElementKind): boolean {
-    return FLOW_NODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS.includes(kind);
+    return FLOW_NODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS.has(kind);
   }
 
   /**
@@ -113,13 +128,12 @@ const GATEWAY_KINDS = filterKind('Gateway');
 const TASK_KINDS = filterKind('Task', { ignoreCase: true, notStartingWith: 'global' });
 
 const ACTIVITY_KINDS = [...TASK_KINDS, ShapeBpmnElementKind.CALL_ACTIVITY, ShapeBpmnElementKind.SUB_PROCESS];
-const FLOW_NODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS = [
+const FLOW_NODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS = new Set([
   ...ACTIVITY_KINDS,
   ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
   ShapeBpmnElementKind.GATEWAY_INCLUSIVE,
-  // Uncomment when supported
-  // ShapeBpmnElementKind.GATEWAY_COMPLEX,
-];
+  ShapeBpmnElementKind.GATEWAY_COMPLEX,
+]);
 
 /**
  * Elements that are effectively used in BPMN diagram as base for eventDefinition i.e all {@link ShapeBpmnEventDefinitionKind} elements except {@link ShapeBpmnEventDefinitionKind.NONE}

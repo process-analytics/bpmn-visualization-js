@@ -7,12 +7,46 @@ updates:
       interval: "weekly"
     open-pull-requests-limit: 2
     versioning-strategy: increase
-    rebase-strategy: "disabled"    
+    rebase-strategy: "disabled"
     commit-message:
-      prefix: "[INFRA] prod -"
-      prefix-development: "[INFRA] dev -"
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps-dev)"
+    labels:
+      - dependencies
+      - javascript
+      - skip-changelog
     reviewers:
       - process-analytics/pa-collaborators
+    groups:
+       css:
+          patterns:
+            - "autoprefixer"
+            - "cssnano"
+            - "postcss*"
+            - "tailwindcss"
+       jest:
+          patterns:
+            - "@types/jest-*"
+            - "expect-playwright"
+            - "jest"
+            - "jest-*"
+            - "ts-jest"
+       lint:
+          patterns:
+            - "@typescript-eslint/*"
+            - "eslint"
+            - "eslint-*"
+            - "lint-staged"
+            - "prettier"
+       rollup:
+          patterns:
+            - "@rollup/*"
+            - "rollup"
+            - "rollup-plugin-*"
+       typescript:
+          patterns:
+            - "typedoc"
+            - "typescript"
 
   - package-ecosystem: "github-actions"
     # Workflow files stored in the default location of `.github/workflows`
@@ -21,8 +55,12 @@ updates:
       interval: "weekly"
       day: wednesday
     open-pull-requests-limit: 2
-    rebase-strategy: "disabled"    
+    rebase-strategy: "disabled"
     commit-message:
-      prefix: "[INFRA] gha -"
+      prefix: "chore(gha)"
+    labels:
+      - dependencies
+      - github_actions
+      - skip-changelog
     reviewers:
       - process-analytics/pa-collaborators

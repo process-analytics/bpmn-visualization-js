@@ -7,7 +7,7 @@ of these conditions are met:
 - All Checks are green.
 - It has been approved by at least two maintainers. If it was a maintainer who opened the PR, only one approval is needed.
 - It has no requested changes.
-- It is up to date with the `master` branch.
+- It is up-to-date with the `master` branch.
 
 ## Release process
 
@@ -25,11 +25,13 @@ are automated once the release is triggered but manual actions are required for:
 
 #### Prepare the GitHub Release
 
-- Open [github releases](https://github.com/process-analytics/bpmn-visualization-js/releases)
+- Open [GitHub releases](https://github.com/process-analytics/bpmn-visualization-js/releases)
 - A draft release for the version to be released should already exist:
   - [release-drafter](https://github.com/release-drafter/release-drafter) creates or updates draft release for the
   next version each time a pull request is merged to the `master` branch.
   - Rename the existing draft release to `In Progress`. The name is not relevant and will be later used to identify the draft release to update.
+  - If no `Notes for next release notes` draft release exists, create a new one. It will be used during development to note important things and prepare
+  the content of the next release notes.
 - Create a new draft release and name it `Next` (the name is not relevant and will be replaced automatically later).
   This ensures that development can continue without impacting the writing of the content of the `In Progress` release. That way,
   if a PR is merged, `release-drafter` will update the `Next` draft release keeping the `In Progress` release untouched.
@@ -38,7 +40,7 @@ are automated once the release is triggered but manual actions are required for:
 
 **Note:** This step triggers the release automation process.
 
-- Open [github actions](https://github.com/process-analytics/bpmn-visualization-js/actions/workflows/release.yml)
+- Open [GitHub actions](https://github.com/process-analytics/bpmn-visualization-js/actions/workflows/release.yml)
 - Click on the 'Run workflow' dropdown located on the right side of the page
 - Provide parameter value for New version type (default is patch, but you can choose one of the [new-version | major | minor | patch])
 - Click on the button 'Run workflow'
@@ -74,28 +76,32 @@ ___
 
 ### Continue filling the GitHub Release
 
-- Open [github releases](https://github.com/process-analytics/bpmn-visualization-js/releases)
+- Open [GitHub releases](https://github.com/process-analytics/bpmn-visualization-js/releases)
 - Rename the existing `In Progress` draft release (updated before starting the release) to match the version that has just been tagged
-- Assign the new tag as release target and save the draft (this may have been already managed by `release-drafter`)
 - Ensure that `This is a pre-release` is unchecked (except if we are releasing alpha, beta, rc, ...)
 - In the release description (check previous releases as a source of inspiration)
   - at least add/update a link to the related milestone
   - put screenshots/gif of the new features
-- Published the release **only when you are done** with the release content. At any time, you can save the draft
+- Use the content of the `Notes for next release notes` draft release to write the description. Keep the unrelated content in this draft release.
+- Assign the new tag as release target and save the draft (this may have been already managed by `release-drafter`). **Do it only just before
+publishing** especially if you update an already set tag for minor version. Once you change the tag and save, the update date of the release
+is updated making it the newest one. This is the one that is updated by release-drafter so there is a risk to loose the whole content of
+the release notes.
+- Publish the release **only when you are done** with the release content. At any time, you can save the draft
 
 
 ### bpmn-visualization-examples repository update
 
-A Pull Request is created automatically (at git tag creation in the `bpmn-visualization` repository) with the following changes:
+A Pull Request is created automatically (at git tag creation in the repository of `bpmn-visualization`) with the following changes:
 - The old demo is replaced by the new.
-- The BPMN Visualization version, in the examples, is replaced by the new version of the library.
+- The `bpmn-visualization` version, in the examples, is replaced by the new version of the library.
 
 See the [Release Overview](#overview) for the big picture.
 
 If, for some reasons, the Pull Request is not created, 
-- first check that the [Update BPMN Visualization version](https://github.com/process-analytics/bpmn-visualization-examples/actions/workflows/update_bpmn_visualization_version.yml) action
-has run, and if it failed, re-run the jobs
-- otherwise, you can execute manually the [Update BPMN Visualization version](https://github.com/process-analytics/bpmn-visualization-examples/actions/workflows/update_bpmn_visualization_version.yml) job.
+- first check that the [Update `bpmn-visualization` version](https://github.com/process-analytics/bpmn-visualization-examples/actions/workflows/update_bpmn_visualization_version.yml) action
+has run, and if it failed, re-run the jobs,
+- otherwise, you can execute manually the [Update `bpmn-visualization` version](https://github.com/process-analytics/bpmn-visualization-examples/actions/workflows/update_bpmn_visualization_version.yml) job.
 
 If it is still not created, you can follow the manual procedure described below.
 
@@ -119,7 +125,7 @@ Make the new version available for demo.
 
 - Make the examples use the latest version of the lib. A bash script is available to help you for this task in the `scripts` folder.
 - Tests that the examples work with the new lib version.
-- If temporary version of the lib has been commited (generally in the demo folder) to make examples use it prior availability on npmjs, delete the corresponding file and update the examples.
+- If a temporary version of the lib has been committed (generally in the demo folder) to make examples use it prior availability on npmjs, delete the corresponding file and update the examples.
 
 ⚠️⚠️⚠️ _**End of the manual steps**_ ⚠️⚠️⚠️
 ___
@@ -129,11 +135,29 @@ ___
 
 In case of important fixes or features in the new release, you can update the examples running on CodeSandbox and CodePen.
 
-For the detailled list of available examples, please check the [examples home page](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html#miscellaneous).
+For the detailed list of available examples, please check the [examples home page](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html#miscellaneous).
 
 
-#### Mark `bpmn-visualization-examples` as released
+#### Mark the `bpmn-visualization-examples` repository as released
 When all updates have been completed, merge the Pull Request created above.
+
+Then create a GitHub release:
+- Open [GitHub actions](https://github.com/process-analytics/bpmn-visualization-examples/actions/workflows/create-gh-release.yml)
+- Click on the 'Run workflow' dropdown located on the right side of the page
+- Provide parameter value for the `version` input
+- Click on the button 'Run workflow'
+- Make sure job execution was successful by checking the status
+
+
+You should have something like in release [v0.21.2](https://github.com/process-analytics/bpmn-visualization-examples/releases/tag/v0.21.2)
+
+![release process automation overview](./images/release_process_part-10_examples_release-notes.png)
+
+
+___
+⚠️⚠️⚠️ _**Only if the job to create the GitHub release does NOT work!**_  ⚠️⚠️⚠️
+
+##### Manual procedure
 
 Create a new GitHub release by following the [GitHub help](https://help.github.com/en/github/administering-a-repository/managing-releases-in-a-repository#creating-a-release)
 - for `Tag version`, use a value that is the **same as the lib in the vX.Y.Z form**. The git tag will be created when the release will be published.
@@ -147,27 +171,37 @@ Create a new GitHub release by following the [GitHub help](https://help.github.c
   - add a link to the live environment for the related tag
   - make GitHub generates the [release notes automatically](https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes)
 
-You should have something like in release [v0.21.2](https://github.com/process-analytics/bpmn-visualization-examples/releases/tag/v0.21.2)
-
-![release process automation overview](./images/release_process_part-10_examples_release-notes.png)
+⚠️⚠️⚠️ _**End of the manual steps**_ ⚠️⚠️⚠️
+___
 
 ___
 ⚠️⚠️⚠️ _**Only if the [notification](https://github.com/process-analytics/bpmn-visualization-js/actions/runs/2191000065) does NOT work!**_  ⚠️⚠️⚠️
 
-##### Notify [BPMN Visualization - R package](https://github.com/process-analytics/bpmn-visualization-R) repository of the new release
+##### Notify [`bpmnVisualizationR` package](https://github.com/process-analytics/bpmn-visualization-R) repository of the new release
 
-Follow the documentation of the [BPMN Visualization - R package](https://github.com/process-analytics/bpmn-visualization-R/blob/main/CONTRIBUTING.md#bpmn-visualization-js-update) to update the BPMN Visualization dependency with the new release.
+Follow the documentation of the [`bpmnVisualizationR` package](https://github.com/process-analytics/bpmn-visualization-R/blob/main/CONTRIBUTING.md#bpmn-visualization-js-update) to update the `bpmn-visualization` dependency with the new release.
 
 ⚠️⚠️⚠️ _**End of the manual steps**_ ⚠️⚠️⚠️
 ___
 
 ## Communicate about the release
 
+- Open [github actions](https://github.com/process-analytics/bpmn-visualization-js/actions/workflows/announce-new-release.yml)
+- Click on the 'Run workflow' dropdown located on the right side of the page
+- Provide parameter values for _version_ and _description_
+- Click on the button 'Run workflow'
+- Make sure job execution was successful by checking the status
+- If all is good, you should see a new message on the [news](https://discord.com/channels/1011911769607913562/1024329159033499780) channel of Process Analytics server on Discord.
+
 ### Twitter
+
+It is no longer possible to post a tweet with the API without a paid plan (and we only have a free plan). See [#2676](https://github.com/process-analytics/bpmn-visualization-js/issues/2676) for more details.
+
+So, create the tweet manually on [ProcessAnalyti1](https://twitter.com/ProcessAnalyti1).
 
 You can use this template:
 
-> 📣 BPMN Visualization {version} is out! 🎉
+> 📣 bpmn-visualization {version} is out! 🎉
 >
 > ===> some short description here <===
 >
@@ -175,3 +209,19 @@ You can use this template:
 >
 > https://github.com/process-analytics/bpmn-visualization-js/releases/tag/v{version}
 
+___
+⚠️⚠️⚠️ _**Only if the [jobs](https://github.com/process-analytics/bpmn-visualization-js/actions/workflows/announce-new-release.yml) does NOT work!**_  ⚠️⚠️⚠️
+### Discord
+
+Channel: [news](https://discord.com/channels/1011911769607913562/1024329159033499780)
+
+You can use this template:
+
+> 📣 bpmn-visualization {version} is out! 🎉
+>
+> ===> some short description here <===
+>
+> https://github.com/process-analytics/bpmn-visualization-js/releases/tag/v{version} 
+
+⚠️⚠️⚠️ _**End of the manual steps**_ ⚠️⚠️⚠️
+___

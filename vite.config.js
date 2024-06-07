@@ -1,20 +1,21 @@
-/**
- * Copyright 2022 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2022 Bonitasoft S.A.
 
-import { resolve } from 'node:path';
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import path from 'node:path';
+
 import { defineConfig } from 'vite';
 
 export default defineConfig(({ mode }) => {
@@ -22,31 +23,36 @@ export default defineConfig(({ mode }) => {
   process.env['NODE_ENV'] = mode;
 
   return {
-    base: './', // Base public path when served in development or production. https://vitejs.dev/config/#base
     server: {
-      port: 10001,
+      port: 10_001,
     },
 
     // Configuration to build the demo
     build: {
       outDir: 'build/demo',
+      assetsDir: 'build/demo/dev/public/assets',
       rollupOptions: {
         input: {
-          index: resolve(__dirname, 'dev/public/index.html'),
-          'elements-identification': resolve(__dirname, 'dev/public/elements-identification.html'),
+          index: path.resolve(__dirname, 'dev/public/index.html'),
+          'elements-identification': path.resolve(__dirname, 'dev/public/elements-identification.html'),
         },
         // No hash in asset names. We make the demo publicly available via the examples repository and served by statically.io
-        // New versions are accessed using tags. The master branch is cachecd by statically.io and updated once a day.
+        // New versions are accessed using tags. The master branch is cached by statically.io and updated once a day.
         // see https://github.com/vitejs/vite/issues/378#issuecomment-768816653
         output: {
-          entryFileNames: `assets/[name].js`,
-          chunkFileNames: `assets/[name].js`,
-          assetFileNames: `assets/[name].[ext]`,
+          entryFileNames: `dev/public/assets/[name].js`,
+          chunkFileNames: `dev/public/assets/[name].js`,
+          assetFileNames: `dev/public/assets/[name].[ext]`,
+          manualChunks: {
+            // put mxgraph code in a dedicated file. As it is eol, it doesn't change from release to release, so it reduces the changes when uploading the demo to the examples repository
+            mxgraph: ['mxgraph'],
+          },
         },
       },
+      chunkSizeWarningLimit: 838, // mxgraph
     },
     preview: {
-      port: 10002,
+      port: 10_002,
     },
   };
 });

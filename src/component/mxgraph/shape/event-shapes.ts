@@ -1,35 +1,37 @@
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2020 Bonitasoft S.A.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import type { BpmnCanvas, PaintParameter, IconPainter } from './render';
+import type { mxAbstractCanvas2D } from 'mxgraph';
 
 import { ShapeBpmnEventDefinitionKind } from '../../../model/bpmn/internal';
-import type { BpmnCanvas, PaintParameter } from './render';
-import { IconPainterProvider } from './render';
+import { mxgraph, mxUtils } from '../initializer';
+import { BpmnStyleIdentifier, StyleDefault } from '../style';
+
 import { buildPaintParameter } from './render/icon-painter';
-import { StyleDefault, StyleUtils } from '../style';
-import type { mxAbstractCanvas2D } from 'mxgraph';
-import { mxgraph } from '../initializer';
 
 /**
  * @internal
  */
 export class EventShape extends mxgraph.mxEllipse {
-  protected iconPainter = IconPainterProvider.get();
+  // The actual value is injected at runtime by BpmnCellRenderer
+  protected iconPainter: IconPainter = undefined;
 
   // refactor: when all/more event types will be supported, we could move to a Record/MappedType
-  private iconPainters: Map<ShapeBpmnEventDefinitionKind, (paintParameter: PaintParameter) => void> = new Map([
+  private iconPainters = new Map<ShapeBpmnEventDefinitionKind, (paintParameter: PaintParameter) => void>([
     [ShapeBpmnEventDefinitionKind.MESSAGE, (paintParameter: PaintParameter) => this.iconPainter.paintEnvelopeIcon({ ...paintParameter, ratioFromParent: 0.5 })],
     [ShapeBpmnEventDefinitionKind.TERMINATE, (paintParameter: PaintParameter) => this.iconPainter.paintCircleIcon({ ...paintParameter, ratioFromParent: 0.6 })],
     [
@@ -88,9 +90,9 @@ export class EventShape extends mxgraph.mxEllipse {
   override paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, isFilled: this.withFilledIcon });
 
-    EventShape.setDashedOuterShapePattern(paintParameter, StyleUtils.getBpmnIsInterrupting(this.style));
+    setDashedOuterShapePattern(paintParameter, mxUtils.getValue(this.style, BpmnStyleIdentifier.IS_INTERRUPTING, undefined));
     this.paintOuterShape(paintParameter);
-    EventShape.restoreOriginalOuterShapePattern(paintParameter);
+    restoreOriginalOuterShapePattern(paintParameter);
 
     this.paintInnerShape(paintParameter);
   }
@@ -100,21 +102,21 @@ export class EventShape extends mxgraph.mxEllipse {
   }
 
   private paintInnerShape(paintParameter: PaintParameter): void {
-    const paintIcon = this.iconPainters.get(StyleUtils.getBpmnEventDefinitionKind(this.style)) || (() => this.iconPainter.paintEmptyIcon());
-    paintIcon(paintParameter);
+    const paintIcon = this.iconPainters.get(mxUtils.getValue(this.style, BpmnStyleIdentifier.EVENT_DEFINITION_KIND, ShapeBpmnEventDefinitionKind.NONE));
+    paintIcon?.(paintParameter);
   }
+}
 
-  private static setDashedOuterShapePattern(paintParameter: PaintParameter, isInterrupting: string): void {
-    paintParameter.canvas.save(); // ensure we can later restore the configuration
-    if (isInterrupting === 'false') {
-      paintParameter.canvas.setDashed(true, false);
-      paintParameter.canvas.setDashPattern('3 2');
-    }
+function setDashedOuterShapePattern(paintParameter: PaintParameter, isInterrupting: string): void {
+  paintParameter.canvas.save(); // ensure we can later restore the configuration
+  if (isInterrupting === 'false') {
+    paintParameter.canvas.setDashed(true, false);
+    paintParameter.canvas.setDashPattern('3 2');
   }
+}
 
-  private static restoreOriginalOuterShapePattern(paintParameter: PaintParameter): void {
-    paintParameter.canvas.restore();
-  }
+function restoreOriginalOuterShapePattern(paintParameter: PaintParameter): void {
+  paintParameter.canvas.restore();
 }
 
 /**

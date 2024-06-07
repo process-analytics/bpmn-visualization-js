@@ -30,14 +30,14 @@ For instance:
 Overview of tasks to be achieved:
 * Update the BPMN model if the BPMN element is not already defined
 * Update the json parsing to store the new element in the BPMN model
-* Add arbitrary rendering
+* Use an arbitrary rendering for the BPMN element
 * Add/Update tests
-* Update the BPMN support documentation
+* Update the BPMN support documentation: add the element with the [experimental icon](../users/bpmn-support.adoc)
 
 Refer to existing Pull Requests to have a better view about the work to do, for instance:
-- [Link Event Detection Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/501/files)
-- [Manual Task Detection Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/582/files)
-
+- [Detect Complex Gateway Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/2250/files)
+- [Detect and Render Group Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/1462/files)
+- [Detect call activities calling different global tasks Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/1447/files)
 
 ### BPMN model update
 
@@ -57,13 +57,13 @@ To update the model
 Except for special container elements like `Pool`, `Lane` and `Subprocess`, detecting a new BPMN element only requires to
 add a new value in the `ShapeBpmnElementKind` enum.
 
-The `ProcessConverter` uses the `ShapeBpmnElementKind` values to detect elements in the BPMN source.
+The `ProcessConverter` uses the `ShapeBpmnElementKind` values to detect elements in the BPMN source except for `Subprocess` (see below).
 
 ### Elements requiring special attention 
 
 - For BPMN Events, the actual type in controlled by `EventDefinition` fields in the BPMN specification. Detecting new event
 types requires changes in `ShapeBpmnEventDefinitionKind` to add the newly supported BPMN Event Definition.
-- For BPMN SubProcesses, the actual type is controlled by `ShapeBpmnSubProcessKind` which is set accordingly during the BPMN parsing.
+- For BPMN SubProcesses (embedded, event, transaction and adhoc), they are all identified as `ShapeBpmnElementKind.SUB_PROCESS`. Their actual type is controlled by `ShapeBpmnSubProcessKind` which is set accordingly during the BPMN parsing.
 
 ### Initial Shape Rendering
 
@@ -117,21 +117,49 @@ So before committing the modification, verify that some elements/configuration a
 ## Elements rendering
 
 Overview of tasks to be achieved:
-- Use the final icon chosen for the BPMN Elements.
+- Choose the [icon for the BPMN Element](#choose-bpmn-icon)
 - Add/Update visual tests
-- Update the BPMN support documentation (see also [icons license](#icons-license))
+- Update the BPMN support documentation: add the element with an [early access icon](../users/bpmn-support.adoc) and include a [snapshot of the icon in the documentation](#icon-in-documentation)
 
 Refer to existing Pull Requests to have a better view about the work to do, for instance:
 - [Error Event Rendering Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/505/files)
 - [Message Flow with initiating & non-initiating message Rendering Pull Request](https://github.com/process-analytics/bpmn-visualization-js/pull/569/files)
 
 
-### Tests for elements rendering 
+#### <a name="choose-bpmn-icon"></a> Choosing the final icon of the BPMN element
 
-All tests should have been introduced during the detection phase. Please review there is no missing tests.
+⚠️**Before starting the implementation**, please discuss with other contributors to ensure everybody agrees.
+The final decision must be written in the GitHub number to keep track of the history.
 
-Visual tests introduced when adding the detection support should fail for the BPMN Element after the rendering has changed. \
-Please update the reference snapshot image accordingly.
+##### Using an original icon
+
+We are very happy to include your original work in `bpmn-visualization`. 
+
+##### Integrating an existing icon
+
+If you integrate an icon that you have not designed by yourself, please don't forget to credit its author and reproduction
+conditions. Please try to use materials covered by a **Free License** to avoid any license compliance issues.
+
+In that case, you must add credit in the following docs:
+- In the source code
+- In the BPMN support documentation: at the same place or close to the BPMN supported element
+- In the main README: we don't list all icons there, but we reference projects where the icons come from
+
+Here is a list of sites that you can use to choose an existing icon:
+- [Bootstrap Icons](https://icons.getbootstrap.com/)
+- [flaticon](https://www.flaticon.com)
+- [Font Awesome Icons](https://fontawesome.com/icons)
+- [freepik](https://www.freepik.com)
+- [Google fonts](https://fonts.google.com/icons) (material symbol and material fonts). Please check the [license](https://developers.google.com/fonts/faq).
+- [ionicons](https://ionic.io/ionicons)
+- [iconify](https://iconify.design/)
+- [Noun Project](https://thenounproject.com)
+- [Octicons](https://primer.style/octicons/)
+- [SVG Repo](https://www.svgrepo.com/)
+- ......
+
+[draw.io](https://github.com/jgraph/drawio) provides [BPMN shapes](https://github.com/jgraph/drawio/blob/v20.5.0/src/main/webapp/shapes/bpmn/mxBpmnShape2.js) that can be directly included in `bpmn-visualization` by adapting the JavaScript code into Typescript.
+It also includes [mxGraph stencils](https://github.com/jgraph/drawio/blob/v20.5.0/src/main/webapp/stencils/bpmn.xml) that can be reused. In this case, they have to be transformed in to TypeScript code. See below for more information.
 
 
 ### BPMN icon and marker tips
@@ -139,8 +167,8 @@ Please update the reference snapshot image accordingly.
 The icon and markers of the BPMN elements must be defined in the mxGraph custom shapes and this currently must be done using
 `TypeScript` code. The `IconPainter` class manages all icons rendering/painting.  
 
-It is possible to adapt an SVG icon thanks to [mxgraph-svg2shape](https://github.com/process-analytics/mxgraph-svg2shape),
-a Java tool that will let you transform your SVG file into a set of `TypeScript` commands.
+It is possible to adapt an SVG icon or an `mxGraph` stencil thanks to [mxgraph-svg2shape](https://github.com/process-analytics/mxgraph-svg2shape),
+a Java tool that will let you transform this content (in a file) into a set of `TypeScript` commands.
 
 Please be aware that the tool is not able to support all SVG files, and you may need to adapt the SVG definition prior the
 tool can transform it. See [PR #210](https://github.com/process-analytics/bpmn-visualization-js/pull/210) for instance.
@@ -148,7 +176,7 @@ tool can transform it. See [PR #210](https://github.com/process-analytics/bpmn-v
 
 #### Integration Example
 
-Let's say we want to use this svg content as an icon or marker:
+Let's say we want to use this SVG content as an icon or marker:
 
 ![bpmn icon example](images/bpmn-icon-example.png)
 
@@ -184,12 +212,36 @@ const canvas = this.newBpmnCanvas(paintParameter, originalIconSize);
 a Pull Request, or an Issue to add the missing functions. 
 
 
-#### <a name="icons-license"></a> Reusing existing icons
+### Tests for elements rendering
 
-If you integrate icons that you have not designed by yourself, please don't forget to credit its author and reproduction
-conditions. Please try to use materials covered by a Free License to avoid any license compliance issues.
+All tests should have been introduced during the detection phase. Please review there is no missing tests.
 
-In that case, you must add credit in the following docs: 
-- In the source code
-- In the BPMN support documentation: at the same place or close to the BPMN supported element 
-- In the main README: we don't list all icons there, but we reference projects where the icons come from
+Visual tests introduced when adding the detection support should fail for the BPMN Element after the rendering has changed. \
+Please update the reference snapshot image accordingly.
+
+
+### <a name="icon-in-documentation"></a> Integrate the BPMN element icon in the documentation
+
+Here are some tips to generate the SVG to be included in the documentation.
+
+- Take the BPMN diagram used to test the related BPMN element in visual tests
+- Load the diagram in a test page
+- With your browser DevTools, inspect the element and retrieve the related SVG group
+- Copy the retrieved SVG code in a file and wrap it in a SVG element as shown below:
+
+```SVG
+  <svg viewBox="0 0 158.485 158.485" width="96" height="96" xmlns="http://www.w3.org/2000/svg">
+      <!-- the retreieved SVG code -->
+  </svg>
+```
+- Open the file in a SVG Editor (Inkscape for instance). 
+- You may need to resize the screen if the SVG icon is placed outside the viowBox as shown below:
+
+![SVG icon placed outside the viewBox in inkscape](images/inkscape-result1.png)
+
+- Re-position and adjust the dimension of the SVG, so that it fits the viewBox as shown below:
+
+![SVG icon fits the viewBox](images/inkscape-result2.png)
+
+- Save
+- Eventually clean the SVG with tools like SVGGO: https://jakearchibald.github.io/svgomg/

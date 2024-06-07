@@ -1,0 +1,87 @@
+name: Test npm package
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - '.github/actions/build-setup/**/*'
+      - '.github/actions/install-playwright-browser/**/*'
+      - '.github/workflows/test-npm-package.yml'
+      - 'scripts/**/*'
+      - 'src/**/*'
+      - 'test/config/**/*'
+      - 'test/bundles/**/*'
+      - 'test/typescript-support/**/*'
+      - 'test/typescript-moduleResolution-bundler/**/*'
+      - '.nvmrc'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'rollup.config.mjs'
+      - 'tsconfig.json'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - '.github/actions/build-setup/**/*'
+      - '.github/actions/install-playwright-browser/**/*'
+      - '.github/workflows/test-npm-package.yml'
+      - 'scripts/**/*'
+      - 'src/**/*'
+      - 'test/bundles/**/*'
+      - 'test/config/**/*'
+      - 'test/shared/**/*'
+      - 'test/typescript-support/**/*'
+      - 'test/typescript-moduleResolution-bundler/**/*'
+      - '.nvmrc'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'rollup.config.mjs'
+      - 'tsconfig.json'
+
+jobs:
+  build_and_test_npm_package:
+    runs-on: ubuntu-22.04
+    env:
+      test-bundles-browser: chromium
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build Setup
+        uses: ./.github/actions/build-setup
+      - name: Build npm package
+        run: npm pack
+      - name: Upload npm package
+        uses: actions/upload-artifact@v4
+        with:
+          name: bpmn-visualization-npm-package-${{github.sha}}
+          path: bpmn-visualization-*.tgz
+      - name: Install ${{env.test-bundles-browser}}
+        uses: ./.github/actions/install-playwright-browser
+        with:
+          browser: ${{env.test-bundles-browser}}
+      - name: Test bundles
+        id: 'test_bundles'
+        env:
+          BROWSERS: ${{env.test-bundles-browser}}
+        run: npm run test:bundles:verbose
+      - name: Upload bundles test results
+        if: ${{ failure() && steps.test_bundles.outcome == 'failure' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundles-test-results-${{github.sha}}
+          path: build/test-report/bundles
+      # Check the minimal TS version required to use bpmn-visualization
+      - name: Setup typescript-support test
+        working-directory: 'test/typescript-support'
+        run: npm install --ignore-scripts --prefer-offline --audit false
+      - name: Run typescript-support test
+        working-directory: 'test/typescript-support'
+        run: npm test
+      # Check the "exports" field in package.json: project using moduleResolution=bundler in tsconfig.json
+      - name: Setup typescript-moduleResolution-bundler test
+        working-directory: 'test/typescript-moduleResolution-bundler'
+        run: npm install --ignore-scripts --prefer-offline --audit false
+      - name: Run typescript-moduleResolution-bundler test
+        working-directory: 'test/typescript-moduleResolution-bundler'
+        run: npm test

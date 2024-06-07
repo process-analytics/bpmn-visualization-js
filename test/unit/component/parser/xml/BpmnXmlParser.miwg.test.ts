@@ -1,22 +1,24 @@
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-import BpmnXmlParser from '../../../../../src/component/parser/xml/BpmnXmlParser';
-import type { BPMNDiagram } from '../../../../../src/model/bpmn/json/BPMNDI';
-import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
-import { readFileSync } from '../../../../helpers/file-helper';
+/*
+Copyright 2020 Bonitasoft S.A.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
+import type { BPMNDiagram } from '@lib/model/bpmn/json/bpmndi';
+
+import BpmnXmlParser from '@lib/component/parser/xml/BpmnXmlParser';
+import { readFileSync } from '@test/shared/file-helper';
 
 describe('parse bpmn as xml for MIWG', () => {
   it('bpmn with process with extension, ensure elements are present', () => {
@@ -111,8 +113,8 @@ describe('parse bpmn as xml for MIWG', () => {
           task: [{ startQuantity: 1 }, expect.anything(), expect.anything()],
         },
         BPMNDiagram: {
-          BPMNPlane: { BPMNShape: expect.arrayContaining([expect.objectContaining({ Bounds: { x: 186.0, y: 336.0, width: 30.0, height: 30.0 } })]) },
-          BPMNLabelStyle: { Font: { size: 11.0 } },
+          BPMNPlane: { BPMNShape: expect.arrayContaining([expect.objectContaining({ Bounds: { x: 186, y: 336, width: 30, height: 30 } })]) },
+          BPMNLabelStyle: { Font: { size: 11 } },
         },
       },
     });
@@ -174,7 +176,7 @@ describe('parse bpmn as xml for MIWG', () => {
       definitions: {
         process: {
           startEvent: { name: 'Start Event \n(Main) with &unknown; entity' },
-          task: [{ id: '_ec59e164-68b4-4f94-98de-ffb1c58a84af ♠' }, expect.anything(), expect.anything()],
+          task: [{ id: '<_ec59e164-68b4-4f94-98de-ffb1c58a84af>' }, expect.anything(), expect.anything()],
         },
         BPMNDiagram: expect.anything(),
       },

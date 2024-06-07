@@ -1,24 +1,26 @@
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2020 Bonitasoft S.A.
 
-import { parseJsonAndExpectOnlyEdges } from '../../../helpers/JsonTestUtils';
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
+
 import { verifyEdge } from '../../../helpers/bpmn-model-expect';
+import { parseJsonAndExpectOnlyEdges } from '../../../helpers/JsonTestUtils';
 
-import { Waypoint } from '../../../../../src/model/bpmn/internal/edge/edge';
-import type { TProcess } from '../../../../../src/model/bpmn/json/baseElement/rootElement/rootElement';
+import { Waypoint } from '@lib/model/bpmn/internal/edge/edge';
 
 describe('parse bpmn as json for sequence flow', () => {
   const processWithSequenceFlowAsObject = {
@@ -33,8 +35,8 @@ describe('parse bpmn as json for sequence flow', () => {
   it.each([
     ['object', processWithSequenceFlowAsObject],
     ['array', [processWithSequenceFlowAsObject]],
-  ])(`should convert as Edge, when a sequence flow is an attribute (as object) of 'process' (as %s)`, (title: string, processJson: TProcess) => {
-    const json = {
+  ])(`should convert as Edge, when a sequence flow is an attribute (as object) of 'process' (as %s)`, (_title: string, processJson: TProcess | TProcess[]) => {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: processJson,
@@ -64,7 +66,7 @@ describe('parse bpmn as json for sequence flow', () => {
   });
 
   it(`should convert as Edge, when a sequence flow (with/without name) is an attribute (as array) of 'process'`, () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {
@@ -125,7 +127,7 @@ describe('parse bpmn as json for sequence flow', () => {
   });
 
   it(`should convert as Edge, when a sequence flow (with 2 & several waypoints) is an attribute (as array) of 'process'`, () => {
-    const json = {
+    const json: BpmnJsonModel = {
       definitions: {
         targetNamespace: '',
         process: {

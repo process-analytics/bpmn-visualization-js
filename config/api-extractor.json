@@ -1,0 +1,165 @@
+/**
+ * Config file for API Extractor.  For more info, please visit: https://api-extractor.com
+ */
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
+
+  /**
+   * (REQUIRED) Specifies the .d.ts file to be used as the starting point for analysis.  API Extractor
+   * analyzes the symbols exported by this module.
+   *
+   * The file extension must be ".d.ts" and not ".ts".
+   *
+   * The path is resolved relative to the folder of the config file that contains the setting; to change this,
+   * prepend a folder token such as "<projectFolder>".
+   *
+   * SUPPORTED TOKENS: <projectFolder>, <packageName>, <unscopedPackageName>
+   */
+  "mainEntryPointFilePath": "<projectFolder>/build/types/bpmn-visualization.d.ts",
+
+  /**
+   * A list of NPM package names whose exports should be treated as part of this package.
+   *
+   * For example, suppose that Webpack is used to generate a distributed bundle for the project "library1",
+   * and another NPM package "library2" is embedded in this bundle.  Some types from library2 may become part
+   * of the exported API for library1, but by default API Extractor would generate a .d.ts rollup that explicitly
+   * imports library2.  To avoid this, we can specify:
+   *
+   *   "bundledPackages": [ "library2" ],
+   *
+   * This would direct API Extractor to embed those types directly in the .d.ts rollup, as if they had been
+   * local files for library1.
+   */
+  "bundledPackages": [],
+
+  /**
+   * Specifies what type of newlines API Extractor should use when writing output files.  By default, the output files
+   * will be written with Windows-style newlines.  To use POSIX-style newlines, specify "lf" instead.
+   * To use the OS's default newline kind, specify "os".
+   *
+   * DEFAULT VALUE: "crlf"
+   */
+   "newlineKind": "lf",
+
+  /**
+   * Determines how the TypeScript compiler engine will be invoked by API Extractor.
+   */
+  "compiler": {
+    /**
+     * Specifies the path to the tsconfig.json file to be used by API Extractor when analyzing the project.
+     *
+     * The path is resolved relative to the folder of the config file that contains the setting; to change this,
+     * prepend a folder token such as "<projectFolder>".
+     *
+     * Note: This setting will be ignored if "overrideTsconfig" is used.
+     *
+     * SUPPORTED TOKENS: <projectFolder>, <packageName>, <unscopedPackageName>
+     * DEFAULT VALUE: "<projectFolder>/tsconfig.json"
+     */
+     "tsconfigFilePath": "<projectFolder>/tsconfig.npm-package.json",
+  },
+
+  /**
+   * Configures how the API report file (*.api.md) will be generated.
+   */
+  "apiReport": {
+    /**
+     * (REQUIRED) Whether to generate an API report.
+     */
+    "enabled": false
+  },
+
+  /**
+   * Configures how the doc model file (*.api.json) will be generated.
+   */
+  "docModel": {
+    /**
+     * (REQUIRED) Whether to generate a doc model file.
+     */
+    "enabled": false
+  },
+
+  /**
+   * Configures how the .d.ts rollup file will be generated.
+   */
+  "dtsRollup": {
+    /**
+     * (REQUIRED) Whether to generate the .d.ts rollup file.
+     */
+    "enabled": true,
+  },
+
+  /**
+   * Configures how the tsdoc-metadata.json file will be generated.
+   */
+  "tsdocMetadata": {
+    /**
+     * Whether to generate the tsdoc-metadata.json file.
+     *
+     * DEFAULT VALUE: true
+     */
+     "enabled": false,
+  },
+
+  /**
+   * Configures how API Extractor reports error and warning messages produced during analysis.
+   *
+   * There are three sources of messages:  compiler messages, API Extractor messages, and TSDoc messages.
+   */
+  "messages": {
+    /**
+     * Configures handling of diagnostic messages reported by the TypeScript compiler engine while analyzing
+     * the input .d.ts files.
+     *
+     * TypeScript message identifiers start with "TS" followed by an integer.  For example: "TS2551"
+     *
+     * DEFAULT VALUE:  A single "default" entry with logLevel=warning.
+     */
+    "compilerMessageReporting": {
+      /**
+       * Configures the default routing for messages that don't match an explicit rule in this table.
+       */
+      "default": {
+        /**
+         * Specifies whether the message should be written to the the tool's output log.  Note that
+         * the "addToApiReportFile" property may supersede this option.
+         *
+         * Possible values: "error", "warning", "none"
+         *
+         * Errors cause the build to fail and return a nonzero exit code.  Warnings cause a production build fail
+         * and return a nonzero exit code.  For a non-production build (e.g. when "api-extractor run" includes
+         * the "--local" option), the warning is displayed but the build will not fail.
+         *
+         * DEFAULT VALUE: "warning"
+         */
+        "logLevel": "warning"
+      }
+    },
+
+    /**
+     * Configures handling of messages reported by API Extractor during its analysis.
+     *
+     * API Extractor message identifiers start with "ae-".  For example: "ae-extra-release-tag"
+     *
+     * DEFAULT VALUE: See api-extractor-defaults.json for the complete table of extractorMessageReporting mappings
+     */
+    "extractorMessageReporting": {
+      "default": {
+        "logLevel": "warning"
+      }
+    },
+
+    /**
+     * Configures handling of messages reported by the TSDoc parser when analyzing code comments.
+     *
+     * TSDoc message identifiers start with "tsdoc-".  For example: "tsdoc-link-tag-unescaped-text"
+     *
+     * DEFAULT VALUE:  A single "default" entry with logLevel=warning.
+     */
+    "tsdocMessageReporting": {
+      "default": {
+        "logLevel": "warning"
+      }
+    }
+  }
+}

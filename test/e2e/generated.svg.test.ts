@@ -1,27 +1,27 @@
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2020 Bonitasoft S.A.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 import 'jest-playwright-preset';
-import type { Page } from 'playwright';
-import { AvailableTestPages, BpmnPageSvgTester } from './helpers/visu/bpmn-page-utils';
+import { AvailableTestPages, BpmnPageSvgTester } from '@test/shared/visu/bpmn-page-utils';
 
 const diagramSubfolder = 'svg';
 
 describe('Check generated SVG in demo page', () => {
   it('should display diagram in page', async () => {
-    const pageTester = new BpmnPageSvgTester({ targetedPage: AvailableTestPages.INDEX, diagramSubfolder }, <Page>page);
+    const pageTester = new BpmnPageSvgTester({ targetedPage: AvailableTestPages.INDEX, diagramSubfolder }, page);
     await pageTester.gotoPageAndLoadBpmnDiagram('simple-start-task-end');
 
     await pageTester.expectEvent('StartEvent_1', 'Start Event 1');
@@ -32,7 +32,7 @@ describe('Check generated SVG in demo page', () => {
   });
 });
 
-describe('Check generated SVG in lib-integration page', () => {
+describe('Check generated SVG in library-integration page', () => {
   it('should display diagram in page', async () => {
     const pageTester = new BpmnPageSvgTester(
       {
@@ -40,7 +40,7 @@ describe('Check generated SVG in lib-integration page', () => {
         bpmnContainerId: 'bpmn-container-custom',
         diagramSubfolder,
       },
-      <Page>page,
+      page,
     );
     await pageTester.gotoPageAndLoadBpmnDiagram();
 

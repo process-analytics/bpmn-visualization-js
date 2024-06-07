@@ -1,31 +1,32 @@
-/**
- * Copyright 2020 Bonitasoft S.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2020 Bonitasoft S.A.
 
-import type { ShapeBpmnSubProcessKind, ShapeBpmnEventDefinitionKind } from '../../../src/model/bpmn/internal';
-import { newBpmnJsonParser } from '../../../src/component/parser/json/BpmnJsonParser';
-import type BpmnModel from '../../../src/model/bpmn/internal/BpmnModel';
-import { ShapeBpmnEvent, ShapeBpmnSubProcess } from '../../../src/model/bpmn/internal/shape/ShapeBpmnElement';
-import type Label from '../../../src/model/bpmn/internal/Label';
-import type { BpmnJsonModel } from '../../../src/model/bpmn/json/BPMN20';
-import type { JsonParsingWarning } from '../../../src/component/parser/parsing-messages';
-import { ParsingMessageCollector } from '../../../src/component/parser/parsing-messages';
-import type { ExpectedBounds, ExpectedFont } from './bpmn-model-expect';
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import type { ExpectedBounds, ExpectedFont, ExpectedLabel } from './bpmn-model-expect';
+import type { JsonParsingWarning } from '@lib/component/parser/parsing-messages';
+import type { ShapeBpmnSubProcessKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
+import type BpmnModel from '@lib/model/bpmn/internal/BpmnModel';
+import type Label from '@lib/model/bpmn/internal/Label';
+import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
+
+import { newBpmnJsonParser } from '@lib/component/parser/json/BpmnJsonParser';
+import { ParsingMessageCollector } from '@lib/component/parser/parsing-messages';
+import { ShapeBpmnEvent, ShapeBpmnSubProcess } from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
 
 class ParsingMessageCollectorTester extends ParsingMessageCollector {
-  private warnings: Array<JsonParsingWarning> = [];
+  private warnings: JsonParsingWarning[] = [];
 
   override warning(warning: JsonParsingWarning): void {
     this.warnings.push(warning);
@@ -35,7 +36,7 @@ class ParsingMessageCollectorTester extends ParsingMessageCollector {
     this.warnings = [];
   }
 
-  getWarnings(): Array<JsonParsingWarning> {
+  getWarnings(): JsonParsingWarning[] {
     return this.warnings;
   }
 }
@@ -115,11 +116,11 @@ export function parseJsonAndExpectOnlyEdgesAndFlowNodes(json: BpmnJsonModel, num
 }
 
 export function verifySubProcess(model: BpmnModel, kind: ShapeBpmnSubProcessKind, expectedNumber: number): void {
-  const events = model.flowNodes.filter(shape => {
+  const subProcesses = model.flowNodes.filter(shape => {
     const bpmnElement = shape.bpmnElement;
-    return bpmnElement instanceof ShapeBpmnSubProcess && (bpmnElement as ShapeBpmnSubProcess).subProcessKind === kind;
+    return bpmnElement instanceof ShapeBpmnSubProcess && bpmnElement.subProcessKind === kind;
   });
-  expect(events).toHaveLength(expectedNumber);
+  expect(subProcesses).toHaveLength(expectedNumber);
 }
 
 export function verifyLabelFont(label: Label, expectedFont?: ExpectedFont): void {
@@ -152,6 +153,17 @@ export function verifyLabelBounds(label: Label, expectedBounds?: ExpectedBounds)
   }
 }
 
+export function verifyLabel(label: Label, expectedLabel: ExpectedLabel): void {
+  if (!expectedLabel) {
+    expect(label).toBeUndefined();
+    return;
+  }
+
+  verifyLabelBounds(label, expectedLabel.bounds);
+  expect(label.extensions).toEqual(expectedLabel.extensions ?? {});
+  verifyLabelFont(label, expectedLabel.font);
+}
+
 export function parseJsonAndExpectEvent(json: BpmnJsonModel, eventDefinitionKind: ShapeBpmnEventDefinitionKind, expectedNumber: number): BpmnModel {
   const model = parseJson(json);
 
@@ -159,7 +171,7 @@ export function parseJsonAndExpectEvent(json: BpmnJsonModel, eventDefinitionKind
 
   const events = model.flowNodes.filter(shape => {
     const bpmnElement = shape.bpmnElement;
-    return bpmnElement instanceof ShapeBpmnEvent && (bpmnElement as ShapeBpmnEvent).eventDefinitionKind === eventDefinitionKind;
+    return bpmnElement instanceof ShapeBpmnEvent && bpmnElement.eventDefinitionKind === eventDefinitionKind;
   });
   expect(events).toHaveLength(expectedNumber);
 
@@ -175,7 +187,7 @@ export function parseJsonAndExpectOnlySubProcess(json: BpmnJsonModel, kind: Shap
   return model;
 }
 
-export function expectAsWarning<T>(instance: unknown, constructor: new (...args: never) => T): T {
+export function expectAsWarning<T>(instance: unknown, constructor: new (...arguments_: never) => T): T {
   expect(instance).toBeInstanceOf(constructor);
   return instance as T;
 }
