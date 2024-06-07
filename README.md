@@ -74,7 +74,9 @@ Already available features:
 - [Navigate through the BPMN diagram](https://process-analytics.github.io/bpmn-visualization-js/#diagram-navigation)
 - [Display execution data with interactive capabilities](https://process-analytics.github.io/bpmn-visualization-js/#process_data)
 
-Planned features:
+🔥 Some add-on features are available through a dedicated package: [__⏩ bpmn-visualization add-ons__](https://github.com/process-analytics/bv-experimental-add-ons/)
+
+Planned new features:
 - Additional BPMN styling capabilities
 - Library extension points
 
@@ -87,10 +89,10 @@ Planned features:
 
 **Notes**:
 - Chromium based browsers should work (automatic tests are run with Chromium canary releases). In particular, the following
-desktop browsers are known working with `bpmn-visualization@0.42.0`:
-  - Brave 1.59.120
-  - Chromium 119.0.6045.9
-  - Opera 103.0.4928.34
+desktop browsers are known working with `bpmn-visualization@0.43.0`:
+  - Brave 1.66.118
+  - Chromium 125.0.6422.147
+  - Opera 110.0.5130.66
 - Support Chromium Edge but not Legacy Edge
 - The library may work with the other browsers. They must at least support ES2015.
 
