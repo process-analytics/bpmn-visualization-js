@@ -553,7 +553,7 @@ function addEventDefinitions(
             ...(typeof eventDefinition === 'object' ? eventDefinition : { id: eventDefinition }),
             ...buildEventDefinition(eventDefinitionKind, idSuffix, source, target),
           }
-        : eventDefinition ?? '';
+        : (eventDefinition ?? '');
 
     addEventDefinition(elementWhereAddDefinition, eventDefinitionKind, eventDefinitions);
   }

@@ -110,7 +110,7 @@ const computeConfigurationForDevelopmentServerUsage = defaultBrowsers => {
 const computeConfiguration = options => {
   let configuration;
   configuration =
-    options.startWebServer ?? true ? computeConfigurationForDevelopmentServerUsage(options.defaultBrowsers) : computeConfigurationForStaticUsage(options.defaultBrowsers);
+    (options.startWebServer ?? true) ? computeConfigurationForDevelopmentServerUsage(options.defaultBrowsers) : computeConfigurationForStaticUsage(options.defaultBrowsers);
   log('Computed configuration', configuration);
   return configuration;
 };
