@@ -165,6 +165,12 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           windows: 0.66 / 100, // 0.6566433292574891%
         },
       ],
+      [
+        'subprocess.03.collapsed.with.elements',
+        {
+          macos: 0.11 / 100, // 0.10203186226079852%
+        },
+      ],
     ]);
   }
 
