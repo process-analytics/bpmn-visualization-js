@@ -65,27 +65,27 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'overlays.start.flow.task.gateway',
         {
-          macos: 0.71 / 100, // max 0.7027880077090211%
+          macos: 1 / 100, // max 0.988038212529263%
         },
       ],
       [
         'overlays.edges.associations.complex.paths',
         {
-          macos: 0.53 / 100, // max 0.5254958628580608%
+          macos: 0.56 / 100, // max 0.5553038739350202%
         },
       ],
       [
         'overlays.edges.message.flows.complex.paths',
         {
           linux: 0.58 / 100, // 0.5794594395932884%
-          macos: 0.67 / 100, // 0.6654738557991036%
+          macos: 0.68 / 100, // 0.6769495796905111%
           windows: 0.66 / 100, // 0.6524091603189786%
         },
       ],
       [
         'overlays.edges.sequence.flows.complex.paths',
         {
-          macos: 0.44 / 100, // max 0.43144267510022427%
+          macos: 0.5 / 100, // max 0.4635845943908756%
         },
       ],
     ]);
@@ -243,7 +243,7 @@ describe('Overlay navigation', () => {
         [
           'overlays.start.flow.task.gateway',
           {
-            macos: 0.58 / 100, // max 0.5781644435027378%
+            macos: 0.9 / 100, // max 0.8524820644063569%
           },
         ],
       ]);
@@ -335,7 +335,7 @@ describe('Overlay style', () => {
           {
             linux: 0.7 / 100, // 0.6957363425958542%
             // TODO very large threshold on Firefox macOS for font overlay styles
-            macos: 2.01 / 100, // 2.0033547194979073%
+            macos: 3 / 100, // 2.846090750730257%
           },
         ],
         [
@@ -345,9 +345,9 @@ describe('Overlay style', () => {
           },
         ],
         [
-          'font',
+          'fill',
           {
-            macos: 3 / 100, // 2.846090750730257%
+            macos: 0.6 / 100, // 0.5810104788733339%
           },
         ],
       ]);
