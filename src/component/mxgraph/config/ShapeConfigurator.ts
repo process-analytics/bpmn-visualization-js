@@ -36,7 +36,7 @@ import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { BpmnStyleIdentifier } from '../style';
 import { computeAllBpmnClassNamesOfCell } from '../renderer/style-utils';
-import type { BpmnCellStyle } from '../style/types';
+import type { BpmnCellStateStyle, BpmnCellStyle } from '../style/types';
 import { MxGraphCustomOverlay } from '../overlay/custom-overlay';
 import { OverlayBadgeShape } from '../overlay/shapes';
 import { BpmnConnector } from '../shape/edges';
@@ -170,8 +170,7 @@ export default class ShapeConfigurator {
         const cell = this.state.cell;
         // dialect = strictHtml is set means that current node holds an HTML label
         let allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === constants.DIALECT.STRICTHTML);
-        // TODO maxgraph@0.10.2 - do we need to introduce a BpmnCellStateStyle type (to not have the baseStyleName property in the casted type)?
-        const extraCssClasses = (this.state.style as BpmnCellStyle).bpmn?.extraCssClasses;
+        const extraCssClasses = (this.state.style as BpmnCellStateStyle).bpmn?.extraCssClasses;
         if (extraCssClasses) {
           allBpmnClassNames = allBpmnClassNames.concat(extraCssClasses);
         }
