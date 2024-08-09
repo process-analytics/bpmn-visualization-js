@@ -64,9 +64,10 @@ export default class GraphConfigurator {
   }
 
   private configureNavigationSupport(options: GlobalOptions): void {
-    // TODO maxgraph@0.1.0 decide if we do the check or not.
+    // TODO maxgraph@0.1.0 decide if we check that panningHandler is registered
     // If not, add a comment to explain why
     // In theory, the panningHandler may not be available if its plugin is not registered. The maxGraph code sometimes check for availability. For now, the check is not needed as we know that we load it
+    // we know that the panningHandler is registered because it is done in the BpmnGraph constructor
     const panningHandler = <PanningHandler>this.graph.getPlugin('PanningHandler');
 
     if (options?.navigation?.enabled) {
