@@ -18,8 +18,8 @@ import type { FitOptions, ZoomConfiguration } from '../options';
 import { FitType } from '../options';
 import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/validators';
 import { debounce, throttle } from 'lodash-es';
-import type { CellState, CellStateStyle, CellStyle, Point } from '@maxgraph/core';
-import { eventUtils, Graph, GraphView, InternalEvent, Stylesheet, PanningHandler } from '@maxgraph/core';
+import type { CellState, Point } from '@maxgraph/core';
+import { eventUtils, Graph, GraphView, InternalEvent, PanningHandler } from '@maxgraph/core';
 
 const zoomFactorIn = 1.25;
 const zoomFactorOut = 1 / zoomFactorIn;
