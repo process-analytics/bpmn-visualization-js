@@ -92,21 +92,6 @@ export const setStyle = <T extends string | number>(
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   cellStyle[key] = converter(value);
-
-  // if (value != undefined) {
-  //   const convertedValue = converter(value);
-  //   if (convertedValue == null) {
-  //     // TODO maxgraph@0.1.0 - this is required for the effective cell style computation with the fix temporary used in bpmn-visualization (BpmnStylesheet)
-  //     // if the value is undefined/or null, the value from the default style is not used!
-  //     // remove the property to use the value from the "base styles" which provides the default value
-  //     delete cellStyle[key];
-  //   } else {
-  //     // TODO maxgraph@0.1.0 - fix type - can we really ignore ts error?
-  //     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //     // @ts-ignore
-  //     cellStyle[key] = convertedValue;
-  //   }
-  // }
 };
 
 export const setStyleFlag = (cellStyle: CellStyle, key: NumericCellStateStyleKeys, flag: number, value?: boolean): void => {
