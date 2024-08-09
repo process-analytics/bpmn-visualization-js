@@ -209,9 +209,9 @@ export class BpmnGraph extends Graph {
 
   // TODO maxgraph@0.1.0 temp to fix maxGraph style merge issue (should be fixed in maxGraph@0.2.0)
   // with maxgraph@0.10.1, using the maxGraph implementation impact the results of the integration tests (markers)
-  override createStylesheet(): Stylesheet {
-    return new BpmnStylesheet();
-  }
+  // override createStylesheet(): Stylesheet {
+  //   return new BpmnStylesheet();
+  // }
 }
 
 class BpmnGraphView extends GraphView {
@@ -230,40 +230,40 @@ class BpmnGraphView extends GraphView {
 
 // TODO maxgraph@0.1.0 temp to fix maxGraph style merge issue (should be fixed in maxGraph@0.2.0)
 // see also utils.ts setStyle which adds another workaround that should be possible to remove with maxGraph@0.10.1
-class BpmnStylesheet extends Stylesheet {
-  override getCellStyle(cellStyle: CellStyle, defaultStyle: CellStateStyle): CellStateStyle {
-    let style: CellStateStyle;
-
-    if (cellStyle.baseStyleNames && cellStyle.baseStyleNames.length > 0) {
-      // creates style with the given baseStyleNames. (merges from left to right)
-      style = cellStyle.baseStyleNames.reduce(
-        (acc, styleName) => {
-          return (acc = {
-            ...acc,
-            ...this.styles.get(styleName),
-          });
-        },
-        // here is the change
-        // {},
-        { ...defaultStyle },
-        // END of here is the change
-      );
-    } else if (cellStyle.baseStyleNames && cellStyle.baseStyleNames.length === 0) {
-      // baseStyleNames is explicitly an empty array, so don't use any default styles.
-      style = {};
-    } else {
-      style = { ...defaultStyle };
-    }
-
-    // Merges cellStyle into style
-    style = {
-      ...style,
-      ...cellStyle,
-    };
-
-    return style;
-  }
-}
+// class BpmnStylesheet extends Stylesheet {
+//   override getCellStyle(cellStyle: CellStyle, defaultStyle: CellStateStyle): CellStateStyle {
+//     let style: CellStateStyle;
+//
+//     if (cellStyle.baseStyleNames && cellStyle.baseStyleNames.length > 0) {
+//       // creates style with the given baseStyleNames. (merges from left to right)
+//       style = cellStyle.baseStyleNames.reduce(
+//         (acc, styleName) => {
+//           return (acc = {
+//             ...acc,
+//             ...this.styles.get(styleName),
+//           });
+//         },
+//         // here is the change
+//         // {},
+//         { ...defaultStyle },
+//         // END of here is the change
+//       );
+//     } else if (cellStyle.baseStyleNames && cellStyle.baseStyleNames.length === 0) {
+//       // baseStyleNames is explicitly an empty array, so don't use any default styles.
+//       style = {};
+//     } else {
+//       style = { ...defaultStyle };
+//     }
+//
+//     // Merges cellStyle into style
+//     style = {
+//       ...style,
+//       ...cellStyle,
+//     };
+//
+//     return style;
+//   }
+// }
 
 function convertNaNToZero(value: number): number {
   return Number.isNaN(value) ? 0 : value;
