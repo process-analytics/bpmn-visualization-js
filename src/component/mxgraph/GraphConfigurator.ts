@@ -59,7 +59,7 @@ export default class GraphConfigurator {
 
     // Disable folding for container Cell (pool, lane, sub process, call activity) because we don't need it.
     // This also prevents requesting unavailable images (see #185) as we don't override mxGraph folding default images.
-    // TODO migration maxgraph 0.10.2 - call this.graph.options.foldingEnabled, remove this.graph.foldingEnabled which is not used to manage folding. See https://github.com/maxGraph/maxGraph/pull/426
+    // TODO migration maxgraph 0.10.2 (should be fixed in 0.10.3) - call this.graph.options.foldingEnabled, remove this.graph.foldingEnabled which is not used to manage folding. See https://github.com/maxGraph/maxGraph/pull/426
     this.graph.foldingEnabled = false;
   }
 
