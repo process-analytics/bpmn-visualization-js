@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { CellStyle } from '@maxgraph/core';
+import type { CellStateStyle, CellStyle } from '@maxgraph/core';
 import type {
   AssociationDirectionKind,
   FlowKind,
@@ -27,19 +27,26 @@ import type {
   ShapeBpmnSubProcessKind,
 } from '../../../model/bpmn/internal';
 
+export interface BpmnCellStyleExtension {
+  associationDirectionKind?: AssociationDirectionKind;
+  eventDefinitionKind?: ShapeBpmnEventDefinitionKind;
+  extraCssClasses?: string[];
+  gatewayKind?: ShapeBpmnEventBasedGatewayKind;
+  globalTaskKind?: GlobalTaskKind;
+  isInitiating?: boolean;
+  isInstantiating?: boolean;
+  isInterrupting?: boolean;
+  kind?: ShapeBpmnElementKind | FlowKind;
+  markers?: ShapeBpmnMarkerKind[];
+  sequenceFlowKind?: SequenceFlowKind;
+  subProcessKind?: ShapeBpmnSubProcessKind;
+}
+
+// TODO check if we can use interface augmentation on CellStyle/CellStateStyle instead of extending the type. This would avoid to cast CellStyle/CellStateStyle everywhere in the code
 export interface BpmnCellStyle extends CellStyle {
-  bpmn?: {
-    associationDirectionKind?: AssociationDirectionKind;
-    eventDefinitionKind?: ShapeBpmnEventDefinitionKind;
-    extraCssClasses?: string[];
-    gatewayKind?: ShapeBpmnEventBasedGatewayKind;
-    globalTaskKind?: GlobalTaskKind;
-    isInitiating?: boolean;
-    isInstantiating?: boolean;
-    isInterrupting?: boolean;
-    kind?: ShapeBpmnElementKind | FlowKind;
-    markers?: ShapeBpmnMarkerKind[];
-    sequenceFlowKind?: SequenceFlowKind;
-    subProcessKind?: ShapeBpmnSubProcessKind;
-  };
+  bpmn?: BpmnCellStyleExtension;
+}
+
+export interface BpmnCellStateStyle extends CellStateStyle {
+  bpmn?: BpmnCellStyleExtension;
 }
