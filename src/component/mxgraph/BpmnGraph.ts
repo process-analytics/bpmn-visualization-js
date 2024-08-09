@@ -31,7 +31,7 @@ export class BpmnGraph extends Graph {
    * @internal
    */
   constructor(container: HTMLElement) {
-    // TODO maxGraph@0.10.2 - only set the plugins we need (validate the list)
+    // TODO maxGraph@0.10.2 - validate the list of maxGraph plugins we need to use
     super(container, undefined, [PanningHandler]);
     this.zoomFactor = zoomFactorIn;
     if (this.container) {
