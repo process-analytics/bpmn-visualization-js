@@ -168,8 +168,9 @@ export class StyleConfigurator {
     ShapeUtil.eventKinds().forEach(kind => {
       const style: CellStyle = {
         shape: kind,
-        // TODO maxgraph@0.10.1 decide if we use the function or the string to set the perimeter
-        // this will reduce adherence to the maxGraph implementation and only use configuration string
+        // TODO maxgraph@0.10.2 decide if we use the function or the string to set the perimeter (apply to all configuration in this file)
+        // using a string will reduce adherence to the maxGraph implementation
+        // in case maxGraph provide a way to not register its default style configuration, using a function would avoid to have to register the perimeter in the style registry
         // be also aware of https://github.com/process-analytics/bpmn-visualization-js/pull/2814#issuecomment-1692971602
         perimeter: Perimeter.EllipsePerimeter,
         strokeWidth: kind == ShapeBpmnElementKind.EVENT_END ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN,
@@ -222,7 +223,6 @@ export class StyleConfigurator {
     ShapeUtil.gatewayKinds().forEach(kind => {
       const style: CellStyle = {
         shape: kind,
-        // TODO maxgraph@0.10.1 decide if we use the function or the string to set the perimeter
         perimeter: Perimeter.RhombusPerimeter,
         verticalAlign: 'top',
         strokeWidth: StyleDefault.STROKE_WIDTH_THIN,
