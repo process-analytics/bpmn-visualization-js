@@ -244,7 +244,8 @@ export class StyleConfigurator {
     style.strokeWidth = 1.5;
     style.rounded = true;
     // TODO maxgraph@0.10.2: possible maxGraph regression - the rendered edge arcSize seems larger than with mxGraph (also seen with maxgraph 0.1.0)
-    style.arcSize = 2; // put 2 in maxgraph@0.10.1, in mxGraph@4.2.2 we used 5
+    // a better value may be 2.5, this may be due to an extra division by 2 in maxGraph
+    style.arcSize = 2; // in mxGraph@4.2.2 we used 5
     style.verticalAlign = 'bottom';
     // The end arrow must be redefined in specific style
     delete style.endArrow;
