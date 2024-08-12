@@ -25,5 +25,6 @@ The README file mentions the oldest supported version of TypeScript. Update the 
 
 Update the `typesVersions` attribute in the `package.json` file. This attribute is central.
 
-Run the automatic tests from the `test/typescript-support` directory: `npm test`. They should fail as they are currently using a too old TypeScript version.
+Run the automatic tests from the `test/typescript-support` directory (see the [typescript-support README](../../test/typescript-support/README.md)). They should fail as they are currently using a too old TypeScript version.
+
 Update the TypeScript version in the `package.json` file and run the tests again. They should now succeed.
