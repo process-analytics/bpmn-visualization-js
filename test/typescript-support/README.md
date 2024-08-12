@@ -2,9 +2,7 @@
 
 ## Setup
 
-The `bpmn-visualization` npm package must be built first:
-
-From the repository root, run:
+The `bpmn-visualization` npm package must be built first. From the repository root, run:
 - `npm install`
 - `npm pack`
 

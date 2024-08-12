@@ -215,7 +215,7 @@ They ensure that the bundles provided in the npm package are working, and they a
 
 These tests are validating the usage of the npm package in TypeScript applications:
 - [typescript-support](../../test/typescript-support): validate the [minimal TypeScript version](./supported-typescript-version.md) supported by the library
-- [typescript-moduleResolution-bundler](../../test/typescript-moduleResolution-bundler): validate that the library can be used with `bundler` module resolution strategy 
+- [typescript-moduleResolution-bundler](../../test/typescript-moduleResolution-bundler): validate that the library can be used with the `bundler` module resolution strategy 
 
 
 ## Running tests 
