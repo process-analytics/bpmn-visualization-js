@@ -24,7 +24,7 @@ runs:
       id: surge-preview-tools
       with:
         surge-token: ${{ inputs.surge-token }}
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       if: github.event.action != 'closed'
     - name: Build Setup
       uses: ./.github/actions/build-setup
@@ -46,7 +46,7 @@ runs:
     # Fallback when it is not possible to deploy to surge
     - name: Upload artifact (preview not deployed)
       if: github.event.action != 'closed' && steps.surge-preview-tools.outputs.can-run-surge-command == 'false'
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ inputs.artifact-name }}-${{github.sha}}
         path: ${{ inputs.build-preview-dist }}
