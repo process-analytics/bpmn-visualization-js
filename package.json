@@ -93,7 +93,7 @@
     "utils:test:model": "node ./scripts/utils/dist/utils.mjs test/fixtures/bpmn/simple-start-task-end.bpmn --output model"
   },
   "dependencies": {
-    "@maxgraph/core": "0.10.2",
+    "@maxgraph/core": "0.10.3",
     "fast-xml-parser": "4.2.5",
     "lodash-es": "~4.17.21",
     "strnum": "1.0.5"
