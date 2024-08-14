@@ -71,13 +71,21 @@ export default class GraphConfigurator {
       panningHandler.addListener(mxEvent.PAN_END, setContainerCursor(this.graph, 'default'));
 
       panningHandler.usePopupTrigger = false; // only use the left button to trigger panning
+
+      // TMP disable to introduce e2e failure
+      console.warn('Panning is disabled');
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars -- prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
+      panningHandler.isForcePanningEvent = (_me: mxMouseEvent): boolean => false;
+      this.graph.setPanning(false);
+
       // Reimplement the function as we also want to trigger 'panning on cells' (ignoreCell to true) and only on left-click
       // The mxGraph standard implementation doesn't ignore right click in this case, so do it by ourselves
-      panningHandler.isForcePanningEvent = (me): boolean => mxEvent.isLeftMouseButton(me.getEvent()) || mxEvent.isMultiTouchEvent(me.getEvent());
-      this.graph.setPanning(true);
+      // panningHandler.isForcePanningEvent = (me): boolean => mxEvent.isLeftMouseButton(me.getEvent()) || mxEvent.isMultiTouchEvent(me.getEvent());
+      // this.graph.setPanning(true);
 
       // Zoom configuration
-      this.graph.registerMouseWheelZoomListeners(options.navigation.zoom);
+      // TMP disable to introduce e2e failure
+      // this.graph.registerMouseWheelZoomListeners(options.navigation.zoom);
     } else {
       this.graph.setPanning(false);
       // Disable gesture support for zoom
