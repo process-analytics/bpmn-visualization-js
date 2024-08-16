@@ -53,8 +53,8 @@ export class MxGraphCustomOverlay extends mxgraph.mxCellOverlay {
 
     // START bpmn-visualization CUSTOMIZATION
     // 0 values to position the text overlays on extreme/center points
-    const w = 30;
-    const h = 30;
+    const w = 0;
+    const h = 0;
     // END bpmn-visualization CUSTOMIZATION
 
     if (isEdge) {

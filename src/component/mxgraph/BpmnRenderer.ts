@@ -40,10 +40,9 @@ export class BpmnRenderer {
     readonly styleComputer: StyleComputer,
   ) {}
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  render(renderedModel: RenderedModel, _fitOptions?: FitOptions): void {
+  render(renderedModel: RenderedModel, fitOptions?: FitOptions): void {
     this.insertShapesAndEdges(renderedModel);
-    // this.graph.customFit(fitOptions);
+    this.graph.customFit(fitOptions);
   }
 
   private insertShapesAndEdges({ pools, lanes, subprocesses, otherFlowNodes, boundaryEvents, edges }: RenderedModel): void {
