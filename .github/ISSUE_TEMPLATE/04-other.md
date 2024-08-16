@@ -7,4 +7,4 @@ assignees: ''
 
 ---
 
-Please use this template only if your issue doesn't match a Bug Report, Feature Request or Question?
+Please use this template only if your issue doesn't match a Bug Report, Feature Request or Question.
