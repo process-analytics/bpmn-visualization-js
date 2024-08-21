@@ -20,9 +20,9 @@ import type { Point } from '@test/shared/visu/bpmn-page-utils';
 import path from 'node:path';
 
 import debugLogger from 'debug';
-import 'jest-playwright-preset';
 
-import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
+import { withCustomOutputDirectory, ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
+import 'jest-playwright-preset';
 
 import { ZoomType } from '@lib/component/options';
 import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
@@ -119,11 +119,15 @@ describe('diagram navigation - zoom and pan with mouse', () => {
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-    expect(image).toMatchImageSnapshot({
-      ...config,
-      customSnapshotIdentifier: 'initial.zoom',
-      customDiffDir: path.join(config.customDiffDir, `mouse-zoom-in-out-${xTimes}-times`),
-    });
+    expect(image).toMatchImageSnapshot(
+      withCustomOutputDirectory(
+        {
+          ...config,
+          customSnapshotIdentifier: 'initial.zoom',
+        },
+        path.join(config.customDiffDir, `mouse-zoom-in-out-${xTimes}-times`),
+      ),
+    );
   });
 });
 
@@ -163,11 +167,15 @@ describe('diagram navigation - zoom with buttons', () => {
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-    expect(image).toMatchImageSnapshot({
-      ...config,
-      customSnapshotIdentifier: 'initial.zoom',
-      customDiffDir: path.join(config.customDiffDir, `button-zoom-in-out-${xTimes}-times`),
-    });
+    expect(image).toMatchImageSnapshot(
+      withCustomOutputDirectory(
+        {
+          ...config,
+          customSnapshotIdentifier: 'initial.zoom',
+        },
+        path.join(config.customDiffDir, `button-zoom-in-out-${xTimes}-times`),
+      ),
+    );
   });
 });
 
@@ -205,11 +213,15 @@ describe('diagram navigation - zoom with buttons and mouse', () => {
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-    expect(image).toMatchImageSnapshot({
-      ...config,
-      customSnapshotIdentifier: 'initial.zoom',
-      customDiffDir: path.join(config.customDiffDir, `zoom-button-then-mouse-${firstZoom}-then-${secondZoom}`),
-    });
+    expect(image).toMatchImageSnapshot(
+      withCustomOutputDirectory(
+        {
+          ...config,
+          customSnapshotIdentifier: 'initial.zoom',
+        },
+        path.join(config.customDiffDir, `zoom-button-then-mouse-${firstZoom}-then-${secondZoom}`),
+      ),
+    );
   });
 
   it.each`
@@ -222,10 +234,14 @@ describe('diagram navigation - zoom with buttons and mouse', () => {
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-    expect(image).toMatchImageSnapshot({
-      ...config,
-      customSnapshotIdentifier: 'initial.zoom',
-      customDiffDir: path.join(config.customDiffDir, `zoom-mouse-then-button-${firstZoom}-then-${secondZoom}`),
-    });
+    expect(image).toMatchImageSnapshot(
+      withCustomOutputDirectory(
+        {
+          ...config,
+          customSnapshotIdentifier: 'initial.zoom',
+        },
+        path.join(config.customDiffDir, `zoom-mouse-then-button-${firstZoom}-then-${secondZoom}`),
+      ),
+    );
   });
 });

@@ -23,7 +23,7 @@ import path from 'node:path';
 
 import debugLogger from 'debug';
 
-import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
+import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds, withCustomOutputDirectory } from './helpers/visu/image-snapshot-config';
 
 import { ensureIsArray } from '@lib/component/helpers/array-utils';
 import { ZoomType } from '@lib/component/options';
@@ -146,12 +146,16 @@ describe('BPMN Shapes with overlays', () => {
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-    expect(image).toMatchImageSnapshot({
-      ...config,
-      customSnapshotIdentifier: `add.overlay.on.position.${position}`,
-      customSnapshotsDir: getShapeDirectory(config.customSnapshotsDir),
-      customDiffDir: getShapeDirectory(config.customDiffDir),
-    });
+    expect(image).toMatchImageSnapshot(
+      withCustomOutputDirectory(
+        {
+          ...config,
+          customSnapshotIdentifier: `add.overlay.on.position.${position}`,
+          customSnapshotsDir: getShapeDirectory(config.customSnapshotsDir),
+        },
+        getShapeDirectory(config.customDiffDir),
+      ),
+    );
   });
 
   it(`remove all overlays of Shape`, async () => {
@@ -162,12 +166,16 @@ describe('BPMN Shapes with overlays', () => {
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-    expect(image).toMatchImageSnapshot({
-      ...config,
-      customSnapshotIdentifier: 'remove.all.overlays.of.shape',
-      customSnapshotsDir: getShapeDirectory(config.customSnapshotsDir),
-      customDiffDir: getShapeDirectory(config.customDiffDir),
-    });
+    expect(image).toMatchImageSnapshot(
+      withCustomOutputDirectory(
+        {
+          ...config,
+          customSnapshotIdentifier: 'remove.all.overlays.of.shape',
+          customSnapshotsDir: getShapeDirectory(config.customSnapshotsDir),
+        },
+        getShapeDirectory(config.customDiffDir),
+      ),
+    );
   });
 });
 
@@ -201,12 +209,16 @@ describe('BPMN Edges with overlays', () => {
 
       const image = await page.screenshot({ fullPage: true });
       const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-      expect(image).toMatchImageSnapshot({
-        ...config,
-        customSnapshotIdentifier: `add.overlay.on.${edgeKind}.flow`,
-        customSnapshotsDir: getEdgePositionDirectory(config.customSnapshotsDir, position),
-        customDiffDir: getEdgePositionDirectory(config.customDiffDir, position),
-      });
+      expect(image).toMatchImageSnapshot(
+        withCustomOutputDirectory(
+          {
+            ...config,
+            customSnapshotIdentifier: `add.overlay.on.${edgeKind}.flow`,
+            customSnapshotsDir: getEdgePositionDirectory(config.customSnapshotsDir, position),
+          },
+          getEdgePositionDirectory(config.customDiffDir, position),
+        ),
+      );
     });
 
     it(`remove all overlays of ${edgeKind} flow`, async () => {
@@ -218,12 +230,16 @@ describe('BPMN Edges with overlays', () => {
 
       const image = await page.screenshot({ fullPage: true });
       const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
-      expect(image).toMatchImageSnapshot({
-        ...config,
-        customSnapshotIdentifier: `remove.all.overlays.of.${edgeKind}.flow`,
-        customSnapshotsDir: getEdgeDirectory(config.customSnapshotsDir),
-        customDiffDir: getEdgeDirectory(config.customDiffDir),
-      });
+      expect(image).toMatchImageSnapshot(
+        withCustomOutputDirectory(
+          {
+            ...config,
+            customSnapshotIdentifier: `remove.all.overlays.of.${edgeKind}.flow`,
+            customSnapshotsDir: getEdgeDirectory(config.customSnapshotsDir),
+          },
+          getEdgeDirectory(config.customDiffDir),
+        ),
+      );
     });
   });
 });
@@ -374,11 +390,15 @@ describe('Overlay style', () => {
 
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(style);
-    expect(image).toMatchImageSnapshot({
-      ...config,
-      customSnapshotIdentifier: `add.overlay.with.custom.${style}`,
-      customSnapshotsDir: path.join(config.customSnapshotsDir, snapshotPath),
-      customDiffDir: path.join(config.customDiffDir, snapshotPath),
-    });
+    expect(image).toMatchImageSnapshot(
+      withCustomOutputDirectory(
+        {
+          ...config,
+          customSnapshotIdentifier: `add.overlay.with.custom.${style}`,
+          customSnapshotsDir: path.join(config.customSnapshotsDir, snapshotPath),
+        },
+        path.join(config.customDiffDir, snapshotPath),
+      ),
+    );
   });
 });
