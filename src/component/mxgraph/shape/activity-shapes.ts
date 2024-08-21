@@ -47,8 +47,8 @@ export abstract class BaseActivityShape extends mxRectangleShape {
   private markerPainterFunctions = new Map<ShapeBpmnMarkerKind, (paintParameter: PaintParameter) => void>([
     [ShapeBpmnMarkerKind.EXPAND, (paintParameter: PaintParameter) => this.iconPainter.paintExpandIcon(paintParameter)],
     [ShapeBpmnMarkerKind.LOOP, (paintParameter: PaintParameter) => this.iconPainter.paintLoopIcon(paintParameter)],
-    [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, (paintParameter: PaintParameter) => this.iconPainter.paintSequentialMultiInstanceIcon(paintParameter)],
     [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, (paintParameter: PaintParameter) => this.iconPainter.paintParallelMultiInstanceIcon(paintParameter)],
+    [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, (paintParameter: PaintParameter) => this.iconPainter.paintSequentialMultiInstanceIcon(paintParameter)],
   ]);
 
   constructor() {
