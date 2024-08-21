@@ -55,14 +55,15 @@ export class ImageSnapshotConfigurator {
     const fileName = typeof parameter === 'string' ? parameter : parameter.fileName;
     const failureThreshold = this.getFailureThreshold(fileName);
 
-    return {
-      ...defaultImageSnapshotConfig,
-      failureThreshold: failureThreshold,
-      customSnapshotIdentifier: fileName,
-      customSnapshotsDir: this.defaultCustomSnapshotsDir,
-      customDiffDir: this.defaultCustomDiffDir,
-      customReceivedDir: this.defaultCustomDiffDir,
-    };
+    return withCustomOutputDirectory(
+      {
+        ...defaultImageSnapshotConfig,
+        failureThreshold: failureThreshold,
+        customSnapshotIdentifier: fileName,
+        customSnapshotsDir: this.defaultCustomSnapshotsDir,
+      },
+      this.defaultCustomDiffDir,
+    );
   }
 
   private getFailureThreshold(fileName: string): number {
@@ -166,3 +167,12 @@ export class MultiBrowserImageSnapshotThresholds {
     }
   }
 }
+
+/**
+ * Set both the customDiffDir and customReceivedDir to the same value.
+ */
+export const withCustomOutputDirectory = (options: MatchImageSnapshotOptions, customOutputDirectory: string): MatchImageSnapshotOptions => ({
+  ...options,
+  customDiffDir: customOutputDirectory,
+  customReceivedDir: customOutputDirectory,
+});
