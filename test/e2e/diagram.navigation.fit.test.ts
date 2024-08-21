@@ -19,9 +19,9 @@ import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 
 import path from 'node:path';
 
-import 'jest-playwright-preset';
+import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds, withCustomOutputDirectory } from './helpers/visu/image-snapshot-config';
 
-import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
+import 'jest-playwright-preset';
 
 import { FitType } from '@lib/component/options';
 import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
@@ -34,10 +34,13 @@ class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
     fitType: FitType;
     margin?: number;
   }): MatchImageSnapshotOptions {
-    const config = super.getConfig(parameter);
-    config.customSnapshotsDir = FitImageSnapshotConfigurator.buildSnapshotFitDirectory(config.customSnapshotsDir, parameter.fitType, true, parameter.margin ?? 0);
-    config.customDiffDir = parameter.buildCustomDiffDir(config, parameter.fitType, parameter.margin);
-    return config;
+    return withCustomOutputDirectory(
+      {
+        ...super.getConfig(parameter),
+        customSnapshotsDir: FitImageSnapshotConfigurator.buildSnapshotFitDirectory(super.getConfig(parameter).customSnapshotsDir, parameter.fitType, true, parameter.margin ?? 0),
+      },
+      parameter.buildCustomDiffDir(super.getConfig(parameter), parameter.fitType, parameter.margin),
+    );
   }
 
   private static buildSnapshotFitDirectory(parentDirectory: string, fitType: FitType, withMargin = false, margin?: number): string {
