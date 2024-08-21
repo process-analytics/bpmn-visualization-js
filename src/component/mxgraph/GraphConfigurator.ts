@@ -34,7 +34,7 @@ import { mxEvent } from './initializer';
 export default class GraphConfigurator {
   private readonly graph: BpmnGraph;
 
-  constructor(readonly container: HTMLElement) {
+  constructor(container: HTMLElement) {
     this.graph = new BpmnGraph(container);
   }
 
@@ -91,6 +91,6 @@ export default class GraphConfigurator {
 
 function setContainerCursor(graph: BpmnGraph, cursor: 'grab' | 'default'): () => void {
   return (): void => {
-    graph.isEnabled() && (graph.container.style.cursor = cursor);
+    graph.container.style.cursor = cursor;
   };
 }
