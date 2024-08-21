@@ -70,7 +70,7 @@ async function attachImagesForReport(images: LocationOfImagesForTestReport, matc
   log('Attaching images to report for test %s', currentTestName);
   context[Symbol('bpmn-visualization')] = {
     state: {
-      currentTestName: currentTestName,
+      currentTestName,
       testPath: matcherContext.testPath,
     },
     matchers: {}, // required by the jest-html-reporters getJestGlobalData function even if not used
