@@ -96,14 +96,12 @@ export class BpmnRenderer {
         edge.geometry.height = labelBounds.height;
 
         const edgeCenterCoordinate = this.coordinatesTranslator.computeEdgeCenter(edge);
-        if (edgeCenterCoordinate) {
-          edge.geometry.relative = false;
+        edge.geometry.relative = false;
 
-          const labelBoundsRelativeCoordinateFromParent = this.coordinatesTranslator.computeRelativeCoordinates(edge.parent, new mxPoint(labelBounds.x, labelBounds.y));
-          const relativeLabelX = labelBoundsRelativeCoordinateFromParent.x + labelBounds.width / 2 - edgeCenterCoordinate.x;
-          const relativeLabelY = labelBoundsRelativeCoordinateFromParent.y - edgeCenterCoordinate.y;
-          edge.geometry.offset = new mxPoint(relativeLabelX, relativeLabelY);
-        }
+        const labelBoundsRelativeCoordinateFromParent = this.coordinatesTranslator.computeRelativeCoordinates(edge.parent, new mxPoint(labelBounds.x, labelBounds.y));
+        const relativeLabelX = labelBoundsRelativeCoordinateFromParent.x + labelBounds.width / 2 - edgeCenterCoordinate.x;
+        const relativeLabelY = labelBoundsRelativeCoordinateFromParent.y - edgeCenterCoordinate.y;
+        edge.geometry.offset = new mxPoint(relativeLabelX, relativeLabelY);
       }
 
       this.insertMessageFlowIconIfNeeded(internalEdge, edge);
