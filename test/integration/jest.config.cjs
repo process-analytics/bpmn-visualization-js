@@ -30,14 +30,7 @@ module.exports = {
       },
     ],
   },
-  moduleNameMapper: {
-    ...moduleNameMapper,
-    // Hack to use lodash instead of lodash-es in integration tests.
-    // This is only to resolve the import, otherwise Jest fails to parse the lodash-es files.
-    // For more details, see https://github.com/process-analytics/bpmn-visualization-js/pull/2678
-    // The lodash code is not called in integration tests, so changing the lodash implementation in used in not an issue.
-    '^lodash-es$': 'lodash',
-  },
+  moduleNameMapper,
   collectCoverageFrom: ['src/**/*.{ts,js}'],
   coveragePathIgnorePatterns: ['/src/model/'],
   coverageReporters: ['lcov', 'text-summary'],

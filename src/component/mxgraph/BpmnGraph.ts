@@ -17,7 +17,7 @@ limitations under the License.
 import type { FitOptions, ZoomConfiguration } from '../options';
 import type { mxCellRenderer, mxCellState, mxGraphView, mxPoint } from 'mxgraph';
 
-import { debounce, throttle } from 'lodash-es';
+import { debounce, throttle } from 'es-toolkit';
 
 import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/validators';
 import { FitType } from '../options';
