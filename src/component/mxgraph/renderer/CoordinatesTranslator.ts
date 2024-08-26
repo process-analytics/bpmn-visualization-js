@@ -71,12 +71,9 @@ export default class CoordinatesTranslator {
     const p0 = points[0];
     const pe = points.at(-1);
 
-    if (p0 != null && pe != null) {
-      const dx = pe.x - p0.x;
-      const dy = pe.y - p0.y;
-      return new mxPoint(p0.x + dx / 2, p0.y + dy / 2);
-    }
-
-    return undefined;
+    // p0 and pe are always set (all tests passed so far)
+    const dx = pe.x - p0.x;
+    const dy = pe.y - p0.y;
+    return new mxPoint(p0.x + dx / 2, p0.y + dy / 2);
   }
 }

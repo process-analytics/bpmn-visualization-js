@@ -44,6 +44,13 @@ export abstract class BaseActivityShape extends mxRectangleShape {
   // The actual value is injected at runtime by BpmnCellRenderer
   protected iconPainter: IconPainter = undefined;
 
+  private markerPainterFunctions = new Map<ShapeBpmnMarkerKind, (paintParameter: PaintParameter) => void>([
+    [ShapeBpmnMarkerKind.EXPAND, (paintParameter: PaintParameter) => this.iconPainter.paintExpandIcon(paintParameter)],
+    [ShapeBpmnMarkerKind.LOOP, (paintParameter: PaintParameter) => this.iconPainter.paintLoopIcon(paintParameter)],
+    [ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL, (paintParameter: PaintParameter) => this.iconPainter.paintParallelMultiInstanceIcon(paintParameter)],
+    [ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL, (paintParameter: PaintParameter) => this.iconPainter.paintSequentialMultiInstanceIcon(paintParameter)],
+  ]);
+
   constructor() {
     super(undefined, undefined, undefined); // the configuration is passed with the styles at runtime
   }
@@ -64,24 +71,10 @@ export abstract class BaseActivityShape extends mxRectangleShape {
           setIconOriginFunct: getMarkerIconOriginFunction(orderedMarkers.length, index + 1),
         };
         paintParameter.canvas.save(); // ensure we can later restore the configuration
-        switch (marker) {
-          case ShapeBpmnMarkerKind.LOOP: {
-            this.iconPainter.paintLoopIcon(paintParameter);
-            break;
-          }
-          case ShapeBpmnMarkerKind.MULTI_INSTANCE_SEQUENTIAL: {
-            this.iconPainter.paintSequentialMultiInstanceIcon(paintParameter);
-            break;
-          }
-          case ShapeBpmnMarkerKind.MULTI_INSTANCE_PARALLEL: {
-            this.iconPainter.paintParallelMultiInstanceIcon(paintParameter);
-            break;
-          }
-          case ShapeBpmnMarkerKind.EXPAND: {
-            this.iconPainter.paintExpandIcon(paintParameter);
-            break;
-          }
-        }
+
+        // Paint the marker
+        this.markerPainterFunctions.get(marker as ShapeBpmnMarkerKind)?.(paintParameter);
+
         // Restore original configuration to avoid side effects if the iconPainter changed the canvas configuration (colors, ....)
         paintParameter.canvas.restore();
       }
