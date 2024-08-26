@@ -165,8 +165,8 @@
     "tailwindcss": "~3.4.10",
     "ts-jest": "~29.2.5",
     "typedoc": "~0.26.6",
-    "typescript": "~5.4.5",
-    "vite": "~5.5.4"
+    "typescript": "~5.5.4",
+    "vite": "~5.3.5"
   },
   "lint-staged": {
     "*.{js,cjs,mjs,ts,cts,mts}": [
