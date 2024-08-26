@@ -1,2 +1,12 @@
 # see https://help.github.com/en/github/building-a-strong-community/configuring-issue-templates-for-your-repository#configuring-the-template-chooser
 blank_issues_enabled: false
+contact_links:
+  - name: "Getting Started with bpmn-visualization" article
+    url: https://medium.com/@process-analytics/getting-started-with-bpmn-visualization-a54fbafae2df
+    about: A getting started tutorial to bpmn-visualization using an online monitoring scenario.
+  - name: "All you need to know about styling BPMN elements" article
+    url: https://medium.com/@process-analytics/bpmn-visualization-all-you-need-to-know-about-styling-bpmn-elements-24289154c16c
+    about: Diving into bpmn-visualization Typescript library, we focus on style management, with resources for beginners and advanced usage scenarios.
+  - name: `bpmn-visualization` examples repository
+    url: https://github.com/process-analytics/bpmn-visualization-examples/
+    about: Examples of use of the `bpmn-visualization` library.

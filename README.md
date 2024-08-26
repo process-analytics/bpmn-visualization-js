@@ -119,7 +119,11 @@ import { BpmnVisualization } from 'bpmn-visualization';
 // 'bpmn-container' is the id of the HTMLElement that renders the BPMN Diagram
 const bpmnVisualization = new BpmnVisualization({ container: 'bpmn-container' });
 let bpmnContent; // your BPMN 2.0 XML content
-bpmnVisualization.load(bpmnContent);
+try {
+  bpmnVisualization.load(bpmnContent);
+} catch (error) {
+  console.error('Error loading BPMN content', error);
+}
 ```
 
 You can set the BPMN content using one of the following ways:
@@ -161,7 +165,11 @@ In the HTML page:
   // 'bpmn-container' is the id of the HTMLElement that renders the BPMN Diagram
   const bpmnVisualization = new bpmnvisu.BpmnVisualization({ container: 'bpmn-container'});
   let bpmnContent; // your BPMN 2.0 XML content
-  bpmnVisualization.load(bpmnContent);
+  try {
+    bpmnVisualization.load(bpmnContent);
+  } catch (error) {
+    console.error('Error loading BPMN content', error);
+  }
 </script>
 ```
 
