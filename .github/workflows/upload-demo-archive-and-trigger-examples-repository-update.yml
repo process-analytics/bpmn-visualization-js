@@ -1,15 +1,23 @@
 name: Upload Demo Archive & Trigger Examples Repository Update
 
 on:
-  push:
-    tags:
-      -  v*
+  repository_dispatch:
+    types: [ new_version_available_on_npm ]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version'
+        required: true
 
 jobs:
   upload_demo_archive:
     runs-on: ubuntu-22.04
+    env:
+      VERSION: ${{ github.event.client_payload.version || inputs.version }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: v${{ env.VERSION }}
       - name: Build Setup
         uses: ./.github/actions/build-setup
       - name: Build Demo
@@ -28,3 +36,4 @@ jobs:
           BUILD_DEMO_WORKFLOW_ID: "upload-demo-archive-and-trigger-examples-repository-update.yml"
           ARTIFACT_NAME: '${{ env.ARTIFACT_NAME }}'
           TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}
+          VERSION: ${{ env.VERSION }}

@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-22.04
     permissions:
       id-token: write
-      contents: write
+      contents: write # require to get token for npm provenance and to dispatch event
     steps:
       - uses: actions/checkout@v4
       - name: Build Setup
@@ -18,6 +18,12 @@ jobs:
       - run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Send Repository Dispatch event to trigger workflows in charge of notifying other repositories
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          # use the default GITHUB_TOKEN, this is possible because we are dispatching the same repository
+          event-type: new_version_available_on_npm
+          client-payload: '{ "version": "${{ inputs.version }}" }'
       - name: Send message to Slack channel
         if: success()
         uses: slackapi/slack-github-action@v1.26.0
@@ -58,8 +64,3 @@ jobs:
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-      - name: Notify bpmn-visualization-R repository of new bpmn-visualization version
-        uses: ./.github/actions/notify-PA-repo-of-new-version
-        with:
-          PA_REPOSITORY: 'bpmn-visualization-R'
-          TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}

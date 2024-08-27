@@ -1,0 +1,31 @@
+# TODO rename workflow
+name: Notify new version available on npm
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version'
+        required: true
+  repository_dispatch:
+    types: [ new_version_available_on_npm ]
+
+
+# another repository is notified in 'upload-demo-archive-and-trigger-examples-repository-update.yml'
+jobs:
+  notify:
+    runs-on: ubuntu-22.04
+    env:
+      VERSION: ${{ github.event.client_payload.version || inputs.version }}
+    strategy:
+      matrix:
+        repository:
+          - bpmn-visualization-R'
+    steps:
+      - name: Notify that a new bpmn-visualization version is available
+        uses: ./.github/actions/notify-PA-repo-of-new-version
+        with:
+          PA_REPOSITORY: ${{ matrix.repository }}
+          TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}
+          VERSION: ${{ env.VERSION }}
+
+

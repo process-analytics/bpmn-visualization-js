@@ -18,30 +18,30 @@ inputs:
     description: 'The name of the demo artifact'
     required: false
     default: ''
+  VERSION:
+    description: 'The new version'
+    required: true
 
 runs:
   using: "composite"
   steps:
-    - name: Set VERSION
-      shell: bash
-      run: echo "VERSION=${GITHUB_REF#refs/tags/v*}" >> $GITHUB_ENV
     - name: Set CLIENT_PAYLOAD
       shell: bash
       run: |
         if [[ "${{ inputs.BUILD_DEMO_WORKFLOW_ID }}" == '' && "${{ inputs.ARTIFACT_NAME }}" == '' ]]; then
           echo "CLIENT_PAYLOAD=$( jq -n -c \
-                  --arg v "${{ env.VERSION }}" \
+                  --arg v "${{ inputs.VERSION }}" \
                   '{ version: $v }' )" >> $GITHUB_ENV
         else
           echo "CLIENT_PAYLOAD=$( jq -n -c \
-                  --arg v "${{ env.VERSION }}" \
+                  --arg v "${{ inputs.VERSION }}" \
                   --arg dr "${{ github.repository }}" \
                   --arg dwid "${{ inputs.BUILD_DEMO_WORKFLOW_ID }}" \
                   --arg an "${{ inputs.ARTIFACT_NAME }}" \
                   '{ version: $v, build_demo_repo: $dr, build_demo_workflow_id: $dwid, artifact_name: $an }' )" >> $GITHUB_ENV
         fi
     - name: Send Repository Dispatch event
-      uses: peter-evans/repository-dispatch@v2
+      uses: peter-evans/repository-dispatch@v3
       with:
         token: ${{ inputs.TOKEN }}
         repository: process-analytics/${{ inputs.PA_REPOSITORY }}
