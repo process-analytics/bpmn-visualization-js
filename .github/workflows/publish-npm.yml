@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-22.04
     permissions:
       id-token: write
-      contents: write # require to get token for npm provenance and to dispatch event
+      contents: write # required to get token for "npm provenance" and to dispatch event
     steps:
       - uses: actions/checkout@v4
       - name: Build Setup
