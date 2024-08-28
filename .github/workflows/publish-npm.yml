@@ -18,7 +18,7 @@ jobs:
       - run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: Send Repository Dispatch event to trigger workflows in charge of notifying other repositories
+      - name: Trigger workflows in charge of notifying other repositories
         uses: peter-evans/repository-dispatch@v3
         with:
           # use the default GITHUB_TOKEN, this is possible because we are dispatching the same repository

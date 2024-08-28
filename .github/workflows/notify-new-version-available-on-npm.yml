@@ -1,5 +1,4 @@
-# TODO rename workflow
-name: Notify new version available on npm
+name: Notify other repositories of a new version available on npm
 on:
   workflow_dispatch:
     inputs:
