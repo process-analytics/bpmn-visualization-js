@@ -20,11 +20,8 @@ jobs:
         repository:
           - bpmn-visualization-R'
     steps:
-    # TODO log version and event as json
       # Need to checkout to access to the internal action
       - uses: actions/checkout@v4
-        with:
-          ref: v${{ env.VERSION }}
       - name: Notify that a new bpmn-visualization version is available
         uses: ./.github/actions/notify-PA-repo-of-new-version
         with:
