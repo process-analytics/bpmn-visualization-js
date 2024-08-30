@@ -23,7 +23,7 @@ jobs:
         with:
           # use the default GITHUB_TOKEN, this is possible because we are dispatching the same repository
           event-type: new_version_available_on_npm
-          client-payload: '{ "version": "${{ inputs.version }}" }'
+          client-payload: "{ version: ${{ inputs.version }} }"
       - name: Send message to Slack channel
         if: success()
         uses: slackapi/slack-github-action@v1.26.0
