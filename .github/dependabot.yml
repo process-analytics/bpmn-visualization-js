@@ -17,6 +17,9 @@ updates:
       - skip-changelog
     reviewers:
       - process-analytics/pa-collaborators
+    ignore:
+      # # TMP: ignore until we have found a fix to bump to TS 5.5+, see https://github.com/process-analytics/bpmn-visualization-js/pull/3124
+      - dependency-name: "typescript"
     groups:
        css:
           patterns:
@@ -43,10 +46,11 @@ updates:
             - "@rollup/*"
             - "rollup"
             - "rollup-plugin-*"
-       typescript:
-          patterns:
-            - "typedoc"
-            - "typescript"
+# TMP: disabled until we have found a fix to bump to TS 5.5+, see https://github.com/process-analytics/bpmn-visualization-js/pull/3124
+#       typescript:
+#          patterns:
+#            - "typedoc"
+#            - "typescript"
 
   - package-ecosystem: "github-actions"
     # Workflow files stored in the default location of `.github/workflows`
