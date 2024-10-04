@@ -16,6 +16,7 @@ limitations under the License.
 
 import type BpmnJsonParser from './json/BpmnJsonParser';
 import type BpmnModel from '../../model/bpmn/internal/BpmnModel';
+import type { BpmnJsonModel } from '../../model/bpmn/json/bpmn20';
 import type { ParserOptions } from '../options';
 
 import { newBpmnJsonParser } from './json/BpmnJsonParser';
@@ -33,6 +34,11 @@ class BpmnParser {
 
   parse(bpmnAsXml: string): BpmnModel {
     const json = this.xmlParser.parse(bpmnAsXml);
+    return this.jsonParser.parse(json);
+  }
+
+  parseJson(bpmnAsJson: string): BpmnModel {
+    const json: BpmnJsonModel = JSON.parse(bpmnAsJson);
     return this.jsonParser.parse(json);
   }
 }

@@ -96,6 +96,12 @@ export class BpmnVisualization {
     newBpmnRenderer(this.graph, this.rendererOptions).render(renderedModel, options?.fit);
   }
 
+  loadJson(json: string, options?: LoadOptions): void {
+    const bpmnModel = newBpmnParser(this.parserOptions).parseJson(json);
+    const renderedModel = this.bpmnModelRegistry.load(bpmnModel, options?.modelFilter);
+    newBpmnRenderer(this.graph, this.rendererOptions).render(renderedModel, options?.fit);
+  }
+
   /**
    * Returns the version of `bpmn-visualization` and the version of its dependencies.
    * @deprecated As of `0.43.0`, use {@link getVersion} instead. This method will be removed in `0.45.0`.
