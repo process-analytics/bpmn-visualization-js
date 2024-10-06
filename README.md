@@ -74,7 +74,7 @@ Already available features:
 - [Navigate through the BPMN diagram](https://process-analytics.github.io/bpmn-visualization-js/#diagram-navigation)
 - [Display execution data with interactive capabilities](https://process-analytics.github.io/bpmn-visualization-js/#process_data)
 
-🔥 Some add-on features are available through a dedicated package: [__⏩ bpmn-visualization add-ons__](https://github.com/process-analytics/bv-experimental-add-ons/)
+🔥 Some add-on features are available through a dedicated package: [__⏩ bpmn-visualization-addons__](https://github.com/process-analytics/bpmn-visualization-addons/)
 
 Planned new features:
 - Additional BPMN styling capabilities
