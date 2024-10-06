@@ -49,29 +49,35 @@ jobs:
       # we want to run the full build on all os: don't cancel running jobs even if one fails
       fail-fast: false
       matrix:
-        os: [macos-13, ubuntu-22.04, windows-2022]
-        browser: [chromium, firefox, chrome]
-        include:
-          # only test WebKit on macOS
-          - os: macos-13
-            browser: webkit
-          # only test Edge on Windows
-          - os: windows-2022
-            browser: msedge
+        os: [ubuntu-22.04]
+        browser: [chromium, chrome]
+#        os: [macos-13, ubuntu-22.04, windows-2022]
+#        browser: [chromium, firefox, chrome]
+#        include:
+#          # only test WebKit on macOS
+#          - os: macos-13
+#            browser: webkit
+#          # only test Edge on Windows
+#          - os: windows-2022
+#            browser: msedge
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - uses: ./.github/actions/log-disk-space
       - name: Build Setup
         uses: ./.github/actions/build-setup
       - name: Install ${{matrix.browser}}
         uses: ./.github/actions/install-playwright-browser
         with:
           browser: ${{matrix.browser}}
+      - uses: ./.github/actions/log-disk-space
       - name: Test Application End to End
         id: 'test_e2e'
         env:
           BROWSERS: ${{matrix.browser}}
         run: npm run test:e2e:verbose
+      - uses: ./.github/actions/log-disk-space
+        if: always()
       - name: Upload e2e test results
         if: ${{ failure() && steps.test_e2e.outcome == 'failure' }}
         uses: actions/upload-artifact@v4

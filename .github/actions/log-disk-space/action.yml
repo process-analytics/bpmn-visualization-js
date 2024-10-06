@@ -1,0 +1,16 @@
+name: 'Log disk space'
+description: 'Log disk space, size of the working directory'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Log working directory size
+      shell: bash
+      run: |
+        ls -lh
+        du --max-depth=2 -h
+    - name: Log disk space
+      shell: bash
+      run: |
+        df -kh
+        df -ih
