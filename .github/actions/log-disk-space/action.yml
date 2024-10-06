@@ -1,16 +1,16 @@
 name: 'Log disk space'
-description: 'Log disk space, size of the working directory'
+description: 'Log disk space (for troubleshooting)'
 
 runs:
   using: "composite"
+
   steps:
-#    - name: Log working directory size
-#      shell: bash
-#      run: |
-#        ls -lh
-#        du --max-depth=2 -h
-    - name: Log disk space
+    - name: Log disk space on Unix based OS
       shell: bash
-      run: |
-        df -kh
-        df -ih
+      if: runner.os != 'Windows'
+      run: df -kh
+    - name: Log disk space on Windows
+      shell: pwsh
+      if: runner.os == 'Windows'
+      run: Get-Volume
+

@@ -49,9 +49,8 @@ jobs:
       # we want to run the full build on all os: don't cancel running jobs even if one fails
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04]
+        os: [macos-13, ubuntu-22.04, windows-2022]
         browser: [chrome]
-#        os: [macos-13, ubuntu-22.04, windows-2022]
 #        browser: [chromium, firefox, chrome]
 #        include:
 #          # only test WebKit on macOS
@@ -63,7 +62,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Free disk space
+      - name: Free disk space on Ubuntu runner
+        if: runner.os == 'Linux'
         uses: ./.github/actions/free-runner-disk-space-ubuntu
       - name: Build Setup
         uses: ./.github/actions/build-setup
