@@ -50,15 +50,14 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-13, ubuntu-22.04, windows-2022]
-        browser: [chrome]
-#        browser: [chromium, firefox, chrome]
-#        include:
-#          # only test WebKit on macOS
-#          - os: macos-13
-#            browser: webkit
-#          # only test Edge on Windows
-#          - os: windows-2022
-#            browser: msedge
+        browser: [chromium, firefox, chrome]
+        include:
+          # only test WebKit on macOS
+          - os: macos-13
+            browser: webkit
+          # only test Edge on Windows
+          - os: windows-2022
+            browser: msedge
     steps:
       - name: Checkout
         uses: actions/checkout@v4
