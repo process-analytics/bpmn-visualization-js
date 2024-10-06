@@ -1,0 +1,36 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      type:
+        description: 'New version type [new-version | major | minor | patch]'
+        required: true
+        default: 'patch'
+jobs:
+  bumpVersion:
+    runs-on: ubuntu-22.04
+    steps:
+      - run: |
+          echo "New version type: ${{ inputs.type }}"
+      - name: Setup checkout
+        uses: actions/checkout@v4
+        with:
+          # Use a PAT to ensure workflow run are triggered after git push
+          token: ${{ secrets.GH_RELEASE_TOKEN }}
+      - name: Build Setup
+        uses: ./.github/actions/build-setup
+        with:
+          install-dependencies: false
+      - name: Config git
+        run: |
+          git config --local user.email "${{ vars.PA_BOT_EMAIL }}"
+          git config --local user.name "${{ vars.PA_BOT_NAME }}"
+          git config pull.rebase true
+      - name: Checkout master
+        run: git checkout master && git pull --tags
+      - name: Bump Version
+        run: |
+          npm run version-prepare && npm version ${{ inputs.type }} --no-commit-hooks --message "chore(release): %s"
+      - name: Push Version
+        run: git push && git push --tags

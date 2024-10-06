@@ -1,0 +1,27 @@
+name: Announce new release
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'The version to announce'
+        type: string
+        required: true
+      description:
+        description: 'A short description of the version to announce'
+        type: string
+        required: true
+
+jobs:
+  publish_discord_post:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Publish a message on Discord
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          nodetail: true
+          notimestamp: true
+          title: 📣 `bpmn-visualization` ${{ inputs.version }} is out! 🎉
+          url: ${{ github.server_url }}/${{ github.repository }}/releases/tag/v${{ inputs.version }}
+          description: ${{ inputs.description }}
+          color: 0xDBEFFF
