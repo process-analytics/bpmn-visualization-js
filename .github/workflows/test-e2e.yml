@@ -50,7 +50,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-22.04]
-        browser: [chromium, chrome]
+        browser: [chrome]
 #        os: [macos-13, ubuntu-22.04, windows-2022]
 #        browser: [chromium, firefox, chrome]
 #        include:
@@ -63,20 +63,23 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - uses: ./.github/actions/log-disk-space
+      - name: Free disk space
+        uses: ./.github/actions/free-runner-disk-space-ubuntu
       - name: Build Setup
         uses: ./.github/actions/build-setup
       - name: Install ${{matrix.browser}}
         uses: ./.github/actions/install-playwright-browser
         with:
           browser: ${{matrix.browser}}
-      - uses: ./.github/actions/log-disk-space
+      - name: Log disk space
+        uses: ./.github/actions/log-disk-space
       - name: Test Application End to End
         id: 'test_e2e'
         env:
           BROWSERS: ${{matrix.browser}}
         run: npm run test:e2e:verbose
-      - uses: ./.github/actions/log-disk-space
+      - name: Log disk space
+        uses: ./.github/actions/log-disk-space
         if: always()
       - name: Upload e2e test results
         if: ${{ failure() && steps.test_e2e.outcome == 'failure' }}
