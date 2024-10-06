@@ -1,0 +1,27 @@
+name: 'Free disk space on Ubuntu runner'
+description: 'Remove unused cached tools, to free disk space'
+
+runs:
+  using: composite
+  steps:
+    #
+    # https://github.com/actions/runner-images/issues/2840#issuecomment-2272410832 (2024-08-07), taking implementation done in https://github.com/cilium/cilium/commit/e553bd23443ef14c8cbbeeafa7ebab3bb30c3fac and remove only tools that we don't use
+    # We may also use https://github.com/jlumbroso/free-disk-space mentioned in https://github.com/actions/runner-images/issues/2875#issuecomment-1163363045
+    - name: Free up disk space
+      shell: bash
+      run: |
+        echo "Disk space before cleanup..."
+        df -kh
+        echo "Removing unnecessary files to free up disk space..."
+        sudo rm -rf \
+          "$AGENT_TOOLSDIRECTORY" \
+          /opt/microsoft/powershell \
+          /opt/pipx \
+          /usr/lib/mono \
+          /usr/local/julia* \
+          /usr/local/lib/android \
+          /usr/local/share/powershell \
+          /usr/share/dotnet \
+          /usr/share/swift
+        echo "Disk space after cleanup..."
+        df -kh

@@ -1,0 +1,16 @@
+name: 'Log disk space'
+description: 'Log disk space (for troubleshooting)'
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: Log disk space on Unix based OS
+      shell: bash
+      if: runner.os != 'Windows'
+      run: df -kh
+    - name: Log disk space on Windows
+      shell: pwsh
+      if: runner.os == 'Windows'
+      run: Get-Volume
+
