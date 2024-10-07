@@ -42,7 +42,7 @@ class ImageSnapshotThresholdsModelColors extends MultiBrowserImageSnapshotThresh
   protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
-        'elements.colors.01.labels',
+        'elements.colors.01.no.label',
         {
           linux: 0.03 / 100, // 0.029244682971640845%
           macos: 0.03 / 100, // 0.029244682971640845%
