@@ -68,11 +68,11 @@ declare global {
 function initialize(): mxGraphExportObject {
   // set options globally, as it is not working when passing options to the factory (https://github.com/jgraph/mxgraph/issues/479)
   // Required otherwise 'Uncaught ReferenceError: assignment to undeclared variable mx...'
-  window.mxForceIncludes = false;
-  window.mxLoadResources = false;
+  globalThis.mxForceIncludes = false;
+  globalThis.mxLoadResources = false;
   // Required otherwise we got 'Uncaught ReferenceError: assignment to undeclared variable mx...'
-  window.mxLoadStylesheets = false;
-  window.mxResourceExtension = '.txt';
+  globalThis.mxLoadStylesheets = false;
+  globalThis.mxResourceExtension = '.txt';
 
   return factory({});
 }

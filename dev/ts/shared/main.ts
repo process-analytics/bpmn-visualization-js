@@ -309,7 +309,7 @@ export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguratio
   const log = logStartup;
   log(`Initializing BpmnVisualization with container:`, config.globalOptions.container);
 
-  const parameters = new URLSearchParams(window.location.search);
+  const parameters = new URLSearchParams(globalThis.location.search);
   const rendererIgnoreBpmnColors = parameters.get('renderer.ignore.bpmn.colors');
   if (rendererIgnoreBpmnColors) {
     const ignoreBpmnColors = rendererIgnoreBpmnColors === 'true';
@@ -320,7 +320,7 @@ export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguratio
 
   bpmnVisualization = new ThemedBpmnVisualization(config.globalOptions);
   log('Initialization completed');
-  new DropFileUserInterface(window, 'drop-container', bpmnVisualization.graph.container, readAndLoadFile);
+  new DropFileUserInterface(globalThis, 'drop-container', bpmnVisualization.graph.container, readAndLoadFile);
   log('Drag&Drop support initialized');
 
   statusKoNotifier = config.statusKoNotifier ?? logOnlyStatusKoNotifier;
