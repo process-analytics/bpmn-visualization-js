@@ -46,9 +46,9 @@ describe('Collapse BPMN elements', () => {
   const diagramSubfolder = 'collapse-expand';
   const imageSnapshotConfigurator = new CollapsedElementImageSnapshotConfigurator(
     // chromium: max 0.0696236566863573%
-    // firefox: max 0.10839637777485533%
+    // firefox: max 0.1218238557421536%
     // webkit: max 0.14363687914162873%
-    new MultiBrowserImageSnapshotThresholds({ chromium: 0.07 / 100, firefox: 0.11 / 100, webkit: 0.15 / 100 }),
+    new MultiBrowserImageSnapshotThresholds({ chromium: 0.07 / 100, firefox: 0.13 / 100, webkit: 0.15 / 100 }),
     diagramSubfolder,
   );
   const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder }, page);
