@@ -93,6 +93,14 @@ class ImageSnapshotThresholdsIgnoreBpmnColors extends MultiBrowserImageSnapshotT
   protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
+        'elements.colors.01.no.label',
+        {
+          linux: 0.03 / 100, // 0.028840527994922205%%
+          macos: 0.03 / 100, // 0.028840527994922205%
+          windows: 0.03 / 100, // 0.028840527994922205%
+        },
+      ],
+      [
         'elements.colors.02.labels',
         {
           linux: 0.06 / 100, // 0.05323299012142124%
