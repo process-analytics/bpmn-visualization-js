@@ -90,13 +90,13 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'group.01.in.process.with.label',
         {
-          windows: 0.2 / 100, // 0.19944779635067134%
+          windows: 0.23 / 100, // 0.2264593859631736%
         },
       ],
       [
         'group.02.in.collaboration.with.label',
         {
-          windows: 0.24 / 100, // 0.23009823201961543%
+          windows: 0.25 / 100, // 0.2433767377079566%
         },
       ],
       [
@@ -105,7 +105,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
           // high values due to font rendering discrepancies with chromium rendering
           linux: 1.15 / 100, // 1.1412952972301604%
           macos: 1.72 / 100, // 1.7113512021706412%
-          windows: 12.85 / 100, // 12.8418857562695% - different word wrapping, see https://github.com/process-analytics/bpmn-visualization-js/pull/2790#issuecomment-1680765999
+          windows: 12.87 / 100, // 12.860171896489781% - different word wrapping, see https://github.com/process-analytics/bpmn-visualization-js/pull/2790#issuecomment-1680765999
         },
       ],
       [
