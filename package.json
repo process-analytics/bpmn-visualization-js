@@ -112,7 +112,7 @@
   },
   "devDependencies": {
     "@asciidoctor/core": "~3.0.4",
-    "@eslint/js": "^9.0.0",
+    "@eslint/js": "^9.12.0",
     "@microsoft/api-extractor": "~7.47.11",
     "@rollup/plugin-commonjs": "~28.0.2",
     "@rollup/plugin-node-resolve": "~16.0.0",
@@ -125,13 +125,13 @@
     "cross-env": "~7.0.3",
     "cssnano": "~7.0.6",
     "debug": "~4.3.7",
-    "eslint": "~9.0.0",
+    "eslint": "~9.12.0",
     "eslint-config-prettier": "~9.1.0",
     "eslint-import-resolver-typescript": "~3.7.0",
     "eslint-plugin-import": "~2.31.0",
     "eslint-plugin-jest": "~28.10.0",
     "eslint-plugin-jest-extended": "^2.4.0",
-    "eslint-plugin-notice": "~1.0.0",
+    "eslint-plugin-notice": "~1.0.0-eslint9",
     "eslint-plugin-playwright": "~2.1.0",
     "eslint-plugin-prettier": "~5.2.1",
     "eslint-plugin-unicorn": "~56.0.1",
@@ -164,7 +164,7 @@
     "ts-jest": "~29.2.5",
     "typedoc": "~0.26.11",
     "typescript": "~5.4.5",
-    "typescript-eslint": "^7.6.0",
+    "typescript-eslint": "^8.8.1",
     "vite": "~5.4.11"
   },
   "overrides": {
