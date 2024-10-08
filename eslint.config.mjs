@@ -14,29 +14,29 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-
-
 import eslint from '@eslint/js';
-import importPlugin from "eslint-plugin-import";
 import eslintPluginImport from 'eslint-plugin-import';
-import noticePlugin from "eslint-plugin-notice";
+import jestPlugin from 'eslint-plugin-jest';
+import noticePlugin from 'eslint-plugin-notice';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
-import unicornPlugin from "eslint-plugin-unicorn";
+import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 import tseslint from 'typescript-eslint';
 
-
-export default [
+export default tseslint.config(
   {
-    ...eslintPluginImport.flatConfigs.recommended,
-    // ...unicornPlugin.configs.recommended, // is not working for now with ESLint v9
-    ...eslintPluginPrettierRecommended, // Enables eslint-plugin-prettier, eslint-config-prettier and prettier/prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration.
-
     plugins: {
       notice: noticePlugin,
-      unicorn: unicornPlugin,
-      import: importPlugin
+      '@typescript-eslint': tseslint.plugin,
+      jest: jestPlugin,
     },
+    extends: [
+      // eslint.configs.recommended,
+      eslintPluginImport.flatConfigs.recommended,
+      eslintPluginUnicorn.configs['flat/recommended'],
+      eslintPluginPrettierRecommended, // Enables eslint-plugin-prettier, eslint-config-prettier and prettier/prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration.
+    ],
     languageOptions: {
+      parser: tseslint.parser,
       parserOptions: {
         ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
         sourceType: 'module', // Allows for the use of imports
@@ -56,7 +56,7 @@ export default [
           },
         },
       ],
-        'import/newline-after-import': ['error', { count: 1 }],
+      'import/newline-after-import': ['error', { count: 1 }],
       'import/first': 'error',
       'import/order': [
         'error',
@@ -76,30 +76,21 @@ export default [
       'unicorn/no-new-array': 'off', // In contradiction with unicorn/new-for-builtins: Use `new Array()` instead of `Array()`
       'unicorn/no-null': 'off', // We don't know the impact on mxGraph code
       'unicorn/no-useless-undefined': 'off', // The "undefined" value is useful where we use it and change some mxGraph code
-    'unicorn/prefer-global-this': 'off', // We only target the browser, so it is valid to use the window object. In addition, using 'globalThis' require additional changes in the code/configuration to work.
+      'unicorn/prefer-global-this': 'off', // We only target the browser, so it is valid to use the window object. In addition, using 'globalThis' require additional changes in the code/configuration to work.
     },
-    ignores: [
-      '.github/',
-      '.idea/',
-      '/build/',
-      '/config/',
-      '/dist/',
-      'node_modules/',
-      'scripts/utils/dist/',
-      'test/performance/data/',
-    ],
+    ignores: ['.github/', '.idea/', '/build/', '/config/', '/dist/', 'node_modules/', 'scripts/utils/dist/', 'test/performance/data/'],
+  },
+  {
+    // disable type-aware linting on JS files
+    files: ['**/*.js', '**/*.cjs', '**/*.mjs'],
+    ...tseslint.configs.disableTypeChecked,
   },
 
   // typescript
-  { ...eslint.configs.recommended, files: ['**/*.ts', '**/*.tsx'] },
-  ...tseslint.configs.recommended.map(conf => ({ ...conf, files: ['**/*.ts', '**/*.tsx'] })),
   /** @type {import('@typescript-eslint/utils').TSESLint.FlatConfig.ConfigFile} */
   {
-    ...tseslint.configs.stylistic,
-    ...eslintPluginImport.flatConfigs.typescript,
-    ...eslintPluginPrettierRecommended, // Enables eslint-plugin-prettier, eslint-config-prettier and prettier/prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration.
-
-    files: ['*.ts'],
+    files: ['**/*.ts', '**/*.cts', '**/*.mts'],
+    extends: [...tseslint.configs.recommended, ...tseslint.configs.stylistic, eslintPluginImport.flatConfigs.typescript],
     settings: {
       'import/resolver': {
         typescript: {
@@ -168,4 +159,9 @@ export default [
       // '@typescript-eslint/unbound-method': 'error',
     },
   },
-];
+  {
+    // enable jest rules on test files
+    files: ['test/**'],
+    ...jestPlugin.configs['flat/recommended'],
+  },
+);
