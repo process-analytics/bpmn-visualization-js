@@ -1,0 +1,83 @@
+# Add 'enhancement' label to any PR where the head branch name starts with `feat/`
+enhancement:
+  - head-branch: ['^feat/']
+
+# Add 'bug' label to any PR where the head branch name starts with `fix/`
+bug:
+  - head-branch: ['^fix/']
+
+# Add 'build' label to any PR where the head branch name starts with `build/`
+build:
+  - head-branch: ['^build/']
+  - changed-files:
+    - any-glob-to-any-file:
+      - '.nvmrc'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'rollup.config.mjs'
+      - 'vite.config.js'
+
+# Add 'ci' label to any PR where the head branch name starts with `ci/`
+github_actions:
+  - head-branch: ['^ci/']
+  - changed-files:
+      - any-glob-to-any-file:
+          - '.github/**/*' # Any change to files within '.github' folder or any subfolders
+
+# Add 'defect' label to any PR where the head branch name starts with `defect/`
+defect:
+  - head-branch: ['^defect/']
+
+# Add 'documentation' label
+documentation:
+  - head-branch: ['^docs/'] # Any PR where the head branch name starts with `docs/`
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'docs/**' # Any change to files within 'docs' folder or any subfolders
+      - '**/*.md' # Any change to .md files within the entire repository
+
+example:
+  - head-branch: ['^example/']
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'dev/**'
+
+# Add 'performance' label to any PR where the head branch name starts with `perf/`
+performance:
+  - head-branch: ['^perf/']
+
+# Add 'poc' label to any PR where the head branch name starts with `poc/`
+poc:
+  - head-branch: ['^poc/']
+
+# Add 'refactoring' label to any PR where the head branch name starts with `refactor/`
+refactoring:
+  - head-branch: ['^refactor/']
+
+# Add 'style' label to any PR where the head branch name starts with `style/`
+style:
+  - head-branch: ['^style/']
+
+# Add 'test' label to any PR where the head branch name starts with `test/`
+test:
+  - head-branch: ['^test/']
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'test/**'
+
+# Add 'chore' label to any PR where the head branch name starts with `chore/`
+chore:
+  - head-branch: ['^chore/']
+  - changed-files:
+      - all-globs-to-all-files: # EXCEPT the following files
+          - '!.github/**'
+          - '!dev/**'
+          - '!src/**'
+          - '!test/**'
+          - '!.nvmrc'
+          - '!package.json'
+          - '!package-lock.json'
+          - '!rollup.config.mjs'
+          - '!vite.config.js'
+          - '!docs/**'
+          - '!**/*.md'

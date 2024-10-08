@@ -2,13 +2,24 @@ name: Check Pull Request Metadata
 on:
   pull_request_target:
     # trigger when the PR title changes
-    types: [opened, edited, reopened]
+    types: [opened, synchronize, reopened, edited]
 
 jobs:
   pr-title:
+    if: contains(fromJSON('["opened", "edited", "reopened"]'), github.event.action)
     runs-on: ubuntu-22.04
     permissions:
       pull-requests: write # post comments when the PR title doesn't match the "Conventional Commits" rules
     steps:
       - name: Check Pull Request title
         uses: bonitasoft/actions/packages/pr-title-conventional-commits@v3
+
+  add-labels:
+    if: contains(fromJSON('["opened", "synchronize", "reopened"]'), github.event.action)
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Add labels to PR
+        uses: actions/labeler@v5
