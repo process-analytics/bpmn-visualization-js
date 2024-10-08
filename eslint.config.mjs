@@ -1,5 +1,5 @@
 /*
-Copyright 2021 Bonitasoft S.A.
+Copyright 2024 Bonitasoft S.A.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,19 +14,20 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import noticePlugin from "eslint-plugin-notice";
-import importPlugin from "eslint-plugin-import";
-import unicornPlugin from "eslint-plugin-unicorn";
 
-import eslintPluginImport from 'eslint-plugin-import';
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+
 import eslint from '@eslint/js';
+import importPlugin from "eslint-plugin-import";
+import eslintPluginImport from 'eslint-plugin-import';
+import noticePlugin from "eslint-plugin-notice";
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import unicornPlugin from "eslint-plugin-unicorn";
 import tseslint from 'typescript-eslint';
 
 
 export default [
   {
-    // ...eslintPluginImport.configs.recommended, // is not working for now with ESLint v9
+    ...eslintPluginImport.flatConfigs.recommended,
     // ...unicornPlugin.configs.recommended, // is not working for now with ESLint v9
     ...eslintPluginPrettierRecommended, // Enables eslint-plugin-prettier, eslint-config-prettier and prettier/prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration.
 
@@ -95,7 +96,7 @@ export default [
   /** @type {import('@typescript-eslint/utils').TSESLint.FlatConfig.ConfigFile} */
   {
     ...tseslint.configs.stylistic,
-    // ...eslintPluginImport.configs.typescript, // is not working for now with ESLint v9
+    ...eslintPluginImport.flatConfigs.typescript,
     ...eslintPluginPrettierRecommended, // Enables eslint-plugin-prettier, eslint-config-prettier and prettier/prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration.
 
     files: ['*.ts'],
