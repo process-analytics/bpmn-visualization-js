@@ -66,7 +66,7 @@ function configureRemoveAllOverlays(): void {
 }
 
 function start(): void {
-  const parameters = new URLSearchParams(window.location.search);
+  const parameters = new URLSearchParams(globalThis.location.search);
   configureMousePointer(parameters);
   configureControlsPanel(parameters);
 

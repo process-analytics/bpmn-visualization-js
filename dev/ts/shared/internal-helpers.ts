@@ -27,7 +27,7 @@ export function logStartup(message?: string, ...optionalParameters: unknown[]): 
 
 export function logErrorAndOpenAlert(error: string, alertMessage?: string): void {
   logError(error);
-  window.alert(alertMessage ?? error);
+  globalThis.alert(alertMessage ?? error);
 }
 
 export function logError(error: string): void {
