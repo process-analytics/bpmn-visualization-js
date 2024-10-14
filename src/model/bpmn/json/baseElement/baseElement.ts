@@ -16,8 +16,8 @@ limitations under the License.
 
 import type { TDataState } from './data';
 import type { TExpression, TFormalExpression } from './expression';
-import type { TImplicitThrowEvent } from './flowNode/event';
 import type { TDocumentation, TExtensionElements } from '../Semantic';
+import type { TImplicitThrowEvent } from './flowNode/event';
 
 // abstract="true"
 // <xsd:anyAttribute namespace="##other" processContents="lax"/>
