@@ -49,7 +49,6 @@ concurrency:
 jobs:
   test_e2e:
     if: ${{ ! contains(github.event.pull_request.labels.*.name, 'skip CI e2e tests') }}
-# TMP extra change to test the label condition
     runs-on: ${{ matrix.os }}
     strategy:
       # we want to run the full build on all os: don't cancel running jobs even if one fails
