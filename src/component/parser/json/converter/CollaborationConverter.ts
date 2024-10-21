@@ -26,7 +26,7 @@ import { MessageFlow } from '../../../../model/bpmn/internal/edge/flows';
 import ShapeBpmnElement from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { ensureIsArray } from '../../../helpers/array-utils';
 
-import { buildShapeBpmnGroup } from './utils';
+import { convertAndRegisterAssociationFlows, buildShapeBpmnGroup } from './utils';
 
 /**
  * @internal
@@ -44,6 +44,7 @@ export default class CollaborationConverter {
   private parseCollaboration(collaboration: TCollaboration): void {
     this.buildParticipant(collaboration.participant);
     this.buildMessageFlows(collaboration.messageFlow);
+    convertAndRegisterAssociationFlows(this.convertedElements, collaboration.association);
     this.buildGroups(collaboration.group);
   }
 
@@ -63,4 +64,12 @@ export default class CollaborationConverter {
       shapeBpmnElement && this.convertedElements.registerFlowNode(shapeBpmnElement);
     }
   }
+
+  // TODO duplicated with ProcessConverter --> extract like this is done in buildShapeBpmnGroup
+  // private buildAssociationFlows(bpmnElements: TAssociation[] | TAssociation): void {
+  //   for (const association of ensureIsArray(bpmnElements)) {
+  //     const direction = association.associationDirection as unknown as AssociationDirectionKind;
+  //     this.convertedElements.registerAssociationFlow(new AssociationFlow(association.id, undefined, association.sourceRef, association.targetRef, direction));
+  //   }
+  // }
 }

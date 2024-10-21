@@ -68,6 +68,7 @@ export interface ExpectedEdge {
   edgeId: string;
   bpmnElementId: string;
   bpmnElementName?: string;
+  bpmnElementKind?: FlowKind; // temporarily optional until all tests are updated
   bpmnElementSourceRefId: string;
   bpmnElementTargetRefId: string;
   waypoints: Waypoint[];
@@ -192,6 +193,10 @@ export const verifyEdge = (edge: Edge, expectedValue: ExpectedEdge | ExpectedSeq
   const bpmnElement = edge.bpmnElement;
   expect(bpmnElement.id).toEqual(expectedValue.bpmnElementId);
   expect(bpmnElement.name).toEqual(expectedValue.bpmnElementName);
+  // only check when the value is defined, but once all tests are updated, it should be mandatory
+  if (expectedValue.bpmnElementKind) {
+    expect(edge.bpmnElement.kind).toEqual(expectedValue.bpmnElementKind);
+  }
   expect(bpmnElement.sourceReferenceId).toEqual(expectedValue.bpmnElementSourceRefId);
   expect(bpmnElement.targetReferenceId).toEqual(expectedValue.bpmnElementTargetRefId);
 

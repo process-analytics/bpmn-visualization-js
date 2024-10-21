@@ -15,8 +15,8 @@ limitations under the License.
 */
 
 import type { ConvertedElements, RegisteredEventDefinition } from './utils';
-import type { AssociationDirectionKind, BpmnEventKind } from '../../../../model/bpmn/internal';
-import type { TAssociation, TGroup, TTextAnnotation } from '../../../../model/bpmn/json/baseElement/artifact';
+import type { BpmnEventKind } from '../../../../model/bpmn/internal';
+import type { TGroup, TTextAnnotation } from '../../../../model/bpmn/json/baseElement/artifact';
 import type { TLane, TLaneSet } from '../../../../model/bpmn/json/baseElement/baseElement';
 import type { TFlowNode, TSequenceFlow } from '../../../../model/bpmn/json/baseElement/flowElement';
 import type { TActivity, TCallActivity, TSubProcess } from '../../../../model/bpmn/json/baseElement/flowNode/activity/activity';
@@ -36,7 +36,7 @@ import {
   ShapeBpmnSubProcessKind,
   ShapeUtil,
 } from '../../../../model/bpmn/internal';
-import { AssociationFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/flows';
+import { SequenceFlow } from '../../../../model/bpmn/internal/edge/flows';
 import ShapeBpmnElement, {
   ShapeBpmnIntermediateThrowEvent,
   ShapeBpmnIntermediateCatchEvent,
@@ -52,7 +52,7 @@ import { eventDefinitionKinds } from '../../../../model/bpmn/internal/shape/util
 import { ensureIsArray } from '../../../helpers/array-utils';
 import { BoundaryEventNotAttachedToActivityWarning, LaneUnknownFlowNodeReferenceWarning } from '../warnings';
 
-import { buildShapeBpmnGroup } from './utils';
+import { convertAndRegisterAssociationFlows, buildShapeBpmnGroup } from './utils';
 
 type FlowNode = TFlowNode | TActivity | TReceiveTask | TEventBasedGateway | TTextAnnotation;
 
@@ -182,7 +182,7 @@ export default class ProcessConverter {
 
     // flows
     this.buildSequenceFlows(process.sequenceFlow);
-    this.buildAssociationFlows(process.association);
+    convertAndRegisterAssociationFlows(this.convertedElements, process.association);
   }
 
   private buildFlowNodeBpmnElements(
@@ -392,13 +392,6 @@ export default class ProcessConverter {
     for (const sequenceFlow of ensureIsArray(bpmnElements)) {
       const kind = this.getSequenceFlowKind(sequenceFlow);
       this.convertedElements.registerSequenceFlow(new SequenceFlow(sequenceFlow.id, sequenceFlow.name, sequenceFlow.sourceRef, sequenceFlow.targetRef, kind));
-    }
-  }
-
-  private buildAssociationFlows(bpmnElements: TAssociation[] | TAssociation): void {
-    for (const association of ensureIsArray(bpmnElements)) {
-      const direction = association.associationDirection as unknown as AssociationDirectionKind;
-      this.convertedElements.registerAssociationFlow(new AssociationFlow(association.id, undefined, association.sourceRef, association.targetRef, direction));
     }
   }
 

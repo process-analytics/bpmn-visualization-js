@@ -14,14 +14,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { GlobalTaskKind, ShapeBpmnEventDefinitionKind } from '../../../../model/bpmn/internal';
-import type { Flow, AssociationFlow, MessageFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/flows';
-import type { TGroup } from '../../../../model/bpmn/json/baseElement/artifact';
+import type { AssociationDirectionKind, GlobalTaskKind, ShapeBpmnEventDefinitionKind } from '../../../../model/bpmn/internal';
+import type { Flow, MessageFlow, SequenceFlow } from '../../../../model/bpmn/internal/edge/flows';
+import type { TAssociation, TGroup } from '../../../../model/bpmn/json/baseElement/artifact';
 import type { TEventDefinition, TLinkEventDefinition } from '../../../../model/bpmn/json/baseElement/rootElement/eventDefinition';
 import type { ParsingMessageCollector } from '../../parsing-messages';
 
 import { ShapeBpmnElementKind } from '../../../../model/bpmn/internal';
+import { AssociationFlow } from '../../../../model/bpmn/internal/edge/flows';
 import ShapeBpmnElement from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
+import { ensureIsArray } from '../../../helpers/array-utils';
 import { GroupUnknownCategoryValueWarning } from '../warnings';
 
 export type RegisteredEventDefinition = (Pick<TEventDefinition, 'id'> & Pick<TLinkEventDefinition, 'source' | 'target'>) & {
@@ -133,3 +135,11 @@ export const buildShapeBpmnGroup = (
 interface CategoryValueData {
   value?: string;
 }
+
+// TODO review the name of the function: registerAssociationFlows?
+export const convertAndRegisterAssociationFlows = (convertedElements: ConvertedElements, bpmnElements: TAssociation[] | TAssociation): void => {
+  for (const association of ensureIsArray(bpmnElements)) {
+    const direction = association.associationDirection as unknown as AssociationDirectionKind;
+    convertedElements.registerAssociationFlow(new AssociationFlow(association.id, undefined, association.sourceRef, association.targetRef, direction));
+  }
+};
