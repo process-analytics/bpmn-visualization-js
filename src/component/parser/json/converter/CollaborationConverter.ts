@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import type { ConvertedElements } from './utils';
-import type { TGroup } from '../../../../model/bpmn/json/baseElement/artifact';
+import type { TGroup, TTextAnnotation } from '../../../../model/bpmn/json/baseElement/artifact';
 import type { TMessageFlow } from '../../../../model/bpmn/json/baseElement/baseElement';
 import type { TParticipant } from '../../../../model/bpmn/json/baseElement/participant';
 import type { TCollaboration } from '../../../../model/bpmn/json/baseElement/rootElement/collaboration';
@@ -26,7 +26,7 @@ import { MessageFlow } from '../../../../model/bpmn/internal/edge/flows';
 import ShapeBpmnElement from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { ensureIsArray } from '../../../helpers/array-utils';
 
-import { convertAndRegisterAssociationFlows, buildShapeBpmnGroup } from './utils';
+import { buildShapeBpmnGroup, convertAndRegisterAssociationFlows } from './utils';
 
 /**
  * @internal
@@ -46,6 +46,7 @@ export default class CollaborationConverter {
     this.buildMessageFlows(collaboration.messageFlow);
     convertAndRegisterAssociationFlows(this.convertedElements, collaboration.association);
     this.buildGroups(collaboration.group);
+    this.buildTextAnnotation(collaboration.textAnnotation);
   }
 
   private buildParticipant(bpmnElements: TParticipant[] | TParticipant): void {
@@ -65,11 +66,9 @@ export default class CollaborationConverter {
     }
   }
 
-  // TODO duplicated with ProcessConverter --> extract like this is done in buildShapeBpmnGroup
-  // private buildAssociationFlows(bpmnElements: TAssociation[] | TAssociation): void {
-  //   for (const association of ensureIsArray(bpmnElements)) {
-  //     const direction = association.associationDirection as unknown as AssociationDirectionKind;
-  //     this.convertedElements.registerAssociationFlow(new AssociationFlow(association.id, undefined, association.sourceRef, association.targetRef, direction));
-  //   }
-  // }
+  private buildTextAnnotation(bpmnElements: TTextAnnotation[] | TTextAnnotation): void {
+    for (const textAnnotation of ensureIsArray(bpmnElements)) {
+      this.convertedElements.registerFlowNode(new ShapeBpmnElement(textAnnotation.id, textAnnotation.text as string, ShapeBpmnElementKind.TEXT_ANNOTATION));
+    }
+  }
 }

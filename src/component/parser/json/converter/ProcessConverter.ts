@@ -54,6 +54,7 @@ import { BoundaryEventNotAttachedToActivityWarning, LaneUnknownFlowNodeReference
 
 import { convertAndRegisterAssociationFlows, buildShapeBpmnGroup } from './utils';
 
+// semantically speaking, TTextAnnotation is not a FlowNode, but it is an Artifact
 type FlowNode = TFlowNode | TActivity | TReceiveTask | TEventBasedGateway | TTextAnnotation;
 
 type BpmnSemanticType = keyof TProcess;
