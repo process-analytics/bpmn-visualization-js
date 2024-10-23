@@ -231,7 +231,7 @@ Here are some tips to generate the SVG to be included in the documentation.
 
 ```SVG
   <svg viewBox="0 0 158.485 158.485" width="96" height="96" xmlns="http://www.w3.org/2000/svg">
-      <!-- the retreieved SVG code -->
+      <!-- the retrieved SVG code -->
   </svg>
 ```
 - Open the file in a SVG Editor (Inkscape for instance). 
@@ -244,4 +244,4 @@ Here are some tips to generate the SVG to be included in the documentation.
 ![SVG icon fits the viewBox](images/inkscape-result2.png)
 
 - Save
-- Eventually clean the SVG with tools like SVGGO: https://jakearchibald.github.io/svgomg/
+- Eventually clean the SVG with tools like `SVGGO`: https://jakearchibald.github.io/svgomg/
