@@ -136,7 +136,6 @@ interface CategoryValueData {
   value?: string;
 }
 
-// TODO review the name of the function: registerAssociationFlows?
 export const convertAndRegisterAssociationFlows = (convertedElements: ConvertedElements, bpmnElements: TAssociation[] | TAssociation): void => {
   for (const association of ensureIsArray(bpmnElements)) {
     const direction = association.associationDirection as unknown as AssociationDirectionKind;
