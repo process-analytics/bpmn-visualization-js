@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import type { ConvertedElements } from './utils';
-import type { TGroup } from '../../../../model/bpmn/json/baseElement/artifact';
+import type { TGroup, TTextAnnotation } from '../../../../model/bpmn/json/baseElement/artifact';
 import type { TMessageFlow } from '../../../../model/bpmn/json/baseElement/baseElement';
 import type { TParticipant } from '../../../../model/bpmn/json/baseElement/participant';
 import type { TCollaboration } from '../../../../model/bpmn/json/baseElement/rootElement/collaboration';
@@ -26,7 +26,7 @@ import { MessageFlow } from '../../../../model/bpmn/internal/edge/flows';
 import ShapeBpmnElement from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { ensureIsArray } from '../../../helpers/array-utils';
 
-import { buildShapeBpmnGroup } from './utils';
+import { buildShapeBpmnGroup, convertAndRegisterAssociationFlows } from './utils';
 
 /**
  * @internal
@@ -44,7 +44,9 @@ export default class CollaborationConverter {
   private parseCollaboration(collaboration: TCollaboration): void {
     this.buildParticipant(collaboration.participant);
     this.buildMessageFlows(collaboration.messageFlow);
+    convertAndRegisterAssociationFlows(this.convertedElements, collaboration.association);
     this.buildGroups(collaboration.group);
+    this.buildTextAnnotation(collaboration.textAnnotation);
   }
 
   private buildParticipant(bpmnElements: TParticipant[] | TParticipant): void {
@@ -61,6 +63,12 @@ export default class CollaborationConverter {
     for (const groupBpmnElement of ensureIsArray(bpmnElements)) {
       const shapeBpmnElement = buildShapeBpmnGroup(this.convertedElements, this.parsingMessageCollector, groupBpmnElement);
       shapeBpmnElement && this.convertedElements.registerFlowNode(shapeBpmnElement);
+    }
+  }
+
+  private buildTextAnnotation(bpmnElements: TTextAnnotation[] | TTextAnnotation): void {
+    for (const textAnnotation of ensureIsArray(bpmnElements)) {
+      this.convertedElements.registerFlowNode(new ShapeBpmnElement(textAnnotation.id, textAnnotation.text as string, ShapeBpmnElementKind.TEXT_ANNOTATION));
     }
   }
 }

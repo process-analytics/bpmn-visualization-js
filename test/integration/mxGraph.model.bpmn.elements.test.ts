@@ -1437,6 +1437,13 @@ describe('mxGraph model - BPMN elements', () => {
           align: 'left',
         });
       });
+      it('text annotations in collaboration', () => {
+        expect('text_annotation_in_collaboration_1').toBeTextAnnotation({
+          label: 'Text Annotation in collaboration',
+          parentId: getDefaultParentId(),
+          align: 'left',
+        });
+      });
 
       it('groups', () => {
         expect('Group_0_in_collaboration').toBeGroup({
@@ -1514,6 +1521,10 @@ describe('mxGraph model - BPMN elements', () => {
 
       it('associations', () => {
         expect('association_id').toBeAssociationFlow({ parentId: 'participant_1_id', verticalAlign: 'bottom' });
+      });
+
+      it('associations in collaboration', () => {
+        expect('association_in_collaboration_1').toBeAssociationFlow({ parentId: getDefaultParentId(), verticalAlign: 'bottom' });
       });
     });
 

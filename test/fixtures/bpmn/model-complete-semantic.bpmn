@@ -19,6 +19,10 @@
 
     <!-- Groups -->
     <semantic:group id="Group_0_in_collaboration" categoryValueRef="CategoryValue_0" />
+
+    <!-- Text Annotations and Associations -->
+    <semantic:textAnnotation id="text_annotation_in_collaboration_1" text="Text Annotation in collaboration" />
+    <semantic:association id="association_in_collaboration_1" sourceRef="participant_3_id" targetRef="text_annotation_in_collaboration_1" />
   </semantic:collaboration>
 
   <!-- Event Definition -->
@@ -1933,6 +1937,9 @@
         <dc:Bounds x="1030" y="1210" width="102" height="23" />
         <bpmndi:BPMNLabel/>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_text_annotation_in_collaboration_1" bpmnElement="text_annotation_in_collaboration_1">
+        <dc:Bounds x="2300" y="300" width="200" height="25" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="shape_Group_0_in_collaboration" bpmnElement="Group_0_in_collaboration">
         <dc:Bounds x="3190" y="80" width="600" height="400" />
         <bpmndi:BPMNLabel/>
@@ -2000,6 +2007,8 @@
       <bpmndi:BPMNEdge id="edge_association_id" bpmnElement="association_id">
         <di:waypoint x="1069" y="1106" />
         <di:waypoint x="1080" y="1210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_association_in_collaboration_1" bpmnElement="association_in_collaboration_1">
       </bpmndi:BPMNEdge>
 
       <!-- 2nd process -->
