@@ -23,18 +23,16 @@ import unicornPlugin from 'eslint-plugin-unicorn';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
+  eslint.configs.recommended,
+  importPlugin.flatConfigs.recommended,
+  unicornPlugin.configs['flat/recommended'],
+  prettierRecommendedConfig, // Enables eslint-plugin-prettier, eslint-config-prettier and prettier/prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration.
   {
     plugins: {
       notice: noticePlugin,
       '@typescript-eslint': tseslint.plugin,
       jest: jestPlugin,
     },
-    extends: [
-      // eslint.configs.recommended,
-      importPlugin.flatConfigs.recommended,
-      unicornPlugin.configs['flat/recommended'],
-      prettierRecommendedConfig, // Enables eslint-plugin-prettier, eslint-config-prettier and prettier/prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration.
-    ],
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
@@ -90,7 +88,9 @@ export default tseslint.config(
   /** @type {import('@typescript-eslint/utils').TSESLint.FlatConfig.ConfigFile} */
   {
     files: ['**/*.ts', '**/*.cts', '**/*.mts'],
-    extends: [...tseslint.configs.recommended, ...tseslint.configs.stylistic, importPlugin.flatConfigs.typescript],
+    ...tseslint.configs.recommended,
+    ...tseslint.configs.stylistic,
+    ...importPlugin.flatConfigs.typescript,
     settings: {
       'import/resolver': {
         typescript: {
