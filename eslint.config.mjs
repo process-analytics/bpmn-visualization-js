@@ -15,11 +15,11 @@ limitations under the License.
 */
 
 import eslint from '@eslint/js';
-import eslintPluginImport from 'eslint-plugin-import';
+import importPlugin from 'eslint-plugin-import';
 import jestPlugin from 'eslint-plugin-jest';
 import noticePlugin from 'eslint-plugin-notice';
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
-import eslintPluginUnicorn from 'eslint-plugin-unicorn';
+import prettierRecommendedConfig from 'eslint-plugin-prettier/recommended';
+import unicornPlugin from 'eslint-plugin-unicorn';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
@@ -31,9 +31,9 @@ export default tseslint.config(
     },
     extends: [
       // eslint.configs.recommended,
-      eslintPluginImport.flatConfigs.recommended,
-      eslintPluginUnicorn.configs['flat/recommended'],
-      eslintPluginPrettierRecommended, // Enables eslint-plugin-prettier, eslint-config-prettier and prettier/prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration.
+      importPlugin.flatConfigs.recommended,
+      unicornPlugin.configs['flat/recommended'],
+      prettierRecommendedConfig, // Enables eslint-plugin-prettier, eslint-config-prettier and prettier/prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration.
     ],
     languageOptions: {
       parser: tseslint.parser,
@@ -90,7 +90,7 @@ export default tseslint.config(
   /** @type {import('@typescript-eslint/utils').TSESLint.FlatConfig.ConfigFile} */
   {
     files: ['**/*.ts', '**/*.cts', '**/*.mts'],
-    extends: [...tseslint.configs.recommended, ...tseslint.configs.stylistic, eslintPluginImport.flatConfigs.typescript],
+    extends: [...tseslint.configs.recommended, ...tseslint.configs.stylistic, importPlugin.flatConfigs.typescript],
     settings: {
       'import/resolver': {
         typescript: {
