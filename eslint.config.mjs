@@ -25,16 +25,13 @@ import tseslint from 'typescript-eslint';
 export default tseslint.config(
   eslint.configs.recommended,
   importPlugin.flatConfigs.recommended,
-  unicornPlugin.configs['flat/recommended'],
+  unicornPlugin.configs['flat/recommended'], // https://github.com/sindresorhus/eslint-plugin-unicorn?tab=readme-ov-file#es-module-recommended-1
   prettierRecommendedConfig, // Enables eslint-plugin-prettier, eslint-config-prettier and prettier/prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration.
   {
     plugins: {
       notice: noticePlugin,
-      '@typescript-eslint': tseslint.plugin,
-      jest: jestPlugin,
     },
     languageOptions: {
-      parser: tseslint.parser,
       parserOptions: {
         ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
         sourceType: 'module', // Allows for the use of imports
@@ -78,8 +75,9 @@ export default tseslint.config(
     },
     ignores: ['.github/', '.idea/', '/build/', '/config/', '/dist/', 'node_modules/', 'scripts/utils/dist/', 'test/performance/data/'],
   },
+
+  // disable type-aware linting on JS files
   {
-    // disable type-aware linting on JS files
     files: ['**/*.js', '**/*.cjs', '**/*.mjs'],
     ...tseslint.configs.disableTypeChecked,
   },
@@ -88,8 +86,11 @@ export default tseslint.config(
   /** @type {import('@typescript-eslint/utils').TSESLint.FlatConfig.ConfigFile} */
   {
     files: ['**/*.ts', '**/*.cts', '**/*.mts'],
-    ...tseslint.configs.recommended,
-    ...tseslint.configs.stylistic,
+    extends: [
+      // Feature of `typescript-eslint` to extend multiple configs: https://typescript-eslint.io/packages/typescript-eslint/#flat-config-extends
+      ...tseslint.configs.recommended,
+      ...tseslint.configs.stylistic,
+    ],
     ...importPlugin.flatConfigs.typescript,
     settings: {
       'import/resolver': {
@@ -162,6 +163,9 @@ export default tseslint.config(
   {
     // enable jest rules on test files
     files: ['test/**'],
+    plugins: {
+      jest: jestPlugin,
+    },
     ...jestPlugin.configs['flat/recommended'],
   },
 );
