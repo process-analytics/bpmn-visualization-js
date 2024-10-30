@@ -23,8 +23,6 @@ import unicornPlugin from 'eslint-plugin-unicorn';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  eslint.configs.recommended,
-  importPlugin.flatConfigs.recommended,
   unicornPlugin.configs['flat/recommended'], // https://github.com/sindresorhus/eslint-plugin-unicorn?tab=readme-ov-file#es-module-recommended-1
   prettierRecommendedConfig, // Enables eslint-plugin-prettier, eslint-config-prettier and prettier/prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration.
   {
@@ -51,6 +49,25 @@ export default tseslint.config(
           },
         },
       ],
+      'unicorn/prefer-keyboard-event-key': 'off', // 'key' doesn't exist in the used ES version
+      'unicorn/prefer-module': 'off', // We don't want to change a working configuration
+      'unicorn/prefer-string-replace-all': 'off', // String#replaceAll() doesn't exist in the used ES version
+      'unicorn/no-new-array': 'off', // In contradiction with unicorn/new-for-builtins: Use `new Array()` instead of `Array()`
+      'unicorn/no-null': 'off', // We don't know the impact on mxGraph code
+      'unicorn/no-useless-undefined': 'off', // The "undefined" value is useful where we use it and change some mxGraph code
+      'unicorn/prefer-global-this': 'off', // We only target the browser, so it is valid to use the window object. In addition, using 'globalThis' require additional changes in the code/configuration to work.
+    },
+    // Actually, the new feature to ignore folders in conf file or in commande line, seems to not work after several tests.
+    // https://eslint.org/docs/latest/use/configure/ignore
+    ignores: ['.github/*', '.idea/*', '/build/*', '/config/*', '/dist/*', 'node_modules/*', 'scripts/utils/dist/*', 'test/performance/data/*'],
+  },
+
+  // Don't execute on .cjs and .mjs files. Problem with 'module', 'require', 'console', 'exports', etc.
+  {
+    files: ['**/*.js', '**/*.ts', '**/*.cts', '**/*.mts'],
+    ...eslint.configs.recommended,
+    ...importPlugin.flatConfigs.recommended,
+    rules: {
       'import/newline-after-import': ['error', { count: 1 }],
       'import/first': 'error',
       'import/order': [
@@ -65,15 +82,7 @@ export default tseslint.config(
           },
         },
       ],
-      'unicorn/prefer-keyboard-event-key': 'off', // 'key' doesn't exist in the used ES version
-      'unicorn/prefer-module': 'off', // We don't want to change a working configuration
-      'unicorn/prefer-string-replace-all': 'off', // String#replaceAll() doesn't exist in the used ES version
-      'unicorn/no-new-array': 'off', // In contradiction with unicorn/new-for-builtins: Use `new Array()` instead of `Array()`
-      'unicorn/no-null': 'off', // We don't know the impact on mxGraph code
-      'unicorn/no-useless-undefined': 'off', // The "undefined" value is useful where we use it and change some mxGraph code
-      'unicorn/prefer-global-this': 'off', // We only target the browser, so it is valid to use the window object. In addition, using 'globalThis' require additional changes in the code/configuration to work.
     },
-    ignores: ['.github/', '.idea/', '/build/', '/config/', '/dist/', 'node_modules/', 'scripts/utils/dist/', 'test/performance/data/'],
   },
 
   // disable type-aware linting on JS files
