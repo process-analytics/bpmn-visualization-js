@@ -15,5 +15,5 @@ limitations under the License.
 */
 
 module.exports = {
-  extends: ['plugin:playwright/jest-playwright'],
+  extends: ['plugin:playwright/recommended'],
 };
