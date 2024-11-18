@@ -15,7 +15,8 @@ limitations under the License.
 */
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore js file with commonjs export
+// @ts-ignore use a shared js file with commonjs export
+// eslint-disable-next-line @typescript-eslint/no-require-imports -- use a shared js file with commonjs export
 import environmentUtils = require('@test/shared/environment-utils.cjs');
 
 const onCi = environmentUtils.isRunningOnCi();

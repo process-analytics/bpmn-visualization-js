@@ -61,6 +61,7 @@ module.exports = {
     'unicorn/no-new-array': 'off', // In contradiction with unicorn/new-for-builtins: Use `new Array()` instead of `Array()`
     'unicorn/no-null': 'off', // We don't know the impact on mxGraph code
     'unicorn/no-useless-undefined': 'off', // The "undefined" value is useful where we use it and change some mxGraph code
+    'unicorn/prefer-global-this': 'off', // We only target the browser, so it is valid to use the window object. In addition, using 'globalThis' require additional changes in the code/configuration to work.
   },
   overrides: [
     // typescript
@@ -116,6 +117,16 @@ module.exports = {
         '@typescript-eslint/no-misused-promises': 'error',
 
         '@typescript-eslint/restrict-plus-operands': 'error',
+
+        // disable the base rule as it can report incorrect errors when using '@typescript-eslint/no-unused-expressions', see https://typescript-eslint.io/rules/no-unused-expressions/#how-to-use
+        'eslint/no-unused-expressions': 'off',
+        '@typescript-eslint/no-unused-expressions': [
+          'error',
+          {
+            allowShortCircuit: true,
+            allowTernary: true,
+          },
+        ],
 
         // The following lines are commented, because they show errors on files other than the demo:
         // '@typescript-eslint/no-base-to-string': 'error',

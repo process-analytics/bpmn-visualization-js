@@ -26,7 +26,8 @@ import type { ElementHandle, Page } from 'playwright';
 import debugLogger from 'debug';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore js file with commonjs export
+// @ts-ignore use a shared js file with commonjs export
+// eslint-disable-next-line @typescript-eslint/no-require-imports -- use a shared js file with commonjs export
 import environmentUtils = require('../environment-utils.cjs');
 
 import { delay } from './test-utils';

@@ -15,5 +15,9 @@ limitations under the License.
 */
 
 module.exports = {
-  extends: ['plugin:playwright/jest-playwright'],
+  extends: ['plugin:playwright/recommended'],
+  rules: {
+    /* This rule is for playwright-test and we are using jest-playwright */
+    'playwright/no-standalone-expect': 'off',
+  },
 };
