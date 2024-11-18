@@ -28,15 +28,12 @@ export interface TExtension {
 }
 
 // <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface TExtensionElements {}
+export type TExtensionElements = object;
 
 // mixed="true"
 // <xsd:any namespace="##any" processContents="lax" minOccurs="0"/>
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface TScript {}
+export type TScript = object;
 
 // mixed="true"
 // <xsd:any namespace="##any" processContents="lax" minOccurs="0"/>
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface TText {}
+export type TText = object;
