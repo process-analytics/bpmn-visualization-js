@@ -117,6 +117,16 @@ module.exports = {
 
         '@typescript-eslint/restrict-plus-operands': 'error',
 
+        // disable the base rule as it can report incorrect errors when using '@typescript-eslint/no-unused-expressions', see https://typescript-eslint.io/rules/no-unused-expressions/#how-to-use
+        'eslint/no-unused-expressions': 'off',
+        '@typescript-eslint/no-unused-expressions': [
+          'error',
+          {
+            allowShortCircuit: true,
+            allowTernary: true,
+          },
+        ],
+
         // The following lines are commented, because they show errors on files other than the demo:
         // '@typescript-eslint/no-base-to-string': 'error',
         // '@typescript-eslint/no-unsafe-assignment': 'error',
