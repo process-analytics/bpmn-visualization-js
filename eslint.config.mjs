@@ -62,6 +62,13 @@ export default tseslint.config(
     ignores: ['.github/*', '.idea/*', '/build/*', '/config/*', '/dist/*', 'node_modules/*', 'scripts/utils/dist/*', 'test/performance/data/*'],
   },
 
+  {
+    files: ['**/*.mjs'],
+    rules: {
+      'import/no-unresolved': 'off',
+    },
+  },
+
   // Don't execute on .cjs and .mjs files. Problem with 'module', 'require', 'console', 'exports', etc.
   {
     files: ['**/*.js', '**/*.ts', '**/*.cts', '**/*.mts'],
