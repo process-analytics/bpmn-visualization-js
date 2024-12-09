@@ -13,11 +13,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+import playwright from 'eslint-plugin-playwright';
 
-module.exports = {
-  extends: ['plugin:playwright/recommended'],
-  rules: {
-    /* This rule is for playwright-test and we are using jest-playwright */
-    'playwright/no-standalone-expect': 'off',
+export default [
+  {
+    ...playwright.configs['flat/recommended'],
+    rules: {
+      ...playwright.configs['flat/recommended'].rules,
+      /* This rule is for playwright-test and we are using jest-playwright */
+      'playwright/no-standalone-expect': 'off',
+    },
   },
-};
+];
