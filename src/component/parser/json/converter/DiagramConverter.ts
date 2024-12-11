@@ -40,7 +40,7 @@ export default class DiagramConverter {
     private readonly parsingMessageCollector: ParsingMessageCollector,
   ) {}
 
-  private convertedFonts = new Map<string, Font>();
+  private readonly convertedFonts = new Map<string, Font>();
 
   deserialize(bpmnDiagrams: BPMNDiagram[] | BPMNDiagram): BpmnModel {
     const flowNodes: Shape[] = [];
@@ -66,8 +66,6 @@ export default class DiagramConverter {
   }
 
   private deserializeFonts(bpmnLabelStyle: BPMNLabelStyle[] | BPMNLabelStyle): void {
-    this.convertedFonts = new Map();
-
     for (const labelStyle of ensureIsArray(bpmnLabelStyle))
       for (const font of ensureIsArray(labelStyle.Font))
         this.convertedFonts.set(labelStyle.id, new Font(font.name, font.size, font.isBold, font.isItalic, font.isUnderline, font.isStrikeThrough));
