@@ -23,7 +23,7 @@ import { OverlayBadgeShape } from './overlay/shapes';
 import { overrideCreateSvgCanvas } from './shape/utils';
 
 export class BpmnCellRenderer extends mxgraph.mxCellRenderer {
-  constructor(private iconPainter: IconPainter) {
+  constructor(private readonly iconPainter: IconPainter) {
     super();
   }
 

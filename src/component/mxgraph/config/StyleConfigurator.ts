@@ -116,7 +116,7 @@ const specificAssociationFlowStyles = new MapWithDefault<AssociationDirectionKin
  * @experimental
  */
 export class StyleConfigurator {
-  constructor(private graph: BpmnGraph) {}
+  constructor(private readonly graph: BpmnGraph) {}
 
   configureStyles(): void {
     this.configureDefaultVertexStyle();

@@ -90,14 +90,14 @@ function getShapeBpmnElementKind(bpmnSemanticType: BpmnSemanticType): ShapeBpmnE
  * @internal
  */
 export default class ProcessConverter {
-  private defaultSequenceFlowIds: string[] = [];
-  private elementsWithoutParentByProcessId = new Map<string, ShapeBpmnElement[]>();
-  private callActivitiesCallingProcess = new Map<string, ShapeBpmnElement>();
-  private eventsByLinkEventDefinition = new Map<RegisteredEventDefinition, ShapeBpmnIntermediateThrowEvent | ShapeBpmnIntermediateCatchEvent>();
+  private readonly defaultSequenceFlowIds: string[] = [];
+  private readonly elementsWithoutParentByProcessId = new Map<string, ShapeBpmnElement[]>();
+  private readonly callActivitiesCallingProcess = new Map<string, ShapeBpmnElement>();
+  private readonly eventsByLinkEventDefinition = new Map<RegisteredEventDefinition, ShapeBpmnIntermediateThrowEvent | ShapeBpmnIntermediateCatchEvent>();
 
   constructor(
-    private convertedElements: ConvertedElements,
-    private parsingMessageCollector: ParsingMessageCollector,
+    private readonly convertedElements: ConvertedElements,
+    private readonly parsingMessageCollector: ParsingMessageCollector,
   ) {}
 
   deserialize(processes: string | TProcess | (string | TProcess)[]): void {

@@ -28,7 +28,7 @@ export abstract class JsonParsingWarning {
 export type ParsingMessageCollectorOptions = Pick<ParserOptions, 'disableConsoleLog'>;
 
 export class ParsingMessageCollector {
-  constructor(private options?: ParsingMessageCollectorOptions) {}
+  constructor(private readonly options?: ParsingMessageCollectorOptions) {}
 
   warning(warning: JsonParsingWarning): void {
     if (this.options?.disableConsoleLog) {

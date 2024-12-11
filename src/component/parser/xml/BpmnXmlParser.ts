@@ -80,9 +80,9 @@ export default class BpmnXmlParser {
       return this.processAttribute(value);
     },
   };
-  private xmlParser: XMLParser = new XMLParser(this.x2jOptions);
+  private readonly xmlParser: XMLParser = new XMLParser(this.x2jOptions);
 
-  constructor(private options?: XmlParserOptions) {}
+  constructor(private readonly options?: XmlParserOptions) {}
 
   parse(xml: string): BpmnJsonModel {
     let model: BpmnJsonModel;

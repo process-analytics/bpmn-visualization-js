@@ -126,7 +126,7 @@ export interface RenderedModel {
 }
 
 class SearchableModel {
-  private elements = new Map<string, Shape | Edge>();
+  private readonly elements = new Map<string, Shape | Edge>();
 
   constructor(bpmnModel: BpmnModel) {
     for (const shapeOrEdge of [...bpmnModel.pools, ...bpmnModel.lanes, ...bpmnModel.flowNodes, ...bpmnModel.edges]) {

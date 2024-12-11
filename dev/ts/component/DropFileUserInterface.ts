@@ -17,14 +17,14 @@ limitations under the License.
 import { logErrorAndOpenAlert } from '../shared/internal-helpers';
 
 export class DropFileUserInterface {
-  private document: Document;
-  private head: Element;
+  private readonly document: Document;
+  private readonly head: Element;
 
   constructor(
-    private window: Window,
-    private outerContainerId: string,
-    private containerToFade: HTMLElement,
-    private dropCallback: (file: File) => void,
+    private readonly window: Window,
+    private readonly outerContainerId: string,
+    private readonly containerToFade: HTMLElement,
+    private readonly dropCallback: (file: File) => void,
   ) {
     this.document = window.document;
     this.head = document.head;

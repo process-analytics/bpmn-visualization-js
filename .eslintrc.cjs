@@ -128,6 +128,8 @@ module.exports = {
           },
         ],
 
+        '@typescript-eslint/prefer-readonly': 'error',
+
         // The following lines are commented, because they show errors on files other than the demo:
         // '@typescript-eslint/no-base-to-string': 'error',
         // '@typescript-eslint/no-unsafe-assignment': 'error',

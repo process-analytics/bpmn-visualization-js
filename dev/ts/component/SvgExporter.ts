@@ -31,7 +31,7 @@ interface SvgExportOptions {
 // https://github.com/jgraph/drawio/blob/v14.7.7/src/main/webapp/js/diagramly/Editor.js#L5932
 // https://github.com/jgraph/drawio/blob/v14.8.0/src/main/webapp/js/grapheditor/Graph.js#L9007
 export class SvgExporter {
-  constructor(private graph: mxGraph) {}
+  constructor(private readonly graph: mxGraph) {}
 
   exportSvg(): string {
     return this.doSvgExport(true);
@@ -111,7 +111,7 @@ ${svgAsString}
 
 class CanvasForExport extends mxSvgCanvas2D {
   // Convert HTML entities
-  private htmlConverter = document.createElement('div');
+  private readonly htmlConverter = document.createElement('div');
 
   constructor(node: Element) {
     super(node);
