@@ -106,7 +106,9 @@ jobs:
       # No need to run the analysis from all environments
       - name: SonarCloud Scan
         if: ${{ success() && contains(matrix.os.coverage, 'coverage') && env.SONAR_TOKEN != '' }}
-        uses: SonarSource/sonarcloud-github-action@v3.1.0
+        # This action is now deprecated, so in the future, we should use the new one
+        # Fore more details, see https://community.sonarsource.com/t/upcoming-last-release-v-4-0-0-remove-docker-and-deprecation-of-github-action-for-sonarqube-cloud/131480
+        uses: SonarSource/sonarcloud-github-action@v4.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
