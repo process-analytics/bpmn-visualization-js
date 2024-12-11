@@ -140,8 +140,8 @@ export class BpmnElementsRegistry implements CssClassesRegistry, ElementsRegistr
 
 class HtmlElementRegistry {
   constructor(
-    private container: HTMLElement,
-    private querySelectors: BpmnQuerySelectors,
+    private readonly container: HTMLElement,
+    private readonly querySelectors: BpmnQuerySelectors,
   ) {}
 
   /**

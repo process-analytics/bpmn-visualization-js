@@ -24,7 +24,7 @@ import { ensureIsArray } from '../../../helpers/array-utils';
  * @internal
  */
 export default class CategoryConverter {
-  constructor(private convertedElements: ConvertedElements) {}
+  constructor(private readonly convertedElements: ConvertedElements) {}
 
   deserialize(definitions: TDefinitions): void {
     const categoryValues = ensureIsArray<TCategory>(definitions.category).flatMap(category => ensureIsArray(category.categoryValue));

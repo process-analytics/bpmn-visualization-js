@@ -38,11 +38,11 @@ export class ConvertedElements {
     return [...this.messageFlows.values(), ...this.sequenceFlows.values(), ...this.associationFlows.values()];
   }
 
-  private poolsById = new Map<string, ShapeBpmnElement>();
+  private readonly poolsById = new Map<string, ShapeBpmnElement>();
   findPoolById(id: string): ShapeBpmnElement {
     return this.poolsById.get(id);
   }
-  private poolsByProcessRef = new Map<string, ShapeBpmnElement>();
+  private readonly poolsByProcessRef = new Map<string, ShapeBpmnElement>();
   findPoolByProcessRef(processReference: string): ShapeBpmnElement {
     return this.poolsByProcessRef.get(processReference);
   }
@@ -53,7 +53,7 @@ export class ConvertedElements {
     }
   }
 
-  private messageFlows = new Map<string, MessageFlow>();
+  private readonly messageFlows = new Map<string, MessageFlow>();
   findMessageFlow(id: string): MessageFlow {
     return this.messageFlows.get(id);
   }
@@ -61,7 +61,7 @@ export class ConvertedElements {
     this.messageFlows.set(messageFlow.id, messageFlow);
   }
 
-  private flowNodes = new Map<string, ShapeBpmnElement>();
+  private readonly flowNodes = new Map<string, ShapeBpmnElement>();
   findFlowNode(id: string): ShapeBpmnElement {
     return this.flowNodes.get(id);
   }
@@ -69,7 +69,7 @@ export class ConvertedElements {
     this.flowNodes.set(flowNode.id, flowNode);
   }
 
-  private lanes = new Map<string, ShapeBpmnElement>();
+  private readonly lanes = new Map<string, ShapeBpmnElement>();
   findLane(id: string): ShapeBpmnElement {
     return this.lanes.get(id);
   }
@@ -77,7 +77,7 @@ export class ConvertedElements {
     this.lanes.set(lane.id, lane);
   }
 
-  private sequenceFlows = new Map<string, SequenceFlow>();
+  private readonly sequenceFlows = new Map<string, SequenceFlow>();
   findSequenceFlow(id: string): SequenceFlow {
     return this.sequenceFlows.get(id);
   }
@@ -85,7 +85,7 @@ export class ConvertedElements {
     this.sequenceFlows.set(sequenceFlow.id, sequenceFlow);
   }
 
-  private associationFlows = new Map<string, AssociationFlow>();
+  private readonly associationFlows = new Map<string, AssociationFlow>();
   findAssociationFlow(id: string): AssociationFlow {
     return this.associationFlows.get(id);
   }
@@ -93,7 +93,7 @@ export class ConvertedElements {
     this.associationFlows.set(associationFlow.id, associationFlow);
   }
 
-  private eventDefinitionsOfDefinitions = new Map<string, RegisteredEventDefinition>();
+  private readonly eventDefinitionsOfDefinitions = new Map<string, RegisteredEventDefinition>();
   findEventDefinitionOfDefinition(id: string): RegisteredEventDefinition {
     return this.eventDefinitionsOfDefinitions.get(id);
   }
@@ -101,7 +101,7 @@ export class ConvertedElements {
     this.eventDefinitionsOfDefinitions.set(id, eventDefinition);
   }
 
-  private globalTasks = new Map<string, GlobalTaskKind>();
+  private readonly globalTasks = new Map<string, GlobalTaskKind>();
   findGlobalTask(id: string): GlobalTaskKind {
     return this.globalTasks.get(id);
   }
@@ -109,7 +109,7 @@ export class ConvertedElements {
     this.globalTasks.set(id, kind);
   }
 
-  private categoryValues = new Map<string, CategoryValueData>();
+  private readonly categoryValues = new Map<string, CategoryValueData>();
   findCategoryValue(categoryValue: string): CategoryValueData {
     return this.categoryValues.get(categoryValue);
   }

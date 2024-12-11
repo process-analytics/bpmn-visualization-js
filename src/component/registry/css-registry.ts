@@ -76,7 +76,7 @@ export class CssClassesRegistryImpl implements CssClassesRegistry {
  * @internal
  */
 export class CssClassesCache {
-  private classNamesByBpmnId = new Map<string, Set<string>>();
+  private readonly classNamesByBpmnId = new Map<string, Set<string>>();
 
   /**
    * Clear all classes that were registered.

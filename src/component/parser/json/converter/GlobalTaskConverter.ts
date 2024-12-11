@@ -26,7 +26,7 @@ import { ensureIsArray } from '../../../helpers/array-utils';
  * @internal
  */
 export default class GlobalTaskConverter {
-  constructor(private convertedElements: ConvertedElements) {}
+  constructor(private readonly convertedElements: ConvertedElements) {}
 
   deserialize(definitions: TDefinitions): void {
     this.parseGlobalTasks(definitions.globalTask, ShapeBpmnElementKind.GLOBAL_TASK);

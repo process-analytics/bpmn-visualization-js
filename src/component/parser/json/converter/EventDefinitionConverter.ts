@@ -28,7 +28,7 @@ type EventDefinitions = string | TEventDefinition | (string | TEventDefinition)[
  * @internal
  */
 export default class EventDefinitionConverter {
-  constructor(private convertedElements: ConvertedElements) {}
+  constructor(private readonly convertedElements: ConvertedElements) {}
 
   deserialize(definitions: TDefinitions): void {
     for (const eventDefinitionKind of eventDefinitionKinds) {

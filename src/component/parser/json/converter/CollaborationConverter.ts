@@ -33,8 +33,8 @@ import { buildShapeBpmnGroup, convertAndRegisterAssociationFlows } from './utils
  */
 export default class CollaborationConverter {
   constructor(
-    private convertedElements: ConvertedElements,
-    private parsingMessageCollector: ParsingMessageCollector,
+    private readonly convertedElements: ConvertedElements,
+    private readonly parsingMessageCollector: ParsingMessageCollector,
   ) {}
 
   deserialize(collaborations: string | TCollaboration | (string | TCollaboration)[]): void {

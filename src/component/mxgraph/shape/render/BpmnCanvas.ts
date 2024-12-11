@@ -80,7 +80,7 @@ export function computeScaledIconSize(initialIconSize: Size, iconStyleConfigurat
  * @experimental
  */
 export class BpmnCanvas {
-  private canvas: mxAbstractCanvas2D;
+  private readonly canvas: mxAbstractCanvas2D;
 
   private readonly iconOriginalSize: Size;
   private readonly scaleX: number;

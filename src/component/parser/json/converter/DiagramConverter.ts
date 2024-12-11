@@ -36,8 +36,8 @@ import { EdgeUnknownBpmnElementWarning, LabelStyleMissingFontWarning, ShapeUnkno
  */
 export default class DiagramConverter {
   constructor(
-    private convertedElements: ConvertedElements,
-    private parsingMessageCollector: ParsingMessageCollector,
+    private readonly convertedElements: ConvertedElements,
+    private readonly parsingMessageCollector: ParsingMessageCollector,
   ) {}
 
   private convertedFonts = new Map<string, Font>();

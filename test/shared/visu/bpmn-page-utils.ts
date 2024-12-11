@@ -38,11 +38,11 @@ import { BpmnQuerySelectorsForTests } from '@test/shared/query-selectors';
 const pageCheckLog = debugLogger('bv:test:page-check');
 
 class BpmnPage {
-  private bpmnQuerySelectors = new BpmnQuerySelectorsForTests();
+  private readonly bpmnQuerySelectors = new BpmnQuerySelectorsForTests();
 
   constructor(
-    private bpmnContainerId: string,
-    private page: Page,
+    private readonly bpmnContainerId: string,
+    private readonly page: Page,
   ) {}
 
   async expectAvailableBpmnContainer(options?: PageWaitForSelectorOptions): Promise<void> {
@@ -298,7 +298,7 @@ export class PageTester {
 }
 
 export class BpmnPageSvgTester extends PageTester {
-  private bpmnQuerySelectors = new BpmnQuerySelectorsForTests();
+  private readonly bpmnQuerySelectors = new BpmnQuerySelectorsForTests();
 
   override async gotoPageAndLoadBpmnDiagram(bpmnDiagramName?: string): Promise<void> {
     await super.gotoPageAndLoadBpmnDiagram(bpmnDiagramName ?? 'not-used-dedicated-diagram-loaded-by-the-page', {
