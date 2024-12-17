@@ -65,26 +65,6 @@ describe('BpmnVisualization API', () => {
     });
   });
 
-  // Note: the tests here are duplicated with test/unit/component/version.test.ts
-  // They will be removed when the deprecated `BpmnVisualization.getVersion` method is removed
-  describe('Version', () => {
-    it('lib version', () => {
-      expect(bpmnVisualization.getVersion().lib).toBe(getLibraryVersionFromPackageJson());
-    });
-    it('mxGraph version', () => {
-      expect(bpmnVisualization.getVersion().dependencies.get('mxGraph')).toBeDefined();
-    });
-    it('not modifiable version', () => {
-      const initialVersion = bpmnVisualization.getVersion();
-      initialVersion.lib = 'set by test';
-      initialVersion.dependencies.set('extra', 'added in test');
-
-      const newVersion = bpmnVisualization.getVersion();
-      expect(newVersion.lib).not.toBe(initialVersion.lib);
-      expect(newVersion.dependencies).not.toBe(initialVersion.dependencies);
-    });
-  });
-
   // The API should not fail
   describe('Registry access when no loaded diagram', () => {
     const bv = initializeBpmnVisualizationWithContainerId('bpmn-no-loaded-diagram');
@@ -114,9 +94,3 @@ describe('BpmnVisualization API', () => {
     });
   });
 });
-
-function getLibraryVersionFromPackageJson(): string {
-  const json = readFileSync('../../package.json');
-  const packageJson = JSON.parse(json);
-  return packageJson.version;
-}
