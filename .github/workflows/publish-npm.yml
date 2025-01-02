@@ -10,6 +10,9 @@ jobs:
       id-token: write
       contents: write # required to get token for "npm provenance" and to dispatch event
     steps:
+      - name: Set VERSION
+        shell: bash
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v*}" >> $GITHUB_ENV
       - uses: actions/checkout@v4
       - name: Build Setup
         uses: ./.github/actions/build-setup
@@ -23,4 +26,4 @@ jobs:
         with:
           # use the default GITHUB_TOKEN, this is possible because we are dispatching the same repository
           event-type: new_version_available_on_npm
-          client-payload: "{ version: ${{ inputs.version }} }"
+          client-payload: "{ version: ${{ env.version }} }"
