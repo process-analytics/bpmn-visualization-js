@@ -26,4 +26,4 @@ jobs:
         with:
           # use the default GITHUB_TOKEN, this is possible because we are dispatching the same repository
           event-type: new_version_available_on_npm
-          client-payload: "{ version: ${{ env.version }} }"
+          client-payload: "{ version: ${{ env.VERSION }} }"
