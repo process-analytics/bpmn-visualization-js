@@ -248,7 +248,10 @@ Html reports are generated for test execution and coverage in
 **IMPORTANT**
 - as of version 1.38.0, `playwright` no longer installs browsers when running `npm install` (see [playwright v1.38.0 release-notes](https://github.com/microsoft/playwright/releases/tag/v1.38.0)).
 This means that browsers must be installed manually, and may need to be reinstalled when the Playwright version changes.
-- see the [Playwright documentation](https://playwright.dev/docs/browsers#installing-browsers) for more details about browsers management 
+- see the [Playwright documentation](https://playwright.dev/docs/browsers#installing-browsers) for more details about browsers management.
+- for chromium, only use the headless shell version, by passing the `--only-shell` option to the `install` command. For example, `npx playwright install chromium --only-shell`. For more details, see: 
+  - the [Playwright headless documentation](https://playwright.dev/docs/browsers#optimize-download-size-on-ci)
+  - the announcement in [Playwright 1.49.0](https://github.com/microsoft/playwright/issues/33566)
 
 By default, 
 - end-to-end tests use Chromium.
