@@ -30,8 +30,6 @@ export default tseslint.config(
     ignores: ['.github/*', '.idea/*', '/build/*', '/config/*', '/dist/*', 'node_modules/*', 'scripts/utils/dist/*', 'test/performance/data/*'],
   },
 
-  unicornPlugin.configs['flat/recommended'], // https://github.com/sindresorhus/eslint-plugin-unicorn?tab=readme-ov-file#es-module-recommended-1
-  prettierRecommendedConfig, // Enables eslint-plugin-prettier, eslint-config-prettier and prettier/prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration.
   {
     plugins: {
       notice: noticePlugin,
@@ -45,6 +43,15 @@ export default tseslint.config(
     rules: {
       'notice/notice': ['error', { templateFile: 'config/license-header.js', onNonMatchingHeader: 'replace' }],
       'no-console': ['error', { allow: ['warn', 'error'] }],
+    },
+  },
+
+  {
+    extends: [
+      // Feature of `typescript-eslint` to extend multiple configs: https://typescript-eslint.io/packages/typescript-eslint/#flat-config-extends
+      unicornPlugin.configs['flat/recommended'], // https://github.com/sindresorhus/eslint-plugin-unicorn?tab=readme-ov-file#es-module-recommended-1
+    ],
+    rules: {
       'unicorn/filename-case': [
         'error',
         {
@@ -101,7 +108,7 @@ export default tseslint.config(
     files: ['**/*.ts', '**/*.cts', '**/*.mts'],
     extends: [
       // Feature of `typescript-eslint` to extend multiple configs: https://typescript-eslint.io/packages/typescript-eslint/#flat-config-extends
-      eslint.configs.recommended, // Problem with 'module', 'require', 'console', 'exports', etc.
+      eslint.configs.recommended, // Problem with 'module', 'require', 'console', 'exports', etc. on .js, .cjs, .mjs files
       ...tseslint.configs.recommended,
       ...tseslint.configs.stylistic,
     ],
@@ -182,4 +189,6 @@ export default tseslint.config(
     },
     ...jestPlugin.configs['flat/recommended'],
   },
+
+  prettierRecommendedConfig, // Enables eslint-plugin-prettier, eslint-config-prettier and prettier/prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration.
 );
