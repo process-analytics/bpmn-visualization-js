@@ -20,6 +20,7 @@ import jestPlugin from 'eslint-plugin-jest';
 import noticePlugin from 'eslint-plugin-notice';
 import prettierRecommendedConfig from 'eslint-plugin-prettier/recommended';
 import unicornPlugin from 'eslint-plugin-unicorn';
+// eslint-disable-next-line import/no-unresolved
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
@@ -28,6 +29,7 @@ export default tseslint.config(
     // https://eslint.org/docs/latest/use/configure/ignore
     ignores: ['.github/*', '.idea/*', '/build/*', '/config/*', '/dist/*', 'node_modules/*', 'scripts/utils/dist/*', 'test/performance/data/*'],
   },
+
   unicornPlugin.configs['flat/recommended'], // https://github.com/sindresorhus/eslint-plugin-unicorn?tab=readme-ov-file#es-module-recommended-1
   prettierRecommendedConfig, // Enables eslint-plugin-prettier, eslint-config-prettier and prettier/prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration.
   {
@@ -65,17 +67,10 @@ export default tseslint.config(
   },
 
   {
-    files: ['**/*.mjs'],
-    rules: {
-      'import/no-unresolved': 'off',
-    },
-  },
-
-  // Don't execute on .cjs and .mjs files. Problem with 'module', 'require', 'console', 'exports', etc.
-  {
-    files: ['**/*.js', '**/*.ts', '**/*.cts', '**/*.mts'],
-    ...eslint.configs.recommended,
-    ...importPlugin.flatConfigs.recommended,
+    extends: [
+      // Feature of `typescript-eslint` to extend multiple configs: https://typescript-eslint.io/packages/typescript-eslint/#flat-config-extends
+      importPlugin.flatConfigs.recommended,
+    ],
     rules: {
       'import/newline-after-import': ['error', { count: 1 }],
       'import/first': 'error',
@@ -106,6 +101,7 @@ export default tseslint.config(
     files: ['**/*.ts', '**/*.cts', '**/*.mts'],
     extends: [
       // Feature of `typescript-eslint` to extend multiple configs: https://typescript-eslint.io/packages/typescript-eslint/#flat-config-extends
+      eslint.configs.recommended, // Problem with 'module', 'require', 'console', 'exports', etc.
       ...tseslint.configs.recommended,
       ...tseslint.configs.stylistic,
     ],
