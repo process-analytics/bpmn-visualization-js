@@ -35,7 +35,7 @@ export default tseslint.config(
   {
     // Need to be in first before any other configuration
     // https://eslint.org/docs/latest/use/configure/ignore
-    ignores: ['.github/*', '.idea/*', '/build/*', '/config/*', '/dist/*', 'node_modules/*', 'scripts/utils/dist/*', 'test/performance/data/*'],
+    ignores: ['.github/*', '.idea/*', '/build/*', '/config/*', '/dist/*', 'node_modules/*', 'scripts/utils/dist/*', 'test/performance/data/*', 'test/typescript-support/*'],
   },
 
   {
