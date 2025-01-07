@@ -15,10 +15,10 @@ limitations under the License.
 */
 
 import assert from 'node:assert';
-import { readFileSync } from 'node:fs';
-import path from 'node:path';
 
-const packageJSON = JSON.parse(readFileSync(path.resolve(__dirname, '../../package.json'), 'utf8'));
+// generate warning when running with Node 20
+// (node:75278) ExperimentalWarning: Importing JSON modules is an experimental feature. This feature could change at any time
+import packageJSON from '../../package.json' with { type: 'json' };
 
 export const getTypeFilesInformation = () => {
   const notSupportedTSVersionsFilePath = packageJSON.types;
