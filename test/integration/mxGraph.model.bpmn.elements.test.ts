@@ -1693,7 +1693,7 @@ describe('mxGraph model - BPMN elements', () => {
       const startEvent1Geometry = new mxGeometry(
         156.100_010_002_564_63,
         81.345_000_000_000_01, // 81.345000000000009 in the diagram
-        // eslint-disable-next-line @typescript-eslint/no-loss-of-precision
+        // eslint-disable-next-line no-loss-of-precision
         36.000_345_000_100_000_2, // 36.0003450001000002 in the diagram
         36.000_000_100_354_96,
       );
