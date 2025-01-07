@@ -46,11 +46,8 @@ export default tseslint.config(
     },
   },
 
+  unicornPlugin.configs['flat/recommended'], // https://github.com/sindresorhus/eslint-plugin-unicorn?tab=readme-ov-file#es-module-recommended-1
   {
-    extends: [
-      // Feature of `typescript-eslint` to extend multiple configs: https://typescript-eslint.io/packages/typescript-eslint/#flat-config-extends
-      unicornPlugin.configs['flat/recommended'], // https://github.com/sindresorhus/eslint-plugin-unicorn?tab=readme-ov-file#es-module-recommended-1
-    ],
     rules: {
       'unicorn/filename-case': [
         'error',
@@ -75,7 +72,8 @@ export default tseslint.config(
   {
     files: ['**/*.js', '**/*.cjs', '**/*.mjs'],
     rules: {
-      'unicorn/numeric-separators-style': 'off', // The syntax with underscores is not supported in older versions of JavaScript.
+      'unicorn/numeric-separators-style': 'off', // With ESLint v9, the syntax with underscores is not supported in older versions of JavaScript.
+      'unicorn/prefer-optional-catch-binding': 'off', // With ESLint v9, the syntax 'try {} catch {}' is not supported in cjs files (not tested on other JS files).
     },
   },
 

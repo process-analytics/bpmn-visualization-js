@@ -25,7 +25,7 @@ const { pathsToModuleNameMapper } = require('ts-jest');
 let jsonTxt;
 try {
   jsonTxt = fs.readFileSync('./tsconfig.test.json', 'utf8');
-} catch {
+} catch (_) {
   // when running from IDE (IntelliJ/Webstrom, the working directory is not the project root dir
   // for instance it can be tsconfig: '<rootDir>/test/unit',
   // so give a try to an alternate file path
