@@ -56,7 +56,6 @@ export const mxUtils = mxgraph.mxUtils;
 
 /** @internal */
 declare global {
-  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Since we are overriding an existing interface in the global scope, it is not possible to convert it to a type.
   interface Window {
     mxForceIncludes: boolean;
     mxLoadResources: boolean;

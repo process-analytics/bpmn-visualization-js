@@ -14,14 +14,22 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+
 import eslint from '@eslint/js';
 import importPlugin from 'eslint-plugin-import';
 import jestPlugin from 'eslint-plugin-jest';
+import jestExtendedPlugin from 'eslint-plugin-jest-extended';
 import noticePlugin from 'eslint-plugin-notice';
+import playwright from 'eslint-plugin-playwright';
 import prettierRecommendedConfig from 'eslint-plugin-prettier/recommended';
 import unicornPlugin from 'eslint-plugin-unicorn';
 // eslint-disable-next-line import/no-unresolved
 import tseslint from 'typescript-eslint';
+
+const jestPackagePath = path.resolve('node_modules', 'jest', 'package.json');
+const jestPackage = JSON.parse(readFileSync(jestPackagePath, 'utf8'));
 
 export default tseslint.config(
   {
@@ -185,13 +193,58 @@ export default tseslint.config(
       // '@typescript-eslint/unbound-method': 'error',
     },
   },
+
+  // test files
+  // There is no more cascading and hierarchy configuration files in ESLint v9.
+  // All configurations must be in the same file.
   {
     // enable jest rules on test files
     files: ['test/**'],
+    extends: [
+      // Feature of `typescript-eslint` to extend multiple configs: https://typescript-eslint.io/packages/typescript-eslint/#flat-config-extends
+      jestPlugin.configs['flat/recommended'],
+      jestPlugin.configs['flat/style'],
+    ],
     plugins: {
       jest: jestPlugin,
     },
-    ...jestPlugin.configs['flat/recommended'],
+    languageOptions: {
+      globals: jestPlugin.environments.globals.globals,
+    },
+    settings: {
+      jest: {
+        version: jestPackage.version,
+      },
+    },
+    rules: {
+      /* The rule list: https://github.com/jest-community/eslint-plugin-jest#rules */
+      'jest/prefer-expect-resolves': 'warn',
+      'jest/prefer-spy-on': 'warn',
+      'jest/prefer-todo': 'warn',
+      /* The rule didn't find the 'expect' in the called methods */
+      'jest/expect-expect': 'off',
+    },
+  },
+  {
+    files: ['test/**/*.test.ts'],
+    extends: [
+      // Feature of `typescript-eslint` to extend multiple configs: https://typescript-eslint.io/packages/typescript-eslint/#flat-config-extends
+      jestExtendedPlugin.configs['flat/recommended'],
+    ],
+
+    plugins: { 'jest-extended': jestExtendedPlugin },
+  },
+  {
+    files: ['test/(bundles|e2e|performance)/*.test.ts'],
+    extends: [
+      // Feature of `typescript-eslint` to extend multiple configs: https://typescript-eslint.io/packages/typescript-eslint/#flat-config-extends
+      playwright.configs['flat/recommended'],
+    ],
+
+    rules: {
+      /* This rule is for playwright-test and we are using jest-playwright */
+      'playwright/no-standalone-expect': 'off',
+    },
   },
 
   prettierRecommendedConfig, // Enables eslint-plugin-prettier, eslint-config-prettier and prettier/prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration.
