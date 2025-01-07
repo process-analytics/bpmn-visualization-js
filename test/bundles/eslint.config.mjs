@@ -17,9 +17,12 @@ import playwright from 'eslint-plugin-playwright';
 
 export default [
   {
-    ...playwright.configs['flat/recommended'],
+    extends: [
+      // Feature of `typescript-eslint` to extend multiple configs: https://typescript-eslint.io/packages/typescript-eslint/#flat-config-extends
+      ...playwright.configs['flat/recommended'],
+    ],
+
     rules: {
-      ...playwright.configs['flat/recommended'].rules,
       /* This rule is for playwright-test and we are using jest-playwright */
       'playwright/no-standalone-expect': 'off',
     },

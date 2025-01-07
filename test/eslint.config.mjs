@@ -20,10 +20,15 @@ const pluginJestExtended = require('eslint-plugin-jest-extended');
 module.exports = [
   {
     files: ['**/*.test.ts'],
+    extends: [
+      // Feature of `typescript-eslint` to extend multiple configs: https://typescript-eslint.io/packages/typescript-eslint/#flat-config-extends
+      ...jest.configs['flat/recommended'],
+      ...jest.configs['flat/style'],
+      ...'jest-extended'.configs['flat/recommended'],
+    ],
+
     plugins: { jest: pluginJest, 'jest-extended': pluginJestExtended },
-    ...jest.configs['flat/recommended'],
-    ...jest.configs['flat/style'],
-    ...'jest-extended'.configs['flat/recommended'],
+
     languageOptions: {
       globals: pluginJest.environments.globals.globals,
     },
@@ -33,9 +38,6 @@ module.exports = [
       },
     },
     rules: {
-      ...jest.configs['flat/recommended'].rules,
-      ...jest.configs['flat/style'].rules,
-      ...'jest-extended'.configs['flat/recommended'].rules,
       /* The rule list: https://github.com/jest-community/eslint-plugin-jest#rules */
       'jest/prefer-expect-resolves': 'warn',
       'jest/prefer-spy-on': 'warn',
