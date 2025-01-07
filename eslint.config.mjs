@@ -72,6 +72,12 @@ export default tseslint.config(
       'unicorn/prefer-global-this': 'off', // We only target the browser, so it is valid to use the window object. In addition, using 'globalThis' require additional changes in the code/configuration to work.
     },
   },
+  {
+    files: ['**/*.js', '**/*.cjs', '**/*.mjs'],
+    rules: {
+      'unicorn/numeric-separators-style': 'off', // The syntax with underscores is not supported in older versions of JavaScript.
+    },
+  },
 
   {
     extends: [
