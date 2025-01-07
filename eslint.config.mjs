@@ -23,6 +23,11 @@ import unicornPlugin from 'eslint-plugin-unicorn';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
+  {
+    // Need to be in first before any other configuration
+    // https://eslint.org/docs/latest/use/configure/ignore
+    ignores: ['.github/*', '.idea/*', '/build/*', '/config/*', '/dist/*', 'node_modules/*', 'scripts/utils/dist/*', 'test/performance/data/*'],
+  },
   unicornPlugin.configs['flat/recommended'], // https://github.com/sindresorhus/eslint-plugin-unicorn?tab=readme-ov-file#es-module-recommended-1
   prettierRecommendedConfig, // Enables eslint-plugin-prettier, eslint-config-prettier and prettier/prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration.
   {
@@ -57,9 +62,6 @@ export default tseslint.config(
       'unicorn/no-useless-undefined': 'off', // The "undefined" value is useful where we use it and change some mxGraph code
       'unicorn/prefer-global-this': 'off', // We only target the browser, so it is valid to use the window object. In addition, using 'globalThis' require additional changes in the code/configuration to work.
     },
-    // Actually, the new feature to ignore folders in conf file or in commande line, seems to not work after several tests.
-    // https://eslint.org/docs/latest/use/configure/ignore
-    ignores: ['.github/*', '.idea/*', '/build/*', '/config/*', '/dist/*', 'node_modules/*', 'scripts/utils/dist/*', 'test/performance/data/*'],
   },
 
   {
