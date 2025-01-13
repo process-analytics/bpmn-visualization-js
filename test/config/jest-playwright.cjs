@@ -94,7 +94,7 @@ const computeConfigurationForDevelopmentServerUsage = defaultBrowsers => {
     // for more details, see https://github.com/process-analytics/bpmn-visualization-js/pull/1056
     protocol: 'http',
     // high value mainly for GitHub Workflows running on macOS (slow machines) and to build the bundle before start
-    launchTimeout: isRunningOnCi() ? 60000 : 10000,
+    launchTimeout: isRunningOnCi() ? 60 * 1000 : 10 * 1000,
     debug: true,
     usedPortAction: 'ignore', // your tests are executed, we assume that the server is already started
     waitOnScheme: {
