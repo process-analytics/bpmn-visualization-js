@@ -130,14 +130,6 @@ Make the new version available for demo.
 ⚠️⚠️⚠️ _**End of the manual steps**_ ⚠️⚠️⚠️
 ___
 
-
-#### Update examples running in live IDE
-
-In case of important fixes or features in the new release, you can update the examples running on CodeSandbox and CodePen.
-
-For the detailed list of available examples, please check the [examples home page](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html#miscellaneous).
-
-
 #### Mark the `bpmn-visualization-examples` repository as released
 When all updates have been completed, merge the Pull Request created above.
 
