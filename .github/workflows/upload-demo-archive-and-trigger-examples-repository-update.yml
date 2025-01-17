@@ -11,7 +11,7 @@ on:
 
 jobs:
   upload_demo_archive:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       VERSION: ${{ github.event.client_payload.version || inputs.version }}
     steps:
