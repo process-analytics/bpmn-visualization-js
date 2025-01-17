@@ -130,14 +130,6 @@ Make the new version available for demo.
 ⚠️⚠️⚠️ _**End of the manual steps**_ ⚠️⚠️⚠️
 ___
 
-
-#### Update examples running in live IDE
-
-In case of important fixes or features in the new release, you can update the examples running on CodeSandbox and CodePen.
-
-For the detailed list of available examples, please check the [examples home page](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html#miscellaneous).
-
-
 #### Mark the `bpmn-visualization-examples` repository as released
 When all updates have been completed, merge the Pull Request created above.
 
@@ -180,48 +172,6 @@ ___
 ##### Notify [`bpmnVisualizationR` package](https://github.com/process-analytics/bpmn-visualization-R) repository of the new release
 
 Follow the documentation of the [`bpmnVisualizationR` package](https://github.com/process-analytics/bpmn-visualization-R/blob/main/CONTRIBUTING.md#bpmn-visualization-js-update) to update the `bpmn-visualization` dependency with the new release.
-
-⚠️⚠️⚠️ _**End of the manual steps**_ ⚠️⚠️⚠️
-___
-
-## Communicate about the release
-
-- Open [github actions](https://github.com/process-analytics/bpmn-visualization-js/actions/workflows/announce-new-release.yml)
-- Click on the 'Run workflow' dropdown located on the right side of the page
-- Provide parameter values for _version_ and _description_
-- Click on the button 'Run workflow'
-- Make sure job execution was successful by checking the status
-- If all is good, you should see a new message on the [news](https://discord.com/channels/1011911769607913562/1024329159033499780) channel of Process Analytics server on Discord.
-
-### Twitter
-
-It is no longer possible to post a tweet with the API without a paid plan (and we only have a free plan). See [#2676](https://github.com/process-analytics/bpmn-visualization-js/issues/2676) for more details.
-
-So, create the tweet manually on [ProcessAnalyti1](https://twitter.com/ProcessAnalyti1).
-
-You can use this template:
-
-> 📣 bpmn-visualization {version} is out! 🎉
->
-> ===> some short description here <===
->
-> #bpmnvisualization #bpmn #visualization #typescript #opensource
->
-> https://github.com/process-analytics/bpmn-visualization-js/releases/tag/v{version}
-
-___
-⚠️⚠️⚠️ _**Only if the [jobs](https://github.com/process-analytics/bpmn-visualization-js/actions/workflows/announce-new-release.yml) does NOT work!**_  ⚠️⚠️⚠️
-### Discord
-
-Channel: [news](https://discord.com/channels/1011911769607913562/1024329159033499780)
-
-You can use this template:
-
-> 📣 bpmn-visualization {version} is out! 🎉
->
-> ===> some short description here <===
->
-> https://github.com/process-analytics/bpmn-visualization-js/releases/tag/v{version} 
 
 ⚠️⚠️⚠️ _**End of the manual steps**_ ⚠️⚠️⚠️
 ___
