@@ -12,7 +12,7 @@ on:
 # another repository is notified in 'upload-demo-archive-and-trigger-examples-repository-update.yml'
 jobs:
   notify:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       VERSION: ${{ github.event.client_payload.version || inputs.version }}
     strategy:

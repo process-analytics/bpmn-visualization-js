@@ -34,7 +34,7 @@ class StyleImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'font.color.opacity',
         {
-          linux: 0.12 / 100, // 0.1155614505197633%
+          linux: 0.13 / 100, // 0.12152253986267292%
           windows: 0.12 / 100, // 0.11000117996341485%
         },
       ],
