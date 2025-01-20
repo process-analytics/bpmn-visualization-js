@@ -41,7 +41,7 @@ on:
 
 jobs:
   build_and_test_npm_package:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       test-bundles-browser: chromium
     steps:
