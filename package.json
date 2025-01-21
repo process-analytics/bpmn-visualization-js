@@ -165,7 +165,7 @@
     "ts-jest": "~29.2.5",
     "typedoc": "~0.27.6",
     "typescript": "~5.4.5",
-    "vite": "~6.0.7"
+    "vite": "~6.0.9"
   },
   "overrides": {
     "@types/node": "^16.18.0"
