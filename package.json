@@ -104,7 +104,6 @@
     "utils:test:model": "node ./scripts/utils/dist/utils.mjs test/fixtures/bpmn/simple-start-task-end.bpmn --output model"
   },
   "dependencies": {
-    "@tailwindcss/postcss": "^4.0.0",
     "@typed-mxgraph/typed-mxgraph": "~1.0.8",
     "es-toolkit": "~1.31.0",
     "fast-xml-parser": "4.5.1",
@@ -117,6 +116,7 @@
     "@rollup/plugin-commonjs": "~28.0.2",
     "@rollup/plugin-node-resolve": "~16.0.0",
     "@rollup/plugin-terser": "~0.4.4",
+    "@tailwindcss/postcss": "^4.0.0",
     "@types/debug": "~4.1.12",
     "@types/jest-image-snapshot": "~6.4.0",
     "@types/minimist": "~1.2.5",
