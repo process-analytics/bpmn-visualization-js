@@ -72,16 +72,15 @@ To know how configure your development environment, see [IDE configuration](./do
 You'll find [here](./docs/contributors/development.md) the necessary information to build, test, lint your code, and some tips too. 
 
 ### Commit in your branch
-There is no convention for the commit message in your branch.
+There is no convention for the commit messages in your branch.
 The most important part is the title of the Pull Request, because:
-- Everyone must use Pull Request, no direct commit allowed on master branch
-- The commits of a Pull Request are almost always squashed
-- The title of the Pull Request is used as proposal for the maintainer merging the Pull Request
+- Everyone must use Pull Request, no direct commit is allowed in the `master` branch
+- The commits of a Pull Request are always squashed
+- The title of the Pull Request is used as the commit message when merging the Pull Request
 
 ### Pull Request
 
-After your development finished, you need to open a Pull Request. You'll find [here](./docs/contributors/pull-request.md) all the necessary information to open it and to keep it updated.
-
+After completing your development, open a Pull Request. Refer to [this guide](./docs/contributors/pull-request.md) for detailed instructions on how to open and maintain your Pull Request.
 
 At this point, you're ready to make your changes! Feel free to ask for help. Everyone is a beginner at first 😸
 
