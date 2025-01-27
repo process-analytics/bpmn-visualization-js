@@ -15,8 +15,7 @@ limitations under the License.
 */
 
 const defaultPlugins = {
-  tailwindcss: {},
-  autoprefixer: {},
+  '@tailwindcss/postcss': {},
 };
 
 const plugins =

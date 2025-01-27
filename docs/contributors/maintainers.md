@@ -70,8 +70,6 @@ ___
 - Ensure the name of the milestone used for the new release version matches the name of the tag/version that has just been pushed. Renamed it if needed.
 - Clean this opened milestone if some issues are still opened (move them to a new one or discard milestone from them)
 - Close the milestone
-- Clean the [Day to Day Board](https://github.com/process-analytics/bpmn-visualization-js/projects/1): archive all cards
-  of the `Done` column related to the milestone
 
 
 ### Continue filling the GitHub Release
