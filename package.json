@@ -104,6 +104,7 @@
     "utils:test:model": "node ./scripts/utils/dist/utils.mjs test/fixtures/bpmn/simple-start-task-end.bpmn --output model"
   },
   "dependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
     "@typed-mxgraph/typed-mxgraph": "~1.0.8",
     "es-toolkit": "~1.31.0",
     "fast-xml-parser": "4.5.1",
@@ -121,7 +122,6 @@
     "@types/minimist": "~1.2.5",
     "@typescript-eslint/eslint-plugin": "~8.21.0",
     "@typescript-eslint/parser": "~8.21.0",
-    "autoprefixer": "~10.4.20",
     "clipboardy": "~4.0.0",
     "cross-env": "~7.0.3",
     "cssnano": "~7.0.6",
