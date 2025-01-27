@@ -16,6 +16,7 @@ limitations under the License.
 
 import path from 'node:path';
 
+import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
 
 export default defineConfig(({ mode }) => {
@@ -26,6 +27,8 @@ export default defineConfig(({ mode }) => {
     server: {
       port: 10_001,
     },
+
+    plugins: [tailwindcss()],
 
     // Configuration to build the demo
     build: {
