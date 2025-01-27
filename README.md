@@ -46,7 +46,12 @@ We hope it will help you to create applications for process visualization and an
 
 Please check the [__⏩ live environment__](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html).
 
-You will find there basic usage as well as detailed examples showing possible rendering customizations.
+You will find their basic usage as well as detailed examples showing possible rendering customizations.
+
+## 📂 Repository Structure
+
+The [dev](./dev) directory contains the source code for the **Load and Navigation demo** showcased on the [example site](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html). \
+This demo is also used for the PR previews of this repository.
 
 
 ## 🔆 Project Status
