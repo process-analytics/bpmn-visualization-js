@@ -14,12 +14,12 @@ git pull upstream master
 Then update your feature branch from your local copy of master, and push it!
 
 ```sh
-git checkout 25-annotations_to_tasks
+git checkout feat/25-annotations_to_tasks
 git rebase master
-git push --set-upstream origin 25-annotations_to_tasks
+git push --set-upstream origin feat/25-annotations_to_tasks
 ```
 
-Finally, go to GitHub and [make a Pull Request](https://help.github.com/articles/creating-a-pull-request) ​with labels 😄 \
+Finally, go to GitHub and [create a Pull Request](https://help.github.com/articles/creating-a-pull-request) with labels (labels can only be defined by people with write access to the repository) 😄 \
 For the title, follow the directives of the Pull Request template.
 
 ⚠️ We care about quality. So your PR won't be merged until all tests pass.
@@ -43,9 +43,9 @@ If a maintainer asks you to [rebase](http://git-scm.com/book/en/Git-Branching-Re
 Here's the suggested workflow:
 
 ```sh
-git checkout 25-annotations_to_tasks
+git checkout feat/25-annotations_to_tasks
 git pull --rebase upstream master
-git push --force-with-lease 25-annotations_to_tasks
+git push --force-with-lease feat/25-annotations_to_tasks
 ```
 
 ## Draft Pull Request
