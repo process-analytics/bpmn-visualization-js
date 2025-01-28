@@ -8,8 +8,8 @@ All members of our community are expected to follow our [Code of Conduct](CODE_O
 
 There are many ways to contribute:
 
-- help people with the questions they ask on the [Github Issues](https://github.com/process-analytics/bpmn-visualization-js/issues)
-- submitting bug reports and feature requests in the [Github Issues](https://github.com/process-analytics/bpmn-visualization-js/issues/new)
+- help people with the questions they ask on the [GitHub Issues](https://github.com/process-analytics/bpmn-visualization-js/issues)
+- submitting bug reports and feature requests in the [GitHub Issues](https://github.com/process-analytics/bpmn-visualization-js/issues/new)
 - [writing code](CONTRIBUTING.md#code-and-documentation-changes-guidelines) which can be incorporated into `bpmn-visualization` itself
 - [improving](CONTRIBUTING.md#code-and-documentation-changes-guidelines) the documentation
 - improve the existing [example applications](https://github.com/process-analytics/bpmn-visualization-examples) to demonstrate features in `bpmn-visualization`
@@ -24,7 +24,7 @@ For all contributions, please respect the following guidelines:
   - Without prior agreement, we only accept external contributions for issues marked with the [PR Accepted](https://github.com/process-analytics/bpmn-visualization-js/issues?q=is%3Aissue+is%3Aopen+label%3A%22PR+accepted%22) label.
   - Please always leave a comment in the issue to mention that you'd like to work on the subject.
   - We will check that the description is understood in the same way by you and by us, and that the implementation you envisage can correspond to what we expect.
-  - Finally, we'll assign you to the question, so that everyone knows it's taken and no one else will be working on it in parallel.
+  - Finally, we'll assign you to the issue, so that everyone knows it's taken and no one else will be working on it in parallel.
   - By following the above guidelines, we maximize the chances of contributions being accepted and integrated quickly into `bpmn-visualization`.
 
 3. If you see an unlabeled problem you'd like to work on, let us know to start discussions and see if we change our minds and finally accept a contribution.
@@ -72,16 +72,15 @@ To know how configure your development environment, see [IDE configuration](./do
 You'll find [here](./docs/contributors/development.md) the necessary information to build, test, lint your code, and some tips too. 
 
 ### Commit in your branch
-There is no convention for the commit message in your branch.
+There is no convention for the commit messages in your branch.
 The most important part is the title of the Pull Request, because:
-- Everyone must use Pull Request, no direct commit allowed on master branch
-- The commits of a Pull Request are almost always squashed
-- The title of the Pull Request is used as proposal for the maintainer merging the Pull Request
+- Everyone must use Pull Request, no direct commit is allowed in the `master` branch
+- The commits of a Pull Request are always squashed
+- The title of the Pull Request is used as the commit message when merging the Pull Request
 
 ### Pull Request
 
-After your development finished, you need to open a Pull Request. You'll find [here](./docs/contributors/pull-request.md) all the necessary information to open it and to keep it updated.
-
+After completing your development, open a Pull Request. Refer to [this guide](./docs/contributors/pull-request.md) for detailed instructions on how to open and maintain your Pull Request.
 
 At this point, you're ready to make your changes! Feel free to ask for help. Everyone is a beginner at first 😸
 

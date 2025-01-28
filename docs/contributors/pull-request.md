@@ -47,3 +47,7 @@ git checkout 25-annotations_to_tasks
 git pull --rebase upstream master
 git push --force-with-lease 25-annotations_to_tasks
 ```
+
+## Draft Pull Request
+
+Consider marking the PR as [a Draft](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests#draft-pull-requests) if it is still a work in progress and not ready for review.
