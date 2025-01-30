@@ -23,7 +23,7 @@ The root README file content should not be overwhelming and supposed to contain 
 ## Building the HTML documentation
 
 **DISCLAIMER**:
-The documentation sources are in the AsciiDoctor format. 
+The documentation sources are in the AsciiDoctor format.
 Depending on the rendering engine, the display may not work completely (font-awesome icons and some links). 
 This is the case when viewing directly on GitHub Web.
 
