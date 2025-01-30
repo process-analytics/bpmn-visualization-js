@@ -49,6 +49,6 @@ For more details, see
 
 ## Typescript
 Although Linting, Sonar and Tests keeps the code in a good shape
-We strongly recommend you to read following resources to be able to write code that is conformed to the best practices:
+We strongly recommend that you read the following resources to write code that conforms to best practices:
 - [basics](https://www.typescriptlang.org/docs/handbook/basic-types.html)
 - [do's and don'ts](https://www.typescriptlang.org/docs/handbook/declaration-files/do-s-and-don-ts.html)
