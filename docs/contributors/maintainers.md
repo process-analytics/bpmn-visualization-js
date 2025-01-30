@@ -40,6 +40,13 @@ are automated once the release is triggered but manual actions are required for:
 
 **Note:** This step triggers the release automation process.
 
+Decide on the new version depending on the type of changes:
+- Follow [semver](https://semver.org/)
+- Check the new commits since the latest release to determine the type of changes included in the new version. This can be done by:
+  - running locally `git log --oneline <latest-release-tag>..HEAD`
+  - going the [latest GitHub release page](https://github.com/process-analytics/bpmn-visualization-js/releases/latest) and checking the commits since this release (a link is available just above the release title).
+- Until we release the first major version, bump the minor version if the release contains new features or breaking changes.
+
 - Open [GitHub actions](https://github.com/process-analytics/bpmn-visualization-js/actions/workflows/release.yml)
 - Click on the 'Run workflow' dropdown located on the right side of the page
 - Provide parameter value for New version type (default is patch, but you can choose one of the [new-version | major | minor | patch])
@@ -68,6 +75,7 @@ ___
 **Note:** we always put issues related to a version in a Milestone whose name matches the version.
 
 - Ensure the name of the milestone used for the new release version matches the name of the tag/version that has just been pushed. Renamed it if needed.
+- Verify that all issues related to the upcoming release are attached to the milestone. In particular, check the issues that [do not have a milestone](https://github.com/process-analytics/bpmn-visualization-js/issues?q=is%3Aissue+is%3Aclosed+no%3Amilestone).
 - Clean this opened milestone if some issues are still opened (move them to a new one or discard milestone from them)
 - Close the milestone
 
