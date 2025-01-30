@@ -26,7 +26,7 @@ Your patch should follow the same conventions & pass the same code quality check
 
 Project, in major line, follows the code style suggested by [airbnb](https://github.com/airbnb/javascript) which is explicit and well documented.
 
-Typescript have been chosen as it's strongly typed and we believe it adds some syntactical benefits to the JavaScript language
+Typescript have been chosen as it's strongly typed, and we believe it adds some syntactical benefits to the JavaScript language
 More information here: [Typescript](development.md#typescript) 
 
 To enforce best practices we use ESLint and husky.
@@ -49,6 +49,6 @@ For more details, see
 
 ## Typescript
 Although Linting, Sonar and Tests keeps the code in a good shape
-We strongly recommend you to read following resources to be able to write code that is conform to the best practices:
+We strongly recommend you to read following resources to be able to write code that is conformed to the best practices:
 - [basics](https://www.typescriptlang.org/docs/handbook/basic-types.html)
 - [do's and don'ts](https://www.typescriptlang.org/docs/handbook/declaration-files/do-s-and-don-ts.html)
