@@ -24,7 +24,7 @@ The root README file content should not be overwhelming and supposed to contain 
 
 **DISCLAIMER**:
 The documentation sources are in the AsciiDoctor format.
-Depending on the rendering engine, the display may not work completely (font-awesome icons and some links). 
+Depending on the rendering engine, the display may not work completely (font-awesome icons and some links).
 This is the case when viewing directly on GitHub Web.
 
 - From the root folder of the repository, run 
