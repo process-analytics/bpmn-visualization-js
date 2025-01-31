@@ -1,5 +1,7 @@
 # BPMN Support - How To
 
+**NOTE**: knowledge of the [BPMN specification](https://www.omg.org/spec/BPMN/2.0.2/PDF) is recommended if you wish to work with BPMN support.
+
 ## Introduction
 
 We manage the BPMN Support very incrementally as we prefer small changes, because they are easier and faster to review
