@@ -160,7 +160,7 @@
     "rollup-plugin-node-externals": "~8.0.0",
     "rollup-plugin-sizes": "~1.1.0",
     "rollup-plugin-typescript2": "~0.36.0",
-    "tailwindcss": "~4.0.0",
+    "tailwindcss": "~4.0.3",
     "ts-jest": "~29.2.5",
     "typedoc": "~0.27.6",
     "typescript": "~5.4.5",

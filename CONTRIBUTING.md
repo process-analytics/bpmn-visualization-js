@@ -1,4 +1,4 @@
-# Contributing
+# Contributing Guidelines
 
 You are here to help on `bpmn-visualization`? Awesome, feel welcome and read the following guidelines in order to know how to contribute, to ask questions and to make `bpmn-visualization` such a great tool.
 
@@ -56,12 +56,13 @@ test everything).
 
 [Fork bpmn-visualization](https://help.github.com/articles/fork-a-repo) and create a branch with a descriptive name. 
 
-A good branch name would be (where issue #25 is the ticket you're working on): **25-annotations_to_tasks**  
+A good branch name would be (where issue `25` is the ticket you're working on): **feat/25-annotations_to_tasks**. For a bug, it could be **fix/25-annotations_to_tasks**.
+For more details about the branch naming convention, see the in the [general contribute guidelines](https://github.com/process-analytics/.github/blob/01771492665a92526e2aa1f2b47d781f83e2cd81/CONTRIBUTING.md#branching).
 
-ℹ️ Please don't forget to leave a comment under the issue to let other contributors know that this issue is under the development \[i.e "in progress", "i am on it"\]
+ℹ️ Please don't forget to leave a comment under the issue to let other contributors know that this issue is under the development \[i.e "in progress", "I am on it"\]
 
 ```sh
-git checkout -b 25-annotations_to_tasks
+git checkout -b feat/25-annotations_to_tasks
 ```
 
 ### IDE configuration
