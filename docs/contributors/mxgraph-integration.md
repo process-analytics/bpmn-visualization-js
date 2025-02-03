@@ -182,11 +182,10 @@ To ensure that the rendering matches our needs, we have a lot of non regression 
 In the BPMN source, most of the time, the edges include waypoints (this is highly recommended by the BPMN specification).
 Some modelers don't set the terminal points on the visual perimeter of the shapes. In this case, using the perimeter sometimes introduces a side effect on the final computed segment of the edge and its markers.
 
-The markers (generally an arrow) is not aligned with the original final segment of the edge.
-A new segment is created to connect the edge to the shape perimeter. This new segment is not always aligned with the original segment, which creates a visual glitch.
-The marker can be:
-- inside the shape, like the issue about ["Association Flow arrow sometimes displayed inside the terminal BPMN element"]( https://github.com/process-analytics/bpmn-visualization-js/issues/715).
-- outside the shape like in the following screenshots 👇
+The first case in when the final waypoint is inside the shape, like the issue about ["Association Flow arrow sometimes displayed inside the terminal BPMN element"]( https://github.com/process-analytics/bpmn-visualization-js/issues/715).
+
+The second case occurs when the marker (generally an arrow) is not aligned with the original final segment of the edge.
+A new segment is created to connect the edge to the shape perimeter. This new segment is not always aligned with the original segment, which creates a visual glitch like in the following screenshots 👇
 
 | positioning                                              | rendering                                              |
 |----------------------------------------------------------|--------------------------------------------------------|
@@ -247,7 +246,7 @@ This solution would make it possible to implement the following points:
 
 **Alternatives and technical elements that could help for the implementation**
 
-mxGraph` provides parameters for positioning the shape and edge in the foreground or background. See links in [PR #1863](https://github.com/process-analytics/bpmn-visualization-js/pull/1863) and [issue #1870](https://github.com/process-analytics/bpmn-visualization-js/issues/1870).
+`mxGraph` provides parameters for positioning the shape and edge in the foreground or background. See links in [PR #1863](https://github.com/process-analytics/bpmn-visualization-js/pull/1863) and [issue #1870](https://github.com/process-analytics/bpmn-visualization-js/issues/1870).
 This is what [bpmn-js](https://github.com/bpmn-io/bpmn-js/) does: shapes are in the foreground and edges in the background.
 
 Information on SVG Q (quadratic) if required:
