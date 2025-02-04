@@ -141,21 +141,20 @@ to see various positioning methods in action.
 
 **Note**: All SVG files from this paragraph are generated from this [draw.io file](resources/mxGraph-perimeter.drawio).
 
-##### Information from mxGrapĥ/maxGraph
+##### Information from mxGrapĥ
 
 `mxGraph` doesn't provide details about the Perimeters concept in the documentation. However, it is available in the `maxGraph` documentation about the [Perimeters](https://maxgraph.github.io/maxGraph/docs/usage/perimeters).
 
 Here are some tips to switch from `maxGraph` to `mxGraph` concepts.
 
-The definition of the cell style is not the same in `mxGraph` and `maxGraph`. In `mxGraph`, the style is a string, whereas in `maxGraph`, it is an object.
-See the ["`mxGraph` to `maxGraph` migration guide" style paragraph](https://maxgraph.github.io/maxGraph/docs/usage/migrate-from-mxgraph/#styling) for more details.
-
-For example, about the orthogonal projection activation:
-- `mxGraph`: style[mxgraph.mxConstants.STYLE_ORTHOGONAL] = 1;
-- `maxGraph`: style.orthogonal = true;
-
-All `mxGraph` examples are listed in: https://jgraph.github.io/mxgraph/javascript/examples/index.html.
-In particular, the Orthogonal example is available at https://jgraph.github.io/mxgraph/javascript/examples/orthogonal.html.
+- **Cell Style Differences**:
+  - `mxGraph`: Style is a string.
+  - `maxGraph`: Style is an object.
+  - See [migration guide](https://maxgraph.github.io/maxGraph/docs/usage/migrate-from-mxgraph/#styling) from `mxGraph` to `maxGraph` for details.
+- **Orthogonal Projection**:
+  - `mxGraph`: `style[mxgraph.mxConstants.STYLE_ORTHOGONAL] = 1;`
+  - `maxGraph`: `style.orthogonal = true;`
+- **`mxGraph` Examples**: [All Examples](https://jgraph.github.io/mxgraph/javascript/examples/index.html), including [Orthogonal Example](https://jgraph.github.io/mxgraph/javascript/examples/orthogonal.html).
 
 
 ##### Perimeters in `bpmn-visualization`
