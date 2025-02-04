@@ -160,21 +160,14 @@ In particular, the Orthogonal example is available at https://jgraph.github.io/m
 
 ##### Perimeters in `bpmn-visualization`
 
-We always set a perimeter to the style of the shapes we configure. This is done in [StyleConfigurator](../../src/component/mxgraph/config/StyleConfigurator.ts).
-
-`mxGraph` provides various perimeters out of the box, in particular: rectangle, ellipse, diamond. This is everything we need for BPMN shapes, so we don't need to implement custom perimeters.
-
-We don't use orthogonal projection in bpmn-visualization because it introduced side effects in the past. For more information, see:
-- https://github.com/process-analytics/bpmn-visualization-js/issues/349
-- https://github.com/process-analytics/bpmn-visualization-js/issues/295
-- https://github.com/process-analytics/bpmn-visualization-js/issues/295#issuecomment-904336449
-- https://github.com/process-analytics/bpmn-visualization-js/pull/1399
-
-To ensure that the rendering matches our needs, we have a lot of non regression visual tests on associations, message and sequence flows for:
-- edges without waypoints
-- edges with some waypoints producing simple or complex paths
-- terminal waypoints inside and outside shapes
-- terminal waypoints outside shapes without intersection of the flow segment with the shape
+- **Style Configuration**: Perimeters are set in [StyleConfigurator](../../src/component/mxgraph/config/StyleConfigurator.ts).
+- **Default Perimeters**: `mxGraph` provides rectangle, ellipse, and diamond perimeters, which are sufficient for BPMN shapes.
+- **Orthogonal Projection**: Not used due to past side effects ([#349](https://github.com/process-analytics/bpmn-visualization-js/issues/349), [#295](https://github.com/process-analytics/bpmn-visualization-js/issues/295), [#295#comment](https://github.com/process-analytics/bpmn-visualization-js/issues/295#issuecomment-904336449), [#1399](https://github.com/process-analytics/bpmn-visualization-js/pull/1399)).
+- **Visual Tests**: Extensive tests for associations, message, and sequence flows with various edge configurations, covering:
+  - Edges without waypoints
+  - Edges with some waypoints producing simple or complex paths  
+  - Terminal waypoints inside or outside shapes  
+  - Terminal waypoints outside shapes without intersection of the flow segment with the shape
 
 
 ###### Perimeter Impact on Edges and Markers
