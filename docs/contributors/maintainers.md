@@ -5,9 +5,10 @@
 A Pull Request (referred as PR in the rest of this documentation) should only be merged into the `master` branch by a maintainer, if all
 of these conditions are met:
 - All Checks are green.
-- It has been approved by at least two maintainers. If it was a maintainer who opened the PR, only one approval is needed.
+- It has at least two maintainer approvals (one if it was opened by a maintainer).
 - It has no requested changes.
 - It is up-to-date with the `master` branch.
+- Labels are correctly set for auto-generated release notes.
 
 ## Release process
 
@@ -35,6 +36,14 @@ are automated once the release is triggered but manual actions are required for:
 - Create a new draft release and name it `Next` (the name is not relevant and will be replaced automatically later).
   This ensures that development can continue without impacting the writing of the content of the `In Progress` release. That way,
   if a PR is merged, `release-drafter` will update the `Next` draft release keeping the `In Progress` release untouched.
+
+The GitHub release includes an auto-generated release notes based on merged PR labels. To ensure this works:
+  -  Label all merged PRs in the release. Check [unlabeled PRs](https://github.com/process-analytics/bpmn-visualization-js/pulls?q=is%3Apr+sort%3Aupdated-desc+no%3Alabel+is%3Amerged) to add missing labels.
+  - Ensure that all PRs related to bump production dependencies (e.g., mxGraph) do not have the `skip-changelog` label. Otherwise, they are not included in the changelog.
+  Find such PRs here: [bump prod dependency PR with skip-changelog label](https://github.com/process-analytics/bpmn-visualization-js/pulls?q=is%3Apr+is%3Amerged+%22chore%28deps%29%22+in%3Atitle+NOT+%22chore%28deps-dev%29%22+in%3Atitle+label%3Askip-changelog+).
+
+**Note**: Currently, dependabot can't apply different labels to production and development dependency update PRs, so labels must be checked manually.
+For more details, see the [dependabot labels documentation](https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference#labels--).
 
 #### Set the release version and create a git tag
 
