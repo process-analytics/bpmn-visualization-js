@@ -180,7 +180,7 @@ To ensure that the rendering matches our needs, we have a lot of non regression 
 ###### Perimeter Impact on Edges and Markers
 
 In BPMN source, most BPMN edges include waypoints, which the BPMN specification strongly recommends.
-Some modelers don't set the terminal points on the visual perimeter of the shapes. In this case, using the perimeter sometimes introduces a side effect on the final computed segment of the edge and its markers.
+Some modelers don't set the terminal points on the visual perimeter of the shapes, causing side effects on the last segment of the edge and its markers when using `mxGraph` perimeters:
   1. **Final Waypoint Inside Shape**: An arrow may be displayed inside the terminal element ([#715](https://github.com/process-analytics/bpmn-visualization-js/issues/715)).
   2. **Marker Misalignment With Original Last Edge Segment**: A new segment is created to connect the edge to the shape perimeter. This new segment is not always aligned with the original segment, which creates a visual glitch like in the following screenshots 👇
 
