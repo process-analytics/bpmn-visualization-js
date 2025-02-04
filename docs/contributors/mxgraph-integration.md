@@ -189,7 +189,7 @@ Some modelers don't set the terminal points on the visual perimeter of the shape
 | ![](images/mxgraph-perimeter/markers-01-positioning.png) | ![](images/mxgraph-perimeter/markers-02-rendering.png) |
 
 
-###### Specific implementation to fix the problem
+###### Workaround used to Fix the Problem
 
 The current implementation was done in [PR #1868](https://github.com/process-analytics/bpmn-visualization-js/pull/1868).
 It solves the previous problem by
