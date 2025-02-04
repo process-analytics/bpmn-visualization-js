@@ -242,16 +242,11 @@ This solution would make it possible to implement the following points:
 - ["Restore the experimental pools/subprocess live collapsing"](https://github.com/process-analytics/bpmn-visualization-js/issues/1871)
 
 
-**Alternatives and technical elements that could help for the implementation**
+**Additional considerations**
 
-`mxGraph` provides parameters for positioning the shape and edge in the foreground or background. See links in [PR #1863](https://github.com/process-analytics/bpmn-visualization-js/pull/1863) and [issue #1870](https://github.com/process-analytics/bpmn-visualization-js/issues/1870).
-This is what [bpmn-js](https://github.com/bpmn-io/bpmn-js/) does: shapes are in the foreground and edges in the background.
-
-Information on SVG Q (quadratic) if required:
-- See [PR #1207] (https://github.com/process-analytics/bpmn-visualization-js/pull/1207#issuecomment-810357733) which dealt with a wrong position of an overlay on the edge center.
-- The problem seems to have been introduced by `mxPolyline.paintLine` when rounded is true in the edge style, see `mxShape.addPoints`.
-
-Library that could be used to investigate for intersection: https://github.com/bpmn-io/path-intersection
+- **Foreground/Background Positioning**: `mxGraph` supports foreground/background positioning ([PR #1863](https://github.com/process-analytics/bpmn-visualization-js/pull/1863), [Issue #1870](https://github.com/process-analytics/bpmn-visualization-js/issues/1870)). [bpmn-js](https://github.com/bpmn-io/bpmn-js/) places shapes in the foreground and edges in the background.  
+- **SVG Q (quadratic)**: Enabling `rounded` in the edge style caused an overlay misalignment at the edge center due to `mxPolyline.paintLine`. See `mxShape.addPoints` for details ([PR #1207](https://github.com/process-analytics/bpmn-visualization-js/pull/1207#issuecomment-810357733)).
+- **Intersection Detection**: The [path-intersection](https://github.com/bpmn-io/path-intersection) library could be useful for handling edge intersections.
 
 
 ## Overlays
