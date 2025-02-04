@@ -137,9 +137,9 @@ Check the [GitHub Pull Request #291](https://github.com/process-analytics/bpmn-v
 to see various positioning methods in action.
 
 
-#### Terminal points and Perimeters
+#### Terminal Points and Perimeters
 
-**Note**: all SVG files from this paragraph are generated from this [draw.io file](resources/mxGraph-perimeter.drawio)
+**Note**: All SVG files from this paragraph are generated from this [draw.io file](resources/mxGraph-perimeter.drawio).
 
 ##### Information from mxGrapĥ/maxGraph
 
@@ -158,7 +158,7 @@ All `mxGraph` examples are listed in: https://jgraph.github.io/mxgraph/javascrip
 In particular, the Orthogonal example is available at https://jgraph.github.io/mxgraph/javascript/examples/orthogonal.html.
 
 
-##### Usage of Perimeters in `bpmn-visualization`
+##### Perimeters in `bpmn-visualization`
 
 We always set a perimeter to the style of the shapes we configure. This is done in [StyleConfigurator](../../src/component/mxgraph/config/StyleConfigurator.ts).
 
@@ -177,30 +177,28 @@ To ensure that the rendering matches our needs, we have a lot of non regression 
 - terminal waypoints outside shapes without intersection of the flow segment with the shape
 
 
-###### Impact of a Perimeter on last segment of the Edge and markers
+###### Perimeter Impact on Edges and Markers
 
-In the BPMN source, most of the time, the edges include waypoints (this is highly recommended by the BPMN specification).
+In BPMN source, most BPMN edges include waypoints, which the BPMN specification strongly recommends.
 Some modelers don't set the terminal points on the visual perimeter of the shapes. In this case, using the perimeter sometimes introduces a side effect on the final computed segment of the edge and its markers.
+  1. **Final Waypoint Inside Shape**: An arrow may be displayed inside the terminal element ([#715](https://github.com/process-analytics/bpmn-visualization-js/issues/715)).
+  2. **Marker Misalignment With Original Last Edge Segment**: A new segment is created to connect the edge to the shape perimeter. This new segment is not always aligned with the original segment, which creates a visual glitch like in the following screenshots 👇
 
-The first case is where the final waypoint is inside the shape, like the issue about ["Association Flow arrow sometimes displayed inside the terminal BPMN element"]( https://github.com/process-analytics/bpmn-visualization-js/issues/715).
-
-The second case occurs when the marker (usually an arrow) is not aligned with the original final segment of the edge.
-A new segment is created to connect the edge to the shape perimeter. This new segment is not always aligned with the original segment, which creates a visual glitch like in the following screenshots 👇
-
-| positioning                                              | rendering                                              |
+| Positioning                                              | Rendering                                              |
 |----------------------------------------------------------|--------------------------------------------------------|
 | ![](images/mxgraph-perimeter/markers-01-positioning.png) | ![](images/mxgraph-perimeter/markers-02-rendering.png) |
 
 
 ###### Specific implementation to fix the problem
 
-The current implementation has been done in [PR #1868](https://github.com/process-analytics/bpmn-visualization-js/pull/1868).
-It consists on not using the perimeter when the edge has waypoints and to use the perimeter only when the edge has no waypoints.
+The current implementation was done in [PR #1868](https://github.com/process-analytics/bpmn-visualization-js/pull/1868).
+It solves the previous problem by
+- Ignoring perimeters if the edges have waypoints.
+- Using the perimeters only if the edge has no waypoints.
 
-This is done by a dedicated `BpmnGraphView` class (extending `mxGraphView`) injected in the `BpmnGraph` (extending `mxGraph`) which overrides the `getFloatingPoint` method.
-This method includes the logic to compute the terminal points of the edge:
-- if the edge has waypoints, the perimeter is not used. We take the last non-null points in the points array and use them directly as end points.
-- if the edge has no waypoints, we fall back to the perimeter computation.
+This logic is implemented in `BpmnGraphView` (extends `mxGraphView`), overriding `getFloatingPoint`:
+- With waypoints: Ignore the perimeter. Use the first and the last non-null value in the `points` array as endpoint.
+- Without waypoints: Use perimeter calculation.
 
 **Reminder about `mxGraph` terminal waypoints**
 
@@ -223,7 +221,7 @@ They involve the visualization test diagram `flows.sequence.04.waypoints.03.term
 | ![without projection](images/mxgraph-perimeter/flows.sequence.04.waypoints.03.terminal.outside.shapes.02.segments.no.intersection.with.shapes-snap.png) | ![seq_flow_outside_no_segment_connector_01_default_projection_to_center](https://user-images.githubusercontent.com/27200110/150537056-68d7410b-9675-4bcc-9d01-ce2562965ffc.png) | ![seq_flow_outside_no_segment_connector_02_orthogonal_projection](https://user-images.githubusercontent.com/27200110/150537058-65e645c1-fb80-4f54-8da9-b0c819bbbc7a.png) |
 
 
-###### Wish for the future
+###### Potential future enhancements
 
 The ideal solution would be to use the existing edge segment and calculate the end point at the intersection with the perimeter.
 This would not create a new segment potentially not aligned with the previous one, and would avoid the visual problem.
