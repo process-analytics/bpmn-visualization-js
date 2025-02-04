@@ -210,11 +210,10 @@ So there is a special case when the edge has no waypoints: the array contains 2 
 
 **Limitations of the current implementation**
 
-As the is no additional points computed to have connections on the target shape perimeter, the edge can be too short.
+Edges may appear too short, because no additional points are calculated on the perimeter of the target shape.
 
-The following screenshots demonstrates the problem and shows the rendering when a perimeter is used. The edges have no `EdgeStyle` (STYLE_EDGE not set)
-and the screenshots are taken from [Pull Request #1765](https://github.com/process-analytics/bpmn-visualization-js/pull/1765#issuecomment-1018508771) (2 screenshots at the end).
-They involve the visualization test diagram `flows.sequence.04.waypoints.03.terminal.outside.shapes.02.segments.no.intersection.with.shapes.bpmn`.
+The screenshots below illustrate the problem and the effect of using a perimeter. The edges have no `EdgeStyle` (`STYLE_EDGE` is not set). 
+These images are from [PR #1765](https://github.com/process-analytics/bpmn-visualization-js/pull/1765#issuecomment-1018508771) (2 screenshots at the end) and show the test diagram `flows.sequence.04.waypoints.03.terminal.outside.shapes.02.segments.no.intersection.with.shapes.bpmn`.
 
 | Without Projection (no perimeter)                                                                                                                       | Default (Projection to center)                                                                                                                                                  | Orthogonal Projection (`STYLE_ORTHOGONAL` = 1)                                                                                                                           |
 |---------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
