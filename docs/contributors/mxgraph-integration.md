@@ -202,11 +202,10 @@ This logic is implemented in `BpmnGraphView` (extends `mxGraphView`), overriding
 
 **Reminder about `mxGraph` terminal waypoints**
 
-The points of the cell in the model are copied into the `abspoints` array property of the edge `state` instance.
-This copy process also adds `null` values at the beginning and the end of the array.
-They will later be replaced by the computed terminal points in [mxGraphView.updateFloatingTerminalPoints](https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/mxGraphView.js#L1547) which involves the perimeter if it is defined.
+The points of the cell in the model are copied into the `abspoints` array property of the edge `state` instance, starting and ending with `null`. 
+They will later be replaced by the computed terminal points in [`mxGraphView.updateFloatingTerminalPoints`](https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/mxGraphView.js#L1547) which involves the perimeter if it is defined.
 
-So there is a special case when the edge has no waypoints: the array contains 2 `null` values.
+⚠️ So, if the edge has no waypoints, the array will contain 2 `null' values.
 
 **Limitations of the current implementation**
 
