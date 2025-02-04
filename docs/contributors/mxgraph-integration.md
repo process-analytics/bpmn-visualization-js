@@ -221,16 +221,15 @@ These images are from [PR #1765](https://github.com/process-analytics/bpmn-visua
 
 ###### Potential future enhancements
 
-The ideal solution would be to use the existing edge segment and calculate the end point at the intersection with the perimeter.
-This would not create a new segment potentially not aligned with the previous one, and would avoid the visual problem.
+Align edges by extending them to intersect with the shape perimeter instead of adding a misaligned segment.
 
-![](images/mxgraph-perimeter/markers-03-projection-vs-intersection.png)
-_Edge Markers: comparison between projection and intersection with the shape perimeter_
+- **Intersect with Perimeter**: Calculate the edge endpoint to meet the shape perimeter, preventing alignment issues.  
+- **Fallback to `mxGraph` Perimeter**: If no intersection is found, default to `mxGraph`'s perimeter behavior.  
 
-In case there is no intersection, the fallback to the `mxGraph` standard perimeter usage would be the best solution.
 
-![](images/mxgraph-perimeter/perimeter-no-intersection.png)
-_Usage of perimeter when no intersection with the shape perimeter_
+| **Edge Markers: Projection vs Intersection** | **Perimeter Usage When No Intersection** |  
+|-------------------------------|------------------------------|  
+| ![](images/mxgraph-perimeter/markers-03-projection-vs-intersection.png) | ![](images/mxgraph-perimeter/perimeter-no-intersection.png) |  
 
 
 **Potential fixes**
