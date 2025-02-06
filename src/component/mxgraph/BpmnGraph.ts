@@ -222,6 +222,7 @@ class BpmnGraphView extends GraphView {
   }
 }
 
+// TODO maxgraph@0.10.3 move somewhere else as this is an utility function
 function convertNaNToZero(value: number): number {
   return Number.isNaN(value) ? 0 : value;
 }
