@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-// TODO duplicated with environment-utils.js
+// TODO magraph@0.10.3 duplicated with environment-utils.js
 
 const isMacOS = (): boolean => {
   return process.platform.startsWith('darwin');

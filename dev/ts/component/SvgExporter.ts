@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { Client, SvgCanvas2D, ImageExport, constants, xmlUtils, domUtils, stringUtils, XmlCanvas2D } from '@maxgraph/core';
+import { Client, SvgCanvas2D, ImageExport, constants, xmlUtils, domUtils, stringUtils } from '@maxgraph/core';
 import type { Graph, AlignValue, VAlignValue, OverflowValue, TextDirectionValue } from '@maxgraph/core';
 
 interface SvgExportOptions {
@@ -44,26 +44,9 @@ export class SvgExporter {
     return this.doSvgExport(isFirefox);
   }
 
-  // TODO maxgraph@0.10.2 migration - generate empty content - should be fixed with https://github.com/maxGraph/maxGraph/pull/425
   private doSvgExport(enableForeignObjectForLabel: boolean): string {
-    const svgDocument = this.computeSvg({ scale: 1, border: 25, enableForeignObjectForLabel: enableForeignObjectForLabel });
-
-    const svgAsString = xmlUtils.getXml(svgDocument);
-    // DEBUG - TODO magraph@0.10.2 - attempt to debug empty content
-    console.warn('svgDocument', svgDocument);
-    const xmlDoc = xmlUtils.createXmlDocument();
-    const root = xmlDoc.createElement('data');
-    xmlDoc.appendChild(root);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore -- TODO maxgraph@0.10.2 migration - wrong type in maxGraph XmlCanvas2D constructor, should be Element in constructor - see https://github.com/maxGraph/maxGraph/pull/423
-    const xmlCanvas = new XmlCanvas2D(root);
-    const imgExport = new ImageExport();
-    imgExport.includeOverlays = true;
-    imgExport.drawState(this.graph.getView().getState(this.graph.model.root), xmlCanvas);
-    const xml = xmlUtils.getXml(root);
-    console.warn('xml', xml);
-    // end of DEBUG
-
+    const svgElement = this.computeSvg({ scale: 1, border: 25, enableForeignObjectForLabel: enableForeignObjectForLabel });
+    const svgAsString = xmlUtils.getXml(svgElement);
     return `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 ${svgAsString}

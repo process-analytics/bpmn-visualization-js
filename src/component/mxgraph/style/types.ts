@@ -42,7 +42,8 @@ export interface BpmnCellStyleExtension {
   subProcessKind?: ShapeBpmnSubProcessKind;
 }
 
-// TODO migration maxGraph@0.10.2 check if we can use interface augmentation on CellStyle/CellStateStyle instead of extending the type. This would avoid to cast CellStyle/CellStateStyle everywhere in the code
+// TODO maxgraph@0.10.2 check if we can use interface augmentation on CellStyle/CellStateStyle instead of extending the type. This would avoid to cast CellStyle/CellStateStyle everywhere in the code
+// we'd have to check whether it's accessible to libs using bpmn-visualization, otherwise it's useless.
 export interface BpmnCellStyle extends CellStyle {
   bpmn?: BpmnCellStyleExtension;
 }

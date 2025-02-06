@@ -59,7 +59,7 @@ export class ImageSnapshotConfigurator {
       customSnapshotIdentifier: fileName,
       customSnapshotsDir: this.defaultCustomSnapshotsDir,
       customDiffDir: this.defaultCustomDiffDir,
-      // TODO migration maxgraph 0.10.1 - to fix in the master branch - we may remove this line and enforce the use of withCustomReceivedDir everywhere
+      // TODO magraph@0.10.3 should not be needed in a more recent bpmn-visualization version (0.44.0+), see https://github.com/process-analytics/bpmn-visualization-js/pull/3145
       customReceivedDir: this.defaultCustomDiffDir,
     };
   }
@@ -158,6 +158,5 @@ export class MultiBrowserImageSnapshotThresholds {
   }
 }
 
-// TODO migration maxgraph 0.10.1 - to fix in the master branch - we may make a copy of the original configuration
-// TODO find a better name: consolidate configuration?
+// TODO magraph@0.10.3 should not be needed in a more recent bpmn-visualization version (0.44.0+), see https://github.com/process-analytics/bpmn-visualization-js/pull/3145
 export const withCustomReceivedDir = (options: MatchImageSnapshotOptions): MatchImageSnapshotOptions => ({ ...options, customReceivedDir: options.customDiffDir });

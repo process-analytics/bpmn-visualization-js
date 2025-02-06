@@ -56,6 +56,8 @@ class RetriesCounter {
 
 const retriesCounter = new RetriesCounter();
 
+// TODO magraph@0.10.3 should not be needed in a more recent bpmn-visualization version (0.44.0+), see https://github.com/process-analytics/bpmn-visualization-js/pull/3145
+// --> use the implementation of the master branch
 async function saveAndRegisterImages(matcherContext: MatcherContext, received: Buffer, options: MatchImageSnapshotOptions): Promise<void> {
   const snapshotIdentifier = <string>options.customSnapshotIdentifier;
   // Manage expected and received images

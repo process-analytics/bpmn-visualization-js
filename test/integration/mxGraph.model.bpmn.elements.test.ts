@@ -1700,9 +1700,10 @@ describe('mxGraph model - BPMN elements', () => {
     });
 
     it('Parse a diagram with numbers not parsable as number', () => {
-      // TODO maxgraph@0.10.1 change in maxGraph, throw 'Error: Invalid x supplied'. bpmn-visualization should handle it - wait for new rebase on master (the code changed in recent version)
-      // capture the error and rethrow it with a convenient
-      // OR validate the values during parsing
+      // TODO maxgraph@0.10.3 restore this test when using bpmn-visualization 0.43.0+
+      // the maxGraph behavior is not the same as in mxGraph, it throws 'Error: Invalid x supplied'.
+      // need: capture the error and rethrow it with a convenient message OR validate the values during parsing
+      // bpmn-visualization should handle it with https://github.com/process-analytics/bpmn-visualization-js/pull/3040
 
       expect(() => bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/simple-start-task-end_numbers_not_parsable_as_number.bpmn'))).toThrow(
         `Invalid x supplied.`,

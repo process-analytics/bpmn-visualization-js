@@ -21,6 +21,7 @@ import type { Page } from 'playwright';
 import type { Point } from '@test/shared/visu/bpmn-page-utils';
 import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
 import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
+// TODO magraph@0.10.3 should not be needed in a more recent bpmn-visualization version (0.44.0+), see https://github.com/process-analytics/bpmn-visualization-js/pull/3145
 import { withCustomReceivedDir } from './helpers/visu/image-snapshot-config';
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 import { ZoomType } from '@lib/component/options';
@@ -108,7 +109,7 @@ describe('diagram navigation - zoom and pan with mouse', () => {
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image).toMatchImageSnapshot(
-      // TODO migration maxgraph 0.10.1 - to fix in the master branch - set customReceivedDir
+      // TODO magraph@0.10.3 should not be needed in a more recent bpmn-visualization version (0.44.0+), see https://github.com/process-analytics/bpmn-visualization-js/pull/3145
       withCustomReceivedDir({
         ...config,
         customSnapshotIdentifier: 'initial.zoom',
@@ -155,7 +156,7 @@ describe('diagram navigation - zoom with buttons', () => {
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image).toMatchImageSnapshot(
-      // TODO migration maxgraph 0.10.1 - to fix in the master branch - set customReceivedDir
+      // TODO magraph@0.10.3 should not be needed in a more recent bpmn-visualization version (0.44.0+), see https://github.com/process-analytics/bpmn-visualization-js/pull/3145
       withCustomReceivedDir({
         ...config,
         customSnapshotIdentifier: 'initial.zoom',
@@ -200,7 +201,7 @@ describe('diagram navigation - zoom with buttons and mouse', () => {
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image).toMatchImageSnapshot(
-      // TODO migration maxgraph 0.10.1 - to fix in the master branch - set customReceivedDir
+      // TODO magraph@0.10.3 should not be needed in a more recent bpmn-visualization version (0.44.0+), see https://github.com/process-analytics/bpmn-visualization-js/pull/3145
       withCustomReceivedDir({
         ...config,
         customSnapshotIdentifier: 'initial.zoom',
@@ -220,7 +221,7 @@ describe('diagram navigation - zoom with buttons and mouse', () => {
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image).toMatchImageSnapshot(
-      // TODO migration maxgraph 0.10.1 - to fix in the master branch - set customReceivedDir
+      // TODO magraph@0.10.3 should not be needed in a more recent bpmn-visualization version (0.44.0+), see https://github.com/process-analytics/bpmn-visualization-js/pull/3145
       withCustomReceivedDir({
         ...config,
         customSnapshotIdentifier: 'initial.zoom',

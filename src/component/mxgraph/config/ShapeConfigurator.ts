@@ -52,6 +52,7 @@ export default class ShapeConfigurator {
     this.initMxCellRendererCreateCellOverlays();
   }
 
+  // TODO maxgraph@0.10.3 - registerShape like in maxGraph, see https://github.com/maxGraph/maxGraph/blob/v0.15.0/packages/core/src/view/cell/register-shapes.ts#L46-L66
   private registerShapes(): void {
     // events
     CellRenderer.registerShape(ShapeBpmnElementKind.EVENT_END, EndEventShape);

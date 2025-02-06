@@ -17,7 +17,8 @@ limitations under the License.
 import { expect } from '@jest/globals';
 import toMatchImageSnapshot from 'jest-image-snapshot';
 
-// This is a temporary fix, waiting for the migration of jest.image.ts
+// TODO magraph@0.10.3 should not be needed in a more recent bpmn-visualization version (0.44.0+), see https://github.com/process-analytics/bpmn-visualization-js/pull/3145
+// This is a temporary fix, image attachment is currently not working in the POC
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore not the right signature, but works at runtime

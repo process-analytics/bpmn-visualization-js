@@ -45,10 +45,10 @@ export class StyleConfigurator {
         style.dashPattern = '8 5';
         style.startArrow = 'oval';
         style.startSize = 8;
-        style.startFill = true; // TODO maxgraph@0.1.0 could be removed when maxGraph fixes https://github.com/maxGraph/maxGraph/pull/157
+        style.startFill = true; // TODO maxgraph@0.1.0 could be removed when maxGraph fixes https://github.com/maxGraph/maxGraph/pull/157. Ensure we have stable passing e2e visualization tests prior removing this
         style.startFillColor = StyleDefault.MESSAGE_FLOW_MARKER_START_FILL_COLOR;
         style.endArrow = 'blockThin';
-        style.endFill = true; // TODO maxgraph@0.1.0 could be removed when maxGraph fixes https://github.com/maxGraph/maxGraph/pull/157
+        style.endFill = true; // TODO maxgraph@0.1.0 could be removed when maxGraph fixes https://github.com/maxGraph/maxGraph/pull/157. Ensure we have stable passing e2e visualization tests prior removing this
         style.endFillColor = StyleDefault.MESSAGE_FLOW_MARKER_END_FILL_COLOR;
       },
     ],
@@ -74,7 +74,7 @@ export class StyleConfigurator {
       (style: CellStyle) => {
         style.startArrow = 'diamondThin';
         style.startSize = 18;
-        style.startFill = true; // TODO maxgraph@0.1.0 could be removed when maxGraph fixes https://github.com/maxGraph/maxGraph/pull/157
+        style.startFill = true; // TODO maxgraph@0.1.0 could be removed when maxGraph fixes https://github.com/maxGraph/maxGraph/pull/157. Ensure we have stable passing e2e visualization tests prior removing this
         style.startFillColor = StyleDefault.SEQUENCE_FLOW_CONDITIONAL_FROM_ACTIVITY_MARKER_FILL_COLOR;
       },
     ],
@@ -243,9 +243,9 @@ export class StyleConfigurator {
     style.endSize = arrowDefaultSize;
     style.strokeWidth = 1.5;
     style.rounded = true;
-    // TODO maxgraph@0.10.2: possible maxGraph regression - the rendered edge arcSize seems larger than with mxGraph (also seen with maxgraph 0.1.0)
-    // a better value may be 2.5, this may be due to an extra division by 2 in maxGraph
-    style.arcSize = 2; // in mxGraph@4.2.2 we used 5
+    // TODO maxgraph@0.10.2: possible maxGraph regression - with the original value used with mxGraph, the rendered edge arcSize seems larger here than with mxGraph (also seen with maxGraph 0.1.0)
+    // with mxGraph@4.2.2 we used 5. A better temp value may be 2.5 here (its seems the value must be divided by two to configure maxGraph)
+    style.arcSize = 2;
     style.verticalAlign = 'bottom';
     // The end arrow must be redefined in specific style
     delete style.endArrow;

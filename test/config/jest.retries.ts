@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+// TODO magraph@0.10.3 this configuration file is used in the e2e and performance tests, it has been migrated to support ESM
 import { jest } from '@jest/globals';
 import { isRunningOnCi } from '@test/shared/environment-utils';
 
