@@ -61,8 +61,6 @@ function expectedStrokeWidth(kind: ShapeBpmnElementKind): number {
 
 export function buildExpectedShapeCellStyle(expectedModel: ExpectedShapeModelElement): ComparedBpmnCellStyle {
   const style = buildExpectedCellStyleWithCommonAttributes(expectedModel);
-  // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
-  // expectedStateStyle.shape = <ShapeValue>(<unknown>(!expectedModel.styleShape ? expectedModel.kind : expectedModel.styleShape));
   style.shape = expectedModel.styleShape ?? expectedModel.kind;
   style.verticalAlign = expectedModel.verticalAlign ?? 'middle';
   style.align = expectedModel.align ?? 'center';
@@ -85,6 +83,7 @@ export function buildExpectedShapeCellStyle(expectedModel: ExpectedShapeModelEle
 }
 
 // TODO maxgraph@0.1.0 Here we don't check all properties. This duplicates the other style check functions
+// this was needed for mxGraph because the style property was a string and we had to check it with a regexp
 function buildExpectedShapeStylePropertyRegexp(
   expectedModel:
     | ExpectedShapeModelElement
@@ -151,7 +150,6 @@ function buildShapeMatcher(matcherName: string, matcherContext: MatcherContext, 
 function buildContainerMatcher(matcherName: string, matcherContext: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
   return buildShapeMatcher(matcherName, matcherContext, received, {
     ...expected,
-    // TODO maxgraph@0.1.0 maxGraph "TS2748: Cannot access ambient const enums when the '--isolatedModules' flag is provided." constants.SHAPE.SWIMLANE
     styleShape: 'swimlane',
     isSwimLaneLabelHorizontal: expected.isSwimLaneLabelHorizontal ?? false,
   });

@@ -113,8 +113,6 @@ export default class GraphCellUpdater {
           updateFill(cellStyle, styleUpdate.fill);
         }
 
-        // TODO maxgraph@0.10.2 migration --> ensure that change to apply this to the master branch: graph.model --> model (from maxgraph@0.1.0 migration)
-        // change applied to master in "refactor: split internal registries (#2818)" commit3dfc4967
         model.setStyle(cell, cellStyle);
       }
     });

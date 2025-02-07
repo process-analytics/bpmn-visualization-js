@@ -71,9 +71,10 @@ describe('compute all css class names based on style input', () => {
     ${{ bpmn: { isInitiating: false }, shape: 'bpmn.message-flow-icon' }}                                                                                 | ${false} | ${['bpmn-message-flow-icon', 'bpmn-icon-non-initiating']}
     ${{ bpmn: { isInitiating: true }, shape: 'bpmn.message-flow-icon' }}                                                                                  | ${true}  | ${['bpmn-message-flow-icon', 'bpmn-icon-initiating', 'bpmn-label']}
   `(
-    // TODO maxgraph@0.1.0 find a way to correctly display the style object
+    // TODO maxgraph@0.1.0 find a way to correctly display the style object in the test name (currently it's {"bpmn": [Object]})
     // see also https://jestjs.io/docs/api#1-testeachtablename-fn-timeout
     // partial solution: $style.bpmn.kind
+    // or switch to the test.each syntax using an array to be able to format the test inputs
     'style="$style" / isLabel=$isLabel',
     ({ style, isLabel, expectedClassNames }: { style: BpmnCellStyle; isLabel: boolean; expectedClassNames: string[] }) => {
       expect(computeAllBpmnClassNames(style, isLabel)).toEqual(expectedClassNames);

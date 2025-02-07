@@ -54,11 +54,11 @@ export default class StyleComputer {
     const baseStyleNames: string[] = [bpmnCell.bpmnElement.kind as string];
 
     if (bpmnCell instanceof Shape) {
-      // TODO maxgraph@0.1.0 find a better way for the merge - computeShapeBaseStylesValues and returns a CellStyle for consistency with other methods
+      // TODO maxgraph@0.1.0 find a better way for the merge - method could be renamed to "computeShapeBaseStylesValues" and returns a CellStyle for consistency with other methods
       this.enrichStyleWithShapeInfo(style, bpmnCell);
     } else {
       baseStyleNames.push(...StyleComputer.computeEdgeBaseStyleNames(bpmnCell));
-      // TODO maxgraph@0.1.0 find a better way for the merge - computeEdgeBaseStylesValues and returns a CellStyle for consistency with other methods
+      // TODO maxgraph@0.1.0 find a better way for the merge - method could be renamed to "computeEdgeBaseStylesValues" and returns a CellStyle for consistency with other methods
       this.enrichStyleWithEdgeInfo(style, bpmnCell);
     }
 
@@ -118,7 +118,7 @@ export default class StyleComputer {
     style.bpmn.markers = bpmnElement.markers;
   }
 
-  // TODO maxgraph@0.10.1 switch from static method to function (same in other places of this class) --> this has been done in master branch
+  // TODO maxgraph@0.10.1 switch from static method to function (same in other places of this class) --> this has been done in master branch with https://github.com/process-analytics/bpmn-visualization-js/pull/3041
   // This applies to the current implementation and to all static methods of this class
   private static computeEdgeBaseStyleNames(edge: Edge): string[] {
     const styles: string[] = [];

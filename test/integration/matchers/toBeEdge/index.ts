@@ -75,7 +75,7 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement |
     styleViewState: buildExpectedEdgeCellStyle(expectedModel),
     edge: true,
     vertex: false,
-    parent: { id: parentId ? parentId : getDefaultParentId() }, // TODO maxgraph@0.1.0 use ?? instead (in master branch)
+    parent: { id: parentId ? parentId : getDefaultParentId() }, // TODO maxgraph@0.1.0 use ?? instead (do this change in master branch)
     overlays: expectedModel.overlays,
   };
 

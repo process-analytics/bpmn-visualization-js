@@ -20,6 +20,7 @@ import { SvgCanvas2D, ConnectorShape } from '@maxgraph/core';
 import type { BpmnCellStateStyle } from '../style/types';
 
 // TODO maxgraph@0.1.0 remove the BpmnConnector class to use the new support of endFillColor and starFillColor provided by https://github.com/maxGraph/maxGraph/issues/201
+// Ensure we have stable passing e2e visualization tests prior removing this class
 export class BpmnConnector extends ConnectorShape {
   constructor(points: Point[], stroke: string, strokewidth?: number) {
     super(points, stroke, strokewidth);

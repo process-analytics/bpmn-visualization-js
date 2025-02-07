@@ -48,7 +48,8 @@ module.exports = {
     'expect-playwright',
     './test/config/jest.retries.ts',
     // jest-image-snapshot configuration doesn't work with setupFiles, fix with setupFilesAfterEnv: see https://github.com/testing-library/jest-dom/issues/122#issuecomment-650520461
-    // TODO tmp implementation (no attachment in the report)
+    // TODO magraph@0.10.3 should not be needed in a more recent bpmn-visualization version (0.44.0+), see https://github.com/process-analytics/bpmn-visualization-js/pull/3145
+    // tmp implementation (no attachment in the report), restore the original one
     './test/config/jest.image.tmp.ts',
     // './test/config/jest.image.ts',
     // need playwright globals to be available, so after environment

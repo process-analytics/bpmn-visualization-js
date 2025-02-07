@@ -187,7 +187,7 @@ describe('BPMN Shapes with overlays', () => {
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image).toMatchImageSnapshot(
-      // TODO migration maxgraph 0.10.1 - to fix in the master branch - set customReceivedDir
+      // TODO magraph@0.10.3 should not be needed in a more recent bpmn-visualization version (0.44.0+), see https://github.com/process-analytics/bpmn-visualization-js/pull/3145
       withCustomReceivedDir({
         ...config,
         customSnapshotIdentifier: `add.overlay.on.position.${position}`,
@@ -206,7 +206,7 @@ describe('BPMN Shapes with overlays', () => {
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
     expect(image).toMatchImageSnapshot(
-      // TODO migration maxgraph 0.10.1 - to fix in the master branch - set customReceivedDir
+      // TODO magraph@0.10.3 should not be needed in a more recent bpmn-visualization version (0.44.0+), see https://github.com/process-analytics/bpmn-visualization-js/pull/3145
       withCustomReceivedDir({
         ...config,
         customSnapshotIdentifier: 'remove.all.overlays.of.shape',
@@ -256,7 +256,7 @@ describe('BPMN Edges with overlays', () => {
       const image = await page.screenshot({ fullPage: true });
       const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
       expect(image).toMatchImageSnapshot(
-        // TODO migration maxgraph 0.10.1 - to fix in the master branch - set customReceivedDir
+        // TODO magraph@0.10.3 should not be needed in a more recent bpmn-visualization version (0.44.0+), see https://github.com/process-analytics/bpmn-visualization-js/pull/3145
         withCustomReceivedDir({
           ...config,
           customSnapshotIdentifier: `add.overlay.on.${edgeKind}.flow`,
@@ -276,7 +276,7 @@ describe('BPMN Edges with overlays', () => {
       const image = await page.screenshot({ fullPage: true });
       const config = imageSnapshotConfigurator.getConfig(bpmnDiagramName);
       expect(image).toMatchImageSnapshot(
-        // TODO migration maxgraph 0.10.1 - to fix in the master branch - set customReceivedDir
+        // TODO magraph@0.10.3 should not be needed in a more recent bpmn-visualization version (0.44.0+), see https://github.com/process-analytics/bpmn-visualization-js/pull/3145
         withCustomReceivedDir({
           ...config,
           customSnapshotIdentifier: `remove.all.overlays.of.${edgeKind}.flow`,
@@ -488,7 +488,7 @@ describe('Overlay style', () => {
     const image = await page.screenshot({ fullPage: true });
     const config = imageSnapshotConfigurator.getConfig(style);
     expect(image).toMatchImageSnapshot(
-      // TODO migration maxgraph 0.10.1 - to fix in the master branch - set customReceivedDir
+      // TODO magraph@0.10.3 should not be needed in a more recent bpmn-visualization version (0.44.0+), see https://github.com/process-analytics/bpmn-visualization-js/pull/3145
       withCustomReceivedDir({
         ...config,
         customSnapshotIdentifier: `add.overlay.with.custom.${style}`,
