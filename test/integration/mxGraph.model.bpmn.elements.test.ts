@@ -1705,6 +1705,8 @@ describe('mxGraph model - BPMN elements', () => {
       // need: capture the error and rethrow it with a convenient message OR validate the values during parsing
       // bpmn-visualization should handle it with https://github.com/process-analytics/bpmn-visualization-js/pull/3040
 
+      // Note that the bpmn-visualization code may be updated, as maxGraph provides a mathUtils.isNumber() method.
+
       expect(() => bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/simple-start-task-end_numbers_not_parsable_as_number.bpmn'))).toThrow(
         `Invalid x supplied.`,
       );

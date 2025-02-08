@@ -25,6 +25,9 @@ import externals from 'rollup-plugin-node-externals';
 import sizes from 'rollup-plugin-sizes';
 
 import typescript from 'rollup-plugin-typescript2';
+// TODO maxgraph 0.15.1 remove commonjs plugin once fxp v5+ is used as it supports ESM.
+// This plugin was only used for fxp and mxgraph. MaxGraph is ESM only
+// See also https://github.com/process-analytics/bpmn-visualization-js/pull/3278
 import commonjs from '@rollup/plugin-commonjs'; // at least, needed to bundle mxGraph which is only available as a CommonJS module
 import resolve from '@rollup/plugin-node-resolve';
 

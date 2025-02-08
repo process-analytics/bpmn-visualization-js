@@ -194,6 +194,7 @@ export default class ShapeConfigurator {
   }
 
   initMxCellRendererCreateCellOverlays(): void {
+    // TODO maxgraph@0.15.0 - simplify this once maxGraph allow to use a different shape for an overlay - https://github.com/maxGraph/maxGraph/issues/28
     CellRenderer.prototype.createCellOverlays = function (state: CellState) {
       const graph = state.view.graph;
       const overlays = graph.getCellOverlays(state.cell);
@@ -223,8 +224,7 @@ export default class ShapeConfigurator {
           overlayShape.dialect = state.view.graph.dialect;
           overlayShape.overlay = currentOverlay;
 
-          // The 'initializeOverlay' signature forces us to hardly cast the overlayShape
-          this.initializeOverlay(state, <ImageShape>overlayShape);
+          this.initializeOverlay(state, overlayShape);
           this.installCellOverlayListeners(state, currentOverlay, overlayShape);
 
           if (currentOverlay.cursor != null) {

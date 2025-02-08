@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { MarkerIdentifier } from '../style';
-import type { Cell, Point, Shape, AbstractCanvas2D } from '@maxgraph/core';
+import type { AbstractCanvas2D, Cell, MarkerFactoryFunction, Point, Shape } from '@maxgraph/core';
 import { MarkerShape } from '@maxgraph/core';
 
 /**
@@ -31,7 +31,7 @@ export default class MarkerConfigurator {
     // https://github.com/jgraph/drawio/blob/f539f1ff362e76127dcc7e68b5a9d83dd7d4965c/src/main/webapp/js/mxgraph/Shapes.js#L2796
 
     // prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
-    const createMarker = (
+    const createMarker: MarkerFactoryFunction = (
       c: AbstractCanvas2D,
       _shape: Shape,
       _type: string,
@@ -39,7 +39,7 @@ export default class MarkerConfigurator {
       unitX: number,
       unitY: number,
       size: number,
-      _source: Cell,
+      _source: boolean,
       strokewidth: number,
     ): (() => void) => {
       const nx = unitX * (size + strokewidth + 4);
