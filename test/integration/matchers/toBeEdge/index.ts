@@ -86,8 +86,7 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement |
         id: `messageFlowIcon_of_${id}`,
         value: null, // maxGraph now set to 'null', mxGraph set to 'undefined'
         styleRawFromModelOrJestExpect: expect.objectContaining(<BpmnCellStyle>{
-          // TODO maxgraph@0.1.0 remove forcing type when maxGraph fixes its types
-          shape: <ShapeValue>BpmnStyleIdentifier.MESSAGE_FLOW_ICON,
+          shape: BpmnStyleIdentifier.MESSAGE_FLOW_ICON,
           // TODO maxgraph@0.1.0 duplicated logic to compute the 'isInitiating' property. Update the expectedModel to store a boolean instead of a string
           // duplication exists in the master branch (it is fixed in bpmn-visualization 0.43.0)
           bpmn: { isInitiating: expectedModel.messageVisibleKind == MessageVisibleKind.INITIATING },
