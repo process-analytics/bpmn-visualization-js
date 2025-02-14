@@ -66,7 +66,6 @@ import { BpmnVisualization, ShapeBpmnElementKind } from '@lib/bpmn-visualization
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace jest {
-    // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Since we are overriding an existing interface in Jest, it is not possible to convert it to a type.
     interface Matchers<R> {
       toBeCell(): R;
       toBeCellWithParentAndGeometry(modelElement: ExpectedCellWithGeometry): R;
