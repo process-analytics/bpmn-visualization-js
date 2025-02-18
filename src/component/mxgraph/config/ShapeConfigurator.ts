@@ -224,9 +224,7 @@ export default class ShapeConfigurator {
           overlayShape.dialect = state.view.graph.dialect;
           overlayShape.overlay = currentOverlay;
 
-          // TODO migration maxgraph@0.15.0 - cast could be removed starting with maxGraph@0.15.1
-          // The 'initializeOverlay' signature forces us to hardly cast the overlayShape
-          this.initializeOverlay(state, <ImageShape>overlayShape);
+          this.initializeOverlay(state, overlayShape);
           this.installCellOverlayListeners(state, currentOverlay, overlayShape);
 
           if (currentOverlay.cursor != null) {
