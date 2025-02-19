@@ -16,6 +16,22 @@ limitations under the License.
 
 const { moduleNameMapper } = require('../config/ts-jest.cjs');
 
+// TODO check if we can run with ESM support, currently execution fails
+// f-x-p is supposed to provide a CommonJS support
+//     Cannot find module 'fast-xml-parser' from 'src/component/parser/xml/BpmnXmlParser.ts'
+//
+//     Require stack:
+//       src/component/parser/xml/BpmnXmlParser.ts
+//       test/unit/component/parser/xml/BpmnXmlParser.omnitracker-bpmn.11_5.test.ts
+//
+//       18 | import type { ParserOptions } from '../../options';
+//       19 |
+//     > 20 | import { XMLParser, type X2jOptions } from 'fast-xml-parser';
+//          | ^
+//       21 |
+//       22 | type Replacement = {
+//       23 |   regex: RegExp;
+
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
   rootDir: '../..',
