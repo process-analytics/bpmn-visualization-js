@@ -16,8 +16,9 @@ limitations under the License.
 
 const { moduleNameMapper } = require('../config/ts-jest.cjs');
 
-// TODO check if we can run with ESM support, currently execution fails
-// f-x-p is supposed to provide a CommonJS support
+// TODO fail with f-x-p 5.0.1
+// check if we can run with ESM support, currently execution fails
+// f-x-p is supposed to provide a CommonJS support, see https://github.com/NaturalIntelligence/fast-xml-parser/issues/713
 //     Cannot find module 'fast-xml-parser' from 'src/component/parser/xml/BpmnXmlParser.ts'
 //
 //     Require stack:
