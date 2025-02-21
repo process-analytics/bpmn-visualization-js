@@ -30,8 +30,10 @@ const xml = `<?xml version="1.0"?>
 
 const parser = new XMLParser();
 const parsedObject = parser.parse(xml);
+// eslint-disable-next-line no-console -- CLI
 console.log('parsedObject', JSON.stringify(parsedObject, null, 2));
 
 const builder = new XMLBuilder();
 const xmlContent = builder.build({ note: 'hello' });
+// eslint-disable-next-line no-console -- CLI
 console.log('xmlContent', xmlContent);
