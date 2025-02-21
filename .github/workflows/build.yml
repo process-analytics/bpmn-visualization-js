@@ -82,7 +82,7 @@ jobs:
       - name: Test Application
         id: 'test_unit'
         run: npm run test:unit ${{ matrix.os.coverage }}
-        env:
+#        env:
           # See also https://making.close.com/posts/finding-the-cause-of-a-memory-leak-in-jest
           # TMP give a try after bump of babel/traverse
 #          NODE_OPTIONS: '--max-old-space-size=4096'
