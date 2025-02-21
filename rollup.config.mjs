@@ -88,7 +88,7 @@ const configESM = {
   },
 };
 
-export default [configESM];
+export default [configIIFE, configIIFEMinified, configESM];
 
 // =====================================================================================================================
 // helpers
