@@ -108,7 +108,7 @@
     "es-toolkit": "~1.31.0",
     "fast-xml-parser": "5.0.6",
     "mxgraph": "4.2.2",
-    "strnum": "1.0.5"
+    "strnum": "2.0.4"
   },
   "devDependencies": {
     "@asciidoctor/core": "~3.0.4",
