@@ -81,6 +81,9 @@ jobs:
       - name: Test Application
         id: 'test_unit'
         run: npm run test:unit ${{ matrix.os.coverage }}
+        env:
+          # TMP give a try after bump of babel/traverse
+          NODE_OPTIONS=--max-old-space-size=4096
       - name: Upload unit test results
         if: ${{ failure() && steps.test_unit.outcome == 'failure' }}
         uses: actions/upload-artifact@v4
