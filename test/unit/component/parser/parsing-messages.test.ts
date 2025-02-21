@@ -34,6 +34,11 @@ describe('parsing message collector', () => {
     jest.clearAllMocks();
   });
 
+  // suggested in https://jsschools.com/javascript/how-to-conquer-memory-leaks-in-jest-best-practice/
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
   const parsingMessageCollector = new ParsingMessageCollector();
 
   describe('console.warn when warning is registered', () => {
