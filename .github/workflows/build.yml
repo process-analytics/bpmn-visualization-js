@@ -56,8 +56,9 @@ jobs:
         # syntax inspired from https://github.community/t5/GitHub-Actions/Using-a-matrix-defined-input-for-a-custom-action/m-p/32032/highlight/true#M988
         os:
           - { name: ubuntu-24.04, coverage: '-- --coverage' }
-          - { name: macos-13 }
-          - { name: windows-2022 }
+#          TMP disable while investigating unit test failures on ubuntu
+#          - { name: macos-13 }
+#          - { name: windows-2022 }
     permissions:
       # SonarCloud: checks and pull-requests
       checks: write
@@ -82,8 +83,9 @@ jobs:
         id: 'test_unit'
         run: npm run test:unit ${{ matrix.os.coverage }}
         env:
+          # See also https://making.close.com/posts/finding-the-cause-of-a-memory-leak-in-jest
           # TMP give a try after bump of babel/traverse
-          NODE_OPTIONS: '--max-old-space-size=4096'
+#          NODE_OPTIONS: '--max-old-space-size=4096'
       - name: Upload unit test results
         if: ${{ failure() && steps.test_unit.outcome == 'failure' }}
         uses: actions/upload-artifact@v4
