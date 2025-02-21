@@ -18,7 +18,7 @@ import { mxClient } from './mxgraph/initializer';
 
 // WARN: this constant is automatically updated at release time by the 'manage-version-in-files.mjs' script.
 // So, if you modify the name of this file or this constant, please update the script accordingly.
-const libraryVersion = '0.45.0-post';
+const libraryVersion = '0.45.1-post';
 
 /**
  * Returns the version of `bpmn-visualization` and the version of its dependencies.
