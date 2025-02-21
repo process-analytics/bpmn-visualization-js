@@ -23,7 +23,7 @@ import type { ParsingMessageCollector } from '../../parsing-messages';
 import { ShapeBpmnElementKind } from '../../../../model/bpmn/internal';
 import { AssociationFlow } from '../../../../model/bpmn/internal/edge/flows';
 import ShapeBpmnElement from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
-import { ensureIsArray } from '../../../helpers/array-utils';
+import { ensureIsArray } from '../../../helpers/array-utilities';
 import { GroupUnknownCategoryValueWarning } from '../warnings';
 
 export type RegisteredEventDefinition = (Pick<TEventDefinition, 'id'> & Pick<TLinkEventDefinition, 'source' | 'target'>) & {

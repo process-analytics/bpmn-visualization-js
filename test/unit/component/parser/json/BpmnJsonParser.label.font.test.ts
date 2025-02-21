@@ -19,8 +19,8 @@ limitations under the License.
 
 import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
 
-import { expectAsWarning, parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector, verifyLabelFont } from '../../../helpers/JsonTestUtils';
-import { shapeBpmnElementKindForLabelTests } from '../../../helpers/TestUtils';
+import { expectAsWarning, parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector, verifyLabelFont } from '../../../helpers/JsonTestUtilities';
+import { shapeBpmnElementKindForLabelTests } from '../../../helpers/TestUtilities';
 
 import { LabelStyleMissingFontWarning } from '@lib/component/parser/json/warnings';
 

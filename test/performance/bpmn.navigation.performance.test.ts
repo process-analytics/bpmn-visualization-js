@@ -14,18 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { ChartData, PerformanceMetric } from './helpers/perf-utils';
-import type { Point } from '@test/shared/visu/bpmn-page-utils';
+import type { ChartData, PerformanceMetric } from './helpers/perf-utilities';
+import type { Point } from '@test/shared/visu/bpmn-page-utilities';
 
 import * as fs from 'node:fs';
 
-import { performanceDataFilePath } from './helpers/file-utils';
+import { performanceDataFilePath } from './helpers/file-utilities';
 import { ChromiumMetricsCollector } from './helpers/metrics-chromium';
-import { calculateMetrics } from './helpers/perf-utils';
+import { calculateMetrics } from './helpers/perf-utilities';
 
 import { ZoomType } from '@lib/component/options';
-import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
-import { delay } from '@test/shared/visu/test-utils';
+import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utilities';
+import { delay } from '@test/shared/visu/test-utilities';
 
 const metricsArray: PerformanceMetric[] = [];
 

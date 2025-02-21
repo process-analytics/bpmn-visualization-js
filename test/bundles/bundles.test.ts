@@ -15,12 +15,12 @@ limitations under the License.
 */
 
 import 'jest-playwright-preset';
-import type { TargetedPageConfiguration } from '@test/shared/visu/bpmn-page-utils';
+import type { TargetedPageConfiguration } from '@test/shared/visu/bpmn-page-utilities';
 import type { Page } from 'playwright';
 
 import path from 'node:path';
 
-import { BpmnPageSvgTester } from '@test/shared/visu/bpmn-page-utils';
+import { BpmnPageSvgTester } from '@test/shared/visu/bpmn-page-utilities';
 
 describe('bundles', () => {
   it('IIFE bundle - should generate BPMN Diagram SVG', async () => {

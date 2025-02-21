@@ -18,8 +18,8 @@ import type { ExpectedEdgeModelElement, ExpectedShapeModelElement } from './help
 import type { mxCell } from 'mxgraph';
 
 import { initializeBpmnVisualizationWithContainerId } from './helpers/bpmn-visualization-initialization';
-import { HtmlElementLookup } from './helpers/html-utils';
-import { buildReceivedResolvedModelCellStyle, buildReceivedViewStateStyle } from './matchers/matcher-utils';
+import { HtmlElementLookup } from './helpers/html-utilities';
+import { buildReceivedResolvedModelCellStyle, buildReceivedViewStateStyle } from './matchers/matcher-utilities';
 import { buildExpectedEdgeCellStyle } from './matchers/toBeEdge';
 import { buildExpectedShapeCellStyle } from './matchers/toBeShape';
 

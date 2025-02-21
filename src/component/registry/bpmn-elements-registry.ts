@@ -19,8 +19,8 @@ import type { BpmnElement, BpmnSemantic, CssClassesRegistry, ElementsRegistry, O
 import type { BpmnElementKind } from '../../model/bpmn/internal';
 import type { BpmnGraph } from '../mxgraph/BpmnGraph';
 
-import { ensureIsArray } from '../helpers/array-utils';
-import { computeBpmnBaseClassName } from '../mxgraph/renderer/style-utils';
+import { ensureIsArray } from '../helpers/array-utilities';
+import { computeBpmnBaseClassName } from '../mxgraph/renderer/style-utilities';
 
 import { createNewCssRegistry, type CssClassesRegistryImpl } from './css-registry';
 import { createNewOverlaysRegistry } from './overlays-registry';

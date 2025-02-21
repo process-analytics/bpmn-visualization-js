@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { ExpectedOverlay } from '../matchers/matcher-utils';
+import type { ExpectedOverlay } from '../matchers/matcher-utilities';
 import type {
   FlowKind,
   GlobalTaskKind,
@@ -59,7 +59,7 @@ import {
   toBeTextAnnotation,
   toBeUserTask,
 } from '../matchers';
-import { getCell } from '../matchers/matcher-utils';
+import { getCell } from '../matchers/matcher-utilities';
 
 import { BpmnVisualization, ShapeBpmnElementKind } from '@lib/bpmn-visualization';
 

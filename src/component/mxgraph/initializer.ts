@@ -52,7 +52,7 @@ export const mxRectangleShape = mxgraph.mxRectangleShape;
 /** @internal */
 export const mxSvgCanvas2D = mxgraph.mxSvgCanvas2D;
 /** @internal */
-export const mxUtils = mxgraph.mxUtils;
+export const mxUtilities = mxgraph.mxUtils;
 
 /** @internal */
 declare global {

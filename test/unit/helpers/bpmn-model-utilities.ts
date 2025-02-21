@@ -16,7 +16,7 @@ limitations under the License.
 
 import type BpmnModel from '@lib/model/bpmn/internal/BpmnModel';
 
-import { ensureIsArray } from '@lib/component/helpers/array-utils';
+import { ensureIsArray } from '@lib/component/helpers/array-utilities';
 import { ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';
 import { Edge } from '@lib/model/bpmn/internal/edge/edge';
 import { AssociationFlow, MessageFlow, SequenceFlow } from '@lib/model/bpmn/internal/edge/flows';

@@ -18,7 +18,7 @@ import type { BuildEventDefinition, BuildNotBoundaryEventKind } from '../../../h
 import type { TEventDefinition } from '@lib/model/bpmn/json/baseElement/rootElement/eventDefinition';
 
 import { EventDefinitionOn } from '../../../helpers/JsonBuilder';
-import { eventDefinitionsParameters, executeEventCommonTests, testMustConvertShapes } from '../../../helpers/TestUtils.BpmnJsonParser.event';
+import { eventDefinitionsParameters, executeEventCommonTests, testMustConvertShapes } from '../../../helpers/TestUtilities.BpmnJsonParser.event';
 
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
 

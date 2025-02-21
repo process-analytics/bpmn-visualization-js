@@ -19,8 +19,8 @@ limitations under the License.
 
 import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
 
-import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes, verifyLabelBounds } from '../../../helpers/JsonTestUtils';
-import { shapeBpmnElementKindForLabelTests } from '../../../helpers/TestUtils';
+import { parseJsonAndExpectOnlyEdges, parseJsonAndExpectOnlyFlowNodes, verifyLabelBounds } from '../../../helpers/JsonTestUtilities';
+import { shapeBpmnElementKindForLabelTests } from '../../../helpers/TestUtilities';
 
 describe('parse bpmn as json for label bounds', () => {
   describe.each(shapeBpmnElementKindForLabelTests)('parse bpmn as json for label bounds on %s', sourceKind => {

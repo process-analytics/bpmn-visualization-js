@@ -20,7 +20,7 @@ import type { TTask } from '@lib/model/bpmn/json/baseElement/flowNode/activity/t
 import type { TStartEvent } from '@lib/model/bpmn/json/baseElement/flowNode/event';
 import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
 
-import { ensureIsArray } from '@lib/component/helpers/array-utils';
+import { ensureIsArray } from '@lib/component/helpers/array-utilities';
 import BpmnXmlParser from '@lib/component/parser/xml/BpmnXmlParser';
 import { readFileSync } from '@test/shared/file-helper';
 

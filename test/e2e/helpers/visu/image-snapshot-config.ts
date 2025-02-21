@@ -18,7 +18,7 @@ import type { MatchImageSnapshotOptions } from 'jest-image-snapshot';
 
 import path from 'node:path';
 
-import { configLog, getSimplePlatformName, getTestedBrowserFamily } from '@test/shared/visu/test-utils';
+import { configLog, getSimplePlatformName, getTestedBrowserFamily } from '@test/shared/visu/test-utilities';
 
 export interface ImageSnapshotThresholdConfig {
   linux?: number;

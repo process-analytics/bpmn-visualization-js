@@ -16,7 +16,7 @@ limitations under the License.
 
 import type { mxAbstractCanvas2D, mxPoint } from 'mxgraph';
 
-import { mxgraph, mxSvgCanvas2D, mxUtils } from '../initializer';
+import { mxgraph, mxSvgCanvas2D, mxUtilities } from '../initializer';
 import { BpmnStyleIdentifier } from '../style';
 
 export class BpmnConnector extends mxgraph.mxConnector {
@@ -34,12 +34,12 @@ export class BpmnConnector extends mxgraph.mxConnector {
     c.setDashed(false, false);
 
     if (sourceMarker != null) {
-      c.setFillColor(mxUtils.getValue(this.style, BpmnStyleIdentifier.EDGE_START_FILL_COLOR, this.stroke));
+      c.setFillColor(mxUtilities.getValue(this.style, BpmnStyleIdentifier.EDGE_START_FILL_COLOR, this.stroke));
       sourceMarker();
     }
 
     if (targetMarker != null) {
-      c.setFillColor(mxUtils.getValue(this.style, BpmnStyleIdentifier.EDGE_END_FILL_COLOR, this.stroke));
+      c.setFillColor(mxUtilities.getValue(this.style, BpmnStyleIdentifier.EDGE_END_FILL_COLOR, this.stroke));
       targetMarker();
     }
   }

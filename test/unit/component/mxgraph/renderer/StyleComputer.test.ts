@@ -33,7 +33,7 @@ import {
   ShapeBpmnEventDefinitionKind,
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
-  ShapeUtil,
+  ShapeUtility,
 } from '@lib/model/bpmn/internal';
 import Bounds from '@lib/model/bpmn/internal/Bounds';
 import { Edge } from '@lib/model/bpmn/internal/edge/edge';
@@ -494,7 +494,7 @@ describe('Style Computer', () => {
       }
 
       describe('shapes', () => {
-        it.each(Object.values(ShapeUtil.flowNodeKinds()))('%s', (kind: ShapeBpmnElementKind) => {
+        it.each(Object.values(ShapeUtility.flowNodeKinds()))('%s', (kind: ShapeBpmnElementKind) => {
           const shape = newShape(newShapeBpmnElement(kind), newLabelExtension('#010101'));
           shape.extensions.fillColor = '#000003';
           shape.extensions.strokeColor = '#FF0203';

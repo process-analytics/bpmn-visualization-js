@@ -14,17 +14,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { ShapeBpmnElementKind, ShapeUtil } from '@lib/model/bpmn/internal';
+import { ShapeBpmnElementKind, ShapeUtility } from '@lib/model/bpmn/internal';
 
 describe('ShapeUtil', () => {
   it('top level bpmn event kinds', () => {
-    const events = ShapeUtil.eventKinds();
+    const events = ShapeUtility.eventKinds();
     expect(events).toContain(ShapeBpmnElementKind.EVENT_END);
     expect(events).toContain(ShapeBpmnElementKind.EVENT_START);
   });
 
   it('task kinds', () => {
-    const tasks = ShapeUtil.taskKinds();
+    const tasks = ShapeUtility.taskKinds();
     expect(tasks).toContain(ShapeBpmnElementKind.TASK);
     expect(tasks).toContain(ShapeBpmnElementKind.TASK_USER);
   });
@@ -42,18 +42,18 @@ describe('ShapeUtil', () => {
       [ShapeBpmnElementKind.GROUP],
       [ShapeBpmnElementKind.TEXT_ANNOTATION],
     ])('%s', (bpmnKind: ShapeBpmnElementKind) => {
-      expect(ShapeUtil.isPoolOrLane(bpmnKind)).toBeFalsy();
+      expect(ShapeUtility.isPoolOrLane(bpmnKind)).toBeFalsy();
     });
   });
 
   describe('Reference kinds cannot be modified', () => {
     it.each`
       kind            | kindsFunction
-      ${'activities'} | ${() => ShapeUtil.activityKinds()}
-      ${'events'}     | ${() => ShapeUtil.eventKinds()}
-      ${'flow nodes'} | ${() => ShapeUtil.flowNodeKinds()}
-      ${'gateways'}   | ${() => ShapeUtil.gatewayKinds()}
-      ${'tasks'}      | ${() => ShapeUtil.taskKinds()}
+      ${'activities'} | ${() => ShapeUtility.activityKinds()}
+      ${'events'}     | ${() => ShapeUtility.eventKinds()}
+      ${'flow nodes'} | ${() => ShapeUtility.flowNodeKinds()}
+      ${'gateways'}   | ${() => ShapeUtility.gatewayKinds()}
+      ${'tasks'}      | ${() => ShapeUtility.taskKinds()}
     `('$kind', ({ kindsFunction }: { kindsFunction: () => string[] }) => {
       const kinds = kindsFunction();
 

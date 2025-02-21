@@ -25,10 +25,10 @@ import type {
   ExpectedIntermediateCatchEventModelElement,
   ExpectedIntermediateThrowEventModelElement,
 } from '../../helpers/model-expect';
-import type { BpmnCellStyle, ExpectedCell } from '../matcher-utils';
+import type { BpmnCellStyle, ExpectedCell } from '../matcher-utilities';
 
 import { getDefaultParentId } from '../../helpers/model-expect';
-import { buildCellMatcher, buildExpectedCellStyleWithCommonAttributes, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
+import { buildCellMatcher, buildExpectedCellStyleWithCommonAttributes, buildReceivedCellWithCommonAttributes } from '../matcher-utilities';
 
 import { mxConstants } from '@lib/component/mxgraph/initializer';
 import { ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';

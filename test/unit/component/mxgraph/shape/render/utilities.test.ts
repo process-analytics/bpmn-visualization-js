@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { orderActivityMarkers } from '@lib/component/mxgraph/shape/render/utils';
+import { orderActivityMarkers } from '@lib/component/mxgraph/shape/render/utilities';
 import { ShapeBpmnMarkerKind } from '@lib/model/bpmn/internal';
 
 function computeAllPermutations(array: string[]): string[][][] {

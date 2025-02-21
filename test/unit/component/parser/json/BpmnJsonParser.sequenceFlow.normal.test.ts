@@ -18,7 +18,7 @@ import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/root
 import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
 
 import { verifyEdge } from '../../../helpers/bpmn-model-expect';
-import { parseJsonAndExpectOnlyEdges } from '../../../helpers/JsonTestUtils';
+import { parseJsonAndExpectOnlyEdges } from '../../../helpers/JsonTestUtilities';
 
 import { Waypoint } from '@lib/model/bpmn/internal/edge/edge';
 

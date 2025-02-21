@@ -18,8 +18,8 @@ import type { BuildEventDefinition, BuildNotBoundaryEventKind } from '../../../h
 
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
 import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilder';
-import { parseJsonAndExpectEvent } from '../../../helpers/JsonTestUtils';
-import { executeEventCommonTests } from '../../../helpers/TestUtils.BpmnJsonParser.event';
+import { parseJsonAndExpectEvent } from '../../../helpers/JsonTestUtilities';
+import { executeEventCommonTests } from '../../../helpers/TestUtilities.BpmnJsonParser.event';
 
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
 

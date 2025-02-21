@@ -22,7 +22,7 @@ import type { ShapeBpmnIntermediateCatchEvent, ShapeBpmnIntermediateThrowEvent }
 import type { EdgeExtensions, LabelExtensions, ShapeExtensions } from '@lib/model/bpmn/internal/types';
 import type { TProcess } from '@lib/model/bpmn/json/baseElement/rootElement/rootElement';
 
-import { FlowKind, MessageVisibleKind, SequenceFlowKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind, ShapeBpmnEventDefinitionKind, ShapeUtil } from '@lib/model/bpmn/internal';
+import { FlowKind, MessageVisibleKind, SequenceFlowKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind, ShapeBpmnEventDefinitionKind, ShapeUtility } from '@lib/model/bpmn/internal';
 import { SequenceFlow } from '@lib/model/bpmn/internal/edge/flows';
 import { ShapeBpmnActivity, ShapeBpmnBoundaryEvent, ShapeBpmnCallActivity, ShapeBpmnEvent } from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
 
@@ -146,9 +146,9 @@ export const verifyShape = (
     expect(event.eventDefinitionKind).toEqual(expectedEvent.eventDefinitionKind);
 
     if (expectedEvent.eventDefinitionKind === ShapeBpmnEventDefinitionKind.LINK) {
-      if (ShapeUtil.isIntermediateCatchEvent(expectedShape.bpmnElementKind)) {
+      if (ShapeUtility.isIntermediateCatchEvent(expectedShape.bpmnElementKind)) {
         expect((event as ShapeBpmnIntermediateCatchEvent).sourceIds).toEqual((expectedEvent as ExpectedIntermediateCatchEventShape).sourceIds ?? []);
-      } else if (ShapeUtil.isIntermediateThrowEvent(expectedShape.bpmnElementKind)) {
+      } else if (ShapeUtility.isIntermediateThrowEvent(expectedShape.bpmnElementKind)) {
         expect((event as ShapeBpmnIntermediateThrowEvent).targetId).toEqual((expectedEvent as ExpectedIntermediateThrowEventShape).targetId);
       }
     }

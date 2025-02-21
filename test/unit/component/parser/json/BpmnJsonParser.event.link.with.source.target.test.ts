@@ -16,8 +16,8 @@ limitations under the License.
 
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
 import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilder';
-import { parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtils';
-import { expectedBounds } from '../../../helpers/TestUtils.BpmnJsonParser.event';
+import { parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtilities';
+import { expectedBounds } from '../../../helpers/TestUtilities.BpmnJsonParser.event';
 
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
 
