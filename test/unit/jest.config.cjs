@@ -16,17 +16,32 @@ limitations under the License.
 
 const { moduleNameMapper } = require('../config/ts-jest.cjs');
 
-/** @type {import('ts-jest').JestConfigWithTsJest} */
+// The type provided here could provide more guidance if it included types from @swc/jest
+/** @type {import('@jest/types').Config.InitialOptions} */
 module.exports = {
   rootDir: '../..',
   roots: ['./test/unit'],
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
   transform: {
     '^.+\\.ts?$': [
-      'ts-jest',
+      // TODO add tsc check npm script
+      // TODO update dependabot configuration
+      // use https://github.com/process-analytics/bpmn-visualization-addons/pull/302/files as an example
+      '@swc/jest',
       {
-        tsconfig: '<rootDir>/tsconfig.test.json',
+        // See https://swc.rs/docs/usage/jest
+        jsc: {
+          parser: {
+            syntax: 'typescript',
+            tsx: false,
+          },
+          target: 'es2020', // keep in sync with tsconfig.test.json
+        },
       },
+      // 'ts-jest',
+      // {
+      //   tsconfig: '<rootDir>/tsconfig.test.json',
+      // },
     ],
   },
   moduleNameMapper,
