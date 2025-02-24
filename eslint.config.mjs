@@ -24,6 +24,7 @@ import jestExtendedPlugin from 'eslint-plugin-jest-extended';
 import noticePlugin from 'eslint-plugin-notice';
 import playwright from 'eslint-plugin-playwright';
 import prettierRecommendedConfig from 'eslint-plugin-prettier/recommended';
+// eslint-disable-next-line import/namespace,import/default
 import unicornPlugin from 'eslint-plugin-unicorn';
 // eslint-disable-next-line import/no-unresolved
 import tseslint from 'typescript-eslint';
@@ -65,8 +66,10 @@ export default tseslint.config(
     },
   },
 
-  unicornPlugin.configs['flat/recommended'], // https://github.com/sindresorhus/eslint-plugin-unicorn?tab=readme-ov-file#es-module-recommended-1
+  // Unicorn
   {
+    extends: [unicornPlugin.configs['flat/recommended']], // https://github.com/sindresorhus/eslint-plugin-unicorn?tab=readme-ov-file#es-module-recommended-1
+
     rules: {
       'unicorn/filename-case': [
         'error',
@@ -96,6 +99,7 @@ export default tseslint.config(
     },
   },
 
+  // Import
   {
     extends: [
       // Feature of `typescript-eslint` to extend multiple configs: https://typescript-eslint.io/packages/typescript-eslint/#flat-config-extends
@@ -119,13 +123,14 @@ export default tseslint.config(
     },
   },
 
+  // TypeScript
+
   // disable type-aware linting on JS files
   {
     files: ['**/*.js', '**/*.cjs', '**/*.mjs'],
-    ...tseslint.configs.disableTypeChecked,
+    extends: [tseslint.configs.disableTypeChecked],
   },
 
-  // typescript
   /** @type {import('@typescript-eslint/utils').TSESLint.FlatConfig.ConfigFile} */
   {
     files: ['**/*.ts', '**/*.cts', '**/*.mts'],
@@ -134,8 +139,8 @@ export default tseslint.config(
       eslint.configs.recommended, // Problem with 'module', 'require', 'console', 'exports', etc. on .js, .cjs, .mjs files
       ...tseslint.configs.recommended,
       ...tseslint.configs.stylistic,
+      importPlugin.flatConfigs.typescript,
     ],
-    ...importPlugin.flatConfigs.typescript,
     settings: {
       'import/resolver': {
         typescript: {
