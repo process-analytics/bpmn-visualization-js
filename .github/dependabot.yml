@@ -23,6 +23,7 @@ updates:
     groups:
        css:
           patterns:
+            - "@tailwindcss/*"
             - "autoprefixer"
             - "cssnano"
             - "postcss*"
