@@ -23,9 +23,7 @@ import externals from 'rollup-plugin-node-externals';
 import sizes from 'rollup-plugin-sizes';
 import typescript from 'rollup-plugin-typescript2';
 
-// generate warning when running with Node 18
-// (node:75278) ExperimentalWarning: Importing JSON modules is an experimental feature. This feature could change at any time
-import packageJson from './package.json' assert { type: 'json' };
+import packageJson from './package.json' with { type: 'json' };
 import { computeBanner } from './scripts/shared/banner.mjs';
 
 const input = 'src/bpmn-visualization.ts';
