@@ -116,7 +116,7 @@
     "@rollup/plugin-commonjs": "~28.0.2",
     "@rollup/plugin-node-resolve": "~16.0.0",
     "@rollup/plugin-terser": "~0.4.4",
-    "@tailwindcss/postcss": "~4.0.8",
+    "@tailwindcss/postcss": "~4.0.9",
     "@types/debug": "~4.1.12",
     "@types/jest-image-snapshot": "~6.4.0",
     "@types/minimist": "~1.2.5",
