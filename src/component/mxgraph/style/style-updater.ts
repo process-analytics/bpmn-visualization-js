@@ -18,12 +18,12 @@ import type { StyleUpdate } from '../../registry';
 import type { BpmnGraph } from '../BpmnGraph';
 import type { mxCell, mxGraphModel } from 'mxgraph';
 
-import { ensureIsArray } from '../../helpers/array-utils';
+import { ensureIsArray } from '../../helpers/array-utilities';
 import { ensureOpacityValue } from '../../helpers/validators';
 import { messageFlowIconId } from '../BpmnRenderer';
 import { mxConstants } from '../initializer';
 
-import { getStyleValue, isShapeStyleUpdate, setStyle, updateFill, updateFont, updateStroke } from './utils';
+import { getStyleValue, isShapeStyleUpdate, setStyle, updateFill, updateFont, updateStroke } from './utilities';
 
 import { BpmnStyleIdentifier } from '.';
 

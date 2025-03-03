@@ -17,7 +17,7 @@ limitations under the License.
 import type { BpmnGraph } from '../BpmnGraph';
 import type { mxStylesheet, StyleMap } from 'mxgraph';
 
-import { AssociationDirectionKind, FlowKind, SequenceFlowKind, ShapeBpmnElementKind, ShapeUtil } from '../../../model/bpmn/internal';
+import { AssociationDirectionKind, FlowKind, SequenceFlowKind, ShapeBpmnElementKind, ShapeUtility } from '../../../model/bpmn/internal';
 import { mxConstants, mxPerimeter } from '../initializer';
 import { BpmnStyleIdentifier, MarkerIdentifier, StyleDefault } from '../style';
 
@@ -179,7 +179,7 @@ export class StyleConfigurator {
   }
 
   private configureEventStyles(): void {
-    for (const kind of ShapeUtil.eventKinds()) {
+    for (const kind of ShapeUtility.eventKinds()) {
       const style: StyleMap = {};
       style[mxConstants.STYLE_SHAPE] = kind;
       style[mxConstants.STYLE_PERIMETER] = mxPerimeter.EllipsePerimeter;
@@ -215,7 +215,7 @@ export class StyleConfigurator {
   }
 
   private configureActivityStyles(): void {
-    for (const kind of ShapeUtil.activityKinds()) {
+    for (const kind of ShapeUtility.activityKinds()) {
       const style: StyleMap = {};
       style[mxConstants.STYLE_SHAPE] = kind;
       style[mxConstants.STYLE_ROUNDED] = true; // required by the BPMN specification
@@ -226,7 +226,7 @@ export class StyleConfigurator {
   }
 
   private configureGatewayStyles(): void {
-    for (const kind of ShapeUtil.gatewayKinds()) {
+    for (const kind of ShapeUtility.gatewayKinds()) {
       const style: StyleMap = {};
       style[mxConstants.STYLE_SHAPE] = kind;
       style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RhombusPerimeter;

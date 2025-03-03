@@ -21,7 +21,7 @@ import {
   initializeBpmnVisualizationWithContainerId,
   initializeBpmnVisualizationWithHtmlElement,
 } from './helpers/bpmn-visualization-initialization';
-import { allTestedFitTypes } from './helpers/fit-utils';
+import { allTestedFitTypes } from './helpers/fit-utilities';
 
 import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 import { readFileSync } from '@test/shared/file-helper';

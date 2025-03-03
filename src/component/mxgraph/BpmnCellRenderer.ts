@@ -20,7 +20,7 @@ import type { mxCellState, mxImageShape, mxShape } from 'mxgraph';
 import { mxgraph, mxRectangle } from './initializer';
 import { MxGraphCustomOverlay } from './overlay/custom-overlay';
 import { OverlayBadgeShape } from './overlay/shapes';
-import { overrideCreateSvgCanvas } from './shape/utils';
+import { overrideCreateSvgCanvas } from './shape/utilities';
 
 export class BpmnCellRenderer extends mxgraph.mxCellRenderer {
   constructor(private readonly iconPainter: IconPainter) {

@@ -19,4 +19,4 @@ export * from './shared/main';
 export * from './shared/shared-helpers';
 export * from '../../src/bpmn-visualization';
 // extra code not exported by bpmn-visualization
-export * from '../../src/model/bpmn/internal/edge/utils';
+export * from '../../src/model/bpmn/internal/edge/utilities';

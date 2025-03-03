@@ -20,7 +20,7 @@ import type { Edge } from '../../model/bpmn/internal/edge/edge';
 import type Shape from '../../model/bpmn/internal/shape/Shape';
 import type { ModelFilter } from '../options';
 
-import { ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind, ShapeUtil } from '../../model/bpmn/internal';
+import { ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind, ShapeUtility } from '../../model/bpmn/internal';
 import { Flow } from '../../model/bpmn/internal/edge/flows';
 import ShapeBpmnElement, {
   ShapeBpmnCallActivity,
@@ -91,7 +91,7 @@ function toRenderedModel(bpmnModel: BpmnModel): RenderedModel {
     bpmnModel.flowNodes
       .filter(shape => {
         const bpmnElement = shape.bpmnElement;
-        return ShapeUtil.isSubProcess(bpmnElement.kind) && (bpmnElement as ShapeBpmnSubProcess).markers.includes(ShapeBpmnMarkerKind.EXPAND);
+        return ShapeUtility.isSubProcess(bpmnElement.kind) && (bpmnElement as ShapeBpmnSubProcess).markers.includes(ShapeBpmnMarkerKind.EXPAND);
       })
       .map(shape => shape.bpmnElement.id),
   );
@@ -101,9 +101,9 @@ function toRenderedModel(bpmnModel: BpmnModel): RenderedModel {
   const otherFlowNodes: Shape[] = [];
   for (const shape of bpmnModel.flowNodes) {
     const kind = shape.bpmnElement.kind;
-    if (ShapeUtil.isSubProcess(kind)) {
+    if (ShapeUtility.isSubProcess(kind)) {
       subprocesses.push(shape);
-    } else if (ShapeUtil.isBoundaryEvent(kind)) {
+    } else if (ShapeUtility.isBoundaryEvent(kind)) {
       boundaryEvents.push(shape);
     } else if (!collapsedSubProcessIds.has(shape.bpmnElement.parentId)) {
       otherFlowNodes.push(shape);

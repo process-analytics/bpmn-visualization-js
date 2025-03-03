@@ -16,8 +16,8 @@ limitations under the License.
 
 import type { mxCell } from 'mxgraph';
 
-import { ShapeUtil } from '../../../model/bpmn/internal';
-import { isFlowKind } from '../../../model/bpmn/internal/edge/utils';
+import { ShapeUtility as ShapeUtility } from '../../../model/bpmn/internal';
+import { isFlowKind } from '../../../model/bpmn/internal/edge/utilities';
 import { BpmnStyleIdentifier } from '../style/identifiers';
 
 /**
@@ -47,12 +47,12 @@ export function computeAllBpmnClassNames(style: string, isLabel: boolean): strin
   const bpmnElementKind = pseudoBpmnElementKind.replace(/shape=bpmn./g, '');
 
   const typeClasses = new Map<string, boolean>();
-  typeClasses.set('bpmn-type-activity', ShapeUtil.isActivity(bpmnElementKind));
-  typeClasses.set('bpmn-type-container', ShapeUtil.isPoolOrLane(bpmnElementKind));
-  typeClasses.set('bpmn-type-event', ShapeUtil.isEvent(bpmnElementKind));
+  typeClasses.set('bpmn-type-activity', ShapeUtility.isActivity(bpmnElementKind));
+  typeClasses.set('bpmn-type-container', ShapeUtility.isPoolOrLane(bpmnElementKind));
+  typeClasses.set('bpmn-type-event', ShapeUtility.isEvent(bpmnElementKind));
   typeClasses.set('bpmn-type-flow', isFlowKind(bpmnElementKind));
-  typeClasses.set('bpmn-type-gateway', ShapeUtil.isGateway(bpmnElementKind));
-  typeClasses.set('bpmn-type-task', ShapeUtil.isTask(bpmnElementKind));
+  typeClasses.set('bpmn-type-gateway', ShapeUtility.isGateway(bpmnElementKind));
+  typeClasses.set('bpmn-type-task', ShapeUtility.isTask(bpmnElementKind));
   for (const [className] of [...typeClasses].filter(([, isType]) => isType)) classes.push(className);
 
   classes.push(computeBpmnBaseClassName(bpmnElementKind));

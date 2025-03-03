@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { insertBpmnContainer, insertBpmnContainerWithoutId } from './dom-utils';
+import { insertBpmnContainer, insertBpmnContainerWithoutId } from './dom-utilities';
 
 import { BpmnVisualization, type GlobalOptions } from '@lib/bpmn-visualization';
 

@@ -17,6 +17,7 @@ limitations under the License.
 import fs, { readFileSync } from 'node:fs';
 
 import { computeBanner } from './shared/banner.mjs';
+// eslint-disable-next-line import/namespace
 import { getTypeFilesInformation } from './shared/types-info.mjs';
 
 const { notSupportedTSVersionsFilePath, typesFilePath } = getTypeFilesInformation();

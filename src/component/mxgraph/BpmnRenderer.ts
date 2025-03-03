@@ -23,7 +23,7 @@ import type { FitOptions, RendererOptions } from '../options';
 import type { RenderedModel } from '../registry/bpmn-model-registry';
 import type { mxCell } from 'mxgraph';
 
-import { MessageVisibleKind, ShapeUtil } from '../../model/bpmn/internal';
+import { MessageVisibleKind, ShapeUtility } from '../../model/bpmn/internal';
 import { MessageFlow } from '../../model/bpmn/internal/edge/flows';
 
 import { mxPoint } from './initializer';
@@ -74,7 +74,7 @@ export class BpmnRenderer {
     const bounds = shape.bounds;
     let labelBounds = shape.label?.bounds;
     // pool/lane label bounds are not managed for now (use hard coded values)
-    labelBounds = ShapeUtil.isPoolOrLane(bpmnElement.kind) ? undefined : labelBounds;
+    labelBounds = ShapeUtility.isPoolOrLane(bpmnElement.kind) ? undefined : labelBounds;
     const style = this.styleComputer.computeStyle(shape, labelBounds);
 
     this.insertVertex(parent, bpmnElement.id, bpmnElement.name, bounds, labelBounds, style);

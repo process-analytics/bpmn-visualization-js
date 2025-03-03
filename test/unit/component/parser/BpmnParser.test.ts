@@ -17,7 +17,7 @@ limitations under the License.
 import type BpmnModel from '@lib/model/bpmn/internal/BpmnModel';
 
 import { getEdgeByBpmnElementId, getFlowNodeByBpmnElementId, getLaneByBpmnElementId, getPoolByBpmnElementId, verifyEdge, verifyShape } from '../../helpers/bpmn-model-expect';
-import { expectPoolLaneEdgeFlowNode, verifyLabel } from '../../helpers/JsonTestUtils';
+import { expectPoolLaneEdgeFlowNode, verifyLabel } from '../../helpers/JsonTestUtilities';
 
 import { newBpmnParser } from '@lib/component/parser/BpmnParser';
 import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';

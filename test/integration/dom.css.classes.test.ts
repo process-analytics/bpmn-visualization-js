@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { initializeBpmnVisualizationWithContainerId } from './helpers/bpmn-visualization-initialization';
-import { HtmlElementLookup } from './helpers/html-utils';
+import { HtmlElementLookup } from './helpers/html-utilities';
 
 import { ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
 import { readFileSync } from '@test/shared/file-helper';

@@ -15,11 +15,11 @@ limitations under the License.
 */
 
 import type { ExpectedCellWithGeometry } from '../../helpers/model-expect';
-import type { ExpectedCell } from '../matcher-utils';
+import type { ExpectedCell } from '../matcher-utilities';
 import type { mxCell } from 'mxgraph';
 
 import { getDefaultParentId } from '../../helpers/model-expect';
-import { buildCellMatcher, getCell } from '../matcher-utils';
+import { buildCellMatcher, getCell } from '../matcher-utilities';
 
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;

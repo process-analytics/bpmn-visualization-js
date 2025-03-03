@@ -19,7 +19,7 @@ import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
 
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
 import { buildDefinitions } from '../../../helpers/JsonBuilder';
-import { parseJsonAndExpect, parseJsonAndExpectOnlyPools, parseJsonAndExpectOnlyPoolsAndFlowNodes, parseJsonAndExpectOnlyPoolsAndLanes } from '../../../helpers/JsonTestUtils';
+import { parseJsonAndExpect, parseJsonAndExpectOnlyPools, parseJsonAndExpectOnlyPoolsAndFlowNodes, parseJsonAndExpectOnlyPoolsAndLanes } from '../../../helpers/JsonTestUtilities';
 
 import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 

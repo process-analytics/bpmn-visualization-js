@@ -17,7 +17,7 @@ limitations under the License.
 import 'jest-playwright-preset';
 import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
 import type { OverlayEdgePosition, OverlayPosition, OverlayShapePosition } from '@lib/component/registry';
-import type { Point } from '@test/shared/visu/bpmn-page-utils';
+import type { Point } from '@test/shared/visu/bpmn-page-utilities';
 
 import path from 'node:path';
 
@@ -25,10 +25,10 @@ import debugLogger from 'debug';
 
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds, withCustomOutputDirectory } from './helpers/visu/image-snapshot-config';
 
-import { ensureIsArray } from '@lib/component/helpers/array-utils';
+import { ensureIsArray } from '@lib/component/helpers/array-utilities';
 import { ZoomType } from '@lib/component/options';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '@test/shared/overlays';
-import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
+import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utilities';
 
 const log = debugLogger('bv:test:e2e:overlays');
 

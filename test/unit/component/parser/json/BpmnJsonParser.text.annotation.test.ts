@@ -21,7 +21,7 @@ import type { BPMNEdge, BPMNShape } from '@lib/model/bpmn/json/bpmndi';
 
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
 import { buildDefinitions } from '../../../helpers/JsonBuilder';
-import { parseJsonAndExpectOnlyEdgesAndFlowNodes, parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtils';
+import { parseJsonAndExpectOnlyEdgesAndFlowNodes, parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtilities';
 
 import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 

@@ -15,10 +15,10 @@ limitations under the License.
 */
 
 import type { ExpectedEdgeModelElement, ExpectedSequenceFlowModelElement } from '../../helpers/model-expect';
-import type { BpmnCellStyle, ExpectedCell } from '../matcher-utils';
+import type { BpmnCellStyle, ExpectedCell } from '../matcher-utilities';
 
 import { getDefaultParentId } from '../../helpers/model-expect';
-import { buildCellMatcher, buildExpectedCellStyleWithCommonAttributes, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
+import { buildCellMatcher, buildExpectedCellStyleWithCommonAttributes, buildReceivedCellWithCommonAttributes } from '../matcher-utilities';
 
 import { mxConstants } from '@lib/component/mxgraph/initializer';
 import { BpmnStyleIdentifier } from '@lib/component/mxgraph/style';

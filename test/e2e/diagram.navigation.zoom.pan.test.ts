@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot-config';
-import type { Point } from '@test/shared/visu/bpmn-page-utils';
+import type { Point } from '@test/shared/visu/bpmn-page-utilities';
 
 import path from 'node:path';
 
@@ -25,7 +25,7 @@ import { withCustomOutputDirectory, ImageSnapshotConfigurator, MultiBrowserImage
 import 'jest-playwright-preset';
 
 import { ZoomType } from '@lib/component/options';
-import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
+import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utilities';
 
 const log = debugLogger('bv:test:e2e:navigation:zoom-pan');
 
