@@ -18,7 +18,11 @@ updates:
     reviewers:
       - process-analytics/pa-collaborators
     ignore:
-      # # TMP: ignore until we have found a fix to bump to TS 5.5+, see https://github.com/process-analytics/bpmn-visualization-js/pull/3124
+      # eslint v9 requires to first switch to flat configuration
+      - dependency-name: "eslint"
+      # eslint-plugin-unicorn v57+ requires eslint v9 and flat configuration
+      - dependency-name: "eslint-plugin-unicorn"
+      # TMP: ignore until we have found a fix to bump to TS 5.5+, see https://github.com/process-analytics/bpmn-visualization-js/pull/3124
       - dependency-name: "typescript"
     groups:
        css:
