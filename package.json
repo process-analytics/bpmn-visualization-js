@@ -105,7 +105,7 @@
   },
   "dependencies": {
     "@typed-mxgraph/typed-mxgraph": "~1.0.8",
-    "es-toolkit": "~1.31.0",
+    "es-toolkit": "~1.33.0",
     "fast-xml-parser": "5.0.8",
     "mxgraph": "4.2.2"
   },
