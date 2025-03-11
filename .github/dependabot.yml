@@ -22,8 +22,6 @@ updates:
       - dependency-name: "eslint"
       # eslint-plugin-unicorn v57+ requires eslint v9 and flat configuration
       - dependency-name: "eslint-plugin-unicorn"
-      # TMP: ignore until we have found a fix to bump to TS 5.5+, see https://github.com/process-analytics/bpmn-visualization-js/pull/3124
-      - dependency-name: "typescript"
     groups:
        css:
           patterns:
@@ -52,11 +50,10 @@ updates:
             - "@rollup/*"
             - "rollup"
             - "rollup-plugin-*"
-# TMP: disabled until we have found a fix to bump to TS 5.5+, see https://github.com/process-analytics/bpmn-visualization-js/pull/3124
-#       typescript:
-#          patterns:
-#            - "typedoc"
-#            - "typescript"
+       typescript:
+          patterns:
+            - "typedoc"
+            - "typescript"
 
   - package-ecosystem: "github-actions"
     # Workflow files stored in the default location of `.github/workflows`

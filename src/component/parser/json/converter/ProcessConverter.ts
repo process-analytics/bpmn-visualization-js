@@ -334,8 +334,8 @@ export default class ProcessConverter {
 
     for (const eventDefinitionKind of eventDefinitionKinds) {
       // sometimes eventDefinition is simple, and therefore it is parsed as empty string "", in that case eventDefinition will be converted to an empty object
-      const eventDefinition = bpmnElement[`${eventDefinitionKind}EventDefinition`];
-      eventDefinitionsByKind.set(eventDefinitionKind, ensureIsArray(eventDefinition, true));
+      const eventDefinition = bpmnElement[`${eventDefinitionKind}EventDefinition`] as string | RegisteredEventDefinition;
+      eventDefinitionsByKind.set(eventDefinitionKind, ensureIsArray<RegisteredEventDefinition>(eventDefinition, true));
     }
 
     for (const eventDefinitionReference of ensureIsArray<string>(bpmnElement.eventDefinitionRef)) {
