@@ -163,11 +163,11 @@
     "tailwindcss": "~4.0.8",
     "ts-jest": "~29.2.6",
     "typedoc": "~0.27.9",
-    "typescript": "~5.4.5",
+    "typescript": "~5.8.2",
     "vite": "~6.2.1"
   },
   "overrides": {
-    "@types/node": "^16.18.0"
+    "@types/node": "^20.17.24"
   },
   "lint-staged": {
     "*.{js,cjs,mjs,ts,cts,mts}": [
