@@ -19,8 +19,8 @@ import type { BuildEventDefinition, BuildEventParameter } from './JsonBuilder';
 
 import { verifyShape } from './bpmn-model-expect';
 import { buildDefinitions, EventDefinitionOn } from './JsonBuilder';
-import { expectAsWarning, parseJsonAndExpectEvent, parseJsonAndExpectOnlyEdgesAndFlowNodes, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector } from './JsonTestUtils';
-import { getEventShapes } from './TestUtils';
+import { expectAsWarning, parseJsonAndExpectEvent, parseJsonAndExpectOnlyEdgesAndFlowNodes, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector } from './JsonTestUtilities';
+import { getEventShapes } from './TestUtilities';
 
 import { ShapeUnknownBpmnElementWarning } from '@lib/component/parser/json/warnings';
 import { ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';

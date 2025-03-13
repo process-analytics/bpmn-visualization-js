@@ -27,7 +27,7 @@ import {
   log,
   removeAllOverlays,
   removeCssClasses,
-  ShapeUtil,
+  ShapeUtility,
   startBpmnVisualization,
   updateLoadOptions,
   updateStyle,
@@ -63,13 +63,13 @@ function computeStyleUpdateByKind(bpmnKind: BpmnElementKind): StyleUpdate {
     return style;
   }
 
-  if (ShapeUtil.isTask(bpmnKind)) {
+  if (ShapeUtility.isTask(bpmnKind)) {
     style.font.color = 'Indigo';
     style.fill.color = 'gold';
     style.font.size = 14;
     style.fill.opacity = 20;
-  } else if (ShapeUtil.isEvent(bpmnKind)) {
-    if (ShapeUtil.isBoundaryEvent(bpmnKind)) {
+  } else if (ShapeUtility.isEvent(bpmnKind)) {
+    if (ShapeUtility.isBoundaryEvent(bpmnKind)) {
       style.font.color = 'inherit';
       style.fill.color = 'inherit';
       style.stroke.color = 'inherit';
@@ -77,23 +77,23 @@ function computeStyleUpdateByKind(bpmnKind: BpmnElementKind): StyleUpdate {
       style.font.color = 'MediumTurquoise';
       style.stroke.color = 'MediumTurquoise';
     }
-  } else if (ShapeUtil.isGateway(bpmnKind)) {
+  } else if (ShapeUtility.isGateway(bpmnKind)) {
     style.font.color = 'CadetBlue';
     style.font.opacity = 85;
     style.stroke.color = 'OrangeRed';
     style.stroke.width = 4;
-  } else if (ShapeUtil.isPoolOrLane(bpmnKind)) {
+  } else if (ShapeUtility.isPoolOrLane(bpmnKind)) {
     style.font.color = 'white !important';
     style.fill.color = 'deeppink';
     style.stroke.opacity = 80;
-  } else if (ShapeUtil.isCallActivity(bpmnKind)) {
+  } else if (ShapeUtility.isCallActivity(bpmnKind)) {
     style.font.color = 'white';
     style.font.family = 'Times New Roman';
     style.font.isItalic = true;
     style.font.isStrikeThrough = true;
 
     style.fill.color = { startColor: 'LightYellow', endColor: 'LimeGreen', direction: 'left-to-right' };
-  } else if (ShapeUtil.isSubProcess(bpmnKind)) {
+  } else if (ShapeUtility.isSubProcess(bpmnKind)) {
     style.font.color = 'white';
     style.font.size = 14;
     style.font.family = 'Dialog';
@@ -133,7 +133,7 @@ function updateStyleByAPI(bpmnIds: string[], bpmnKind: ShapeBpmnElementKind): vo
   }
   updateStyle(subProcessChildrenIds, { fill: { color: 'swimlane' }, stroke: { color: 'swimlane' }, font: { color: 'swimlane' } });
 
-  if (ShapeUtil.isBoundaryEvent(bpmnKind)) {
+  if (ShapeUtility.isBoundaryEvent(bpmnKind)) {
     lastIdentifiedParentBpmnIds = getParentElementIds(otherIds);
     updateStyle(lastIdentifiedParentBpmnIds, { opacity: 5, font: { color: 'green', opacity: 5 }, fill: { color: 'gold' }, stroke: { color: 'red' } });
   }
@@ -242,7 +242,7 @@ function configureControls(): void {
 }
 
 function getOverlay(bpmnKind: BpmnElementKind): Overlay {
-  if (ShapeUtil.isActivity(bpmnKind)) {
+  if (ShapeUtility.isActivity(bpmnKind)) {
     return {
       position: 'top-right',
       label: '30',

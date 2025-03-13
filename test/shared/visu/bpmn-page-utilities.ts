@@ -27,10 +27,10 @@ import debugLogger from 'debug';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore use a shared js file with commonjs export
-// eslint-disable-next-line @typescript-eslint/no-require-imports -- use a shared js file with commonjs export
-import environmentUtils = require('../environment-utils.cjs');
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+import environmentUtilities = require('../environment-utilities.cjs');
 
-import { delay } from './test-utils';
+import { delay } from './test-utilities';
 
 import { FitType, type LoadOptions, ZoomType } from '@lib/component/options';
 import { BpmnQuerySelectorsForTests } from '@test/shared/query-selectors';
@@ -291,7 +291,7 @@ export class PageTester {
     for (let index = 0; index < xTimes; index++) {
       await this.mouseZoomNoDelay(point, zoomType);
       // delay here is needed to make the tests pass on macOS, delay must be greater than debounce timing, so it surely gets triggered
-      await delay(environmentUtils.isRunningOnCISlowOS() ? 300 : 150);
+      await delay(environmentUtilities.isRunningOnCISlowOS() ? 300 : 150);
     }
     pageCheckLog('Mouse zoom done');
   }

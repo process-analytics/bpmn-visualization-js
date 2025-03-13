@@ -16,7 +16,7 @@ limitations under the License.
 
 import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
 
-import { expectAsWarning, parseJsonAndExpectOnlyWarnings, parsingMessageCollector } from '../../../helpers/JsonTestUtils';
+import { expectAsWarning, parseJsonAndExpectOnlyWarnings, parsingMessageCollector } from '../../../helpers/JsonTestUtilities';
 
 import { EdgeUnknownBpmnElementWarning } from '@lib/component/parser/json/warnings';
 

@@ -15,4 +15,4 @@ limitations under the License.
 */
 
 export * from './kinds';
-export { ShapeUtil } from './utils';
+export { ShapeUtility } from './utilities';

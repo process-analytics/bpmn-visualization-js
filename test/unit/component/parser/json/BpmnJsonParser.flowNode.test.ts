@@ -21,9 +21,9 @@ import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
 
 import { verifyShape } from '../../../helpers/bpmn-model-expect';
 import { buildDefinitions } from '../../../helpers/JsonBuilder';
-import { parseJsonAndExpectOnlyEdgesAndFlowNodes, parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtils';
+import { parseJsonAndExpectOnlyEdgesAndFlowNodes, parseJsonAndExpectOnlyFlowNodes } from '../../../helpers/JsonTestUtilities';
 
-import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind, ShapeUtil } from '@lib/model/bpmn/internal';
+import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind, ShapeUtility } from '@lib/model/bpmn/internal';
 
 describe.each([
   ['task', ShapeBpmnElementKind.TASK],
@@ -352,7 +352,7 @@ describe.each([
   }
 
   describe(`incoming/outgoing management for ${bpmnKind}`, () => {
-    const isTask = ShapeUtil.isTask(bpmnKind);
+    const isTask = ShapeUtility.isTask(bpmnKind);
     const flowNodeParameterKind = isTask ? 'task' : 'gateway';
     const expectedBounds = isTask ? { x: 362, y: 232, width: 36, height: 45 } : { x: 567, y: 345, width: 25, height: 25 };
 

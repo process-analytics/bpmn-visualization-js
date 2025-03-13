@@ -18,7 +18,7 @@ limitations under the License.
 */
 
 import { BpmnStyleIdentifier } from '@lib/component/mxgraph/style';
-import { getStyleValue } from '@lib/component/mxgraph/style/utils';
+import { getStyleValue } from '@lib/component/mxgraph/style/utilities';
 
 describe('getStyleValue', () => {
   test('cell style with key, returns the value', () => {

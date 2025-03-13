@@ -39,11 +39,12 @@ updates:
             - "ts-jest"
        lint:
           patterns:
-            - "@typescript-eslint/*"
+            - "@eslint/*"
             - "eslint"
             - "eslint-*"
             - "lint-staged"
             - "prettier"
+            - "typescript-eslint"
        rollup:
           patterns:
             - "@rollup/*"

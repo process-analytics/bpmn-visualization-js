@@ -17,7 +17,7 @@ limitations under the License.
 import type { CssClassesRegistry } from './types';
 import type { BpmnGraph } from '../mxgraph/BpmnGraph';
 
-import { ensureIsArray } from '../helpers/array-utils';
+import { ensureIsArray } from '../helpers/array-utilities';
 import { createNewCssClassesUpdater, type CssClassesUpdater } from '../mxgraph/style/css-classes-updater';
 
 export function createNewCssRegistry(graph: BpmnGraph): CssClassesRegistryImpl {

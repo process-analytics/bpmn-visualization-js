@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { BpmnVisualization, FlowKind, ShapeBpmnElementKind, ShapeUtil, StyleConfigurator, StyleDefault } from '../../../src/bpmn-visualization';
+import { BpmnVisualization, FlowKind, ShapeBpmnElementKind, ShapeUtility, StyleConfigurator, StyleDefault } from '../../../src/bpmn-visualization';
 import { mxConstants } from '../../../src/component/mxgraph/initializer';
 import { logStartup } from '../shared/internal-helpers';
 
@@ -116,7 +116,7 @@ export class ThemedBpmnVisualization extends BpmnVisualization {
     const styleSheet = this.graph.getStylesheet();
 
     // EVENT
-    for (const kind of ShapeUtil.eventKinds()) {
+    for (const kind of ShapeUtility.eventKinds()) {
       let fillColor;
       let strokeColor;
       switch (kind) {
@@ -149,7 +149,7 @@ export class ThemedBpmnVisualization extends BpmnVisualization {
     }
 
     // TASK
-    for (const kind of ShapeUtil.taskKinds()) {
+    for (const kind of ShapeUtility.taskKinds()) {
       const style = styleSheet.styles[kind];
       style.fillColor = theme.taskAndCallActivityFillColor;
     }

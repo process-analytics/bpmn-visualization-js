@@ -21,7 +21,7 @@ import {
   initializeBpmnVisualizationWithHtmlElement,
   initializeBpmnVisualizationWithoutId,
 } from './helpers/bpmn-visualization-initialization';
-import { HtmlElementLookup } from './helpers/html-utils';
+import { HtmlElementLookup } from './helpers/html-utilities';
 
 import { ShapeBpmnEventDefinitionKind } from '@lib/bpmn-visualization';
 import { readFileSync } from '@test/shared/file-helper';

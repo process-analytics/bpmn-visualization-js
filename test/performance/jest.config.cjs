@@ -24,7 +24,7 @@ module.exports = {
   rootDir: '../..',
   roots: ['./test/performance'],
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
-  testTimeout: 200_000,
+  testTimeout: 200 * 1000,
   transform: {
     '^.+\\.ts?$': [
       'ts-jest',

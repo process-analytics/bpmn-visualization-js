@@ -32,7 +32,7 @@ import {
   expectServiceTaskBpmnElement,
   expectStartEventBpmnElement,
   expectTaskBpmnElement,
-} from './helpers/semantic-with-svg-utils';
+} from './helpers/semantic-with-svg-utilities';
 
 import { FlowKind, ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/bpmn-visualization';
 import { readFileSync } from '@test/shared/file-helper';

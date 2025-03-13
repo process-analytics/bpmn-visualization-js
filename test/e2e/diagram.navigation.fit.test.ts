@@ -24,8 +24,8 @@ import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds, withCus
 import 'jest-playwright-preset';
 
 import { FitType } from '@lib/component/options';
-import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
-import { getBpmnDiagramNames } from '@test/shared/visu/test-utils';
+import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utilities';
+import { getBpmnDiagramNames } from '@test/shared/visu/test-utilities';
 
 class FitImageSnapshotConfigurator extends ImageSnapshotConfigurator {
   override getConfig(parameter: {

@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import 'jest-playwright-preset';
-import { AvailableTestPages, BpmnPageSvgTester } from '@test/shared/visu/bpmn-page-utils';
+import { AvailableTestPages, BpmnPageSvgTester } from '@test/shared/visu/bpmn-page-utilities';
 
 const diagramSubfolder = 'svg';
 

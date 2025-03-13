@@ -17,7 +17,7 @@ limitations under the License.
 import type { mxShape, mxSvgCanvas2D } from 'mxgraph';
 
 import { mxConstants } from '../initializer';
-import { computeAllBpmnClassNamesOfCell } from '../renderer/style-utils';
+import { computeAllBpmnClassNamesOfCell } from '../renderer/style-utilities';
 import { BpmnStyleIdentifier } from '../style';
 
 export const overrideCreateSvgCanvas = function (shape: mxShape): void {

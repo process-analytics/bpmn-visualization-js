@@ -24,7 +24,7 @@ import DiagramConverter from './converter/DiagramConverter';
 import EventDefinitionConverter from './converter/EventDefinitionConverter';
 import GlobalTaskConverter from './converter/GlobalTaskConverter';
 import ProcessConverter from './converter/ProcessConverter';
-import { ConvertedElements } from './converter/utils';
+import { ConvertedElements } from './converter/utilities';
 
 /**
  * @internal

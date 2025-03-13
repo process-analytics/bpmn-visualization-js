@@ -17,7 +17,7 @@ limitations under the License.
 import type { IconPainter } from './render';
 import type { mxAbstractCanvas2D } from 'mxgraph';
 
-import { mxRectangleShape, mxUtils } from '../initializer';
+import { mxRectangleShape, mxUtilities } from '../initializer';
 import { BpmnStyleIdentifier } from '../style';
 
 import { buildPaintParameter } from './render/icon-painter';
@@ -38,7 +38,7 @@ export class MessageFlowIconShape extends mxRectangleShape {
       height: h,
       shape: this,
       ratioFromParent: 1,
-      isFilled: mxUtils.getValue(this.style, BpmnStyleIdentifier.IS_INITIATING, 'true') == 'false',
+      isFilled: mxUtilities.getValue(this.style, BpmnStyleIdentifier.IS_INITIATING, 'true') == 'false',
     });
 
     this.iconPainter.paintEnvelopeIcon(paintParameter);

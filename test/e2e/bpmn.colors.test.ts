@@ -18,8 +18,8 @@ import type { ImageSnapshotThresholdConfig } from './helpers/visu/image-snapshot
 
 import { ImageSnapshotConfigurator, MultiBrowserImageSnapshotThresholds } from './helpers/visu/image-snapshot-config';
 
-import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utils';
-import { getBpmnDiagramNames } from '@test/shared/visu/test-utils';
+import { AvailableTestPages, PageTester } from '@test/shared/visu/bpmn-page-utilities';
+import { getBpmnDiagramNames } from '@test/shared/visu/test-utilities';
 
 class ImageSnapshotThresholdsModelColors extends MultiBrowserImageSnapshotThresholds {
   constructor() {
