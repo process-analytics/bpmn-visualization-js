@@ -19,7 +19,7 @@ import type { Edge } from '../../../model/bpmn/internal/edge/edge';
 import type { Font } from '../../../model/bpmn/internal/Label';
 import type { RendererOptions } from '../../options';
 
-import { MessageVisibleKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeUtil } from '../../../model/bpmn/internal';
+import { MessageVisibleKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeUtility } from '../../../model/bpmn/internal';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/flows';
 import Shape from '../../../model/bpmn/internal/shape/Shape';
 import {
@@ -70,7 +70,7 @@ export default class StyleComputer {
       computeEventShapeStyle(bpmnElement, styleValues);
     } else if (bpmnElement instanceof ShapeBpmnActivity) {
       computeActivityShapeStyle(bpmnElement, styleValues);
-    } else if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
+    } else if (ShapeUtility.isPoolOrLane(bpmnElement.kind)) {
       // mxConstants.STYLE_HORIZONTAL is for the label
       // In BPMN, isHorizontal is for the Shape
       // So we invert the value when we switch from the BPMN value to the mxGraph value.
@@ -85,7 +85,7 @@ export default class StyleComputer {
       const fillColor = extensions.fillColor;
       if (fillColor) {
         styleValues.set(mxConstants.STYLE_FILLCOLOR, fillColor);
-        if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
+        if (ShapeUtility.isPoolOrLane(bpmnElement.kind)) {
           styleValues.set(mxConstants.STYLE_SWIMLANE_FILLCOLOR, fillColor);
         }
       }

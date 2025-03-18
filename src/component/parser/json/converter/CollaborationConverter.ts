@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { ConvertedElements } from './utils';
+import type { ConvertedElements } from './utilities';
 import type { TGroup, TTextAnnotation } from '../../../../model/bpmn/json/baseElement/artifact';
 import type { TMessageFlow } from '../../../../model/bpmn/json/baseElement/baseElement';
 import type { TParticipant } from '../../../../model/bpmn/json/baseElement/participant';
@@ -24,9 +24,9 @@ import type { ParsingMessageCollector } from '../../parsing-messages';
 import { ShapeBpmnElementKind } from '../../../../model/bpmn/internal';
 import { MessageFlow } from '../../../../model/bpmn/internal/edge/flows';
 import ShapeBpmnElement from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
-import { ensureIsArray } from '../../../helpers/array-utils';
+import { ensureIsArray } from '../../../helpers/array-utilities';
 
-import { buildShapeBpmnGroup, convertAndRegisterAssociationFlows } from './utils';
+import { buildShapeBpmnGroup, convertAndRegisterAssociationFlows } from './utilities';
 
 /**
  * @internal

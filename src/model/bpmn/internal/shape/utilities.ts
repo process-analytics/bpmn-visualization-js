@@ -14,22 +14,22 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { FilterParameter } from '../../../../component/helpers/array-utils';
+import type { FilterParameter } from '../../../../component/helpers/array-utilities';
 
-import { filter } from '../../../../component/helpers/array-utils';
+import { filter } from '../../../../component/helpers/array-utilities';
 
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from './kinds';
 
 /**
  * Utils to simplify the management of {@link ShapeBpmnElementKind}.
  *
- * This class is mainly used for internal purpose. You may use it to customize the BPMN theme as proposed in the examples but be aware it is subject to change.
+ * This class is mainly used for internal purposes. You may use it to customize the BPMN theme as proposed in the examples but be aware it is subject to change.
  *
  * @category BPMN
  * @experimental
  */
 // eslint-disable-next-line unicorn/no-static-only-class -- Breaking change on API
-export class ShapeUtil {
+export class ShapeUtility {
   static isEvent(kind: ShapeBpmnElementKind | string): boolean {
     return isKindOf(EVENT_KINDS, kind);
   }
@@ -104,7 +104,7 @@ export class ShapeUtil {
   }
 
   static flowNodeKinds(): ShapeBpmnElementKind[] {
-    return Object.values(ShapeBpmnElementKind).filter(kind => !ShapeUtil.isPoolOrLane(kind));
+    return Object.values(ShapeBpmnElementKind).filter(kind => !ShapeUtility.isPoolOrLane(kind));
   }
 
   static isPoolOrLane(kind: ShapeBpmnElementKind | string): boolean {

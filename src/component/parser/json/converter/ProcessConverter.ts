@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { ConvertedElements, RegisteredEventDefinition } from './utils';
+import type { ConvertedElements, RegisteredEventDefinition } from './utilities';
 import type { BpmnEventKind } from '../../../../model/bpmn/internal';
 import type { TGroup, TTextAnnotation } from '../../../../model/bpmn/json/baseElement/artifact';
 import type { TLane, TLaneSet } from '../../../../model/bpmn/json/baseElement/baseElement';
@@ -34,7 +34,7 @@ import {
   ShapeBpmnEventDefinitionKind,
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
-  ShapeUtil,
+  ShapeUtility as ShapeUtility,
 } from '../../../../model/bpmn/internal';
 import { SequenceFlow } from '../../../../model/bpmn/internal/edge/flows';
 import ShapeBpmnElement, {
@@ -48,11 +48,11 @@ import ShapeBpmnElement, {
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
-import { eventDefinitionKinds } from '../../../../model/bpmn/internal/shape/utils';
-import { ensureIsArray } from '../../../helpers/array-utils';
+import { eventDefinitionKinds } from '../../../../model/bpmn/internal/shape/utilities';
+import { ensureIsArray } from '../../../helpers/array-utilities';
 import { BoundaryEventNotAttachedToActivityWarning, LaneUnknownFlowNodeReferenceWarning } from '../warnings';
 
-import { convertAndRegisterAssociationFlows, buildShapeBpmnGroup } from './utils';
+import { convertAndRegisterAssociationFlows, buildShapeBpmnGroup } from './utilities';
 
 // semantically speaking, TTextAnnotation is not a FlowNode, but it is an Artifact
 type FlowNode = TFlowNode | TActivity | TReceiveTask | TEventBasedGateway | TTextAnnotation;
@@ -78,7 +78,7 @@ const orderedFlowNodeBpmnTypes: BpmnSemanticType[] = [
   'adHocSubProcess',
   'transaction',
   // process boundary events afterward as we need its parent activity to be available when building it
-  ...(ShapeUtil.flowNodeKinds().filter(kind => kind !== ShapeBpmnElementKind.EVENT_BOUNDARY) as BpmnSemanticType[]),
+  ...(ShapeUtility.flowNodeKinds().filter(kind => kind !== ShapeBpmnElementKind.EVENT_BOUNDARY) as BpmnSemanticType[]),
   ShapeBpmnElementKind.EVENT_BOUNDARY,
 ];
 
@@ -196,7 +196,7 @@ export default class ProcessConverter {
     for (const bpmnElement of ensureIsArray(bpmnElements)) {
       const shapeBpmnElement = this.buildFlowNodeBpmnElement(kind, bpmnElement, parentId, processedSemanticType);
 
-      if ('default' in bpmnElement && ShapeUtil.isWithDefaultSequenceFlow(kind)) {
+      if ('default' in bpmnElement && ShapeUtility.isWithDefaultSequenceFlow(kind)) {
         this.defaultSequenceFlowIds.push(bpmnElement.default);
       }
 
@@ -210,9 +210,9 @@ export default class ProcessConverter {
   }
 
   private buildFlowNodeBpmnElement(kind: ShapeBpmnElementKind, bpmnElement: TFlowNode, parentId: string, processedSemanticType: BpmnSemanticType): ShapeBpmnElement {
-    if (ShapeUtil.isEvent(kind)) {
+    if (ShapeUtility.isEvent(kind)) {
       return this.buildShapeBpmnEvent(bpmnElement, kind as BpmnEventKind, parentId);
-    } else if (ShapeUtil.isActivity(kind)) {
+    } else if (ShapeUtility.isActivity(kind)) {
       return this.buildShapeBpmnActivity(bpmnElement, kind, parentId, processedSemanticType);
     } else if (kind == ShapeBpmnElementKind.GATEWAY_EVENT_BASED) {
       const eventBasedGatewayBpmnElement = bpmnElement as TEventBasedGateway;
@@ -238,11 +238,11 @@ export default class ProcessConverter {
   private buildShapeBpmnActivity(bpmnElement: TActivity, kind: ShapeBpmnElementKind, parentId: string, processedSemanticType: BpmnSemanticType): ShapeBpmnActivity {
     const markers = buildMarkers(bpmnElement);
 
-    if (ShapeUtil.isSubProcess(kind)) {
+    if (ShapeUtility.isSubProcess(kind)) {
       return this.buildShapeBpmnSubProcess(bpmnElement, parentId, computeSubProcessKind(processedSemanticType, bpmnElement), markers);
     }
 
-    if (!ShapeUtil.isCallActivity(kind)) {
+    if (!ShapeUtility.isCallActivity(kind)) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- the 'instantiate' property doesn't always exist, in that case, it will be undefined
       // @ts-ignore
       return new ShapeBpmnActivity(bpmnElement.id, bpmnElement.name, kind, parentId, bpmnElement.instantiate, markers);
@@ -268,14 +268,14 @@ export default class ProcessConverter {
       .reduce((counter, it) => counter + it, 0);
 
     // do we have a None Event?
-    if (numberOfEventDefinitions == 0 && ShapeUtil.canHaveNoneEvent(elementKind)) {
+    if (numberOfEventDefinitions == 0 && ShapeUtility.canHaveNoneEvent(elementKind)) {
       return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, ShapeBpmnEventDefinitionKind.NONE, parentId);
     }
 
     if (numberOfEventDefinitions == 1) {
       const [eventDefinitionKind, eventDefinitions] = [...eventDefinitionsByKind.entries()][0];
 
-      const bpmnEvent = ShapeUtil.isCatchEvent(elementKind)
+      const bpmnEvent = ShapeUtility.isCatchEvent(elementKind)
         ? this.buildShapeBpmnCatchEvent(bpmnElement as TCatchEvent, elementKind, eventDefinitionKind, parentId)
         : this.buildShapeBpmnThrowEvent(bpmnElement as TThrowEvent, elementKind, eventDefinitionKind, parentId);
 
@@ -293,10 +293,10 @@ export default class ProcessConverter {
     eventDefinitionKind: ShapeBpmnEventDefinitionKind,
     parentId: string,
   ): ShapeBpmnIntermediateCatchEvent | ShapeBpmnStartEvent | ShapeBpmnBoundaryEvent {
-    if (ShapeUtil.isBoundaryEvent(elementKind)) {
+    if (ShapeUtility.isBoundaryEvent(elementKind)) {
       return this.buildShapeBpmnBoundaryEvent(bpmnElement as TBoundaryEvent, eventDefinitionKind);
     }
-    if (ShapeUtil.isStartEvent(elementKind)) {
+    if (ShapeUtility.isStartEvent(elementKind)) {
       return new ShapeBpmnStartEvent(bpmnElement.id, bpmnElement.name, eventDefinitionKind, parentId, bpmnElement.isInterrupting);
     }
     return new ShapeBpmnIntermediateCatchEvent(bpmnElement.id, bpmnElement.name, eventDefinitionKind, parentId);
@@ -308,7 +308,7 @@ export default class ProcessConverter {
     eventDefinitionKind: ShapeBpmnEventDefinitionKind,
     parentId: string,
   ): ShapeBpmnIntermediateThrowEvent | ShapeBpmnEvent {
-    if (ShapeUtil.isIntermediateThrowEvent(elementKind)) {
+    if (ShapeUtility.isIntermediateThrowEvent(elementKind)) {
       return new ShapeBpmnIntermediateThrowEvent(bpmnElement.id, bpmnElement.name, eventDefinitionKind, parentId);
     }
     return new ShapeBpmnEvent(bpmnElement.id, bpmnElement.name, elementKind, eventDefinitionKind, parentId);
@@ -317,7 +317,7 @@ export default class ProcessConverter {
   private buildShapeBpmnBoundaryEvent(bpmnElement: TBoundaryEvent, eventDefinitionKind: ShapeBpmnEventDefinitionKind): ShapeBpmnBoundaryEvent {
     const parent = this.convertedElements.findFlowNode(bpmnElement.attachedToRef);
 
-    if (ShapeUtil.isActivity(parent?.kind)) {
+    if (ShapeUtility.isActivity(parent?.kind)) {
       return new ShapeBpmnBoundaryEvent(bpmnElement.id, bpmnElement.name, eventDefinitionKind, bpmnElement.attachedToRef, bpmnElement.cancelActivity);
     } else {
       this.parsingMessageCollector.warning(new BoundaryEventNotAttachedToActivityWarning(bpmnElement.id, bpmnElement.attachedToRef, parent?.kind));
@@ -380,7 +380,7 @@ export default class ProcessConverter {
       const shapeBpmnElement = this.convertedElements.findFlowNode(flowNodeReference);
       const laneId = lane.id;
       if (shapeBpmnElement) {
-        if (!ShapeUtil.isBoundaryEvent(shapeBpmnElement.kind)) {
+        if (!ShapeUtility.isBoundaryEvent(shapeBpmnElement.kind)) {
           shapeBpmnElement.parentId = laneId;
         }
       } else {
@@ -401,8 +401,8 @@ export default class ProcessConverter {
       return SequenceFlowKind.DEFAULT;
     } else {
       const sourceShapeBpmnElement = this.convertedElements.findFlowNode(sequenceFlow.sourceRef);
-      if (sourceShapeBpmnElement && ShapeUtil.isWithDefaultSequenceFlow(sourceShapeBpmnElement.kind) && sequenceFlow.conditionExpression) {
-        return ShapeUtil.isActivity(sourceShapeBpmnElement.kind) ? SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY : SequenceFlowKind.CONDITIONAL_FROM_GATEWAY;
+      if (sourceShapeBpmnElement && ShapeUtility.isWithDefaultSequenceFlow(sourceShapeBpmnElement.kind) && sequenceFlow.conditionExpression) {
+        return ShapeUtility.isActivity(sourceShapeBpmnElement.kind) ? SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY : SequenceFlowKind.CONDITIONAL_FROM_GATEWAY;
       }
     }
     return SequenceFlowKind.NORMAL;

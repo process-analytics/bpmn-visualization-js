@@ -20,7 +20,7 @@ import type { Edge } from '@lib/model/bpmn/internal/edge/edge';
 import type Shape from '@lib/model/bpmn/internal/shape/Shape';
 
 import { verifyEdge as baseVerifyEdge, verifyShape as baseVerifyShape } from '../../helpers/bpmn-model-expect';
-import { buildEdgeId, buildShapeId, poolInModel, toBpmnModel } from '../../helpers/bpmn-model-utils';
+import { buildEdgeId, buildShapeId, poolInModel, toBpmnModel } from '../../helpers/bpmn-model-utilities';
 
 import { ModelFiltering } from '@lib/component/registry/bpmn-model-filters';
 import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';

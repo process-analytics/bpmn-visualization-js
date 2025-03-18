@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { filter } from '@lib/component/helpers/array-utils';
+import { filter } from '@lib/component/helpers/array-utilities';
 import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 
 describe('array helper functions', () => {

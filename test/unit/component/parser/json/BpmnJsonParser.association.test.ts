@@ -21,7 +21,7 @@ import type { Point } from '@lib/model/bpmn/json/dc';
 
 import { type ExpectedEdge, verifyEdge } from '../../../helpers/bpmn-model-expect';
 import { buildDefinitions } from '../../../helpers/JsonBuilder';
-import { parseJsonAndExpectOnlyEdges } from '../../../helpers/JsonTestUtils';
+import { parseJsonAndExpectOnlyEdges } from '../../../helpers/JsonTestUtilities';
 
 import { FlowKind } from '@lib/model/bpmn/internal';
 import { Waypoint } from '@lib/model/bpmn/internal/edge/edge';

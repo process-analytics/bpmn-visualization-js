@@ -18,7 +18,7 @@ import type { BpmnGraph } from '../BpmnGraph';
 
 import { messageFlowIconId } from '../BpmnRenderer';
 
-import { setStyle } from './utils';
+import { setStyle } from './utilities';
 
 import { BpmnStyleIdentifier } from './index';
 

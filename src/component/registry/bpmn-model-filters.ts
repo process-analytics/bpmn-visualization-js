@@ -19,7 +19,7 @@ import type { Edge } from '../../model/bpmn/internal/edge/edge';
 import type Shape from '../../model/bpmn/internal/shape/Shape';
 import type { ModelFilter } from '../options';
 
-import { ensureIsArray } from '../helpers/array-utils';
+import { ensureIsArray } from '../helpers/array-utilities';
 
 /**
  * @internal

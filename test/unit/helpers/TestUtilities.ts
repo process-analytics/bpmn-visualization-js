@@ -17,10 +17,10 @@ limitations under the License.
 import type BpmnModel from '@lib/model/bpmn/internal/BpmnModel';
 import type Shape from '@lib/model/bpmn/internal/shape/Shape';
 
-import { ShapeBpmnElementKind, ShapeUtil } from '@lib/model/bpmn/internal';
+import { ShapeBpmnElementKind, ShapeUtility } from '@lib/model/bpmn/internal';
 
 export const shapeBpmnElementKindForLabelTests = Object.values(ShapeBpmnElementKind)
-  .filter(kind => !ShapeUtil.isPoolOrLane(kind))
+  .filter(kind => !ShapeUtility.isPoolOrLane(kind))
   // group as label is managed by category
   .filter(kind => kind != ShapeBpmnElementKind.GROUP)
   // intermediate catch and boundary events require extra property no managed here
@@ -28,5 +28,5 @@ export const shapeBpmnElementKindForLabelTests = Object.values(ShapeBpmnElementK
   .map(kind => [kind]);
 
 export function getEventShapes(model: BpmnModel): Shape[] {
-  return model.flowNodes.filter(shape => ShapeUtil.isEvent(shape.bpmnElement.kind));
+  return model.flowNodes.filter(shape => ShapeUtility.isEvent(shape.bpmnElement.kind));
 }

@@ -22,9 +22,9 @@ import type {
   ExpectedEventElement,
   ExpectedIntermediateThrowEventElement,
   ExpectedIntermediateCatchEventElement,
-} from '@test/shared/model/bpmn-semantic-utils';
+} from '@test/shared/model/bpmn-semantic-utilities';
 
-import { expectSvgEvent, expectSvgGateway, expectSvgPool, expectSvgSequenceFlow, expectSvgTask } from './html-utils';
+import { expectSvgEvent, expectSvgGateway, expectSvgPool, expectSvgSequenceFlow, expectSvgTask } from './html-utilities';
 
 import {
   expectEndEvent,
@@ -36,7 +36,7 @@ import {
   expectServiceTask,
   expectStartEvent,
   expectTask,
-} from '@test/shared/model/bpmn-semantic-utils';
+} from '@test/shared/model/bpmn-semantic-utilities';
 
 export function expectStartEventBpmnElement(bpmnElement: BpmnElement, expected: ExpectedEventElement): void {
   expectStartEvent(bpmnElement.bpmnSemantic as ShapeBpmnSemantic, expected);

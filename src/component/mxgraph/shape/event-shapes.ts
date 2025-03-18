@@ -18,7 +18,7 @@ import type { BpmnCanvas, PaintParameter, IconPainter } from './render';
 import type { mxAbstractCanvas2D } from 'mxgraph';
 
 import { ShapeBpmnEventDefinitionKind } from '../../../model/bpmn/internal';
-import { mxgraph, mxUtils } from '../initializer';
+import { mxgraph, mxUtilities } from '../initializer';
 import { BpmnStyleIdentifier, StyleDefault } from '../style';
 
 import { buildPaintParameter } from './render/icon-painter';
@@ -90,7 +90,7 @@ export class EventShape extends mxgraph.mxEllipse {
   override paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, isFilled: this.withFilledIcon });
 
-    setDashedOuterShapePattern(paintParameter, mxUtils.getValue(this.style, BpmnStyleIdentifier.IS_INTERRUPTING, undefined));
+    setDashedOuterShapePattern(paintParameter, mxUtilities.getValue(this.style, BpmnStyleIdentifier.IS_INTERRUPTING, undefined));
     this.paintOuterShape(paintParameter);
     restoreOriginalOuterShapePattern(paintParameter);
 
@@ -102,7 +102,7 @@ export class EventShape extends mxgraph.mxEllipse {
   }
 
   private paintInnerShape(paintParameter: PaintParameter): void {
-    const paintIcon = this.iconPainters.get(mxUtils.getValue(this.style, BpmnStyleIdentifier.EVENT_DEFINITION_KIND, ShapeBpmnEventDefinitionKind.NONE));
+    const paintIcon = this.iconPainters.get(mxUtilities.getValue(this.style, BpmnStyleIdentifier.EVENT_DEFINITION_KIND, ShapeBpmnEventDefinitionKind.NONE));
     paintIcon?.(paintParameter);
   }
 }

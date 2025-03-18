@@ -18,7 +18,7 @@ import type { Fill, Font, ShapeStyleUpdate, Stroke, StyleUpdate, GradientDirecti
 
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
 import { ensureOpacityValue, ensureStrokeWidthValue } from '../../helpers/validators';
-import { mxConstants, mxUtils } from '../initializer';
+import { mxConstants, mxUtilities as mxUtilities } from '../initializer';
 
 import { BpmnStyleIdentifier } from './identifiers';
 
@@ -80,7 +80,7 @@ export const StyleDefault = {
  * @internal
  * @private
  */
-export const getBpmnIsInstantiating = (style: Record<string, unknown>): boolean => mxUtils.getValue(style, BpmnStyleIdentifier.IS_INSTANTIATING, 'false') == 'true';
+export const getBpmnIsInstantiating = (style: Record<string, unknown>): boolean => mxUtilities.getValue(style, BpmnStyleIdentifier.IS_INSTANTIATING, 'false') == 'true';
 
 const convertDefaultValue = (value: string): string | undefined => (value == 'default' ? undefined : value);
 
@@ -94,11 +94,11 @@ export const updateStroke = (cellStyle: string, stroke: Stroke): string => {
 };
 
 export const setStyle = <T extends string | number>(cellStyle: string, key: string, value: T | undefined, converter: (value: T) => T | undefined = (value: T) => value): string => {
-  return value == undefined ? cellStyle : mxUtils.setStyle(cellStyle, key, converter(value));
+  return value == undefined ? cellStyle : mxUtilities.setStyle(cellStyle, key, converter(value));
 };
 
 export const setStyleFlag = (cellStyle: string, key: string, flag: number, value: boolean | undefined): string =>
-  value == undefined ? cellStyle : mxUtils.setStyleFlag(cellStyle, key, flag, value);
+  value == undefined ? cellStyle : mxUtilities.setStyleFlag(cellStyle, key, flag, value);
 
 export const updateFont = (cellStyle: string, font: Font): string => {
   if (font) {
@@ -150,11 +150,11 @@ export const updateFill = (cellStyle: string, fill: Fill): string => {
 
     if (isGradient) {
       // The values of the color are mandatory. So, no need to check if it's undefined.
-      cellStyle = mxUtils.setStyle(cellStyle, mxConstants.STYLE_GRADIENTCOLOR, color.endColor);
-      cellStyle = mxUtils.setStyle(cellStyle, mxConstants.STYLE_GRADIENT_DIRECTION, convertDirection(color.direction));
+      cellStyle = mxUtilities.setStyle(cellStyle, mxConstants.STYLE_GRADIENTCOLOR, color.endColor);
+      cellStyle = mxUtilities.setStyle(cellStyle, mxConstants.STYLE_GRADIENT_DIRECTION, convertDirection(color.direction));
     } else if (color === 'default') {
-      cellStyle = mxUtils.setStyle(cellStyle, mxConstants.STYLE_GRADIENTCOLOR, undefined);
-      cellStyle = mxUtils.setStyle(cellStyle, mxConstants.STYLE_GRADIENT_DIRECTION, undefined);
+      cellStyle = mxUtilities.setStyle(cellStyle, mxConstants.STYLE_GRADIENTCOLOR, undefined);
+      cellStyle = mxUtilities.setStyle(cellStyle, mxConstants.STYLE_GRADIENT_DIRECTION, undefined);
     }
 
     if (cellStyle.includes(ShapeBpmnElementKind.POOL) || cellStyle.includes(ShapeBpmnElementKind.LANE)) {

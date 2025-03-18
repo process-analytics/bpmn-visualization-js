@@ -17,7 +17,7 @@ limitations under the License.
 import type { OverlayEdgePosition, OverlayShapePosition } from '@lib/bpmn-visualization';
 
 import { initializeBpmnVisualizationWithContainerId } from './helpers/bpmn-visualization-initialization';
-import { HtmlElementLookup } from './helpers/html-utils';
+import { HtmlElementLookup } from './helpers/html-utilities';
 
 import { readFileSync } from '@test/shared/file-helper';
 import { overlayEdgePositionValues, overlayShapePositionValues } from '@test/shared/overlays';

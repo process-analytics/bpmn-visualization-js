@@ -29,8 +29,8 @@ import {
   parseJsonAndExpectOnlyFlowNodes,
   parseJsonAndExpectOnlySubProcess,
   verifySubProcess,
-} from '../../../helpers/JsonTestUtils';
-import { getEventShapes } from '../../../helpers/TestUtils';
+} from '../../../helpers/JsonTestUtilities';
+import { getEventShapes } from '../../../helpers/TestUtilities';
 
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';
 import { Waypoint } from '@lib/model/bpmn/internal/edge/edge';

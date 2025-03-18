@@ -18,7 +18,7 @@ import type { BpmnGraph } from './mxgraph/BpmnGraph';
 import type { GlobalOptions, LoadOptions, ParserOptions, RendererOptions } from './options';
 import type { BpmnElementsRegistry } from './registry';
 
-import { htmlElement } from './helpers/dom-utils';
+import { htmlElement } from './helpers/dom-utilities';
 import { newBpmnRenderer } from './mxgraph/BpmnRenderer';
 import GraphConfigurator from './mxgraph/GraphConfigurator';
 import { Navigation } from './navigation';

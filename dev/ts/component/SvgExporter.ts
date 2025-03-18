@@ -16,7 +16,7 @@ limitations under the License.
 
 import type { mxGraph, mxSvgCanvas2D as mxSvgCanvas2DType } from 'mxgraph';
 
-import { mxgraph, mxClient, mxConstants, mxSvgCanvas2D, mxUtils } from '../../../src/component/mxgraph/initializer';
+import { mxgraph, mxClient, mxConstants, mxSvgCanvas2D, mxUtilities } from '../../../src/component/mxgraph/initializer';
 
 interface SvgExportOptions {
   scale: number;
@@ -47,7 +47,7 @@ export class SvgExporter {
 
   private doSvgExport(enableForeignObjectForLabel: boolean): string {
     const svgDocument = this.computeSvg({ scale: 1, border: 25, enableForeignObjectForLabel: enableForeignObjectForLabel });
-    const svgAsString = mxUtils.getXml(svgDocument);
+    const svgAsString = mxUtilities.getXml(svgDocument);
     return `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 ${svgAsString}
@@ -64,7 +64,7 @@ ${svgAsString}
     const viewScale = this.graph.view.scale;
 
     // Prepares SVG document that holds the output
-    const svgDocument = mxUtils.createXmlDocument();
+    const svgDocument = mxUtilities.createXmlDocument();
     const root = svgDocument.createElementNS(mxConstants.NS_SVG, 'svg');
 
     const s = scale / viewScale;
@@ -168,7 +168,7 @@ class CanvasForExport extends mxSvgCanvas2D {
 
     try {
       this.htmlConverter.innerHTML = content;
-      content = mxUtils.extractTextWithWhitespace(this.htmlConverter.childNodes);
+      content = mxUtilities.extractTextWithWhitespace(this.htmlConverter.childNodes);
 
       // Workaround for substring breaking double byte UTF
       const exp = Math.ceil((2 * w) / this.state.fontSize);
@@ -193,7 +193,7 @@ class CanvasForExport extends mxSvgCanvas2D {
 
       // Uses result and adds ellipsis if more than 1 char remains
       if (result.length < content.length && content.length - result.length > 1) {
-        content = mxUtils.trim(result.join('')) + '...';
+        content = mxUtilities.trim(result.join('')) + '...';
       }
     } catch (error) {
       console.warn('Error while computing txt label', error);

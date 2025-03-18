@@ -20,10 +20,10 @@ import type { BpmnJsonModel } from '@lib/model/bpmn/json/bpmn20';
 
 import { verifyEdge } from '../../../helpers/bpmn-model-expect';
 import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilder';
-import { parseJson, parseJsonAndExpectOnlyEdges } from '../../../helpers/JsonTestUtils';
+import { parseJson, parseJsonAndExpectOnlyEdges } from '../../../helpers/JsonTestUtilities';
 
 /** Json model */
-import { ShapeBpmnElementKind, ShapeUtil } from '@lib/model/bpmn/internal';
+import { ShapeBpmnElementKind, ShapeUtility } from '@lib/model/bpmn/internal';
 import { Waypoint } from '@lib/model/bpmn/internal/edge/edge';
 import { MessageVisibleKind } from '@lib/model/bpmn/internal/edge/kinds';
 import * as bpmndi from '@lib/model/bpmn/json/bpmndi';
@@ -33,7 +33,7 @@ import * as bpmndi from '@lib/model/bpmn/json/bpmndi';
 function buildProcessParameter(kind: ShapeBpmnElementKind, id: string): BuildProcessParameter {
   if (kind === ShapeBpmnElementKind.POOL) {
     return { id, withParticipant: true };
-  } else if (ShapeUtil.isEvent(kind)) {
+  } else if (ShapeUtility.isEvent(kind)) {
     const isBoundaryEvent = kind === ShapeBpmnElementKind.EVENT_BOUNDARY;
     const eventParameter: BuildEventParameter = isBoundaryEvent
       ? {

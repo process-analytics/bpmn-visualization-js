@@ -25,7 +25,7 @@ import {
   poolInModel,
   sequenceFlowInModel,
   startEventInModel,
-} from '../../helpers/bpmn-model-utils';
+} from '../../helpers/bpmn-model-utilities';
 
 import { BpmnModelRegistry } from '@lib/component/registry/bpmn-model-registry';
 import { ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
@@ -38,7 +38,7 @@ import {
   expectPool,
   expectSequenceFlow,
   expectStartEvent,
-} from '@test/shared/model/bpmn-semantic-utils';
+} from '@test/shared/model/bpmn-semantic-utilities';
 
 const bpmnModelRegistry = new BpmnModelRegistry();
 

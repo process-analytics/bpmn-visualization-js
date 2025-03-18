@@ -33,7 +33,7 @@ import {
   expectSubprocess,
   expectTask,
   expectUserTask,
-} from '@test/shared/model/bpmn-semantic-utils';
+} from '@test/shared/model/bpmn-semantic-utilities';
 
 describe('Registry API - retrieve Model Bpmn elements', () => {
   describe('Get by ids', () => {

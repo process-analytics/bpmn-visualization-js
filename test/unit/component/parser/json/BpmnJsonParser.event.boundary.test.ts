@@ -17,9 +17,9 @@ limitations under the License.
 import type { BuildDefinitionParameter, BuildEventDefinition } from '../../../helpers/JsonBuilder';
 
 import { buildDefinitions, EventDefinitionOn } from '../../../helpers/JsonBuilder';
-import { expectAsWarning, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector } from '../../../helpers/JsonTestUtils';
-import { getEventShapes } from '../../../helpers/TestUtils';
-import { eventDefinitionsParameters, executeEventCommonTests, testMustConvertShapes } from '../../../helpers/TestUtils.BpmnJsonParser.event';
+import { expectAsWarning, parseJsonAndExpectOnlyFlowNodes, parsingMessageCollector } from '../../../helpers/JsonTestUtilities';
+import { getEventShapes } from '../../../helpers/TestUtilities';
+import { eventDefinitionsParameters, executeEventCommonTests, testMustConvertShapes } from '../../../helpers/TestUtilities.BpmnJsonParser.event';
 
 import { BoundaryEventNotAttachedToActivityWarning, ShapeUnknownBpmnElementWarning } from '@lib/component/parser/json/warnings';
 import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from '@lib/model/bpmn/internal';
