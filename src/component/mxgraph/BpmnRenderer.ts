@@ -19,7 +19,7 @@ import type Bounds from '../../model/bpmn/internal/Bounds';
 import type { Edge, Waypoint } from '../../model/bpmn/internal/edge/edge';
 import type Shape from '../../model/bpmn/internal/shape/Shape';
 import type ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
-import type { FitOptions, RendererOptions } from '../options';
+import type { RendererOptions } from '../options';
 import type { RenderedModel } from '../registry/bpmn-model-registry';
 import type { mxCell } from 'mxgraph';
 
@@ -40,9 +40,8 @@ export class BpmnRenderer {
     readonly styleComputer: StyleComputer,
   ) {}
 
-  render(renderedModel: RenderedModel, fitOptions?: FitOptions): void {
+  render(renderedModel: RenderedModel): void {
     this.insertShapesAndEdges(renderedModel);
-    this.graph.customFit(fitOptions);
   }
 
   private insertShapesAndEdges({ pools, lanes, subprocesses, otherFlowNodes, boundaryEvents, edges }: RenderedModel): void {

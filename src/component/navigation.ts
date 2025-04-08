@@ -15,7 +15,14 @@ limitations under the License.
 */
 
 import type { BpmnGraph } from './mxgraph/BpmnGraph';
-import type { FitOptions, ZoomType } from './options';
+import type { FitOptions, NavigationConfiguration, ZoomConfiguration, ZoomType } from './options';
+import type { mxMouseEvent } from 'mxgraph';
+
+import { debounce, throttle } from 'es-toolkit';
+
+import { ensurePositiveValue, ensureValidZoomConfiguration } from './helpers/validators';
+import { mxEvent } from './mxgraph/initializer';
+import { FitType } from './options';
 
 /**
  * Perform BPMN diagram navigation.
@@ -24,16 +31,231 @@ import type { FitOptions, ZoomType } from './options';
  *
  * @category Navigation
  * @experimental
+ * @since 0.47.0
+ */
+export interface Navigation {
+  fit(options?: FitOptions): void;
+
+  zoom(type: ZoomType): void;
+}
+
+/**
+ * Defines the available methods to perform BPMN diagram navigation.
+ *
+ * **WARN**: subject to change, feedback welcome.
+ *
+ * @category Navigation
+ * @experimental
+ * @private
  * @since 0.24.0
  */
-export class Navigation {
-  constructor(private readonly graph: BpmnGraph) {}
+export class NavigationImpl implements Navigation {
+  constructor(
+    private readonly graph: BpmnGraph,
+    private readonly zoomSupport: ZoomSupport,
+  ) {}
 
   fit(options?: FitOptions): void {
-    this.graph.customFit(options);
+    this.zoomSupport.fit(options);
   }
 
   zoom(type: ZoomType): void {
-    type == 'in' ? this.graph.zoomIn() : this.graph.zoomOut();
+    type == 'in' ? this.zoomSupport.zoomIn() : this.zoomSupport.zoomOut();
+  }
+
+  configure(options?: NavigationConfiguration): void {
+    const panningHandler = this.graph.panningHandler;
+    if (options?.enabled) {
+      // Pan configuration
+      panningHandler.addListener(mxEvent.PAN_START, setContainerCursor(this.graph, 'grab'));
+      panningHandler.addListener(mxEvent.PAN_END, setContainerCursor(this.graph, 'default'));
+
+      panningHandler.usePopupTrigger = false; // only use the left button to trigger panning
+      // Reimplement the function as we also want to trigger 'panning on cells' (ignoreCell to true) and only on left-click
+      // The mxGraph standard implementation doesn't ignore right click in this case, so do it by ourselves
+      panningHandler.isForcePanningEvent = (me: mxMouseEvent): boolean => mxEvent.isLeftMouseButton(me.getEvent()) || mxEvent.isMultiTouchEvent(me.getEvent());
+      this.graph.setPanning(true);
+
+      // Zoom configuration
+      this.zoomSupport.registerMouseWheelZoomListeners(options?.zoom);
+    } else {
+      this.graph.setPanning(false);
+      // Disable gesture support for zoom
+      panningHandler.setPinchEnabled(false);
+      // Disable panning on touch device
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars -- prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
+      panningHandler.isForcePanningEvent = (_me: mxMouseEvent): boolean => false;
+    }
+  }
+}
+
+function setContainerCursor(graph: BpmnGraph, cursor: 'grab' | 'default'): () => void {
+  return (): void => {
+    graph.container.style.cursor = cursor;
+  };
+}
+
+/**
+ * @internal
+ */
+export function createNewNavigation(graph: BpmnGraph, options?: NavigationConfiguration): Navigation {
+  const navigation = new NavigationImpl(graph, new ZoomSupport(graph));
+  navigation.configure(options);
+  return navigation;
+}
+
+const zoomFactorIn = 1.25;
+const zoomFactorOut = 1 / zoomFactorIn;
+
+/**
+ * Call Graph methods and zoom with mouse.
+ * @internal
+ */
+class ZoomSupport {
+  private currentZoomLevel = 1;
+
+  constructor(private readonly graph: BpmnGraph) {
+    this.graph.zoomFactor = zoomFactorIn;
+  }
+
+  private graphFit(border: number, keepOrigin?: boolean, margin?: number, enabled?: boolean, ignoreWidth?: boolean, ignoreHeight?: boolean, maxHeight?: number): number {
+    const scale = this.graph.fit(border, keepOrigin, margin, enabled, ignoreWidth, ignoreHeight, maxHeight);
+    this.setCurrentZoomLevel(scale);
+    return scale;
+  }
+
+  private setCurrentZoomLevel(scale?: number): void {
+    this.currentZoomLevel = scale ?? this.graph.view.scale;
+  }
+
+  private zoomActual(): void {
+    this.graph.zoomActual();
+    this.setCurrentZoomLevel();
+  }
+
+  zoomIn(): void {
+    this.graph.zoomIn();
+    this.setCurrentZoomLevel();
+  }
+
+  zoomOut(): void {
+    this.graph.zoomOut();
+    this.setCurrentZoomLevel();
+  }
+
+  fit(fitOptions: FitOptions): void {
+    // We should avoid extra zoom/fit reset. See https://github.com/process-analytics/bpmn-visualization-js/issues/888
+    this.zoomActual();
+
+    const type = fitOptions?.type;
+    if (type == undefined || type == FitType.None) {
+      return;
+    }
+
+    const margin = ensurePositiveValue(fitOptions?.margin);
+
+    if (type == FitType.Center) {
+      // Inspired from https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxGraph-js.html#mxGraph.fit
+      const maxScale = 3;
+
+      const bounds = this.graph.getGraphBounds();
+      const clientWidth = this.graph.container.clientWidth - margin;
+      const clientHeight = this.graph.container.clientHeight - margin;
+      const width = bounds.width / this.graph.view.scale;
+      const height = bounds.height / this.graph.view.scale;
+      const scale = Math.min(maxScale, Math.min(clientWidth / width, clientHeight / height));
+      this.setCurrentZoomLevel(scale);
+
+      this.graph.view.scaleAndTranslate(
+        scale,
+        (margin + clientWidth - width * scale) / (2 * scale) - bounds.x / this.graph.view.scale,
+        (margin + clientHeight - height * scale) / (2 * scale) - bounds.y / this.graph.view.scale,
+      );
+    } else {
+      let ignoreWidth = false;
+      let ignoreHeight = false;
+      switch (type) {
+        case FitType.Horizontal: {
+          ignoreHeight = true;
+          break;
+        }
+        case FitType.Vertical: {
+          ignoreWidth = true;
+          break;
+        }
+      }
+
+      this.graphFit(this.graph.border, false, margin, true, ignoreWidth, ignoreHeight);
+    }
+  }
+
+  /**
+   * @internal
+   */
+  registerMouseWheelZoomListeners(config: ZoomConfiguration): void {
+    config = ensureValidZoomConfiguration(config);
+    mxEvent.addMouseWheelListener(debounce(this.createMouseWheelZoomListener(true), config.debounceDelay), this.graph.container);
+    mxEvent.addMouseWheelListener(throttle(this.createMouseWheelZoomListener(false), config.throttleDelay), this.graph.container);
+  }
+
+  // Update the currentZoomLevel when performScaling is false, use the currentZoomLevel to set the scale otherwise
+  // Initial implementation inspired by https://github.com/algenty/grafana-flowcharting/blob/0.9.0/src/graph_class.ts#L1254
+  private manageMouseWheelZoomEvent(up: boolean, event: MouseEvent, performScaling: boolean): void {
+    if (performScaling) {
+      const [offsetX, offsetY] = this.getEventRelativeCoordinates(event);
+      const [newScale, dx, dy] = this.getScaleAndTranslationDeltas(offsetX, offsetY);
+      this.graph.view.scaleAndTranslate(newScale, this.graph.view.translate.x + dx, this.graph.view.translate.y + dy);
+      mxEvent.consume(event);
+    } else {
+      this.currentZoomLevel *= up ? zoomFactorIn : zoomFactorOut;
+    }
+  }
+
+  private createMouseWheelZoomListener(performScaling: boolean) {
+    return (event: Event, up: boolean) => {
+      if (mxEvent.isConsumed(event) || !(event instanceof MouseEvent)) {
+        return;
+      }
+
+      // only the ctrl key
+      const isZoomWheelEvent = event.ctrlKey && !event.altKey && !event.shiftKey && !event.metaKey;
+      if (isZoomWheelEvent) {
+        this.manageMouseWheelZoomEvent(up, event, performScaling);
+      }
+    };
+  }
+
+  private getEventRelativeCoordinates(event: MouseEvent): [number, number] {
+    const rect = this.graph.container.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    return [x, y];
+  }
+
+  private getScaleAndTranslationDeltas(offsetX: number, offsetY: number): [number, number, number] {
+    const [factor, scale] = this.calculateFactorAndScale();
+    const [dx, dy] = this.calculateTranslationDeltas(factor, scale, offsetX * 2, offsetY * 2);
+    return [scale, dx, dy];
+  }
+
+  // solution inspired by https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/mxGraph.js#L8074-L8085
+  private calculateTranslationDeltas(factor: number, scale: number, dx: number, dy: number): [number, number] {
+    if (factor > 1) {
+      const f = (factor - 1) / (scale * 2);
+      dx *= -f;
+      dy *= -f;
+    } else {
+      const f = (1 / factor - 1) / (this.graph.view.scale * 2);
+      dx *= f;
+      dy *= f;
+    }
+    return [dx, dy];
+  }
+
+  private calculateFactorAndScale(): [number, number] {
+    // Rounded in the same way as in the mxGraph.zoom function for consistency.
+    const scale = Math.round(this.currentZoomLevel * 100) / 100;
+    const factor = scale / this.graph.view.scale;
+    return [factor, scale];
   }
 }
