@@ -198,19 +198,6 @@ class ZoomSupport {
     mxEvent.addMouseWheelListener(throttle(this.createMouseWheelZoomListener(false), config.throttleDelay), this.graph.container);
   }
 
-  // Update the currentZoomLevel when performScaling is false, use the currentZoomLevel to set the scale otherwise
-  // Initial implementation inspired by https://github.com/algenty/grafana-flowcharting/blob/0.9.0/src/graph_class.ts#L1254
-  private manageMouseWheelZoomEvent(up: boolean, event: MouseEvent, performScaling: boolean): void {
-    if (performScaling) {
-      const [offsetX, offsetY] = this.getEventRelativeCoordinates(event);
-      const [newScale, dx, dy] = this.getScaleAndTranslationDeltas(offsetX, offsetY);
-      this.graph.view.scaleAndTranslate(newScale, this.graph.view.translate.x + dx, this.graph.view.translate.y + dy);
-      mxEvent.consume(event);
-    } else {
-      this.currentZoomLevel *= up ? zoomFactorIn : zoomFactorOut;
-    }
-  }
-
   private createMouseWheelZoomListener(performScaling: boolean) {
     return (event: Event, up: boolean) => {
       if (mxEvent.isConsumed(event) || !(event instanceof MouseEvent)) {
@@ -220,7 +207,16 @@ class ZoomSupport {
       // only the ctrl key
       const isZoomWheelEvent = event.ctrlKey && !event.altKey && !event.shiftKey && !event.metaKey;
       if (isZoomWheelEvent) {
-        this.manageMouseWheelZoomEvent(up, event, performScaling);
+        // Update the currentZoomLevel when performScaling is false, use the currentZoomLevel to set the scale otherwise
+        // Initial implementation inspired by https://github.com/algenty/grafana-flowcharting/blob/0.9.0/src/graph_class.ts#L1254
+        if (performScaling) {
+          const [offsetX, offsetY] = this.getEventRelativeCoordinates(event);
+          const [newScale, dx, dy] = this.getScaleAndTranslationDeltas(offsetX, offsetY);
+          this.graph.view.scaleAndTranslate(newScale, this.graph.view.translate.x + dx, this.graph.view.translate.y + dy);
+          mxEvent.consume(event);
+        } else {
+          this.currentZoomLevel *= up ? zoomFactorIn : zoomFactorOut;
+        }
       }
     };
   }
