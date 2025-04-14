@@ -14,14 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { GlobalOptions } from '../options';
-import type { mxMouseEvent } from 'mxgraph';
-
 import { BpmnGraph } from './BpmnGraph';
 import MarkerConfigurator from './config/MarkerConfigurator';
 import ShapeConfigurator from './config/ShapeConfigurator';
 import { StyleConfigurator } from './config/StyleConfigurator';
-import { mxEvent } from './initializer';
 
 /**
  * Configure the BpmnMxGraph graph that can be used by the lib
@@ -38,9 +34,8 @@ export default class GraphConfigurator {
     this.graph = new BpmnGraph(container);
   }
 
-  configure(options: GlobalOptions): BpmnGraph {
+  configure(): BpmnGraph {
     this.configureGraph();
-    this.configureNavigationSupport(options);
     new StyleConfigurator(this.graph).configureStyles();
     new ShapeConfigurator().configureShapes();
     new MarkerConfigurator().configureMarkers();
@@ -62,35 +57,4 @@ export default class GraphConfigurator {
     // This also prevents requesting unavailable images (see #185) as we don't override BpmnMxGraph folding default images.
     this.graph.foldingEnabled = false;
   }
-
-  private configureNavigationSupport(options: GlobalOptions): void {
-    const panningHandler = this.graph.panningHandler;
-    if (options?.navigation?.enabled) {
-      // Pan configuration
-      panningHandler.addListener(mxEvent.PAN_START, setContainerCursor(this.graph, 'grab'));
-      panningHandler.addListener(mxEvent.PAN_END, setContainerCursor(this.graph, 'default'));
-
-      panningHandler.usePopupTrigger = false; // only use the left button to trigger panning
-      // Reimplement the function as we also want to trigger 'panning on cells' (ignoreCell to true) and only on left-click
-      // The mxGraph standard implementation doesn't ignore right click in this case, so do it by ourselves
-      panningHandler.isForcePanningEvent = (me): boolean => mxEvent.isLeftMouseButton(me.getEvent()) || mxEvent.isMultiTouchEvent(me.getEvent());
-      this.graph.setPanning(true);
-
-      // Zoom configuration
-      this.graph.registerMouseWheelZoomListeners(options.navigation.zoom);
-    } else {
-      this.graph.setPanning(false);
-      // Disable gesture support for zoom
-      panningHandler.setPinchEnabled(false);
-      // Disable panning on touch device
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars -- prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
-      panningHandler.isForcePanningEvent = (_me: mxMouseEvent): boolean => false;
-    }
-  }
-}
-
-function setContainerCursor(graph: BpmnGraph, cursor: 'grab' | 'default'): () => void {
-  return (): void => {
-    graph.container.style.cursor = cursor;
-  };
 }
