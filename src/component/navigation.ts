@@ -25,13 +25,13 @@ import { mxEvent } from './mxgraph/initializer';
 import { FitType } from './options';
 
 /**
- * Perform BPMN diagram navigation.
+ * Defines the methods available to perform BPMN diagram navigation.
  *
  * **WARN**: subject to change, feedback welcome.
  *
  * @category Navigation
  * @experimental
- * @since 0.47.0
+ * @since 0.24.0
  */
 export interface Navigation {
   fit(options?: FitOptions): void;
@@ -40,14 +40,14 @@ export interface Navigation {
 }
 
 /**
- * Defines the available methods to perform BPMN diagram navigation.
+ * Concrete implementation for BPMN diagram navigation.
  *
- * **WARN**: subject to change, feedback welcome.
+ * **WARN**: internal, as it provides methods that are not part of the public API.
  *
  * @category Navigation
  * @experimental
- * @private
- * @since 0.24.0
+ * @internal
+ * @since 0.47.0
  */
 export class NavigationImpl implements Navigation {
   constructor(
