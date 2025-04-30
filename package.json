@@ -164,7 +164,7 @@
     "ts-jest": "~29.3.2",
     "typedoc": "~0.28.3",
     "typescript": "~5.8.3",
-    "vite": "~6.3.3"
+    "vite": "~6.3.4"
   },
   "overrides": {
     "@types/node": "^20.17.24"
