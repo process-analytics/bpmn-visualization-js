@@ -15,8 +15,8 @@ limitations under the License.
 */
 
 import { MarkerIdentifier } from '../style';
-import type { AbstractCanvas2D, Cell, MarkerFactoryFunction, Point, Shape } from '@maxgraph/core';
-import { MarkerShape } from '@maxgraph/core';
+import type { AbstractCanvas2D, MarkerFactoryFunction, Point, Shape } from '@maxgraph/core';
+import { EdgeMarkerRegistry } from '@maxgraph/core';
 
 /**
  * @internal
@@ -52,6 +52,6 @@ export default class MarkerConfigurator {
         c.stroke();
       };
     };
-    MarkerShape.addMarker(MarkerIdentifier.ARROW_DASH, createMarker);
+    EdgeMarkerRegistry.add(MarkerIdentifier.ARROW_DASH, createMarker);
   }
 }

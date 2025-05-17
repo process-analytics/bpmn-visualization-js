@@ -126,18 +126,18 @@ export default class ShapeConfigurator {
         // END OF Fix for issue #920
         '; ';
 
-      if ((s.fontStyle & constants.FONT.BOLD) == constants.FONT.BOLD) {
+      if ((s.fontStyle & constants.FONT_STYLE_MASK.BOLD) == constants.FONT_STYLE_MASK.BOLD) {
         css += 'font-weight: bold; ';
       }
-      if ((s.fontStyle & constants.FONT.ITALIC) == constants.FONT.ITALIC) {
+      if ((s.fontStyle & constants.FONT_STYLE_MASK.ITALIC) == constants.FONT_STYLE_MASK.ITALIC) {
         css += 'font-style: italic; ';
       }
 
       const deco = [];
-      if ((s.fontStyle & constants.FONT.UNDERLINE) == constants.FONT.UNDERLINE) {
+      if ((s.fontStyle & constants.FONT_STYLE_MASK.UNDERLINE) == constants.FONT_STYLE_MASK.UNDERLINE) {
         deco.push('underline');
       }
-      if ((s.fontStyle & constants.FONT.STRIKETHROUGH) == constants.FONT.STRIKETHROUGH) {
+      if ((s.fontStyle & constants.FONT_STYLE_MASK.STRIKETHROUGH) == constants.FONT_STYLE_MASK.STRIKETHROUGH) {
         deco.push('line-through');
       }
       if (deco.length > 0) {
