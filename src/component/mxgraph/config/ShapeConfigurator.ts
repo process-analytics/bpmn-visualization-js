@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { CellRenderer, constants, Dictionary, ImageShape, Rectangle, Shape, SvgCanvas2D } from '@maxgraph/core';
-import type { CellOverlay, CellState } from '@maxgraph/core';
+import { CellRenderer, constants, Dictionary, ImageShape, Rectangle, Shape, ShapeRegistry, SvgCanvas2D } from '@maxgraph/core';
+import type { CellOverlay, CellState, ShapeConstructor } from '@maxgraph/core';
 
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
 import { EndEventShape, EventShape, IntermediateEventShape, ThrowIntermediateEventShape } from '../shape/event-shapes';
@@ -52,54 +52,42 @@ export default class ShapeConfigurator {
     this.initMxCellRendererCreateCellOverlays();
   }
 
-  // TODO maxgraph@0.10.3 - registerShape like in maxGraph, see https://github.com/maxGraph/maxGraph/blob/v0.15.0/packages/core/src/view/cell/register-shapes.ts#L46-L66
   private registerShapes(): void {
-    // events
-    CellRenderer.registerShape(ShapeBpmnElementKind.EVENT_END, EndEventShape);
-    CellRenderer.registerShape(ShapeBpmnElementKind.EVENT_START, EventShape);
-    CellRenderer.registerShape(ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ThrowIntermediateEventShape);
-    CellRenderer.registerShape(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, IntermediateEventShape);
-    CellRenderer.registerShape(ShapeBpmnElementKind.EVENT_BOUNDARY, IntermediateEventShape);
-    // gateways
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.10.2 fix CellRenderer.registerShape call (from maxgraph@0.1.0)
-    // @ts-ignore
-    CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_COMPLEX, ComplexGatewayShape);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.10.2 fix CellRenderer.registerShape call (from maxgraph@0.1.0)
-    // @ts-ignore
-    CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_EVENT_BASED, EventBasedGatewayShape);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.10.2 fix CellRenderer.registerShape call (from maxgraph@0.1.0)
-    // @ts-ignore
-    CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, ExclusiveGatewayShape);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.10.2 fix CellRenderer.registerShape call (from maxgraph@0.1.0)
-    // @ts-ignore
-    CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_INCLUSIVE, InclusiveGatewayShape);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.10.2 fix CellRenderer.registerShape call (from maxgraph@0.1.0)
-    // @ts-ignore
-    CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_PARALLEL, ParallelGatewayShape);
-    // activities
-    CellRenderer.registerShape(ShapeBpmnElementKind.SUB_PROCESS, SubProcessShape);
-    CellRenderer.registerShape(ShapeBpmnElementKind.CALL_ACTIVITY, CallActivityShape);
-    // tasks
-    CellRenderer.registerShape(ShapeBpmnElementKind.TASK, TaskShape);
-    CellRenderer.registerShape(ShapeBpmnElementKind.TASK_SERVICE, ServiceTaskShape);
-    CellRenderer.registerShape(ShapeBpmnElementKind.TASK_USER, UserTaskShape);
-    CellRenderer.registerShape(ShapeBpmnElementKind.TASK_RECEIVE, ReceiveTaskShape);
-    CellRenderer.registerShape(ShapeBpmnElementKind.TASK_SEND, SendTaskShape);
-    CellRenderer.registerShape(ShapeBpmnElementKind.TASK_MANUAL, ManualTaskShape);
-    CellRenderer.registerShape(ShapeBpmnElementKind.TASK_SCRIPT, ScriptTaskShape);
-    CellRenderer.registerShape(ShapeBpmnElementKind.TASK_BUSINESS_RULE, BusinessRuleTaskShape);
-    // artifacts
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.10.2 fix CellRenderer.registerShape call (from maxgraph@0.1.0)
-    // @ts-ignore
-    CellRenderer.registerShape(ShapeBpmnElementKind.TEXT_ANNOTATION, TextAnnotationShape);
-
-    // shapes for flows
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.10.2 fix CellRenderer.registerShape call (from maxgraph@0.1.0)
-    // @ts-ignore
-    CellRenderer.registerShape(BpmnStyleIdentifier.EDGE, BpmnConnector);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.10.2 fix CellRenderer.registerShape call (from maxgraph@0.1.0)
-    // @ts-ignore
-    CellRenderer.registerShape(BpmnStyleIdentifier.MESSAGE_FLOW_ICON, MessageFlowIconShape);
+    // Inspired by the default shapes registration done in maxGraph
+    const shapesToRegister: [string, ShapeConstructor][] = [
+      // events
+      [ShapeBpmnElementKind.EVENT_END, EndEventShape],
+      [ShapeBpmnElementKind.EVENT_START, EventShape],
+      [ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ThrowIntermediateEventShape],
+      [ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, IntermediateEventShape],
+      [ShapeBpmnElementKind.EVENT_BOUNDARY, IntermediateEventShape],
+      // gateways
+      [ShapeBpmnElementKind.GATEWAY_COMPLEX, ComplexGatewayShape],
+      [ShapeBpmnElementKind.GATEWAY_EVENT_BASED, EventBasedGatewayShape],
+      [ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, ExclusiveGatewayShape],
+      [ShapeBpmnElementKind.GATEWAY_INCLUSIVE, InclusiveGatewayShape],
+      [ShapeBpmnElementKind.GATEWAY_PARALLEL, ParallelGatewayShape],
+      // activities
+      [ShapeBpmnElementKind.SUB_PROCESS, SubProcessShape],
+      [ShapeBpmnElementKind.CALL_ACTIVITY, CallActivityShape],
+      // tasks
+      [ShapeBpmnElementKind.TASK, TaskShape],
+      [ShapeBpmnElementKind.TASK_SERVICE, ServiceTaskShape],
+      [ShapeBpmnElementKind.TASK_USER, UserTaskShape],
+      [ShapeBpmnElementKind.TASK_RECEIVE, ReceiveTaskShape],
+      [ShapeBpmnElementKind.TASK_SEND, SendTaskShape],
+      [ShapeBpmnElementKind.TASK_MANUAL, ManualTaskShape],
+      [ShapeBpmnElementKind.TASK_SCRIPT, ScriptTaskShape],
+      [ShapeBpmnElementKind.TASK_BUSINESS_RULE, BusinessRuleTaskShape],
+      // artifacts
+      [ShapeBpmnElementKind.TEXT_ANNOTATION, TextAnnotationShape],
+      // shapes for flows
+      [BpmnStyleIdentifier.EDGE, BpmnConnector],
+      [BpmnStyleIdentifier.MESSAGE_FLOW_ICON, MessageFlowIconShape],
+    ];
+    for (const [shapeName, shapeClass] of shapesToRegister) {
+      ShapeRegistry.add(shapeName, shapeClass);
+    }
   }
 
   private initMxSvgCanvasPrototype(): void {
