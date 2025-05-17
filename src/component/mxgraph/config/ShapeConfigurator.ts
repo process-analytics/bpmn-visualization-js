@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { CellRenderer, constants, Dictionary, ImageShape, Rectangle, Shape, ShapeRegistry, SvgCanvas2D } from '@maxgraph/core';
+import { CellRenderer, constants, Dictionary, ImageShape, Rectangle, Shape, ShapeRegistry, SvgCanvas2D, SwimlaneShape } from '@maxgraph/core';
 import type { CellOverlay, CellState, ShapeConstructor } from '@maxgraph/core';
 
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
@@ -81,6 +81,9 @@ export default class ShapeConfigurator {
       [ShapeBpmnElementKind.TASK_BUSINESS_RULE, BusinessRuleTaskShape],
       // artifacts
       [ShapeBpmnElementKind.TEXT_ANNOTATION, TextAnnotationShape],
+      // pool and lanes
+      [ShapeBpmnElementKind.LANE, SwimlaneShape],
+      [ShapeBpmnElementKind.POOL, SwimlaneShape],
       // shapes for flows
       [BpmnStyleIdentifier.EDGE, BpmnConnector],
       [BpmnStyleIdentifier.MESSAGE_FLOW_ICON, MessageFlowIconShape],

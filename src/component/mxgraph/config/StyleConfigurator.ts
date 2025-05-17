@@ -139,7 +139,7 @@ export class StyleConfigurator {
 
   private configurePoolStyle(): void {
     const style: CellStyle = {
-      shape: 'swimlane',
+      shape: ShapeBpmnElementKind.POOL,
       // label style
       verticalAlign: 'middle',
       align: 'center',
@@ -152,7 +152,7 @@ export class StyleConfigurator {
 
   private configureLaneStyle(): void {
     const style: CellStyle = {
-      shape: 'swimlane',
+      shape: ShapeBpmnElementKind.LANE,
       // label style
       verticalAlign: 'middle',
       align: 'center',
