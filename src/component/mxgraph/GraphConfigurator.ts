@@ -42,7 +42,7 @@ export default class GraphConfigurator {
     this.configureNavigationSupport(options);
     new StyleConfigurator(this.graph).configureStyles();
     new ShapeConfigurator().configureShapes();
-    new MarkerConfigurator().configureMarkers();
+    new MarkerConfigurator().registerMarkers();
     return this.graph;
   }
 

@@ -15,56 +15,53 @@ limitations under the License.
 */
 
 import { MarkerIdentifier } from '../style';
-import type { AbstractCanvas2D, ArrowValue, MarkerFactoryFunction, Point, Shape } from '@maxgraph/core';
+import type { AbstractCanvas2D, MarkerFactoryFunction, Point, Shape, StyleArrowValue } from '@maxgraph/core';
 import { EdgeMarker, EdgeMarkerRegistry } from '@maxgraph/core';
+
+// This implementation is adapted from the draw.io BPMN 'dash' marker
+// https://github.com/jgraph/drawio/blob/f539f1ff362e76127dcc7e68b5a9d83dd7d4965c/src/main/webapp/js/mxgraph/Shapes.js#L2796
+
+// prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
+const dashMarkerFactory: MarkerFactoryFunction = (
+  c: AbstractCanvas2D,
+  _shape: Shape,
+  _type: string,
+  pe: Point,
+  unitX: number,
+  unitY: number,
+  size: number,
+  _source: boolean,
+  strokewidth: number,
+): (() => void) => {
+  const nx = unitX * (size + strokewidth + 4);
+  const ny = unitY * (size + strokewidth + 4);
+
+  return function () {
+    c.begin();
+    c.moveTo(pe.x - nx / 2 - ny / 2, pe.y - ny / 2 + nx / 2);
+    c.lineTo(pe.x + ny / 2 - (3 * nx) / 2, pe.y - (3 * ny) / 2 - nx / 2);
+    c.stroke();
+  };
+};
 
 /**
  * @internal
  */
 // // TODO maxgraph@0.20.0 rename to EdgeMarkerConfigurator for clarity (do not mix with bpmn activity markers)
 export default class MarkerConfigurator {
-  configureMarkers(): void {
-    this.registerArrowDashMarker();
-    // register maxGraph built-in markers used in bpmn-visualization (not registered by default as we used BaseGraph)
+  registerMarkers(): void {
+    // Also register maxGraph built-in markers used in bpmn-visualization (not registered by default as we used BaseGraph)
     // see https://github.com/maxGraph/maxGraph/blob/0a18ab1479f0235087c7763dafc098f12cd5f0c9/packages/core/src/view/style/register.ts#L139
 
-    const markersToRegister: [ArrowValue, MarkerFactoryFunction][] = [
+    const markersToRegister: [StyleArrowValue, MarkerFactoryFunction][] = [
       ['blockThin', EdgeMarker.createArrow(3)],
       ['openThin', EdgeMarker.createOpenArrow(3)],
       ['oval', EdgeMarker.oval],
       ['diamondThin', EdgeMarker.diamond],
+      [MarkerIdentifier.ARROW_DASH, dashMarkerFactory],
     ];
     for (const [type, factory] of markersToRegister) {
       EdgeMarkerRegistry.add(type, factory);
     }
-  }
-
-  private registerArrowDashMarker(): void {
-    // This implementation is adapted from the draw.io BPMN 'dash' marker
-    // https://github.com/jgraph/drawio/blob/f539f1ff362e76127dcc7e68b5a9d83dd7d4965c/src/main/webapp/js/mxgraph/Shapes.js#L2796
-
-    // prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
-    const createMarker: MarkerFactoryFunction = (
-      c: AbstractCanvas2D,
-      _shape: Shape,
-      _type: string,
-      pe: Point,
-      unitX: number,
-      unitY: number,
-      size: number,
-      _source: boolean,
-      strokewidth: number,
-    ): (() => void) => {
-      const nx = unitX * (size + strokewidth + 4);
-      const ny = unitY * (size + strokewidth + 4);
-
-      return function () {
-        c.begin();
-        c.moveTo(pe.x - nx / 2 - ny / 2, pe.y - ny / 2 + nx / 2);
-        c.lineTo(pe.x + ny / 2 - (3 * nx) / 2, pe.y - (3 * ny) / 2 - nx / 2);
-        c.stroke();
-      };
-    };
-    EdgeMarkerRegistry.add(MarkerIdentifier.ARROW_DASH, createMarker);
   }
 }
