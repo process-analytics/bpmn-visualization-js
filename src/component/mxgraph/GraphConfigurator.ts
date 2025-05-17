@@ -19,8 +19,8 @@ import ShapeConfigurator from './config/ShapeConfigurator';
 import MarkerConfigurator from './config/MarkerConfigurator';
 import type { GlobalOptions } from '../options';
 import { BpmnGraph } from './BpmnGraph';
-import type { InternalMouseEvent, PanningHandler } from '@maxgraph/core';
-import { eventUtils, InternalEvent } from '@maxgraph/core';
+import type { InternalMouseEvent, PanningHandler, PerimeterFunction, PerimeterValue } from '@maxgraph/core';
+import { eventUtils, InternalEvent, Perimeter, PerimeterRegistry } from '@maxgraph/core';
 
 /**
  * Configure the BpmnMxGraph graph that can be used by the lib
@@ -43,6 +43,7 @@ export default class GraphConfigurator {
     new StyleConfigurator(this.graph).configureStyles();
     new ShapeConfigurator().configureShapes();
     new MarkerConfigurator().registerMarkers();
+    registerPerimeters();
     return this.graph;
   }
 
@@ -96,5 +97,19 @@ export default class GraphConfigurator {
     return (): void => {
       this.graph.isEnabled() && (this.container.style.cursor = cursor);
     };
+  }
+}
+
+// TODO maxgraph@0.20.0 move to a dedicated file
+// Register maxGraph built-in perimeters used in bpmn-visualization (not registered by default as we use BaseGraph)
+// see https://github.com/maxGraph/maxGraph/blob/0a18ab1479f0235087c7763dafc098f12cd5f0c9/packages/core/src/view/style/register.ts#L74
+function registerPerimeters(): void {
+  const perimetersToRegister: [PerimeterValue, PerimeterFunction][] = [
+    ['ellipsePerimeter', Perimeter.EllipsePerimeter],
+    ['rectanglePerimeter', Perimeter.RectanglePerimeter],
+    ['rhombusPerimeter', Perimeter.RhombusPerimeter],
+  ];
+  for (const [name, perimeter] of perimetersToRegister) {
+    PerimeterRegistry.add(name, perimeter);
   }
 }
