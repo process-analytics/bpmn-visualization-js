@@ -150,7 +150,7 @@ function buildShapeMatcher(matcherName: string, matcherContext: MatcherContext, 
 function buildContainerMatcher(matcherName: string, matcherContext: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
   return buildShapeMatcher(matcherName, matcherContext, received, {
     ...expected,
-    styleShape: 'swimlane',
+    styleShape: expected.kind,
     isSwimLaneLabelHorizontal: expected.isSwimLaneLabelHorizontal ?? false,
   });
 }
