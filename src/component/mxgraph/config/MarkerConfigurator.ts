@@ -47,7 +47,8 @@ const dashMarkerFactory: MarkerFactoryFunction = (
 /**
  * @internal
  */
-// // TODO maxgraph@0.20.0 rename to EdgeMarkerConfigurator for clarity (do not mix with bpmn activity markers)
+// TODO maxgraph@0.20.0 rename to EdgeMarkerConfigurator for clarity (do not mix with bpmn activity markers)
+// TODO maxgraph@0.20.0 this could be a single function instead of a class without property and with a single method
 export default class MarkerConfigurator {
   registerMarkers(): void {
     // Also register maxGraph built-in markers used in bpmn-visualization (not registered by default as we used BaseGraph)
