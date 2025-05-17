@@ -18,9 +18,8 @@ import type { FitOptions, ZoomConfiguration } from '../options';
 import { FitType } from '../options';
 import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/validators';
 import { debounce, throttle } from 'lodash-es';
-import type { CellState, Point } from '@maxgraph/core';
+import type { AbstractGraph, CellState, Point } from '@maxgraph/core';
 import { BaseGraph, eventUtils, GraphView, InternalEvent, PanningHandler } from '@maxgraph/core';
-import type { AbstractGraph } from '@maxgraph/core/lib/esm/view/AbstractGraph';
 
 const zoomFactorIn = 1.25;
 const zoomFactorOut = 1 / zoomFactorIn;
