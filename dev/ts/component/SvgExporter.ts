@@ -160,7 +160,7 @@ class CanvasForExport extends SvgCanvas2D {
     if (str == null || this.state.fontSize <= 0) {
       return '';
     }
-    // TODO maxgraph@0.1.0 migration - manage str when it is an Element (see maxGraph code)
+    // TODO maxgraph@0.1.0 - manage str when it is an Element (see maxGraph code)
     if (str instanceof Element) {
       str = str.innerHTML;
     }
