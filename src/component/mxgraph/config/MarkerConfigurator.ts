@@ -21,6 +21,7 @@ import { EdgeMarker, EdgeMarkerRegistry } from '@maxgraph/core';
 /**
  * @internal
  */
+// // TODO maxgraph@0.20.0 rename to EdgeMarkerConfigurator for clarity (do not mix with bpmn activity markers)
 export default class MarkerConfigurator {
   configureMarkers(): void {
     this.registerArrowDashMarker();
