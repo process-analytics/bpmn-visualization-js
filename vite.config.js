@@ -49,7 +49,7 @@ export default defineConfig(({ mode }) => {
           },
         },
       },
-      chunkSizeWarningLimit: 448, // maxGraph
+      chunkSizeWarningLimit: 330, // maxGraph
     },
     preview: {
       port: 10002,
