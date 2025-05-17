@@ -18,13 +18,13 @@ import type { FitOptions, ZoomConfiguration } from '../options';
 import { FitType } from '../options';
 import { ensurePositiveValue, ensureValidZoomConfiguration } from '../helpers/validators';
 import { debounce, throttle } from 'lodash-es';
-import type { CellState, Point } from '@maxgraph/core';
-import { eventUtils, Graph, GraphView, InternalEvent, PanningHandler } from '@maxgraph/core';
+import type { AbstractGraph, CellState, Point } from '@maxgraph/core';
+import { BaseGraph, eventUtils, GraphView, InternalEvent, PanningHandler } from '@maxgraph/core';
 
 const zoomFactorIn = 1.25;
 const zoomFactorOut = 1 / zoomFactorIn;
 
-export class BpmnGraph extends Graph {
+export class BpmnGraph extends BaseGraph {
   private currentZoomLevel = 1;
 
   /**
@@ -32,19 +32,12 @@ export class BpmnGraph extends Graph {
    */
   constructor(container: HTMLElement) {
     // TODO maxGraph@0.10.2 - validate the list of maxGraph plugins we need to use
-    super(container, undefined, [PanningHandler]);
+    super({ container, view: (graph: AbstractGraph) => new BpmnGraphView(graph), plugins: [PanningHandler] });
     this.zoomFactor = zoomFactorIn;
     if (this.container) {
       // ensure we don't have a select text cursor on label hover, see #294
       this.container.style.cursor = 'default';
     }
-  }
-
-  /**
-   * @internal
-   */
-  override createGraphView(): GraphView {
-    return new BpmnGraphView(this);
   }
 
   /**

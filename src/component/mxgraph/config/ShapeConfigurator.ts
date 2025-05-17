@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { CellRenderer, constants, Dictionary, ImageShape, Rectangle, Shape, SvgCanvas2D } from '@maxgraph/core';
-import type { CellOverlay, CellState } from '@maxgraph/core';
+import { CellRenderer, constants, Rectangle, Shape, ShapeRegistry, SvgCanvas2D, SwimlaneShape } from '@maxgraph/core';
+import type { CellOverlay, CellState, ShapeConstructor, StyleShapeValue } from '@maxgraph/core';
 
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
 import { EndEventShape, EventShape, IntermediateEventShape, ThrowIntermediateEventShape } from '../shape/event-shapes';
@@ -52,54 +52,44 @@ export default class ShapeConfigurator {
     this.initMxCellRendererCreateCellOverlays();
   }
 
-  // TODO maxgraph@0.10.3 - registerShape like in maxGraph, see https://github.com/maxGraph/maxGraph/blob/v0.15.0/packages/core/src/view/cell/register-shapes.ts#L46-L66
   private registerShapes(): void {
-    // events
-    CellRenderer.registerShape(ShapeBpmnElementKind.EVENT_END, EndEventShape);
-    CellRenderer.registerShape(ShapeBpmnElementKind.EVENT_START, EventShape);
-    CellRenderer.registerShape(ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ThrowIntermediateEventShape);
-    CellRenderer.registerShape(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, IntermediateEventShape);
-    CellRenderer.registerShape(ShapeBpmnElementKind.EVENT_BOUNDARY, IntermediateEventShape);
-    // gateways
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.10.2 fix CellRenderer.registerShape call (from maxgraph@0.1.0)
-    // @ts-ignore
-    CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_COMPLEX, ComplexGatewayShape);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.10.2 fix CellRenderer.registerShape call (from maxgraph@0.1.0)
-    // @ts-ignore
-    CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_EVENT_BASED, EventBasedGatewayShape);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.10.2 fix CellRenderer.registerShape call (from maxgraph@0.1.0)
-    // @ts-ignore
-    CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, ExclusiveGatewayShape);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.10.2 fix CellRenderer.registerShape call (from maxgraph@0.1.0)
-    // @ts-ignore
-    CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_INCLUSIVE, InclusiveGatewayShape);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.10.2 fix CellRenderer.registerShape call (from maxgraph@0.1.0)
-    // @ts-ignore
-    CellRenderer.registerShape(ShapeBpmnElementKind.GATEWAY_PARALLEL, ParallelGatewayShape);
-    // activities
-    CellRenderer.registerShape(ShapeBpmnElementKind.SUB_PROCESS, SubProcessShape);
-    CellRenderer.registerShape(ShapeBpmnElementKind.CALL_ACTIVITY, CallActivityShape);
-    // tasks
-    CellRenderer.registerShape(ShapeBpmnElementKind.TASK, TaskShape);
-    CellRenderer.registerShape(ShapeBpmnElementKind.TASK_SERVICE, ServiceTaskShape);
-    CellRenderer.registerShape(ShapeBpmnElementKind.TASK_USER, UserTaskShape);
-    CellRenderer.registerShape(ShapeBpmnElementKind.TASK_RECEIVE, ReceiveTaskShape);
-    CellRenderer.registerShape(ShapeBpmnElementKind.TASK_SEND, SendTaskShape);
-    CellRenderer.registerShape(ShapeBpmnElementKind.TASK_MANUAL, ManualTaskShape);
-    CellRenderer.registerShape(ShapeBpmnElementKind.TASK_SCRIPT, ScriptTaskShape);
-    CellRenderer.registerShape(ShapeBpmnElementKind.TASK_BUSINESS_RULE, BusinessRuleTaskShape);
-    // artifacts
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.10.2 fix CellRenderer.registerShape call (from maxgraph@0.1.0)
-    // @ts-ignore
-    CellRenderer.registerShape(ShapeBpmnElementKind.TEXT_ANNOTATION, TextAnnotationShape);
-
-    // shapes for flows
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.10.2 fix CellRenderer.registerShape call (from maxgraph@0.1.0)
-    // @ts-ignore
-    CellRenderer.registerShape(BpmnStyleIdentifier.EDGE, BpmnConnector);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- TODO maxgraph@0.10.2 fix CellRenderer.registerShape call (from maxgraph@0.1.0)
-    // @ts-ignore
-    CellRenderer.registerShape(BpmnStyleIdentifier.MESSAGE_FLOW_ICON, MessageFlowIconShape);
+    // Inspired by the default shapes registration done in maxGraph
+    const shapesToRegister: [StyleShapeValue, ShapeConstructor][] = [
+      // events
+      [ShapeBpmnElementKind.EVENT_END, EndEventShape],
+      [ShapeBpmnElementKind.EVENT_START, EventShape],
+      [ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW, ThrowIntermediateEventShape],
+      [ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, IntermediateEventShape],
+      [ShapeBpmnElementKind.EVENT_BOUNDARY, IntermediateEventShape],
+      // gateways
+      [ShapeBpmnElementKind.GATEWAY_COMPLEX, ComplexGatewayShape],
+      [ShapeBpmnElementKind.GATEWAY_EVENT_BASED, EventBasedGatewayShape],
+      [ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, ExclusiveGatewayShape],
+      [ShapeBpmnElementKind.GATEWAY_INCLUSIVE, InclusiveGatewayShape],
+      [ShapeBpmnElementKind.GATEWAY_PARALLEL, ParallelGatewayShape],
+      // activities
+      [ShapeBpmnElementKind.SUB_PROCESS, SubProcessShape],
+      [ShapeBpmnElementKind.CALL_ACTIVITY, CallActivityShape],
+      // tasks
+      [ShapeBpmnElementKind.TASK, TaskShape],
+      [ShapeBpmnElementKind.TASK_SERVICE, ServiceTaskShape],
+      [ShapeBpmnElementKind.TASK_USER, UserTaskShape],
+      [ShapeBpmnElementKind.TASK_RECEIVE, ReceiveTaskShape],
+      [ShapeBpmnElementKind.TASK_SEND, SendTaskShape],
+      [ShapeBpmnElementKind.TASK_MANUAL, ManualTaskShape],
+      [ShapeBpmnElementKind.TASK_SCRIPT, ScriptTaskShape],
+      [ShapeBpmnElementKind.TASK_BUSINESS_RULE, BusinessRuleTaskShape],
+      // artifacts
+      [ShapeBpmnElementKind.TEXT_ANNOTATION, TextAnnotationShape],
+      // pool and lanes
+      ['swimlane', SwimlaneShape],
+      // shapes for flows
+      [BpmnStyleIdentifier.EDGE, BpmnConnector],
+      [BpmnStyleIdentifier.MESSAGE_FLOW_ICON, MessageFlowIconShape],
+    ];
+    for (const [shapeName, shapeClass] of shapesToRegister) {
+      ShapeRegistry.add(shapeName, shapeClass);
+    }
   }
 
   private initMxSvgCanvasPrototype(): void {
@@ -126,18 +116,18 @@ export default class ShapeConfigurator {
         // END OF Fix for issue #920
         '; ';
 
-      if ((s.fontStyle & constants.FONT.BOLD) == constants.FONT.BOLD) {
+      if ((s.fontStyle & constants.FONT_STYLE_MASK.BOLD) == constants.FONT_STYLE_MASK.BOLD) {
         css += 'font-weight: bold; ';
       }
-      if ((s.fontStyle & constants.FONT.ITALIC) == constants.FONT.ITALIC) {
+      if ((s.fontStyle & constants.FONT_STYLE_MASK.ITALIC) == constants.FONT_STYLE_MASK.ITALIC) {
         css += 'font-style: italic; ';
       }
 
       const deco = [];
-      if ((s.fontStyle & constants.FONT.UNDERLINE) == constants.FONT.UNDERLINE) {
+      if ((s.fontStyle & constants.FONT_STYLE_MASK.UNDERLINE) == constants.FONT_STYLE_MASK.UNDERLINE) {
         deco.push('underline');
       }
-      if ((s.fontStyle & constants.FONT.STRIKETHROUGH) == constants.FONT.STRIKETHROUGH) {
+      if ((s.fontStyle & constants.FONT_STYLE_MASK.STRIKETHROUGH) == constants.FONT_STYLE_MASK.STRIKETHROUGH) {
         deco.push('line-through');
       }
       if (deco.length > 0) {
@@ -170,7 +160,7 @@ export default class ShapeConfigurator {
         // 'this.state.cell.style' = the style applied to the cell: 1st element: style name = bpmn shape name
         const cell = this.state.cell;
         // dialect = strictHtml is set means that current node holds an HTML label
-        let allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === constants.DIALECT.STRICTHTML);
+        let allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === 'strictHtml');
         const extraCssClasses = (this.state.style as BpmnCellStateStyle).bpmn?.extraCssClasses;
         if (extraCssClasses) {
           allBpmnClassNames = allBpmnClassNames.concat(extraCssClasses);
@@ -194,63 +184,33 @@ export default class ShapeConfigurator {
   }
 
   initMxCellRendererCreateCellOverlays(): void {
-    // TODO maxgraph@0.15.0 - simplify this once maxGraph allow to use a different shape for an overlay - https://github.com/maxGraph/maxGraph/issues/28
-    CellRenderer.prototype.createCellOverlays = function (state: CellState) {
-      const graph = state.view.graph;
-      const overlays = graph.getCellOverlays(state.cell);
-      let dict = null;
+    // TODO maxgraph@0.20.0 - adapted using new overlay extension features, to reapply to the Custom CellRenderer in new versions of bpmn-visu (no prototype modification)
+    // new extension points: https://github.com/maxGraph/maxGraph/issues/28
 
-      if (overlays != null) {
-        dict = new Dictionary<CellOverlay, Shape>();
-
-        for (const currentOverlay of overlays) {
-          const shape = state.overlays != null ? state.overlays.remove(currentOverlay) : null;
-          if (shape != null) {
-            dict.put(currentOverlay, shape);
-            continue;
-          }
-
-          let overlayShape: Shape;
-
-          // START bpmn-visualization CUSTOMIZATION
-          if (currentOverlay instanceof MxGraphCustomOverlay) {
-            overlayShape = new OverlayBadgeShape(currentOverlay.label, new Rectangle(0, 0, 0, 0), currentOverlay.style);
-          } else {
-            overlayShape = new ImageShape(new Rectangle(0, 0, 0, 0), currentOverlay.image.src);
-            (<ImageShape>overlayShape).preserveImageAspect = false;
-          }
-          // END bpmn-visualization CUSTOMIZATION
-
-          overlayShape.dialect = state.view.graph.dialect;
-          overlayShape.overlay = currentOverlay;
-
-          this.initializeOverlay(state, overlayShape);
-          this.installCellOverlayListeners(state, currentOverlay, overlayShape);
-
-          if (currentOverlay.cursor != null) {
-            overlayShape.node.style.cursor = currentOverlay.cursor;
-          }
-
-          // START bpmn-visualization CUSTOMIZATION
-          if (overlayShape instanceof OverlayBadgeShape) {
-            overlayShape.node.classList.add('overlay-badge');
-            overlayShape.node.setAttribute('data-bpmn-id', state.cell.id);
-          }
-          // END bpmn-visualization CUSTOMIZATION
-
-          dict.put(currentOverlay, overlayShape);
-        }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore createOverlayShape is protected
+    const originalCreateOverlayShape = CellRenderer.prototype.createOverlayShape;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore createOverlayShape is protected
+    CellRenderer.prototype.createOverlayShape = function (_state: CellState, cellOverlay: CellOverlay): Shape {
+      if (cellOverlay instanceof MxGraphCustomOverlay) {
+        return new OverlayBadgeShape(cellOverlay.label, new Rectangle(0, 0, 0, 0), cellOverlay.style);
       }
+      return originalCreateOverlayShape.call(this, _state, cellOverlay);
+    };
 
-      // Removes unused
-      if (state.overlays != null) {
-        // prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
-        state.overlays.visit(function (_id: string, shape: Shape) {
-          shape.destroy();
-        });
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore configureOverlayShape is protected
+    const originalConfigureOverlayShape = CellRenderer.prototype.configureOverlayShape;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore configureOverlayShape is protected
+    CellRenderer.prototype.configureOverlayShape = function (state: CellState, cellOverlay: CellOverlay, overlayShape: Shape) {
+      originalConfigureOverlayShape.call(this, state, cellOverlay, overlayShape);
+
+      if (overlayShape instanceof OverlayBadgeShape) {
+        overlayShape.node.classList.add('overlay-badge');
+        overlayShape.node.setAttribute('data-bpmn-id', state.cell.id);
       }
-
-      state.overlays = dict;
     };
   }
 }

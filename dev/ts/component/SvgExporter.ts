@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { Client, SvgCanvas2D, ImageExport, constants, xmlUtils, domUtils, stringUtils } from '@maxgraph/core';
-import type { Graph, AlignValue, VAlignValue, OverflowValue, TextDirectionValue } from '@maxgraph/core';
+import type { AbstractGraph, AlignValue, VAlignValue, OverflowValue, TextDirectionValue } from '@maxgraph/core';
 
 interface SvgExportOptions {
   scale: number;
@@ -30,7 +30,7 @@ interface SvgExportOptions {
 // https://github.com/jgraph/drawio/blob/v14.7.7/src/main/webapp/js/diagramly/Editor.js#L5932
 // https://github.com/jgraph/drawio/blob/v14.8.0/src/main/webapp/js/grapheditor/Graph.js#L9007
 export class SvgExporter {
-  constructor(private graph: Graph) {}
+  constructor(private graph: AbstractGraph) {}
 
   exportSvg(): string {
     return this.doSvgExport(true);
@@ -160,7 +160,7 @@ class CanvasForExport extends SvgCanvas2D {
     if (str == null || this.state.fontSize <= 0) {
       return '';
     }
-    // TODO maxgraph@0.1.0 migration - manage str when it is an Element (see maxGraph code)
+    // TODO maxgraph@0.1.0 - manage str when it is an Element (see maxGraph code)
     if (str instanceof Element) {
       str = str.innerHTML;
     }

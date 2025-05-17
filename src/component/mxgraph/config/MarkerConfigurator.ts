@@ -15,8 +15,8 @@ limitations under the License.
 */
 
 import { MarkerIdentifier } from '../style';
-import type { AbstractCanvas2D, Cell, MarkerFactoryFunction, Point, Shape } from '@maxgraph/core';
-import { MarkerShape } from '@maxgraph/core';
+import type { AbstractCanvas2D, ArrowValue, MarkerFactoryFunction, Point, Shape } from '@maxgraph/core';
+import { EdgeMarker, EdgeMarkerRegistry } from '@maxgraph/core';
 
 /**
  * @internal
@@ -24,6 +24,18 @@ import { MarkerShape } from '@maxgraph/core';
 export default class MarkerConfigurator {
   configureMarkers(): void {
     this.registerArrowDashMarker();
+    // register maxGraph built-in markers used in bpmn-visualization (not registered by default as we used BaseGraph)
+    // see https://github.com/maxGraph/maxGraph/blob/0a18ab1479f0235087c7763dafc098f12cd5f0c9/packages/core/src/view/style/register.ts#L139
+
+    const markersToRegister: [ArrowValue, MarkerFactoryFunction][] = [
+      ['blockThin', EdgeMarker.createArrow(3)],
+      ['openThin', EdgeMarker.createOpenArrow(3)],
+      ['oval', EdgeMarker.oval],
+      ['diamondThin', EdgeMarker.diamond],
+    ];
+    for (const [type, factory] of markersToRegister) {
+      EdgeMarkerRegistry.add(type, factory);
+    }
   }
 
   private registerArrowDashMarker(): void {
@@ -52,6 +64,6 @@ export default class MarkerConfigurator {
         c.stroke();
       };
     };
-    MarkerShape.addMarker(MarkerIdentifier.ARROW_DASH, createMarker);
+    EdgeMarkerRegistry.add(MarkerIdentifier.ARROW_DASH, createMarker);
   }
 }

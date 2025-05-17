@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import { registerPerimeters } from './config/register-style-definitions';
 import { StyleConfigurator } from './config/StyleConfigurator';
 import ShapeConfigurator from './config/ShapeConfigurator';
 import MarkerConfigurator from './config/MarkerConfigurator';
@@ -43,6 +44,7 @@ export default class GraphConfigurator {
     new StyleConfigurator(this.graph).configureStyles();
     new ShapeConfigurator().configureShapes();
     new MarkerConfigurator().configureMarkers();
+    registerPerimeters();
     return this.graph;
   }
 

@@ -108,10 +108,10 @@ export const updateFont = (cellStyle: CellStyle, font: Font): void => {
     setStyle(cellStyle, 'fontSize', font.size);
     setStyle(cellStyle, 'fontFamily', font.family);
 
-    setStyleFlag(cellStyle, 'fontStyle', constants.FONT.BOLD, font.isBold);
-    setStyleFlag(cellStyle, 'fontStyle', constants.FONT.ITALIC, font.isItalic);
-    setStyleFlag(cellStyle, 'fontStyle', constants.FONT.UNDERLINE, font.isUnderline);
-    setStyleFlag(cellStyle, 'fontStyle', constants.FONT.STRIKETHROUGH, font.isStrikeThrough);
+    setStyleFlag(cellStyle, 'fontStyle', constants.FONT_STYLE_MASK.BOLD, font.isBold);
+    setStyleFlag(cellStyle, 'fontStyle', constants.FONT_STYLE_MASK.ITALIC, font.isItalic);
+    setStyleFlag(cellStyle, 'fontStyle', constants.FONT_STYLE_MASK.UNDERLINE, font.isUnderline);
+    setStyleFlag(cellStyle, 'fontStyle', constants.FONT_STYLE_MASK.STRIKETHROUGH, font.isStrikeThrough);
 
     setStyle(cellStyle, 'textOpacity', font.opacity, ensureOpacityValue);
   }

@@ -17,7 +17,7 @@ limitations under the License.
 import { AssociationDirectionKind, FlowKind, SequenceFlowKind, ShapeBpmnElementKind, ShapeUtil } from '../../../model/bpmn/internal';
 import { BpmnStyleIdentifier, MarkerIdentifier, StyleDefault } from '../style';
 import type { BpmnGraph } from '../BpmnGraph';
-import { constants, Perimeter } from '@maxgraph/core';
+import { constants } from '@maxgraph/core';
 import type { CellStyle, Stylesheet } from '@maxgraph/core';
 
 const arrowDefaultSize = 12;
@@ -139,7 +139,7 @@ export class StyleConfigurator {
 
   private configurePoolStyle(): void {
     const style: CellStyle = {
-      shape: constants.SHAPE.SWIMLANE,
+      shape: 'swimlane',
       // label style
       verticalAlign: 'middle',
       align: 'center',
@@ -152,7 +152,7 @@ export class StyleConfigurator {
 
   private configureLaneStyle(): void {
     const style: CellStyle = {
-      shape: constants.SHAPE.SWIMLANE,
+      shape: 'swimlane',
       // label style
       verticalAlign: 'middle',
       align: 'center',
@@ -168,11 +168,7 @@ export class StyleConfigurator {
     ShapeUtil.eventKinds().forEach(kind => {
       const style: CellStyle = {
         shape: kind,
-        // TODO maxgraph@0.10.2 decide if we use the function or the string to set the perimeter (apply to all configuration in this file)
-        // using a string will reduce adherence to the maxGraph implementation
-        // in case maxGraph provide a way to not register its default style configuration, using a function would avoid to have to register the perimeter in the style registry
-        // be also aware of https://github.com/process-analytics/bpmn-visualization-js/pull/2814#issuecomment-1692971602
-        perimeter: Perimeter.EllipsePerimeter,
+        perimeter: 'ellipsePerimeter',
         strokeWidth: kind == ShapeBpmnElementKind.EVENT_END ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN,
         verticalLabelPosition: 'bottom',
       };
@@ -223,7 +219,7 @@ export class StyleConfigurator {
     ShapeUtil.gatewayKinds().forEach(kind => {
       const style: CellStyle = {
         shape: kind,
-        perimeter: Perimeter.RhombusPerimeter,
+        perimeter: 'rhombusPerimeter',
         verticalAlign: 'top',
         strokeWidth: StyleDefault.STROKE_WIDTH_THIN,
 
@@ -245,7 +241,7 @@ export class StyleConfigurator {
     style.rounded = true;
     // TODO maxgraph@0.10.2: possible maxGraph regression - with the original value used with mxGraph, the rendered edge arcSize seems larger here than with mxGraph (also seen with maxGraph 0.1.0)
     // with mxGraph@4.2.2 we used 5. A better temp value may be 2.5 here (its seems the value must be divided by two to configure maxGraph)
-    style.arcSize = 2;
+    style.arcSize = 2.5;
     style.verticalAlign = 'bottom';
     // The end arrow must be redefined in specific style
     delete style.endArrow;
