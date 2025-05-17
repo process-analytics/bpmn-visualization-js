@@ -209,16 +209,16 @@ export default class StyleComputer {
 export function getFontStyleValue(font: Font): number {
   let value = 0;
   if (font.isBold) {
-    value += constants.FONT.BOLD;
+    value += constants.FONT_STYLE_MASK.BOLD;
   }
   if (font.isItalic) {
-    value += constants.FONT.ITALIC;
+    value += constants.FONT_STYLE_MASK.ITALIC;
   }
   if (font.isStrikeThrough) {
-    value += constants.FONT.STRIKETHROUGH;
+    value += constants.FONT_STYLE_MASK.STRIKETHROUGH;
   }
   if (font.isUnderline) {
-    value += constants.FONT.UNDERLINE;
+    value += constants.FONT_STYLE_MASK.UNDERLINE;
   }
   return value;
 }
