@@ -24,7 +24,6 @@ import {
   ShapeUnknownBpmnElementWarning,
   BoundaryEventNotAttachedToActivityWarning,
 } from '@lib/component/parser/json/warnings';
-import { jest } from '@jest/globals';
 
 describe('parsing message collector', () => {
   jest.spyOn(console, 'warn').mockImplementation(() => {

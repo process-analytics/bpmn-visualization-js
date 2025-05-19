@@ -116,7 +116,7 @@ async function saveAndRegisterImages(matcherContext: MatcherContext, received: B
 // The 'options' parameter is mandatory for us, and some properties must be set as well
 // All options properties used here are always set in bpmn-visualization tests
 // If the following implementation would be done directly in jest-image-snapshot, this won't be required as it set default values we cannot access here
-async function toMatchImageSnapshotCustom(this: MatcherContext, received: Buffer, options: MatchImageSnapshotOptions): Promise<CustomMatcherResult> {
+function toMatchImageSnapshotCustom(this: MatcherContext, received: Buffer, options: MatchImageSnapshotOptions): CustomMatcherResult {
   const testId = this.currentTestName;
   retriesCounter.incrementExecutionCount(testId);
   jestLog("Test: '%s' (test file path: '%s')", this.currentTestName, this.testPath);
@@ -128,7 +128,7 @@ async function toMatchImageSnapshotCustom(this: MatcherContext, received: Buffer
   if (!result.pass) {
     jestLog('Result: failure');
     if (retriesCounter.hasReachMaxRetries(testId)) {
-      await saveAndRegisterImages(this, received, options);
+      saveAndRegisterImages(this, received, options);
     }
 
     // Add configured failure threshold in the error message

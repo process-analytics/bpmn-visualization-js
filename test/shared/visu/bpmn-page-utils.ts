@@ -27,7 +27,9 @@ import type { ShapeStyleUpdate } from '@lib/component/registry';
 import type { StyleUpdate } from '@lib/component/registry';
 import { BpmnQuerySelectorsForTests } from '@test/shared/query-selectors';
 import { delay } from './test-utils';
-import * as envUtils from '../environment-utils';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore js file with commonjs export
+import envUtils = require('../environment-utils.js');
 
 const pageCheckLog = debugLogger('bv:test:page-check');
 

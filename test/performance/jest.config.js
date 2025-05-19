@@ -30,13 +30,9 @@ module.exports = {
       'ts-jest',
       {
         tsconfig: '<rootDir>/tsconfig.test.json',
-        useESM: true,
       },
     ],
   },
-  extensionsToTreatAsEsm: ['.ts'],
-  // https://jestjs.io/docs/configuration#modulefileextensions-arraystring
-  moduleFileExtensions: ['ts', 'js', 'mjs', 'cjs', 'jsx', 'tsx', 'json', 'node'],
   moduleNameMapper,
   setupFiles: ['./test/config/jest.retries.ts'],
   setupFilesAfterEnv: ['jest-extended/all', 'expect-playwright'],
