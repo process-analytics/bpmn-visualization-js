@@ -33,11 +33,41 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
     // if no dedicated information, set minimal threshold to make test pass on GitHub Workflow
     // linux threshold are set for Ubuntu
     return new Map<string, ImageSnapshotThresholdConfig>([
-      // start with diagram including labels
+      [
+        'group.04.cross.lanes',
+        {
+          macos: 0.24 / 100, // 0.230570157482346%
+        },
+      ],
+      [
+        'pools.02.vertical.with.lanes',
+        {
+          macos: 0.64 / 100, // 0.6332022563018125%
+        },
+      ],
+      [
+        'subprocess.01.with.lanes',
+        {
+          macos: 0.34 / 100, // 0.33160348122966976%
+        },
+      ],
+      [
+        'subprocess.02.with.inner.subprocess',
+        {
+          macos: 0.31 / 100, // 0.30071651467027394%
+        },
+      ],
+      [
+        'subprocess.02.with.lanes',
+        {
+          macos: 0.31 / 100, // 0.30071651467027394%
+        },
+      ],
+      // diagram including labels
       [
         'labels.01.general',
         {
-          macos: 0.8 / 100, // 0.7941577314545922%
+          macos: 0.82 / 100, // 0.8101295126397234%
           windows: 0.52 / 100, // 0.5122398889742197%
         },
       ],
@@ -51,7 +81,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'labels.03.default.position',
         {
-          macos: 0.38 / 100, // 0.37323579648680383%
+          macos: 0.39 / 100, // 0.3807851728670819%
           windows: 0.33 / 100, // 0.3203254635281927%
         },
       ],
@@ -72,7 +102,8 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'pools.01.labels.and.lanes',
         {
-          windows: 0.23 / 100, // 0.21990738071808735%
+          macos: 0.96 / 100, // 0.9547210335236311%
+          windows: 0.96 / 100, // 0.9547210335236311%
         },
       ],
     ]);

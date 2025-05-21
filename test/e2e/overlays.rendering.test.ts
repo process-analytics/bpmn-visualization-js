@@ -50,6 +50,13 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         },
       ],
       [
+        'overlays.edges.message.flows.complex.paths',
+        {
+          macos: 0.39 / 100, // max 0.38845092259515157%
+          windows: 0.2 / 100, // max 0.1989755797400572%
+        },
+      ],
+      [
         'overlays.edges.sequence.flows.complex.paths',
         {
           linux: 0.24 / 100, // max 0.2311919361290271%
@@ -77,9 +84,9 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'overlays.edges.message.flows.complex.paths',
         {
-          linux: 0.58 / 100, // 0.5794594395932884%
+          linux: 0.71 / 100, // 0.7075048726484345%
           macos: 0.71 / 100, // 0.7082393664009867%
-          windows: 0.66 / 100, // 0.6524091603189786%
+          windows: 0.73 / 100, // 0.7201733271427924%
         },
       ],
       [
@@ -328,6 +335,13 @@ describe('Overlay style', () => {
       // linux threshold are set for Ubuntu
       return new Map<string, ImageSnapshotThresholdConfig>([
         [
+          'fill',
+          {
+            macos: 0.15 / 100, // 0.14612951118292417%
+            windows: 0.15 / 100, // 0.14250607890964326%
+          },
+        ],
+        [
           'font',
           {
             macos: 0.56 / 100, // 0.5500536579274629%
@@ -337,8 +351,8 @@ describe('Overlay style', () => {
         [
           'stroke',
           {
-            macos: 0.19 / 100, // 0.18879188656002463%
-            windows: 0.22 / 100, // 0.2184761338537622%
+            macos: 0.22 / 100, // 0.21534933042920423%
+            windows: 0.24 / 100, // 0.23679453599644296%
           },
         ],
       ]);
@@ -355,15 +369,9 @@ describe('Overlay style', () => {
           },
         ],
         [
-          'stroke',
-          {
-            macos: 0.41 / 100, // 0.408993697130311%
-          },
-        ],
-        [
           'fill',
           {
-            macos: 0.6 / 100, // 0.5810104788733339%
+            macos: 0.6 / 100, // 0.409246460963808%
           },
         ],
       ]);

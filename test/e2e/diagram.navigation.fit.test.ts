@@ -69,7 +69,7 @@ const bpmnDiagramNames = getBpmnDiagramNames(diagramSubfolder);
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
-    super({ chromium: 0.0096 / 100, firefox: 0.042 / 100, webkit: 0.058 / 100 });
+    super({ chromium: 0.018 / 100, firefox: 0.042 / 100, webkit: 0.058 / 100 });
   }
   protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     // if no dedicated information, set minimal threshold to make test pass on GitHub Workflow
@@ -96,7 +96,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'with.outside.labels',
         {
-          macos: 0.26 / 100, // max 0.2520311140280951%
+          macos: 0.27 / 100, // max 0.26141697307554557%
           windows: 0.39 / 100, // max 0.38276450047973753%
         },
       ],
@@ -108,7 +108,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'with.outside.labels',
         {
-          macos: 0.25 / 100, // max 0.24536808515324138%
+          macos: 0.26 / 100, // max 0.2503825544848626%
           // TODO possible rendering issue so high threshold value
           windows: 4.4 / 100, // max 4.039381490979144%
         },

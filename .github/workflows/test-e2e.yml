@@ -54,20 +54,15 @@ jobs:
       # we want to run the full build on all os: don't cancel running jobs even if one fails
       fail-fast: false
       matrix:
-        os: [macos-13, ubuntu-24.04, windows-2022]
+        os: [macos-14, ubuntu-24.04, windows-2022]
         browser: [chromium, firefox, chrome]
         include:
           # only test WebKit on macOS
-          - os: macos-13
+          - os: macos-14
             browser: webkit
           # only test Edge on Windows
           - os: windows-2022
             browser: msedge
-        exclude:
-          # TEMP skip testing Chrome on ubuntu
-          # The GH Actions runner includes a newer version of Chrome that the one matching the Chromium version installed by Playwright, so some tests fail.
-          - os: ubuntu-24.04
-            browser: chrome
     steps:
       - name: Checkout
         uses: actions/checkout@v4
