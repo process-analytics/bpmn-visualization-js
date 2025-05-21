@@ -31,7 +31,7 @@ jobs:
         #            triggerUncaughtException(err, true /* fromPromise */);
         #            ^
         # cdpSession.detach: Browser closed.
-        os: [macos-13, ubuntu-24.04]
+        os: [macos-14, ubuntu-24.04]
     env:
       # Performance tests rely on chromium API
       browser: chromium
