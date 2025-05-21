@@ -1,5 +1,5 @@
 /*
-Copyright 2020 Bonitasoft S.A.
+Copyright 2025 Bonitasoft S.A.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { mxShape } from 'mxgraph';
+import type { mxAbstractCanvas2D, mxCell, mxPoint, mxShape } from 'mxgraph';
 
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
-import { mxCellRenderer } from '../initializer';
+import { mxCellRenderer, mxgraph } from '../initializer';
 import {
   BusinessRuleTaskShape,
   CallActivityShape,
@@ -35,9 +35,9 @@ import { EndEventShape, EventShape, IntermediateEventShape, ThrowIntermediateEve
 import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { ComplexGatewayShape, EventBasedGatewayShape, ExclusiveGatewayShape, InclusiveGatewayShape, ParallelGatewayShape } from '../shape/gateway-shapes';
 import { TextAnnotationShape } from '../shape/text-annotation-shapes';
-import { BpmnStyleIdentifier } from '../style';
+import { BpmnStyleIdentifier, MarkerIdentifier } from '../style';
 
-const registerShapes = (): void => {
+export const registerShapes = (): void => {
   // Inspired by the default shapes registration done in maxGraph
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- required by the signature of registerShape
   const shapesToRegister: [string, new (...arguments_: any) => mxShape][] = [
@@ -75,12 +75,32 @@ const registerShapes = (): void => {
     mxCellRenderer.registerShape(shapeName, shapeClass);
   }
 };
+// This implementation is adapted from the draw.io BPMN 'dash' marker
+// https://github.com/jgraph/drawio/blob/f539f1ff362e76127dcc7e68b5a9d83dd7d4965c/src/main/webapp/js/mxgraph/Shapes.js#L2796
+// prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
+const dashMarkerFactory = (
+  c: mxAbstractCanvas2D,
+  _shape: mxShape,
+  _type: string,
+  pe: mxPoint,
+  unitX: number,
+  unitY: number,
+  size: number,
+  _source: mxCell,
+  strokewidth: number,
+  // eslint-disable-next-line unicorn/consistent-function-scoping -- Code from mxGraph example
+): (() => void) => {
+  const nx = unitX * (size + strokewidth + 4);
+  const ny = unitY * (size + strokewidth + 4);
 
-/**
- * @internal
- */
-export default class ShapeConfigurator {
-  configureShapes(): void {
-    registerShapes();
-  }
-}
+  return function () {
+    c.begin();
+    c.moveTo(pe.x - nx / 2 - ny / 2, pe.y - ny / 2 + nx / 2);
+    c.lineTo(pe.x + ny / 2 - (3 * nx) / 2, pe.y - (3 * ny) / 2 - nx / 2);
+    c.stroke();
+  };
+};
+
+export const registerEdgeMarkers = (): void => {
+  mxgraph.mxMarker.addMarker(MarkerIdentifier.ARROW_DASH, dashMarkerFactory);
+};

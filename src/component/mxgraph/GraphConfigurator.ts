@@ -15,8 +15,7 @@ limitations under the License.
 */
 
 import { BpmnGraph } from './BpmnGraph';
-import MarkerConfigurator from './config/MarkerConfigurator';
-import ShapeConfigurator from './config/ShapeConfigurator';
+import { registerEdgeMarkers, registerShapes } from './config/register-style-definitions';
 import { StyleConfigurator } from './config/StyleConfigurator';
 
 /**
@@ -37,8 +36,8 @@ export default class GraphConfigurator {
   configure(): BpmnGraph {
     this.configureGraph();
     new StyleConfigurator(this.graph).configureStyles();
-    new ShapeConfigurator().configureShapes();
-    new MarkerConfigurator().configureMarkers();
+    registerShapes();
+    registerEdgeMarkers();
     return this.graph;
   }
 

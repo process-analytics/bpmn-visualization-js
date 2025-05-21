@@ -44,7 +44,7 @@ The [style](https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxStylesheet
 is defined and registered in `StyleConfigurator`. In particular, it refers to the name of a [mxShape](https://jgraph.github.io/mxgraph/docs/js-api/files/shape/mxShape-js.html)
 used for the rendering.
 
-The `mxShape` can be a standard `mxGraph` class or a custom BPMN `mxShape` defined by the `bpmn-visualization`. The custom `mxShapes` are registered by [ShapeConfigurator](../../src/component/mxgraph/config/ShapeConfigurator.ts).
+The `mxShape` can be a standard `mxGraph` class or a custom BPMN `mxShape` defined by the `bpmn-visualization`. The custom `mxShapes` are registered by [registerShapes()](../../src/component/mxgraph/config/register-style-definitions.ts).
 which associates the `mxShape` name (used in style definition) with the `mxShape` class to be used.
 
 For more details, see [BPMN Support - How To](./bpmn-support-how-to.md).
