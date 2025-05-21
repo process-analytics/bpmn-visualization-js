@@ -52,6 +52,12 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         },
       ],
       [
+        'subprocess.02.with.inner.subprocess',
+        {
+          macos: 0.31 / 100, // 0.30071651467027394%
+        },
+      ],
+      [
         'subprocess.02.with.lanes',
         {
           macos: 0.31 / 100, // 0.30071651467027394%
@@ -96,6 +102,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'pools.01.labels.and.lanes',
         {
+          macos: 0.96 / 100, // 0.9547210335236311%
           windows: 0.96 / 100, // 0.9547210335236311%
         },
       ],
