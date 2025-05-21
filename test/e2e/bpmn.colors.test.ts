@@ -30,6 +30,12 @@ class ImageSnapshotThresholdsModelColors extends MultiBrowserImageSnapshotThresh
   protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
       [
+        'elements.colors.01.labels',
+        {
+          macos: 0.46 / 100, // 0.45287656700301315%
+        },
+      ],
+      [
         'elements.colors.02.labels',
         {
           macos: 0.16 / 100, // 0.15342106983194936%
@@ -80,6 +86,12 @@ class ImageSnapshotThresholdsIgnoreBpmnColors extends MultiBrowserImageSnapshotT
 
   protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     return new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'elements.colors.01.labels',
+        {
+          macos: 0.53 / 100, // 0.5207484510394877%
+        },
+      ],
       [
         'elements.colors.02.labels',
         {

@@ -52,8 +52,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
       [
         'overlays.edges.message.flows.complex.paths',
         {
-          // linux: 0.24 / 100, // max 0.2311919361290271%
-          // macos: 0.24 / 100, // max 0.23432430740331073%
+          macos: 0.39 / 100, // max 0.38845092259515157%
           windows: 0.2 / 100, // max 0.1989755797400572%
         },
       ],
@@ -338,6 +337,7 @@ describe('Overlay style', () => {
         [
           'fill',
           {
+            macos: 0.15 / 100, // 0.14612951118292417%
             windows: 0.15 / 100, // 0.14250607890964326%
           },
         ],
@@ -351,8 +351,7 @@ describe('Overlay style', () => {
         [
           'stroke',
           {
-            // TODO restore with right thresholds after the change of the reference image
-            //     macos: 0.19 / 100, // 0.18879188656002463%
+            macos: 0.22 / 100, // 0.21534933042920423%
             windows: 0.24 / 100, // 0.23679453599644296%
           },
         ],

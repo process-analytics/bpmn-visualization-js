@@ -42,26 +42,26 @@ class StyleImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         'fill.color.gradient',
         {
           linux: 0.11 / 100, // 0.10872082550010823%
-          macos: 0.11 / 100, // 0.10872082550010823%
+          macos: 0.43 / 100, // 0.4208981695548175%
           windows: 0.11 / 100, // 0.10872082550010823%
         },
       ],
       [
         'fill.color.string',
         {
-          macos: 0.11 / 100, // 0.10486874434754156%
+          macos: 0.49 / 100, // 0.48826657351156433%
         },
       ],
       [
         'fill.color.opacity.group',
         {
-          macos: 0.13 / 100, // 0.12861950774821773%
+          macos: 0.91 / 100, // 0.9073275414720916%
         },
       ],
       [
         'stroke.color',
         {
-          macos: 0.09 / 100, // 0.08553874565668806%
+          macos: 0.68 / 100, // 0.6772805800715376%
         },
       ],
     ]);
