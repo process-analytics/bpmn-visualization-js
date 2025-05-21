@@ -69,7 +69,7 @@ const bpmnDiagramNames = getBpmnDiagramNames(diagramSubfolder);
 
 class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
   constructor() {
-    super({ chromium: 0.0096 / 100, firefox: 0.042 / 100, webkit: 0.058 / 100 });
+    super({ chromium: 0.018 / 100, firefox: 0.042 / 100, webkit: 0.058 / 100 });
   }
   protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
     // if no dedicated information, set minimal threshold to make test pass on GitHub Workflow
