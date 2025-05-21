@@ -368,13 +368,6 @@ describe('Overlay style', () => {
             macos: 3 / 100, // 2.846090750730257%
           },
         ],
-        // TODO restore with right thresholds after the change of the reference image
-        // [
-        //   'stroke',
-        //   {
-        //     macos: 0.41 / 100, // 0.408993697130311%
-        //   },
-        // ],
         [
           'fill',
           {
