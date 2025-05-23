@@ -31,7 +31,7 @@ export const overrideCreateSvgCanvas = function (shape: mxShape): void {
       const originalPointerEvents = this.pointerEvents;
       // Fix for issue https://github.com/process-analytics/bpmn-visualization-js/issues/920
       // This sets the "pointer-events" style property to "none" to avoid capturing the click.
-      // This cannot be generalized for all mxgraph use cases. For instance, in an editor mode, we should be able to edit the text by clicking on it.
+      // This cannot be generalized for all mxGraph use cases. For instance, in an editor mode, we should be able to edit the text by clicking on it.
       this.pointerEvents = false;
 
       const textCss = originalCanvasGetTextCss.bind(this)();

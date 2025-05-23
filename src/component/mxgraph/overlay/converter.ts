@@ -14,12 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { MxGraphCustomOverlayOptions, MxGraphCustomOverlayPosition, MxGraphCustomOverlayStyle } from './custom-overlay';
+import type { CustomCellOverlayOptions, CustomCellOverlayPosition, CustomCellOverlayStyle } from './custom-overlay';
 import type { Overlay, OverlayFont, OverlayPosition, OverlayFill, OverlayStroke } from '../../registry';
 
 import { StyleDefault } from '../style';
 
-const overlayPositions = new Map<OverlayPosition, MxGraphCustomOverlayPosition>([
+const overlayPositions = new Map<OverlayPosition, CustomCellOverlayPosition>([
   // Edge
   ['start', { horizontalAlign: 'left', verticalAlign: 'top' }],
   ['middle', { horizontalAlign: 'center', verticalAlign: 'top' }],
@@ -35,30 +35,30 @@ const overlayPositions = new Map<OverlayPosition, MxGraphCustomOverlayPosition>(
   ['middle-right', { horizontalAlign: 'right', verticalAlign: 'middle' }],
 ]);
 
-const convertPosition = (overlay: Overlay): MxGraphCustomOverlayPosition => overlayPositions.get(overlay.position);
+const convertPosition = (overlay: Overlay): CustomCellOverlayPosition => overlayPositions.get(overlay.position);
 
-const convertFill = (convertedStyle: MxGraphCustomOverlayStyle, apiFill: OverlayFill): void => {
+const convertFill = (convertedStyle: CustomCellOverlayStyle, apiFill: OverlayFill): void => {
   if (apiFill) {
     convertedStyle.fill.color = apiFill.color ?? convertedStyle.fill.color;
     convertedStyle.fill.opacity = apiFill.opacity ?? convertedStyle.fill.opacity;
   }
 };
 
-const convertStroke = (convertedStyle: MxGraphCustomOverlayStyle, apiStroke: OverlayStroke): void => {
+const convertStroke = (convertedStyle: CustomCellOverlayStyle, apiStroke: OverlayStroke): void => {
   if (apiStroke) {
     convertedStyle.stroke.color = apiStroke.color ?? convertedStyle.stroke.color;
     convertedStyle.stroke.width = apiStroke.width ?? convertedStyle.stroke.width;
   }
 };
 
-const convertFont = (convertedStyle: MxGraphCustomOverlayStyle, apiFont: OverlayFont): void => {
+const convertFont = (convertedStyle: CustomCellOverlayStyle, apiFont: OverlayFont): void => {
   if (apiFont) {
     convertedStyle.font.color = apiFont.color ?? convertedStyle.font.color;
     convertedStyle.font.size = apiFont.size ?? convertedStyle.font.size;
   }
 };
 
-const convertStyle = (overlay: Overlay): MxGraphCustomOverlayStyle => {
+const convertStyle = (overlay: Overlay): CustomCellOverlayStyle => {
   // recompute the style at each call to ensure we consider default changes that could occur after lib initialization
   const defaultStyle = {
     fill: { color: StyleDefault.DEFAULT_OVERLAY_FILL_COLOR.valueOf(), opacity: StyleDefault.DEFAULT_OVERLAY_FILL_OPACITY.valueOf() },
@@ -67,7 +67,7 @@ const convertStyle = (overlay: Overlay): MxGraphCustomOverlayStyle => {
   };
 
   const style = overlay.style;
-  const convertedStyle = { ...defaultStyle } as MxGraphCustomOverlayStyle;
+  const convertedStyle = { ...defaultStyle } as CustomCellOverlayStyle;
   if (!style) {
     return convertedStyle;
   }
@@ -80,7 +80,7 @@ const convertStyle = (overlay: Overlay): MxGraphCustomOverlayStyle => {
 };
 
 export class OverlayConverter {
-  convert(overlay: Overlay): MxGraphCustomOverlayOptions {
+  convert(overlay: Overlay): CustomCellOverlayOptions {
     const position = convertPosition(overlay);
     const style = convertStyle(overlay);
     return { position, style };

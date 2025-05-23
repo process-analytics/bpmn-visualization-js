@@ -19,7 +19,7 @@ import { registerEdgeMarkers, registerShapes } from './config/register-style-def
 import { StyleConfigurator } from './config/StyleConfigurator';
 
 /**
- * Configure the BpmnMxGraph graph that can be used by the lib
+ * Configure the {@link BpmnGraph} graph that can be used by the lib
  * <ul>
  *     <li>styles
  *     <li>shapes
@@ -52,8 +52,8 @@ export default class GraphConfigurator {
     this.graph.setConstrainChildren(false);
     this.graph.setExtendParents(false);
 
-    // Disable folding for container mxCell (pool, lane, sub process, call activity) because we don't need it.
-    // This also prevents requesting unavailable images (see #185) as we don't override BpmnMxGraph folding default images.
+    // Disable folding for container cells (pool, lane, sub process, call activity) because we don't need it.
+    // This also prevents requesting unavailable images (see #185) as we don't override BpmnGraph folding default images.
     this.graph.foldingEnabled = false;
   }
 }

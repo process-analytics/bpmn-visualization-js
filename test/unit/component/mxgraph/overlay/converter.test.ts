@@ -17,7 +17,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { MxGraphCustomOverlayPosition } from '@lib/component/mxgraph/overlay/custom-overlay';
+import type { CustomCellOverlayPosition } from '@lib/component/mxgraph/overlay/custom-overlay';
 import type { Overlay, OverlayPosition } from '@lib/component/registry/types';
 
 import { OverlayConverter } from '@lib/component/mxgraph/overlay/converter';
@@ -41,9 +41,9 @@ describe('overlay converter', () => {
     [undefined, undefined],
     [null, undefined],
   ];
-  it.each(positionParameters as [[OverlayPosition, MxGraphCustomOverlayPosition]])(
+  it.each(positionParameters as [[OverlayPosition, CustomCellOverlayPosition]])(
     'convert API overlay position %s to mxGraph overlay position %s',
-    (apiPosition: OverlayPosition, mxGraphPosition: MxGraphCustomOverlayPosition) => {
+    (apiPosition: OverlayPosition, mxGraphPosition: CustomCellOverlayPosition) => {
       const overlay: Overlay = { position: apiPosition };
 
       const result = overlayConverter.convert(overlay);

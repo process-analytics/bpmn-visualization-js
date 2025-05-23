@@ -23,7 +23,7 @@ import { BpmnStyleIdentifier } from '../style/identifiers';
 /**
  * Compute the all class names associated to a cell in a hyphen case form.
  *
- * @param cell the `mxCell` related to the BPMN element.
+ * @param cell the `Cell` related to the BPMN element.
  * @param isLabel the boolean that indicates if class must be computed for label.
  * @internal
  */
@@ -34,7 +34,7 @@ export function computeAllBpmnClassNamesOfCell(cell: mxCell, isLabel: boolean): 
 /**
  * Compute the all class names associated to a given bpmn element in a hyphen case form.
  *
- * @param style the part of the mxCell style related to a {@link BpmnElementKind}. Message flow icon is a special case, as it is not related to `BpmnElementKind`.
+ * @param style the part of the Cell style related to a {@link BpmnElementKind}. Message flow icon is a special case, as it is not related to `BpmnElementKind`.
  * @param isLabel the boolean that indicates if class must be computed for label.
  * @internal exported for testing purpose
  */

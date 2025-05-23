@@ -14,13 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { MxGraphCustomOverlayStyle } from './custom-overlay';
+import type { CustomCellOverlayStyle } from './custom-overlay';
 import type { mxRectangle } from 'mxgraph';
 
 import { mxgraph } from '../initializer';
 
 export class OverlayBadgeShape extends mxgraph.mxText {
-  constructor(value: string, bounds: mxRectangle, style: MxGraphCustomOverlayStyle) {
+  constructor(value: string, bounds: mxRectangle, style: CustomCellOverlayStyle) {
     super(
       value,
       bounds,

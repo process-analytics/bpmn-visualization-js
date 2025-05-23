@@ -18,7 +18,7 @@ import type { IconPainter } from './shape/render';
 import type { mxCellState, mxImageShape, mxShape } from 'mxgraph';
 
 import { mxgraph, mxRectangle } from './initializer';
-import { MxGraphCustomOverlay } from './overlay/custom-overlay';
+import { CustomCellOverlay } from './overlay/custom-overlay';
 import { OverlayBadgeShape } from './overlay/shapes';
 import { overrideCreateSvgCanvas } from './shape/utils';
 
@@ -45,7 +45,7 @@ export class BpmnCellRenderer extends mxgraph.mxCellRenderer {
         let overlayShape: mxShape;
 
         // START bpmn-visualization CUSTOMIZATION
-        if (currentOverlay instanceof MxGraphCustomOverlay) {
+        if (currentOverlay instanceof CustomCellOverlay) {
           overlayShape = new OverlayBadgeShape(currentOverlay.label, new mxRectangle(0, 0, 0, 0), currentOverlay.style);
         } else {
           overlayShape = new mxgraph.mxImageShape(new mxRectangle(0, 0, 0, 0), currentOverlay.image.src);
