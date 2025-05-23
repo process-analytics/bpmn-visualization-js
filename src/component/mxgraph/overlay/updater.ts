@@ -20,7 +20,7 @@ import type { BpmnGraph } from '../BpmnGraph';
 import { ensureIsArray } from '../../helpers/array-utils';
 
 import { OverlayConverter } from './converter';
-import { MxGraphCustomOverlay } from './custom-overlay';
+import { CustomCellOverlay } from './custom-overlay';
 
 export function createNewOverlaysUpdater(graph: BpmnGraph): OverlaysUpdater {
   return new OverlaysUpdater(graph, new OverlayConverter());
@@ -38,7 +38,7 @@ export class OverlaysUpdater {
       return;
     }
     for (const overlay of ensureIsArray(overlays)) {
-      const bpmnOverlay = new MxGraphCustomOverlay(overlay.label, this.overlayConverter.convert(overlay));
+      const bpmnOverlay = new CustomCellOverlay(overlay.label, this.overlayConverter.convert(overlay));
       this.graph.addCellOverlay(cell, bpmnOverlay);
     }
   }

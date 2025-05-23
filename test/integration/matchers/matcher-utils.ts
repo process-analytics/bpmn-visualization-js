@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import type { ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement, HorizontalAlign, VerticalAlign } from '../helpers/model-expect';
-import type { MxGraphCustomOverlay, MxGraphCustomOverlayStyle } from '@lib/component/mxgraph/overlay/custom-overlay';
+import type { CustomCellOverlay, CustomCellOverlayStyle } from '@lib/component/mxgraph/overlay/custom-overlay';
 import type { Opacity } from '@lib/component/registry';
 import type { mxCell, mxGeometry, StyleMap } from 'mxgraph';
 
@@ -83,7 +83,7 @@ export interface ExpectedOverlay {
   label?: string;
   horizontalAlign?: string;
   verticalAlign?: string;
-  style?: MxGraphCustomOverlayStyle;
+  style?: CustomCellOverlayStyle;
 }
 
 export const EXPECTED_LABEL = 'Expected in the mxGraph model';
@@ -236,7 +236,7 @@ function buildBaseReceivedExpectedCell(cell: mxCell): ExpectedCell {
 export function buildReceivedCellWithCommonAttributes(cell: mxCell): ExpectedCell {
   const receivedCell = buildBaseReceivedExpectedCell(cell);
 
-  const cellOverlays = bpmnVisualization.graph.getCellOverlays(cell) as MxGraphCustomOverlay[];
+  const cellOverlays = bpmnVisualization.graph.getCellOverlays(cell) as CustomCellOverlay[];
   receivedCell.overlays = cellOverlays?.map(cellOverlay => ({
     label: cellOverlay.label,
     horizontalAlign: cellOverlay.align,

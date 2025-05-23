@@ -114,7 +114,7 @@ class StyleManager {
   /**
    * Resets the style of a cell and applies its CSS classes.
    *
-   * @param cellId The ID of the mxCell whose style is to be reset.
+   * @param cellId The ID of the Cell whose style is to be reset.
    */
   resetStyleIfIsStored(cellId: string): void {
     const style = this.stylesCache.get(cellId);

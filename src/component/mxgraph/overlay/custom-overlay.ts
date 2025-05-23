@@ -22,24 +22,24 @@ import { mxgraph, mxConstants, mxPoint, mxRectangle } from '../initializer';
 export type VerticalAlignType = 'bottom' | 'middle' | 'top';
 export type HorizontalAlignType = 'left' | 'center' | 'right';
 
-export interface MxGraphCustomOverlayOptions {
-  position: MxGraphCustomOverlayPosition;
-  style: MxGraphCustomOverlayStyle;
+export interface CustomCellOverlayOptions {
+  position: CustomCellOverlayPosition;
+  style: CustomCellOverlayStyle;
 }
 
-export interface MxGraphCustomOverlayPosition {
+export interface CustomCellOverlayPosition {
   horizontalAlign?: HorizontalAlignType;
   verticalAlign?: VerticalAlignType;
 }
 
-export type MxGraphCustomOverlayStyle = Required<OverlayStyle>;
+export type CustomCellOverlayStyle = Required<OverlayStyle>;
 
-export class MxGraphCustomOverlay extends mxgraph.mxCellOverlay {
-  readonly style: MxGraphCustomOverlayStyle;
+export class CustomCellOverlay extends mxgraph.mxCellOverlay {
+  readonly style: CustomCellOverlayStyle;
 
   constructor(
     public label: string,
-    options: MxGraphCustomOverlayOptions,
+    options: CustomCellOverlayOptions,
   ) {
     super(null, '', options.position.horizontalAlign, options.position.verticalAlign, null, 'default');
     this.style = options.style;
