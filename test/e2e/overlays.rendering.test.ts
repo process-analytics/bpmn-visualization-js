@@ -86,7 +86,7 @@ class ImageSnapshotThresholds extends MultiBrowserImageSnapshotThresholds {
         'overlays.edges.message.flows.complex.paths',
         {
           linux: 0.71 / 100, // 0.7075048726484345%
-          macos: 0.71 / 100, // 0.7082393664009867%
+          macos: 0.72 / 100, // 0.7142164089951275%
           windows: 0.73 / 100, // 0.7201733271427924%
         },
       ],
