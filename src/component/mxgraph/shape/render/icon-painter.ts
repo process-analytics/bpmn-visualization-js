@@ -97,7 +97,7 @@ export class IconPainter {
   /**
    * Utility paint icon methods to easily instantiate a {@link BpmnCanvas} from a {@link PaintParameter}.
    *
-   * @param canvas                  mxgraph `mxAbstractCanvas2D` in charge of performing the paint operations.
+   * @param canvas                  `mxAbstractCanvas2D` in charge of performing the paint operations.
    * @param ratioFromParent         the actual size of the icon will be computed from the shape dimensions using this ratio.
    * @param setIconOriginFunct      called function to set the origin of the icon. Generally, it calls a method of {@link BpmnCanvas}.
    * @param shapeConfig             dimension and style of the shape where the icon is painted.

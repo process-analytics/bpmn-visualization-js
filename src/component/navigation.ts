@@ -72,7 +72,7 @@ export class NavigationImpl implements Navigation {
 
       panningHandler.usePopupTrigger = false; // only use the left button to trigger panning
       // Reimplement the function as we also want to trigger 'panning on cells' (ignoreCell to true) and only on left-click
-      // The mxGraph standard implementation doesn't ignore right click in this case, so do it by ourselves
+      // The regular implementation doesn't ignore right click in this case, so do it by ourselves
       panningHandler.isForcePanningEvent = (me: mxMouseEvent): boolean => mxEvent.isLeftMouseButton(me.getEvent()) || mxEvent.isMultiTouchEvent(me.getEvent());
       this.graph.setPanning(true);
 

@@ -38,8 +38,8 @@ import { BpmnModelRegistry } from './registry/bpmn-model-registry';
  */
 export class BpmnVisualization {
   /**
-   * Direct access to the `mxGraph` instance that powers `bpmn-visualization`.
-   * It is for **advanced users**, so please use the lib API first and access to the `mxGraph` instance only when there is no alternative.
+   * Direct access to the `Graph` instance that powers `bpmn-visualization`.
+   * It is for **advanced users**, so please use the lib API first and access to the `Graph` instance only when there is no alternative.
    *
    * **WARN**: subject to change, could be removed or made available in another way.
    *
@@ -74,7 +74,7 @@ export class BpmnVisualization {
 
   constructor(options: GlobalOptions) {
     this.rendererOptions = options?.renderer;
-    // mxgraph configuration
+    // graph configuration
     const configurator = new GraphConfigurator(htmlElement(options?.container));
     this.graph = configurator.configure();
     // other configurations
