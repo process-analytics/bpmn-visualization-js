@@ -37,7 +37,7 @@ jobs:
       browser: chromium
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Build Setup
         uses: ./.github/actions/build-setup
       - name: Install ${{env.browser}}

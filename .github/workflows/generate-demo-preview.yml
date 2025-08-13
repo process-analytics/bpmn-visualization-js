@@ -28,7 +28,7 @@ jobs:
     permissions:
       pull-requests: write # surge-preview: PR comments
     steps:
-      - uses: actions/checkout@v4 # access to the local action
+      - uses: actions/checkout@v5 # access to the local action
       - name: surge preview
         uses: ./.github/actions/custom-surge-preview
         with:
