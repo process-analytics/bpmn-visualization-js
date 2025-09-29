@@ -163,8 +163,8 @@
     "rollup-plugin-typescript2": "~0.36.0",
     "tailwindcss": "~4.1.1",
     "ts-jest": "~29.4.4",
-    "typedoc": "~0.28.5",
-    "typescript": "~5.8.3",
+    "typedoc": "~0.28.13",
+    "typescript": "~5.9.2",
     "vite": "~7.1.5"
   },
   "overrides": {
