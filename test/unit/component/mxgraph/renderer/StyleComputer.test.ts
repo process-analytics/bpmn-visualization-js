@@ -542,4 +542,136 @@ describe('Style Computer', () => {
       });
     });
   });
+
+  describe('compute style - ignore label bounds options', () => {
+    describe('ignoreBpmnActivityLabelBounds', () => {
+      const styleComputer = new StyleComputer({ ignoreBpmnActivityLabelBounds: true });
+
+      function computeStyleWithIgnoreActivityBounds(element: Shape | Edge): string {
+        return styleComputer.computeStyle(element, element.label?.bounds);
+      }
+
+      it('should ignore label bounds for task', () => {
+        const shape = newShape(newShapeBpmnActivity(ShapeBpmnElementKind.TASK), newLabel({ name: 'Arial' }, new Bounds(50, 50, 100, 100)));
+        // Without the ignore option, this would include labelWidth, labelPosition, etc.
+        expect(computeStyleWithIgnoreActivityBounds(shape)).toBe('task;fontFamily=Arial');
+      });
+
+      it('should ignore label bounds for user task', () => {
+        const shape = newShape(newShapeBpmnActivity(ShapeBpmnElementKind.TASK_USER), newLabel({ name: 'Arial' }, new Bounds(50, 50, 100, 100)));
+        expect(computeStyleWithIgnoreActivityBounds(shape)).toBe('userTask;fontFamily=Arial');
+      });
+
+      it('should ignore label bounds for sub-process', () => {
+        const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, []), newLabel({ name: 'Arial' }, new Bounds(50, 50, 100, 100)));
+        expect(computeStyleWithIgnoreActivityBounds(shape)).toBe('subProcess;bpmn.subProcessKind=embedded;fontFamily=Arial;verticalAlign=top');
+      });
+
+      it('should ignore label bounds for call activity', () => {
+        const shape = newShape(newShapeBpmnCallActivityCallingProcess([]), newLabel({ name: 'Arial' }, new Bounds(50, 50, 100, 100)));
+        expect(computeStyleWithIgnoreActivityBounds(shape)).toBe('callActivity;fontFamily=Arial;verticalAlign=top');
+      });
+
+      it('should NOT ignore label bounds for events', () => {
+        const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.EVENT_START), newLabel({ name: 'Arial' }, new Bounds(50, 50, 100, 100)));
+        // Events are not activities, so their label bounds should still be used
+        expect(computeStyleWithIgnoreActivityBounds(shape)).toBe(
+          'startEvent;fontFamily=Arial;verticalAlign=top;align=center;labelWidth=101;labelPosition=ignore;verticalLabelPosition=middle',
+        );
+      });
+
+      it('should NOT ignore label bounds for gateways', () => {
+        const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE), newLabel({ name: 'Arial' }, new Bounds(50, 50, 100, 100)));
+        // Gateways are not activities, so their label bounds should still be used
+        expect(computeStyleWithIgnoreActivityBounds(shape)).toBe(
+          'exclusiveGateway;fontFamily=Arial;verticalAlign=top;align=center;labelWidth=101;labelPosition=ignore;verticalLabelPosition=middle',
+        );
+      });
+
+      it('should NOT ignore label bounds for edges', () => {
+        const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.NORMAL), undefined, newLabel({ name: 'Arial' }, new Bounds(50, 50, 100, 100)));
+        // Edges are not activities, so their label bounds should still be used
+        expect(computeStyleWithIgnoreActivityBounds(edge)).toBe('sequenceFlow;normal;fontFamily=Arial;verticalAlign=top;align=center');
+      });
+    });
+
+    describe('ignoreBpmnTaskLabelBounds', () => {
+      const styleComputer = new StyleComputer({ ignoreBpmnTaskLabelBounds: true });
+
+      function computeStyleWithIgnoreTaskBounds(element: Shape | Edge): string {
+        return styleComputer.computeStyle(element, element.label?.bounds);
+      }
+
+      it('should ignore label bounds for task', () => {
+        const shape = newShape(newShapeBpmnActivity(ShapeBpmnElementKind.TASK), newLabel({ name: 'Arial' }, new Bounds(50, 50, 100, 100)));
+        expect(computeStyleWithIgnoreTaskBounds(shape)).toBe('task;fontFamily=Arial');
+      });
+
+      it('should ignore label bounds for user task', () => {
+        const shape = newShape(newShapeBpmnActivity(ShapeBpmnElementKind.TASK_USER), newLabel({ name: 'Arial' }, new Bounds(50, 50, 100, 100)));
+        expect(computeStyleWithIgnoreTaskBounds(shape)).toBe('userTask;fontFamily=Arial');
+      });
+
+      it('should ignore label bounds for service task', () => {
+        const shape = newShape(newShapeBpmnActivity(ShapeBpmnElementKind.TASK_SERVICE), newLabel({ name: 'Arial' }, new Bounds(50, 50, 100, 100)));
+        expect(computeStyleWithIgnoreTaskBounds(shape)).toBe('serviceTask;fontFamily=Arial');
+      });
+
+      it('should NOT ignore label bounds for sub-process (still an activity but not a task)', () => {
+        const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, []), newLabel({ name: 'Arial' }, new Bounds(50, 50, 100, 100)));
+        // Sub-processes should still have their label bounds applied since ignoreBpmnTaskLabelBounds only affects tasks
+        expect(computeStyleWithIgnoreTaskBounds(shape)).toBe(
+          'subProcess;bpmn.subProcessKind=embedded;fontFamily=Arial;verticalAlign=top;align=center;labelWidth=101;labelPosition=ignore;verticalLabelPosition=middle',
+        );
+      });
+
+      it('should NOT ignore label bounds for call activity (still an activity but not a task)', () => {
+        const shape = newShape(newShapeBpmnCallActivityCallingProcess([]), newLabel({ name: 'Arial' }, new Bounds(50, 50, 100, 100)));
+        // Call activities should still have their label bounds applied since ignoreBpmnTaskLabelBounds only affects tasks
+        expect(computeStyleWithIgnoreTaskBounds(shape)).toBe(
+          'callActivity;fontFamily=Arial;verticalAlign=top;align=center;labelWidth=101;labelPosition=ignore;verticalLabelPosition=middle',
+        );
+      });
+    });
+
+    describe('both options false (default behavior)', () => {
+      const styleComputer = new StyleComputer({ ignoreBpmnActivityLabelBounds: false, ignoreBpmnTaskLabelBounds: false });
+
+      function computeStyleWithDefaultOptions(element: Shape | Edge): string {
+        return styleComputer.computeStyle(element, element.label?.bounds);
+      }
+
+      it('should use label bounds for task', () => {
+        const shape = newShape(newShapeBpmnActivity(ShapeBpmnElementKind.TASK), newLabel({ name: 'Arial' }, new Bounds(50, 50, 100, 100)));
+        expect(computeStyleWithDefaultOptions(shape)).toBe('task;fontFamily=Arial;verticalAlign=top;align=center;labelWidth=101;labelPosition=ignore;verticalLabelPosition=middle');
+      });
+
+      it('should use label bounds for sub-process', () => {
+        const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, []), newLabel({ name: 'Arial' }, new Bounds(50, 50, 100, 100)));
+        expect(computeStyleWithDefaultOptions(shape)).toBe(
+          'subProcess;bpmn.subProcessKind=embedded;fontFamily=Arial;verticalAlign=top;align=center;labelWidth=101;labelPosition=ignore;verticalLabelPosition=middle',
+        );
+      });
+    });
+
+    describe('option precedence', () => {
+      const styleComputer = new StyleComputer({ ignoreBpmnActivityLabelBounds: true, ignoreBpmnTaskLabelBounds: true });
+
+      function computeStyleWithBothOptions(element: Shape | Edge): string {
+        return styleComputer.computeStyle(element, element.label?.bounds);
+      }
+
+      it('should ignore label bounds for task when both options are true', () => {
+        const shape = newShape(newShapeBpmnActivity(ShapeBpmnElementKind.TASK), newLabel({ name: 'Arial' }, new Bounds(50, 50, 100, 100)));
+        // Both options would apply to tasks, result should be the same
+        expect(computeStyleWithBothOptions(shape)).toBe('task;fontFamily=Arial');
+      });
+
+      it('should ignore label bounds for sub-process when ignoreBpmnActivityLabelBounds is true', () => {
+        const shape = newShape(newShapeBpmnSubProcess(ShapeBpmnSubProcessKind.EMBEDDED, []), newLabel({ name: 'Arial' }, new Bounds(50, 50, 100, 100)));
+        // Only ignoreBpmnActivityLabelBounds applies to sub-processes
+        expect(computeStyleWithBothOptions(shape)).toBe('subProcess;bpmn.subProcessKind=embedded;fontFamily=Arial;verticalAlign=top');
+      });
+    });
+  });
 });

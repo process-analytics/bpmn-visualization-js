@@ -206,4 +206,20 @@ export type RendererOptions = {
    * @default true
    */
   ignoreBpmnColors?: boolean;
+  /**
+   * If set to `true`, ignore the label bounds configuration defined in the BPMN diagram for all activities.
+   * This forces the use of default label positioning instead of the bounds specified in the BPMN source.
+   * Activities include tasks, sub-processes, and call activities.
+   *
+   * @default false
+   */
+  ignoreBpmnActivityLabelBounds?: boolean;
+  /**
+   * If set to `true`, ignore the label bounds configuration defined in the BPMN diagram for tasks only.
+   * This forces the use of default label positioning for tasks instead of the bounds specified in the BPMN source.
+   * This option is more restrictive than `ignoreBpmnActivityLabelBounds` as it only affects tasks, not sub-processes or call activities.
+   *
+   * @default false
+   */
+  ignoreBpmnTaskLabelBounds?: boolean;
 };
