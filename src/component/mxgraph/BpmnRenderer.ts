@@ -34,13 +34,16 @@ import StyleComputer from './renderer/StyleComputer';
  * @internal
  */
 export class BpmnRenderer {
+  private ignoreBpmnLabelStyles?: boolean;
+
   constructor(
     readonly graph: BpmnGraph,
     readonly coordinatesTranslator: CoordinatesTranslator,
     readonly styleComputer: StyleComputer,
   ) {}
 
-  render(renderedModel: RenderedModel): void {
+  render(renderedModel: RenderedModel, ignoreBpmnLabelStyles?: boolean): void {
+    this.ignoreBpmnLabelStyles = ignoreBpmnLabelStyles;
     this.insertShapesAndEdges(renderedModel);
   }
 
@@ -74,7 +77,7 @@ export class BpmnRenderer {
     let labelBounds = shape.label?.bounds;
     // pool/lane label bounds are not managed for now (use hard coded values)
     labelBounds = ShapeUtil.isPoolOrLane(bpmnElement.kind) ? undefined : labelBounds;
-    const style = this.styleComputer.computeStyle(shape, labelBounds);
+    const style = this.styleComputer.computeStyle(shape, labelBounds, this.ignoreBpmnLabelStyles);
 
     this.insertVertex(parent, bpmnElement.id, bpmnElement.name, bounds, labelBounds, style);
   }
@@ -86,7 +89,7 @@ export class BpmnRenderer {
       const source = this.getCell(bpmnElement.sourceReferenceId);
       const target = this.getCell(bpmnElement.targetReferenceId);
       const labelBounds = internalEdge.label?.bounds;
-      const style = this.styleComputer.computeStyle(internalEdge, labelBounds);
+      const style = this.styleComputer.computeStyle(internalEdge, labelBounds, this.ignoreBpmnLabelStyles);
       const edge = this.graph.insertEdge(parent, bpmnElement.id, bpmnElement.name, source, target, style);
       this.insertWaypoints(internalEdge.waypoints, edge);
 

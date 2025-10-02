@@ -122,6 +122,15 @@ export interface PoolFilter {
 export interface LoadOptions {
   fit?: FitOptions;
   modelFilter?: ModelFilter;
+  /**
+   * If set to `true`, ignore the font configurations defined in the BPMN LabelStyles.
+   * This ensures font consistency in the rendered diagram.
+   *
+   * If this option is set at load time, it takes precedence over the renderer option.
+   *
+   * @default false
+   */
+  ignoreBpmnLabelStyles?: boolean;
 }
 
 /**
@@ -206,4 +215,13 @@ export type RendererOptions = {
    * @default true
    */
   ignoreBpmnColors?: boolean;
+  /**
+   * If set to `true`, ignore the font configurations defined in the BPMN LabelStyles.
+   * This ensures font consistency in the rendered diagram.
+   *
+   * This option can be overridden at load time using the `LoadOptions.ignoreBpmnLabelStyles` option.
+   *
+   * @default false
+   */
+  ignoreBpmnLabelStyles?: boolean;
 };
