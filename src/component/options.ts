@@ -211,6 +211,7 @@ export type RendererOptions = {
    * This ensures font consistency in the rendered diagram.
    *
    * @default false
+   * @since 0.48.0
    */
   ignoreBpmnLabelStyles?: boolean;
 };
