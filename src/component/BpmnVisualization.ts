@@ -93,7 +93,7 @@ export class BpmnVisualization {
   load(xml: string, options?: LoadOptions): void {
     const bpmnModel = newBpmnParser(this.parserOptions).parse(xml);
     const renderedModel = this.bpmnModelRegistry.load(bpmnModel, options?.modelFilter);
-    newBpmnRenderer(this.graph, this.rendererOptions).render(renderedModel, options?.ignoreBpmnLabelStyles);
+    newBpmnRenderer(this.graph, this.rendererOptions).render(renderedModel);
     this.navigation.fit(options?.fit);
   }
 }

@@ -531,33 +531,6 @@ describe('Style Computer', () => {
           expect(computeStyleWithIgnoreLabelStyles(edge)).toBe(`sequenceFlow;default${expectedFontStyle}`);
         });
       });
-
-      describe('load-time override', () => {
-        it('load-time option overrides renderer option - ignore labels when renderer allows them', () => {
-          const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.TASK_USER), undefined, new Label(toFont({ name: 'Arial', size: 12, isBold: true }), undefined));
-          const styleWithoutOverride = styleComputer.computeStyle(shape, shape.label?.bounds);
-          const styleWithOverride = styleComputer.computeStyle(shape, shape.label?.bounds, true);
-
-          const expectedStyleWithoutOverride = expectFontStyles ? 'userTask;fontFamily=Arial;fontSize=12;fontStyle=1' : 'userTask';
-          expect(styleWithoutOverride).toBe(expectedStyleWithoutOverride);
-          expect(styleWithOverride).toBe('userTask');
-        });
-
-        it('load-time option overrides renderer option - allow labels when renderer ignores them', () => {
-          const shape = new Shape(
-            'id',
-            newShapeBpmnElement(ShapeBpmnElementKind.TASK_SERVICE),
-            undefined,
-            new Label(toFont({ name: 'Helvetica', size: 10, isItalic: true }), undefined),
-          );
-          const styleWithoutOverride = styleComputer.computeStyle(shape, shape.label?.bounds);
-          const styleWithOverride = styleComputer.computeStyle(shape, shape.label?.bounds, false);
-
-          const expectedStyleWithoutOverride = expectFontStyles ? 'serviceTask;fontFamily=Helvetica;fontSize=10;fontStyle=2' : 'serviceTask';
-          expect(styleWithoutOverride).toBe(expectedStyleWithoutOverride);
-          expect(styleWithOverride).toBe('serviceTask;fontFamily=Helvetica;fontSize=10;fontStyle=2');
-        });
-      });
     });
   });
 

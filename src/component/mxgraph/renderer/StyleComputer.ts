@@ -46,7 +46,7 @@ export default class StyleComputer {
     this.ignoreBpmnLabelStyles = options?.ignoreBpmnLabelStyles ?? false;
   }
 
-  computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds, ignoreBpmnLabelStyles?: boolean): string {
+  computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): string {
     const styles: string[] = [bpmnCell.bpmnElement.kind as string];
 
     let mainStyleValues;
@@ -57,7 +57,7 @@ export default class StyleComputer {
       mainStyleValues = this.computeEdgeStyleValues(bpmnCell);
     }
 
-    const fontStyleValues = this.computeFontStyleValues(bpmnCell, ignoreBpmnLabelStyles);
+    const fontStyleValues = this.computeFontStyleValues(bpmnCell);
     const labelStyleValues = computeLabelStyleValues(bpmnCell, labelBounds);
 
     styles.push(...toArrayOfMxGraphStyleEntries([...mainStyleValues, ...fontStyleValues, ...labelStyleValues]));
@@ -108,14 +108,11 @@ export default class StyleComputer {
     return styleValues;
   }
 
-  private computeFontStyleValues(bpmnCell: Shape | Edge, ignoreBpmnLabelStyles?: boolean): Map<string, string | number> {
+  private computeFontStyleValues(bpmnCell: Shape | Edge): Map<string, string | number> {
     const styleValues = new Map<string, string | number>();
 
-    // Check if we should ignore label styles (load-time option takes precedence over renderer option)
-    const shouldIgnoreLabelStyles = ignoreBpmnLabelStyles ?? this.ignoreBpmnLabelStyles;
-
     const font = bpmnCell.label?.font;
-    if (font && !shouldIgnoreLabelStyles) {
+    if (font && !this.ignoreBpmnLabelStyles) {
       styleValues.set(mxConstants.STYLE_FONTFAMILY, font.name);
       styleValues.set(mxConstants.STYLE_FONTSIZE, font.size);
       styleValues.set(mxConstants.STYLE_FONTSTYLE, getFontStyleValue(font));
