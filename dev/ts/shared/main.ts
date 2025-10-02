@@ -318,6 +318,14 @@ export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguratio
     config.globalOptions.renderer.ignoreBpmnColors = ignoreBpmnColors;
   }
 
+  const rendererIgnoreLabelStyle = parameters.get('renderer.ignore.label.style');
+  if (rendererIgnoreLabelStyle) {
+    const ignoreBpmnLabelStyles = rendererIgnoreLabelStyle === 'true';
+    log('Ignore BPMN label styles?', ignoreBpmnLabelStyles);
+    !config.globalOptions.renderer && (config.globalOptions.renderer = {});
+    config.globalOptions.renderer.ignoreBpmnLabelStyles = ignoreBpmnLabelStyles;
+  }
+
   bpmnVisualization = new ThemedBpmnVisualization(config.globalOptions);
   log('Initialization completed');
   new DropFileUserInterface(window, 'drop-container', bpmnVisualization.graph.container, readAndLoadFile);
