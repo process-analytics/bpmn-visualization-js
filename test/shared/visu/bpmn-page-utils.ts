@@ -46,10 +46,12 @@ class BpmnPage {
   ) {}
 
   async expectAvailableBpmnContainer(options?: PageWaitForSelectorOptions): Promise<void> {
-    pageCheckLog('Expecting the BPMN container available (confirm bpmn-visualization initialization)');
+    pageCheckLog('Waiting for the BPMN container to be initialized (verifying bpmn-visualization setup)');
+    // Check that mxGraph updated the DOM with the SVG element. This is done during the bpmn-visualization initialization.
+    // See BpmnQuerySelectors, the 2nd 'g' node contains the BPMN elements
     // eslint-disable-next-line jest/no-standalone-expect
-    await expect(this.page).toMatchAttribute(`#${this.bpmnContainerId}`, 'style', /cursor: default/, options);
-    pageCheckLog('BPMN container available');
+    await expect(this.page).toHaveSelector(`#${this.bpmnContainerId} > svg > g > g:nth-child(2)`, options);
+    pageCheckLog('BPMN container initialized');
   }
 
   async expectPageTitle(title: string): Promise<void> {
