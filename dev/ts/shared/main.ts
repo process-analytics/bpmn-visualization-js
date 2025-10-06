@@ -239,7 +239,7 @@ function getFitOptionsFromParameters(config: BpmnVisualizationDemoConfiguration,
 
 function getRendererOptionsFromParameters(config: BpmnVisualizationDemoConfiguration, parameters: URLSearchParams): RendererOptions {
   const rendererOptions: RendererOptions = config.globalOptions.renderer ?? {};
-  
+
   // Mapping between query parameter names and RendererOptions properties
   const rendererParameterMappings: Record<string, keyof RendererOptions> = {
     'renderer.ignore.bpmn.colors': 'ignoreBpmnColors',
@@ -257,7 +257,7 @@ function getRendererOptionsFromParameters(config: BpmnVisualizationDemoConfigura
       rendererOptions[optionKey] = optionValue;
     }
   }
-  
+
   return rendererOptions;
 }
 
