@@ -212,6 +212,7 @@ export type RendererOptions = {
    * Activities include tasks, sub-processes, and call activities.
    *
    * @default false
+   * @since 0.48.0
    */
   ignoreBpmnActivityLabelBounds?: boolean;
   /**
@@ -220,6 +221,7 @@ export type RendererOptions = {
    * This option is more restrictive than `ignoreBpmnActivityLabelBounds` as it only affects tasks, not sub-processes or call activities.
    *
    * @default false
+   * @since 0.48.0
    */
   ignoreBpmnTaskLabelBounds?: boolean;
 };
