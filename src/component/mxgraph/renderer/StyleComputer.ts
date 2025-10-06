@@ -39,9 +39,11 @@ import { BpmnStyleIdentifier } from '../style';
  */
 export default class StyleComputer {
   private readonly ignoreBpmnColors: boolean;
+  private readonly ignoreBpmnLabelStyles: boolean;
 
   constructor(options?: RendererOptions) {
     this.ignoreBpmnColors = options?.ignoreBpmnColors ?? true;
+    this.ignoreBpmnLabelStyles = options?.ignoreBpmnLabelStyles ?? false;
   }
 
   computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): string {
@@ -110,7 +112,7 @@ export default class StyleComputer {
     const styleValues = new Map<string, string | number>();
 
     const font = bpmnCell.label?.font;
-    if (font) {
+    if (font && !this.ignoreBpmnLabelStyles) {
       styleValues.set(mxConstants.STYLE_FONTFAMILY, font.name);
       styleValues.set(mxConstants.STYLE_FONTSIZE, font.size);
       styleValues.set(mxConstants.STYLE_FONTSTYLE, getFontStyleValue(font));

@@ -206,4 +206,12 @@ export type RendererOptions = {
    * @default true
    */
   ignoreBpmnColors?: boolean;
+  /**
+   * If set to `true`, ignore the font configurations defined in the BPMN LabelStyles.
+   * This ensures font consistency in the rendered diagram.
+   *
+   * @default false
+   * @since 0.48.0
+   */
+  ignoreBpmnLabelStyles?: boolean;
 };
