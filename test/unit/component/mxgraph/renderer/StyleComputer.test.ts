@@ -479,6 +479,61 @@ describe('Style Computer', () => {
     );
   });
 
+  describe('compute style - ignore BPMN label styles', () => {
+    describe.each([[undefined], [false], [true]])(`Ignore BPMN label styles (renderer option): %s`, (ignoreBpmnLabelStyles: boolean) => {
+      const styleComputer = new StyleComputer(ignoreBpmnLabelStyles === undefined ? {} : { ignoreBpmnLabelStyles });
+      const expectFontStyles = !(ignoreBpmnLabelStyles ?? false);
+
+      function computeStyleWithIgnoreLabelStyles(element: Shape | Edge): string {
+        return styleComputer.computeStyle(element, element.label?.bounds);
+      }
+
+      describe('shapes', () => {
+        it('shape with font family only', () => {
+          const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.TASK_SCRIPT), undefined, new Label(toFont({ name: 'Roboto' }), undefined));
+          const expectedFontStyle = expectFontStyles ? ';fontFamily=Roboto' : '';
+          expect(computeStyleWithIgnoreLabelStyles(shape)).toBe(`scriptTask${expectedFontStyle}`);
+        });
+
+        it('shape with bold font', () => {
+          const shape = new Shape(
+            'id',
+            newShapeBpmnElement(ShapeBpmnElementKind.GATEWAY_EXCLUSIVE),
+            undefined,
+            new Label(toFont({ name: 'Courier', size: 9, isBold: true }), undefined),
+          );
+          const expectedFontStyle = expectFontStyles ? ';fontFamily=Courier;fontSize=9;fontStyle=1' : '';
+          expect(computeStyleWithIgnoreLabelStyles(shape)).toBe(`exclusiveGateway${expectedFontStyle}`);
+        });
+
+        it('shape with italic font', () => {
+          const shape = new Shape(
+            'id',
+            newShapeBpmnElement(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH),
+            undefined,
+            new Label(toFont({ name: 'Arial', isItalic: true }), undefined),
+          );
+          const expectedFontStyle = expectFontStyles ? ';fontFamily=Arial;fontStyle=2' : '';
+          expect(computeStyleWithIgnoreLabelStyles(shape)).toBe(`intermediateCatchEvent${expectedFontStyle}`);
+        });
+      });
+
+      describe('edges', () => {
+        it('edge with strike-through font', () => {
+          const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY), undefined, new Label(toFont({ size: 14.2, isStrikeThrough: true }), undefined));
+          const expectedFontStyle = expectFontStyles ? ';fontSize=14.2;fontStyle=8' : '';
+          expect(computeStyleWithIgnoreLabelStyles(edge)).toBe(`sequenceFlow;conditional_from_activity${expectedFontStyle}`);
+        });
+
+        it('edge with underline font', () => {
+          const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.DEFAULT), undefined, new Label(toFont({ isUnderline: true }), undefined));
+          const expectedFontStyle = expectFontStyles ? ';fontStyle=4' : '';
+          expect(computeStyleWithIgnoreLabelStyles(edge)).toBe(`sequenceFlow;default${expectedFontStyle}`);
+        });
+      });
+    });
+  });
+
   describe('compute style - colors', () => {
     describe.each([[undefined], [false], [true]])(`Ignore BPMN colors: %s`, (ignoreBpmnColors: boolean) => {
       // 'undefined' RendererOptions tested in other tests in this file

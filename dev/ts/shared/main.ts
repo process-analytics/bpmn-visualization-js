@@ -26,6 +26,7 @@ import type {
   ModelFilter,
   Overlay,
   PoolFilter,
+  RendererOptions,
   StyleUpdate,
   ZoomType,
 } from '../../../src/bpmn-visualization';
@@ -310,12 +311,24 @@ export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguratio
   log(`Initializing BpmnVisualization with container:`, config.globalOptions.container);
 
   const parameters = new URLSearchParams(window.location.search);
-  const rendererIgnoreBpmnColors = parameters.get('renderer.ignore.bpmn.colors');
-  if (rendererIgnoreBpmnColors) {
-    const ignoreBpmnColors = rendererIgnoreBpmnColors === 'true';
-    log('Ignore support for "BPMN in Color"?', ignoreBpmnColors);
-    !config.globalOptions.renderer && (config.globalOptions.renderer = {});
-    config.globalOptions.renderer.ignoreBpmnColors = ignoreBpmnColors;
+
+  // Always initialize renderer options
+  !config.globalOptions.renderer && (config.globalOptions.renderer = {});
+
+  // Mapping between query parameter names and RendererOptions properties
+  const rendererParameterMappings: Record<string, keyof RendererOptions> = {
+    'renderer.ignore.bpmn.colors': 'ignoreBpmnColors',
+    'renderer.ignore.label.style': 'ignoreBpmnLabelStyles',
+  };
+
+  // Process renderer parameters
+  for (const [parameterName, optionKey] of Object.entries(rendererParameterMappings)) {
+    const parameterValue = parameters.get(parameterName);
+    if (parameterValue) {
+      const optionValue = parameterValue === 'true';
+      log(`Setting renderer option '${optionKey}':`, optionValue);
+      config.globalOptions.renderer[optionKey] = optionValue;
+    }
   }
 
   bpmnVisualization = new ThemedBpmnVisualization(config.globalOptions);
