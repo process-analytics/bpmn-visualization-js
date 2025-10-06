@@ -238,7 +238,6 @@ function getFitOptionsFromParameters(config: BpmnVisualizationDemoConfiguration,
 }
 
 function getRendererOptionsFromParameters(config: BpmnVisualizationDemoConfiguration, parameters: URLSearchParams): RendererOptions {
-  const log = logStartup;
   const rendererOptions: RendererOptions = config.globalOptions.renderer ?? {};
   
   // Mapping between query parameter names and RendererOptions properties
@@ -254,7 +253,7 @@ function getRendererOptionsFromParameters(config: BpmnVisualizationDemoConfigura
     const parameterValue = parameters.get(parameterName);
     if (parameterValue) {
       const optionValue = parameterValue === 'true';
-      log(`Setting renderer option '${optionKey}':`, optionValue);
+      logStartup(`Setting renderer option '${optionKey}':`, optionValue);
       rendererOptions[optionKey] = optionValue;
     }
   }
