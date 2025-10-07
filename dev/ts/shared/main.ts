@@ -237,6 +237,30 @@ function getFitOptionsFromParameters(config: BpmnVisualizationDemoConfiguration,
   return fitOptions;
 }
 
+function getRendererOptionsFromParameters(config: BpmnVisualizationDemoConfiguration, parameters: URLSearchParams): RendererOptions {
+  const rendererOptions: RendererOptions = config.globalOptions.renderer ?? {};
+
+  // Mapping between query parameter names and RendererOptions properties
+  const rendererParameterMappings: Record<string, keyof RendererOptions> = {
+    'renderer.ignore.bpmn.colors': 'ignoreBpmnColors',
+    'renderer.ignore.label.style': 'ignoreBpmnLabelStyles',
+    'renderer.ignore.activity.label.bounds': 'ignoreBpmnActivityLabelBounds',
+    'renderer.ignore.task.label.bounds': 'ignoreBpmnTaskLabelBounds',
+  };
+
+  // Process renderer parameters
+  for (const [parameterName, optionKey] of Object.entries(rendererParameterMappings)) {
+    const parameterValue = parameters.get(parameterName);
+    if (parameterValue) {
+      const optionValue = parameterValue === 'true';
+      logStartup(`Setting renderer option '${optionKey}':`, optionValue);
+      rendererOptions[optionKey] = optionValue;
+    }
+  }
+
+  return rendererOptions;
+}
+
 function configureStyleFromParameters(parameters: URLSearchParams): void {
   const useBpmnContainerAlternativeColor = parameters.get('style.container.alternative.background.color');
   if (useBpmnContainerAlternativeColor == 'true') {
@@ -312,24 +336,8 @@ export function startBpmnVisualization(config: BpmnVisualizationDemoConfiguratio
 
   const parameters = new URLSearchParams(window.location.search);
 
-  // Always initialize renderer options
-  !config.globalOptions.renderer && (config.globalOptions.renderer = {});
-
-  // Mapping between query parameter names and RendererOptions properties
-  const rendererParameterMappings: Record<string, keyof RendererOptions> = {
-    'renderer.ignore.bpmn.colors': 'ignoreBpmnColors',
-    'renderer.ignore.label.style': 'ignoreBpmnLabelStyles',
-  };
-
-  // Process renderer parameters
-  for (const [parameterName, optionKey] of Object.entries(rendererParameterMappings)) {
-    const parameterValue = parameters.get(parameterName);
-    if (parameterValue) {
-      const optionValue = parameterValue === 'true';
-      log(`Setting renderer option '${optionKey}':`, optionValue);
-      config.globalOptions.renderer[optionKey] = optionValue;
-    }
-  }
+  // Configure renderer options from query parameters
+  config.globalOptions.renderer = getRendererOptionsFromParameters(config, parameters);
 
   bpmnVisualization = new ThemedBpmnVisualization(config.globalOptions);
   log('Initialization completed');

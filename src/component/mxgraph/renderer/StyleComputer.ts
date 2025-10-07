@@ -40,10 +40,14 @@ import { BpmnStyleIdentifier } from '../style';
 export default class StyleComputer {
   private readonly ignoreBpmnColors: boolean;
   private readonly ignoreBpmnLabelStyles: boolean;
+  private readonly ignoreBpmnActivityLabelBounds: boolean;
+  private readonly ignoreBpmnTaskLabelBounds: boolean;
 
   constructor(options?: RendererOptions) {
     this.ignoreBpmnColors = options?.ignoreBpmnColors ?? true;
     this.ignoreBpmnLabelStyles = options?.ignoreBpmnLabelStyles ?? false;
+    this.ignoreBpmnActivityLabelBounds = options?.ignoreBpmnActivityLabelBounds ?? false;
+    this.ignoreBpmnTaskLabelBounds = options?.ignoreBpmnTaskLabelBounds ?? false;
   }
 
   computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): string {
@@ -58,10 +62,14 @@ export default class StyleComputer {
     }
 
     const fontStyleValues = this.computeFontStyleValues(bpmnCell);
-    const labelStyleValues = computeLabelStyleValues(bpmnCell, labelBounds);
+    const labelStyleValues = this.computeLabelStyleValues(bpmnCell, labelBounds);
 
     styles.push(...toArrayOfMxGraphStyleEntries([...mainStyleValues, ...fontStyleValues, ...labelStyleValues]));
     return styles.join(';');
+  }
+
+  private computeLabelStyleValues(bpmnCell: Shape | Edge, labelBounds: Bounds): Map<string, string | number> {
+    return computeLabelStyleValues(bpmnCell, labelBounds, this.ignoreBpmnActivityLabelBounds, this.ignoreBpmnTaskLabelBounds);
   }
 
   private computeShapeStyleValues(shape: Shape): Map<string, string | number> {
@@ -174,11 +182,20 @@ function computeEdgeBaseStyles(edge: Edge): string[] {
   return styles;
 }
 
-function computeLabelStyleValues(bpmnCell: Shape | Edge, labelBounds: Bounds): Map<string, string | number> {
+function computeLabelStyleValues(
+  bpmnCell: Shape | Edge,
+  labelBounds: Bounds,
+  ignoreBpmnActivityLabelBounds: boolean,
+  ignoreBpmnTaskLabelBounds: boolean,
+): Map<string, string | number> {
   const styleValues = new Map<string, string | number>();
 
   const bpmnElement = bpmnCell.bpmnElement;
-  if (labelBounds) {
+
+  // Check if we should ignore label bounds for this element
+  const shouldIgnoreLabelBounds = shouldIgnoreBpmnLabelBounds(bpmnCell, ignoreBpmnActivityLabelBounds, ignoreBpmnTaskLabelBounds);
+
+  if (labelBounds && !shouldIgnoreLabelBounds) {
     styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
     if (bpmnCell.bpmnElement.kind != ShapeBpmnElementKind.TEXT_ANNOTATION) {
       styleValues.set(mxConstants.STYLE_ALIGN, mxConstants.ALIGN_CENTER);
@@ -205,6 +222,32 @@ function computeLabelStyleValues(bpmnCell: Shape | Edge, labelBounds: Bounds): M
   }
 
   return styleValues;
+}
+
+/**
+ * Determines if label bounds should be ignored based on the element type and options.
+ */
+function shouldIgnoreBpmnLabelBounds(bpmnCell: Shape | Edge, ignoreBpmnActivityLabelBounds: boolean, ignoreBpmnTaskLabelBounds: boolean): boolean {
+  // Only apply to shapes, not edges
+  if (!(bpmnCell instanceof Shape)) {
+    return false;
+  }
+
+  const bpmnElement = bpmnCell.bpmnElement;
+
+  // If ignoring all activity label bounds
+  if (ignoreBpmnActivityLabelBounds && bpmnElement instanceof ShapeBpmnActivity) {
+    return true;
+  }
+
+  // If ignoring task label bounds only, check if it's a task (but not subprocess or call activity)
+  if (ignoreBpmnTaskLabelBounds && bpmnElement instanceof ShapeBpmnActivity) {
+    // Activities include tasks, sub-processes, and call activities
+    // We only want to ignore bounds for tasks, not sub-processes or call activities
+    return !(bpmnElement instanceof ShapeBpmnSubProcess) && !(bpmnElement instanceof ShapeBpmnCallActivity);
+  }
+
+  return false;
 }
 
 /**
