@@ -78,7 +78,7 @@ const orderedFlowNodeBpmnTypes: BpmnSemanticType[] = [
   'adHocSubProcess',
   'transaction',
   // process boundary events afterward as we need its parent activity to be available when building it
-  ...(ShapeUtil.flowNodeKinds().filter(kind => kind !== ShapeBpmnElementKind.EVENT_BOUNDARY) as BpmnSemanticType[]),
+  ...([...ShapeUtil.flowNodeKinds(), ...ShapeUtil.artifactKinds()].filter(kind => kind !== ShapeBpmnElementKind.EVENT_BOUNDARY) as BpmnSemanticType[]),
   ShapeBpmnElementKind.EVENT_BOUNDARY,
 ];
 
