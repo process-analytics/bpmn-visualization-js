@@ -107,8 +107,22 @@ export class ShapeUtil {
     return Object.values(ShapeBpmnElementKind).filter(kind => !ShapeUtil.isPoolOrLane(kind));
   }
 
+  /**
+   * @since 0.48.0
+   */
+  static isFlowNode(kind: ShapeBpmnElementKind | string): boolean {
+    return ShapeUtil.flowNodeKinds().includes(kind as ShapeBpmnElementKind);
+  }
+
   static isPoolOrLane(kind: ShapeBpmnElementKind | string): boolean {
     return kind == ShapeBpmnElementKind.POOL || kind == ShapeBpmnElementKind.LANE;
+  }
+
+  /**
+   * @since 0.48.0
+   */
+  static isArtifact(kind: ShapeBpmnElementKind | string): boolean {
+    return kind === ShapeBpmnElementKind.GROUP || kind === ShapeBpmnElementKind.TEXT_ANNOTATION;
   }
 }
 
