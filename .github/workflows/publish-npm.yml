@@ -22,7 +22,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Trigger workflows in charge of notifying other repositories
-        uses: peter-evans/repository-dispatch@v3
+        uses: peter-evans/repository-dispatch@v4
         with:
           # use the default GITHUB_TOKEN, this is possible because we are dispatching the same repository
           event-type: new_version_available_on_npm
