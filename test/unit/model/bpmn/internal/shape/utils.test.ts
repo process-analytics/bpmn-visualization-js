@@ -37,6 +37,12 @@ describe('ShapeUtil', () => {
     expect(flowNodeKinds).not.toContain(ShapeBpmnElementKind.POOL);
   });
 
+  it('artifact kinds', () => {
+    const artifacts = ShapeUtil.artifactKinds();
+    expect(artifacts).toContain(ShapeBpmnElementKind.GROUP);
+    expect(artifacts).toContain(ShapeBpmnElementKind.TEXT_ANNOTATION);
+  });
+
   describe('Is pool or lane?', () => {
     it.each([
       [ShapeBpmnElementKind.CALL_ACTIVITY],
@@ -98,6 +104,7 @@ describe('ShapeUtil', () => {
     it.each`
       kind            | kindsFunction
       ${'activities'} | ${() => ShapeUtil.activityKinds()}
+      ${'artifacts'}  | ${() => ShapeUtil.artifactKinds()}
       ${'events'}     | ${() => ShapeUtil.eventKinds()}
       ${'flow nodes'} | ${() => ShapeUtil.flowNodeKinds()}
       ${'gateways'}   | ${() => ShapeUtil.gatewayKinds()}
