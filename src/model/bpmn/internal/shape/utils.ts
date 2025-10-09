@@ -107,8 +107,29 @@ export class ShapeUtil {
     return Object.values(ShapeBpmnElementKind).filter(kind => !ShapeUtil.isPoolOrLane(kind));
   }
 
+  /**
+   * @since 0.48.0
+   */
+  static isFlowNode(kind: ShapeBpmnElementKind | string): boolean {
+    return ShapeUtil.flowNodeKinds().includes(kind as ShapeBpmnElementKind);
+  }
+
   static isPoolOrLane(kind: ShapeBpmnElementKind | string): boolean {
     return kind == ShapeBpmnElementKind.POOL || kind == ShapeBpmnElementKind.LANE;
+  }
+
+  /**
+   * @since 0.48.0
+   */
+  static artifactKinds(): ShapeBpmnElementKind[] {
+    return [...ARTIFACT_KINDS];
+  }
+
+  /**
+   * @since 0.48.0
+   */
+  static isArtifact(kind: ShapeBpmnElementKind | string): boolean {
+    return ARTIFACT_KINDS.includes(kind as ShapeBpmnElementKind);
   }
 }
 
@@ -134,6 +155,8 @@ const FLOW_NODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS = new Set([
   ShapeBpmnElementKind.GATEWAY_INCLUSIVE,
   ShapeBpmnElementKind.GATEWAY_COMPLEX,
 ]);
+
+const ARTIFACT_KINDS = [ShapeBpmnElementKind.GROUP, ShapeBpmnElementKind.TEXT_ANNOTATION];
 
 /**
  * Elements that are effectively used in BPMN diagram as base for eventDefinition i.e all {@link ShapeBpmnEventDefinitionKind} elements except {@link ShapeBpmnEventDefinitionKind.NONE}

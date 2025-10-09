@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { ShapeBpmnElementKind, ShapeUtil } from '@lib/model/bpmn/internal';
+import { FlowKind, ShapeBpmnElementKind, ShapeUtil } from '@lib/model/bpmn/internal';
 
 describe('ShapeUtil', () => {
   it('top level bpmn event kinds', () => {
@@ -27,6 +27,20 @@ describe('ShapeUtil', () => {
     const tasks = ShapeUtil.taskKinds();
     expect(tasks).toContain(ShapeBpmnElementKind.TASK);
     expect(tasks).toContain(ShapeBpmnElementKind.TASK_USER);
+  });
+
+  it('flow node kinds', () => {
+    const flowNodeKinds = ShapeUtil.flowNodeKinds();
+    expect(flowNodeKinds).toContain(ShapeBpmnElementKind.TASK);
+    expect(flowNodeKinds).toContain(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH);
+    expect(flowNodeKinds).toContain(ShapeBpmnElementKind.GROUP); // artifact should not be included
+    expect(flowNodeKinds).not.toContain(ShapeBpmnElementKind.POOL);
+  });
+
+  it('artifact kinds', () => {
+    const artifacts = ShapeUtil.artifactKinds();
+    expect(artifacts).toContain(ShapeBpmnElementKind.GROUP);
+    expect(artifacts).toContain(ShapeBpmnElementKind.TEXT_ANNOTATION);
   });
 
   describe('Is pool or lane?', () => {
@@ -46,10 +60,51 @@ describe('ShapeUtil', () => {
     });
   });
 
+  describe('isArtifact', () => {
+    test.each`
+      kind                                     | expected
+      ${ShapeBpmnElementKind.EVENT_END}        | ${false}
+      ${ShapeBpmnElementKind.GATEWAY_PARALLEL} | ${false}
+      ${ShapeBpmnElementKind.TASK}             | ${false}
+      ${ShapeBpmnElementKind.SUB_PROCESS}      | ${false}
+      ${ShapeBpmnElementKind.CALL_ACTIVITY}    | ${false}
+      ${ShapeBpmnElementKind.POOL}             | ${false}
+      ${ShapeBpmnElementKind.LANE}             | ${false}
+      ${ShapeBpmnElementKind.GROUP}            | ${true}
+      ${ShapeBpmnElementKind.TEXT_ANNOTATION}  | ${true}
+      ${FlowKind.MESSAGE_FLOW}                 | ${false}
+      ${'unknown'}                             | ${false}
+      ${'receiveTask'}                         | ${false}
+    `('$kind isArtifact? $expected', ({ kind, expected }: Record<string, unknown>) => {
+      expect(ShapeUtil.isArtifact(kind as string)).toBe(expected);
+    });
+  });
+
+  describe('isFlowNode', () => {
+    test.each`
+      kind                                     | expected
+      ${ShapeBpmnElementKind.EVENT_END}        | ${true}
+      ${ShapeBpmnElementKind.GATEWAY_PARALLEL} | ${true}
+      ${ShapeBpmnElementKind.TASK}             | ${true}
+      ${ShapeBpmnElementKind.SUB_PROCESS}      | ${true}
+      ${ShapeBpmnElementKind.CALL_ACTIVITY}    | ${true}
+      ${ShapeBpmnElementKind.POOL}             | ${false}
+      ${ShapeBpmnElementKind.LANE}             | ${false}
+      ${ShapeBpmnElementKind.GROUP}            | ${true}
+      ${ShapeBpmnElementKind.TEXT_ANNOTATION}  | ${true}
+      ${FlowKind.MESSAGE_FLOW}                 | ${false}
+      ${'unknown'}                             | ${false}
+      ${'receiveTask'}                         | ${true}
+    `('$kind isFlowNode? $expected', ({ kind, expected }: Record<string, unknown>) => {
+      expect(ShapeUtil.isFlowNode(kind as string)).toBe(expected);
+    });
+  });
+
   describe('Reference kinds cannot be modified', () => {
     it.each`
       kind            | kindsFunction
       ${'activities'} | ${() => ShapeUtil.activityKinds()}
+      ${'artifacts'}  | ${() => ShapeUtil.artifactKinds()}
       ${'events'}     | ${() => ShapeUtil.eventKinds()}
       ${'flow nodes'} | ${() => ShapeUtil.flowNodeKinds()}
       ${'gateways'}   | ${() => ShapeUtil.gatewayKinds()}
