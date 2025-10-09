@@ -73,12 +73,13 @@ const computeSubProcessKind = (processedSemanticType: BpmnSemanticType, bpmnElem
   }
 };
 
+//  semantically speaking, artifacts are not FlowNodes, but for the purpose of conversion, we consider them as FlowNodes here
 const orderedFlowNodeBpmnTypes: BpmnSemanticType[] = [
   // specific management for adhoc and transaction sub-processes which are handled with a dedicated ShapeBpmnSubProcessKind
   'adHocSubProcess',
   'transaction',
   // process boundary events afterward as we need its parent activity to be available when building it
-  ...(ShapeUtil.flowNodeKinds().filter(kind => kind !== ShapeBpmnElementKind.EVENT_BOUNDARY) as BpmnSemanticType[]),
+  ...([...ShapeUtil.flowNodeKinds(), ...ShapeUtil.artifactKinds()].filter(kind => kind !== ShapeBpmnElementKind.EVENT_BOUNDARY) as BpmnSemanticType[]),
   ShapeBpmnElementKind.EVENT_BOUNDARY,
 ];
 

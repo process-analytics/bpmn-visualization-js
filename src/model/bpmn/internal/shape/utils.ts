@@ -104,7 +104,7 @@ export class ShapeUtil {
   }
 
   static flowNodeKinds(): ShapeBpmnElementKind[] {
-    return Object.values(ShapeBpmnElementKind).filter(kind => !ShapeUtil.isPoolOrLane(kind));
+    return Object.values(ShapeBpmnElementKind).filter(kind => !ShapeUtil.isPoolOrLane(kind) && !ShapeUtil.isArtifact(kind));
   }
 
   /**

@@ -31,10 +31,13 @@ describe('ShapeUtil', () => {
 
   it('flow node kinds', () => {
     const flowNodeKinds = ShapeUtil.flowNodeKinds();
-    expect(flowNodeKinds).toContain(ShapeBpmnElementKind.TASK);
-    expect(flowNodeKinds).toContain(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH);
-    expect(flowNodeKinds).toContain(ShapeBpmnElementKind.GROUP); // artifact should not be included
+
+    expect(flowNodeKinds).toEqual(expect.arrayContaining(ShapeUtil.activityKinds()));
+    expect(flowNodeKinds).toEqual(expect.arrayContaining(ShapeUtil.eventKinds()));
+    expect(flowNodeKinds).toEqual(expect.arrayContaining(ShapeUtil.gatewayKinds()));
+
     expect(flowNodeKinds).not.toContain(ShapeBpmnElementKind.POOL);
+    expect(flowNodeKinds).not.toContain(ShapeBpmnElementKind.GROUP);
   });
 
   it('artifact kinds', () => {
@@ -90,8 +93,8 @@ describe('ShapeUtil', () => {
       ${ShapeBpmnElementKind.CALL_ACTIVITY}    | ${true}
       ${ShapeBpmnElementKind.POOL}             | ${false}
       ${ShapeBpmnElementKind.LANE}             | ${false}
-      ${ShapeBpmnElementKind.GROUP}            | ${true}
-      ${ShapeBpmnElementKind.TEXT_ANNOTATION}  | ${true}
+      ${ShapeBpmnElementKind.GROUP}            | ${false}
+      ${ShapeBpmnElementKind.TEXT_ANNOTATION}  | ${false}
       ${FlowKind.MESSAGE_FLOW}                 | ${false}
       ${'unknown'}                             | ${false}
       ${'receiveTask'}                         | ${true}
