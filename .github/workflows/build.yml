@@ -83,7 +83,7 @@ jobs:
         run: npm run test:unit ${{ matrix.os.coverage }}
       - name: Upload unit test results
         if: ${{ failure() && steps.test_unit.outcome == 'failure' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: unit-test-results-${{matrix.os.name}}-${{github.sha}}
           path: build/test-report/unit
@@ -92,7 +92,7 @@ jobs:
         run: npm run test:integration ${{ matrix.os.coverage }}
       - name: Upload integration test results
         if: ${{ failure() && steps.test_integration.outcome == 'failure' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: integration-test-results-${{matrix.os.name}}-${{github.sha}}
           path: build/test-report/integration

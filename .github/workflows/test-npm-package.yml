@@ -52,7 +52,7 @@ jobs:
       - name: Build npm package
         run: npm pack
       - name: Upload npm package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: bpmn-visualization-npm-package-${{github.sha}}
           path: bpmn-visualization-*.tgz
@@ -67,7 +67,7 @@ jobs:
         run: npm run test:bundles:verbose
       - name: Upload bundles test results
         if: ${{ failure() && steps.test_bundles.outcome == 'failure' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: bundles-test-results-${{github.sha}}
           path: build/test-report/bundles
