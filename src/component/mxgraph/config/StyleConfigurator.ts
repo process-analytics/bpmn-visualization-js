@@ -38,30 +38,30 @@ const specificFlowStyles = new MapWithDefault<FlowKind>([
   [
     FlowKind.SEQUENCE_FLOW,
     (style: CellStateStyle) => {
-      style[endArrow] = 'blockThin';
+      style.endArrow = 'blockThin';
     },
   ],
   [
     FlowKind.MESSAGE_FLOW,
     (style: CellStateStyle) => {
-      style[dashed] = true;
-      style[dashPattern] = '8 5';
-      style[startArrow] = 'oval';
-      style[startSize] = 8;
-      style[startFill] = true;
+      style.dashed = true;
+      style.dashPattern = '8 5';
+      style.startArrow = 'oval';
+      style.startSize = 8;
+      style.startFill = true;
       style[BpmnStyleIdentifier.EDGE_START_FILL_COLOR] = StyleDefault.MESSAGE_FLOW_MARKER_START_FILL_COLOR;
-      style[endArrow] = 'blockThin';
-      style[endFill] = true;
+      style.endArrow = 'blockThin';
+      style.endFill = true;
       style[BpmnStyleIdentifier.EDGE_END_FILL_COLOR] = StyleDefault.MESSAGE_FLOW_MARKER_END_FILL_COLOR;
     },
   ],
   [
     FlowKind.ASSOCIATION_FLOW,
     (style: CellStateStyle) => {
-      style[dashed] = true;
-      style[dashPattern] = '1 2';
+      style.dashed = true;
+      style.dashPattern = '1 2';
       // STYLE_ENDARROW and STYLE_STARTARROW are defined in specific AssociationDirectionKind styles when needed
-      style[startSize] = arrowDefaultSize;
+      style.startSize = arrowDefaultSize;
     },
   ],
 ]);
@@ -70,15 +70,15 @@ const specificSequenceFlowStyles = new MapWithDefault<SequenceFlowKind>([
   [
     SequenceFlowKind.DEFAULT,
     (style: CellStateStyle) => {
-      style[startArrow] = MarkerIdentifier.ARROW_DASH;
+      style.startArrow = MarkerIdentifier.ARROW_DASH;
     },
   ],
   [
     SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY,
     (style: CellStateStyle) => {
-      style[startArrow] = 'diamondThin';
-      style[startSize] = 18;
-      style[startFill] = true;
+      style.startArrow = 'diamondThin';
+      style.startSize = 18;
+      style.startFill = true;
       style[BpmnStyleIdentifier.EDGE_START_FILL_COLOR] = StyleDefault.SEQUENCE_FLOW_CONDITIONAL_FROM_ACTIVITY_MARKER_FILL_COLOR;
     },
   ],
@@ -95,14 +95,14 @@ const specificAssociationFlowStyles = new MapWithDefault<AssociationDirectionKin
   [
     AssociationDirectionKind.ONE,
     (style: CellStateStyle) => {
-      style[endArrow] = 'openThin';
+      style.endArrow = 'openThin';
     },
   ],
   [
     AssociationDirectionKind.BOTH,
     (style: CellStateStyle) => {
-      style[startArrow] = 'openThin';
-      style[endArrow] = 'openThin';
+      style.startArrow = 'openThin';
+      style.endArrow = 'openThin';
     },
   ],
 ]);
@@ -147,33 +147,33 @@ export class StyleConfigurator {
     const style = this.stylesheet.getDefaultVertexStyle();
     configureCommonDefaultStyle(style);
 
-    style[absoluteArcSize] = true;
-    style[arcSize] = StyleDefault.SHAPE_ARC_SIZE;
+    style.absoluteArcSize = true;
+    style.arcSize = StyleDefault.SHAPE_ARC_SIZE;
   }
 
   private configurePoolStyle(): void {
     const style: CellStateStyle = {};
-    style[shape] = 'swimlane';
+    style.shape = 'swimlane';
 
     // label style
-    style[verticalAlign] = 'middle';
-    style[align] = 'center';
-    style[startSize] = StyleDefault.POOL_LABEL_SIZE;
-    style[fillColor] = StyleDefault.POOL_LABEL_FILL_COLOR;
+    style.verticalAlign = 'middle';
+    style.align = 'center';
+    style.startSize = StyleDefault.POOL_LABEL_SIZE;
+    style.fillColor = StyleDefault.POOL_LABEL_FILL_COLOR;
 
     this.graph.stylesheet.putCellStyle(ShapeBpmnElementKind.POOL, style);
   }
 
   private configureLaneStyle(): void {
     const style: CellStateStyle = {};
-    style[shape] = 'swimlane';
+    style.shape = 'swimlane';
 
     // label style
-    style[verticalAlign] = 'middle';
-    style[align] = 'center';
+    style.verticalAlign = 'middle';
+    style.align = 'center';
     style[mxConstants.STYLE_SWIMLANE_LINE] = 0; // hide the line between the title region and the content area
-    style[startSize] = StyleDefault.LANE_LABEL_SIZE;
-    style[fillColor] = StyleDefault.LANE_LABEL_FILL_COLOR;
+    style.startSize = StyleDefault.LANE_LABEL_SIZE;
+    style.fillColor = StyleDefault.LANE_LABEL_FILL_COLOR;
 
     this.graph.stylesheet.putCellStyle(ShapeBpmnElementKind.LANE, style);
   }
@@ -181,7 +181,7 @@ export class StyleConfigurator {
   private configureEventStyles(): void {
     for (const kind of ShapeUtil.eventKinds()) {
       const style: CellStateStyle = {};
-      style[shape] = kind;
+      style.shape = kind;
       style[mxConstants.STYLE_PERIMETER] = mxPerimeter.EllipsePerimeter;
       style[mxConstants.STYLE_STROKEWIDTH] = kind == ShapeBpmnElementKind.EVENT_END ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN;
       style[mxConstants.STYLE_VERTICAL_LABEL_POSITION] = mxConstants.ALIGN_BOTTOM;
@@ -191,11 +191,11 @@ export class StyleConfigurator {
 
   private configureTextAnnotationStyle(): void {
     const style: CellStateStyle = {};
-    style[shape] = ShapeBpmnElementKind.TEXT_ANNOTATION;
-    style[verticalAlign] = 'middle';
-    style[align] = mxConstants.ALIGN_LEFT;
+    style.shape = ShapeBpmnElementKind.TEXT_ANNOTATION;
+    style.verticalAlign = 'middle';
+    style.align = mxConstants.ALIGN_LEFT;
     style[mxConstants.STYLE_SPACING_LEFT] = 5;
-    style[fillColor] = StyleDefault.TEXT_ANNOTATION_FILL_COLOR;
+    style.fillColor = StyleDefault.TEXT_ANNOTATION_FILL_COLOR;
     style[mxConstants.STYLE_STROKEWIDTH] = StyleDefault.STROKE_WIDTH_THIN;
     this.putCellStyle(ShapeBpmnElementKind.TEXT_ANNOTATION, style);
   }
@@ -203,13 +203,13 @@ export class StyleConfigurator {
   private configureGroupStyle(): void {
     const style: CellStateStyle = {};
     style[mxConstants.STYLE_ROUNDED] = true;
-    style[dashed] = true;
-    style[dashPattern] = '7 4 1 4';
+    style.dashed = true;
+    style.dashPattern = '7 4 1 4';
     style[mxConstants.STYLE_STROKEWIDTH] = StyleDefault.STROKE_WIDTH_THIN;
-    style[fillColor] = StyleDefault.GROUP_FILL_COLOR;
+    style.fillColor = StyleDefault.GROUP_FILL_COLOR;
     // Default label positioning
-    style[align] = 'center';
-    style[verticalAlign] = mxConstants.ALIGN_TOP;
+    style.align = 'center';
+    style.verticalAlign = mxConstants.ALIGN_TOP;
 
     this.putCellStyle(ShapeBpmnElementKind.GROUP, style);
   }
@@ -217,9 +217,9 @@ export class StyleConfigurator {
   private configureActivityStyles(): void {
     for (const kind of ShapeUtil.activityKinds()) {
       const style: CellStateStyle = {};
-      style[shape] = kind;
+      style.shape = kind;
       style[mxConstants.STYLE_ROUNDED] = true; // required by the BPMN specification
-      style[verticalAlign] = 'middle';
+      style.verticalAlign = 'middle';
       style[mxConstants.STYLE_STROKEWIDTH] = kind == ShapeBpmnElementKind.CALL_ACTIVITY ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN;
       this.putCellStyle(kind, style);
     }
@@ -228,10 +228,10 @@ export class StyleConfigurator {
   private configureGatewayStyles(): void {
     for (const kind of ShapeUtil.gatewayKinds()) {
       const style: CellStateStyle = {};
-      style[shape] = kind;
+      style.shape = kind;
       style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RhombusPerimeter;
       style[mxConstants.STYLE_STROKEWIDTH] = StyleDefault.STROKE_WIDTH_THIN;
-      style[verticalAlign] = mxConstants.ALIGN_TOP;
+      style.verticalAlign = mxConstants.ALIGN_TOP;
 
       // Default label positioning
       style[mxConstants.STYLE_LABEL_POSITION] = mxConstants.ALIGN_LEFT;
@@ -245,15 +245,15 @@ export class StyleConfigurator {
     const style = this.stylesheet.getDefaultEdgeStyle();
     configureCommonDefaultStyle(style);
 
-    style[shape] = BpmnStyleIdentifier.EDGE;
-    style[endSize] = arrowDefaultSize;
+    style.shape = BpmnStyleIdentifier.EDGE;
+    style.endSize = arrowDefaultSize;
     style[mxConstants.STYLE_STROKEWIDTH] = 1.5;
     style[mxConstants.STYLE_ROUNDED] = true;
-    style[arcSize] = 5;
-    style[verticalAlign] = mxConstants.ALIGN_BOTTOM;
+    style.arcSize = 5;
+    style.verticalAlign = mxConstants.ALIGN_BOTTOM;
 
     // The end arrow must be redefined in specific style
-    delete style[endArrow];
+    delete style.endArrow;
   }
 
   private configureEdgeStyles<T>(styleKinds: T[], specificStyles: Map<T, (style: CellStateStyle) => void>): void {
@@ -275,7 +275,7 @@ function configureCommonDefaultStyle(style: CellStateStyle): void {
   style[mxConstants.STYLE_FONTFAMILY] = StyleDefault.DEFAULT_FONT_FAMILY;
   style[mxConstants.STYLE_FONTSIZE] = StyleDefault.DEFAULT_FONT_SIZE;
   style[mxConstants.STYLE_FONTCOLOR] = StyleDefault.DEFAULT_FONT_COLOR;
-  style[fillColor] = StyleDefault.DEFAULT_FILL_COLOR;
+  style.fillColor = StyleDefault.DEFAULT_FILL_COLOR;
   style[mxConstants.STYLE_STROKECOLOR] = StyleDefault.DEFAULT_STROKE_COLOR;
   style[mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = mxConstants.NONE;
 

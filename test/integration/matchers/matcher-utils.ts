@@ -17,7 +17,7 @@ limitations under the License.
 import type { ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement, HorizontalAlign, VerticalAlign } from '../helpers/model-expect';
 import type { CustomCellOverlay, CustomCellOverlayStyle } from '@lib/component/mxgraph/overlay/custom-overlay';
 import type { Opacity } from '@lib/component/registry';
-import type { mxCell, mxGeometry, StyleMap } from 'mxgraph';
+import type { Cell, Geometry, CellStateStyle } from '@maxgraph/core';
 
 import { bpmnVisualization } from '../helpers/model-expect';
 
@@ -29,7 +29,7 @@ import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 
 // Used for received view state, computed resolved style and expected style.
-export interface BpmnCellStyle extends StyleMap {
+export interface BpmnCellStyle extends CellStateStyle {
   opacity: Opacity;
   verticalAlign?: VerticalAlign;
   align?: HorizontalAlign;
@@ -58,7 +58,7 @@ export interface BpmnCellStyle extends StyleMap {
 
 export interface ExpectedCell {
   value?: string;
-  geometry?: mxGeometry;
+  geometry?: Geometry;
   /** the Cell style property or a jest expect using a regexp. */
   styleRawFromModelOrJestExpect?: string;
   /**
@@ -96,7 +96,7 @@ export function buildCellMatcher<R>(
   expected: R,
   cellKind: string,
   buildExpectedCell: (received: string, expected: R) => ExpectedCell,
-  buildReceivedCell: (cell: mxCell) => ExpectedCell,
+  buildReceivedCell: (cell: Cell) => ExpectedCell,
 ): CustomMatcherResult {
   const options = {
     isNot: matcherContext.isNot,
@@ -159,12 +159,12 @@ export function buildExpectedCellStyleWithCommonAttributes(expectedModelElt: Exp
 /**
  * This function really gets style from the state of the cell in the graph view.
  * The functions that return BpmnCellStyle objects are in fact, returning a computed style by using the style properties from the model augmented with the properties resolved
- * from the styles referenced by the cell. The object isn't related to the cached value stored in the style property of the mxCell state stored in the mxGraphView.
+ * from the styles referenced by the cell. The object isn't related to the cached value stored in the style property of the Cell state stored in the mxGraphView.
  *
  * @param cell The Cell to consider to get the style in the state view
  * @param bv The instance of BpmnVisualization under test
  */
-export function buildReceivedViewStateStyle(cell: mxCell, bv = bpmnVisualization): BpmnCellStyle {
+export function buildReceivedViewStateStyle(cell: Cell, bv = bpmnVisualization): BpmnCellStyle {
   return toBpmnStyle(bv.graph.getView().getState(cell).style, cell.edge);
 }
 
@@ -178,11 +178,11 @@ export function buildReceivedViewStateStyle(cell: mxCell, bv = bpmnVisualization
  * @param cell The Cell to consider for the computation of the resolved style.
  * @param bv The instance of BpmnVisualization under test
  */
-export function buildReceivedResolvedModelCellStyle(cell: mxCell, bv = bpmnVisualization): BpmnCellStyle {
+export function buildReceivedResolvedModelCellStyle(cell: Cell, bv = bpmnVisualization): BpmnCellStyle {
   return toBpmnStyle(bv.graph.getCellStyle(cell), cell.edge);
 }
 
-function toBpmnStyle(rawStyle: StyleMap, isEdge: boolean): BpmnCellStyle {
+function toBpmnStyle(rawStyle: CellStateStyle, isEdge: boolean): BpmnCellStyle {
   return {
     opacity: rawStyle.opacity,
     verticalAlign: rawStyle.verticalAlign,
@@ -220,7 +220,7 @@ function toBpmnStyle(rawStyle: StyleMap, isEdge: boolean): BpmnCellStyle {
   };
 }
 
-function buildBaseReceivedExpectedCell(cell: mxCell): ExpectedCell {
+function buildBaseReceivedExpectedCell(cell: Cell): ExpectedCell {
   return {
     value: cell.value,
     styleRawFromModelOrJestExpect: cell.style,
@@ -233,7 +233,7 @@ function buildBaseReceivedExpectedCell(cell: mxCell): ExpectedCell {
   };
 }
 
-export function buildReceivedCellWithCommonAttributes(cell: mxCell): ExpectedCell {
+export function buildReceivedCellWithCommonAttributes(cell: Cell): ExpectedCell {
   const receivedCell = buildBaseReceivedExpectedCell(cell);
 
   const cellOverlays = bpmnVisualization.graph.getCellOverlays(cell) as CustomCellOverlay[];
@@ -255,6 +255,6 @@ export function buildReceivedCellWithCommonAttributes(cell: mxCell): ExpectedCel
   return receivedCell;
 }
 
-export function getCell(received: string): mxCell {
+export function getCell(received: string): Cell {
   return bpmnVisualization.graph.model.getCell(received);
 }

@@ -39,7 +39,7 @@ import {
 import { mxConstants, mxgraph, mxPoint } from '@lib/component/mxgraph/initializer';
 import { readFileSync } from '@test/shared/file-helper';
 
-const mxGeometry = mxgraph.mxGeometry;
+const Geometry = mxgraph.Geometry;
 
 describe('mxGraph model - BPMN elements', () => {
   describe('BPMN elements should be available in the mxGraph model', () => {
@@ -1577,12 +1577,12 @@ describe('mxGraph model - BPMN elements', () => {
 
     expect('Participant_1').toBeCellWithParentAndGeometry({
       // unchanged as this is a pool, coordinates are the ones from the bpmn source
-      geometry: new mxGeometry(160, 80, 900, 180),
+      geometry: new Geometry(160, 80, 900, 180),
     });
 
     expect('StartEvent_1').toBeCellWithParentAndGeometry({
       parentId: 'Participant_1',
-      geometry: new mxGeometry(
+      geometry: new Geometry(
         150, // absolute coordinates: parent 160, cell 310
         80, // absolute coordinates: parent 80, cell 160
         40, // unchanged as no transformation on size
@@ -1590,7 +1590,7 @@ describe('mxGraph model - BPMN elements', () => {
       ),
     });
 
-    const sequenceFlowGeometry = new mxGeometry(0, 0, 0, 0);
+    const sequenceFlowGeometry = new Geometry(0, 0, 0, 0);
     sequenceFlowGeometry.points = [
       new mxPoint(190, 100), // absolute coordinates: parent x="160" y="80", cell x="350" y="180"
       new mxPoint(350, 100), // absolute coordinates: parent x="160" y="80", cell x="510" y="180"
@@ -1600,7 +1600,7 @@ describe('mxGraph model - BPMN elements', () => {
       geometry: sequenceFlowGeometry,
     });
 
-    const messageFlowGeometry = new mxGeometry(0, 0, 0, 0);
+    const messageFlowGeometry = new Geometry(0, 0, 0, 0);
     messageFlowGeometry.points = [
       new mxPoint(334, 260), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="260"
       new mxPoint(334, 342), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="342"
@@ -1615,12 +1615,12 @@ describe('mxGraph model - BPMN elements', () => {
 
     expect('Participant_1').toBeCellWithParentAndGeometry({
       // unchanged as this is a pool, coordinates are the ones from the bpmn source
-      geometry: new mxGeometry(160, 80, 900, 400),
+      geometry: new Geometry(160, 80, 900, 400),
     });
 
     expect('Lane_1_1').toBeCellWithParentAndGeometry({
       parentId: 'Participant_1',
-      geometry: new mxGeometry(
+      geometry: new Geometry(
         30, // absolute coordinates: parent 160, cell 190
         0, // absolute coordinates: parent 80, cell 80
         870, // unchanged as no transformation on size
@@ -1630,7 +1630,7 @@ describe('mxGraph model - BPMN elements', () => {
 
     expect('StartEvent_1').toBeCellWithParentAndGeometry({
       parentId: 'Lane_1_1',
-      geometry: new mxGeometry(
+      geometry: new Geometry(
         120, // absolute coordinates: parent 190, cell 310
         80, // absolute coordinates: parent 80, cell 160
         40, // unchanged as no transformation on size
@@ -1640,7 +1640,7 @@ describe('mxGraph model - BPMN elements', () => {
 
     expect('Lane_1_847987').not.toBeCellWithParentAndGeometry({
       parentId: 'Participant_1',
-      geometry: new mxGeometry(
+      geometry: new Geometry(
         30, // absolute coordinates: parent 160, cell 190
         200, // absolute coordinates: parent 80, cell 280
         870, // unchanged as no transformation on size
@@ -1648,7 +1648,7 @@ describe('mxGraph model - BPMN elements', () => {
       ),
     });
 
-    const sequenceFlowGeometry = new mxGeometry(0, 0, 0, 0);
+    const sequenceFlowGeometry = new Geometry(0, 0, 0, 0);
     sequenceFlowGeometry.points = [
       new mxPoint(160, 100), // absolute coordinates: parent x="190" y="80", cell x="350" y="180"
       new mxPoint(320, 100), // absolute coordinates: parent x="190" y="80", cell x="510" y="180"
@@ -1658,7 +1658,7 @@ describe('mxGraph model - BPMN elements', () => {
       geometry: sequenceFlowGeometry,
     });
 
-    const messageFlowGeometry = new mxGeometry(0, 0, 0, 0);
+    const messageFlowGeometry = new Geometry(0, 0, 0, 0);
     messageFlowGeometry.points = [
       new mxPoint(334, 480), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="480"
       new mxPoint(334, 632), // absolute coordinates: parent graph.getDefaultParent(), cell x="334" y="632"
@@ -1690,7 +1690,7 @@ describe('mxGraph model - BPMN elements', () => {
     it('Parse a diagram with large numbers and large decimals', () => {
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/simple-start-task-end_large_numbers_and_large_decimals.bpmn'));
 
-      const startEvent1Geometry = new mxGeometry(
+      const startEvent1Geometry = new Geometry(
         156.100_010_002_564_63,
         81.345_000_000_000_01, // 81.345000000000009 in the diagram
         // eslint-disable-next-line @typescript-eslint/no-loss-of-precision
@@ -1705,10 +1705,10 @@ describe('mxGraph model - BPMN elements', () => {
 
       expect('Activity_1').toBeCellWithParentAndGeometry({
         parentId: defaultParentId,
-        geometry: new mxGeometry(250, 59.795_444_2, 100.678_942_1, 80),
+        geometry: new Geometry(250, 59.795_444_2, 100.678_942_1, 80),
       });
 
-      const endEvent1Geometry = new mxGeometry(412, 81, 36, 36);
+      const endEvent1Geometry = new Geometry(412, 81, 36, 36);
       endEvent1Geometry.offset = new mxPoint(4.16e25, 1.240_000_000_03e29);
       expect('EndEvent_1').toBeCellWithParentAndGeometry({
         parentId: defaultParentId,
@@ -1721,7 +1721,7 @@ describe('mxGraph model - BPMN elements', () => {
 
       expect('Activity_1').toBeCellWithParentAndGeometry({
         parentId: defaultParentId,
-        geometry: new mxGeometry(
+        geometry: new Geometry(
           Number.NaN, // from 'not_a_number'
           Number.NaN, // from 'not a number too'
           -100,

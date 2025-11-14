@@ -14,7 +14,21 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { CellRenderer, Client, constants, EdgeStyle, InternalEvent, Perimeter, Point, Rectangle, RectangleShape, SvgCanvas2D, styleUtils } from '@maxgraph/core';
+import {
+  CellRenderer,
+  Client,
+  constants,
+  Dictionary,
+  EdgeStyle,
+  ImageShape,
+  InternalEvent,
+  Perimeter,
+  Point,
+  Rectangle,
+  RectangleShape,
+  SvgCanvas2D,
+  styleUtils,
+} from '@maxgraph/core';
 
 /**
  * The `mxgraph` context that allows access to the mxGraph objects.
@@ -33,35 +47,33 @@ import { CellRenderer, Client, constants, EdgeStyle, InternalEvent, Perimeter, P
  */
 export const mxgraph = {
   CellRenderer: CellRenderer,
+  mxCellRenderer: CellRenderer,
   mxClient: Client,
   mxConstants: constants,
+  mxDictionary: Dictionary,
   mxEvent: InternalEvent,
   mxPerimeter: Perimeter,
-  Point: Point,
-  Rectangle: Rectangle,
+  mxPoint: Point,
+  mxRectangle: Rectangle,
   mxRectangleShape: RectangleShape,
-  SvgCanvas2D: SvgCanvas2D,
+  mxSvgCanvas2D: SvgCanvas2D,
   mxUtils: styleUtils,
+  ImageShape,
   EdgeStyle,
 };
 
 /** @internal */
-export const CellRenderer = CellRenderer;
-/** @internal */
-export const mxClient = Client;
-/** @internal */
-export const mxConstants = constants;
-/** @internal */
-export const mxEvent = InternalEvent;
-/** @internal */
-export const mxPerimeter = Perimeter;
-/** @internal */
-export const Point = Point;
-/** @internal */
-export const Rectangle = Rectangle;
-/** @internal */
-export const mxRectangleShape = RectangleShape;
-/** @internal */
-export const SvgCanvas2D = SvgCanvas2D;
-/** @internal */
-export const mxUtils = styleUtils;
+export {
+  CellRenderer as mxCellRenderer,
+  Client as mxClient,
+  constants as mxConstants,
+  InternalEvent as mxEvent,
+  Perimeter as mxPerimeter,
+  Point,
+  Point as mxPoint,
+  Rectangle,
+  Rectangle as mxRectangle,
+  RectangleShape as mxRectangleShape,
+  SvgCanvas2D as mxSvgCanvas2D,
+  styleUtils as mxUtils,
+} from '@maxgraph/core';

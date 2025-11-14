@@ -14,11 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-// Use mxgraph types
+// Use maxGraph types
 // The `preserve="true"` directive is required to retain types in the output starting from TypeScript 5.5.
 // See https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html#preservetrue for details.
 // It is sufficient to add the `preserve` attribute once across all triple-slash directives, as the API Extractor will merge them when generating the final single definition file.
-/// <reference types="@typed-mxgraph/typed-mxgraph" preserve="true"/>
+/// <reference types="@maxgraph/core" preserve="true"/>
 
 // Public API
 export * from './component/options';

@@ -87,6 +87,7 @@ export class BpmnRenderer {
       const target = this.getCell(bpmnElement.targetReferenceId);
       const labelBounds = internalEdge.label?.bounds;
       const style = this.styleComputer.computeStyle(internalEdge, labelBounds);
+      // @ts-expect-error - TODO maxgraph: style is string but maxGraph expects CellStyle object
       const edge = this.graph.insertEdge(parent, bpmnElement.id, bpmnElement.name, source, target, style);
       this.insertWaypoints(internalEdge.waypoints, edge);
 
@@ -109,6 +110,7 @@ export class BpmnRenderer {
 
   private insertMessageFlowIconIfNeeded(internalEdge: Edge, edge: Cell): void {
     if (internalEdge.bpmnElement instanceof MessageFlow && internalEdge.messageVisibleKind !== MessageVisibleKind.NONE) {
+      // @ts-expect-error - TODO maxgraph: style is string but maxGraph expects CellStyle object
       const cell = this.graph.insertVertex(edge, messageFlowIconId(edge.id), undefined, 0, 0, 20, 14, this.styleComputer.computeMessageFlowIconStyle(internalEdge));
       cell.geometry.relative = true;
       cell.geometry.offset = new Point(-10, -7);
@@ -127,6 +129,7 @@ export class BpmnRenderer {
 
   private insertVertex(parent: Cell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: string): Cell {
     const vertexCoordinates = this.coordinatesTranslator.computeRelativeCoordinates(parent, new Point(bounds.x, bounds.y));
+    // @ts-expect-error - TODO maxgraph: style is string but maxGraph expects CellStyle object
     const cell = this.graph.insertVertex(parent, id, value, vertexCoordinates.x, vertexCoordinates.y, bounds.width, bounds.height, style);
 
     if (labelBounds) {

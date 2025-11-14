@@ -16,7 +16,7 @@ limitations under the License.
 
 import type { ExpectedCellWithGeometry } from '../../helpers/model-expect';
 import type { ExpectedCell } from '../matcher-utils';
-import type { mxCell } from 'mxgraph';
+import type { Cell } from '@maxgraph/core';
 
 import { getDefaultParentId } from '../../helpers/model-expect';
 import { buildCellMatcher, getCell } from '../matcher-utils';
@@ -32,7 +32,7 @@ export function toBeCell(this: MatcherContext, received: string): CustomMatcherR
   };
 }
 
-function buildReceivedCell(cell: mxCell): ExpectedCell {
+function buildReceivedCell(cell: Cell): ExpectedCell {
   return {
     id: cell.id,
     parent: { id: cell.parent.id },

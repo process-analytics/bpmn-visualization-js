@@ -46,14 +46,14 @@ export default class GraphConfigurator {
     this.graph.setCellsSelectable(false);
     this.graph.setEdgeLabelsMovable(false);
 
-    this.graph.options.allowHtmlLabel = true; // required for wrapping
+    this.graph.htmlLabels = true; // required for wrapping
 
     // To have the boundary event on the border of a task
-    this.graph.options.constrainChildrenOnResize = false;
-    this.graph.options.extendParentsOnAdd = false;
+    this.graph.setConstrainChildren(false);
+    this.graph.setExtendParents(false);
 
     // Disable folding for container cells (pool, lane, sub process, call activity) because we don't need it.
     // This also prevents requesting unavailable images (see #185) as we don't override BpmnGraph folding default images.
-    this.graph.options.foldingEnabled = false;
+    this.graph.foldingEnabled = false;
   }
 }
