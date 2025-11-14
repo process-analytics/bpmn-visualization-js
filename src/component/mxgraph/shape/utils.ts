@@ -16,7 +16,7 @@ limitations under the License.
 
 import type { Shape, SvgCanvas2D } from '@maxgraph/core';
 
-import { mxConstants } from '../initializer';
+import { constants } from '@maxgraph/core';
 import { computeAllBpmnClassNamesOfCell } from '../renderer/style-utils';
 import { BpmnStyleIdentifier } from '../style';
 
@@ -45,7 +45,7 @@ export const overrideCreateSvgCanvas = function (shape: Shape): void {
       // 'this.state.cell.style' = the style applied to the cell: 1st element: style name = bpmn shape name
       const cell = this.state.cell;
       // dialect = strictHtml is set means that current node holds an HTML label
-      const allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === mxConstants.DIALECT_STRICTHTML);
+      const allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === constants.DIALECT_STRICTHTML);
       const extraCssClasses = this.state.style[BpmnStyleIdentifier.EXTRA_CSS_CLASSES];
       if (typeof extraCssClasses == 'string') {
         allBpmnClassNames.push(...extraCssClasses.split(','));

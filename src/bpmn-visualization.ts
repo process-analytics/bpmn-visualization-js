@@ -14,12 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-// Use maxGraph types
-// The `preserve="true"` directive is required to retain types in the output starting from TypeScript 5.5.
-// See https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html#preservetrue for details.
-// It is sufficient to add the `preserve` attribute once across all triple-slash directives, as the API Extractor will merge them when generating the final single definition file.
-/// <reference types="@maxgraph/core" preserve="true"/>
-
 // Public API
 export * from './component/options';
 export { BpmnVisualization } from './component/BpmnVisualization';
@@ -33,5 +27,37 @@ export { StyleConfigurator } from './component/mxgraph/config/StyleConfigurator'
 export * from './component/mxgraph/style';
 export * from './component/mxgraph/shape/render';
 
-// the mxGraph context
-export { mxgraph } from './component/mxgraph/initializer';
+// the mxGraph context - for backward compatibility
+// @deprecated Use direct imports from '@maxgraph/core' instead
+import {
+  CellRenderer,
+  Client,
+  constants,
+  Dictionary,
+  EdgeStyle,
+  ImageShape,
+  InternalEvent,
+  Perimeter,
+  Point,
+  Rectangle,
+  RectangleShape,
+  SvgCanvas2D,
+  styleUtils,
+} from '@maxgraph/core';
+
+export const mxgraph = {
+  CellRenderer: CellRenderer,
+  mxCellRenderer: CellRenderer,
+  mxClient: Client,
+  mxConstants: constants,
+  mxDictionary: Dictionary,
+  mxEvent: InternalEvent,
+  mxPerimeter: Perimeter,
+  mxPoint: Point,
+  mxRectangle: Rectangle,
+  mxRectangleShape: RectangleShape,
+  mxSvgCanvas2D: SvgCanvas2D,
+  mxUtils: styleUtils,
+  ImageShape,
+  EdgeStyle,
+};

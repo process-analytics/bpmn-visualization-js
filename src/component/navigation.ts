@@ -21,7 +21,7 @@ import type { InternalMouseEvent } from '@maxgraph/core';
 import { debounce, throttle } from 'es-toolkit';
 
 import { ensurePositiveValue, ensureValidZoomConfiguration } from './helpers/validators';
-import { mxEvent } from './mxgraph/initializer';
+import { InternalEvent } from '@maxgraph/core';
 import { FitType } from './options';
 
 /**
@@ -67,13 +67,13 @@ export class NavigationImpl implements Navigation {
     const panningHandler = this.graph.panningHandler;
     if (options?.enabled) {
       // Pan configuration
-      panningHandler.addListener(mxEvent.PAN_START, setContainerCursor(this.graph, 'grab'));
-      panningHandler.addListener(mxEvent.PAN_END, setContainerCursor(this.graph, 'default'));
+      panningHandler.addListener(InternalEvent.PAN_START, setContainerCursor(this.graph, 'grab'));
+      panningHandler.addListener(InternalEvent.PAN_END, setContainerCursor(this.graph, 'default'));
 
       panningHandler.usePopupTrigger = false; // only use the left button to trigger panning
       // Reimplement the function as we also want to trigger 'panning on cells' (ignoreCell to true) and only on left-click
       // The regular implementation doesn't ignore right click in this case, so do it by ourselves
-      panningHandler.isForcePanningEvent = (me: InternalMouseEvent): boolean => mxEvent.isLeftMouseButton(me.getEvent()) || mxEvent.isMultiTouchEvent(me.getEvent());
+      panningHandler.isForcePanningEvent = (me: InternalMouseEvent): boolean => InternalEvent.isLeftMouseButton(me.getEvent()) || InternalEvent.isMultiTouchEvent(me.getEvent());
       this.graph.setPanning(true);
 
       // Zoom configuration
@@ -194,13 +194,13 @@ class ZoomSupport {
    */
   registerMouseWheelZoomListeners(config: ZoomConfiguration): void {
     config = ensureValidZoomConfiguration(config);
-    mxEvent.addMouseWheelListener(debounce(this.createMouseWheelZoomListener(true), config.debounceDelay), this.graph.container);
-    mxEvent.addMouseWheelListener(throttle(this.createMouseWheelZoomListener(false), config.throttleDelay), this.graph.container);
+    InternalEvent.addMouseWheelListener(debounce(this.createMouseWheelZoomListener(true), config.debounceDelay), this.graph.container);
+    InternalEvent.addMouseWheelListener(throttle(this.createMouseWheelZoomListener(false), config.throttleDelay), this.graph.container);
   }
 
   private createMouseWheelZoomListener(performScaling: boolean) {
     return (event: Event, up: boolean) => {
-      if (mxEvent.isConsumed(event) || !(event instanceof MouseEvent)) {
+      if (InternalEvent.isConsumed(event) || !(event instanceof MouseEvent)) {
         return;
       }
 
@@ -213,7 +213,7 @@ class ZoomSupport {
           const [offsetX, offsetY] = this.getEventRelativeCoordinates(event);
           const [newScale, dx, dy] = this.getScaleAndTranslationDeltas(offsetX, offsetY);
           this.graph.view.scaleAndTranslate(newScale, this.graph.view.translate.x + dx, this.graph.view.translate.y + dy);
-          mxEvent.consume(event);
+          InternalEvent.consume(event);
         } else {
           this.currentZoomLevel *= up ? zoomFactorIn : zoomFactorOut;
         }

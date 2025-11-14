@@ -18,13 +18,13 @@ import type { IconPainter, PaintParameter } from './render';
 import type { AbstractCanvas2D } from '@maxgraph/core';
 
 import { ShapeBpmnEventBasedGatewayKind } from '../../../model/bpmn/internal';
-import { mxgraph, mxUtils } from '../initializer';
+import { RhombusShape, styleUtils } from '@maxgraph/core';
 import { BpmnStyleIdentifier, StyleDefault } from '../style';
 import { getBpmnIsInstantiating } from '../style/utils';
 
 import { buildPaintParameter } from './render/icon-painter';
 
-abstract class GatewayShape extends mxgraph.mxRhombus {
+abstract class GatewayShape extends RhombusShape {
   // The actual value is injected at runtime by BpmnCellRenderer
   protected iconPainter: IconPainter = undefined;
 
@@ -117,7 +117,7 @@ export class EventBasedGatewayShape extends GatewayShape {
       ...paintParameter,
       ratioFromParent: 0.3,
     };
-    if (mxUtils.getValue(this.style, BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND, ShapeBpmnEventBasedGatewayKind.Exclusive) == ShapeBpmnEventBasedGatewayKind.Parallel) {
+    if (styleUtils.getValue(this.style, BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND, ShapeBpmnEventBasedGatewayKind.Exclusive) == ShapeBpmnEventBasedGatewayKind.Parallel) {
       this.iconPainter.paintPlusCrossIcon(innerIconPaintParameter);
     } else {
       this.iconPainter.paintPentagon(innerIconPaintParameter);

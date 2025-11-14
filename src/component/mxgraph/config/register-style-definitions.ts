@@ -17,7 +17,7 @@ limitations under the License.
 import type { AbstractCanvas2D, Cell, Point, Shape } from '@maxgraph/core';
 
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
-import { CellRenderer, mxgraph } from '../initializer';
+import { CellRenderer, MarkerShape } from '@maxgraph/core';
 import {
   BusinessRuleTaskShape,
   CallActivityShape,
@@ -102,5 +102,5 @@ const dashMarkerFactory = (
 };
 
 export const registerEdgeMarkers = (): void => {
-  mxgraph.mxMarker.addMarker(MarkerIdentifier.ARROW_DASH, dashMarkerFactory);
+  MarkerShape.addMarker(MarkerIdentifier.ARROW_DASH, dashMarkerFactory);
 };

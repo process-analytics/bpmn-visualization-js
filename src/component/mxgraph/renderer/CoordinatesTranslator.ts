@@ -17,7 +17,7 @@ limitations under the License.
 import type { BpmnGraph } from '../BpmnGraph';
 import type { Cell, Point as mxPointType } from '@maxgraph/core';
 
-import { Point } from '../initializer';
+import { Point } from '@maxgraph/core';
 
 /**
  * @internal

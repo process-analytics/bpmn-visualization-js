@@ -17,12 +17,12 @@ limitations under the License.
 import type { IconPainter } from './shape/render';
 import type { CellState, ImageShape, Shape } from '@maxgraph/core';
 
-import { mxgraph, Rectangle } from './initializer';
+import { CellRenderer, Dictionary, Rectangle } from '@maxgraph/core';
 import { CustomCellOverlay } from './overlay/custom-overlay';
 import { OverlayBadgeShape } from './overlay/shapes';
 import { overrideCreateSvgCanvas } from './shape/utils';
 
-export class BpmnCellRenderer extends mxgraph.CellRenderer {
+export class BpmnCellRenderer extends CellRenderer {
   constructor(private readonly iconPainter: IconPainter) {
     super();
   }
@@ -33,7 +33,7 @@ export class BpmnCellRenderer extends mxgraph.CellRenderer {
     let dict = null;
 
     if (overlays != null) {
-      dict = new mxgraph.mxDictionary<Shape>();
+      dict = new Dictionary<Shape>();
 
       for (const currentOverlay of overlays) {
         const shape = state.overlays == null ? null : state.overlays.remove(currentOverlay);
@@ -48,7 +48,7 @@ export class BpmnCellRenderer extends mxgraph.CellRenderer {
         if (currentOverlay instanceof CustomCellOverlay) {
           overlayShape = new OverlayBadgeShape(currentOverlay.label, new Rectangle(0, 0, 0, 0), currentOverlay.style);
         } else {
-          overlayShape = new mxgraph.ImageShape(new Rectangle(0, 0, 0, 0), currentOverlay.image.src);
+          overlayShape = new ImageShape(new Rectangle(0, 0, 0, 0), currentOverlay.image.src);
           (overlayShape as ImageShape).preserveImageAspect = false;
         }
         // END bpmn-visualization CUSTOMIZATION

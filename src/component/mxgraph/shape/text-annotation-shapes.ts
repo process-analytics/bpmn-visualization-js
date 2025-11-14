@@ -16,13 +16,13 @@ limitations under the License.
 
 import type { AbstractCanvas2D } from '@maxgraph/core';
 
-import { mxRectangleShape } from '../initializer';
+import { RectangleShape } from '@maxgraph/core';
 import { StyleDefault } from '../style';
 
 /**
  * @internal
  */
-export class TextAnnotationShape extends mxRectangleShape {
+export class TextAnnotationShape extends RectangleShape {
   override paintForeground(c: AbstractCanvas2D, x: number, y: number, _w: number, h: number): void {
     // paint sort of left square bracket shape - for text annotation
     c.begin();

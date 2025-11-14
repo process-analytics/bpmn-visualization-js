@@ -18,7 +18,7 @@ import type { BpmnCanvas, IconPainter, PaintParameter, ShapeConfiguration } from
 import type { AbstractCanvas2D } from '@maxgraph/core';
 
 import { ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal';
-import { mxRectangleShape, mxUtils } from '../initializer';
+import { RectangleShape, styleUtils } from '@maxgraph/core';
 import { BpmnStyleIdentifier, StyleDefault } from '../style';
 import { getBpmnIsInstantiating } from '../style/utils';
 
@@ -40,7 +40,7 @@ function getMarkerIconOriginFunction(numberOfMarkers: number, markerPosition: nu
 /**
  * @internal
  */
-export abstract class BaseActivityShape extends mxRectangleShape {
+export abstract class BaseActivityShape extends RectangleShape {
   // The actual value is injected at runtime by BpmnCellRenderer
   protected iconPainter: IconPainter = undefined;
 
@@ -62,7 +62,7 @@ export abstract class BaseActivityShape extends mxRectangleShape {
   }
 
   protected paintMarkerIcons(paintParameter: PaintParameter): void {
-    const markers = mxUtils.getValue(this.style, BpmnStyleIdentifier.MARKERS, undefined);
+    const markers = styleUtils.getValue(this.style, BpmnStyleIdentifier.MARKERS, undefined);
     if (markers) {
       const orderedMarkers = orderActivityMarkers(markers.split(','));
       for (const [index, marker] of orderedMarkers.entries()) {
@@ -205,7 +205,7 @@ export class CallActivityShape extends BaseActivityShape {
 
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this });
 
-    switch (mxUtils.getValue(this.style, BpmnStyleIdentifier.GLOBAL_TASK_KIND, undefined)) {
+    switch (styleUtils.getValue(this.style, BpmnStyleIdentifier.GLOBAL_TASK_KIND, undefined)) {
       case ShapeBpmnElementKind.GLOBAL_TASK_MANUAL: {
         this.iconPainter.paintHandIcon({
           ...paintParameter,
@@ -247,7 +247,7 @@ export class CallActivityShape extends BaseActivityShape {
  */
 export class SubProcessShape extends BaseActivityShape {
   override paintBackground(c: AbstractCanvas2D, x: number, y: number, w: number, h: number): void {
-    const subProcessKind = mxUtils.getValue(this.style, BpmnStyleIdentifier.SUB_PROCESS_KIND, undefined);
+    const subProcessKind = styleUtils.getValue(this.style, BpmnStyleIdentifier.SUB_PROCESS_KIND, undefined);
     c.save(); // ensure we can later restore the configuration
     if (subProcessKind === ShapeBpmnSubProcessKind.EVENT) {
       c.setDashed(true, false);

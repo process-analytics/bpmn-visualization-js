@@ -16,10 +16,10 @@ limitations under the License.
 
 import type { AbstractCanvas2D, Point } from '@maxgraph/core';
 
-import { mxgraph, SvgCanvas2D, mxUtils } from '../initializer';
+import { ConnectorShape, SvgCanvas2D, styleUtils } from '@maxgraph/core';
 import { BpmnStyleIdentifier } from '../style';
 
-export class BpmnConnector extends mxgraph.mxConnector {
+export class BpmnConnector extends ConnectorShape {
   override paintEdgeShape(c: AbstractCanvas2D, pts: Point[]): void {
     // The indirection via functions for markers is needed in
     // order to apply the offsets before painting the line and
@@ -34,12 +34,12 @@ export class BpmnConnector extends mxgraph.mxConnector {
     c.setDashed(false, false);
 
     if (sourceMarker != null) {
-      c.setFillColor(mxUtils.getValue(this.style, BpmnStyleIdentifier.EDGE_START_FILL_COLOR, this.stroke));
+      c.setFillColor(styleUtils.getValue(this.style, BpmnStyleIdentifier.EDGE_START_FILL_COLOR, this.stroke));
       sourceMarker();
     }
 
     if (targetMarker != null) {
-      c.setFillColor(mxUtils.getValue(this.style, BpmnStyleIdentifier.EDGE_END_FILL_COLOR, this.stroke));
+      c.setFillColor(styleUtils.getValue(this.style, BpmnStyleIdentifier.EDGE_END_FILL_COLOR, this.stroke));
       targetMarker();
     }
   }

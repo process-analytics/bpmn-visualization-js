@@ -18,7 +18,7 @@ import type { Fill, Font, ShapeStyleUpdate, Stroke, StyleUpdate, GradientDirecti
 
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
 import { ensureOpacityValue, ensureStrokeWidthValue } from '../../helpers/validators';
-import { mxConstants, mxUtils } from '../initializer';
+import { constants, styleUtils } from '@maxgraph/core';
 
 import { BpmnStyleIdentifier } from './identifiers';
 
@@ -80,38 +80,38 @@ export const StyleDefault = {
  * @internal
  * @private
  */
-export const getBpmnIsInstantiating = (style: Record<string, unknown>): boolean => mxUtils.getValue(style, BpmnStyleIdentifier.IS_INSTANTIATING, 'false') == 'true';
+export const getBpmnIsInstantiating = (style: Record<string, unknown>): boolean => styleUtils.getValue(style, BpmnStyleIdentifier.IS_INSTANTIATING, 'false') == 'true';
 
 const convertDefaultValue = (value: string): string | undefined => (value == 'default' ? undefined : value);
 
 export const updateStroke = (cellStyle: string, stroke: Stroke): string => {
   if (stroke) {
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_STROKECOLOR, stroke.color, convertDefaultValue);
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_STROKE_OPACITY, stroke.opacity, ensureOpacityValue);
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_STROKEWIDTH, stroke.width, ensureStrokeWidthValue);
+    cellStyle = setStyle(cellStyle, constants.STYLE_STROKECOLOR, stroke.color, convertDefaultValue);
+    cellStyle = setStyle(cellStyle, constants.STYLE_STROKE_OPACITY, stroke.opacity, ensureOpacityValue);
+    cellStyle = setStyle(cellStyle, constants.STYLE_STROKEWIDTH, stroke.width, ensureStrokeWidthValue);
   }
   return cellStyle;
 };
 
 export const setStyle = <T extends string | number>(cellStyle: string, key: string, value: T | undefined, converter: (value: T) => T | undefined = (value: T) => value): string => {
-  return value == undefined ? cellStyle : mxUtils.setStyle(cellStyle, key, converter(value));
+  return value == undefined ? cellStyle : styleUtils.setStyle(cellStyle, key, converter(value));
 };
 
 export const setStyleFlag = (cellStyle: string, key: string, flag: number, value: boolean | undefined): string =>
-  value == undefined ? cellStyle : mxUtils.setStyleFlag(cellStyle, key, flag, value);
+  value == undefined ? cellStyle : styleUtils.setStyleFlag(cellStyle, key, flag, value);
 
 export const updateFont = (cellStyle: string, font: Font): string => {
   if (font) {
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_FONTCOLOR, font.color, convertDefaultValue);
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_FONTSIZE, font.size);
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_FONTFAMILY, font.family);
+    cellStyle = setStyle(cellStyle, constants.STYLE_FONTCOLOR, font.color, convertDefaultValue);
+    cellStyle = setStyle(cellStyle, constants.STYLE_FONTSIZE, font.size);
+    cellStyle = setStyle(cellStyle, constants.STYLE_FONTFAMILY, font.family);
 
-    cellStyle = setStyleFlag(cellStyle, mxConstants.STYLE_FONTSTYLE, mxConstants.FONT_BOLD, font.isBold);
-    cellStyle = setStyleFlag(cellStyle, mxConstants.STYLE_FONTSTYLE, mxConstants.FONT_ITALIC, font.isItalic);
-    cellStyle = setStyleFlag(cellStyle, mxConstants.STYLE_FONTSTYLE, mxConstants.FONT_UNDERLINE, font.isUnderline);
-    cellStyle = setStyleFlag(cellStyle, mxConstants.STYLE_FONTSTYLE, mxConstants.FONT_STRIKETHROUGH, font.isStrikeThrough);
+    cellStyle = setStyleFlag(cellStyle, constants.STYLE_FONTSTYLE, constants.FONT_BOLD, font.isBold);
+    cellStyle = setStyleFlag(cellStyle, constants.STYLE_FONTSTYLE, constants.FONT_ITALIC, font.isItalic);
+    cellStyle = setStyleFlag(cellStyle, constants.STYLE_FONTSTYLE, constants.FONT_UNDERLINE, font.isUnderline);
+    cellStyle = setStyleFlag(cellStyle, constants.STYLE_FONTSTYLE, constants.FONT_STRIKETHROUGH, font.isStrikeThrough);
 
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_TEXT_OPACITY, font.opacity, ensureOpacityValue);
+    cellStyle = setStyle(cellStyle, constants.STYLE_TEXT_OPACITY, font.opacity, ensureOpacityValue);
   }
   return cellStyle;
 };
@@ -126,16 +126,16 @@ export const getStyleValue = (cellStyle: string, key: string, defaultValue: stri
 const convertDirection = (direction: GradientDirection): string => {
   switch (direction) {
     case 'right-to-left': {
-      return mxConstants.DIRECTION_WEST;
+      return constants.DIRECTION_WEST;
     }
     case 'bottom-to-top': {
-      return mxConstants.DIRECTION_NORTH;
+      return constants.DIRECTION_NORTH;
     }
     case 'top-to-bottom': {
-      return mxConstants.DIRECTION_SOUTH;
+      return constants.DIRECTION_SOUTH;
     }
     default: {
-      return mxConstants.DIRECTION_EAST;
+      return constants.DIRECTION_EAST;
     }
   }
 };
@@ -146,23 +146,23 @@ export const updateFill = (cellStyle: string, fill: Fill): string => {
     const isGradient = isFillColorGradient(color);
 
     const fillColor = isGradient ? color.startColor : color;
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_FILLCOLOR, fillColor, convertDefaultValue);
+    cellStyle = setStyle(cellStyle, constants.STYLE_FILLCOLOR, fillColor, convertDefaultValue);
 
     if (isGradient) {
       // The values of the color are mandatory. So, no need to check if it's undefined.
-      cellStyle = mxUtils.setStyle(cellStyle, mxConstants.STYLE_GRADIENTCOLOR, color.endColor);
-      cellStyle = mxUtils.setStyle(cellStyle, mxConstants.STYLE_GRADIENT_DIRECTION, convertDirection(color.direction));
+      cellStyle = styleUtils.setStyle(cellStyle, constants.STYLE_GRADIENTCOLOR, color.endColor);
+      cellStyle = styleUtils.setStyle(cellStyle, constants.STYLE_GRADIENT_DIRECTION, convertDirection(color.direction));
     } else if (color === 'default') {
-      cellStyle = mxUtils.setStyle(cellStyle, mxConstants.STYLE_GRADIENTCOLOR, undefined);
-      cellStyle = mxUtils.setStyle(cellStyle, mxConstants.STYLE_GRADIENT_DIRECTION, undefined);
+      cellStyle = styleUtils.setStyle(cellStyle, constants.STYLE_GRADIENTCOLOR, undefined);
+      cellStyle = styleUtils.setStyle(cellStyle, constants.STYLE_GRADIENT_DIRECTION, undefined);
     }
 
     if (cellStyle.includes(ShapeBpmnElementKind.POOL) || cellStyle.includes(ShapeBpmnElementKind.LANE)) {
-      cellStyle = setStyle(cellStyle, mxConstants.STYLE_SWIMLANE_FILLCOLOR, fillColor, convertDefaultValue);
+      cellStyle = setStyle(cellStyle, constants.STYLE_SWIMLANE_FILLCOLOR, fillColor, convertDefaultValue);
     }
   }
 
-  cellStyle = setStyle(cellStyle, mxConstants.STYLE_FILL_OPACITY, fill.opacity, ensureOpacityValue);
+  cellStyle = setStyle(cellStyle, constants.STYLE_FILL_OPACITY, fill.opacity, ensureOpacityValue);
 
   return cellStyle;
 };

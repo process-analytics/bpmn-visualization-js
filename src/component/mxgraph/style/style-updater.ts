@@ -21,7 +21,7 @@ import type { Cell, GraphDataModel } from '@maxgraph/core';
 import { ensureIsArray } from '../../helpers/array-utils';
 import { ensureOpacityValue } from '../../helpers/validators';
 import { messageFlowIconId } from '../BpmnRenderer';
-import { mxConstants } from '../initializer';
+import { constants } from '@maxgraph/core';
 
 import { getStyleValue, isShapeStyleUpdate, setStyle, updateFill, updateFont, updateStroke } from './utils';
 
@@ -69,7 +69,7 @@ export class StyleUpdater {
         this.styleManager.ensureStyleIsStored(cell);
 
         let cellStyle = cell.getStyle();
-        cellStyle = setStyle(cellStyle, mxConstants.STYLE_OPACITY, styleUpdate.opacity, ensureOpacityValue);
+        cellStyle = setStyle(cellStyle, constants.STYLE_OPACITY, styleUpdate.opacity, ensureOpacityValue);
         cellStyle = updateStroke(cellStyle, styleUpdate.stroke);
         cellStyle = updateFont(cellStyle, styleUpdate.font);
 

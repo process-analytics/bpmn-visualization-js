@@ -18,7 +18,7 @@ import type { BpmnGraph } from '../BpmnGraph';
 import type { Stylesheet, CellStateStyle } from '@maxgraph/core';
 
 import { AssociationDirectionKind, FlowKind, SequenceFlowKind, ShapeBpmnElementKind, ShapeUtil } from '../../../model/bpmn/internal';
-import { mxConstants, mxPerimeter } from '../initializer';
+import { constants, Perimeter } from '@maxgraph/core';
 import { BpmnStyleIdentifier, MarkerIdentifier, StyleDefault } from '../style';
 
 const arrowDefaultSize = 12;
@@ -171,7 +171,7 @@ export class StyleConfigurator {
     // label style
     style.verticalAlign = 'middle';
     style.align = 'center';
-    style[mxConstants.STYLE_SWIMLANE_LINE] = 0; // hide the line between the title region and the content area
+    style[constants.STYLE_SWIMLANE_LINE] = 0; // hide the line between the title region and the content area
     style.startSize = StyleDefault.LANE_LABEL_SIZE;
     style.fillColor = StyleDefault.LANE_LABEL_FILL_COLOR;
 
@@ -182,9 +182,9 @@ export class StyleConfigurator {
     for (const kind of ShapeUtil.eventKinds()) {
       const style: CellStateStyle = {};
       style.shape = kind;
-      style[mxConstants.STYLE_PERIMETER] = mxPerimeter.EllipsePerimeter;
-      style[mxConstants.STYLE_STROKEWIDTH] = kind == ShapeBpmnElementKind.EVENT_END ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN;
-      style[mxConstants.STYLE_VERTICAL_LABEL_POSITION] = mxConstants.ALIGN_BOTTOM;
+      style[constants.STYLE_PERIMETER] = Perimeter.EllipsePerimeter;
+      style[constants.STYLE_STROKEWIDTH] = kind == ShapeBpmnElementKind.EVENT_END ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN;
+      style[constants.STYLE_VERTICAL_LABEL_POSITION] = constants.ALIGN_BOTTOM;
       this.putCellStyle(kind, style);
     }
   }
@@ -193,23 +193,23 @@ export class StyleConfigurator {
     const style: CellStateStyle = {};
     style.shape = ShapeBpmnElementKind.TEXT_ANNOTATION;
     style.verticalAlign = 'middle';
-    style.align = mxConstants.ALIGN_LEFT;
-    style[mxConstants.STYLE_SPACING_LEFT] = 5;
+    style.align = constants.ALIGN_LEFT;
+    style[constants.STYLE_SPACING_LEFT] = 5;
     style.fillColor = StyleDefault.TEXT_ANNOTATION_FILL_COLOR;
-    style[mxConstants.STYLE_STROKEWIDTH] = StyleDefault.STROKE_WIDTH_THIN;
+    style[constants.STYLE_STROKEWIDTH] = StyleDefault.STROKE_WIDTH_THIN;
     this.putCellStyle(ShapeBpmnElementKind.TEXT_ANNOTATION, style);
   }
 
   private configureGroupStyle(): void {
     const style: CellStateStyle = {};
-    style[mxConstants.STYLE_ROUNDED] = true;
+    style[constants.STYLE_ROUNDED] = true;
     style.dashed = true;
     style.dashPattern = '7 4 1 4';
-    style[mxConstants.STYLE_STROKEWIDTH] = StyleDefault.STROKE_WIDTH_THIN;
+    style[constants.STYLE_STROKEWIDTH] = StyleDefault.STROKE_WIDTH_THIN;
     style.fillColor = StyleDefault.GROUP_FILL_COLOR;
     // Default label positioning
     style.align = 'center';
-    style.verticalAlign = mxConstants.ALIGN_TOP;
+    style.verticalAlign = constants.ALIGN_TOP;
 
     this.putCellStyle(ShapeBpmnElementKind.GROUP, style);
   }
@@ -218,9 +218,9 @@ export class StyleConfigurator {
     for (const kind of ShapeUtil.activityKinds()) {
       const style: CellStateStyle = {};
       style.shape = kind;
-      style[mxConstants.STYLE_ROUNDED] = true; // required by the BPMN specification
+      style[constants.STYLE_ROUNDED] = true; // required by the BPMN specification
       style.verticalAlign = 'middle';
-      style[mxConstants.STYLE_STROKEWIDTH] = kind == ShapeBpmnElementKind.CALL_ACTIVITY ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN;
+      style[constants.STYLE_STROKEWIDTH] = kind == ShapeBpmnElementKind.CALL_ACTIVITY ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN;
       this.putCellStyle(kind, style);
     }
   }
@@ -229,13 +229,13 @@ export class StyleConfigurator {
     for (const kind of ShapeUtil.gatewayKinds()) {
       const style: CellStateStyle = {};
       style.shape = kind;
-      style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RhombusPerimeter;
-      style[mxConstants.STYLE_STROKEWIDTH] = StyleDefault.STROKE_WIDTH_THIN;
-      style.verticalAlign = mxConstants.ALIGN_TOP;
+      style[constants.STYLE_PERIMETER] = Perimeter.RhombusPerimeter;
+      style[constants.STYLE_STROKEWIDTH] = StyleDefault.STROKE_WIDTH_THIN;
+      style.verticalAlign = constants.ALIGN_TOP;
 
       // Default label positioning
-      style[mxConstants.STYLE_LABEL_POSITION] = mxConstants.ALIGN_LEFT;
-      style[mxConstants.STYLE_VERTICAL_LABEL_POSITION] = mxConstants.ALIGN_TOP;
+      style[constants.STYLE_LABEL_POSITION] = constants.ALIGN_LEFT;
+      style[constants.STYLE_VERTICAL_LABEL_POSITION] = constants.ALIGN_TOP;
 
       this.putCellStyle(kind, style);
     }
@@ -247,10 +247,10 @@ export class StyleConfigurator {
 
     style.shape = BpmnStyleIdentifier.EDGE;
     style.endSize = arrowDefaultSize;
-    style[mxConstants.STYLE_STROKEWIDTH] = 1.5;
-    style[mxConstants.STYLE_ROUNDED] = true;
+    style[constants.STYLE_STROKEWIDTH] = 1.5;
+    style[constants.STYLE_ROUNDED] = true;
     style.arcSize = 5;
-    style.verticalAlign = mxConstants.ALIGN_BOTTOM;
+    style.verticalAlign = constants.ALIGN_BOTTOM;
 
     // The end arrow must be redefined in specific style
     delete style.endArrow;
@@ -272,13 +272,13 @@ export class StyleConfigurator {
 }
 
 function configureCommonDefaultStyle(style: CellStateStyle): void {
-  style[mxConstants.STYLE_FONTFAMILY] = StyleDefault.DEFAULT_FONT_FAMILY;
-  style[mxConstants.STYLE_FONTSIZE] = StyleDefault.DEFAULT_FONT_SIZE;
-  style[mxConstants.STYLE_FONTCOLOR] = StyleDefault.DEFAULT_FONT_COLOR;
+  style[constants.STYLE_FONTFAMILY] = StyleDefault.DEFAULT_FONT_FAMILY;
+  style[constants.STYLE_FONTSIZE] = StyleDefault.DEFAULT_FONT_SIZE;
+  style[constants.STYLE_FONTCOLOR] = StyleDefault.DEFAULT_FONT_COLOR;
   style.fillColor = StyleDefault.DEFAULT_FILL_COLOR;
-  style[mxConstants.STYLE_STROKECOLOR] = StyleDefault.DEFAULT_STROKE_COLOR;
-  style[mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = mxConstants.NONE;
+  style[constants.STYLE_STROKECOLOR] = StyleDefault.DEFAULT_STROKE_COLOR;
+  style[constants.STYLE_LABEL_BACKGROUNDCOLOR] = constants.NONE;
 
   // only works with html labels (enabled by GraphConfigurator)
-  style[mxConstants.STYLE_WHITE_SPACE] = 'wrap';
+  style[constants.STYLE_WHITE_SPACE] = 'wrap';
 }
