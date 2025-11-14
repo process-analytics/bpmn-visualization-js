@@ -171,7 +171,7 @@ export class StyleConfigurator {
     // label style
     style.verticalAlign = 'middle';
     style.align = 'center';
-    style[constants.STYLE_SWIMLANE_LINE] = 0; // hide the line between the title region and the content area
+    style['swimlaneLine'] = 0; // hide the line between the title region and the content area
     style.startSize = StyleDefault.LANE_LABEL_SIZE;
     style.fillColor = StyleDefault.LANE_LABEL_FILL_COLOR;
 
@@ -182,9 +182,9 @@ export class StyleConfigurator {
     for (const kind of ShapeUtil.eventKinds()) {
       const style: CellStateStyle = {};
       style.shape = kind;
-      style[constants.STYLE_PERIMETER] = Perimeter.EllipsePerimeter;
-      style[constants.STYLE_STROKEWIDTH] = kind == ShapeBpmnElementKind.EVENT_END ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN;
-      style[constants.STYLE_VERTICAL_LABEL_POSITION] = constants.ALIGN_BOTTOM;
+      style['perimeter'] = Perimeter.EllipsePerimeter;
+      style['strokeWidth'] = kind == ShapeBpmnElementKind.EVENT_END ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN;
+      style['verticalLabelPosition'] = 'bottom';
       this.putCellStyle(kind, style);
     }
   }
@@ -193,23 +193,23 @@ export class StyleConfigurator {
     const style: CellStateStyle = {};
     style.shape = ShapeBpmnElementKind.TEXT_ANNOTATION;
     style.verticalAlign = 'middle';
-    style.align = constants.ALIGN_LEFT;
-    style[constants.STYLE_SPACING_LEFT] = 5;
+    style.align = 'left';
+    style['spacingLeft'] = 5;
     style.fillColor = StyleDefault.TEXT_ANNOTATION_FILL_COLOR;
-    style[constants.STYLE_STROKEWIDTH] = StyleDefault.STROKE_WIDTH_THIN;
+    style['strokeWidth'] = StyleDefault.STROKE_WIDTH_THIN;
     this.putCellStyle(ShapeBpmnElementKind.TEXT_ANNOTATION, style);
   }
 
   private configureGroupStyle(): void {
     const style: CellStateStyle = {};
-    style[constants.STYLE_ROUNDED] = true;
+    style['rounded'] = true;
     style.dashed = true;
     style.dashPattern = '7 4 1 4';
-    style[constants.STYLE_STROKEWIDTH] = StyleDefault.STROKE_WIDTH_THIN;
+    style['strokeWidth'] = StyleDefault.STROKE_WIDTH_THIN;
     style.fillColor = StyleDefault.GROUP_FILL_COLOR;
     // Default label positioning
     style.align = 'center';
-    style.verticalAlign = constants.ALIGN_TOP;
+    style.verticalAlign = 'top';
 
     this.putCellStyle(ShapeBpmnElementKind.GROUP, style);
   }
@@ -218,9 +218,9 @@ export class StyleConfigurator {
     for (const kind of ShapeUtil.activityKinds()) {
       const style: CellStateStyle = {};
       style.shape = kind;
-      style[constants.STYLE_ROUNDED] = true; // required by the BPMN specification
+      style['rounded'] = true; // required by the BPMN specification
       style.verticalAlign = 'middle';
-      style[constants.STYLE_STROKEWIDTH] = kind == ShapeBpmnElementKind.CALL_ACTIVITY ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN;
+      style['strokeWidth'] = kind == ShapeBpmnElementKind.CALL_ACTIVITY ? StyleDefault.STROKE_WIDTH_THICK : StyleDefault.STROKE_WIDTH_THIN;
       this.putCellStyle(kind, style);
     }
   }
@@ -229,13 +229,13 @@ export class StyleConfigurator {
     for (const kind of ShapeUtil.gatewayKinds()) {
       const style: CellStateStyle = {};
       style.shape = kind;
-      style[constants.STYLE_PERIMETER] = Perimeter.RhombusPerimeter;
-      style[constants.STYLE_STROKEWIDTH] = StyleDefault.STROKE_WIDTH_THIN;
-      style.verticalAlign = constants.ALIGN_TOP;
+      style['perimeter'] = Perimeter.RhombusPerimeter;
+      style['strokeWidth'] = StyleDefault.STROKE_WIDTH_THIN;
+      style.verticalAlign = 'top';
 
       // Default label positioning
-      style[constants.STYLE_LABEL_POSITION] = constants.ALIGN_LEFT;
-      style[constants.STYLE_VERTICAL_LABEL_POSITION] = constants.ALIGN_TOP;
+      style['labelPosition'] = 'left';
+      style['verticalLabelPosition'] = 'top';
 
       this.putCellStyle(kind, style);
     }
@@ -247,10 +247,10 @@ export class StyleConfigurator {
 
     style.shape = BpmnStyleIdentifier.EDGE;
     style.endSize = arrowDefaultSize;
-    style[constants.STYLE_STROKEWIDTH] = 1.5;
-    style[constants.STYLE_ROUNDED] = true;
+    style['strokeWidth'] = 1.5;
+    style['rounded'] = true;
     style.arcSize = 5;
-    style.verticalAlign = constants.ALIGN_BOTTOM;
+    style.verticalAlign = 'bottom';
 
     // The end arrow must be redefined in specific style
     delete style.endArrow;

@@ -81,10 +81,10 @@ export default class StyleComputer {
     } else if (bpmnElement instanceof ShapeBpmnActivity) {
       computeActivityShapeStyle(bpmnElement, styleValues);
     } else if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
-      // constants.STYLE_HORIZONTAL is for the label
+      // 'horizontal' is for the label
       // In BPMN, isHorizontal is for the Shape
       // So we invert the value when we switch from the BPMN value to the mxGraph value.
-      styleValues.set(constants.STYLE_HORIZONTAL, shape.isHorizontal ? '0' : '1');
+      styleValues.set('horizontal', shape.isHorizontal ? '0' : '1');
     } else if (bpmnElement instanceof ShapeBpmnEventBasedGateway) {
       styleValues.set(BpmnStyleIdentifier.IS_INSTANTIATING, String(bpmnElement.instantiate));
       styleValues.set(BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND, String(bpmnElement.gatewayKind));
@@ -94,12 +94,12 @@ export default class StyleComputer {
       const extensions = shape.extensions;
       const fillColor = extensions.fillColor;
       if (fillColor) {
-        styleValues.set(constants.STYLE_FILLCOLOR, fillColor);
+        styleValues.set('fillColor', fillColor);
         if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
-          styleValues.set(constants.STYLE_SWIMLANE_FILLCOLOR, fillColor);
+          styleValues.set('swimlaneFillColor', fillColor);
         }
       }
-      extensions.strokeColor && styleValues.set(constants.STYLE_STROKECOLOR, extensions.strokeColor);
+      extensions.strokeColor && styleValues.set('strokeColor', extensions.strokeColor);
     }
 
     return styleValues;
@@ -110,7 +110,7 @@ export default class StyleComputer {
 
     if (!this.ignoreBpmnColors) {
       const extensions = edge.extensions;
-      extensions.strokeColor && styleValues.set(constants.STYLE_STROKECOLOR, extensions.strokeColor);
+      extensions.strokeColor && styleValues.set('strokeColor', extensions.strokeColor);
     }
 
     return styleValues;
@@ -121,14 +121,14 @@ export default class StyleComputer {
 
     const font = bpmnCell.label?.font;
     if (font && !this.ignoreBpmnLabelStyles) {
-      styleValues.set(constants.STYLE_FONTFAMILY, font.name);
-      styleValues.set(constants.STYLE_FONTSIZE, font.size);
-      styleValues.set(constants.STYLE_FONTSTYLE, getFontStyleValue(font));
+      styleValues.set('fontFamily', font.name);
+      styleValues.set('fontSize', font.size);
+      styleValues.set('fontStyle', getFontStyleValue(font));
     }
 
     if (!this.ignoreBpmnColors) {
       const extensions = bpmnCell.label?.extensions;
-      extensions?.color && styleValues.set(constants.STYLE_FONTCOLOR, extensions.color);
+      extensions?.color && styleValues.set('fontColor', extensions.color);
     }
 
     return styleValues;
@@ -138,7 +138,7 @@ export default class StyleComputer {
     const styleValues: [string, string][] = [];
     styleValues.push(['shape', BpmnStyleIdentifier.MESSAGE_FLOW_ICON], [BpmnStyleIdentifier.IS_INITIATING, String(edge.messageVisibleKind === MessageVisibleKind.INITIATING)]);
     if (!this.ignoreBpmnColors) {
-      edge.extensions.strokeColor && styleValues.push([constants.STYLE_STROKECOLOR, edge.extensions.strokeColor]);
+      edge.extensions.strokeColor && styleValues.push(['strokeColor', edge.extensions.strokeColor]);
     }
 
     return toArrayOfMxGraphStyleEntries(styleValues).join(';');
@@ -196,20 +196,20 @@ function computeLabelStyleValues(
   const shouldIgnoreLabelBounds = shouldIgnoreBpmnLabelBounds(bpmnCell, ignoreBpmnActivityLabelBounds, ignoreBpmnTaskLabelBounds);
 
   if (labelBounds && !shouldIgnoreLabelBounds) {
-    styleValues.set(constants.STYLE_VERTICAL_ALIGN, constants.ALIGN_TOP);
+    styleValues.set('verticalAlign', 'top');
     if (bpmnCell.bpmnElement.kind != ShapeBpmnElementKind.TEXT_ANNOTATION) {
-      styleValues.set(constants.STYLE_ALIGN, constants.ALIGN_CENTER);
+      styleValues.set('align', 'center');
     }
 
     if (bpmnCell instanceof Shape) {
       // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
-      styleValues.set(constants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
+      styleValues.set('labelWidth', labelBounds.width + 1);
       // align settings
       // According to the documentation, "label position" can only take values in left, center, right with default=center
       // However, there is undocumented behavior when the value is not one of these and this behavior is exactly what we want.
       // See https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/GraphView.js#L1183-L1252
-      styleValues.set(constants.STYLE_LABEL_POSITION, 'ignore');
-      styleValues.set(constants.STYLE_VERTICAL_LABEL_POSITION, constants.ALIGN_MIDDLE);
+      styleValues.set('labelPosition', 'ignore');
+      styleValues.set('verticalLabelPosition', 'middle');
     }
   }
   // when no label bounds, adjust the default style dynamically
@@ -218,7 +218,7 @@ function computeLabelStyleValues(
     (bpmnElement instanceof ShapeBpmnSubProcess || (bpmnElement instanceof ShapeBpmnCallActivity && bpmnElement.callActivityKind === ShapeBpmnCallActivityKind.CALLING_PROCESS)) &&
     !bpmnElement.markers.includes(ShapeBpmnMarkerKind.EXPAND)
   ) {
-    styleValues.set(constants.STYLE_VERTICAL_ALIGN, constants.ALIGN_TOP);
+    styleValues.set('verticalAlign', 'top');
   }
 
   return styleValues;
@@ -257,16 +257,16 @@ function shouldIgnoreBpmnLabelBounds(bpmnCell: Shape | Edge, ignoreBpmnActivityL
 export function getFontStyleValue(font: Font): number {
   let value = 0;
   if (font.isBold) {
-    value += constants.FONT_BOLD;
+    value += 1;
   }
   if (font.isItalic) {
-    value += constants.FONT_ITALIC;
+    value += 2;
   }
   if (font.isStrikeThrough) {
-    value += constants.FONT_STRIKETHROUGH;
+    value += 8;
   }
   if (font.isUnderline) {
-    value += constants.FONT_UNDERLINE;
+    value += 4;
   }
   return value;
 }
