@@ -162,7 +162,7 @@ export const updateFill = (cellStyle: string, fill: Fill): string => {
     }
   }
 
-  cellStyle = setStyle(cellStyle, constants.STYLE_FILL_OPACITY, fill.opacity, ensureOpacityValue);
+  cellStyle = setStyle(cellStyle, 'fillOpacity', fill.opacity, ensureOpacityValue);
 
   return cellStyle;
 };

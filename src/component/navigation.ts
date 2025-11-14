@@ -64,6 +64,7 @@ export class NavigationImpl implements Navigation {
   }
 
   configure(options?: NavigationConfiguration): void {
+    // @ts-expect-error - TODO maxGraph: panningHandler moved to plugin system, use getPlugin<PanningHandler>
     const panningHandler = this.graph.panningHandler;
     if (options?.enabled) {
       // Pan configuration
@@ -73,6 +74,7 @@ export class NavigationImpl implements Navigation {
       panningHandler.usePopupTrigger = false; // only use the left button to trigger panning
       // Reimplement the function as we also want to trigger 'panning on cells' (ignoreCell to true) and only on left-click
       // The regular implementation doesn't ignore right click in this case, so do it by ourselves
+      // @ts-expect-error - TODO maxGraph: check if isLeftMouseButton and isMultiTouchEvent exist in InternalEvent or eventUtils
       panningHandler.isForcePanningEvent = (me: InternalMouseEvent): boolean => InternalEvent.isLeftMouseButton(me.getEvent()) || InternalEvent.isMultiTouchEvent(me.getEvent());
       this.graph.setPanning(true);
 
@@ -200,6 +202,7 @@ class ZoomSupport {
 
   private createMouseWheelZoomListener(performScaling: boolean) {
     return (event: Event, up: boolean) => {
+      // @ts-expect-error - TODO maxGraph: check correct method name in InternalEvent (might be consume instead of isConsumed)
       if (InternalEvent.isConsumed(event) || !(event instanceof MouseEvent)) {
         return;
       }
