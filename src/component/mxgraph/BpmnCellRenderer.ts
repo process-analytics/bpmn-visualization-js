@@ -15,25 +15,25 @@ limitations under the License.
 */
 
 import type { IconPainter } from './shape/render';
-import type { mxCellState, mxImageShape, mxShape } from 'mxgraph';
+import type { CellState, ImageShape, Shape } from '@maxgraph/core';
 
-import { mxgraph, mxRectangle } from './initializer';
+import { mxgraph, Rectangle } from './initializer';
 import { CustomCellOverlay } from './overlay/custom-overlay';
 import { OverlayBadgeShape } from './overlay/shapes';
 import { overrideCreateSvgCanvas } from './shape/utils';
 
-export class BpmnCellRenderer extends mxgraph.mxCellRenderer {
+export class BpmnCellRenderer extends mxgraph.CellRenderer {
   constructor(private readonly iconPainter: IconPainter) {
     super();
   }
 
-  override createCellOverlays(state: mxCellState): void {
+  override createCellOverlays(state: CellState): void {
     const graph = state.view.graph;
     const overlays = graph.getCellOverlays(state.cell);
     let dict = null;
 
     if (overlays != null) {
-      dict = new mxgraph.mxDictionary<mxShape>();
+      dict = new mxgraph.mxDictionary<Shape>();
 
       for (const currentOverlay of overlays) {
         const shape = state.overlays == null ? null : state.overlays.remove(currentOverlay);
@@ -42,14 +42,14 @@ export class BpmnCellRenderer extends mxgraph.mxCellRenderer {
           continue;
         }
 
-        let overlayShape: mxShape;
+        let overlayShape: Shape;
 
         // START bpmn-visualization CUSTOMIZATION
         if (currentOverlay instanceof CustomCellOverlay) {
-          overlayShape = new OverlayBadgeShape(currentOverlay.label, new mxRectangle(0, 0, 0, 0), currentOverlay.style);
+          overlayShape = new OverlayBadgeShape(currentOverlay.label, new Rectangle(0, 0, 0, 0), currentOverlay.style);
         } else {
-          overlayShape = new mxgraph.mxImageShape(new mxRectangle(0, 0, 0, 0), currentOverlay.image.src);
-          (overlayShape as mxImageShape).preserveImageAspect = false;
+          overlayShape = new mxgraph.ImageShape(new Rectangle(0, 0, 0, 0), currentOverlay.image.src);
+          (overlayShape as ImageShape).preserveImageAspect = false;
         }
         // END bpmn-visualization CUSTOMIZATION
 
@@ -57,7 +57,7 @@ export class BpmnCellRenderer extends mxgraph.mxCellRenderer {
         overlayShape.overlay = currentOverlay;
 
         // The 'initializeOverlay' signature forces us to hardly cast the overlayShape
-        this.initializeOverlay(state, overlayShape as mxImageShape);
+        this.initializeOverlay(state, overlayShape as ImageShape);
         this.installCellOverlayListeners(state, currentOverlay, overlayShape);
 
         if (currentOverlay.cursor != null) {
@@ -78,7 +78,7 @@ export class BpmnCellRenderer extends mxgraph.mxCellRenderer {
     // Removes unused
     if (state.overlays != null) {
       // prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
-      state.overlays.visit(function (_id: string, shape: mxShape) {
+      state.overlays.visit(function (_id: string, shape: Shape) {
         shape.destroy();
       });
     }
@@ -86,7 +86,7 @@ export class BpmnCellRenderer extends mxgraph.mxCellRenderer {
     state.overlays = dict;
   }
 
-  override createShape(state: mxCellState): mxShape {
+  override createShape(state: CellState): Shape {
     const shape = super.createShape(state);
     if ('iconPainter' in shape) {
       shape.iconPainter = this.iconPainter;
@@ -95,7 +95,7 @@ export class BpmnCellRenderer extends mxgraph.mxCellRenderer {
     return shape;
   }
 
-  override createLabel(state: mxCellState, value: string): void {
+  override createLabel(state: CellState, value: string): void {
     super.createLabel(state, value);
     overrideCreateSvgCanvas(state.text);
   }

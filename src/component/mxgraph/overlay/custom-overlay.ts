@@ -15,9 +15,9 @@ limitations under the License.
 */
 
 import type { OverlayStyle } from '../../registry';
-import type { mxCellState, mxPoint as mxPointType, mxRectangle as mxRectangleType } from 'mxgraph';
+import type { CellState, Point as mxPointType, Rectangle as mxRectangleType } from '@maxgraph/core';
 
-import { mxgraph, mxConstants, mxPoint, mxRectangle } from '../initializer';
+import { mxgraph, mxConstants, Point, Rectangle } from '../initializer';
 
 export type VerticalAlignType = 'bottom' | 'middle' | 'top';
 export type HorizontalAlignType = 'left' | 'center' | 'right';
@@ -46,7 +46,7 @@ export class CustomCellOverlay extends mxgraph.mxCellOverlay {
   }
 
   // Based on original method from mxCellOverlay (mxCellOverlay.prototype.getBounds)
-  override getBounds(state: mxCellState): mxRectangleType {
+  override getBounds(state: CellState): mxRectangleType {
     const isEdge = state.view.graph.getModel().isEdge(state.cell);
     const s = state.view.scale;
     let pt;
@@ -60,7 +60,7 @@ export class CustomCellOverlay extends mxgraph.mxCellOverlay {
     if (isEdge) {
       pt = this.computeEdgeBounds(state);
     } else {
-      pt = new mxPoint();
+      pt = new Point();
 
       if (this.align == mxConstants.ALIGN_LEFT) {
         pt.x = state.x;
@@ -79,10 +79,10 @@ export class CustomCellOverlay extends mxgraph.mxCellOverlay {
       }
     }
 
-    return new mxRectangle(Math.round(pt.x - (w * this.defaultOverlap - this.offset.x) * s), Math.round(pt.y - (h * this.defaultOverlap - this.offset.y) * s), w * s, h * s);
+    return new Rectangle(Math.round(pt.x - (w * this.defaultOverlap - this.offset.x) * s), Math.round(pt.y - (h * this.defaultOverlap - this.offset.y) * s), w * s, h * s);
   }
 
-  private computeEdgeBounds(state: mxCellState): mxPointType {
+  private computeEdgeBounds(state: CellState): mxPointType {
     const pts = state.absolutePoints;
     // 1st point for start position
     if (this.align == mxConstants.ALIGN_LEFT) {
@@ -96,7 +96,7 @@ export class CustomCellOverlay extends mxgraph.mxCellOverlay {
         const index = pts.length / 2;
         const p0 = pts[index - 1];
         const p1 = pts[index];
-        return new mxPoint(p0.x + (p1.x - p0.x) / 2, p0.y + (p1.y - p0.y) / 2);
+        return new Point(p0.x + (p1.x - p0.x) / 2, p0.y + (p1.y - p0.y) / 2);
       }
     }
     // last point for end position

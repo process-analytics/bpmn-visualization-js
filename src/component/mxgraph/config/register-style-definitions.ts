@@ -14,10 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { mxAbstractCanvas2D, mxCell, mxPoint, mxShape } from 'mxgraph';
+import type { AbstractCanvas2D, Cell, Point, Shape } from '@maxgraph/core';
 
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
-import { mxCellRenderer, mxgraph } from '../initializer';
+import { CellRenderer, mxgraph } from '../initializer';
 import {
   BusinessRuleTaskShape,
   CallActivityShape,
@@ -40,7 +40,7 @@ import { BpmnStyleIdentifier, MarkerIdentifier } from '../style';
 export const registerShapes = (): void => {
   // Inspired by the default shapes registration done in maxGraph
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- required by the signature of registerShape
-  const shapesToRegister: [string, new (...arguments_: any) => mxShape][] = [
+  const shapesToRegister: [string, new (...arguments_: any) => Shape][] = [
     // events
     [ShapeBpmnElementKind.EVENT_END, EndEventShape],
     [ShapeBpmnElementKind.EVENT_START, EventShape],
@@ -72,21 +72,21 @@ export const registerShapes = (): void => {
     [BpmnStyleIdentifier.MESSAGE_FLOW_ICON, MessageFlowIconShape],
   ];
   for (const [shapeName, shapeClass] of shapesToRegister) {
-    mxCellRenderer.registerShape(shapeName, shapeClass);
+    CellRenderer.registerShape(shapeName, shapeClass);
   }
 };
 // This implementation is adapted from the draw.io BPMN 'dash' marker
 // https://github.com/jgraph/drawio/blob/f539f1ff362e76127dcc7e68b5a9d83dd7d4965c/src/main/webapp/js/mxgraph/Shapes.js#L2796
 // prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
 const dashMarkerFactory = (
-  c: mxAbstractCanvas2D,
-  _shape: mxShape,
+  c: AbstractCanvas2D,
+  _shape: Shape,
   _type: string,
-  pe: mxPoint,
+  pe: Point,
   unitX: number,
   unitY: number,
   size: number,
-  _source: mxCell,
+  _source: Cell,
   strokewidth: number,
   // eslint-disable-next-line unicorn/consistent-function-scoping -- Code from mxGraph example
 ): (() => void) => {

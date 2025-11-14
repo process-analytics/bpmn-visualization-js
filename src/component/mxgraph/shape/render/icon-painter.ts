@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import type { IconStyleConfiguration, ShapeConfiguration, Size } from './render-types';
-import type { mxAbstractCanvas2D, mxShape } from 'mxgraph';
+import type { AbstractCanvas2D, Shape } from '@maxgraph/core';
 
 import { mxConstants, mxUtils } from '../../initializer';
 import { StyleDefault } from '../../style';
@@ -30,7 +30,7 @@ import { BpmnCanvas } from './BpmnCanvas';
  */
 export interface PaintParameter {
   /** Underlying 'Canvas' in charge of performing the paint operations. */
-  canvas: mxAbstractCanvas2D;
+  canvas: AbstractCanvas2D;
   /** The dimension and the style of the shape where the icon is painted. */
   shapeConfig: ShapeConfiguration;
   /** The style configuration of the icon. */
@@ -58,12 +58,12 @@ export function buildPaintParameter({
   isFilled,
   iconStrokeWidth,
 }: {
-  canvas: mxAbstractCanvas2D;
+  canvas: AbstractCanvas2D;
   x: number;
   y: number;
   width: number;
   height: number;
-  shape: mxShape;
+  shape: Shape;
   ratioFromParent?: number;
   isFilled?: boolean;
   iconStrokeWidth?: number;
@@ -97,7 +97,7 @@ export class IconPainter {
   /**
    * Utility paint icon methods to easily instantiate a {@link BpmnCanvas} from a {@link PaintParameter}.
    *
-   * @param canvas                  `mxAbstractCanvas2D` in charge of performing the paint operations.
+   * @param canvas                  `AbstractCanvas2D` in charge of performing the paint operations.
    * @param ratioFromParent         the actual size of the icon will be computed from the shape dimensions using this ratio.
    * @param setIconOriginFunct      called function to set the origin of the icon. Generally, it calls a method of {@link BpmnCanvas}.
    * @param shapeConfig             dimension and style of the shape where the icon is painted.

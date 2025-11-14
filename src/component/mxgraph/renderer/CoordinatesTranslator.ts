@@ -15,9 +15,9 @@ limitations under the License.
 */
 
 import type { BpmnGraph } from '../BpmnGraph';
-import type { mxCell, mxPoint as mxPointType } from 'mxgraph';
+import type { Cell, Point as mxPointType } from '@maxgraph/core';
 
-import { mxPoint } from '../initializer';
+import { Point } from '../initializer';
 
 /**
  * @internal
@@ -30,11 +30,11 @@ export default class CoordinatesTranslator {
    * @param parent the cell to use for the new coordinate referential
    * @param absoluteCoordinate
    */
-  computeRelativeCoordinates(parent: mxCell, absoluteCoordinate: mxPointType): mxPointType {
+  computeRelativeCoordinates(parent: Cell, absoluteCoordinate: mxPointType): mxPointType {
     const translateForRoot = this.getTranslateForRoot(parent);
     const relativeX = absoluteCoordinate.x + translateForRoot.x;
     const relativeY = absoluteCoordinate.y + translateForRoot.y;
-    return new mxPoint(relativeX, relativeY);
+    return new Point(relativeX, relativeY);
   }
 
   // Returns the translation to be applied to a cell whose Geometry x and y values are expressed with absolute coordinates
@@ -43,9 +43,9 @@ export default class CoordinatesTranslator {
   //
   // This implementation is taken from the example described in the documentation of mxgraph#getTranslateForRoot (4.1.1)
   // The translation is generally negative
-  private getTranslateForRoot(cell: mxCell): mxPointType {
+  private getTranslateForRoot(cell: Cell): mxPointType {
     const model = this.graph.getModel();
-    const offset = new mxPoint(0, 0);
+    const offset = new Point(0, 0);
 
     while (cell != null) {
       const geo = model.getGeometry(cell);
@@ -65,7 +65,7 @@ export default class CoordinatesTranslator {
    *
    * The center coordinates are given in the same referential as the `Cell`, so relative to its parent.
    */
-  computeEdgeCenter(edge: mxCell): mxPointType {
+  computeEdgeCenter(edge: Cell): mxPointType {
     const points: mxPointType[] = edge.geometry.points;
 
     const p0 = points[0];
@@ -74,6 +74,6 @@ export default class CoordinatesTranslator {
     // p0 and pe are always set (all tests passed so far)
     const dx = pe.x - p0.x;
     const dy = pe.y - p0.y;
-    return new mxPoint(p0.x + dx / 2, p0.y + dy / 2);
+    return new Point(p0.x + dx / 2, p0.y + dy / 2);
   }
 }

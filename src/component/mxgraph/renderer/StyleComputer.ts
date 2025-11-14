@@ -207,7 +207,7 @@ function computeLabelStyleValues(
       // align settings
       // According to the documentation, "label position" can only take values in left, center, right with default=center
       // However, there is undocumented behavior when the value is not one of these and this behavior is exactly what we want.
-      // See https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/mxGraphView.js#L1183-L1252
+      // See https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/GraphView.js#L1183-L1252
       styleValues.set(mxConstants.STYLE_LABEL_POSITION, 'ignore');
       styleValues.set(mxConstants.STYLE_VERTICAL_LABEL_POSITION, mxConstants.ALIGN_MIDDLE);
     }

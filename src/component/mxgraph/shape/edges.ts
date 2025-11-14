@@ -14,13 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { mxAbstractCanvas2D, mxPoint } from 'mxgraph';
+import type { AbstractCanvas2D, Point } from '@maxgraph/core';
 
-import { mxgraph, mxSvgCanvas2D, mxUtils } from '../initializer';
+import { mxgraph, SvgCanvas2D, mxUtils } from '../initializer';
 import { BpmnStyleIdentifier } from '../style';
 
 export class BpmnConnector extends mxgraph.mxConnector {
-  override paintEdgeShape(c: mxAbstractCanvas2D, pts: mxPoint[]): void {
+  override paintEdgeShape(c: AbstractCanvas2D, pts: Point[]): void {
     // The indirection via functions for markers is needed in
     // order to apply the offsets before painting the line and
     // paint the markers after painting the line.
@@ -46,7 +46,7 @@ export class BpmnConnector extends mxgraph.mxConnector {
 
   // taken from mxPolyline, required as we cannot call mxPolyline method here (parent of the parent)
   // we only support non STYLE_CURVED here (is possible with parent class)
-  private paintEdgeLine(c: mxAbstractCanvas2D, pts: mxPoint[]): void {
+  private paintEdgeLine(c: AbstractCanvas2D, pts: Point[]): void {
     const previous = getPointerEventsValue(c);
     setPointerEventsValue(c, 'stroke');
     this.paintLine(c, pts, this.isRounded);
@@ -54,12 +54,12 @@ export class BpmnConnector extends mxgraph.mxConnector {
   }
 }
 
-function getPointerEventsValue(c: mxAbstractCanvas2D): string {
-  return c instanceof mxSvgCanvas2D ? c.pointerEventsValue : null;
+function getPointerEventsValue(c: AbstractCanvas2D): string {
+  return c instanceof SvgCanvas2D ? c.pointerEventsValue : null;
 }
 
-function setPointerEventsValue(c: mxAbstractCanvas2D, value: string): void {
-  if (c instanceof mxSvgCanvas2D) {
+function setPointerEventsValue(c: AbstractCanvas2D, value: string): void {
+  if (c instanceof SvgCanvas2D) {
     c.pointerEventsValue = value;
   }
 }

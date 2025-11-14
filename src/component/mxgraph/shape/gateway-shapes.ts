@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import type { IconPainter, PaintParameter } from './render';
-import type { mxAbstractCanvas2D } from 'mxgraph';
+import type { AbstractCanvas2D } from '@maxgraph/core';
 
 import { ShapeBpmnEventBasedGatewayKind } from '../../../model/bpmn/internal';
 import { mxgraph, mxUtils } from '../initializer';
@@ -30,7 +30,7 @@ abstract class GatewayShape extends mxgraph.mxRhombus {
 
   protected abstract paintInnerShape(paintParameter: PaintParameter): void;
 
-  override paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+  override paintVertexShape(c: AbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this });
     this.paintOuterShape(paintParameter);
     this.paintInnerShape(paintParameter);

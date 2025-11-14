@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import factory, { type mxGraphExportObject } from 'mxgraph';
+import { CellRenderer, Client, constants, EdgeStyle, InternalEvent, Perimeter, Point, Rectangle, RectangleShape, SvgCanvas2D, styleUtils } from '@maxgraph/core';
 
 /**
  * The `mxgraph` context that allows access to the mxGraph objects.
@@ -31,48 +31,37 @@ import factory, { type mxGraphExportObject } from 'mxgraph';
  *
  * @since 0.30.0
  */
-export const mxgraph = initialize();
+export const mxgraph = {
+  CellRenderer: CellRenderer,
+  mxClient: Client,
+  mxConstants: constants,
+  mxEvent: InternalEvent,
+  mxPerimeter: Perimeter,
+  Point: Point,
+  Rectangle: Rectangle,
+  mxRectangleShape: RectangleShape,
+  SvgCanvas2D: SvgCanvas2D,
+  mxUtils: styleUtils,
+  EdgeStyle,
+};
 
 /** @internal */
-export const mxCellRenderer = mxgraph.mxCellRenderer;
+export const CellRenderer = CellRenderer;
 /** @internal */
-export const mxClient = mxgraph.mxClient;
+export const mxClient = Client;
 /** @internal */
-export const mxConstants = mxgraph.mxConstants;
+export const mxConstants = constants;
 /** @internal */
-export const mxEvent = mxgraph.mxEvent;
+export const mxEvent = InternalEvent;
 /** @internal */
-export const mxPerimeter = mxgraph.mxPerimeter;
+export const mxPerimeter = Perimeter;
 /** @internal */
-export const mxPoint = mxgraph.mxPoint;
+export const Point = Point;
 /** @internal */
-export const mxRectangle = mxgraph.mxRectangle;
+export const Rectangle = Rectangle;
 /** @internal */
-export const mxRectangleShape = mxgraph.mxRectangleShape;
+export const mxRectangleShape = RectangleShape;
 /** @internal */
-export const mxSvgCanvas2D = mxgraph.mxSvgCanvas2D;
+export const SvgCanvas2D = SvgCanvas2D;
 /** @internal */
-export const mxUtils = mxgraph.mxUtils;
-
-/** @internal */
-declare global {
-  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Since we are overriding an existing interface in the global scope, it is not possible to convert it to a type.
-  interface Window {
-    mxForceIncludes: boolean;
-    mxLoadResources: boolean;
-    mxLoadStylesheets: boolean;
-    mxResourceExtension: string;
-  }
-}
-
-function initialize(): mxGraphExportObject {
-  // set options globally, as it is not working when passing options to the factory (https://github.com/jgraph/mxgraph/issues/479)
-  // Required otherwise 'Uncaught ReferenceError: assignment to undeclared variable mx...'
-  window.mxForceIncludes = false;
-  window.mxLoadResources = false;
-  // Required otherwise we got 'Uncaught ReferenceError: assignment to undeclared variable mx...'
-  window.mxLoadStylesheets = false;
-  window.mxResourceExtension = '.txt';
-
-  return factory({});
-}
+export const mxUtils = styleUtils;

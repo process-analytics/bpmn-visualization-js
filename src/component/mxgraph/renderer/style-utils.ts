@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { mxCell } from 'mxgraph';
+import type { Cell } from '@maxgraph/core';
 
 import { ShapeUtil } from '../../../model/bpmn/internal';
 import { isFlowKind } from '../../../model/bpmn/internal/edge/utils';
@@ -27,7 +27,7 @@ import { BpmnStyleIdentifier } from '../style/identifiers';
  * @param isLabel the boolean that indicates if class must be computed for label.
  * @internal
  */
-export function computeAllBpmnClassNamesOfCell(cell: mxCell, isLabel: boolean): string[] {
+export function computeAllBpmnClassNamesOfCell(cell: Cell, isLabel: boolean): string[] {
   return computeAllBpmnClassNames(cell.style, isLabel);
 }
 

@@ -14,13 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { mxCellRenderer, mxCellState, mxGraphView, mxPoint } from 'mxgraph';
+import type { CellRenderer, CellState, Point } from '@maxgraph/core';
+
+import { Graph, GraphView } from '@maxgraph/core';
 
 import { BpmnCellRenderer } from './BpmnCellRenderer';
-import { mxgraph } from './initializer';
 import { IconPainterProvider } from './shape/render';
 
-export class BpmnGraph extends mxgraph.mxGraph {
+export class BpmnGraph extends Graph {
   /**
    * @internal
    */
@@ -35,11 +36,11 @@ export class BpmnGraph extends mxgraph.mxGraph {
   /**
    * @internal
    */
-  override createGraphView(): mxGraphView {
+  override createGraphView(): GraphView {
     return new BpmnGraphView(this);
   }
 
-  override createCellRenderer(): mxCellRenderer {
+  override createCellRenderer(): CellRenderer {
     // in the future, the IconPainter could be configured at library initialization and the provider could be removed
     return new BpmnCellRenderer(IconPainterProvider.get());
   }
@@ -51,7 +52,7 @@ export class BpmnGraph extends mxgraph.mxGraph {
    *
    * @param callbackFunction the update to be made in the transaction.
    *
-   * @experimental subject to change, may move to a subclass of {@link mxGraphModel}
+   * @experimental subject to change, may move to a subclass of {@link GraphDataModel}
    * @alpha
    */
   batchUpdate(callbackFunction: () => void): void {
@@ -64,8 +65,8 @@ export class BpmnGraph extends mxgraph.mxGraph {
   }
 }
 
-class BpmnGraphView extends mxgraph.mxGraphView {
-  override getFloatingTerminalPoint(edge: mxCellState, start: mxCellState, end: mxCellState, source: boolean): mxPoint {
+class BpmnGraphView extends GraphView {
+  override getFloatingTerminalPoint(edge: CellState, start: CellState, end: CellState, source: boolean): Point {
     // some values may be null: the first and the last values are null prior computing floating terminal points
     const edgePoints = edge.absolutePoints.filter(Boolean);
     // when there is no BPMN waypoint, all values are null

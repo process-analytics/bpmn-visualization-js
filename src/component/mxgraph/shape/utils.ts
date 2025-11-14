@@ -14,15 +14,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { mxShape, mxSvgCanvas2D } from 'mxgraph';
+import type { Shape, SvgCanvas2D } from '@maxgraph/core';
 
 import { mxConstants } from '../initializer';
 import { computeAllBpmnClassNamesOfCell } from '../renderer/style-utils';
 import { BpmnStyleIdentifier } from '../style';
 
-export const overrideCreateSvgCanvas = function (shape: mxShape): void {
+export const overrideCreateSvgCanvas = function (shape: Shape): void {
   const originalShapeCreateSvgCanvas = shape.createSvgCanvas;
-  shape.createSvgCanvas = function (): mxSvgCanvas2D {
+  shape.createSvgCanvas = function (): SvgCanvas2D {
     const canvas = originalShapeCreateSvgCanvas.bind(this)();
 
     // getTextCss is only used when creating foreignObject for label, so there is no impact on SVG text that we use for Overlays (Apply to mxgraph@4.2.2)
