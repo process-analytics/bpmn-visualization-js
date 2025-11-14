@@ -21,12 +21,12 @@ import type Shape from '../../model/bpmn/internal/shape/Shape';
 import type ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 import type { RendererOptions } from '../options';
 import type { RenderedModel } from '../registry/bpmn-model-registry';
-import type { mxCell } from 'mxgraph';
+import type { Cell } from '@maxgraph/core';
 
 import { MessageVisibleKind, ShapeUtil } from '../../model/bpmn/internal';
 import { MessageFlow } from '../../model/bpmn/internal/edge/flows';
 
-import { mxPoint } from './initializer';
+import { Point } from '@maxgraph/core';
 import CoordinatesTranslator from './renderer/CoordinatesTranslator';
 import StyleComputer from './renderer/StyleComputer';
 
@@ -46,7 +46,7 @@ export class BpmnRenderer {
 
   private insertShapesAndEdges({ pools, lanes, subprocesses, otherFlowNodes, boundaryEvents, edges }: RenderedModel): void {
     this.graph.batchUpdate(() => {
-      this.graph.getModel().clear(); // ensure to remove manual changes or already loaded graphs
+      this.graph.getDataModel().clear(); // ensure to remove manual changes or already loaded graphs
       this.insertShapes(pools);
       this.insertShapes(lanes);
       this.insertShapes(subprocesses);
@@ -62,7 +62,7 @@ export class BpmnRenderer {
     for (const shape of shapes) this.insertShape(shape);
   }
 
-  private getParent(bpmnElement: ShapeBpmnElement): mxCell {
+  private getParent(bpmnElement: ShapeBpmnElement): Cell {
     const bpmnElementParent = this.getCell(bpmnElement.parentId);
     return bpmnElementParent ?? this.graph.getDefaultParent();
   }
@@ -87,6 +87,7 @@ export class BpmnRenderer {
       const target = this.getCell(bpmnElement.targetReferenceId);
       const labelBounds = internalEdge.label?.bounds;
       const style = this.styleComputer.computeStyle(internalEdge, labelBounds);
+      // @ts-expect-error - TODO maxgraph: style is string but maxGraph expects CellStyle object
       const edge = this.graph.insertEdge(parent, bpmnElement.id, bpmnElement.name, source, target, style);
       this.insertWaypoints(internalEdge.waypoints, edge);
 
@@ -97,43 +98,45 @@ export class BpmnRenderer {
         const edgeCenterCoordinate = this.coordinatesTranslator.computeEdgeCenter(edge);
         edge.geometry.relative = false;
 
-        const labelBoundsRelativeCoordinateFromParent = this.coordinatesTranslator.computeRelativeCoordinates(edge.parent, new mxPoint(labelBounds.x, labelBounds.y));
+        const labelBoundsRelativeCoordinateFromParent = this.coordinatesTranslator.computeRelativeCoordinates(edge.parent, new Point(labelBounds.x, labelBounds.y));
         const relativeLabelX = labelBoundsRelativeCoordinateFromParent.x + labelBounds.width / 2 - edgeCenterCoordinate.x;
         const relativeLabelY = labelBoundsRelativeCoordinateFromParent.y - edgeCenterCoordinate.y;
-        edge.geometry.offset = new mxPoint(relativeLabelX, relativeLabelY);
+        edge.geometry.offset = new Point(relativeLabelX, relativeLabelY);
       }
 
       this.insertMessageFlowIconIfNeeded(internalEdge, edge);
     }
   }
 
-  private insertMessageFlowIconIfNeeded(internalEdge: Edge, edge: mxCell): void {
+  private insertMessageFlowIconIfNeeded(internalEdge: Edge, edge: Cell): void {
     if (internalEdge.bpmnElement instanceof MessageFlow && internalEdge.messageVisibleKind !== MessageVisibleKind.NONE) {
+      // @ts-expect-error - TODO maxgraph: style is string but maxGraph expects CellStyle object
       const cell = this.graph.insertVertex(edge, messageFlowIconId(edge.id), undefined, 0, 0, 20, 14, this.styleComputer.computeMessageFlowIconStyle(internalEdge));
       cell.geometry.relative = true;
-      cell.geometry.offset = new mxPoint(-10, -7);
+      cell.geometry.offset = new Point(-10, -7);
     }
   }
 
-  private insertWaypoints(waypoints: Waypoint[], edge: mxCell): void {
+  private insertWaypoints(waypoints: Waypoint[], edge: Cell): void {
     if (waypoints) {
-      edge.geometry.points = waypoints.map(waypoint => this.coordinatesTranslator.computeRelativeCoordinates(edge.parent, new mxPoint(waypoint.x, waypoint.y)));
+      edge.geometry.points = waypoints.map(waypoint => this.coordinatesTranslator.computeRelativeCoordinates(edge.parent, new Point(waypoint.x, waypoint.y)));
     }
   }
 
-  private getCell(id: string): mxCell {
-    return this.graph.getModel().getCell(id);
+  private getCell(id: string): Cell {
+    return this.graph.getDataModel().getCell(id);
   }
 
-  private insertVertex(parent: mxCell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: string): mxCell {
-    const vertexCoordinates = this.coordinatesTranslator.computeRelativeCoordinates(parent, new mxPoint(bounds.x, bounds.y));
+  private insertVertex(parent: Cell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: string): Cell {
+    const vertexCoordinates = this.coordinatesTranslator.computeRelativeCoordinates(parent, new Point(bounds.x, bounds.y));
+    // @ts-expect-error - TODO maxgraph: style is string but maxGraph expects CellStyle object
     const cell = this.graph.insertVertex(parent, id, value, vertexCoordinates.x, vertexCoordinates.y, bounds.width, bounds.height, style);
 
     if (labelBounds) {
       // label coordinates are relative in the cell referential coordinates
       const relativeLabelX = labelBounds.x - bounds.x;
       const relativeLabelY = labelBounds.y - bounds.y;
-      cell.geometry.offset = new mxPoint(relativeLabelX, relativeLabelY);
+      cell.geometry.offset = new Point(relativeLabelX, relativeLabelY);
     }
     return cell;
   }
