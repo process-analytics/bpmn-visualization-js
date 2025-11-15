@@ -18,6 +18,7 @@ import type { FitType } from '@lib/component/options';
 
 import {
   type GlobalOptionsWithoutContainer,
+  initializeBpmnVisualization,
   initializeBpmnVisualizationWithContainerId,
   initializeBpmnVisualizationWithHtmlElement,
 } from './helpers/bpmn-visualization-initialization';
@@ -91,6 +92,33 @@ describe('BpmnVisualization API', () => {
     });
     it('resetStyle', () => {
       bpmnElementsRegistry.resetStyle('fake_id');
+    });
+  });
+
+  describe('Dispose', () => {
+    it('Dispose clean the bpmn container in DOM', () => {
+      const bpmnContainerId = 'bpmn-container-to-dispose';
+      const bv = initializeBpmnVisualization(bpmnContainerId);
+      const bpmnContainer = document.querySelector(`#${bpmnContainerId}`);
+      expect(bv.graph.container).toBe(bpmnContainer);
+      expect(bv.graph.container.children).not.toHaveLength(0); // fill by mxGraph
+
+      bv.dispose();
+
+      expect(bv.graph.container).toBeNull();
+      expect(bpmnContainer.innerHTML).toBeEmpty(); // cleaned by mxGraph
+    });
+
+    it('Dispose twice does not throw error', () => {
+      const bv = initializeBpmnVisualization();
+      bv.dispose();
+      bv.dispose();
+    });
+
+    it('Load throws error if already disposed', () => {
+      const bv = initializeBpmnVisualization();
+      bv.dispose();
+      expect(() => bv.load(readFileSync('../fixtures/bpmn/simple-start-task-end.bpmn'))).toThrow('Cannot load BPMN diagram: the BpmnVisualization instance has been disposed');
     });
   });
 });

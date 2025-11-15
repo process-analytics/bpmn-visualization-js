@@ -18,6 +18,7 @@ import type { BpmnGraph } from './mxgraph/BpmnGraph';
 import type { Navigation } from './navigation';
 import type { GlobalOptions, LoadOptions, ParserOptions, RendererOptions } from './options';
 import type { BpmnElementsRegistry } from './registry';
+import type { Disposable } from './types';
 
 import { htmlElement } from './helpers/dom-utils';
 import { newBpmnRenderer } from './mxgraph/BpmnRenderer';
@@ -36,7 +37,7 @@ import { BpmnModelRegistry } from './registry/bpmn-model-registry';
  *
  * @category Initialization & Configuration
  */
-export class BpmnVisualization {
+export class BpmnVisualization implements Disposable {
   /**
    * Direct access to the `Graph` instance that powers `bpmn-visualization`.
    * It is for **advanced users**, so please use the lib API first and access to the `Graph` instance only when there is no alternative.
@@ -72,6 +73,8 @@ export class BpmnVisualization {
 
   private readonly rendererOptions: RendererOptions;
 
+  private disposed = false;
+
   constructor(options: GlobalOptions) {
     this.rendererOptions = options?.renderer;
     // graph configuration
@@ -91,9 +94,29 @@ export class BpmnVisualization {
    * @throws `Error` when loading fails. This is generally due to a parsing error caused by a malformed BPMN content
    */
   load(xml: string, options?: LoadOptions): void {
+    if (this.disposed) {
+      throw new Error('Cannot load BPMN diagram: the BpmnVisualization instance has been disposed');
+    }
     const bpmnModel = newBpmnParser(this.parserOptions).parse(xml);
     const renderedModel = this.bpmnModelRegistry.load(bpmnModel, options?.modelFilter);
     newBpmnRenderer(this.graph, this.rendererOptions).render(renderedModel);
     this.navigation.fit(options?.fit);
+  }
+
+  /**
+   * Dispose the BpmnVisualization instance and release all its resources.
+   *
+   * This is particularly useful when you want to remove the BPMN diagram from the page and free the memory or,
+   * to clean up or unmount a component that uses a BpmnVisualization instance.
+   *
+   * @since 0.48.0
+   */
+  dispose(): void {
+    if (this.disposed) {
+      return;
+    }
+    (this.navigation as unknown as Disposable).dispose();
+    this.disposed = true;
+    this.graph.destroy();
   }
 }
