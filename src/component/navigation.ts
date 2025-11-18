@@ -16,6 +16,7 @@ limitations under the License.
 
 import type { BpmnGraph } from './mxgraph/BpmnGraph';
 import type { FitOptions, NavigationConfiguration, ZoomConfiguration, ZoomType } from './options';
+import type { Disposable } from './types';
 import type { mxMouseEvent } from 'mxgraph';
 
 import { debounce, throttle } from 'es-toolkit';
@@ -49,7 +50,7 @@ export interface Navigation {
  * @internal
  * @since 0.47.0
  */
-export class NavigationImpl implements Navigation {
+export class NavigationImpl implements Disposable, Navigation {
   constructor(
     private readonly graph: BpmnGraph,
     private readonly zoomSupport: ZoomSupport,
@@ -61,6 +62,11 @@ export class NavigationImpl implements Navigation {
 
   zoom(type: ZoomType): void {
     type == 'in' ? this.zoomSupport.zoomIn() : this.zoomSupport.zoomOut();
+  }
+
+  dispose(): void {
+    this.zoomSupport.dispose();
+    this.graph.panningHandler.destroy();
   }
 
   configure(options?: NavigationConfiguration): void {
@@ -107,12 +113,15 @@ export function createNewNavigation(graph: BpmnGraph, options?: NavigationConfig
 const zoomFactorIn = 1.25;
 const zoomFactorOut = 1 / zoomFactorIn;
 
+type MouseWheelListener = (event: Event, up: boolean) => void;
+
 /**
  * Call Graph methods and zoom with mouse.
  * @internal
  */
-class ZoomSupport {
+class ZoomSupport implements Disposable {
   private currentZoomLevel = 1;
+  private mouseWheelListeners: MouseWheelListener[] = [];
 
   constructor(private readonly graph: BpmnGraph) {
     this.graph.zoomFactor = zoomFactorIn;
@@ -189,13 +198,24 @@ class ZoomSupport {
     }
   }
 
-  /**
-   * @internal
-   */
   registerMouseWheelZoomListeners(config: ZoomConfiguration): void {
     config = ensureValidZoomConfiguration(config);
-    mxEvent.addMouseWheelListener(debounce(this.createMouseWheelZoomListener(true), config.debounceDelay), this.graph.container);
-    mxEvent.addMouseWheelListener(throttle(this.createMouseWheelZoomListener(false), config.throttleDelay), this.graph.container);
+    this.addMouseWheelListener(debounce(this.createMouseWheelZoomListener(true), config.debounceDelay));
+    this.addMouseWheelListener(throttle(this.createMouseWheelZoomListener(false), config.throttleDelay));
+  }
+
+  private addMouseWheelListener(listener: MouseWheelListener): void {
+    mxEvent.addMouseWheelListener(listener, this.graph.container);
+    this.mouseWheelListeners.push(listener);
+  }
+
+  dispose(): void {
+    if (this.graph.container) {
+      for (const listener of this.mouseWheelListeners) {
+        mxEvent.removeListener(this.graph.container, 'wheel', listener);
+      }
+    }
+    this.mouseWheelListeners = [];
   }
 
   private createMouseWheelZoomListener(performScaling: boolean) {
