@@ -16,12 +16,12 @@ limitations under the License.
 
 import type { StyleUpdate } from '../../registry';
 import type { BpmnGraph } from '../BpmnGraph';
-import type { mxCell, mxGraphModel } from 'mxgraph';
+import type { Cell, GraphDataModel } from '@maxgraph/core';
 
 import { ensureIsArray } from '../../helpers/array-utils';
 import { ensureOpacityValue } from '../../helpers/validators';
 import { messageFlowIconId } from '../BpmnRenderer';
-import { mxConstants } from '../initializer';
+import { constants } from '@maxgraph/core';
 
 import { getStyleValue, isShapeStyleUpdate, setStyle, updateFill, updateFont, updateStroke } from './utils';
 
@@ -69,7 +69,7 @@ export class StyleUpdater {
         this.styleManager.ensureStyleIsStored(cell);
 
         let cellStyle = cell.getStyle();
-        cellStyle = setStyle(cellStyle, mxConstants.STYLE_OPACITY, styleUpdate.opacity, ensureOpacityValue);
+        cellStyle = setStyle(cellStyle, constants.STYLE_OPACITY, styleUpdate.opacity, ensureOpacityValue);
         cellStyle = updateStroke(cellStyle, styleUpdate.stroke);
         cellStyle = updateFont(cellStyle, styleUpdate.font);
 
@@ -99,7 +99,7 @@ const cssClassesStyleIdentifier = BpmnStyleIdentifier.EXTRA_CSS_CLASSES;
 class StyleManager {
   private readonly stylesCache = new Map<string, string>();
 
-  constructor(private readonly model: mxGraphModel) {}
+  constructor(private readonly model: GraphDataModel) {}
 
   clear(): void {
     this.stylesCache.clear();
@@ -132,7 +132,7 @@ class StyleManager {
     this.stylesCache.delete(cellId);
   }
 
-  ensureStyleIsStored(cell: mxCell): void {
+  ensureStyleIsStored(cell: Cell): void {
     const cellId = cell.getId();
     if (!this.stylesCache.has(cellId)) {
       this.stylesCache.set(cellId, cell.getStyle());

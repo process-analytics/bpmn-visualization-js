@@ -14,15 +14,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { mxShape, mxSvgCanvas2D } from 'mxgraph';
+import type { Shape, SvgCanvas2D } from '@maxgraph/core';
 
-import { mxConstants } from '../initializer';
+import { constants } from '@maxgraph/core';
 import { computeAllBpmnClassNamesOfCell } from '../renderer/style-utils';
 import { BpmnStyleIdentifier } from '../style';
 
-export const overrideCreateSvgCanvas = function (shape: mxShape): void {
+export const overrideCreateSvgCanvas = function (shape: Shape): void {
   const originalShapeCreateSvgCanvas = shape.createSvgCanvas;
-  shape.createSvgCanvas = function (): mxSvgCanvas2D {
+  shape.createSvgCanvas = function (): SvgCanvas2D {
     const canvas = originalShapeCreateSvgCanvas.bind(this)();
 
     // getTextCss is only used when creating foreignObject for label, so there is no impact on SVG text that we use for Overlays (Apply to mxgraph@4.2.2)
@@ -45,7 +45,7 @@ export const overrideCreateSvgCanvas = function (shape: mxShape): void {
       // 'this.state.cell.style' = the style applied to the cell: 1st element: style name = bpmn shape name
       const cell = this.state.cell;
       // dialect = strictHtml is set means that current node holds an HTML label
-      const allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === mxConstants.DIALECT_STRICTHTML);
+      const allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === constants.DIALECT_STRICTHTML);
       const extraCssClasses = this.state.style[BpmnStyleIdentifier.EXTRA_CSS_CLASSES];
       if (typeof extraCssClasses == 'string') {
         allBpmnClassNames.push(...extraCssClasses.split(','));

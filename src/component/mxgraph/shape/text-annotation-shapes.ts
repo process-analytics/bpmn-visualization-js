@@ -14,16 +14,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { mxAbstractCanvas2D } from 'mxgraph';
+import type { AbstractCanvas2D } from '@maxgraph/core';
 
-import { mxRectangleShape } from '../initializer';
+import { RectangleShape } from '@maxgraph/core';
 import { StyleDefault } from '../style';
 
 /**
  * @internal
  */
-export class TextAnnotationShape extends mxRectangleShape {
-  override paintForeground(c: mxAbstractCanvas2D, x: number, y: number, _w: number, h: number): void {
+export class TextAnnotationShape extends RectangleShape {
+  override paintForeground(c: AbstractCanvas2D, x: number, y: number, _w: number, h: number): void {
     // paint sort of left square bracket shape - for text annotation
     c.begin();
     c.moveTo(x + StyleDefault.TEXT_ANNOTATION_BORDER_LENGTH, y);
@@ -33,7 +33,7 @@ export class TextAnnotationShape extends mxRectangleShape {
     c.stroke();
   }
 
-  override paintBackground(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+  override paintBackground(c: AbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     c.save(); // ensure we can later restore the configuration
     c.setStrokeColor('none'); // we have a special stroke shape managed in 'paintForeground'
     super.paintBackground(c, x, y, w, h);

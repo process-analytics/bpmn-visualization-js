@@ -27,7 +27,7 @@ import type {
   ShapeBpmnSubProcessKind,
   Stroke,
 } from '@lib/bpmn-visualization';
-import type { mxCell, mxGeometry } from 'mxgraph';
+import type { Cell, Geometry } from '@maxgraph/core';
 
 import {
   toBeAssociationFlow,
@@ -139,7 +139,7 @@ expect.extend({
 
 export type ExpectedCellWithGeometry = {
   parentId?: string;
-  geometry: mxGeometry;
+  geometry: Geometry;
 };
 
 export type ExpectedFont = {
@@ -241,20 +241,20 @@ const defaultParent = bpmnVisualization.graph.getDefaultParent();
 
 export const getDefaultParentId = (): string => defaultParent.id;
 
-const expectElementsInModel = (parentId: string, elementsNumber: number, filter: (cell: mxCell) => boolean): void => {
+const expectElementsInModel = (parentId: string, elementsNumber: number, filter: (cell: Cell) => boolean): void => {
   const model = bpmnVisualization.graph.model;
   const descendants = model.filterDescendants(filter, getCell(parentId));
   expect(descendants).toHaveLength(elementsNumber);
 };
 
 export const expectPoolsInModel = (pools: number): void => {
-  expectElementsInModel(undefined, pools, (cell: mxCell): boolean => {
+  expectElementsInModel(undefined, pools, (cell: Cell): boolean => {
     return cell.style?.startsWith(ShapeBpmnElementKind.POOL);
   });
 };
 
 export const expectShapesInModel = (parentId: string, shapesNumber: number): void => {
-  expectElementsInModel(parentId, shapesNumber, (cell: mxCell): boolean => {
+  expectElementsInModel(parentId, shapesNumber, (cell: Cell): boolean => {
     return cell.getId() != parentId && cell.isVertex();
   });
 };
@@ -264,7 +264,7 @@ export const expectTotalShapesInModel = (shapesNumber: number): void => {
 };
 
 export const expectEdgesInModel = (parentId: string, edgesNumber: number): void => {
-  expectElementsInModel(parentId, edgesNumber, (cell: mxCell): boolean => {
+  expectElementsInModel(parentId, edgesNumber, (cell: Cell): boolean => {
     return cell.isEdge();
   });
 };
