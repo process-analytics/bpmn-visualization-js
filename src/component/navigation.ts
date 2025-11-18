@@ -66,6 +66,7 @@ export class NavigationImpl implements Navigation {
 
   dispose(): void {
     this.zoomSupport.dispose();
+    this.graph.panningHandler.destroy();
   }
 
   configure(options?: NavigationConfiguration): void {
