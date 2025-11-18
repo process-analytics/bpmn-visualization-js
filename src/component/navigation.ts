@@ -50,7 +50,7 @@ export interface Navigation {
  * @internal
  * @since 0.47.0
  */
-export class NavigationImpl implements Navigation {
+export class NavigationImpl implements Disposable, Navigation {
   constructor(
     private readonly graph: BpmnGraph,
     private readonly zoomSupport: ZoomSupport,
