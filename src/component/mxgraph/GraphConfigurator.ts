@@ -14,9 +14,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { RendererOptions } from '../options';
+
 import { BpmnGraph } from './BpmnGraph';
 import { registerEdgeMarkers, registerShapes } from './config/register-style-definitions';
 import { StyleConfigurator } from './config/StyleConfigurator';
+import { IconPainter } from './shape/render';
+
+/**
+ * @internal
+ */
+export function createNewBpmnGraph(container: HTMLElement, rendererOptions?: RendererOptions): BpmnGraph {
+  return new GraphConfigurator(new BpmnGraph(container, rendererOptions?.iconPainter ?? new IconPainter())).configure();
+}
 
 /**
  * Configure the {@link BpmnGraph} graph that can be used by the lib
@@ -26,12 +36,8 @@ import { StyleConfigurator } from './config/StyleConfigurator';
  *     <li>markers
  * @internal
  */
-export default class GraphConfigurator {
-  private readonly graph: BpmnGraph;
-
-  constructor(container: HTMLElement) {
-    this.graph = new BpmnGraph(container);
-  }
+export class GraphConfigurator {
+  constructor(private readonly graph: BpmnGraph) {}
 
   configure(): BpmnGraph {
     this.configureGraph();

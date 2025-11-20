@@ -33,6 +33,7 @@ import type {
 import type { mxCell } from 'mxgraph';
 
 import { FlowKind, ShapeBpmnElementKind } from '../../../src/bpmn-visualization';
+import { CustomIconPainter } from '../component/CustomIconPainter';
 import { downloadAsPng, downloadAsSvg } from '../component/download';
 import { DropFileUserInterface } from '../component/DropFileUserInterface';
 import { SvgExporter } from '../component/SvgExporter';
@@ -240,8 +241,8 @@ function getFitOptionsFromParameters(config: BpmnVisualizationDemoConfiguration,
 function getRendererOptionsFromParameters(config: BpmnVisualizationDemoConfiguration, parameters: URLSearchParams): RendererOptions {
   const rendererOptions: RendererOptions = config.globalOptions.renderer ?? {};
 
-  // Mapping between query parameter names and RendererOptions properties
-  const rendererParameterMappings: Record<string, keyof RendererOptions> = {
+  // Mapping between query parameter names and RendererOptions boolean properties
+  const rendererParameterMappings: Record<string, Exclude<keyof RendererOptions, 'iconPainter'>> = {
     'renderer.ignore.bpmn.colors': 'ignoreBpmnColors',
     'renderer.ignore.label.style': 'ignoreBpmnLabelStyles',
     'renderer.ignore.activity.label.bounds': 'ignoreBpmnActivityLabelBounds',
@@ -256,6 +257,12 @@ function getRendererOptionsFromParameters(config: BpmnVisualizationDemoConfigura
       logStartup(`Setting renderer option '${optionKey}':`, optionValue);
       rendererOptions[optionKey] = optionValue;
     }
+  }
+
+  // Special handling for iconPainter as it requires an instance
+  if (parameters.get('renderer.iconPainter.use.custom') === 'true') {
+    rendererOptions.iconPainter = new CustomIconPainter();
+    logStartup(`Setting renderer option 'iconPainter' with a CustomIconPainter instance`);
   }
 
   return rendererOptions;

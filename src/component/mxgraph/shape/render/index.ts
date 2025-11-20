@@ -17,4 +17,4 @@ limitations under the License.
 // export types first, otherwise typedoc doesn't generate the subsequent doc correctly (no category and uses the file header instead of the actual TSDoc)
 export type * from './render-types';
 export { BpmnCanvas, type BpmnCanvasConfiguration } from './BpmnCanvas';
-export { IconPainter, IconPainterProvider, type PaintParameter } from './icon-painter';
+export { IconPainter, type PaintParameter } from './icon-painter';
