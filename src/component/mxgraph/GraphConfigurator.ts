@@ -24,8 +24,8 @@ import { IconPainter } from './shape/render';
 /**
  * @internal
  */
-export function newGraphConfigurator(container: HTMLElement, rendererOptions?: RendererOptions): GraphConfigurator {
-  return new GraphConfigurator(new BpmnGraph(container, rendererOptions?.iconPainter ?? new IconPainter()));
+export function createNewBpmnGraph(container: HTMLElement, rendererOptions?: RendererOptions): BpmnGraph {
+  return new GraphConfigurator(new BpmnGraph(container, rendererOptions?.iconPainter ?? new IconPainter())).configure();
 }
 
 /**
