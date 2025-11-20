@@ -940,22 +940,3 @@ function paintGearInnerCircle(canvas: BpmnCanvas, arcStartX: number, arcStartY: 
   canvas.close();
   canvas.fillAndStroke();
 }
-
-/**
- * Hold the instance of {@link IconPainter} used by the BPMN Theme.
- *
- * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
- *
- * @category BPMN Theme
- * @experimental
- */
-export class IconPainterProvider {
-  private static instance = new IconPainter();
-
-  static get(): IconPainter {
-    return this.instance;
-  }
-  static set(painter: IconPainter): void {
-    this.instance = painter;
-  }
-}

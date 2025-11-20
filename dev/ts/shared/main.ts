@@ -240,8 +240,8 @@ function getFitOptionsFromParameters(config: BpmnVisualizationDemoConfiguration,
 function getRendererOptionsFromParameters(config: BpmnVisualizationDemoConfiguration, parameters: URLSearchParams): RendererOptions {
   const rendererOptions: RendererOptions = config.globalOptions.renderer ?? {};
 
-  // Mapping between query parameter names and RendererOptions properties
-  const rendererParameterMappings: Record<string, keyof RendererOptions> = {
+  // Mapping between query parameter names and RendererOptions boolean properties
+  const rendererParameterMappings: Record<string, Exclude<keyof RendererOptions, 'iconPainter'>> = {
     'renderer.ignore.bpmn.colors': 'ignoreBpmnColors',
     'renderer.ignore.label.style': 'ignoreBpmnLabelStyles',
     'renderer.ignore.activity.label.bounds': 'ignoreBpmnActivityLabelBounds',

@@ -24,6 +24,7 @@ import {
 } from './helpers/bpmn-visualization-initialization';
 import { allTestedFitTypes } from './helpers/fit-utils';
 
+import { IconPainter } from '@lib/component/mxgraph/shape/render';
 import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 import { readFileSync } from '@test/shared/file-helper';
 
@@ -36,6 +37,22 @@ describe('BpmnVisualization initialization', () => {
     ${'navigation with zoom config'}    | ${{ navigation: { enabled: true, zoom: { throttleDelay: 20 } } }}
   `(`Verify correct initialization with '$configName' configuration`, ({ configName, config }: { configName: string; config: GlobalOptionsWithoutContainer }) => {
     initializeBpmnVisualizationWithContainerId(`bpmn-visualization-init-check-with-config-${configName}`, config);
+  });
+});
+
+describe('BpmnVisualization constructor parameters', () => {
+  describe('Custom IconPainter', () => {
+    it('Custom IconPainter is called when rendering userTask', () => {
+      const customIconPainter = new IconPainter();
+      const paintPersonIconSpy = jest.spyOn(customIconPainter, 'paintPersonIcon');
+
+      const bv = initializeBpmnVisualization('bpmn-custom-icon-painter', {
+        renderer: { iconPainter: customIconPainter },
+      });
+      bv.load(readFileSync('../fixtures/bpmn/simple-start-userTask-end.bpmn'));
+
+      expect(paintPersonIconSpy).toHaveBeenCalled();
+    });
   });
 });
 
