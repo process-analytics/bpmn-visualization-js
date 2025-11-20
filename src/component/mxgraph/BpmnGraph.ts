@@ -85,7 +85,7 @@ export class BpmnGraph extends mxgraph.mxGraph {
    * @internal
    */
   override createCellRenderer(): mxCellRenderer {
-    return new BpmnCellRenderer(pendingIconPainter!);
+    return new BpmnCellRenderer(pendingIconPainter);
   }
 
   /**
