@@ -121,7 +121,7 @@
     "@types/minimist": "~1.2.5",
     "@typescript-eslint/eslint-plugin": "~8.47.0",
     "@typescript-eslint/parser": "~8.47.0",
-    "clipboardy": "~4.0.0",
+    "clipboardy": "~5.0.1",
     "cross-env": "~10.1.0",
     "cssnano": "~7.1.2",
     "debug": "~4.4.3",
