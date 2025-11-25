@@ -19,13 +19,14 @@ import type { PaintParameter } from '../../../src/component/mxgraph/shape/render
 import { IconPainter } from '../../../src/component/mxgraph/shape/render';
 
 // Taken from https://github.com/process-analytics/bpmn-visualization-examples/blob/v0.47.0/examples/custom-bpmn-theme/custom-user-task-icon/index.js#L9
+// The only difference is the fill color of the icon, which is not set here, to let the theme define it.
 export class CustomIconPainter extends IconPainter {
   // adapted from https://github.com/primer/octicons/blob/638c6683c96ec4b357576c7897be8f19c933c052/icons/person.svg
   // use mxgraph-svg2shape to generate the code from the svg
   override paintPersonIcon(paintParameter: PaintParameter): void {
     const canvas = this.newBpmnCanvas(paintParameter, { height: 13, width: 12 });
-    // this way of doing subject to change in the future (probably by setting the fillColor in the icon style configuration)
-    paintParameter.canvas.setFillColor('orange');
+    // respect the color in the current theme
+    canvas.setFillColor(paintParameter.iconStyleConfig.strokeColor);
 
     canvas.begin();
     canvas.moveTo(12, 13);
