@@ -21,7 +21,7 @@ jobs:
           - bpmn-visualization-R
     steps:
       # Need to checkout to access to the internal action
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Notify that a new bpmn-visualization version is available
         uses: ./.github/actions/notify-PA-repo-of-new-version
         with:

@@ -15,7 +15,7 @@ jobs:
     env:
       VERSION: ${{ github.event.client_payload.version || inputs.version }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           ref: v${{ env.VERSION }}
       - name: Build Setup

@@ -13,7 +13,7 @@ jobs:
       - name: Set VERSION
         shell: bash
         run: echo "VERSION=${GITHUB_REF#refs/tags/v*}" >> $GITHUB_ENV
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Build Setup
         uses: ./.github/actions/build-setup
         with:
