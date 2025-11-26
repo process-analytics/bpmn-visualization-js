@@ -224,6 +224,7 @@ export type RendererOptions = {
    * ```
    *
    * @since 0.48.0
+   * @default an instance of the default {@link IconPainter} class
    */
   iconPainter?: IconPainter;
   /**
