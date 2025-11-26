@@ -64,10 +64,10 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout with shallow clone
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         if: ${{ !contains(matrix.os.coverage, 'coverage') }}
       - name: Checkout without shallow clone
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         if: ${{ contains(matrix.os.coverage, 'coverage') }}
         with:
           # Disabling shallow clone is recommended for improving relevancy of SonarCloud reporting
