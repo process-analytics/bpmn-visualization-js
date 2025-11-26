@@ -178,6 +178,14 @@ In the HTML page:
 The User documentation (with the feature list & the public API) is available in the [documentation site](https://process-analytics.github.io/bpmn-visualization-js/).
 
 
+### ⚒️ More
+
+💡 Want to know more about `bpmn-visualization` usage and extensibility? Have a look at the
+[__⏩ live examples site__](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html).
+
+For more technical details and how-to, go to the `bpmn-visualization-examples` [repository](https://github.com/process-analytics/bpmn-visualization-examples/).
+
+
 ## 🚀 Repository Demo
 
 This repository includes a **Load and Navigation demo** located in the [dev](./dev) directory, which is also featured on the [example site](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html) and used for PR previews.
@@ -185,14 +193,6 @@ This repository includes a **Load and Navigation demo** located in the [dev](./d
 The demo supports customization through URL query parameters. For instance, you can set a specific theme by passing `style.theme=light-blue`, or enable a custom icon painter with `renderer.iconPainter.use.custom=true`.
 
 For a complete list of configuration options, refer to the [source code](./dev/ts/shared/main.ts).
-
-
-### ⚒️ More
-
-💡 Want to know more about `bpmn-visualization` usage and extensibility? Have a look at the
-[__⏩ live examples site__](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html).
-
-For more technical details and how-to, go to the `bpmn-visualization-examples` [repository](https://github.com/process-analytics/bpmn-visualization-examples/).
 
 
 ## 🔧 Contributing

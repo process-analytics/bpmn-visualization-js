@@ -25,7 +25,7 @@ export class CustomIconPainter extends IconPainter {
   // use mxgraph-svg2shape to generate the code from the svg
   override paintPersonIcon(paintParameter: PaintParameter): void {
     const canvas = this.newBpmnCanvas(paintParameter, { height: 13, width: 12 });
-    // respect the color in the current theme
+    // respect the color of the current theme
     canvas.setFillColor(paintParameter.iconStyleConfig.strokeColor);
 
     canvas.begin();
