@@ -14,6 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { IconPainter } from './mxgraph/shape/render';
+
 /**
  * Options to configure the `bpmn-visualization` initialization.
  * @category Initialization & Configuration
@@ -197,6 +199,34 @@ export type ParserOptions = {
  * @since 0.35.0
  */
 export type RendererOptions = {
+  /**
+   * Custom {@link IconPainter} instance to use for rendering BPMN element icons.
+   * This allows you to customize how icons are rendered on tasks, events, and other BPMN elements.
+   *
+   * If not provided, a default {@link IconPainter} instance will be created automatically.
+   *
+   * @example
+   * ```typescript
+   * import { BpmnVisualization, IconPainter } from 'bpmn-visualization';
+   *
+   * class CustomIconPainter extends IconPainter {
+   *   paintPersonIcon(paintParameter) {
+   *     // Custom rendering logic for user task icon
+   *   }
+   * }
+   *
+   * const bpmnVisualization = new BpmnVisualization({
+   *   container: 'bpmn-container',
+   *   renderer: {
+   *     iconPainter: new CustomIconPainter()
+   *   }
+   * });
+   * ```
+   *
+   * @since 0.48.0
+   * @default an instance of the default {@link IconPainter} class
+   */
+  iconPainter?: IconPainter;
   /**
    * If set to `true`, ignore the label bounds configuration defined in the BPMN diagram for all activities.
    * This forces the use of default label positioning instead of the bounds specified in the BPMN source.

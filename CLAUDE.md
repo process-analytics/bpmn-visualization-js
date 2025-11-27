@@ -53,6 +53,53 @@ npm run lint                   # Auto-fix linting issues
 npm run lint-check             # Check linting without fixing
 ```
 
+### JSDoc Guidelines
+
+When writing or updating code, follow these JSDoc practices:
+
+**Public API Documentation:**
+- **REQUIRED**: All public classes, methods, interfaces, and types must have JSDoc comments
+- **REQUIRED**: All new public API elements must include the `@since` tag with the version number
+  - Infer the next version from `package.json` (current: `0.47.0-post` → next: `0.48.0`)
+  - Always confirm the target version with the user once per session before using it
+- Include description, `@param` for parameters, `@return` for return values
+- Document exceptions with `@throws` when applicable
+- Use `@example` for complex APIs to show usage patterns
+- Mark experimental APIs with `@experimental` tag
+- Mark deprecated APIs with `@deprecated` and provide migration guidance
+
+**Internal Code Documentation:**
+- **OPTIONAL**: Internal/private code may have JSDoc but it's not required
+- Prefer self-documenting code with clear naming over excessive comments
+- Add JSDoc for complex internal logic where the "why" isn't obvious
+- Use inline comments for non-trivial implementation details
+
+**JSDoc Best Practices:**
+- Keep descriptions concise but complete
+- Use TypeScript types; avoid redundant type information in JSDoc (rely on `@param {Type}` when TypeScript inference isn't sufficient)
+- Link to related types/methods using `{@link ClassName}` or `{@link methodName}`
+- Document parameter constraints and valid ranges
+- Specify units for numeric parameters (e.g., "duration in milliseconds")
+
+**Example:**
+```typescript
+/**
+ * Loads and renders a BPMN diagram from XML.
+ *
+ * @param xml The BPMN 2.0 XML content to parse and render
+ * @param options Optional configuration for rendering behavior
+ * @returns The loaded model information
+ * @throws {Error} If the XML is invalid or cannot be parsed
+ * @since 0.48.0
+ * @example
+ * const bpmnVisualization = new BpmnVisualization({ container: 'diagram' });
+ * bpmnVisualization.load('<definitions>...</definitions>');
+ */
+public load(xml: string, options?: LoadOptions): LoadResult {
+  // implementation
+}
+```
+
 ### Documentation
 ```bash
 npm run docs                   # Generate all documentation

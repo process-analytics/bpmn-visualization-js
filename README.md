@@ -49,12 +49,6 @@ Please check the [__⏩ live environment__](https://cdn.statically.io/gh/process
 You will find their basic usage as well as detailed examples showing possible rendering customizations.
 
 
-## 📂 Repository Structure
-
-The [dev](./dev) directory contains the source code for the **Load and Navigation demo** showcased on the [example site](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html). \
-This demo is also used for the PR previews of this repository.
-
-
 ## 🔆 Project Status
 
 `bpmn-visualization` is actively developed and maintained.
@@ -190,6 +184,15 @@ The User documentation (with the feature list & the public API) is available in 
 [__⏩ live examples site__](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html).
 
 For more technical details and how-to, go to the `bpmn-visualization-examples` [repository](https://github.com/process-analytics/bpmn-visualization-examples/).
+
+
+## 🚀 Repository Demo
+
+This repository includes a **Load and Navigation demo** located in the [dev](./dev) directory, which is also featured on the [example site](https://cdn.statically.io/gh/process-analytics/bpmn-visualization-examples/master/examples/index.html) and used for PR previews.
+
+The demo supports customization through URL query parameters. For instance, you can set a specific theme by passing `style.theme=light-blue`, or enable a custom icon painter with `renderer.iconPainter.use.custom=true`.
+
+For a complete list of configuration options, refer to the [source code](./dev/ts/shared/main.ts).
 
 
 ## 🔧 Contributing

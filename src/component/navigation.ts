@@ -218,8 +218,8 @@ class ZoomSupport implements Disposable {
     this.mouseWheelListeners = [];
   }
 
-  private createMouseWheelZoomListener(performScaling: boolean) {
-    return (event: Event, up: boolean) => {
+  private createMouseWheelZoomListener(performScaling: boolean): MouseWheelListener {
+    return (event: Event, up: boolean): void => {
       if (mxEvent.isConsumed(event) || !(event instanceof MouseEvent)) {
         return;
       }

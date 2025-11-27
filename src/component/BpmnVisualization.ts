@@ -22,7 +22,7 @@ import type { Disposable } from './types';
 
 import { htmlElement } from './helpers/dom-utils';
 import { newBpmnRenderer } from './mxgraph/BpmnRenderer';
-import GraphConfigurator from './mxgraph/GraphConfigurator';
+import { createNewBpmnGraph } from './mxgraph/GraphConfigurator';
 import { createNewNavigation } from './navigation';
 import { newBpmnParser } from './parser/BpmnParser';
 import { createNewBpmnElementsRegistry } from './registry/bpmn-elements-registry';
@@ -78,8 +78,7 @@ export class BpmnVisualization implements Disposable {
   constructor(options: GlobalOptions) {
     this.rendererOptions = options?.renderer;
     // graph configuration
-    const configurator = new GraphConfigurator(htmlElement(options?.container));
-    this.graph = configurator.configure();
+    this.graph = createNewBpmnGraph(htmlElement(options?.container), this.rendererOptions);
     // other configurations
     this.navigation = createNewNavigation(this.graph, options?.navigation);
     this.bpmnModelRegistry = new BpmnModelRegistry();
