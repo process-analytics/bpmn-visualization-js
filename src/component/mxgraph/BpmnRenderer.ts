@@ -34,11 +34,18 @@ import StyleComputer from './renderer/StyleComputer';
  * @internal
  */
 export class BpmnRenderer {
+  private readonly ignoreBpmnActivityLabelBounds: boolean;
+  private readonly ignoreBpmnTaskLabelBounds: boolean;
+
   constructor(
     readonly graph: BpmnGraph,
     readonly coordinatesTranslator: CoordinatesTranslator,
     readonly styleComputer: StyleComputer,
-  ) {}
+    rendererOptions: RendererOptions,
+  ) {
+    this.ignoreBpmnActivityLabelBounds = rendererOptions?.ignoreBpmnActivityLabelBounds ?? false;
+    this.ignoreBpmnTaskLabelBounds = rendererOptions?.ignoreBpmnTaskLabelBounds ?? false;
+  }
 
   render(renderedModel: RenderedModel): void {
     this.insertShapesAndEdges(renderedModel);
@@ -71,9 +78,7 @@ export class BpmnRenderer {
     const bpmnElement = shape.bpmnElement;
     const parent = this.getParent(bpmnElement);
     const bounds = shape.bounds;
-    let labelBounds = shape.label?.bounds;
-    // pool/lane label bounds are not managed for now (use hard coded values)
-    labelBounds = ShapeUtil.isPoolOrLane(bpmnElement.kind) ? undefined : labelBounds;
+    const labelBounds = isLabelBoundsIgnored(shape, this.ignoreBpmnActivityLabelBounds, this.ignoreBpmnTaskLabelBounds) ? undefined : shape.label?.bounds;
     const style = this.styleComputer.computeStyle(shape, labelBounds);
 
     this.insertVertex(parent, bpmnElement.id, bpmnElement.name, bounds, labelBounds, style);
@@ -142,8 +147,24 @@ export class BpmnRenderer {
 /**
  * @internal
  */
+export function isLabelBoundsIgnored(shape: Shape, ignoreBpmnActivityLabelBounds: boolean, ignoreBpmnTaskLabelBounds: boolean): boolean {
+  const kind = shape.bpmnElement.kind;
+  if (ShapeUtil.isPoolOrLane(kind)) {
+    return true;
+  }
+
+  if (ignoreBpmnActivityLabelBounds && ShapeUtil.isActivity(kind)) {
+    return true;
+  }
+
+  return ignoreBpmnTaskLabelBounds && ShapeUtil.isTask(kind);
+}
+
+/**
+ * @internal
+ */
 export function newBpmnRenderer(graph: BpmnGraph, options: RendererOptions): BpmnRenderer {
-  return new BpmnRenderer(graph, new CoordinatesTranslator(graph), new StyleComputer(options));
+  return new BpmnRenderer(graph, new CoordinatesTranslator(graph), new StyleComputer(options), options);
 }
 
 /**
