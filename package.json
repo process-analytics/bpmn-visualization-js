@@ -162,7 +162,7 @@
     "rollup-plugin-sizes": "~1.1.0",
     "rollup-plugin-typescript2": "~0.36.0",
     "tailwindcss": "~4.1.1",
-    "ts-jest": "~29.4.5",
+    "ts-jest": "~29.4.6",
     "typedoc": "~0.28.15",
     "typescript": "~5.9.3",
     "vite": "~7.2.4"
