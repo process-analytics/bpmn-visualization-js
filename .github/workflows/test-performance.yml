@@ -49,7 +49,7 @@ jobs:
         run: npm run test:perf
       - name: Upload test results
         if: success()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: perf-test-results-${{matrix.os}}-${{github.sha}}
           path: |
