@@ -288,6 +288,7 @@ describe('Overlay navigation', () => {
     await pageTester.addOverlays('Flow_1', 'start');
     log('Overlays added');
   });
+
   afterEach(() => {
     log("End test: '%s' (test file path: '%s')", expect.getState().currentTestName, expect.getState().testPath);
   });
