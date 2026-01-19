@@ -117,7 +117,7 @@
     "@rollup/plugin-terser": "~0.4.4",
     "@tailwindcss/postcss": "~4.1.18",
     "@types/debug": "~4.1.12",
-    "@types/jest-image-snapshot": "~6.4.0",
+    "@types/jest-image-snapshot": "~6.4.1",
     "@types/minimist": "~1.2.5",
     "@typescript-eslint/eslint-plugin": "~8.52.0",
     "@typescript-eslint/parser": "~8.52.0",
