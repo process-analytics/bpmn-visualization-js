@@ -24,7 +24,7 @@ import ShapeBpmnElement from '@lib/model/bpmn/internal/shape/ShapeBpmnElement';
 
 describe('isLabelBoundsIgnored', () => {
   describe('no specific option', () => {
-    const cases: [ShapeBpmnElementKind, boolean][] = [
+    test.each([
       [ShapeBpmnElementKind.POOL, true],
       [ShapeBpmnElementKind.LANE, true],
       [ShapeBpmnElementKind.TASK_USER, false],
@@ -33,30 +33,26 @@ describe('isLabelBoundsIgnored', () => {
       [ShapeBpmnElementKind.EVENT_END, false],
       [ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, false],
       [ShapeBpmnElementKind.GATEWAY_PARALLEL, false],
-    ];
-
-    test.each(cases)('should ignore %s label bounds?  %s', (kind, expected) => {
+    ])('should ignore %s label bounds?  %s', (kind, expected) => {
       const shape = new Shape('id', new ShapeBpmnElement('id', 'name', kind));
       expect(isLabelBoundsIgnored(shape, false, false)).toBe(expected);
     });
   });
 
   describe('with ignoreBpmnActivityLabelBounds option', () => {
-    const cases: [ShapeBpmnElementKind, boolean][] = [
-      [ShapeBpmnElementKind.POOL, true],
-      [ShapeBpmnElementKind.LANE, true],
-      [ShapeBpmnElementKind.TASK_USER, true],
-      [ShapeBpmnElementKind.TASK_SCRIPT, true],
-      [ShapeBpmnElementKind.CALL_ACTIVITY, true],
-      [ShapeBpmnElementKind.SUB_PROCESS, true],
-      [ShapeBpmnElementKind.EVENT_START, false],
-      [ShapeBpmnElementKind.EVENT_END, false],
-      [ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, false],
-      [ShapeBpmnElementKind.GATEWAY_PARALLEL, false],
-    ];
-
     describe.each([true, false])('with ignoreBpmnTaskLabelBounds option set to %b', (ignoreBpmnTaskLabelBounds: boolean) => {
-      test.each(cases)('should ignore %s label bounds?  %s', (kind, expected) => {
+      test.each([
+        [ShapeBpmnElementKind.POOL, true],
+        [ShapeBpmnElementKind.LANE, true],
+        [ShapeBpmnElementKind.TASK_USER, true],
+        [ShapeBpmnElementKind.TASK_SCRIPT, true],
+        [ShapeBpmnElementKind.CALL_ACTIVITY, true],
+        [ShapeBpmnElementKind.SUB_PROCESS, true],
+        [ShapeBpmnElementKind.EVENT_START, false],
+        [ShapeBpmnElementKind.EVENT_END, false],
+        [ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, false],
+        [ShapeBpmnElementKind.GATEWAY_PARALLEL, false],
+      ])('should ignore %s label bounds?  %s', (kind, expected) => {
         const shape = new Shape('id', new ShapeBpmnElement('id', 'name', kind));
         expect(isLabelBoundsIgnored(shape, true, ignoreBpmnTaskLabelBounds)).toBe(expected);
       });
@@ -64,7 +60,7 @@ describe('isLabelBoundsIgnored', () => {
   });
 
   describe('with ignoreBpmnTaskLabelBounds option', () => {
-    const cases: [ShapeBpmnElementKind, boolean][] = [
+    test.each([
       [ShapeBpmnElementKind.POOL, true],
       [ShapeBpmnElementKind.LANE, true],
       [ShapeBpmnElementKind.TASK_USER, true],
@@ -75,9 +71,7 @@ describe('isLabelBoundsIgnored', () => {
       [ShapeBpmnElementKind.EVENT_END, false],
       [ShapeBpmnElementKind.GATEWAY_EXCLUSIVE, false],
       [ShapeBpmnElementKind.GATEWAY_PARALLEL, false],
-    ];
-
-    test.each(cases)('should ignore %s label bounds?  %s', (kind, expected) => {
+    ])('should ignore %s label bounds?  %s', (kind, expected) => {
       const shape = new Shape('id', new ShapeBpmnElement('id', 'name', kind));
       expect(isLabelBoundsIgnored(shape, false, true)).toBe(expected);
     });
