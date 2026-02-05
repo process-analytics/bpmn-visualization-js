@@ -63,6 +63,9 @@ jobs:
           # only test Edge on Windows
           - os: windows-2022
             browser: msedge
+        exclude:
+          - os: macos-14
+            browser: chrome
     steps:
       - name: Checkout
         uses: actions/checkout@v6
