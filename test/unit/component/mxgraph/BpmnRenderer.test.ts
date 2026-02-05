@@ -40,7 +40,7 @@ describe('isLabelBoundsIgnored', () => {
   });
 
   describe('with ignoreBpmnActivityLabelBounds option', () => {
-    describe.each([true, false])('with ignoreBpmnTaskLabelBounds option set to %b', (ignoreBpmnTaskLabelBounds: boolean) => {
+    describe.each([true, false])('with ignoreBpmnTaskLabelBounds option set to %s', (ignoreBpmnTaskLabelBounds: boolean) => {
       test.each([
         [ShapeBpmnElementKind.POOL, true],
         [ShapeBpmnElementKind.LANE, true],
