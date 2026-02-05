@@ -59,7 +59,7 @@ jobs:
       - name: Build docs
         run: npm run docs
       - name: Upload
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: documentation-${{github.sha}}
           path: build/docs
@@ -72,7 +72,7 @@ jobs:
       contents: write # Push to gh-pages
     steps:
       - name: Download
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: documentation-${{github.sha}}
       - name: Push to gh-pages

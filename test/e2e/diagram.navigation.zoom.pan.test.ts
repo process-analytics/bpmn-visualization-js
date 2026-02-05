@@ -72,6 +72,7 @@ describe('diagram navigation - zoom and pan with mouse', () => {
     await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName);
     containerCenter = await pageTester.getContainerCenter();
   });
+
   afterEach(() => {
     log("End test: '%s' (test file path: '%s')", expect.getState().currentTestName, expect.getState().testPath);
   });
@@ -96,6 +97,7 @@ describe('diagram navigation - zoom and pan with mouse', () => {
     beforeEach(() => {
       log("Start test: '%s' (test file path: '%s')", expect.getState().currentTestName, expect.getState().testPath);
     });
+
     afterEach(() => {
       log("End test: '%s' (test file path: '%s')", expect.getState().currentTestName, expect.getState().testPath);
     });

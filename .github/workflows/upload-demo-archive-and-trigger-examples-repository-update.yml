@@ -25,7 +25,7 @@ jobs:
       - name: Set ARTIFACT_NAME
         run: echo "ARTIFACT_NAME=demo-${{github.sha}}" >> $GITHUB_ENV
       - name: Upload
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ env.ARTIFACT_NAME }}
           path: build/demo/dev/public
