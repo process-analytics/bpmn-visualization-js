@@ -149,16 +149,11 @@ export class BpmnRenderer {
  */
 export function isLabelBoundsIgnored(shape: Shape, ignoreBpmnActivityLabelBounds: boolean, ignoreBpmnTaskLabelBounds: boolean): boolean {
   const kind = shape.bpmnElement.kind;
-  if (ShapeUtil.isPoolOrLane(kind)) {
-    // pool/lane label bounds are not managed for now (use hard coded values)
-    return true;
-  }
-
-  if (ignoreBpmnActivityLabelBounds && ShapeUtil.isActivity(kind)) {
-    return true;
-  }
-
-  return ignoreBpmnTaskLabelBounds && ShapeUtil.isTask(kind);
+  return (
+    ShapeUtil.isPoolOrLane(kind) || // pool/lane label bounds are not managed for now (use hard coded values)
+    (ignoreBpmnActivityLabelBounds && ShapeUtil.isActivity(kind)) ||
+    (ignoreBpmnTaskLabelBounds && ShapeUtil.isTask(kind))
+  );
 }
 
 /**
