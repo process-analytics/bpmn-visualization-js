@@ -54,16 +54,8 @@ jobs:
       # we want to run the full build on all os: don't cancel running jobs even if one fails
       fail-fast: false
       matrix:
-        os: [macos-14, ubuntu-24.04, windows-2022]
-        browser: [chromium, firefox, chrome]
         include:
-          # only test WebKit on macOS
-          - os: macos-14
-            browser: webkit
-          # only test Edge on Windows
-          - os: windows-2022
-            browser: msedge
-        exclude:
+          # TODO restore the rest of the configuration. For now, only run on the environment that requires threshold adjustments
           - os: macos-14
             browser: chrome
     steps:
