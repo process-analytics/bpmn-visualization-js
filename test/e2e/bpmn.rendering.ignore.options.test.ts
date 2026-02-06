@@ -30,7 +30,14 @@ class ImageSnapshotThresholdsActivityLabelBounds extends MultiBrowserImageSnapsh
   }
 
   protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
-    return new Map<string, ImageSnapshotThresholdConfig>();
+    return new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'activities.with.wrongly.positioned.labels',
+        {
+          linux: 0.23 / 100, // 0.2236111574782207%
+        },
+      ],
+    ]);
   }
 
   protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
@@ -48,7 +55,14 @@ class ImageSnapshotThresholdsActivityLabelBoundsIgnored extends MultiBrowserImag
   }
 
   protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
-    return new Map<string, ImageSnapshotThresholdConfig>();
+    return new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'activities.with.wrongly.positioned.labels',
+        {
+          linux: 0.85 / 100, // 0.8457215876566115%
+        },
+      ],
+    ]);
   }
 
   protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
@@ -66,7 +80,16 @@ class ImageSnapshotThresholdsLabelStyles extends MultiBrowserImageSnapshotThresh
   }
 
   protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
-    return new Map<string, ImageSnapshotThresholdConfig>();
+    return new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'labels.with.font.styles',
+        {
+          // very large number because of firefox rendering differences compared to chrome (wrapping, font)
+          // this test requires to use a dedicated reference screenshot, see https://github.com/process-analytics/bpmn-visualization-js/issues/2838
+          linux: 2.4 / 100, // 2.3980839754224936%%
+        },
+      ],
+    ]);
   }
 
   protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
@@ -84,7 +107,14 @@ class ImageSnapshotThresholdsLabelStylesIgnored extends MultiBrowserImageSnapsho
   }
 
   protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
-    return new Map<string, ImageSnapshotThresholdConfig>();
+    return new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'labels.with.font.styles',
+        {
+          linux: 0.06 / 100, // 0.05351232277721607%
+        },
+      ],
+    ]);
   }
 
   protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
