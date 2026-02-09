@@ -59,7 +59,7 @@ class ImageSnapshotThresholdsActivityLabelBounds extends MultiBrowserImageSnapsh
         {
           linux: 0.85 / 100, // 0.8457215876566115%
           macos: 0.64 / 100, // 0.634897664634726%
-          windows: 1.90 / 100, // 1.8900990794732508%
+          windows: 1.9 / 100, // 1.8900990794732508%
         },
       ],
     ]);
@@ -76,7 +76,7 @@ class ImageSnapshotThresholdsActivityLabelBounds extends MultiBrowserImageSnapsh
       [
         'activities.with.wrongly.positioned.labels.ignored',
         {
-          macos: 1.50 / 100, // 1.4951298719464878%
+          macos: 1.5 / 100, // 1.4951298719464878%
         },
       ],
     ]);
@@ -115,8 +115,8 @@ class ImageSnapshotThresholdsLabelStyles extends MultiBrowserImageSnapshotThresh
           // very large number because of firefox rendering differences compared to chrome (font)
           // this test requires to use a dedicated reference screenshot, see https://github.com/process-analytics/bpmn-visualization-js/issues/2838
           linux: 4.53 / 100, // 4.529968414713514%
-          macos: 0.50 / 100, // 0.49100385220669507%
-          windows: 2.10 / 100, // 2.096414153407533%
+          macos: 0.5 / 100, // 0.49100385220669507%
+          windows: 2.1 / 100, // 2.096414153407533%
         },
       ],
       [
@@ -148,13 +148,13 @@ class ImageSnapshotThresholdsLabelStyles extends MultiBrowserImageSnapshotThresh
   }
 }
 
+function getConfigName(bpmnDiagramName: string, ignoredOption: boolean): string {
+  return bpmnDiagramName + '.' + (ignoredOption ? 'ignored' : 'not-ignored');
+}
+
 describe('BPMN rendering - ignore options', () => {
   const diagramSubfolder = 'bpmn-rendering-ignore-options';
   const pageTester = new PageTester({ targetedPage: AvailableTestPages.BPMN_RENDERING, diagramSubfolder }, page);
-
-  function getConfigName(bpmnDiagramName: string, ignoredOption: boolean): string {
-    return bpmnDiagramName + '.' + (ignoredOption ? 'ignored' : 'not-ignored');
-  }
 
   describe('Ignore activity label bounds', () => {
     const bpmnDiagramName = 'activities.with.wrongly.positioned.labels';
