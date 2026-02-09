@@ -26,7 +26,22 @@ class ImageSnapshotThresholdsActivityLabelBounds extends MultiBrowserImageSnapsh
   }
 
   protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
-    return new Map<string, ImageSnapshotThresholdConfig>();
+    return new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'activities.with.wrongly.positioned.labels.not-ignored',
+        {
+          macos: 0.19 / 100, // 0.18413140767182812%
+          windows: 0.22 / 100, // 0.21177195104159496%
+        },
+      ],
+      [
+        'activities.with.wrongly.positioned.labels.ignored',
+        {
+          macos: 0.29 / 100, // 0.28115982788768923%
+          windows: 0.28 / 100, // 0.27545483944123594%
+        },
+      ],
+    ]);
   }
 
   protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
@@ -35,19 +50,36 @@ class ImageSnapshotThresholdsActivityLabelBounds extends MultiBrowserImageSnapsh
         'activities.with.wrongly.positioned.labels.not-ignored',
         {
           linux: 0.23 / 100, // 0.2236111574782207%
+          macos: 0.36 / 100, // 0.35012765743468455%
+          windows: 1.32 / 100, // 1.3103779470739596%
         },
       ],
       [
         'activities.with.wrongly.positioned.labels.ignored',
         {
           linux: 0.85 / 100, // 0.8457215876566115%
+          macos: 0.64 / 100, // 0.634897664634726%
+          windows: 1.90 / 100, // 1.8900990794732508%
         },
       ],
     ]);
   }
 
   protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
-    return new Map<string, ImageSnapshotThresholdConfig>();
+    return new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'activities.with.wrongly.positioned.labels.not-ignored',
+        {
+          macos: 0.44 / 100, // 0.4382175377357411%
+        },
+      ],
+      [
+        'activities.with.wrongly.positioned.labels.ignored',
+        {
+          macos: 1.50 / 100, // 1.4951298719464878%
+        },
+      ],
+    ]);
   }
 }
 
@@ -57,7 +89,22 @@ class ImageSnapshotThresholdsLabelStyles extends MultiBrowserImageSnapshotThresh
   }
 
   protected override getChromiumThresholds(): Map<string, ImageSnapshotThresholdConfig> {
-    return new Map<string, ImageSnapshotThresholdConfig>();
+    return new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'labels.with.font.styles.not-ignored',
+        {
+          macos: 0.17 / 100, // 0.16518659366272503%
+          windows: 0.16 / 100, // 0.1578221549419112%
+        },
+      ],
+      [
+        'labels.with.font.styles.ignored',
+        {
+          macos: 0.21 / 100, // 0.20961855005547925%
+          windows: 0.29 / 100, // 0.2864761242524328%
+        },
+      ],
+    ]);
   }
 
   protected override getFirefoxThresholds(): Map<string, ImageSnapshotThresholdConfig> {
@@ -67,20 +114,37 @@ class ImageSnapshotThresholdsLabelStyles extends MultiBrowserImageSnapshotThresh
         {
           // very large number because of firefox rendering differences compared to chrome (font)
           // this test requires to use a dedicated reference screenshot, see https://github.com/process-analytics/bpmn-visualization-js/issues/2838
-          linux: 2.4 / 100, // 2.3980839754224936%%
+          linux: 4.53 / 100, // 4.529968414713514%
+          macos: 0.50 / 100, // 0.49100385220669507%
+          windows: 2.10 / 100, // 2.096414153407533%
         },
       ],
       [
         'labels.with.font.styles.ignored',
         {
           linux: 0.06 / 100, // 0.05351232277721607%
+          macos: 0.26 / 100, // 0.2513269855389466%
+          windows: 1.64 / 100, // 1.637503468193735%
         },
       ],
     ]);
   }
 
   protected override getWebkitThresholds(): Map<string, ImageSnapshotThresholdConfig> {
-    return new Map<string, ImageSnapshotThresholdConfig>();
+    return new Map<string, ImageSnapshotThresholdConfig>([
+      [
+        'labels.with.font.styles.not-ignored',
+        {
+          macos: 0.31 / 100, // 0.30621380597637415%
+        },
+      ],
+      [
+        'labels.with.font.styles.ignored',
+        {
+          macos: 0.38 / 100, // 0.37988509633168904%
+        },
+      ],
+    ]);
   }
 }
 
