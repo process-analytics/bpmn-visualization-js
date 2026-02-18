@@ -8,6 +8,10 @@
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0ebknow">
       <bpmndi:BPMNShape id="Participant_05dhqe4_di" bpmnElement="Participant_162p67u" isHorizontal="true">
         <dc:Bounds x="160" y="80" width="600" height="120" />
+        <!-- Label bounds are always ignored for pools -->
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="255" y="63" width="56" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Participant_16gpg6s_di" bpmnElement="Participant_16gpg6s" isHorizontal="false">
         <dc:Bounds x="160" y="300" width="600" height="60" />
