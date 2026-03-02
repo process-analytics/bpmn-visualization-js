@@ -17,7 +17,9 @@ limitations under the License.
 module.exports = {
   extends: ['plugin:playwright/recommended'],
   rules: {
-    /* This rule is for playwright-test and we are using jest-playwright */
+    // This rule is for playwright-test and we are using jest-playwright
     'playwright/no-standalone-expect': 'off',
+    // not working as expected when introduced in version 2.9.0 of eslint-plugin-playwright
+    'playwright/no-duplicate-hooks': 'off',
   },
 };
