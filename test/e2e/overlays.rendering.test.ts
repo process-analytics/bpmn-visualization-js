@@ -126,7 +126,7 @@ class OverlaysPageTester extends PageTester {
   }
 
   private async setBpmnElementId(id: string): Promise<void> {
-    await this.page.fill('#bpmn-id-input', id);
+    await this.page.locator('#bpmn-id-input').fill(id);
   }
 }
 
