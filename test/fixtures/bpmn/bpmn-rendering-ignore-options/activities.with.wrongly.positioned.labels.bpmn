@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_wrongly_positioned_labels" targetNamespace="http://example.bpmn.com/schema/bpmn">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:task id="Task_1" name="Task with label too high" />
+    <bpmn:userTask id="UserTask_1" name="User Task partly outside" />
+    <bpmn:serviceTask id="ServiceTask_1" name="Service Task label out of bounds" />
+    <bpmn:callActivity id="CallActivity_1" name="Call Activity top right" calledElement="global_task" />
+    <bpmn:subProcess id="SubProcess_1" name="SubProcess bottom left">
+      <bpmn:task id="InnerTask_1" />
+    </bpmn:subProcess>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="Task_1_di" bpmnElement="Task_1">
+        <dc:Bounds x="160" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="160" y="80" width="100" height="30" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UserTask_1_di" bpmnElement="UserTask_1">
+        <dc:Bounds x="320" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="320" y="65" width="100" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_1_di" bpmnElement="ServiceTask_1">
+        <dc:Bounds x="470" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="510" y="140" width="100" height="50" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="CallActivity_1_di" bpmnElement="CallActivity_1" isExpanded="true">
+        <dc:Bounds x="160" y="220" width="140" height="100" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="220" y="225" width="80" height="25" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SubProcess_1_di" bpmnElement="SubProcess_1" isExpanded="true">
+        <dc:Bounds x="360" y="200" width="250" height="150" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="365" y="320" width="120" height="25" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="InnerTask_1_di" bpmnElement="InnerTask_1">
+        <dc:Bounds x="430" y="250" width="100" height="60" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
