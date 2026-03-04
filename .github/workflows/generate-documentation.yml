@@ -59,7 +59,7 @@ jobs:
       - name: Build docs
         run: npm run docs
       - name: Upload
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: documentation-${{github.sha}}
           path: build/docs
