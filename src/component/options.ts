@@ -235,7 +235,7 @@ export type RendererOptions = {
    * @default false
    * @since 0.48.0
    */
-  ignoreBpmnActivityLabelBounds?: boolean;
+  ignoreActivityLabelBounds?: boolean;
   /**
    * If set to `false`, support the "BPMN in Color" specification with a fallback with bpmn.io colors. For more details about the support, see
    * {@link https://github.com/process-analytics/bpmn-visualization-js/pull/2614}.
@@ -252,16 +252,16 @@ export type RendererOptions = {
    * @default false
    * @since 0.48.0
    */
-  ignoreBpmnLabelStyles?: boolean;
+  ignoreLabelStyles?: boolean;
   /**
    * If set to `true`, ignore the label bounds configuration defined in the BPMN diagram for tasks only.
    * This forces the use of default label positioning for tasks instead of the bounds specified in the BPMN source.
-   * This option is more restrictive than `ignoreBpmnActivityLabelBounds` as it only affects tasks, not sub-processes or call activities.
+   * This option is more restrictive than {@link ignoreActivityLabelBounds} as it only affects tasks, not sub-processes or call activities.
    *
-   * **Note**: When `ignoreBpmnActivityLabelBounds` is `true`, this option is ignored as the more general activity option takes precedence.
+   * **Note**: When {@link ignoreActivityLabelBounds} is `true`, this option is ignored as the more general activity option takes precedence.
    *
    * @default false
    * @since 0.48.0
    */
-  ignoreBpmnTaskLabelBounds?: boolean;
+  ignoreTaskLabelBounds?: boolean;
 };
