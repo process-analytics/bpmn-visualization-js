@@ -143,8 +143,8 @@ export interface PageOptions {
   bpmnElementIdToCollapse?: string;
   poolIdsToFilter?: string | string[];
   rendererIgnoreBpmnColors?: boolean;
-  rendererIgnoreBpmnLabelStyles?: boolean;
-  rendererIgnoreBpmnActivityLabelBounds?: boolean;
+  rendererIgnoreLabelStyles?: boolean;
+  rendererIgnoreActivityLabelBounds?: boolean;
 }
 
 export interface Point {
@@ -258,9 +258,8 @@ export class PageTester {
     otherPageOptions?.poolIdsToFilter && (url += `&bpmn.filter.pool.ids=${otherPageOptions.poolIdsToFilter}`);
     // renderer options
     otherPageOptions?.rendererIgnoreBpmnColors !== undefined && (url += `&renderer.ignore.bpmn.colors=${otherPageOptions.rendererIgnoreBpmnColors}`);
-    otherPageOptions?.rendererIgnoreBpmnLabelStyles !== undefined && (url += `&renderer.ignore.label.style=${otherPageOptions.rendererIgnoreBpmnLabelStyles}`);
-    otherPageOptions?.rendererIgnoreBpmnActivityLabelBounds !== undefined &&
-      (url += `&renderer.ignore.activity.label.bounds=${otherPageOptions.rendererIgnoreBpmnActivityLabelBounds}`);
+    otherPageOptions?.rendererIgnoreLabelStyles !== undefined && (url += `&renderer.ignore.label.style=${otherPageOptions.rendererIgnoreLabelStyles}`);
+    otherPageOptions?.rendererIgnoreActivityLabelBounds !== undefined && (url += `&renderer.ignore.activity.label.bounds=${otherPageOptions.rendererIgnoreActivityLabelBounds}`);
 
     return url;
   }

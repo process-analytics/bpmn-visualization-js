@@ -480,9 +480,9 @@ describe('Style Computer', () => {
   });
 
   describe('compute style - ignore BPMN label styles', () => {
-    describe.each([[undefined], [false], [true]])(`Ignore BPMN label styles (renderer option): %s`, (ignoreBpmnLabelStyles: boolean) => {
-      const styleComputer = new StyleComputer(ignoreBpmnLabelStyles === undefined ? {} : { ignoreBpmnLabelStyles });
-      const expectFontStyles = !(ignoreBpmnLabelStyles ?? false);
+    describe.each([[undefined], [false], [true]])(`Ignore BPMN label styles (renderer option): %s`, (ignoreLabelStyles: boolean) => {
+      const styleComputer = new StyleComputer(ignoreLabelStyles === undefined ? {} : { ignoreLabelStyles });
+      const expectFontStyles = !(ignoreLabelStyles ?? false);
 
       function computeStyleWithIgnoreLabelStyles(element: Shape | Edge): string {
         return styleComputer.computeStyle(element, element.label?.bounds);

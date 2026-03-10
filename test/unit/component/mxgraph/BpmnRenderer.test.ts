@@ -39,8 +39,8 @@ describe('isLabelBoundsIgnored', () => {
     });
   });
 
-  describe('with ignoreBpmnActivityLabelBounds option', () => {
-    describe.each([true, false])('with ignoreBpmnTaskLabelBounds option set to %s', (ignoreBpmnTaskLabelBounds: boolean) => {
+  describe('with ignoreActivityLabelBounds option', () => {
+    describe.each([true, false])('with ignoreTaskLabelBounds option set to %s', (ignoreTaskLabelBounds: boolean) => {
       test.each([
         [ShapeBpmnElementKind.POOL, true],
         [ShapeBpmnElementKind.LANE, true],
@@ -54,12 +54,12 @@ describe('isLabelBoundsIgnored', () => {
         [ShapeBpmnElementKind.GATEWAY_PARALLEL, false],
       ])('should ignore %s label bounds?  %s', (kind, expected) => {
         const shape = new Shape('id', new ShapeBpmnElement('id', 'name', kind));
-        expect(isLabelBoundsIgnored(shape, true, ignoreBpmnTaskLabelBounds)).toBe(expected);
+        expect(isLabelBoundsIgnored(shape, true, ignoreTaskLabelBounds)).toBe(expected);
       });
     });
   });
 
-  describe('with ignoreBpmnTaskLabelBounds option', () => {
+  describe('with ignoreTaskLabelBounds option', () => {
     test.each([
       [ShapeBpmnElementKind.POOL, true],
       [ShapeBpmnElementKind.LANE, true],

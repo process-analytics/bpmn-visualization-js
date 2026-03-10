@@ -34,8 +34,8 @@ import StyleComputer from './renderer/StyleComputer';
  * @internal
  */
 export class BpmnRenderer {
-  private readonly ignoreBpmnActivityLabelBounds: boolean;
-  private readonly ignoreBpmnTaskLabelBounds: boolean;
+  private readonly ignoreActivityLabelBounds: boolean;
+  private readonly ignoreTaskLabelBounds: boolean;
 
   constructor(
     readonly graph: BpmnGraph,
@@ -43,8 +43,8 @@ export class BpmnRenderer {
     readonly styleComputer: StyleComputer,
     rendererOptions: RendererOptions,
   ) {
-    this.ignoreBpmnActivityLabelBounds = rendererOptions?.ignoreBpmnActivityLabelBounds ?? false;
-    this.ignoreBpmnTaskLabelBounds = rendererOptions?.ignoreBpmnTaskLabelBounds ?? false;
+    this.ignoreActivityLabelBounds = rendererOptions?.ignoreActivityLabelBounds ?? false;
+    this.ignoreTaskLabelBounds = rendererOptions?.ignoreTaskLabelBounds ?? false;
   }
 
   render(renderedModel: RenderedModel): void {
@@ -78,7 +78,7 @@ export class BpmnRenderer {
     const bpmnElement = shape.bpmnElement;
     const parent = this.getParent(bpmnElement);
     const bounds = shape.bounds;
-    const labelBounds = isLabelBoundsIgnored(shape, this.ignoreBpmnActivityLabelBounds, this.ignoreBpmnTaskLabelBounds) ? undefined : shape.label?.bounds;
+    const labelBounds = isLabelBoundsIgnored(shape, this.ignoreActivityLabelBounds, this.ignoreTaskLabelBounds) ? undefined : shape.label?.bounds;
     const style = this.styleComputer.computeStyle(shape, labelBounds);
 
     this.insertVertex(parent, bpmnElement.id, bpmnElement.name, bounds, labelBounds, style);
@@ -147,12 +147,12 @@ export class BpmnRenderer {
 /**
  * @internal
  */
-export function isLabelBoundsIgnored(shape: Shape, ignoreBpmnActivityLabelBounds: boolean, ignoreBpmnTaskLabelBounds: boolean): boolean {
+export function isLabelBoundsIgnored(shape: Shape, ignoreActivityLabelBounds: boolean, ignoreTaskLabelBounds: boolean): boolean {
   const kind = shape.bpmnElement.kind;
   return (
     ShapeUtil.isPoolOrLane(kind) || // pool/lane label bounds are not managed for now (use hard coded values)
-    (ignoreBpmnActivityLabelBounds && ShapeUtil.isActivity(kind)) ||
-    (ignoreBpmnTaskLabelBounds && ShapeUtil.isTask(kind))
+    (ignoreActivityLabelBounds && ShapeUtil.isActivity(kind)) ||
+    (ignoreTaskLabelBounds && ShapeUtil.isTask(kind))
   );
 }
 
