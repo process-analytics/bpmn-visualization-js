@@ -33,6 +33,7 @@ import factory, { type mxGraphExportObject } from 'mxgraph';
  */
 export const mxgraph = initialize();
 
+/** @internal */
 export const {
   mxCellOverlay,
   mxCellRenderer,
