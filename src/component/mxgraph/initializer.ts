@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import factory, { type mxGraphExportObject } from 'mxgraph';
+import factory, { type mxGraph as mxGraphClass, type mxGraphExportObject } from 'mxgraph';
 
 /**
  * The `mxgraph` context that allows access to the mxGraph objects.
@@ -33,26 +33,33 @@ import factory, { type mxGraphExportObject } from 'mxgraph';
  */
 export const mxgraph = initialize();
 
-/** @internal */
-export const mxCellRenderer = mxgraph.mxCellRenderer;
-/** @internal */
-export const mxClient = mxgraph.mxClient;
-/** @internal */
-export const mxConstants = mxgraph.mxConstants;
-/** @internal */
-export const mxEvent = mxgraph.mxEvent;
-/** @internal */
-export const mxPerimeter = mxgraph.mxPerimeter;
-/** @internal */
-export const mxPoint = mxgraph.mxPoint;
-/** @internal */
-export const mxRectangle = mxgraph.mxRectangle;
-/** @internal */
-export const mxRectangleShape = mxgraph.mxRectangleShape;
-/** @internal */
-export const mxSvgCanvas2D = mxgraph.mxSvgCanvas2D;
-/** @internal */
-export const mxUtils = mxgraph.mxUtils;
+// Destructured exports for convenient access to mxGraph objects.
+// mxGraph is exported separately to preserve their constructor types in the api-extractor generated .d.ts (destructuring loses `typeof` during rollup).
+export const {
+  mxCellOverlay,
+  mxCellRenderer,
+  mxClient,
+  mxConnector,
+  mxConstants,
+  mxDictionary,
+  mxEllipse,
+  mxEvent,
+  mxGeometry, // at least used in tests
+  mxGraphView,
+  mxImageExport,
+  mxImageShape,
+  mxMarker,
+  mxPerimeter,
+  mxPoint,
+  mxRectangle,
+  mxRectangleShape,
+  mxRhombus,
+  mxSvgCanvas2D,
+  mxText,
+  mxUtils,
+} = mxgraph;
+
+export const mxGraph: typeof mxGraphClass = mxgraph.mxGraph;
 
 /** @internal */
 declare global {

@@ -16,10 +16,10 @@ limitations under the License.
 
 import type { mxAbstractCanvas2D, mxPoint } from 'mxgraph';
 
-import { mxgraph, mxSvgCanvas2D, mxUtils } from '../initializer';
+import { mxConnector, mxSvgCanvas2D, mxUtils } from '../initializer';
 import { BpmnStyleIdentifier } from '../style';
 
-export class BpmnConnector extends mxgraph.mxConnector {
+export class BpmnConnector extends mxConnector {
   override paintEdgeShape(c: mxAbstractCanvas2D, pts: mxPoint[]): void {
     // The indirection via functions for markers is needed in
     // order to apply the offsets before painting the line and
