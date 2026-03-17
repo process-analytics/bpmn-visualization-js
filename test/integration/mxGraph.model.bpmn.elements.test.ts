@@ -36,8 +36,10 @@ import {
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
 } from '@lib/bpmn-visualization';
-import { mxConstants, mxGeometry, mxPoint } from '@lib/component/mxgraph/initializer';
+import { mxConstants, mxgraph, mxPoint } from '@lib/component/mxgraph/initializer';
 import { readFileSync } from '@test/shared/file-helper';
+
+const mxGeometry = mxgraph.mxGeometry;
 
 describe('mxGraph model - BPMN elements', () => {
   describe('BPMN elements should be available in the mxGraph model', () => {

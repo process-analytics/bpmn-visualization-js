@@ -34,30 +34,7 @@ import factory, { type mxGraphExportObject } from 'mxgraph';
 export const mxgraph = initialize();
 
 /** @internal */
-export const {
-  mxCellOverlay,
-  mxCellRenderer,
-  mxClient,
-  mxConnector,
-  mxConstants,
-  mxDictionary,
-  mxEllipse,
-  mxEvent,
-  mxGeometry,
-  mxGraph,
-  mxGraphView,
-  mxImageExport,
-  mxImageShape,
-  mxMarker,
-  mxPerimeter,
-  mxPoint,
-  mxRectangle,
-  mxRectangleShape,
-  mxRhombus,
-  mxSvgCanvas2D,
-  mxText,
-  mxUtils,
-} = mxgraph;
+export const { mxCellRenderer, mxClient, mxConstants, mxEvent, mxPerimeter, mxPoint, mxRectangle, mxRectangleShape, mxSvgCanvas2D, mxUtils } = mxgraph;
 
 /** @internal */
 declare global {

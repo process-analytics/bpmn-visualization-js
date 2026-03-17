@@ -17,7 +17,7 @@ limitations under the License.
 import type { OverlayStyle } from '../../registry';
 import type { mxCellState, mxPoint as mxPointType, mxRectangle as mxRectangleType } from 'mxgraph';
 
-import { mxCellOverlay, mxConstants, mxPoint, mxRectangle } from '../initializer';
+import { mxgraph, mxConstants, mxPoint, mxRectangle } from '../initializer';
 
 export type VerticalAlignType = 'bottom' | 'middle' | 'top';
 export type HorizontalAlignType = 'left' | 'center' | 'right';
@@ -34,7 +34,7 @@ export interface CustomCellOverlayPosition {
 
 export type CustomCellOverlayStyle = Required<OverlayStyle>;
 
-export class CustomCellOverlay extends mxCellOverlay {
+export class CustomCellOverlay extends mxgraph.mxCellOverlay {
   readonly style: CustomCellOverlayStyle;
 
   constructor(

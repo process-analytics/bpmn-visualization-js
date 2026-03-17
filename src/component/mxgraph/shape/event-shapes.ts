@@ -18,7 +18,7 @@ import type { BpmnCanvas, PaintParameter, IconPainter } from './render';
 import type { mxAbstractCanvas2D } from 'mxgraph';
 
 import { ShapeBpmnEventDefinitionKind } from '../../../model/bpmn/internal';
-import { mxEllipse, mxUtils } from '../initializer';
+import { mxgraph, mxUtils } from '../initializer';
 import { BpmnStyleIdentifier, StyleDefault } from '../style';
 
 import { buildPaintParameter } from './render/icon-painter';
@@ -26,7 +26,7 @@ import { buildPaintParameter } from './render/icon-painter';
 /**
  * @internal
  */
-export class EventShape extends mxEllipse {
+export class EventShape extends mxgraph.mxEllipse {
   // The actual value is injected at runtime by BpmnCellRenderer
   protected iconPainter: IconPainter = undefined;
 

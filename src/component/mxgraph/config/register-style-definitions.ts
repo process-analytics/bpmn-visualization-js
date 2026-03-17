@@ -17,7 +17,7 @@ limitations under the License.
 import type { mxAbstractCanvas2D, mxCell, mxPoint, mxShape } from 'mxgraph';
 
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
-import { mxCellRenderer, mxMarker } from '../initializer';
+import { mxCellRenderer, mxgraph } from '../initializer';
 import {
   BusinessRuleTaskShape,
   CallActivityShape,
@@ -102,5 +102,5 @@ const dashMarkerFactory = (
 };
 
 export const registerEdgeMarkers = (): void => {
-  mxMarker.addMarker(MarkerIdentifier.ARROW_DASH, dashMarkerFactory);
+  mxgraph.mxMarker.addMarker(MarkerIdentifier.ARROW_DASH, dashMarkerFactory);
 };

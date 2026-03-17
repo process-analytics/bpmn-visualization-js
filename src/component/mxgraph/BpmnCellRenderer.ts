@@ -15,14 +15,14 @@ limitations under the License.
 */
 
 import type { IconPainter } from './shape/render';
-import type { mxCellState, mxImageShape as mxImageShapeType, mxShape } from 'mxgraph';
+import type { mxCellState, mxImageShape, mxShape } from 'mxgraph';
 
-import { mxCellRenderer, mxDictionary, mxImageShape, mxRectangle } from './initializer';
+import { mxgraph, mxRectangle } from './initializer';
 import { CustomCellOverlay } from './overlay/custom-overlay';
 import { OverlayBadgeShape } from './overlay/shapes';
 import { overrideCreateSvgCanvas } from './shape/utils';
 
-export class BpmnCellRenderer extends mxCellRenderer {
+export class BpmnCellRenderer extends mxgraph.mxCellRenderer {
   constructor(private readonly iconPainter: IconPainter) {
     super();
   }
@@ -33,7 +33,7 @@ export class BpmnCellRenderer extends mxCellRenderer {
     let dict = null;
 
     if (overlays != null) {
-      dict = new mxDictionary<mxShape>();
+      dict = new mxgraph.mxDictionary<mxShape>();
 
       for (const currentOverlay of overlays) {
         const shape = state.overlays == null ? null : state.overlays.remove(currentOverlay);
@@ -48,8 +48,8 @@ export class BpmnCellRenderer extends mxCellRenderer {
         if (currentOverlay instanceof CustomCellOverlay) {
           overlayShape = new OverlayBadgeShape(currentOverlay.label, new mxRectangle(0, 0, 0, 0), currentOverlay.style);
         } else {
-          overlayShape = new mxImageShape(new mxRectangle(0, 0, 0, 0), currentOverlay.image.src);
-          (overlayShape as mxImageShapeType).preserveImageAspect = false;
+          overlayShape = new mxgraph.mxImageShape(new mxRectangle(0, 0, 0, 0), currentOverlay.image.src);
+          (overlayShape as mxImageShape).preserveImageAspect = false;
         }
         // END bpmn-visualization CUSTOMIZATION
 
@@ -57,7 +57,7 @@ export class BpmnCellRenderer extends mxCellRenderer {
         overlayShape.overlay = currentOverlay;
 
         // The 'initializeOverlay' signature forces us to hardly cast the overlayShape
-        this.initializeOverlay(state, overlayShape as mxImageShapeType);
+        this.initializeOverlay(state, overlayShape as mxImageShape);
         this.installCellOverlayListeners(state, currentOverlay, overlayShape);
 
         if (currentOverlay.cursor != null) {
