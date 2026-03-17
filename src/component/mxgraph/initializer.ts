@@ -43,6 +43,7 @@ export const {
   mxDictionary,
   mxEllipse,
   mxEvent,
+  mxGeometry,
   mxGraph,
   mxGraphView,
   mxImageExport,
