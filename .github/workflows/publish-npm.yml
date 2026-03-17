@@ -7,7 +7,7 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     permissions:
-      id-token: write
+      id-token: write # required for OIDC: trusted publisher and "npm provenance"
       contents: write # required to get token for "npm provenance" and to dispatch event
     steps:
       - name: Set VERSION
@@ -18,9 +18,9 @@ jobs:
         uses: ./.github/actions/build-setup
         with:
           registry-url: 'https://registry.npmjs.org'
-      - run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # no token used, use trusted publisher setup instead (https://docs.npmjs.com/trusted-publishers)
+      - name: Publish to NPM
+        run: npm publish --provenance --access public
       - name: Trigger workflows in charge of notifying other repositories
         uses: peter-evans/repository-dispatch@v4
         with:
