@@ -159,16 +159,16 @@ describe('BPMN rendering - ignore options', () => {
   describe('Ignore activity label bounds', () => {
     const bpmnDiagramName = 'activities.with.wrongly.positioned.labels';
 
-    describe.each([false, true])('ignoreBpmnActivityLabelBounds: %s', (ignoreBpmnActivityLabelBounds: boolean) => {
+    describe.each([false, true])('ignoreActivityLabelBounds: %s', (ignoreActivityLabelBounds: boolean) => {
       const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new ImageSnapshotThresholdsActivityLabelBounds(), 'bpmn-rendering-ignore-options');
 
       it(`${bpmnDiagramName}`, async () => {
         await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName, {
-          rendererIgnoreBpmnActivityLabelBounds: ignoreBpmnActivityLabelBounds,
+          rendererIgnoreActivityLabelBounds: ignoreActivityLabelBounds,
         });
 
         const image = await page.screenshot({ fullPage: true });
-        const config = imageSnapshotConfigurator.getConfig(getConfigName(bpmnDiagramName, ignoreBpmnActivityLabelBounds));
+        const config = imageSnapshotConfigurator.getConfig(getConfigName(bpmnDiagramName, ignoreActivityLabelBounds));
         expect(image).toMatchImageSnapshot(config);
       });
     });
@@ -177,16 +177,16 @@ describe('BPMN rendering - ignore options', () => {
   describe('Ignore label styles', () => {
     const bpmnDiagramName = 'labels.with.font.styles';
 
-    describe.each([false, true])('ignoreBpmnLabelStyles: %s', (ignoreBpmnLabelStyles: boolean) => {
+    describe.each([false, true])('ignoreLabelStyles: %s', (ignoreLabelStyles: boolean) => {
       const imageSnapshotConfigurator = new ImageSnapshotConfigurator(new ImageSnapshotThresholdsLabelStyles(), 'bpmn-rendering-ignore-options');
 
       it(`${bpmnDiagramName}`, async () => {
         await pageTester.gotoPageAndLoadBpmnDiagram(bpmnDiagramName, {
-          rendererIgnoreBpmnLabelStyles: ignoreBpmnLabelStyles,
+          rendererIgnoreLabelStyles: ignoreLabelStyles,
         });
 
         const image = await page.screenshot({ fullPage: true });
-        const config = imageSnapshotConfigurator.getConfig(getConfigName(bpmnDiagramName, ignoreBpmnLabelStyles));
+        const config = imageSnapshotConfigurator.getConfig(getConfigName(bpmnDiagramName, ignoreLabelStyles));
         expect(image).toMatchImageSnapshot(config);
       });
     });
