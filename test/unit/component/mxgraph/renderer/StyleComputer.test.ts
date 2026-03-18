@@ -479,8 +479,8 @@ describe('Style Computer', () => {
     );
   });
 
-  describe('compute style - ignore BPMN label styles', () => {
-    describe.each([[undefined], [false], [true]])(`Ignore BPMN label styles (renderer option): %s`, (ignoreLabelStyles: boolean) => {
+  describe('compute style - ignore label styles', () => {
+    describe.each([[undefined], [false], [true]])(`Ignore label styles (renderer option): %s`, (ignoreLabelStyles: boolean) => {
       const styleComputer = new StyleComputer(ignoreLabelStyles === undefined ? {} : { ignoreLabelStyles });
       const expectFontStyles = !(ignoreLabelStyles ?? false);
 
