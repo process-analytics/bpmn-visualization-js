@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import factory, { type mxGraph as mxGraphClass, type mxGraphExportObject } from 'mxgraph';
+import factory, { type mxGraphExportObject } from 'mxgraph';
 
 /**
  * The `mxgraph` context that allows access to the mxGraph objects.
@@ -34,7 +34,7 @@ import factory, { type mxGraph as mxGraphClass, type mxGraphExportObject } from 
 export const mxgraph = initialize();
 
 // Destructured exports for convenient access to mxGraph objects.
-// mxGraph is exported separately to preserve their constructor types in the api-extractor generated .d.ts (destructuring loses `typeof` during rollup).
+// mxGraph is exported separately to preserve its constructor types in the api-extractor generated .d.ts (destructuring loses `typeof` during rollup).
 export const {
   mxCellOverlay,
   mxCellRenderer,
@@ -59,7 +59,8 @@ export const {
   mxUtils,
 } = mxgraph;
 
-export const mxGraph: typeof mxGraphClass = mxgraph.mxGraph;
+// Declare the type, because api-extractor loses the `typeof` during rollup when destructuring (see comment above).
+export const mxGraph: typeof mxgraph.mxGraph = mxgraph.mxGraph;
 
 /** @internal */
 declare global {
