@@ -15,10 +15,10 @@ limitations under the License.
 */
 
 import type { IconPainter } from './shape/render';
-import type { mxCellRenderer, mxCellState, mxGraphView, mxPoint } from 'mxgraph';
+import type { mxCellRenderer, mxCellState, mxGraphView as mxGraphViewType, mxPoint } from 'mxgraph';
 
 import { BpmnCellRenderer } from './BpmnCellRenderer';
-import { mxgraph } from './initializer';
+import { mxGraph, mxGraphView } from './initializer';
 
 /**
  * Temporary storage for iconPainter during BpmnGraph construction.
@@ -49,7 +49,7 @@ import { mxgraph } from './initializer';
  */
 let pendingIconPainter: IconPainter | undefined;
 
-export class BpmnGraph extends mxgraph.mxGraph {
+export class BpmnGraph extends mxGraph {
   /**
    * @internal
    */
@@ -72,7 +72,7 @@ export class BpmnGraph extends mxgraph.mxGraph {
   /**
    * @internal
    */
-  override createGraphView(): mxGraphView {
+  override createGraphView(): mxGraphViewType {
     return new BpmnGraphView(this);
   }
 
@@ -108,7 +108,7 @@ export class BpmnGraph extends mxgraph.mxGraph {
   }
 }
 
-class BpmnGraphView extends mxgraph.mxGraphView {
+class BpmnGraphView extends mxGraphView {
   override getFloatingTerminalPoint(edge: mxCellState, start: mxCellState, end: mxCellState, source: boolean): mxPoint {
     // some values may be null: the first and the last values are null prior computing floating terminal points
     const edgePoints = edge.absolutePoints.filter(Boolean);
