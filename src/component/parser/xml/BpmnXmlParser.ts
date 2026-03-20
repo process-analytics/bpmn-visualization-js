@@ -68,16 +68,17 @@ export default class BpmnXmlParser {
      */
     processEntities: false,
 
-    // See https://github.com/NaturalIntelligence/fast-xml-parser/blob/v4.3.4/docs/v4/2.XMLparseOptions.md#attributevalueprocessor
-    attributeValueProcessor: (name: string, value: string, nodePath: string): unknown => {
-      if (isNumeric(name, nodePath)) {
+    // See https://github.com/NaturalIntelligence/fast-xml-parser/blob/v5.5.7/docs/v4%2C%20v5/2.XMLparseOptions.md#attributevalueprocessor
+    // jPath Parameter: The third parameter is either a string (when jPath: true, default) or a Matcher instance (when jPath: false).
+    attributeValueProcessor: (attributeName: string, attributeValue: string, nodePathOrMatcher: unknown): unknown => {
+      if (typeof nodePathOrMatcher === 'string' && isNumeric(attributeName, nodePathOrMatcher)) {
         // The strnum lib used by fast-xml-parser is not able to parse all numbers
         // The only available options are https://github.com/NaturalIntelligence/fast-xml-parser/blob/v4.3.4/docs/v4/2.XMLparseOptions.md#numberparseoptions
         // This is a fix for https://github.com/process-analytics/bpmn-visualization-js/issues/2857
-        return Number(value);
+        return Number(attributeValue);
       }
 
-      return this.processAttribute(value);
+      return this.processAttribute(attributeValue);
     },
   };
   private readonly xmlParser: XMLParser = new XMLParser(this.x2jOptions);
