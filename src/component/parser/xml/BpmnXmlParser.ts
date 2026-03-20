@@ -68,10 +68,20 @@ export default class BpmnXmlParser {
      */
     processEntities: false,
 
+    // Use Matcher object (jPath: false) to get paths without namespace prefixes via toString('.', false).
+    // With jPath: true (default), toString() includes namespace prefixes (e.g. "bpmn:definitions.bpmndi:BPMNDiagram")
+    // which don't match our expected paths in nodesWithNumericAttributes.
+    jPath: false,
+
     // See https://github.com/NaturalIntelligence/fast-xml-parser/blob/v5.5.7/docs/v4%2C%20v5/2.XMLparseOptions.md#attributevalueprocessor
-    // jPath Parameter: The third parameter is either a string (when jPath: true, default) or a Matcher instance (when jPath: false).
     attributeValueProcessor: (attributeName: string, attributeValue: string, nodePathOrMatcher: unknown): unknown => {
-      if (typeof nodePathOrMatcher === 'string' && isNumeric(attributeName, nodePathOrMatcher)) {
+      // nodePathOrMatcher is a Matcher instance (jPath: false). Get path without namespace prefixes.
+      const nodePath =
+        typeof nodePathOrMatcher === 'object' && nodePathOrMatcher !== null
+          ? String((nodePathOrMatcher as { toString(separator?: string, includeNs?: boolean): string }).toString('.', false))
+          : String(nodePathOrMatcher);
+
+      if (isNumeric(attributeName, nodePath)) {
         // The strnum lib used by fast-xml-parser is not able to parse all numbers
         // The only available options are https://github.com/NaturalIntelligence/fast-xml-parser/blob/v4.3.4/docs/v4/2.XMLparseOptions.md#numberparseoptions
         // This is a fix for https://github.com/process-analytics/bpmn-visualization-js/issues/2857
