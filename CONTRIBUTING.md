@@ -68,7 +68,7 @@ git checkout -b feat/25-annotations_to_tasks
 ```
 
 ### IDE configuration
-To know how configure your development environment, see [IDE configuration](./docs/contributors/ide-configuration.md).
+To know how to configure your development environment, see [IDE configuration](./docs/contributors/ide-configuration.md).
 
 ### Development
 
