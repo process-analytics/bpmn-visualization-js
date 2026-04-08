@@ -68,16 +68,25 @@ export default class BpmnXmlParser {
      */
     processEntities: false,
 
-    // See https://github.com/NaturalIntelligence/fast-xml-parser/blob/v4.3.4/docs/v4/2.XMLparseOptions.md#attributevalueprocessor
-    attributeValueProcessor: (name: string, value: string, nodePath: string): unknown => {
-      if (isNumeric(name, nodePath)) {
+    // Use Matcher object (jPath: false) to get paths without namespace prefixes via toString('.', false).
+    // With jPath: true (default), toString() includes namespace prefixes (e.g. "bpmn:definitions.bpmndi:BPMNDiagram")
+    // which don't match our expected paths in nodesWithNumericAttributes.
+    jPath: false,
+
+    // See https://github.com/NaturalIntelligence/fast-xml-parser/blob/v5.5.7/docs/v4%2C%20v5/2.XMLparseOptions.md#attributevalueprocessor
+    attributeValueProcessor: (attributeName: string, attributeValue: string, nodePathOrMatcher: unknown): unknown => {
+      // nodePathOrMatcher is a Matcher instance (jPath: false) or a string (jPath: true). Get path without namespace prefixes.
+      const nodePath =
+        typeof nodePathOrMatcher === 'string' ? nodePathOrMatcher : (nodePathOrMatcher as { toString(separator?: string, includeNs?: boolean): string }).toString('.', false);
+
+      if (isNumeric(attributeName, nodePath)) {
         // The strnum lib used by fast-xml-parser is not able to parse all numbers
-        // The only available options are https://github.com/NaturalIntelligence/fast-xml-parser/blob/v4.3.4/docs/v4/2.XMLparseOptions.md#numberparseoptions
+        // The only available options are https://github.com/NaturalIntelligence/fast-xml-parser/blob/v5.5.7/docs/v4%2C%20v5/2.XMLparseOptions.md#numberparseoptions
         // This is a fix for https://github.com/process-analytics/bpmn-visualization-js/issues/2857
-        return Number(value);
+        return Number(attributeValue);
       }
 
-      return this.processAttribute(value);
+      return this.processAttribute(attributeValue);
     },
   };
   private readonly xmlParser: XMLParser = new XMLParser(this.x2jOptions);
