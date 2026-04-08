@@ -77,9 +77,7 @@ export default class BpmnXmlParser {
     attributeValueProcessor: (attributeName: string, attributeValue: string, nodePathOrMatcher: unknown): unknown => {
       // nodePathOrMatcher is a Matcher instance (jPath: false) or a string (jPath: true). Get path without namespace prefixes.
       const nodePath =
-        typeof nodePathOrMatcher === 'string'
-          ? nodePathOrMatcher
-          : (nodePathOrMatcher as { toString(separator?: string, includeNs?: boolean): string }).toString('.', false);
+        typeof nodePathOrMatcher === 'string' ? nodePathOrMatcher : (nodePathOrMatcher as { toString(separator?: string, includeNs?: boolean): string }).toString('.', false);
 
       if (isNumeric(attributeName, nodePath)) {
         // The strnum lib used by fast-xml-parser is not able to parse all numbers
