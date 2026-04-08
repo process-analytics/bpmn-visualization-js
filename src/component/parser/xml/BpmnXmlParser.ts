@@ -75,11 +75,11 @@ export default class BpmnXmlParser {
 
     // See https://github.com/NaturalIntelligence/fast-xml-parser/blob/v5.5.7/docs/v4%2C%20v5/2.XMLparseOptions.md#attributevalueprocessor
     attributeValueProcessor: (attributeName: string, attributeValue: string, nodePathOrMatcher: unknown): unknown => {
-      // nodePathOrMatcher is a Matcher instance (jPath: false). Get path without namespace prefixes.
+      // nodePathOrMatcher is a Matcher instance (jPath: false) or a string (jPath: true). Get path without namespace prefixes.
       const nodePath =
-        typeof nodePathOrMatcher === 'object' && nodePathOrMatcher !== null
-          ? String((nodePathOrMatcher as { toString(separator?: string, includeNs?: boolean): string }).toString('.', false))
-          : String(nodePathOrMatcher);
+        typeof nodePathOrMatcher === 'string'
+          ? nodePathOrMatcher
+          : (nodePathOrMatcher as { toString(separator?: string, includeNs?: boolean): string }).toString('.', false);
 
       if (isNumeric(attributeName, nodePath)) {
         // The strnum lib used by fast-xml-parser is not able to parse all numbers
