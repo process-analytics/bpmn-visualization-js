@@ -51,6 +51,11 @@ jobs:
         uses: ./.github/actions/build-setup
       - name: Build npm package
         run: npm pack
+      - name: List the size of the npm package bundles
+        run: |
+          scripts/list-npm-bundle-sizes.sh
+          echo "## NPM package bundle sizes" >> "$GITHUB_STEP_SUMMARY"
+          scripts/list-npm-bundle-sizes.sh --md-simple >> "$GITHUB_STEP_SUMMARY"
       - name: Upload npm package
         uses: actions/upload-artifact@v7
         with:

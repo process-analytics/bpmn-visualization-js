@@ -33,6 +33,13 @@ runs:
       if: github.event.action != 'closed'
       shell: bash
       run: ${{ inputs.build-preview-command }}
+    - name: List the size of the chunks in the demo
+      if: github.event.action != 'closed' && contains(inputs.build-preview-command, 'demo')
+      shell: bash
+      run: |
+        scripts/list-demo-lib-chunks.sh
+        echo "## Demo lib chunk sizes" >> "$GITHUB_STEP_SUMMARY"
+        scripts/list-demo-lib-chunks.sh --md-simple >> "$GITHUB_STEP_SUMMARY"
     - name: Manage surge preview
       if: steps.surge-preview-tools.outputs.can-run-surge-command == 'true'
       uses: afc163/surge-preview@v1
