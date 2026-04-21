@@ -11,10 +11,10 @@ if [[ "${1:-}" = "--md-simple" ]]; then
 fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DIST_DIR="${SCRIPT_DIR}/../dist/assets"
+DEMO_ASSETS_DIR="${SCRIPT_DIR}/../build/demo/dev/public/assets"
 
-if [[ ! -d "$DIST_DIR" ]]; then
-  echo "Error: dist/assets directory not found. Run 'npm run build -w packages/demo' first." >&2
+if [[ ! -d "$DEMO_ASSETS_DIR" ]]; then
+  echo "Error: demo assets directory not found. Run 'npm run demo:build." >&2
   exit 1
 fi
 
@@ -22,7 +22,7 @@ fi
 declare -a names=()
 declare -a sizes=()
 
-for file in "$DIST_DIR"/lib-*.js; do
+for file in "$DEMO_ASSETS_DIR"/lib-*.js; do
   [[ -f "$file" ]] || continue
   filename=$(basename "$file")
   # Extract dependency name: lib-<name>-<hash>.js -> <name>
