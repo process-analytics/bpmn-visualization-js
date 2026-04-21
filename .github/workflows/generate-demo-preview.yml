@@ -12,6 +12,7 @@ on:
       - '.github/workflows/generate-demo-preview.yml'
       - 'config/**/*'
       - 'dev/**/*'
+      - 'scripts/list-demo-lib-chunks.sh'
       - 'scripts/prepare-demo-for-publish.mjs'
       - 'src/**/*'
       - '.nvmrc'
