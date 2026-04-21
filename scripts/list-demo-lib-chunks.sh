@@ -25,8 +25,8 @@ declare -a sizes=()
 for file in "$DEMO_ASSETS_DIR"/lib-*.js; do
   [[ -f "$file" ]] || continue
   filename=$(basename "$file")
-  # Extract dependency name: lib-<name>-<hash>.js -> <name>
-  dep_name=$(echo "$filename" | sed 's/^lib-//;s/-[^-]*\.js$//')
+  # Extract dependency name: lib-<name>.js -> <name>
+  dep_name=$(echo "$filename" | sed 's/^lib-//;s/\.js$//')
   size_kb=$(LC_NUMERIC=C awk "BEGIN {printf \"%.2f\", $(stat --format=%s "$file") / 1000}")
   names+=("$dep_name")
   sizes+=("$size_kb")
