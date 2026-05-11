@@ -168,7 +168,7 @@ export enum ZoomType {
  * Configure the BPMN parser.
  * @category Initialization & Configuration
  */
-export type ParserOptions = {
+export interface ParserOptions {
   /**
    * Apply additional processing to the XML attributes in the BPMN source.
    *
@@ -182,7 +182,7 @@ export type ParserOptions = {
    *   }
    * }
    * ```
-   * @param val the value of the 'name' attribute to be processed.
+   * @param value the value of the 'name' attribute to be processed.
    */
   additionalXmlAttributeProcessor?: (value: string) => string;
   /**
@@ -190,7 +190,7 @@ export type ParserOptions = {
    * @default false
    */
   disableConsoleLog?: boolean;
-};
+}
 
 /**
  * Global configuration for the rendering of the BPMN elements.
@@ -198,7 +198,7 @@ export type ParserOptions = {
  * @category Initialization & Configuration
  * @since 0.35.0
  */
-export type RendererOptions = {
+export interface RendererOptions {
   /**
    * Custom {@link IconPainter} instance to use for rendering BPMN element icons.
    * This allows you to customize how icons are rendered on tasks, events, and other BPMN elements.
@@ -264,4 +264,4 @@ export type RendererOptions = {
    * @since 0.48.0
    */
   ignoreTaskLabelBounds?: boolean;
-};
+}

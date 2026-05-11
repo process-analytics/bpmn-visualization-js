@@ -19,10 +19,10 @@ import type { ParserOptions } from '../../options';
 
 import { XMLParser, type X2jOptions } from 'fast-xml-parser';
 
-type Replacement = {
+interface Replacement {
   regex: RegExp;
   val: string;
-};
+}
 const entitiesReplacements: Replacement[] = [
   { regex: /&(amp|#38|#x26);/g, val: '&' },
   { regex: /&(apos|#39|#x27);/g, val: "'" },

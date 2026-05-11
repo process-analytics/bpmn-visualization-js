@@ -137,12 +137,12 @@ expect.extend({
   toBeTextAnnotation,
 });
 
-export type ExpectedCellWithGeometry = {
+export interface ExpectedCellWithGeometry {
   parentId?: string;
   geometry: mxGeometry;
-};
+}
 
-export type ExpectedFont = {
+export interface ExpectedFont {
   color?: string;
   family?: string;
   size?: number;
@@ -151,12 +151,12 @@ export type ExpectedFont = {
   isUnderline?: boolean;
   isStrikeThrough?: boolean;
   opacity?: Opacity;
-};
+}
 
 export type HorizontalAlign = 'center' | 'left' | 'right';
 export type VerticalAlign = 'bottom' | 'middle' | 'top';
 
-type ExpectedModelElement = {
+interface ExpectedModelElement {
   align?: HorizontalAlign;
   font?: ExpectedFont;
   label?: string;
@@ -167,19 +167,19 @@ type ExpectedModelElement = {
   opacity?: number;
   // custom bpmn-visualization
   extraCssClasses?: string[];
-};
+}
 
-export type ExpectedFill = {
+export interface ExpectedFill {
   color?: string;
   opacity?: Opacity;
-};
+}
 
 export type ExpectedDirection = 'west' | 'east' | 'north' | 'south';
 
-export type ExpectedGradient = {
+export interface ExpectedGradient {
   color: string;
   direction?: ExpectedDirection;
-};
+}
 
 export type ExpectedShapeModelElement = {
   kind?: ShapeBpmnElementKind;

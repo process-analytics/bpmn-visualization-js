@@ -17,21 +17,21 @@ limitations under the License.
 /**
  * @internal
  */
-export type ShapeExtensions = {
+export interface ShapeExtensions {
   fillColor?: string;
   strokeColor?: string;
-};
+}
 
 /**
  * @internal
  */
-export type EdgeExtensions = {
+export interface EdgeExtensions {
   strokeColor?: string;
-};
+}
 
 /**
  * @internal
  */
-export type LabelExtensions = {
+export interface LabelExtensions {
   color?: string;
-};
+}

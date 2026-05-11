@@ -95,8 +95,7 @@ export class BpmnGraph extends mxGraph {
    *
    * @param callbackFunction the update to be made in the transaction.
    *
-   * @experimental subject to change, may move to a subclass of {@link mxGraphModel}
-   * @alpha
+   * @experimental subject to change, may move to a subclass of `mxGraphModel`
    */
   batchUpdate(callbackFunction: () => void): void {
     this.model.beginUpdate();

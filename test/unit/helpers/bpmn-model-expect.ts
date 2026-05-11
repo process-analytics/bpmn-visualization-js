@@ -80,11 +80,11 @@ export interface ExpectedSequenceEdge extends ExpectedEdge {
   bpmnElementSequenceFlowKind?: SequenceFlowKind;
 }
 
-export type ExpectedLabel = {
+export interface ExpectedLabel {
   bounds?: ExpectedBounds;
   extensions?: LabelExtensions;
   font?: ExpectedFont;
-};
+}
 
 export interface ExpectedFont {
   name?: string;
