@@ -27,4 +27,5 @@ bpmnVisualization.load(`fake BPMN content`);
 // Validate the access to the BpmnGraph type and some mxGraph derived methods and properties
 const graph: BpmnGraph = bpmnVisualization.graph;
 graph.view.revalidate();
-graph.getStylesheet() satisfies mxStylesheet;
+const stylesheet: mxStylesheet = graph.getStylesheet();
+stylesheet.putCellStyle('customStyle', { fillColor: '#FF0000' });
