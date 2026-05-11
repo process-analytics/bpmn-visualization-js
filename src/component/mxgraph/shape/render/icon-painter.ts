@@ -97,15 +97,12 @@ export class IconPainter {
   /**
    * Utility paint icon methods to easily instantiate a {@link BpmnCanvas} from a {@link PaintParameter}.
    *
-   * @param canvas                  `mxAbstractCanvas2D` in charge of performing the paint operations.
-   * @param ratioFromParent         the actual size of the icon will be computed from the shape dimensions using this ratio.
-   * @param setIconOriginFunct      called function to set the origin of the icon. Generally, it calls a method of {@link BpmnCanvas}.
-   * @param shapeConfig             dimension and style of the shape where the icon is painted.
-   * @param iconStyleConfig         style of the icon.
-   * @param originalIconSize        original size of the icon used to compute the scaling/ratio in {@link BpmnCanvas}.
+   * @param paintParameter   aggregates the canvas, the shape/icon configuration and the rendering helpers used to paint the icon. See {@link PaintParameter}.
+   * @param originalIconSize original size of the icon used to compute the scaling/ratio in {@link BpmnCanvas}.
    * @protected
    */
-  protected newBpmnCanvas({ canvas, ratioFromParent, setIconOriginFunct, shapeConfig, iconStyleConfig }: PaintParameter, originalIconSize: Size): BpmnCanvas {
+  protected newBpmnCanvas(paintParameter: PaintParameter, originalIconSize: Size): BpmnCanvas {
+    const { canvas, ratioFromParent, setIconOriginFunct, shapeConfig, iconStyleConfig } = paintParameter;
     return new BpmnCanvas({
       canvas,
       shapeConfig,

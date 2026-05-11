@@ -105,10 +105,10 @@ const withExtras = (bpmnElement: ShapeBpmnElement, extras?: ShapeBpmnElementExtr
   return bpmnElement;
 };
 
-export type ShapeBpmnElementExtraProperties = {
+export interface ShapeBpmnElementExtraProperties {
   incomingIds?: string[];
   outgoingIds?: string[];
-};
+}
 
 const newStartEvent = (parent: string, id: string, name: string, extras?: ShapeBpmnElementExtraProperties): Shape => {
   return new Shape(buildShapeId(id), withExtras(new ShapeBpmnStartEvent(id, name, ShapeBpmnEventDefinitionKind.TIMER, parent), extras));
