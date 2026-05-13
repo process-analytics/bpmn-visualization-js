@@ -27,6 +27,8 @@ export * from './component/registry';
 export * from './component/version';
 export type { Navigation } from './component/navigation';
 export * from './model/bpmn/internal';
+export type { BpmnGraph } from './component/mxgraph/BpmnGraph';
+export type * from './component/types';
 
 // not part of the public API but needed for the custom theme examples
 export { StyleConfigurator } from './component/mxgraph/config/StyleConfigurator';

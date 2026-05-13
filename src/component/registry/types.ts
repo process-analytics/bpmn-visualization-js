@@ -431,27 +431,27 @@ export type OverlayPosition = OverlayShapePosition | OverlayEdgePosition;
 /**
  * @category Overlays
  */
-export type OverlayStyle = {
+export interface OverlayStyle {
   font?: OverlayFont;
   fill?: OverlayFill;
   stroke?: OverlayStroke;
-};
+}
 
 /**
  * The font family is {@link StyleDefault.DEFAULT_FONT_FAMILY}.
  * @category Overlays
  */
-export type OverlayFont = {
+export interface OverlayFont {
   /** @default {@link StyleDefault.DEFAULT_OVERLAY_FONT_COLOR} */
   color?: string;
   /** @default {@link StyleDefault.DEFAULT_OVERLAY_FONT_SIZE} */
   size?: number;
-};
+}
 
 /**
  * @category Overlays
  */
-export type OverlayFill = {
+export interface OverlayFill {
   /** @default {@link StyleDefault.DEFAULT_OVERLAY_FILL_COLOR} */
   color?: string;
   /**
@@ -463,12 +463,12 @@ export type OverlayFill = {
    * @default {@link StyleDefault.DEFAULT_OVERLAY_FILL_OPACITY}
    */
   opacity?: number;
-};
+}
 
 /**
  * @category Overlays
  */
-export type OverlayStroke = {
+export interface OverlayStroke {
   /**
    * If you don't want to display a stroke, you can set the color to
    *   * `transparent`
@@ -482,16 +482,16 @@ export type OverlayStroke = {
    * @default {@link StyleDefault.DEFAULT_OVERLAY_STROKE_WIDTH}
    */
   width?: number;
-};
+}
 
 /**
  * @category Overlays
  */
-export type Overlay = {
+export interface Overlay {
   position: OverlayPosition;
   label?: string;
   style?: OverlayStyle;
-};
+}
 
 /**
  * @category Element Style
@@ -501,7 +501,7 @@ export type StyleUpdate = EdgeStyleUpdate | ShapeStyleUpdate;
 /**
  * @category Element Style
  */
-export type EdgeStyleUpdate = {
+export interface EdgeStyleUpdate {
   font?: Font;
   /**
    * The value must be between 0 and 100:
@@ -516,7 +516,7 @@ export type EdgeStyleUpdate = {
    */
   opacity?: Opacity;
   stroke?: Stroke;
-};
+}
 
 /**
  * @category Element Style
@@ -636,7 +636,7 @@ export type Fill = StyleWithOpacity & {
  *
  * @category Element Style
  */
-export type FillColorGradient = {
+export interface FillColorGradient {
   /**
    * It can be any HTML color name or HEX code, as well as special keywords such as:
    * - `inherit` to apply the fill color of the direct parent element.
@@ -661,7 +661,7 @@ export type FillColorGradient = {
    * @see {@link GradientDirection}
    */
   direction: GradientDirection;
-};
+}
 
 /**
  * @category Element Style
@@ -671,7 +671,7 @@ export type GradientDirection = 'left-to-right' | 'right-to-left' | 'bottom-to-t
 /**
  * @category Element Style
  */
-export type StyleWithOpacity = {
+export interface StyleWithOpacity {
   /**
    * The value must be between 0 and 100:
    * - If the set value is less than 0, the used value is 0.
@@ -682,7 +682,7 @@ export type StyleWithOpacity = {
    * - It can be used when the style is first updated and then needs to be reset to its initial value.
    */
   opacity?: Opacity;
-};
+}
 
 /**
  *  @category Element Style

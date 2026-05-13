@@ -108,11 +108,11 @@ async function attachImagesForReport(images: LocationOfImagesForTestReport, matc
   }
 }
 
-type LocationOfImagesForTestReport = {
+interface LocationOfImagesForTestReport {
   diff: string;
   expected: string;
   received: string;
-};
+}
 
 function saveImages(options: MatchImageSnapshotOptions): LocationOfImagesForTestReport {
   const snapshotIdentifier = options.customSnapshotIdentifier as string;
