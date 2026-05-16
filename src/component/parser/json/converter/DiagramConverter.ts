@@ -20,6 +20,7 @@ import type BpmnModel from '../../../../model/bpmn/internal/BpmnModel';
 import type ShapeBpmnElement from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import type { BPMNDiagram, BPMNEdge, BPMNLabel, BPMNLabelStyle, BPMNShape } from '../../../../model/bpmn/json/bpmndi';
 import type { Point } from '../../../../model/bpmn/json/dc';
+import type { ParsingExtensionPoint } from '../../../extension/extension-points';
 import type { ParsingMessageCollector } from '../../parsing-messages';
 
 import { MessageVisibleKind, ShapeBpmnCallActivityKind, ShapeBpmnMarkerKind, ShapeUtil } from '../../../../model/bpmn/internal';
@@ -28,6 +29,7 @@ import { Edge, Waypoint } from '../../../../model/bpmn/internal/edge/edge';
 import Label, { Font } from '../../../../model/bpmn/internal/Label';
 import Shape from '../../../../model/bpmn/internal/shape/Shape';
 import { ShapeBpmnCallActivity, ShapeBpmnSubProcess } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
+import { bpmnInColorParsingExtension } from '../../../extension/bpmn-in-color/parsing-extension';
 import { ensureIsArray } from '../../../helpers/array-utils';
 import { EdgeUnknownBpmnElementWarning, LabelStyleMissingFontWarning, ShapeUnknownBpmnElementWarning } from '../warnings';
 
@@ -40,6 +42,10 @@ export default class DiagramConverter {
     private readonly parsingMessageCollector: ParsingMessageCollector,
   ) {}
 
+  // The extension list is hardcoded on purpose: the extension mechanism is currently introduced internally
+  // only; external injection (a public `bpmnExtensions` option) is deferred. See ADR 001 in
+  // docs/contributors/adr/, section "Refactoring scope vs. follow-up work".
+  private readonly parsingExtensions: ParsingExtensionPoint[] = [bpmnInColorParsingExtension];
   private readonly convertedFonts = new Map<string, Font>();
 
   deserialize(bpmnDiagrams: BPMNDiagram[] | BPMNDiagram): BpmnModel {
@@ -124,7 +130,7 @@ export default class DiagramConverter {
       const bpmnLabel = bpmnShape.BPMNLabel;
       const label = this.deserializeLabel(bpmnLabel, bpmnShape.id);
       const shape = new Shape(bpmnShape.id, bpmnElement, bounds, label, isHorizontal);
-      setColorExtensionsOnShape(shape, bpmnShape);
+      for (const extension of this.parsingExtensions) extension.onShapeDeserialized?.(shape, bpmnShape);
 
       return shape;
     }
@@ -148,7 +154,7 @@ export default class DiagramConverter {
         const messageVisibleKind = bpmnEdge.messageVisibleKind ? (bpmnEdge.messageVisibleKind as unknown as MessageVisibleKind) : MessageVisibleKind.NONE;
 
         const edge = new Edge(bpmnEdge.id, flow, waypoints, label, messageVisibleKind);
-        setColorExtensionsOnEdge(edge, bpmnEdge);
+        for (const extension of this.parsingExtensions) extension.onEdgeDeserialized?.(edge, bpmnEdge);
         return edge;
       })
       .filter(Boolean);
@@ -162,13 +168,9 @@ export default class DiagramConverter {
     if (bpmnLabel && typeof bpmnLabel === 'object') {
       const font = this.findFont(bpmnLabel.labelStyle, id);
       const bounds = deserializeBounds(bpmnLabel);
-      const label = new Label(font, bounds);
-      if ('color' in bpmnLabel) {
-        label.extensions.color = bpmnLabel.color as string;
-        return label;
-      }
-      if (font || bounds) {
-        return label;
+      const hasExtensionData = this.parsingExtensions.some(extension => extension.hasLabelExtensionData?.(bpmnLabel));
+      if (font || bounds || hasExtensionData) {
+        return new Label(font, bounds);
       }
     }
   }
@@ -187,32 +189,9 @@ export default class DiagramConverter {
   }
 }
 
-// 'BPMN in Color' extensions with fallback to bpmn.io colors
-function setColorExtensionsOnShape(shape: Shape, bpmnShape: BPMNShape): void {
-  if ('background-color' in bpmnShape) {
-    shape.extensions.fillColor = bpmnShape['background-color'] as string;
-  } else if ('fill' in bpmnShape) {
-    shape.extensions.fillColor = bpmnShape.fill as string;
-  }
-  if ('border-color' in bpmnShape) {
-    shape.extensions.strokeColor = bpmnShape['border-color'] as string;
-  } else if ('stroke' in bpmnShape) {
-    shape.extensions.strokeColor = bpmnShape.stroke as string;
-  }
-}
-
 function deserializeBounds(boundedElement: BPMNShape | BPMNLabel): Bounds {
   const bounds = boundedElement.Bounds;
   if (bounds) {
     return new Bounds(bounds.x, bounds.y, bounds.width, bounds.height);
-  }
-}
-
-// 'BPMN in Color' extensions  with fallback to bpmn.io colors
-function setColorExtensionsOnEdge(edge: Edge, bpmnEdge: BPMNEdge): void {
-  if ('border-color' in bpmnEdge) {
-    edge.extensions.strokeColor = bpmnEdge['border-color'] as string;
-  } else if ('stroke' in bpmnEdge) {
-    edge.extensions.strokeColor = bpmnEdge.stroke as string;
   }
 }
