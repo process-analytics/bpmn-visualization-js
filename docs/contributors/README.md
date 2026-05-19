@@ -1,6 +1,6 @@
 # Guidelines for Contributors and Development
 
-General information are available in the [Contributing Guide](../../CONTRIBUTING.md).
+General information is available in the [Contributing Guide](../../CONTRIBUTING.md).
 
 Here are some tips to help during development.
 
@@ -20,6 +20,16 @@ Here are some tips to help during development.
 - [TypeScript version](supported-typescript-version.md)
 - [mxGraph integration](mxgraph-integration.md)
 - [mxGraph version bump](mxgraph-version-bump.md)
+
+## [Architecture Decision Records](./adr/)
+**Purpose:** Document significant architectural decisions made in this project.
+
+ADRs capture the context, decision, and consequences of important technical choices. They serve as a historical record to help current and future team members understand why certain approaches were chosen.
+
+**When to read:** When you need to understand the rationale behind a system's design or when proposing changes to existing architecture.
+
+**Existing ADRs:**
+- [001 — BPMN Extensions Management](./adr/001-bpmn-extensions-management.md)
 
 ## Misc
 - [Documentation guidelines](documentation-guidelines.md)

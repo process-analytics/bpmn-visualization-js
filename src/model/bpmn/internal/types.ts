@@ -17,21 +17,17 @@ limitations under the License.
 /**
  * @internal
  */
-export interface ShapeExtensions {
-  fillColor?: string;
-  strokeColor?: string;
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- Empty interface to allow module augmentation by extensions
+export interface ShapeExtensions {}
 
 /**
  * @internal
  */
-export interface EdgeExtensions {
-  strokeColor?: string;
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- Empty interface to allow module augmentation by extensions
+export interface EdgeExtensions {}
 
 /**
  * @internal
  */
-export interface LabelExtensions {
-  color?: string;
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- Empty interface to allow module augmentation by extensions
+export interface LabelExtensions {}
