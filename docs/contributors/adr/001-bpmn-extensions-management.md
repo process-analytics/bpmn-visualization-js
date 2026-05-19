@@ -22,6 +22,7 @@ Extensions can be applied to both the semantic model (process elements like task
 Examples of BPMN extensions include:
 - [BPMN in Color](https://github.com/bpmn-miwg/bpmn-in-color): Adds color attributes (`background-color`, `border-color`, ...) to shapes, edges, and labels.
 - [Bonita Connector](https://documentation.bonitasoft.com/bonita/2025.2/process/connectivity-overview): Adds connector metadata to tasks and pools, displayed as a specific icon on the top-right of the Tasks (not displayed on Pools).
+- [DF-BPMN](github.com/NourEldin-Ali/df-bpmn/): DataFlow BPMN (DF-BPMN), is a low-coding visual solution, for modeling and analyzing the relationship between process and data.
 
 Managing BPMN extensions in a consistent and extensible way is important to allow `bpmn-visualization` to support known extensions and to let users implement their own.
 
