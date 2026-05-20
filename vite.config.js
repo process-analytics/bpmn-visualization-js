@@ -43,12 +43,17 @@ export default defineConfig(({ mode }) => {
           entryFileNames: `dev/public/assets/[name].js`,
           chunkFileNames: `dev/public/assets/[name].js`,
           assetFileNames: `dev/public/assets/[name].[ext]`,
-          manualChunks: {
-            // put mxgraph code in a dedicated file. As it is eol, it doesn't change from release to release, so it reduces the changes when uploading the demo to the examples repository
-            mxgraph: ['mxgraph'],
+          // Put dependencies in dedicated files to track the impact of their updates on the demo.
+          manualChunks(id) {
+            if (id.includes('node_modules/es-toolkit')) return 'lib-es-toolkit';
+            if (id.includes('node_modules/fast-xml-parser')) return 'lib-fast-xml-parser';
+            if (id.includes('node_modules/mxgraph')) return 'lib-mxgraph';
+            // bpmn-visualization code built from src/
+            if (!id.includes('node_modules') && id.includes('/src/')) return 'lib-bpmn-visualization';
           },
         },
       },
+      // minify: false, // uncomment to see the code in clear
       chunkSizeWarningLimit: 838, // mxgraph
     },
     preview: {

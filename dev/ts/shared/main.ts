@@ -244,9 +244,9 @@ function getRendererOptionsFromParameters(config: BpmnVisualizationDemoConfigura
   // Mapping between query parameter names and RendererOptions boolean properties
   const rendererParameterMappings: Record<string, Exclude<keyof RendererOptions, 'iconPainter'>> = {
     'renderer.ignore.bpmn.colors': 'ignoreBpmnColors',
-    'renderer.ignore.label.style': 'ignoreBpmnLabelStyles',
-    'renderer.ignore.activity.label.bounds': 'ignoreBpmnActivityLabelBounds',
-    'renderer.ignore.task.label.bounds': 'ignoreBpmnTaskLabelBounds',
+    'renderer.ignore.label.style': 'ignoreLabelStyles',
+    'renderer.ignore.activity.label.bounds': 'ignoreActivityLabelBounds',
+    'renderer.ignore.task.label.bounds': 'ignoreTaskLabelBounds',
   };
 
   // Process renderer parameters

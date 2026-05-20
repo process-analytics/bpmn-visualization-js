@@ -16,7 +16,7 @@ limitations under the License.
 
 import type { mxGraph, mxSvgCanvas2D as mxSvgCanvas2DType } from 'mxgraph';
 
-import { mxgraph, mxClient, mxConstants, mxSvgCanvas2D, mxUtils } from '../../../src/component/mxgraph/initializer';
+import { mxClient, mxConstants, mxImageExport, mxSvgCanvas2D, mxUtils } from '../../../src/component/mxgraph/initializer';
 
 interface SvgExportOptions {
   scale: number;
@@ -92,7 +92,7 @@ ${svgAsString}
 
     svgCanvas.scale(s);
 
-    const imgExport = new mxgraph.mxImageExport();
+    const imgExport = new mxImageExport();
     // FIXME only the first overlay is placed at the right position
     // overlays put on element of subprocess/call-activity are not placed correctly in svg export
     imgExport.includeOverlays = true;

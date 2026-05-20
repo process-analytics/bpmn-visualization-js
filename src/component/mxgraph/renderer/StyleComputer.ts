@@ -17,6 +17,7 @@ limitations under the License.
 import type Bounds from '../../../model/bpmn/internal/Bounds';
 import type { Edge } from '../../../model/bpmn/internal/edge/edge';
 import type { Font } from '../../../model/bpmn/internal/Label';
+import type { StyleExtensionPoint } from '../../extension/extension-points';
 import type { RendererOptions } from '../../options';
 
 import { MessageVisibleKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeUtil } from '../../../model/bpmn/internal';
@@ -31,6 +32,7 @@ import {
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../model/bpmn/internal/shape/ShapeBpmnElement';
+import { bpmnInColorStyleExtension } from '../../extension/bpmn-in-color/style-extension';
 import { mxConstants } from '../initializer';
 import { BpmnStyleIdentifier } from '../style';
 
@@ -38,16 +40,15 @@ import { BpmnStyleIdentifier } from '../style';
  * @internal
  */
 export default class StyleComputer {
-  private readonly ignoreBpmnColors: boolean;
-  private readonly ignoreBpmnLabelStyles: boolean;
-  private readonly ignoreBpmnActivityLabelBounds: boolean;
-  private readonly ignoreBpmnTaskLabelBounds: boolean;
+  private readonly ignoreLabelStyles: boolean;
+  private readonly styleExtensions: StyleExtensionPoint[];
 
   constructor(options?: RendererOptions) {
-    this.ignoreBpmnColors = options?.ignoreBpmnColors ?? true;
-    this.ignoreBpmnLabelStyles = options?.ignoreBpmnLabelStyles ?? false;
-    this.ignoreBpmnActivityLabelBounds = options?.ignoreBpmnActivityLabelBounds ?? false;
-    this.ignoreBpmnTaskLabelBounds = options?.ignoreBpmnTaskLabelBounds ?? false;
+    this.ignoreLabelStyles = options?.ignoreLabelStyles ?? false;
+    // The extension list is hardcoded on purpose: the extension mechanism is currently introduced internally
+    // only; external injection (a public `bpmnExtensions` option) is deferred. See ADR 001 in
+    // docs/contributors/adr/, section "Refactoring scope vs. follow-up work".
+    this.styleExtensions = (options?.ignoreBpmnColors ?? true) ? [] : [bpmnInColorStyleExtension];
   }
 
   computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): string {
@@ -62,14 +63,10 @@ export default class StyleComputer {
     }
 
     const fontStyleValues = this.computeFontStyleValues(bpmnCell);
-    const labelStyleValues = this.computeLabelStyleValues(bpmnCell, labelBounds);
+    const labelStyleValues = computeLabelStyleValues(bpmnCell, labelBounds);
 
     styles.push(...toArrayOfMxGraphStyleEntries([...mainStyleValues, ...fontStyleValues, ...labelStyleValues]));
     return styles.join(';');
-  }
-
-  private computeLabelStyleValues(bpmnCell: Shape | Edge, labelBounds: Bounds): Map<string, string | number> {
-    return computeLabelStyleValues(bpmnCell, labelBounds, this.ignoreBpmnActivityLabelBounds, this.ignoreBpmnTaskLabelBounds);
   }
 
   private computeShapeStyleValues(shape: Shape): Map<string, string | number> {
@@ -90,17 +87,7 @@ export default class StyleComputer {
       styleValues.set(BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND, String(bpmnElement.gatewayKind));
     }
 
-    if (!this.ignoreBpmnColors) {
-      const extensions = shape.extensions;
-      const fillColor = extensions.fillColor;
-      if (fillColor) {
-        styleValues.set(mxConstants.STYLE_FILLCOLOR, fillColor);
-        if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
-          styleValues.set(mxConstants.STYLE_SWIMLANE_FILLCOLOR, fillColor);
-        }
-      }
-      extensions.strokeColor && styleValues.set(mxConstants.STYLE_STROKECOLOR, extensions.strokeColor);
-    }
+    for (const extension of this.styleExtensions) extension.enrichShapeStyle?.(shape, styleValues);
 
     return styleValues;
   }
@@ -108,10 +95,7 @@ export default class StyleComputer {
   private computeEdgeStyleValues(edge: Edge): Map<string, string | number> {
     const styleValues = new Map<string, string | number>();
 
-    if (!this.ignoreBpmnColors) {
-      const extensions = edge.extensions;
-      extensions.strokeColor && styleValues.set(mxConstants.STYLE_STROKECOLOR, extensions.strokeColor);
-    }
+    for (const extension of this.styleExtensions) extension.enrichEdgeStyle?.(edge, styleValues);
 
     return styleValues;
   }
@@ -120,28 +104,23 @@ export default class StyleComputer {
     const styleValues = new Map<string, string | number>();
 
     const font = bpmnCell.label?.font;
-    if (font && !this.ignoreBpmnLabelStyles) {
+    if (font && !this.ignoreLabelStyles) {
       styleValues.set(mxConstants.STYLE_FONTFAMILY, font.name);
       styleValues.set(mxConstants.STYLE_FONTSIZE, font.size);
       styleValues.set(mxConstants.STYLE_FONTSTYLE, getFontStyleValue(font));
-    }
-
-    if (!this.ignoreBpmnColors) {
-      const extensions = bpmnCell.label?.extensions;
-      extensions?.color && styleValues.set(mxConstants.STYLE_FONTCOLOR, extensions.color);
     }
 
     return styleValues;
   }
 
   computeMessageFlowIconStyle(edge: Edge): string {
-    const styleValues: [string, string][] = [];
-    styleValues.push(['shape', BpmnStyleIdentifier.MESSAGE_FLOW_ICON], [BpmnStyleIdentifier.IS_INITIATING, String(edge.messageVisibleKind === MessageVisibleKind.INITIATING)]);
-    if (!this.ignoreBpmnColors) {
-      edge.extensions.strokeColor && styleValues.push([mxConstants.STYLE_STROKECOLOR, edge.extensions.strokeColor]);
-    }
+    const styleValues = new Map<string, string | number>();
+    styleValues.set('shape', BpmnStyleIdentifier.MESSAGE_FLOW_ICON);
+    styleValues.set(BpmnStyleIdentifier.IS_INITIATING, String(edge.messageVisibleKind === MessageVisibleKind.INITIATING));
 
-    return toArrayOfMxGraphStyleEntries(styleValues).join(';');
+    for (const extension of this.styleExtensions) extension.enrichMessageFlowIconStyle?.(edge, styleValues);
+
+    return toArrayOfMxGraphStyleEntries([...styleValues]).join(';');
   }
 }
 
@@ -182,20 +161,11 @@ function computeEdgeBaseStyles(edge: Edge): string[] {
   return styles;
 }
 
-function computeLabelStyleValues(
-  bpmnCell: Shape | Edge,
-  labelBounds: Bounds,
-  ignoreBpmnActivityLabelBounds: boolean,
-  ignoreBpmnTaskLabelBounds: boolean,
-): Map<string, string | number> {
+function computeLabelStyleValues(bpmnCell: Shape | Edge, labelBounds: Bounds): Map<string, string | number> {
   const styleValues = new Map<string, string | number>();
 
   const bpmnElement = bpmnCell.bpmnElement;
-
-  // Check if we should ignore label bounds for this element
-  const shouldIgnoreLabelBounds = shouldIgnoreBpmnLabelBounds(bpmnCell, ignoreBpmnActivityLabelBounds, ignoreBpmnTaskLabelBounds);
-
-  if (labelBounds && !shouldIgnoreLabelBounds) {
+  if (labelBounds) {
     styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
     if (bpmnCell.bpmnElement.kind != ShapeBpmnElementKind.TEXT_ANNOTATION) {
       styleValues.set(mxConstants.STYLE_ALIGN, mxConstants.ALIGN_CENTER);
@@ -222,32 +192,6 @@ function computeLabelStyleValues(
   }
 
   return styleValues;
-}
-
-/**
- * Determines if label bounds should be ignored based on the element type and options.
- */
-function shouldIgnoreBpmnLabelBounds(bpmnCell: Shape | Edge, ignoreBpmnActivityLabelBounds: boolean, ignoreBpmnTaskLabelBounds: boolean): boolean {
-  // Only apply to shapes, not edges
-  if (!(bpmnCell instanceof Shape)) {
-    return false;
-  }
-
-  const bpmnElement = bpmnCell.bpmnElement;
-
-  // If ignoring all activity label bounds
-  if (ignoreBpmnActivityLabelBounds && bpmnElement instanceof ShapeBpmnActivity) {
-    return true;
-  }
-
-  // If ignoring task label bounds only, check if it's a task (but not subprocess or call activity)
-  if (ignoreBpmnTaskLabelBounds && bpmnElement instanceof ShapeBpmnActivity) {
-    // Activities include tasks, sub-processes, and call activities
-    // We only want to ignore bounds for tasks, not sub-processes or call activities
-    return !(bpmnElement instanceof ShapeBpmnSubProcess) && !(bpmnElement instanceof ShapeBpmnCallActivity);
-  }
-
-  return false;
 }
 
 /**

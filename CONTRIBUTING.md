@@ -43,7 +43,9 @@ The following sources can give you an idea of whether your request is likely to 
 8. Prior to opening a Pull Request, ensure the build is fully working by locally running `npm run all` (build, check and
 test everything).
 
-9. Open a [GitHub Pull Request](./docs/contributors/pull-request.md#open-a-pull-request) with your patches. (**1** pull request = **1** feature or bug)
+9. Open a [GitHub Pull Request](./docs/contributors/pull-request.md#open-a-pull-request) with your patches. (**1** pull request = **1** feature or bug).
+   Always follow and fill the [Pull Request template](./.github/pull_request_template.md). It is generally proposed to you when you open a Pull Request.
+   Not following this template may result in a delay in processing your Pull Request as we may need to ask you for more information prior to reviewing your contribution.
    We will review your contribution and respond as quickly as possible. Keep in mind that this is an open source project, and it may take us some time to get back to you. Your patience is very much appreciated.
 
 10. If this is your 1st Pull Request, sign the [Contributor License Agreement](./docs/contributors/pull-request.md#sign-the-contributor-license-agreement).
@@ -66,7 +68,7 @@ git checkout -b feat/25-annotations_to_tasks
 ```
 
 ### IDE configuration
-To know how configure your development environment, see [IDE configuration](./docs/contributors/ide-configuration.md).
+To know how to configure your development environment, see [IDE configuration](./docs/contributors/ide-configuration.md).
 
 ### Development
 

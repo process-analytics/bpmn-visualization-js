@@ -18,9 +18,17 @@
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_01pfi2w">
       <bpmndi:BPMNShape id="Participant_09kxlbt_di" bpmnElement="Participant_09kxlbt" isHorizontal="false">
         <dc:Bounds x="160" y="80" width="600" height="250" />
+        <!-- Label bounds are always ignored for pools -->
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="255" y="63" width="56" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_0bpyqm2_di" bpmnElement="Lane_0bpyqm2" isHorizontal="false">
         <dc:Bounds x="460" y="110" width="300" height="220" />
+        <!-- Label bounds are always ignored for lanes -->
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="455" y="63" width="56" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_14h9zcu_di" bpmnElement="Lane_14h9zcu" isHorizontal="false">
         <dc:Bounds x="160" y="110" width="300" height="220" />

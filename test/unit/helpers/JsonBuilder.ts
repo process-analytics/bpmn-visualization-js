@@ -86,7 +86,7 @@ type BuildBoundaryEventParameter = {
 } & BuildInterruptingEventParameter;
 
 export type BuildEventDefinition = 'message' | 'signal' | 'timer' | 'error' | 'escalation' | 'cancel' | 'compensate' | 'conditional' | 'link' | 'terminate';
-export type BuildEventDefinitionParameter = {
+export interface BuildEventDefinitionParameter {
   eventDefinitionKind?: BuildEventDefinition;
   eventDefinitionOn: EventDefinitionOn;
   eventDefinition?: BPMNEventDefinition;
@@ -94,7 +94,7 @@ export type BuildEventDefinitionParameter = {
   withMultipleDefinitions?: boolean;
   source?: string | string[];
   target?: string;
-};
+}
 
 export type BuildTaskKind = 'task' | 'businessRuleTask' | 'manualTask' | 'receiveTask' | 'sendTask' | 'serviceTask' | 'scriptTask' | 'userTask';
 /**
@@ -164,7 +164,7 @@ export type BuildAssociationParameter = Pick<TAssociation, 'id' | 'sourceRef' | 
  */
 export type BuildTextAnnotationParameter = Pick<TTextAnnotation, 'id' | 'text'>;
 
-export type BuildProcessParameter = {
+export interface BuildProcessParameter {
   lane?: BuildLaneParameter | BuildLaneParameter[];
   task?: BuildTaskParameter | BuildTaskParameter[];
   event?: BuildEventParameter | BuildEventParameter[];
@@ -242,28 +242,28 @@ export type BuildProcessParameter = {
 
   /** @default false */
   withParticipant?: boolean;
-};
+}
 
-export type BuildMessageFlowParameter = {
+export interface BuildMessageFlowParameter {
   id: string;
   name?: string;
   sourceRef: string;
   targetRef: string;
-};
+}
 
 export type BpmnGlobalTaskKind = keyof Pick<TDefinitions, 'globalTask' | 'globalBusinessRuleTask' | 'globalManualTask' | 'globalScriptTask' | 'globalUserTask'>;
-export type BuildGlobalTaskParameter = {
+export interface BuildGlobalTaskParameter {
   id?: string;
 
   /** @default 'globalTask' */
   bpmnKind?: BpmnGlobalTaskKind;
-};
+}
 
-export type BuildDefinitionParameter = {
+export interface BuildDefinitionParameter {
   process: BuildProcessParameter | BuildProcessParameter[];
   messageFlows?: BuildMessageFlowParameter | BuildMessageFlowParameter[];
   globalTask?: BuildGlobalTaskParameter | BuildGlobalTaskParameter[];
-};
+}
 
 export function buildDefinitions({ process, messageFlows, globalTask }: BuildDefinitionParameter): BpmnJsonModel {
   const json: BpmnJsonModel = {

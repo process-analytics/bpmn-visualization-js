@@ -143,6 +143,8 @@ export interface PageOptions {
   bpmnElementIdToCollapse?: string;
   poolIdsToFilter?: string | string[];
   rendererIgnoreBpmnColors?: boolean;
+  rendererIgnoreLabelStyles?: boolean;
+  rendererIgnoreActivityLabelBounds?: boolean;
 }
 
 export interface Point {
@@ -256,6 +258,8 @@ export class PageTester {
     otherPageOptions?.poolIdsToFilter && (url += `&bpmn.filter.pool.ids=${otherPageOptions.poolIdsToFilter}`);
     // renderer options
     otherPageOptions?.rendererIgnoreBpmnColors !== undefined && (url += `&renderer.ignore.bpmn.colors=${otherPageOptions.rendererIgnoreBpmnColors}`);
+    otherPageOptions?.rendererIgnoreLabelStyles !== undefined && (url += `&renderer.ignore.label.style=${otherPageOptions.rendererIgnoreLabelStyles}`);
+    otherPageOptions?.rendererIgnoreActivityLabelBounds !== undefined && (url += `&renderer.ignore.activity.label.bounds=${otherPageOptions.rendererIgnoreActivityLabelBounds}`);
 
     return url;
   }

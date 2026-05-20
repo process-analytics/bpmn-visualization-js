@@ -51,8 +51,13 @@ jobs:
         uses: ./.github/actions/build-setup
       - name: Build npm package
         run: npm pack
+      - name: List the size of the npm package bundles
+        run: |
+          scripts/list-npm-bundle-sizes.sh
+          echo "## NPM package bundle sizes" >> "$GITHUB_STEP_SUMMARY"
+          scripts/list-npm-bundle-sizes.sh --md-simple >> "$GITHUB_STEP_SUMMARY"
       - name: Upload npm package
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: bpmn-visualization-npm-package-${{github.sha}}
           path: bpmn-visualization-*.tgz
@@ -67,7 +72,7 @@ jobs:
         run: npm run test:bundles:verbose
       - name: Upload bundles test results
         if: ${{ failure() && steps.test_bundles.outcome == 'failure' }}
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: bundles-test-results-${{github.sha}}
           path: build/test-report/bundles

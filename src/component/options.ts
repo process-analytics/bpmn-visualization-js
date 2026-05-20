@@ -168,7 +168,7 @@ export enum ZoomType {
  * Configure the BPMN parser.
  * @category Initialization & Configuration
  */
-export type ParserOptions = {
+export interface ParserOptions {
   /**
    * Apply additional processing to the XML attributes in the BPMN source.
    *
@@ -182,7 +182,7 @@ export type ParserOptions = {
    *   }
    * }
    * ```
-   * @param val the value of the 'name' attribute to be processed.
+   * @param value the value of the 'name' attribute to be processed.
    */
   additionalXmlAttributeProcessor?: (value: string) => string;
   /**
@@ -190,7 +190,7 @@ export type ParserOptions = {
    * @default false
    */
   disableConsoleLog?: boolean;
-};
+}
 
 /**
  * Global configuration for the rendering of the BPMN elements.
@@ -198,7 +198,7 @@ export type ParserOptions = {
  * @category Initialization & Configuration
  * @since 0.35.0
  */
-export type RendererOptions = {
+export interface RendererOptions {
   /**
    * Custom {@link IconPainter} instance to use for rendering BPMN element icons.
    * This allows you to customize how icons are rendered on tasks, events, and other BPMN elements.
@@ -235,7 +235,7 @@ export type RendererOptions = {
    * @default false
    * @since 0.48.0
    */
-  ignoreBpmnActivityLabelBounds?: boolean;
+  ignoreActivityLabelBounds?: boolean;
   /**
    * If set to `false`, support the "BPMN in Color" specification with a fallback with bpmn.io colors. For more details about the support, see
    * {@link https://github.com/process-analytics/bpmn-visualization-js/pull/2614}.
@@ -252,16 +252,16 @@ export type RendererOptions = {
    * @default false
    * @since 0.48.0
    */
-  ignoreBpmnLabelStyles?: boolean;
+  ignoreLabelStyles?: boolean;
   /**
    * If set to `true`, ignore the label bounds configuration defined in the BPMN diagram for tasks only.
    * This forces the use of default label positioning for tasks instead of the bounds specified in the BPMN source.
-   * This option is more restrictive than `ignoreBpmnActivityLabelBounds` as it only affects tasks, not sub-processes or call activities.
+   * This option is more restrictive than {@link ignoreActivityLabelBounds} as it only affects tasks, not sub-processes or call activities.
    *
-   * **Note**: When `ignoreBpmnActivityLabelBounds` is `true`, this option is ignored as the more general activity option takes precedence.
+   * **Note**: When {@link ignoreActivityLabelBounds} is `true`, this option is ignored as the more general activity option takes precedence.
    *
    * @default false
    * @since 0.48.0
    */
-  ignoreBpmnTaskLabelBounds?: boolean;
-};
+  ignoreTaskLabelBounds?: boolean;
+}
