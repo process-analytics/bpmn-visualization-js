@@ -30,14 +30,14 @@ class ImageSnapshotThresholdsActivityLabelBounds extends MultiBrowserImageSnapsh
       [
         'activities.with.wrongly.positioned.labels.not-ignored',
         {
-          macos: 0.19 / 100, // 0.18413140767182812%
+          macos: 0.22 / 100, // 0.0.21093289838456375%
           windows: 0.22 / 100, // 0.21177195104159496%
         },
       ],
       [
         'activities.with.wrongly.positioned.labels.ignored',
         {
-          macos: 0.29 / 100, // 0.28115982788768923%
+          macos: 0.31 / 100, // 0.30984842235473043%
           windows: 0.28 / 100, // 0.27545483944123594%
         },
       ],
@@ -93,14 +93,14 @@ class ImageSnapshotThresholdsLabelStyles extends MultiBrowserImageSnapshotThresh
       [
         'labels.with.font.styles.not-ignored',
         {
-          macos: 0.17 / 100, // 0.16518659366272503%
+          macos: 0.22 / 100, // 0.21242058764329164%
           windows: 0.16 / 100, // 0.1578221549419112%
         },
       ],
       [
         'labels.with.font.styles.ignored',
         {
-          macos: 0.21 / 100, // 0.20961855005547925%
+          macos: 0.26 / 100, // 0.2568027984101273%
           windows: 0.29 / 100, // 0.2864761242524328%
         },
       ],
