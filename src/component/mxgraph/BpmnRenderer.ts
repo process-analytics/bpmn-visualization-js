@@ -92,22 +92,8 @@ export class BpmnRenderer {
       const target = this.getCell(bpmnElement.targetReferenceId);
       const labelBounds = internalEdge.label?.bounds;
       const style = this.styleComputer.computeStyle(internalEdge, labelBounds);
-      const edge = this.graph.insertEdge(parent, bpmnElement.id, bpmnElement.name, source, target, style);
-      this.insertWaypoints(internalEdge.waypoints, edge);
 
-      if (labelBounds) {
-        edge.geometry.width = labelBounds.width;
-        edge.geometry.height = labelBounds.height;
-
-        const edgeCenterCoordinate = this.coordinatesTranslator.computeEdgeCenter(edge);
-        edge.geometry.relative = false;
-
-        const labelBoundsRelativeCoordinateFromParent = this.coordinatesTranslator.computeRelativeCoordinates(edge.parent, new mxPoint(labelBounds.x, labelBounds.y));
-        const relativeLabelX = labelBoundsRelativeCoordinateFromParent.x + labelBounds.width / 2 - edgeCenterCoordinate.x;
-        const relativeLabelY = labelBoundsRelativeCoordinateFromParent.y - edgeCenterCoordinate.y;
-        edge.geometry.offset = new mxPoint(relativeLabelX, relativeLabelY);
-      }
-
+      const edge = this.insertEdge(parent, bpmnElement.id, bpmnElement.name, source, target, internalEdge.waypoints, labelBounds, style);
       this.insertMessageFlowIconIfNeeded(internalEdge, edge);
     }
   }
@@ -128,6 +114,24 @@ export class BpmnRenderer {
 
   private getCell(id: string): mxCell {
     return this.graph.getModel().getCell(id);
+  }
+
+  private insertEdge(parent: mxCell, id: string | null, value: string, source: mxCell, target: mxCell, waypoints: Waypoint[], labelBounds: Bounds, style: string): mxCell {
+    const edge = this.graph.insertEdge(parent, id, value, source, target, style);
+    this.insertWaypoints(waypoints, edge);
+
+    if (labelBounds) {
+      edge.geometry.width = labelBounds.width;
+      edge.geometry.height = labelBounds.height;
+      edge.geometry.relative = false;
+
+      const edgeCenterCoordinate = this.coordinatesTranslator.computeEdgeCenter(edge);
+      const labelBoundsRelativeCoordinateFromParent = this.coordinatesTranslator.computeRelativeCoordinates(edge.parent, new mxPoint(labelBounds.x, labelBounds.y));
+      const relativeLabelX = labelBoundsRelativeCoordinateFromParent.x + labelBounds.width / 2 - edgeCenterCoordinate.x;
+      const relativeLabelY = labelBoundsRelativeCoordinateFromParent.y - edgeCenterCoordinate.y;
+      edge.geometry.offset = new mxPoint(relativeLabelX, relativeLabelY);
+    }
+    return edge;
   }
 
   private insertVertex(parent: mxCell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: string): mxCell {
