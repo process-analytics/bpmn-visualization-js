@@ -86,14 +86,7 @@ export class BpmnRenderer {
 
   private insertEdges(edges: Edge[]): void {
     for (const internalEdge of edges) {
-      const bpmnElement = internalEdge.bpmnElement;
-      const parent = this.graph.getDefaultParent();
-      const source = this.getCell(bpmnElement.sourceReferenceId);
-      const target = this.getCell(bpmnElement.targetReferenceId);
-      const labelBounds = internalEdge.label?.bounds;
-      const style = this.styleComputer.computeStyle(internalEdge, labelBounds);
-
-      const edge = this.insertEdge(parent, bpmnElement.id, bpmnElement.name, source, target, internalEdge.waypoints, labelBounds, style);
+      const edge = this.insertEdge(internalEdge);
       this.insertMessageFlowIconIfNeeded(internalEdge, edge);
     }
   }
@@ -116,9 +109,15 @@ export class BpmnRenderer {
     return this.graph.getModel().getCell(id);
   }
 
-  private insertEdge(parent: mxCell, id: string | null, value: string, source: mxCell, target: mxCell, waypoints: Waypoint[], labelBounds: Bounds, style: string): mxCell {
-    const edge = this.graph.insertEdge(parent, id, value, source, target, style);
-    this.insertWaypoints(waypoints, edge);
+  private insertEdge(internalEdge: Edge): mxCell {
+    const bpmnElement = internalEdge.bpmnElement;
+    const parent = this.graph.getDefaultParent();
+    const source = this.getCell(bpmnElement.sourceReferenceId);
+    const target = this.getCell(bpmnElement.targetReferenceId);
+    const labelBounds = internalEdge.label?.bounds;
+    const style = this.styleComputer.computeStyle(internalEdge, labelBounds);
+    const edge = this.graph.insertEdge(parent, bpmnElement.id, bpmnElement.name, source, target, style);
+    this.insertWaypoints(internalEdge.waypoints, edge);
 
     if (labelBounds) {
       edge.geometry.width = labelBounds.width;
