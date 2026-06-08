@@ -59,7 +59,7 @@ jobs:
           registry-url: ${{ inputs.registry-url }}
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
-        if: inputs.install-dependencies == 'true'
+        #        if: inputs.install-dependencies == 'true'
         with:
           install-command: npm ci --ignore-scripts --prefer-offline --audit false
       # END OF temporary workaround
