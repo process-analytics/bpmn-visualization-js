@@ -47,8 +47,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-      - name: Build Setup
-        uses: ./.github/actions/build-setup
+      # START temporary workaround
+      # Browser download failure with Node 24. See https://github.com/microsoft/playwright/issues/41185 and https://github.com/microsoft/playwright-cli/issues/419#issuecomment-4646958277 (that mentions that it should work with Node 22)
+      #      - name: Build Setup
+      #        uses: ./.github/actions/build-setup
+      - name: Setup node
+        uses: actions/setup-node@v6
+        with:
+          #          node-version-file: '.nvmrc'
+          node-version: '22'
+          registry-url: ${{ inputs.registry-url }}
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+        #        if: inputs.install-dependencies == 'true'
+        with:
+          install-command: npm ci --ignore-scripts --prefer-offline --audit false
+      # END OF temporary workaround
       - name: Build npm package
         run: npm pack
       - name: List the size of the npm package bundles

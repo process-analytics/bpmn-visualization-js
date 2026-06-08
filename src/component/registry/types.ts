@@ -185,6 +185,9 @@ export interface ElementsRegistry {
    *
    * If you also need to retrieve the related DOM elements and more information, use {@link getElementsByKinds} instead.
    *
+   * **WARNING**: this method is not designed to accept a large number of types. Its implementation currently does DOM lookup to retrieve the BPMN elements for a given kind (some technical limitations require this).
+   * Attempts to retrieve too many elements, especially on large BPMN diagrams, may lead to performance issues.
+   *
    * @param bpmnKinds The BPMN kind of the element(s) to retrieve.
    * @since 0.39.0
    */
@@ -204,7 +207,7 @@ export interface ElementsRegistry {
    *
    * If you only need to retrieve the BPMN model data, use {@link getModelElementsByKinds} instead.
    *
-   * **WARNING**: this method is not designed to accept a large amount of types. It does DOM lookup to retrieve the HTML elements relative to the BPMN elements.
+   * **WARNING**: this method is not designed to accept a large number of types. It does DOM lookup to retrieve the HTML elements relative to the BPMN elements.
    * Attempts to retrieve too many elements, especially on large BPMN diagrams, may lead to performance issues.
    *
    * @param bpmnKinds The BPMN kind of the element(s) to retrieve.

@@ -14,7 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { BpmnVisualization, FlowKind, ShapeBpmnElementKind, ShapeUtil, StyleConfigurator, StyleDefault } from '../../../src/bpmn-visualization';
+import { BpmnVisualization, FlowKind, ShapeBpmnElementKind, ShapeUtil, StyleDefault } from '../../../src/bpmn-visualization';
+import { StyleConfigurator } from '../../../src/component/mxgraph/config/StyleConfigurator';
 import { mxConstants } from '../../../src/component/mxgraph/initializer';
 import { logStartup } from '../shared/internal-helpers';
 
