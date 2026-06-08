@@ -46,7 +46,6 @@ export const {
   mxEvent,
   mxGeometry, // at least used in tests
   mxGraphView,
-  mxImageExport,
   mxImageShape,
   mxMarker,
   mxPerimeter,

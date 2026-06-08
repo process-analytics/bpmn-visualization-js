@@ -31,7 +31,6 @@ export type { BpmnGraph } from './component/mxgraph/BpmnGraph';
 export type * from './component/types';
 
 // not part of the public API but needed for the custom theme examples
-export { StyleConfigurator } from './component/mxgraph/config/StyleConfigurator';
 export * from './component/mxgraph/style';
 export * from './component/mxgraph/shape/render';
 
