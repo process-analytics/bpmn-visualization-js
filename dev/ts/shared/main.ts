@@ -402,6 +402,7 @@ function updateStyleOfElementsIfRequested(): void {
   }
 }
 
+// May have bad performance for large diagrams as it does a lot of DOM lookups
 function retrieveAllBpmnElementIds(): string[] {
   log('Retrieving ids of all BPMN elements');
   const allKinds = [...Object.values(ShapeBpmnElementKind), ...Object.values(FlowKind)];
