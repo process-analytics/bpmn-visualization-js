@@ -120,18 +120,13 @@ Implementation order will be refined in plan phase; the complete inventory with 
 - Node/npm per `.nvmrc`; jest stays CJS (maxGraph ships CJS).
 - Reference materials: maxGraph CHANGELOG (authoritative post-0.18 breaks), `packages/ts-example-selected-features`, v1 branch diffs (`git diff e8fa9071b..poc/bump_maxgraph_0.20.0_v1 -- <file>`).
 
-## Decisions (user-validated) and Open Questions for Plan Phase
-
-Decided:
+## Decisions for the Plan Phase (all user-validated, no remaining open question)
 
 - **Q1 - `BaseGraph`** (tree-shaking, v1 choice): confirmed by the user.
 - **Q2 - `CellStyle` interface augmentation: NOT possible for now**, keep the v1 `BpmnCellStyle` extension-type approach. Mark in the code (TODO) that augmentation will become possible with maxGraph 0.24.0 (to be released).
 - **Q3 - arcSize: revert v1's halving** (0.21.0 fixed the computation), BUT not in the first shot. Do it at the END of the migration as a dedicated step, because the visual (e2e) tests must be checked against this change.
+- **Q4 - `BpmnConnector`/start-end fill color workaround: native maxGraph support is supposed to be available**; give a try to the maxGraph implementation (native marker fill colors, maxGraph#201/PR#157) and delete `BpmnConnector` + `bpmn.edge.startFillColor`/`endFillColor` if it works.
 - **Q5 - FitType.Center: keep the own computation** (integration tests pin exact scaleAndTranslate args). Add a TODO in the code to switch to the maxGraph `FitPlugin.fitCenter` implementation in the future: the maxGraph implementation changes the rendering.
-
-Still open:
-
-- **Q4** - `BpmnConnector`/start-end fill color workaround: check if maxGraph 0.23.0 natively supports marker fill colors (maxGraph#201/PR#157); delete if so.
-- **Q6** - Public replacement (if any) for `export { mxgraph }`: probably none (users import `@maxgraph/core` directly); confirm BREAKING CHANGE wording.
-- **Q7** - `StyleDefaultsConfig` (0.22.0) adoption now or later (could simplify StyleConfigurator but adds delta vs v1 reference).
-- **Q8** - e2e strategy: disable e2e CI during migration like v1, or run locally only and inventory diffs at the end (definition of done requires the diff list).
+- **Q6 - `export { mxgraph }`: no replacement, because not needed** (users import `@maxgraph/core` directly). Document it as a BREAKING CHANGE.
+- **Q7 - `StyleDefaultsConfig` (0.22.0): do NOT adopt, no global configuration change, only local** (per-graph stylesheet as today). Changing the style configuration globally was already possible with mxGraph and the project decided not to do it; continue that way.
+- **Q8 - e2e strategy: disable the e2e tests on CI** (like v1) and run them locally on demand to build the snapshot-diff inventories (the definition of done requires the diff list).
