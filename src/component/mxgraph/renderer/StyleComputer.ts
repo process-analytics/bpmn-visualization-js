@@ -19,6 +19,9 @@ import type { Edge } from '../../../model/bpmn/internal/edge/edge';
 import type { Font } from '../../../model/bpmn/internal/Label';
 import type { StyleExtensionPoint } from '../../extension/extension-points';
 import type { RendererOptions } from '../../options';
+import type { BpmnCellStyle, BpmnCellStyleExtension } from '../style/types';
+
+import { constants } from '@maxgraph/core';
 
 import { MessageVisibleKind, ShapeBpmnCallActivityKind, ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeUtil } from '../../../model/bpmn/internal';
 import { AssociationFlow, SequenceFlow } from '../../../model/bpmn/internal/edge/flows';
@@ -33,7 +36,6 @@ import {
   ShapeBpmnSubProcess,
 } from '../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { bpmnInColorStyleExtension } from '../../extension/bpmn-in-color/style-extension';
-import { constants } from '@maxgraph/core';
 import { BpmnStyleIdentifier } from '../style';
 
 /**
@@ -51,103 +53,92 @@ export default class StyleComputer {
     this.styleExtensions = (options?.ignoreBpmnColors ?? true) ? [] : [bpmnInColorStyleExtension];
   }
 
-  computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): string {
-    const styles: string[] = [bpmnCell.bpmnElement.kind as string];
+  computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): BpmnCellStyle {
+    const bpmn: BpmnCellStyleExtension = { kind: bpmnCell.bpmnElement.kind };
+    const baseStyleNames: string[] = [bpmnCell.bpmnElement.kind as string];
+    const style: BpmnCellStyle = { baseStyleNames, bpmn };
 
-    let mainStyleValues;
     if (bpmnCell instanceof Shape) {
-      mainStyleValues = this.computeShapeStyleValues(bpmnCell);
+      this.computeShapeStyle(bpmnCell, style, bpmn);
     } else {
-      styles.push(...computeEdgeBaseStyles(bpmnCell));
-      mainStyleValues = this.computeEdgeStyleValues(bpmnCell);
+      baseStyleNames.push(...computeEdgeBaseStyleNames(bpmnCell));
+      this.computeEdgeStyle(bpmnCell, style);
     }
 
-    const fontStyleValues = this.computeFontStyleValues(bpmnCell);
-    const labelStyleValues = computeLabelStyleValues(bpmnCell, labelBounds);
+    this.computeFontStyle(bpmnCell, style);
+    computeLabelStyle(bpmnCell, labelBounds, style);
 
-    styles.push(...toArrayOfMxGraphStyleEntries([...mainStyleValues, ...fontStyleValues, ...labelStyleValues]));
-    return styles.join(';');
+    return style;
   }
 
-  private computeShapeStyleValues(shape: Shape): Map<string, string | number> {
-    const styleValues = new Map<string, string | number>();
+  private computeShapeStyle(shape: Shape, style: BpmnCellStyle, bpmn: BpmnCellStyleExtension): void {
     const bpmnElement = shape.bpmnElement;
 
     if (bpmnElement instanceof ShapeBpmnEvent) {
-      computeEventShapeStyle(bpmnElement, styleValues);
+      computeEventShapeStyle(bpmnElement, bpmn);
     } else if (bpmnElement instanceof ShapeBpmnActivity) {
-      computeActivityShapeStyle(bpmnElement, styleValues);
+      computeActivityShapeStyle(bpmnElement, bpmn);
     } else if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
-      // constants.STYLE_HORIZONTAL is for the label
-      // In BPMN, isHorizontal is for the Shape
-      // So we invert the value when we switch from the BPMN value to the mxGraph value.
-      styleValues.set(constants.STYLE_HORIZONTAL, shape.isHorizontal ? '0' : '1');
+      // 'style.horizontal' is for the label.
+      // In BPMN, isHorizontal is for the Shape.
+      // So we invert the value when we switch from the BPMN value to the maxGraph value.
+      style.horizontal = !shape.isHorizontal;
     } else if (bpmnElement instanceof ShapeBpmnEventBasedGateway) {
-      styleValues.set(BpmnStyleIdentifier.IS_INSTANTIATING, String(bpmnElement.instantiate));
-      styleValues.set(BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND, String(bpmnElement.gatewayKind));
+      bpmn.isInstantiating = bpmnElement.instantiate;
+      bpmn.gatewayKind = bpmnElement.gatewayKind;
     }
 
-    for (const extension of this.styleExtensions) extension.enrichShapeStyle?.(shape, styleValues);
-
-    return styleValues;
+    for (const extension of this.styleExtensions) extension.enrichShapeStyle?.(shape, style);
   }
 
-  private computeEdgeStyleValues(edge: Edge): Map<string, string | number> {
-    const styleValues = new Map<string, string | number>();
-
-    for (const extension of this.styleExtensions) extension.enrichEdgeStyle?.(edge, styleValues);
-
-    return styleValues;
+  private computeEdgeStyle(edge: Edge, style: BpmnCellStyle): void {
+    for (const extension of this.styleExtensions) extension.enrichEdgeStyle?.(edge, style);
   }
 
-  private computeFontStyleValues(bpmnCell: Shape | Edge): Map<string, string | number> {
-    const styleValues = new Map<string, string | number>();
-
+  private computeFontStyle(bpmnCell: Shape | Edge, style: BpmnCellStyle): void {
     const font = bpmnCell.label?.font;
     if (font && !this.ignoreLabelStyles) {
-      styleValues.set(constants.STYLE_FONTFAMILY, font.name);
-      styleValues.set(constants.STYLE_FONTSIZE, font.size);
-      styleValues.set(constants.STYLE_FONTSTYLE, getFontStyleValue(font));
+      font.name && (style.fontFamily = font.name);
+      font.size && (style.fontSize = font.size);
+      // Do not set fontStyle to 0: an explicit 0 would override the default and is not meaningful.
+      const fontStyleValue = getFontStyleValue(font);
+      fontStyleValue && (style.fontStyle = fontStyleValue);
     }
-
-    return styleValues;
   }
 
-  computeMessageFlowIconStyle(edge: Edge): string {
-    const styleValues = new Map<string, string | number>();
-    styleValues.set('shape', BpmnStyleIdentifier.MESSAGE_FLOW_ICON);
-    styleValues.set(BpmnStyleIdentifier.IS_INITIATING, String(edge.messageVisibleKind === MessageVisibleKind.INITIATING));
+  computeMessageFlowIconStyle(edge: Edge): BpmnCellStyle {
+    const style: BpmnCellStyle = {
+      shape: BpmnStyleIdentifier.MESSAGE_FLOW_ICON,
+      bpmn: { isInitiating: edge.messageVisibleKind === MessageVisibleKind.INITIATING },
+    };
 
-    for (const extension of this.styleExtensions) extension.enrichMessageFlowIconStyle?.(edge, styleValues);
+    for (const extension of this.styleExtensions) extension.enrichMessageFlowIconStyle?.(edge, style);
 
-    return toArrayOfMxGraphStyleEntries([...styleValues]).join(';');
+    return style;
   }
 }
 
-function computeEventShapeStyle(bpmnElement: ShapeBpmnEvent, styleValues: Map<string, string | number>): void {
-  styleValues.set(BpmnStyleIdentifier.EVENT_DEFINITION_KIND, bpmnElement.eventDefinitionKind);
+function computeEventShapeStyle(bpmnElement: ShapeBpmnEvent, bpmn: BpmnCellStyleExtension): void {
+  bpmn.eventDefinitionKind = bpmnElement.eventDefinitionKind;
 
   if (bpmnElement instanceof ShapeBpmnBoundaryEvent || (bpmnElement instanceof ShapeBpmnStartEvent && bpmnElement.isInterrupting !== undefined)) {
-    styleValues.set(BpmnStyleIdentifier.IS_INTERRUPTING, String(bpmnElement.isInterrupting));
+    bpmn.isInterrupting = bpmnElement.isInterrupting;
   }
 }
 
-function computeActivityShapeStyle(bpmnElement: ShapeBpmnActivity, styleValues: Map<string, string | number>): void {
+function computeActivityShapeStyle(bpmnElement: ShapeBpmnActivity, bpmn: BpmnCellStyleExtension): void {
   if (bpmnElement instanceof ShapeBpmnSubProcess) {
-    styleValues.set(BpmnStyleIdentifier.SUB_PROCESS_KIND, bpmnElement.subProcessKind);
+    bpmn.subProcessKind = bpmnElement.subProcessKind;
   } else if (bpmnElement.kind === ShapeBpmnElementKind.TASK_RECEIVE) {
-    styleValues.set(BpmnStyleIdentifier.IS_INSTANTIATING, String(bpmnElement.instantiate));
+    bpmn.isInstantiating = bpmnElement.instantiate;
   } else if (bpmnElement instanceof ShapeBpmnCallActivity) {
-    styleValues.set(BpmnStyleIdentifier.GLOBAL_TASK_KIND, bpmnElement.globalTaskKind);
+    bpmn.globalTaskKind = bpmnElement.globalTaskKind;
   }
 
-  const markers: ShapeBpmnMarkerKind[] = bpmnElement.markers;
-  if (markers.length > 0) {
-    styleValues.set(BpmnStyleIdentifier.MARKERS, markers.join(','));
-  }
+  bpmn.markers = bpmnElement.markers;
 }
 
-function computeEdgeBaseStyles(edge: Edge): string[] {
+function computeEdgeBaseStyleNames(edge: Edge): string[] {
   const styles: string[] = [];
 
   const bpmnElement = edge.bpmnElement;
@@ -161,25 +152,22 @@ function computeEdgeBaseStyles(edge: Edge): string[] {
   return styles;
 }
 
-function computeLabelStyleValues(bpmnCell: Shape | Edge, labelBounds: Bounds): Map<string, string | number> {
-  const styleValues = new Map<string, string | number>();
-
+function computeLabelStyle(bpmnCell: Shape | Edge, labelBounds: Bounds, style: BpmnCellStyle): void {
   const bpmnElement = bpmnCell.bpmnElement;
   if (labelBounds) {
-    styleValues.set(constants.STYLE_VERTICAL_ALIGN, constants.ALIGN_TOP);
+    style.verticalAlign = 'top';
     if (bpmnCell.bpmnElement.kind != ShapeBpmnElementKind.TEXT_ANNOTATION) {
-      styleValues.set(constants.STYLE_ALIGN, constants.ALIGN_CENTER);
+      style.align = 'center';
     }
 
     if (bpmnCell instanceof Shape) {
       // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
-      styleValues.set(constants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
-      // align settings
-      // According to the documentation, "label position" can only take values in left, center, right with default=center
+      style.labelWidth = labelBounds.width + 1;
+      // According to the documentation, "label position" can only take values in left, center, right with default=center.
       // However, there is undocumented behavior when the value is not one of these and this behavior is exactly what we want.
-      // See https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/mxGraphView.js#L1183-L1252
-      styleValues.set(constants.STYLE_LABEL_POSITION, 'ignore');
-      styleValues.set(constants.STYLE_VERTICAL_LABEL_POSITION, constants.ALIGN_MIDDLE);
+      // The behavior carried over from mxGraph to maxGraph; the 'ignore' value is part of the maxGraph CellStyle type.
+      style.labelPosition = 'ignore';
+      style.verticalLabelPosition = 'middle';
     }
   }
   // when no label bounds, adjust the default style dynamically
@@ -188,10 +176,8 @@ function computeLabelStyleValues(bpmnCell: Shape | Edge, labelBounds: Bounds): M
     (bpmnElement instanceof ShapeBpmnSubProcess || (bpmnElement instanceof ShapeBpmnCallActivity && bpmnElement.callActivityKind === ShapeBpmnCallActivityKind.CALLING_PROCESS)) &&
     !bpmnElement.markers.includes(ShapeBpmnMarkerKind.EXPAND)
   ) {
-    styleValues.set(constants.STYLE_VERTICAL_ALIGN, constants.ALIGN_TOP);
+    style.verticalAlign = 'top';
   }
-
-  return styleValues;
 }
 
 /**
@@ -201,20 +187,16 @@ function computeLabelStyleValues(bpmnCell: Shape | Edge, labelBounds: Bounds): M
 export function getFontStyleValue(font: Font): number {
   let value = 0;
   if (font.isBold) {
-    value += constants.FONT_BOLD;
+    value += constants.FONT_STYLE_MASK.BOLD;
   }
   if (font.isItalic) {
-    value += constants.FONT_ITALIC;
+    value += constants.FONT_STYLE_MASK.ITALIC;
   }
   if (font.isStrikeThrough) {
-    value += constants.FONT_STRIKETHROUGH;
+    value += constants.FONT_STYLE_MASK.STRIKETHROUGH;
   }
   if (font.isUnderline) {
-    value += constants.FONT_UNDERLINE;
+    value += constants.FONT_STYLE_MASK.UNDERLINE;
   }
   return value;
-}
-
-function toArrayOfMxGraphStyleEntries(styleValues: [string, string | number][]): string[] {
-  return styleValues.filter(([, v]) => v && v != 'undefined').map(([key, value]) => `${key}=${value}`);
 }

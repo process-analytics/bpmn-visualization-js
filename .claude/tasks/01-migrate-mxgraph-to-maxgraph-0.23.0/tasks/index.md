@@ -15,7 +15,7 @@ Definition of done: `npm run build`, `npm run test:unit`, `npm run test:integrat
 - [x] **Task 2**: Introduce style types and remove the mxGraph initializer - `task-02.md` (depends on 1)
 - [x] **Task 3**: Adopt BaseGraph in BpmnGraph and GraphConfigurator - `task-03.md` (depends on 2; pairs with 4)
 - [x] **Task 4**: Register shapes/markers/perimeters and rework BpmnCellRenderer overlays - `task-04.md` (depends on 2; pairs with 3)
-- [ ] **Task 5**: Migrate StyleComputer and the read/compute style side - `task-05.md` (depends on 2)
+- [x] **Task 5**: Migrate StyleComputer and the read/compute style side - `task-05.md` (depends on 2)
 - [ ] **Task 6**: Migrate StyleConfigurator, identifiers and style/utils - `task-06.md` (depends on 2, 5)
 - [ ] **Task 7**: Migrate runtime style/CSS updaters and the SVG canvas override - `task-07.md` (depends on 2, 6)
 - [ ] **Task 8**: Migrate shapes and icons, run the BpmnConnector experiment - `task-08.md` (depends on 4, 6, 7)
