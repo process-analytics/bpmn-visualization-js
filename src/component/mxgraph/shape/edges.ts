@@ -14,13 +14,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { mxAbstractCanvas2D, mxPoint } from 'mxgraph';
+import type { AbstractCanvas2D, Point } from '@maxgraph/core';
 
 import { ConnectorShape, SvgCanvas2D } from '@maxgraph/core';
-import { BpmnStyleIdentifier } from '../style';
 
+/**
+ * Custom connector kept only to restrict click capture to the edge stroke (the `paintEdgeLine` pointer-events tweak).
+ *
+ * The marker fill colors are now handled natively by maxGraph through the `startFillColor`/`endFillColor` styles
+ * (maxGraph#157), so this shape no longer needs to set them; that was the other responsibility of `BpmnConnector` with
+ * mxGraph. It is still registered under the `bpmn.edge` shape name and used as the default edge shape.
+ */
 export class BpmnConnector extends ConnectorShape {
-  override paintEdgeShape(c: mxAbstractCanvas2D, pts: mxPoint[]): void {
+  override paintEdgeShape(c: AbstractCanvas2D, pts: Point[]): void {
     // The indirection via functions for markers is needed in
     // order to apply the offsets before painting the line and
     // paint the markers after painting the line.
@@ -33,33 +39,22 @@ export class BpmnConnector extends ConnectorShape {
     c.setShadow(false);
     c.setDashed(false, false);
 
-    if (sourceMarker != null) {
-      c.setFillColor(mxUtils.getValue(this.style, BpmnStyleIdentifier.EDGE_START_FILL_COLOR, this.stroke));
-      sourceMarker();
-    }
-
-    if (targetMarker != null) {
-      c.setFillColor(mxUtils.getValue(this.style, BpmnStyleIdentifier.EDGE_END_FILL_COLOR, this.stroke));
-      targetMarker();
-    }
+    // The marker fill colors are applied natively by maxGraph from the startFillColor/endFillColor styles.
+    sourceMarker?.();
+    targetMarker?.();
   }
 
-  // taken from mxPolyline, required as we cannot call mxPolyline method here (parent of the parent)
-  // we only support non STYLE_CURVED here (is possible with parent class)
-  private paintEdgeLine(c: mxAbstractCanvas2D, pts: mxPoint[]): void {
-    const previous = getPointerEventsValue(c);
-    setPointerEventsValue(c, 'stroke');
-    this.paintLine(c, pts, this.isRounded);
-    setPointerEventsValue(c, previous);
-  }
-}
-
-function getPointerEventsValue(c: mxAbstractCanvas2D): string {
-  return c instanceof SvgCanvas2D ? c.pointerEventsValue : null;
-}
-
-function setPointerEventsValue(c: mxAbstractCanvas2D, value: string): void {
-  if (c instanceof SvgCanvas2D) {
-    c.pointerEventsValue = value;
+  // taken from PolylineShape, required as we cannot call the PolylineShape method here (parent of the parent)
+  // we only support non-curved edges here (curved is possible with the parent class)
+  private paintEdgeLine(c: AbstractCanvas2D, pts: Point[]): void {
+    if (c instanceof SvgCanvas2D) {
+      // restrict click capture to the edge stroke
+      const previous = c.pointerEventsValue;
+      c.pointerEventsValue = 'stroke';
+      this.paintLine(c, pts, this.isRounded);
+      c.pointerEventsValue = previous;
+    } else {
+      this.paintLine(c, pts, this.isRounded);
+    }
   }
 }
