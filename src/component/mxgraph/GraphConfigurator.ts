@@ -17,7 +17,6 @@ limitations under the License.
 import type { RendererOptions } from '../options';
 
 import { BpmnGraph } from './BpmnGraph';
-import { registerEdgeMarkers, registerShapes } from './config/register-style-definitions';
 import { StyleConfigurator } from './config/StyleConfigurator';
 import { IconPainter } from './shape/render';
 
@@ -42,8 +41,8 @@ export class GraphConfigurator {
   configure(): BpmnGraph {
     this.configureGraph();
     new StyleConfigurator(this.graph).configureStyles();
-    registerShapes();
-    registerEdgeMarkers();
+    // The custom and built-in shapes, markers and perimeters are registered by BpmnGraph.registerDefaults(), called
+    // during the graph construction.
     return this.graph;
   }
 
@@ -60,6 +59,6 @@ export class GraphConfigurator {
 
     // Disable folding for container cells (pool, lane, sub process, call activity) because we don't need it.
     // This also prevents requesting unavailable images (see #185) as we don't override BpmnGraph folding default images.
-    this.graph.foldingEnabled = false;
+    this.graph.options.foldingEnabled = false;
   }
 }

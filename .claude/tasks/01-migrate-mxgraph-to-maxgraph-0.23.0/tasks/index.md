@@ -13,7 +13,7 @@ Definition of done: `npm run build`, `npm run test:unit`, `npm run test:integrat
 
 - [x] **Task 1**: Swap dependency and build config to maxGraph - `task-01.md`
 - [x] **Task 2**: Introduce style types and remove the mxGraph initializer - `task-02.md` (depends on 1)
-- [ ] **Task 3**: Adopt BaseGraph in BpmnGraph and GraphConfigurator - `task-03.md` (depends on 2; pairs with 4)
+- [x] **Task 3**: Adopt BaseGraph in BpmnGraph and GraphConfigurator - `task-03.md` (depends on 2; pairs with 4)
 - [ ] **Task 4**: Register shapes/markers/perimeters and rework BpmnCellRenderer overlays - `task-04.md` (depends on 2; pairs with 3)
 - [ ] **Task 5**: Migrate StyleComputer and the read/compute style side - `task-05.md` (depends on 2)
 - [ ] **Task 6**: Migrate StyleConfigurator, identifiers and style/utils - `task-06.md` (depends on 2, 5)
