@@ -630,9 +630,9 @@ export type Fill = StyleWithOpacity & {
 };
 
 /**
- * It is a linear gradient managed by `mxGraph`.
- * For more information about mxGraph, refer to the documentation at:
- * {@link https://jgraph.github.io/mxgraph/docs/js-api/files/util/mxConstants-js.html#mxConstants.STYLE_GRADIENTCOLOR}
+ * It is a linear gradient managed by `maxGraph`.
+ * For more information about maxGraph, refer to its documentation:
+ * {@link https://maxgraph.github.io/maxGraph/api-docs/}
  *
  * **Notes**:
  * Using the same color for the start color and end color will have the same effect as setting only the fill color with an HTML color name, HEX code or special keyword.

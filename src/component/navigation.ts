@@ -219,17 +219,15 @@ class ZoomSupport implements Disposable {
   }
 
   dispose(): void {
-    if (this.graph.container) {
-      for (const listener of this.mouseWheelListeners) {
-        InternalEvent.removeListener(this.graph.container, 'wheel', listener);
-      }
-    }
+    // TODO maxgraph@0.23.0 maxGraph wraps the mouse-wheel listeners internally (InternalEvent.addMouseWheelListener)
+    // and exposes no removal API, so they cannot be explicitly detached here. They are released when the graph
+    // container is discarded on dispose.
     this.mouseWheelListeners = [];
   }
 
   private createMouseWheelZoomListener(performScaling: boolean): MouseWheelListener {
     return (event: Event, up: boolean): void => {
-      if (eventUtils.isConsumed(event) || !(event instanceof MouseEvent)) {
+      if (!(event instanceof MouseEvent) || eventUtils.isConsumed(event)) {
         return;
       }
 

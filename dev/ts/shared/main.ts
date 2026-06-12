@@ -30,7 +30,7 @@ import type {
   StyleUpdate,
   ZoomType,
 } from '../../../src/bpmn-visualization';
-import type { mxCell } from 'mxgraph';
+import type { Cell } from '@maxgraph/core';
 
 import { FlowKind, ShapeBpmnElementKind } from '../../../src/bpmn-visualization';
 import { CustomIconPainter } from '../component/CustomIconPainter';
@@ -111,10 +111,9 @@ export function getModelElementsByIds(bpmnIds: string | string[]): BpmnSemantic[
   return bpmnVisualization.bpmnElementsRegistry.getModelElementsByIds(bpmnIds);
 }
 
-function getParentElement(id: string): mxCell {
-  const model = bpmnVisualization.graph.model;
-  const cell = model.getCell(id);
-  return model.getParent(cell);
+function getParentElement(id: string): Cell {
+  const cell = bpmnVisualization.graph.getDataModel().getCell(id);
+  return cell!.getParent()!;
 }
 
 export function getParentElementIds(bpmnIds: string[]): string[] {
@@ -150,7 +149,7 @@ function collapseBpmnElement(bpmnElementId: string): void {
     return;
   }
   log('Updating model, bpmnElement to collapse:', bpmnElementId);
-  const model = bpmnVisualization.graph.getModel();
+  const model = bpmnVisualization.graph.getDataModel();
   const cell = model.getCell(bpmnElementId);
   if (cell) {
     model.beginUpdate();

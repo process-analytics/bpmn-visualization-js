@@ -31,7 +31,7 @@ export class BpmnCellRenderer extends CellRenderer {
   // maxGraph 0.16.0 introduced the createOverlayShape/configureOverlayShape extension points, so the whole
   // createCellOverlays() no longer needs to be reimplemented (the former implementation relied on mxDictionary,
   // removed in maxGraph 0.21.0).
-  protected override createOverlayShape(state: CellState, cellOverlay: CellOverlay): Shape {
+  protected override createOverlayShape(_state: CellState, cellOverlay: CellOverlay): Shape {
     if (cellOverlay instanceof CustomCellOverlay) {
       return new OverlayBadgeShape(cellOverlay.label, new Rectangle(0, 0, 0, 0), cellOverlay.style);
     }
