@@ -1,5 +1,7 @@
 # Task: Migrate from mxGraph to maxGraph 0.23.0
 
+**Note**: explore done with Claude Fable 5 on 2026-06-12
+
 Part of https://github.com/process-analytics/bpmn-visualization-js/issues/3238.
 
 **Scope**: production code in `src/`, test code, build configuration, JSDoc comments. Out of scope: user documentation and docs referencing mxGraph.

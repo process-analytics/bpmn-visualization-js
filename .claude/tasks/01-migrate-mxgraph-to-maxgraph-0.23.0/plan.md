@@ -1,5 +1,7 @@
 # Implementation Plan: Migrate from mxGraph to maxGraph 0.23.0
 
+**Note**: plan created with Claude Fable 5 on 2026-06-12
+
 ## Overview
 
 Big-bang migration on this branch, executed area by area in dependency order, reapplying the proven `poc/bump_maxgraph_0.20.0_v1` patterns onto the CURRENT architecture (never cherry-picking old diffs). For every file below, the v1 reference is available via `git diff e8fa9071b..poc/bump_maxgraph_0.20.0_v1 -- <path>` or `git show poc/bump_maxgraph_0.20.0_v1:<path>` when the file existed in v1; files created after v1 (`BpmnCellRenderer.ts`, `navigation.ts`, `style-updater.ts`, `css-classes-updater.ts`, `extension/`) receive the patterns, not the diffs.
