@@ -15,10 +15,10 @@ limitations under the License.
 */
 
 import type { IconPainter } from './shape/render';
-import type { mxCellRenderer, mxCellState, mxGraphView as mxGraphViewType, mxPoint } from 'mxgraph';
+import type { mxCellRenderer, mxCellState, GraphView as mxGraphViewType, mxPoint } from 'mxgraph';
 
 import { BpmnCellRenderer } from './BpmnCellRenderer';
-import { mxGraph, mxGraphView } from './initializer';
+import { GraphView } from '@maxgraph/core';
 
 /**
  * Temporary storage for iconPainter during BpmnGraph construction.
@@ -107,7 +107,7 @@ export class BpmnGraph extends mxGraph {
   }
 }
 
-class BpmnGraphView extends mxGraphView {
+class BpmnGraphView extends GraphView {
   override getFloatingTerminalPoint(edge: mxCellState, start: mxCellState, end: mxCellState, source: boolean): mxPoint {
     // some values may be null: the first and the last values are null prior computing floating terminal points
     const edgePoints = edge.absolutePoints.filter(Boolean);

@@ -15,14 +15,14 @@ limitations under the License.
 */
 
 import type { IconPainter } from './shape/render';
-import type { mxCellState, mxImageShape as mxImageShapeType, mxShape } from 'mxgraph';
+import type { mxCellState, ImageShape as mxImageShapeType, mxShape } from 'mxgraph';
 
-import { mxCellRenderer, mxDictionary, mxImageShape, mxRectangle } from './initializer';
+import { CellRenderer, ImageShape, Rectangle } from '@maxgraph/core';
 import { CustomCellOverlay } from './overlay/custom-overlay';
 import { OverlayBadgeShape } from './overlay/shapes';
 import { overrideCreateSvgCanvas } from './shape/utils';
 
-export class BpmnCellRenderer extends mxCellRenderer {
+export class BpmnCellRenderer extends CellRenderer {
   constructor(private readonly iconPainter: IconPainter) {
     super();
   }
@@ -46,9 +46,9 @@ export class BpmnCellRenderer extends mxCellRenderer {
 
         // START bpmn-visualization CUSTOMIZATION
         if (currentOverlay instanceof CustomCellOverlay) {
-          overlayShape = new OverlayBadgeShape(currentOverlay.label, new mxRectangle(0, 0, 0, 0), currentOverlay.style);
+          overlayShape = new OverlayBadgeShape(currentOverlay.label, new Rectangle(0, 0, 0, 0), currentOverlay.style);
         } else {
-          overlayShape = new mxImageShape(new mxRectangle(0, 0, 0, 0), currentOverlay.image.src);
+          overlayShape = new ImageShape(new Rectangle(0, 0, 0, 0), currentOverlay.image.src);
           (overlayShape as mxImageShapeType).preserveImageAspect = false;
         }
         // END bpmn-visualization CUSTOMIZATION

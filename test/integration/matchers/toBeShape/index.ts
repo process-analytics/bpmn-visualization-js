@@ -30,7 +30,7 @@ import type { BpmnCellStyle, ExpectedCell } from '../matcher-utils';
 import { getDefaultParentId } from '../../helpers/model-expect';
 import { buildCellMatcher, buildExpectedCellStyleWithCommonAttributes, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
 
-import { mxConstants } from '@lib/component/mxgraph/initializer';
+import { constants } from '@maxgraph/core';
 import { ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';
 
 import MatcherContext = jest.MatcherContext;
@@ -161,7 +161,7 @@ function buildShapeMatcher(matcherName: string, matcherContext: MatcherContext, 
 function buildContainerMatcher(matcherName: string, matcherContext: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
   return buildShapeMatcher(matcherName, matcherContext, received, {
     ...expected,
-    styleShape: mxConstants.SHAPE_SWIMLANE,
+    styleShape: constants.SHAPE_SWIMLANE,
     isSwimLaneLabelHorizontal: expected.isSwimLaneLabelHorizontal ?? false,
   });
 }

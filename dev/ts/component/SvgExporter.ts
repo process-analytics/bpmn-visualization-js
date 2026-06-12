@@ -14,9 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { mxGraph, mxSvgCanvas2D as mxSvgCanvas2DType } from 'mxgraph';
+import type { mxGraph, SvgCanvas2D as mxSvgCanvas2DType } from 'mxgraph';
 
-import { mxClient, mxConstants, mxgraph, mxSvgCanvas2D, mxUtils } from '../../../src/component/mxgraph/initializer';
+import { Client, constants, SvgCanvas2D } from '@maxgraph/core';
 
 interface SvgExportOptions {
   scale: number;
@@ -41,7 +41,7 @@ export class SvgExporter {
     // chrome and webkit: tainted canvas when svg contains foreignObject
     // also on brave --> probably fail on chromium based browsers
     // so disable foreign objects for such browsers
-    const isFirefox = mxClient.IS_FF;
+    const isFirefox = Client.IS_FF;
     return this.doSvgExport(isFirefox);
   }
 
@@ -65,7 +65,7 @@ ${svgAsString}
 
     // Prepares SVG document that holds the output
     const svgDocument = mxUtils.createXmlDocument();
-    const root = svgDocument.createElementNS(mxConstants.NS_SVG, 'svg');
+    const root = svgDocument.createElementNS(constants.NS_SVG, 'svg');
 
     const s = scale / viewScale;
     const w = Math.max(1, Math.ceil(bounds.width * s) + 2 * border);
@@ -77,7 +77,7 @@ ${svgAsString}
     root.setAttribute('viewBox', (crisp ? '-0.5 -0.5' : '0 0') + ' ' + w + ' ' + h);
     svgDocument.append(root);
 
-    const group = svgDocument.createElementNS(mxConstants.NS_SVG, 'g');
+    const group = svgDocument.createElementNS(constants.NS_SVG, 'g');
     root.append(group);
 
     const svgCanvas = this.createSvgCanvas(group);
@@ -109,7 +109,7 @@ ${svgAsString}
   }
 }
 
-class CanvasForExport extends mxSvgCanvas2D {
+class CanvasForExport extends SvgCanvas2D {
   // Convert HTML entities
   private readonly htmlConverter = document.createElement('div');
 
