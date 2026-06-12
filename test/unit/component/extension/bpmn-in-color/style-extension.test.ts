@@ -17,8 +17,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { BpmnCellStyle } from '@lib/component/mxgraph/style/types';
+
 import { bpmnInColorStyleExtension } from '@lib/component/extension/bpmn-in-color/style-extension';
-import { constants } from '@maxgraph/core';
 import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 import { Edge } from '@lib/model/bpmn/internal/edge/edge';
 import { MessageFlow, SequenceFlow } from '@lib/model/bpmn/internal/edge/flows';
@@ -51,52 +52,52 @@ describe('BPMN in Color — style extension', () => {
       const shape = newShape(ShapeBpmnElementKind.TASK);
       shape.extensions.fillColor = '#aabbcc';
       shape.extensions.strokeColor = '#112233';
-      const styleValues = new Map<string, string | number>();
+      const style: BpmnCellStyle = {};
 
-      bpmnInColorStyleExtension.enrichShapeStyle(shape, styleValues);
+      bpmnInColorStyleExtension.enrichShapeStyle(shape, style);
 
-      expect(styleValues.get(constants.STYLE_FILLCOLOR)).toBe('#aabbcc');
-      expect(styleValues.get(constants.STYLE_STROKECOLOR)).toBe('#112233');
-      expect(styleValues.has(constants.STYLE_SWIMLANE_FILLCOLOR)).toBeFalse();
+      expect(style.fillColor).toBe('#aabbcc');
+      expect(style.strokeColor).toBe('#112233');
+      expect(style.swimlaneFillColor).toBeUndefined();
     });
 
     it.each([ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.LANE])('also sets swimlane fill color for %s', (kind: ShapeBpmnElementKind) => {
       const shape = newShape(kind);
       shape.extensions.fillColor = '#abcdef';
-      const styleValues = new Map<string, string | number>();
+      const style: BpmnCellStyle = {};
 
-      bpmnInColorStyleExtension.enrichShapeStyle(shape, styleValues);
+      bpmnInColorStyleExtension.enrichShapeStyle(shape, style);
 
-      expect(styleValues.get(constants.STYLE_FILLCOLOR)).toBe('#abcdef');
-      expect(styleValues.get(constants.STYLE_SWIMLANE_FILLCOLOR)).toBe('#abcdef');
+      expect(style.fillColor).toBe('#abcdef');
+      expect(style.swimlaneFillColor).toBe('#abcdef');
     });
 
     it('does not set swimlane fill color when fillColor is absent on a pool', () => {
       const shape = newShape(ShapeBpmnElementKind.POOL);
-      const styleValues = new Map<string, string | number>();
+      const style: BpmnCellStyle = {};
 
-      bpmnInColorStyleExtension.enrichShapeStyle(shape, styleValues);
+      bpmnInColorStyleExtension.enrichShapeStyle(shape, style);
 
-      expect(styleValues.has(constants.STYLE_FILLCOLOR)).toBeFalse();
-      expect(styleValues.has(constants.STYLE_SWIMLANE_FILLCOLOR)).toBeFalse();
+      expect(style.fillColor).toBeUndefined();
+      expect(style.swimlaneFillColor).toBeUndefined();
     });
 
     it('sets font color from label extensions', () => {
       const shape = newShape(ShapeBpmnElementKind.TASK, newLabel('#fontcolor'));
-      const styleValues = new Map<string, string | number>();
+      const style: BpmnCellStyle = {};
 
-      bpmnInColorStyleExtension.enrichShapeStyle(shape, styleValues);
+      bpmnInColorStyleExtension.enrichShapeStyle(shape, style);
 
-      expect(styleValues.get(constants.STYLE_FONTCOLOR)).toBe('#fontcolor');
+      expect(style.fontColor).toBe('#fontcolor');
     });
 
-    it('produces an empty map when no extension data is present', () => {
+    it('produces an empty style when no extension data is present', () => {
       const shape = newShape(ShapeBpmnElementKind.TASK);
-      const styleValues = new Map<string, string | number>();
+      const style: BpmnCellStyle = {};
 
-      bpmnInColorStyleExtension.enrichShapeStyle(shape, styleValues);
+      bpmnInColorStyleExtension.enrichShapeStyle(shape, style);
 
-      expect(styleValues.size).toBe(0);
+      expect(style).toEqual({});
     });
   });
 
@@ -104,29 +105,29 @@ describe('BPMN in Color — style extension', () => {
     it('sets stroke color from edge extensions', () => {
       const edge = newSequenceFlowEdge();
       edge.extensions.strokeColor = '#abc123';
-      const styleValues = new Map<string, string | number>();
+      const style: BpmnCellStyle = {};
 
-      bpmnInColorStyleExtension.enrichEdgeStyle(edge, styleValues);
+      bpmnInColorStyleExtension.enrichEdgeStyle(edge, style);
 
-      expect(styleValues.get(constants.STYLE_STROKECOLOR)).toBe('#abc123');
+      expect(style.strokeColor).toBe('#abc123');
     });
 
     it('sets font color from label extensions', () => {
       const edge = newSequenceFlowEdge(newLabel('#labelcolor'));
-      const styleValues = new Map<string, string | number>();
+      const style: BpmnCellStyle = {};
 
-      bpmnInColorStyleExtension.enrichEdgeStyle(edge, styleValues);
+      bpmnInColorStyleExtension.enrichEdgeStyle(edge, style);
 
-      expect(styleValues.get(constants.STYLE_FONTCOLOR)).toBe('#labelcolor');
+      expect(style.fontColor).toBe('#labelcolor');
     });
 
-    it('produces an empty map when no extension data is present', () => {
+    it('produces an empty style when no extension data is present', () => {
       const edge = newSequenceFlowEdge();
-      const styleValues = new Map<string, string | number>();
+      const style: BpmnCellStyle = {};
 
-      bpmnInColorStyleExtension.enrichEdgeStyle(edge, styleValues);
+      bpmnInColorStyleExtension.enrichEdgeStyle(edge, style);
 
-      expect(styleValues.size).toBe(0);
+      expect(style).toEqual({});
     });
   });
 
@@ -134,20 +135,20 @@ describe('BPMN in Color — style extension', () => {
     it('sets stroke color from the edge stroke color extension', () => {
       const edge = newMessageFlowEdge();
       edge.extensions.strokeColor = '#deadbe';
-      const styleValues = new Map<string, string | number>();
+      const style: BpmnCellStyle = {};
 
-      bpmnInColorStyleExtension.enrichMessageFlowIconStyle(edge, styleValues);
+      bpmnInColorStyleExtension.enrichMessageFlowIconStyle(edge, style);
 
-      expect(styleValues.get(constants.STYLE_STROKECOLOR)).toBe('#deadbe');
+      expect(style.strokeColor).toBe('#deadbe');
     });
 
     it('does not set anything when no stroke color is present', () => {
       const edge = newMessageFlowEdge();
-      const styleValues = new Map<string, string | number>();
+      const style: BpmnCellStyle = {};
 
-      bpmnInColorStyleExtension.enrichMessageFlowIconStyle(edge, styleValues);
+      bpmnInColorStyleExtension.enrichMessageFlowIconStyle(edge, style);
 
-      expect(styleValues.size).toBe(0);
+      expect(style).toEqual({});
     });
   });
 });
