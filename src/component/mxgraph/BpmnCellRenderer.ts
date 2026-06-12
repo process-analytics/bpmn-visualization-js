@@ -15,9 +15,10 @@ limitations under the License.
 */
 
 import type { IconPainter } from './shape/render';
-import type { mxCellState, ImageShape as mxImageShapeType, mxShape } from 'mxgraph';
+import type { CellOverlay, CellState, Shape } from '@maxgraph/core';
 
 import { CellRenderer, ImageShape, Rectangle } from '@maxgraph/core';
+
 import { CustomCellOverlay } from './overlay/custom-overlay';
 import { OverlayBadgeShape } from './overlay/shapes';
 import { overrideCreateSvgCanvas } from './shape/utils';
@@ -27,66 +28,29 @@ export class BpmnCellRenderer extends CellRenderer {
     super();
   }
 
-  override createCellOverlays(state: mxCellState): void {
-    const graph = state.view.graph;
-    const overlays = graph.getCellOverlays(state.cell);
-    let dict = null;
-
-    if (overlays != null) {
-      dict = new mxDictionary<mxShape>();
-
-      for (const currentOverlay of overlays) {
-        const shape = state.overlays == null ? null : state.overlays.remove(currentOverlay);
-        if (shape != null) {
-          dict.put(currentOverlay, shape);
-          continue;
-        }
-
-        let overlayShape: mxShape;
-
-        // START bpmn-visualization CUSTOMIZATION
-        if (currentOverlay instanceof CustomCellOverlay) {
-          overlayShape = new OverlayBadgeShape(currentOverlay.label, new Rectangle(0, 0, 0, 0), currentOverlay.style);
-        } else {
-          overlayShape = new ImageShape(new Rectangle(0, 0, 0, 0), currentOverlay.image.src);
-          (overlayShape as mxImageShapeType).preserveImageAspect = false;
-        }
-        // END bpmn-visualization CUSTOMIZATION
-
-        overlayShape.dialect = state.view.graph.dialect;
-        overlayShape.overlay = currentOverlay;
-
-        // The 'initializeOverlay' signature forces us to hardly cast the overlayShape
-        this.initializeOverlay(state, overlayShape as mxImageShapeType);
-        this.installCellOverlayListeners(state, currentOverlay, overlayShape);
-
-        if (currentOverlay.cursor != null) {
-          overlayShape.node.style.cursor = currentOverlay.cursor;
-        }
-
-        // START bpmn-visualization CUSTOMIZATION
-        if (overlayShape instanceof OverlayBadgeShape) {
-          overlayShape.node.classList.add('overlay-badge');
-          overlayShape.node.dataset.bpmnId = state.cell.id;
-        }
-        // END bpmn-visualization CUSTOMIZATION
-
-        dict.put(currentOverlay, overlayShape);
-      }
+  // maxGraph 0.16.0 introduced the createOverlayShape/configureOverlayShape extension points, so the whole
+  // createCellOverlays() no longer needs to be reimplemented (the former implementation relied on mxDictionary,
+  // removed in maxGraph 0.21.0).
+  protected override createOverlayShape(state: CellState, cellOverlay: CellOverlay): Shape {
+    if (cellOverlay instanceof CustomCellOverlay) {
+      return new OverlayBadgeShape(cellOverlay.label, new Rectangle(0, 0, 0, 0), cellOverlay.style);
     }
-
-    // Removes unused
-    if (state.overlays != null) {
-      // prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
-      state.overlays.visit(function (_id: string, shape: mxShape) {
-        shape.destroy();
-      });
-    }
-
-    state.overlays = dict;
+    const overlayShape = new ImageShape(new Rectangle(0, 0, 0, 0), cellOverlay.image.src);
+    overlayShape.preserveImageAspect = false;
+    return overlayShape;
   }
 
-  override createShape(state: mxCellState): mxShape {
+  protected override configureOverlayShape(state: CellState, cellOverlay: CellOverlay, overlayShape: Shape): void {
+    // the default implementation sets the cursor based on the overlay configuration
+    super.configureOverlayShape(state, cellOverlay, overlayShape);
+
+    if (overlayShape instanceof OverlayBadgeShape) {
+      overlayShape.node.classList.add('overlay-badge');
+      overlayShape.node.dataset.bpmnId = state.cell.id;
+    }
+  }
+
+  override createShape(state: CellState): Shape {
     const shape = super.createShape(state);
     if ('iconPainter' in shape) {
       shape.iconPainter = this.iconPainter;
@@ -95,7 +59,7 @@ export class BpmnCellRenderer extends CellRenderer {
     return shape;
   }
 
-  override createLabel(state: mxCellState, value: string): void {
+  override createLabel(state: CellState, value: string): void {
     super.createLabel(state, value);
     overrideCreateSvgCanvas(state.text);
   }
