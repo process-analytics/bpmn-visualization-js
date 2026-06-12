@@ -47,14 +47,14 @@ export default defineConfig(({ mode }) => {
           manualChunks(id) {
             if (id.includes('node_modules/es-toolkit')) return 'lib-es-toolkit';
             if (id.includes('node_modules/fast-xml-parser')) return 'lib-fast-xml-parser';
-            if (id.includes('node_modules/mxgraph')) return 'lib-mxgraph';
+            if (id.includes('node_modules/@maxgraph/core')) return 'lib-maxgraph';
             // bpmn-visualization code built from src/
             if (!id.includes('node_modules') && id.includes('/src/')) return 'lib-bpmn-visualization';
           },
         },
       },
       // minify: false, // uncomment to see the code in clear
-      chunkSizeWarningLimit: 838, // mxgraph
+      chunkSizeWarningLimit: 330, // maxGraph - provisional, confirm at first successful demo build
     },
     preview: {
       port: 10_002,
