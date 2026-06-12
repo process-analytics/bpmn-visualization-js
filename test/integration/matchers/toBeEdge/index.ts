@@ -20,7 +20,7 @@ import type { BpmnCellStyle, ExpectedCell } from '../matcher-utils';
 import { getDefaultParentId } from '../../helpers/model-expect';
 import { buildCellMatcher, buildExpectedCellStyleWithCommonAttributes, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
 
-import { mxConstants } from '@lib/component/mxgraph/initializer';
+import { constants } from '@maxgraph/core';
 import { BpmnStyleIdentifier } from '@lib/component/mxgraph/style';
 import { FlowKind, MessageVisibleKind } from '@lib/model/bpmn/internal';
 
@@ -99,7 +99,7 @@ export function toBeSequenceFlow(this: MatcherContext, received: string, expecte
 }
 
 export function toBeMessageFlow(this: MatcherContext, received: string, expected: ExpectedEdgeModelElement): CustomMatcherResult {
-  return buildEdgeMatcher('toBeMessageFlow', this, received, { ...expected, kind: FlowKind.MESSAGE_FLOW, startArrow: mxConstants.ARROW_OVAL, endArrow: 'blockThin' });
+  return buildEdgeMatcher('toBeMessageFlow', this, received, { ...expected, kind: FlowKind.MESSAGE_FLOW, startArrow: constants.ARROW_OVAL, endArrow: 'blockThin' });
 }
 
 export function toBeAssociationFlow(this: MatcherContext, received: string, expected: ExpectedEdgeModelElement): CustomMatcherResult {

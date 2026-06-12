@@ -18,7 +18,7 @@ import type { BpmnCanvas, IconPainter, PaintParameter, ShapeConfiguration } from
 import type { mxAbstractCanvas2D } from 'mxgraph';
 
 import { ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal';
-import { mxRectangleShape, mxUtils } from '../initializer';
+import { RectangleShape } from '@maxgraph/core';
 import { BpmnStyleIdentifier, StyleDefault } from '../style';
 import { getBpmnIsInstantiating } from '../style/utils';
 
@@ -40,7 +40,7 @@ function getMarkerIconOriginFunction(numberOfMarkers: number, markerPosition: nu
 /**
  * @internal
  */
-export abstract class BaseActivityShape extends mxRectangleShape {
+export abstract class BaseActivityShape extends RectangleShape {
   // The actual value is injected at runtime by BpmnCellRenderer
   protected iconPainter: IconPainter = undefined;
 
@@ -257,7 +257,7 @@ export class SubProcessShape extends BaseActivityShape {
     super.paintBackground(c, x, y, w, h);
 
     if (subProcessKind === ShapeBpmnSubProcessKind.TRANSACTION) {
-      // inspired from https://github.com/jgraph/mxgraph/blob/81dcd5cc86d48792c194ebaa3437a7ebb7a2f9d1/javascript/src/js/shape/mxRectangleShape.js#L79-L102
+      // inspired from https://github.com/jgraph/mxgraph/blob/81dcd5cc86d48792c194ebaa3437a7ebb7a2f9d1/javascript/src/js/shape/RectangleShape.js#L79-L102
       // use a dedicated value for the arcSize. Using the value from the style generates an arc which is different from the arc of the outer rectangle
       const innerOffset = StyleDefault.SUB_PROCESS_TRANSACTION_INNER_RECT_OFFSET;
       const innerArcSize = StyleDefault.SUB_PROCESS_TRANSACTION_INNER_RECT_ARC_SIZE;

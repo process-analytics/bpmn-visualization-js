@@ -16,3 +16,4 @@ limitations under the License.
 
 export { StyleDefault } from './utils';
 export * from './identifiers';
+export type { BpmnCellStyle, BpmnCellStateStyle, BpmnCellStyleExtension } from './types';

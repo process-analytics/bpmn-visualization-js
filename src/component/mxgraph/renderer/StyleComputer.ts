@@ -33,7 +33,7 @@ import {
   ShapeBpmnSubProcess,
 } from '../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { bpmnInColorStyleExtension } from '../../extension/bpmn-in-color/style-extension';
-import { mxConstants } from '../initializer';
+import { constants } from '@maxgraph/core';
 import { BpmnStyleIdentifier } from '../style';
 
 /**
@@ -78,10 +78,10 @@ export default class StyleComputer {
     } else if (bpmnElement instanceof ShapeBpmnActivity) {
       computeActivityShapeStyle(bpmnElement, styleValues);
     } else if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
-      // mxConstants.STYLE_HORIZONTAL is for the label
+      // constants.STYLE_HORIZONTAL is for the label
       // In BPMN, isHorizontal is for the Shape
       // So we invert the value when we switch from the BPMN value to the mxGraph value.
-      styleValues.set(mxConstants.STYLE_HORIZONTAL, shape.isHorizontal ? '0' : '1');
+      styleValues.set(constants.STYLE_HORIZONTAL, shape.isHorizontal ? '0' : '1');
     } else if (bpmnElement instanceof ShapeBpmnEventBasedGateway) {
       styleValues.set(BpmnStyleIdentifier.IS_INSTANTIATING, String(bpmnElement.instantiate));
       styleValues.set(BpmnStyleIdentifier.EVENT_BASED_GATEWAY_KIND, String(bpmnElement.gatewayKind));
@@ -105,9 +105,9 @@ export default class StyleComputer {
 
     const font = bpmnCell.label?.font;
     if (font && !this.ignoreLabelStyles) {
-      styleValues.set(mxConstants.STYLE_FONTFAMILY, font.name);
-      styleValues.set(mxConstants.STYLE_FONTSIZE, font.size);
-      styleValues.set(mxConstants.STYLE_FONTSTYLE, getFontStyleValue(font));
+      styleValues.set(constants.STYLE_FONTFAMILY, font.name);
+      styleValues.set(constants.STYLE_FONTSIZE, font.size);
+      styleValues.set(constants.STYLE_FONTSTYLE, getFontStyleValue(font));
     }
 
     return styleValues;
@@ -166,20 +166,20 @@ function computeLabelStyleValues(bpmnCell: Shape | Edge, labelBounds: Bounds): M
 
   const bpmnElement = bpmnCell.bpmnElement;
   if (labelBounds) {
-    styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
+    styleValues.set(constants.STYLE_VERTICAL_ALIGN, constants.ALIGN_TOP);
     if (bpmnCell.bpmnElement.kind != ShapeBpmnElementKind.TEXT_ANNOTATION) {
-      styleValues.set(mxConstants.STYLE_ALIGN, mxConstants.ALIGN_CENTER);
+      styleValues.set(constants.STYLE_ALIGN, constants.ALIGN_CENTER);
     }
 
     if (bpmnCell instanceof Shape) {
       // arbitrarily increase width to relax too small bounds (for instance for reference diagrams from miwg-test-suite)
-      styleValues.set(mxConstants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
+      styleValues.set(constants.STYLE_LABEL_WIDTH, labelBounds.width + 1);
       // align settings
       // According to the documentation, "label position" can only take values in left, center, right with default=center
       // However, there is undocumented behavior when the value is not one of these and this behavior is exactly what we want.
       // See https://github.com/jgraph/mxgraph/blob/v4.2.2/javascript/src/js/view/mxGraphView.js#L1183-L1252
-      styleValues.set(mxConstants.STYLE_LABEL_POSITION, 'ignore');
-      styleValues.set(mxConstants.STYLE_VERTICAL_LABEL_POSITION, mxConstants.ALIGN_MIDDLE);
+      styleValues.set(constants.STYLE_LABEL_POSITION, 'ignore');
+      styleValues.set(constants.STYLE_VERTICAL_LABEL_POSITION, constants.ALIGN_MIDDLE);
     }
   }
   // when no label bounds, adjust the default style dynamically
@@ -188,7 +188,7 @@ function computeLabelStyleValues(bpmnCell: Shape | Edge, labelBounds: Bounds): M
     (bpmnElement instanceof ShapeBpmnSubProcess || (bpmnElement instanceof ShapeBpmnCallActivity && bpmnElement.callActivityKind === ShapeBpmnCallActivityKind.CALLING_PROCESS)) &&
     !bpmnElement.markers.includes(ShapeBpmnMarkerKind.EXPAND)
   ) {
-    styleValues.set(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_TOP);
+    styleValues.set(constants.STYLE_VERTICAL_ALIGN, constants.ALIGN_TOP);
   }
 
   return styleValues;
@@ -201,16 +201,16 @@ function computeLabelStyleValues(bpmnCell: Shape | Edge, labelBounds: Bounds): M
 export function getFontStyleValue(font: Font): number {
   let value = 0;
   if (font.isBold) {
-    value += mxConstants.FONT_BOLD;
+    value += constants.FONT_BOLD;
   }
   if (font.isItalic) {
-    value += mxConstants.FONT_ITALIC;
+    value += constants.FONT_ITALIC;
   }
   if (font.isStrikeThrough) {
-    value += mxConstants.FONT_STRIKETHROUGH;
+    value += constants.FONT_STRIKETHROUGH;
   }
   if (font.isUnderline) {
-    value += mxConstants.FONT_UNDERLINE;
+    value += constants.FONT_UNDERLINE;
   }
   return value;
 }

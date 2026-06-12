@@ -22,7 +22,7 @@ import type { mxMouseEvent } from 'mxgraph';
 import { debounce, throttle } from 'es-toolkit';
 
 import { ensurePositiveValue, ensureValidZoomConfiguration } from './helpers/validators';
-import { mxEvent } from './mxgraph/initializer';
+import { InternalEvent, eventUtils } from '@maxgraph/core';
 import { FitType } from './options';
 
 /**

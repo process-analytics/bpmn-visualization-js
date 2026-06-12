@@ -17,9 +17,9 @@ limitations under the License.
 import type { CustomCellOverlayStyle } from './custom-overlay';
 import type { mxRectangle } from 'mxgraph';
 
-import { mxText } from '../initializer';
+import { TextShape } from '@maxgraph/core';
 
-export class OverlayBadgeShape extends mxText {
+export class OverlayBadgeShape extends TextShape {
   constructor(value: string, bounds: mxRectangle, style: CustomCellOverlayStyle) {
     super(
       value,

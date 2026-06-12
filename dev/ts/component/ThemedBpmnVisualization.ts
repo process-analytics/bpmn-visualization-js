@@ -16,7 +16,7 @@ limitations under the License.
 
 import { BpmnVisualization, FlowKind, ShapeBpmnElementKind, ShapeUtil, StyleDefault } from '../../../src/bpmn-visualization';
 import { StyleConfigurator } from '../../../src/component/mxgraph/config/StyleConfigurator';
-import { mxConstants } from '../../../src/component/mxgraph/initializer';
+import { constants } from '@maxgraph/core';
 import { logStartup } from '../shared/internal-helpers';
 
 interface Theme {
@@ -194,8 +194,8 @@ export class ThemedBpmnVisualization extends BpmnVisualization {
 
     // directly access the 'styles' map to update values. Using stylesheet.getCellStyle returns a copy of the style
     const seqFlowStyle = stylesheet.styles[FlowKind.SEQUENCE_FLOW];
-    seqFlowStyle[mxConstants.STYLE_STROKECOLOR] = color;
-    seqFlowStyle[mxConstants.STYLE_FILLCOLOR] = color;
+    seqFlowStyle[constants.STYLE_STROKECOLOR] = color;
+    seqFlowStyle[constants.STYLE_FILLCOLOR] = color;
 
     logStartup('Sequence flows style updated');
   }

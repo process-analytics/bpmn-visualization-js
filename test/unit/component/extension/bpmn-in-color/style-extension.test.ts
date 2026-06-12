@@ -18,7 +18,7 @@ limitations under the License.
 */
 
 import { bpmnInColorStyleExtension } from '@lib/component/extension/bpmn-in-color/style-extension';
-import { mxConstants } from '@lib/component/mxgraph/initializer';
+import { constants } from '@maxgraph/core';
 import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
 import { Edge } from '@lib/model/bpmn/internal/edge/edge';
 import { MessageFlow, SequenceFlow } from '@lib/model/bpmn/internal/edge/flows';
@@ -55,9 +55,9 @@ describe('BPMN in Color — style extension', () => {
 
       bpmnInColorStyleExtension.enrichShapeStyle(shape, styleValues);
 
-      expect(styleValues.get(mxConstants.STYLE_FILLCOLOR)).toBe('#aabbcc');
-      expect(styleValues.get(mxConstants.STYLE_STROKECOLOR)).toBe('#112233');
-      expect(styleValues.has(mxConstants.STYLE_SWIMLANE_FILLCOLOR)).toBeFalse();
+      expect(styleValues.get(constants.STYLE_FILLCOLOR)).toBe('#aabbcc');
+      expect(styleValues.get(constants.STYLE_STROKECOLOR)).toBe('#112233');
+      expect(styleValues.has(constants.STYLE_SWIMLANE_FILLCOLOR)).toBeFalse();
     });
 
     it.each([ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.LANE])('also sets swimlane fill color for %s', (kind: ShapeBpmnElementKind) => {
@@ -67,8 +67,8 @@ describe('BPMN in Color — style extension', () => {
 
       bpmnInColorStyleExtension.enrichShapeStyle(shape, styleValues);
 
-      expect(styleValues.get(mxConstants.STYLE_FILLCOLOR)).toBe('#abcdef');
-      expect(styleValues.get(mxConstants.STYLE_SWIMLANE_FILLCOLOR)).toBe('#abcdef');
+      expect(styleValues.get(constants.STYLE_FILLCOLOR)).toBe('#abcdef');
+      expect(styleValues.get(constants.STYLE_SWIMLANE_FILLCOLOR)).toBe('#abcdef');
     });
 
     it('does not set swimlane fill color when fillColor is absent on a pool', () => {
@@ -77,8 +77,8 @@ describe('BPMN in Color — style extension', () => {
 
       bpmnInColorStyleExtension.enrichShapeStyle(shape, styleValues);
 
-      expect(styleValues.has(mxConstants.STYLE_FILLCOLOR)).toBeFalse();
-      expect(styleValues.has(mxConstants.STYLE_SWIMLANE_FILLCOLOR)).toBeFalse();
+      expect(styleValues.has(constants.STYLE_FILLCOLOR)).toBeFalse();
+      expect(styleValues.has(constants.STYLE_SWIMLANE_FILLCOLOR)).toBeFalse();
     });
 
     it('sets font color from label extensions', () => {
@@ -87,7 +87,7 @@ describe('BPMN in Color — style extension', () => {
 
       bpmnInColorStyleExtension.enrichShapeStyle(shape, styleValues);
 
-      expect(styleValues.get(mxConstants.STYLE_FONTCOLOR)).toBe('#fontcolor');
+      expect(styleValues.get(constants.STYLE_FONTCOLOR)).toBe('#fontcolor');
     });
 
     it('produces an empty map when no extension data is present', () => {
@@ -108,7 +108,7 @@ describe('BPMN in Color — style extension', () => {
 
       bpmnInColorStyleExtension.enrichEdgeStyle(edge, styleValues);
 
-      expect(styleValues.get(mxConstants.STYLE_STROKECOLOR)).toBe('#abc123');
+      expect(styleValues.get(constants.STYLE_STROKECOLOR)).toBe('#abc123');
     });
 
     it('sets font color from label extensions', () => {
@@ -117,7 +117,7 @@ describe('BPMN in Color — style extension', () => {
 
       bpmnInColorStyleExtension.enrichEdgeStyle(edge, styleValues);
 
-      expect(styleValues.get(mxConstants.STYLE_FONTCOLOR)).toBe('#labelcolor');
+      expect(styleValues.get(constants.STYLE_FONTCOLOR)).toBe('#labelcolor');
     });
 
     it('produces an empty map when no extension data is present', () => {
@@ -138,7 +138,7 @@ describe('BPMN in Color — style extension', () => {
 
       bpmnInColorStyleExtension.enrichMessageFlowIconStyle(edge, styleValues);
 
-      expect(styleValues.get(mxConstants.STYLE_STROKECOLOR)).toBe('#deadbe');
+      expect(styleValues.get(constants.STYLE_STROKECOLOR)).toBe('#deadbe');
     });
 
     it('does not set anything when no stroke color is present', () => {

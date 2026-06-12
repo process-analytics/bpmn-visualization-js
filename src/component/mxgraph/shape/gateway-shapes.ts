@@ -18,13 +18,13 @@ import type { IconPainter, PaintParameter } from './render';
 import type { mxAbstractCanvas2D } from 'mxgraph';
 
 import { ShapeBpmnEventBasedGatewayKind } from '../../../model/bpmn/internal';
-import { mxRhombus, mxUtils } from '../initializer';
+import { RhombusShape } from '@maxgraph/core';
 import { BpmnStyleIdentifier, StyleDefault } from '../style';
 import { getBpmnIsInstantiating } from '../style/utils';
 
 import { buildPaintParameter } from './render/icon-painter';
 
-abstract class GatewayShape extends mxRhombus {
+abstract class GatewayShape extends RhombusShape {
   // The actual value is injected at runtime by BpmnCellRenderer
   protected iconPainter: IconPainter = undefined;
 

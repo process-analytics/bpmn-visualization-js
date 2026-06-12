@@ -17,7 +17,7 @@ limitations under the License.
 import type { mxAbstractCanvas2D, mxCell, mxPoint, mxShape } from 'mxgraph';
 
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
-import { mxCellRenderer, mxMarker } from '../initializer';
+import { ShapeRegistry, EdgeMarkerRegistry } from '@maxgraph/core';
 import {
   BusinessRuleTaskShape,
   CallActivityShape,
