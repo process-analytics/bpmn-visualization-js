@@ -20,7 +20,7 @@ Definition of done: `npm run build`, `npm run test:unit`, `npm run test:integrat
 - [x] **Task 7**: Migrate runtime style/CSS updaters and the SVG canvas override - `task-07.md` (depends on 2, 6)
 - [x] **Task 8**: Migrate shapes and icons, run the BpmnConnector experiment - `task-08.md` (depends on 4, 6, 7)
 - [x] **Task 9**: Migrate overlays - `task-09.md` (depends on 2, 4)
-- [ ] **Task 10**: Migrate navigation (fit, panning, zoom) - `task-10.md` (depends on 3)
+- [x] **Task 10**: Migrate navigation (fit, panning, zoom) - `task-10.md` (depends on 3)
 - [ ] **Task 11**: Migrate renderer, coordinates, facade, version, dev demo - `task-11.md` (depends on 3, 5, 6) - FIRST full-green `npm run build`
 - [ ] **Task 12**: Migrate unit tests to typed style objects - `task-12.md` (depends on 5, 6, 7, 8, 11)
 - [ ] **Task 13**: Migrate integration tests and the custom matchers - `task-13.md` (depends on 12 + all production tasks)
