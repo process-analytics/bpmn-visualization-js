@@ -15,9 +15,9 @@ limitations under the License.
 */
 
 import type { OverlayStyle } from '../../registry';
-import type { mxCellState, Point as mxPointType, Rectangle as mxRectangleType } from 'mxgraph';
+import type { CellState, ImageBox } from '@maxgraph/core';
 
-import { CellOverlay, Point, Rectangle, constants } from '@maxgraph/core';
+import { CellOverlay, Point, Rectangle } from '@maxgraph/core';
 
 export type VerticalAlignType = 'bottom' | 'middle' | 'top';
 export type HorizontalAlignType = 'left' | 'center' | 'right';
@@ -41,13 +41,15 @@ export class CustomCellOverlay extends CellOverlay {
     public label: string,
     options: CustomCellOverlayOptions,
   ) {
-    super(null, '', options.position.horizontalAlign, options.position.verticalAlign, null, 'default');
+    // No image: this overlay is rendered as a text badge (see BpmnCellRenderer.createOverlayShape), so the image is
+    // never dereferenced. maxGraph requires a non-null Point offset.
+    super(null as unknown as ImageBox, '', options.position.horizontalAlign, options.position.verticalAlign, new Point(), 'default');
     this.style = options.style;
   }
 
-  // Based on original method from CellOverlay (CellOverlay.prototype.getBounds)
-  override getBounds(state: mxCellState): mxRectangleType {
-    const isEdge = state.view.graph.getModel().isEdge(state.cell);
+  // Based on the original method from CellOverlay (CellOverlay.prototype.getBounds)
+  override getBounds(state: CellState): Rectangle {
+    const isEdge = state.cell.isEdge();
     const s = state.view.scale;
     let pt;
 
@@ -62,17 +64,17 @@ export class CustomCellOverlay extends CellOverlay {
     } else {
       pt = new Point();
 
-      if (this.align == constants.ALIGN_LEFT) {
+      if (this.align == 'left') {
         pt.x = state.x;
-      } else if (this.align == constants.ALIGN_CENTER) {
+      } else if (this.align == 'center') {
         pt.x = state.x + state.width / 2;
       } else {
         pt.x = state.x + state.width;
       }
 
-      if (this.verticalAlign == constants.ALIGN_TOP) {
+      if (this.verticalAlign == 'top') {
         pt.y = state.y;
-      } else if (this.verticalAlign == constants.ALIGN_MIDDLE) {
+      } else if (this.verticalAlign == 'middle') {
         pt.y = state.y + state.height / 2;
       } else {
         pt.y = state.y + state.height;
@@ -82,14 +84,14 @@ export class CustomCellOverlay extends CellOverlay {
     return new Rectangle(Math.round(pt.x - (w * this.defaultOverlap - this.offset.x) * s), Math.round(pt.y - (h * this.defaultOverlap - this.offset.y) * s), w * s, h * s);
   }
 
-  private computeEdgeBounds(state: mxCellState): mxPointType {
-    const pts = state.absolutePoints;
+  private computeEdgeBounds(state: CellState): Point {
+    const pts = state.absolutePoints as Point[];
     // 1st point for start position
-    if (this.align == constants.ALIGN_LEFT) {
+    if (this.align == 'left') {
       return pts[0];
     }
     // middle point for middle position
-    else if (this.align == constants.ALIGN_CENTER) {
+    else if (this.align == 'center') {
       if (pts.length % 2 == 1) {
         return pts[Math.floor(pts.length / 2)];
       } else {
@@ -101,7 +103,7 @@ export class CustomCellOverlay extends CellOverlay {
     }
     // last point for end position
     else {
-      return pts.at(-1);
+      return pts.at(-1) as Point;
     }
   }
 }

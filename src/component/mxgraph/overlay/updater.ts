@@ -33,7 +33,7 @@ export class OverlaysUpdater {
   ) {}
 
   addOverlays(bpmnElementId: string, overlays: Overlay | Overlay[]): void {
-    const cell = this.graph.getModel().getCell(bpmnElementId);
+    const cell = this.graph.getDataModel().getCell(bpmnElementId);
     if (!cell) {
       return;
     }
@@ -44,7 +44,7 @@ export class OverlaysUpdater {
   }
 
   removeAllOverlays(bpmnElementId: string): void {
-    const cell = this.graph.getModel().getCell(bpmnElementId);
+    const cell = this.graph.getDataModel().getCell(bpmnElementId);
     if (!cell) {
       return;
     }
