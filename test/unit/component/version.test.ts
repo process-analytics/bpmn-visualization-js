@@ -31,8 +31,8 @@ describe('Version', () => {
     expect(getVersion().lib).toBe(getLibraryVersionFromPackageJson());
   });
 
-  test('mxGraph version', () => {
-    expect(getVersion().dependencies.get('mxGraph')).toBeDefined();
+  test('maxGraph version', () => {
+    expect(getVersion().dependencies.get('maxGraph')).toBeDefined();
   });
 
   test('not modifiable version', () => {
