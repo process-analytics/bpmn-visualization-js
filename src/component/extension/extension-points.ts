@@ -17,6 +17,7 @@ limitations under the License.
 import type { Edge } from '../../model/bpmn/internal/edge/edge';
 import type Shape from '../../model/bpmn/internal/shape/Shape';
 import type { BPMNEdge, BPMNShape } from '../../model/bpmn/json/bpmndi';
+import type { BpmnCellStyle } from '../mxgraph/style/types';
 
 /**
  * Extension point called during BPMN parsing to allow custom processing of deserialized elements.
@@ -64,28 +65,28 @@ export interface ParsingExtensionPoint {
  */
 export interface StyleExtensionPoint {
   /**
-   * Enriches the style values computed for a shape before rendering.
+   * Enriches the style computed for a shape before rendering.
    *
    * @param shape The internal shape model.
-   * @param styleValues The mutable map of style key/value pairs to enrich.
+   * @param style The mutable {@link BpmnCellStyle} to enrich.
    */
-  enrichShapeStyle?(shape: Shape, styleValues: Map<string, string | number>): void;
+  enrichShapeStyle?(shape: Shape, style: BpmnCellStyle): void;
 
   /**
-   * Enriches the style values computed for an edge before rendering.
+   * Enriches the style computed for an edge before rendering.
    *
    * @param edge The internal edge model.
-   * @param styleValues The mutable map of style key/value pairs to enrich.
+   * @param style The mutable {@link BpmnCellStyle} to enrich.
    */
-  enrichEdgeStyle?(edge: Edge, styleValues: Map<string, string | number>): void;
+  enrichEdgeStyle?(edge: Edge, style: BpmnCellStyle): void;
 
   /**
-   * Enriches the style values computed for the message flow icon of an edge before rendering.
+   * Enriches the style computed for the message flow icon of an edge before rendering.
    *
    * The message flow icon is a distinct visual element painted on a message flow edge.
    *
    * @param edge The internal edge model carrying the message flow icon.
-   * @param styleValues The mutable map of style key/value pairs to enrich.
+   * @param style The mutable {@link BpmnCellStyle} to enrich.
    */
-  enrichMessageFlowIconStyle?(edge: Edge, styleValues: Map<string, string | number>): void;
+  enrichMessageFlowIconStyle?(edge: Edge, style: BpmnCellStyle): void;
 }
