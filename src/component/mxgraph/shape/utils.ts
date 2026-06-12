@@ -14,24 +14,26 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { mxShape, mxSvgCanvas2D } from 'mxgraph';
+import type { BpmnCellStyle } from '../style/types';
+import type { Shape, SvgCanvas2D } from '@maxgraph/core';
 
-import { constants } from '@maxgraph/core';
 import { computeAllBpmnClassNamesOfCell } from '../renderer/style-utils';
-import { BpmnStyleIdentifier } from '../style';
 
-export const overrideCreateSvgCanvas = function (shape: mxShape): void {
+export const overrideCreateSvgCanvas = function (shape: Shape): void {
   const originalShapeCreateSvgCanvas = shape.createSvgCanvas;
-  shape.createSvgCanvas = function (): mxSvgCanvas2D {
+  shape.createSvgCanvas = function (): SvgCanvas2D | null {
     const canvas = originalShapeCreateSvgCanvas.bind(this)();
+    if (!canvas) {
+      return canvas;
+    }
 
-    // getTextCss is only used when creating foreignObject for label, so there is no impact on SVG text that we use for Overlays (Apply to mxgraph@4.2.2)
+    // getTextCss is only used when creating foreignObject for label, so there is no impact on SVG text that we use for Overlays
     const originalCanvasGetTextCss = canvas.getTextCss;
     canvas.getTextCss = function (): string {
       const originalPointerEvents = this.pointerEvents;
       // Fix for issue https://github.com/process-analytics/bpmn-visualization-js/issues/920
       // This sets the "pointer-events" style property to "none" to avoid capturing the click.
-      // This cannot be generalized for all mxGraph use cases. For instance, in an editor mode, we should be able to edit the text by clicking on it.
+      // This cannot be generalized for all maxGraph use cases. For instance, in an editor mode, we should be able to edit the text by clicking on it.
       this.pointerEvents = false;
 
       const textCss = originalCanvasGetTextCss.bind(this)();
@@ -41,18 +43,16 @@ export const overrideCreateSvgCanvas = function (shape: mxShape): void {
 
     // The following elements are required to add custom attributes to identify BPMN elements in the DOM
     if (this.state?.cell) {
-      // 'this.state.style' = the style definition associated with the cell
-      // 'this.state.cell.style' = the style applied to the cell: 1st element: style name = bpmn shape name
       const cell = this.state.cell;
-      // dialect = strictHtml is set means that current node holds an HTML label
-      const allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === constants.DIALECT_STRICTHTML);
-      const extraCssClasses = this.state.style[BpmnStyleIdentifier.EXTRA_CSS_CLASSES];
-      if (typeof extraCssClasses == 'string') {
-        allBpmnClassNames.push(...extraCssClasses.split(','));
+      // dialect 'strictHtml' means the current node holds an HTML label
+      const allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === 'strictHtml');
+      const extraCssClasses = (cell.style as BpmnCellStyle).bpmn?.extraCssClasses;
+      if (extraCssClasses) {
+        allBpmnClassNames.push(...extraCssClasses);
       }
 
       this.node.setAttribute('class', allBpmnClassNames.join(' '));
-      this.node.dataset.bpmnId = this.state.cell.id;
+      this.node.dataset.bpmnId = cell.id;
     }
 
     return canvas;

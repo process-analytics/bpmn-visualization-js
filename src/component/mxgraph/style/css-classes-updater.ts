@@ -15,12 +15,11 @@ limitations under the License.
 */
 
 import type { BpmnGraph } from '../BpmnGraph';
+import type { BpmnCellStyle } from './types';
 
 import { messageFlowIconId } from '../BpmnRenderer';
 
-import { setStyle } from './utils';
-
-import { BpmnStyleIdentifier } from './index';
+import { setCssClasses } from './utils';
 
 /**
  * @internal
@@ -42,14 +41,16 @@ export class CssClassesUpdater {
   }
 
   private updateAndRefreshCssClassesOfElement(elementId: string, cssClasses: string[]): void {
-    const model = this.graph.getModel();
+    const model = this.graph.getDataModel();
     const cell = model.getCell(elementId);
     if (!cell) {
       return;
     }
 
-    let cellStyle = cell.getStyle();
-    cellStyle = setStyle(cellStyle, BpmnStyleIdentifier.EXTRA_CSS_CLASSES, cssClasses.join(','));
+    // maxGraph#326: model.setStyle no-ops when handed the cell's own style instance, so mutate a clone.
+    // See https://github.com/maxGraph/maxGraph/issues/326
+    const cellStyle = cell.getClonedStyle() as BpmnCellStyle;
+    setCssClasses(cellStyle, cssClasses);
     model.setStyle(cell, cellStyle);
   }
 }

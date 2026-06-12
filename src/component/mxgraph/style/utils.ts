@@ -173,6 +173,19 @@ export const isShapeStyleUpdate = (style: StyleUpdate): style is ShapeStyleUpdat
   return style && typeof style === 'object' && 'fill' in style;
 };
 
+/**
+ * Set the extra CSS classes on the BPMN part of a {@link CellStyle}, deleting the property when there are none.
+ * @internal
+ */
+export function setCssClasses(cellStyle: BpmnCellStyle, cssClasses: string[]): void {
+  cellStyle.bpmn ??= {};
+  if (cssClasses.length > 0) {
+    cellStyle.bpmn.extraCssClasses = cssClasses;
+  } else {
+    delete cellStyle.bpmn.extraCssClasses;
+  }
+}
+
 const isFillColorGradient = (color: string | FillColorGradient): color is FillColorGradient => {
   return color && typeof color === 'object';
 };

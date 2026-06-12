@@ -16,19 +16,17 @@ limitations under the License.
 
 import type { StyleUpdate } from '../../registry';
 import type { BpmnGraph } from '../BpmnGraph';
-import type { mxCell, mxGraphModel } from 'mxgraph';
+import type { BpmnCellStyle } from './types';
+import type { Cell, GraphDataModel } from '@maxgraph/core';
 
 import { ensureIsArray } from '../../helpers/array-utils';
 import { ensureOpacityValue } from '../../helpers/validators';
 import { messageFlowIconId } from '../BpmnRenderer';
-import { constants } from '@maxgraph/core';
 
-import { getStyleValue, isShapeStyleUpdate, setStyle, updateFill, updateFont, updateStroke } from './utils';
-
-import { BpmnStyleIdentifier } from '.';
+import { isShapeStyleUpdate, setCssClasses, setStyle, updateFill, updateFont, updateStroke } from './utils';
 
 export function createNewStyleUpdater(graph: BpmnGraph): StyleUpdater {
-  return new StyleUpdater(graph, new StyleManager(graph.getModel()));
+  return new StyleUpdater(graph, new StyleManager(graph.getDataModel()));
 }
 
 // The message flow icon is stored in a dedicated Cell, so it must be kept in sync
@@ -55,10 +53,10 @@ export class StyleUpdater {
       return;
     }
 
-    const model = this.graph.getModel();
+    const model = this.graph.getDataModel();
     const cells = withCellIdsOfMessageFlowIcons(bpmnElementIds)
       .map(id => model.getCell(id))
-      .filter(Boolean);
+      .filter(Boolean) as Cell[];
     if (cells.length === 0) {
       // We don't want to create an empty transaction
       return;
@@ -68,13 +66,16 @@ export class StyleUpdater {
       for (const cell of cells) {
         this.styleManager.ensureStyleIsStored(cell);
 
-        let cellStyle = cell.getStyle();
-        cellStyle = setStyle(cellStyle, constants.STYLE_OPACITY, styleUpdate.opacity, ensureOpacityValue);
-        cellStyle = updateStroke(cellStyle, styleUpdate.stroke);
-        cellStyle = updateFont(cellStyle, styleUpdate.font);
+        // maxGraph#326: model.setStyle no-ops when handed the cell's own style instance, so mutate a clone.
+        // This was the root cause of the "CSS classes disappear on navigation" bug in the 0.20.0 POC.
+        // See https://github.com/maxGraph/maxGraph/issues/326
+        const cellStyle = cell.getClonedStyle();
+        setStyle(cellStyle, 'opacity', styleUpdate.opacity, ensureOpacityValue);
+        updateStroke(cellStyle, styleUpdate.stroke);
+        updateFont(cellStyle, styleUpdate.font);
 
         if (isShapeStyleUpdate(styleUpdate)) {
-          cellStyle = updateFill(cellStyle, styleUpdate.fill);
+          updateFill(cellStyle as BpmnCellStyle, styleUpdate.fill);
         }
 
         model.setStyle(cell, cellStyle);
@@ -95,19 +96,18 @@ export class StyleUpdater {
   }
 }
 
-const cssClassesStyleIdentifier = BpmnStyleIdentifier.EXTRA_CSS_CLASSES;
 class StyleManager {
-  private readonly stylesCache = new Map<string, string>();
+  private readonly stylesCache = new Map<string, BpmnCellStyle>();
 
-  constructor(private readonly model: mxGraphModel) {}
+  constructor(private readonly model: GraphDataModel) {}
 
   clear(): void {
     this.stylesCache.clear();
   }
 
   resetAllStyles(): void {
-    for (const cellId of this.stylesCache.keys()) {
-      this.resetStyle(cellId, this.stylesCache.get(cellId));
+    for (const [cellId, style] of [...this.stylesCache]) {
+      this.resetStyle(cellId, style);
     }
   }
 
@@ -123,19 +123,26 @@ class StyleManager {
     }
   }
 
-  private resetStyle(cellId: string, initialStyle: string): void {
-    const cell = this.model.getCell(cellId);
-    const cssClasses = getStyleValue(cell.getStyle(), cssClassesStyleIdentifier, '');
-    const styleWithCssClasses = setStyle(initialStyle, cssClassesStyleIdentifier, cssClasses);
-    this.model.setStyle(cell, styleWithCssClasses);
-
+  private resetStyle(cellId: string, initialStyle: BpmnCellStyle): void {
     this.stylesCache.delete(cellId);
+
+    const cell = this.model.getCell(cellId);
+    if (!cell) {
+      return;
+    }
+
+    // The CSS classes are managed independently (by the CSS classes updater) and must survive a style reset.
+    const extraCssClasses = (cell.style as BpmnCellStyle).bpmn?.extraCssClasses;
+    // maxGraph#326: build a fresh style object (not the cell's own instance) so setStyle propagates the change.
+    const styleToApply: BpmnCellStyle = { ...initialStyle, bpmn: { ...initialStyle.bpmn } };
+    setCssClasses(styleToApply, extraCssClasses ?? []);
+    this.model.setStyle(cell, styleToApply);
   }
 
-  ensureStyleIsStored(cell: mxCell): void {
+  ensureStyleIsStored(cell: Cell): void {
     const cellId = cell.getId();
-    if (!this.stylesCache.has(cellId)) {
-      this.stylesCache.set(cellId, cell.getStyle());
+    if (cellId && !this.stylesCache.has(cellId)) {
+      this.stylesCache.set(cellId, cell.getClonedStyle() as BpmnCellStyle);
     }
   }
 }
