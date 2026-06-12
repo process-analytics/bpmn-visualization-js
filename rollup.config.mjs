@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import commonjs from '@rollup/plugin-commonjs'; // at least, needed to bundle mxGraph which is only available as a CommonJS module
+import commonjs from '@rollup/plugin-commonjs'; // needed to bundle CommonJS dependencies (e.g. fast-xml-parser) into the IIFE bundle
 import resolve from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
 import cleanup from 'rollup-plugin-cleanup';

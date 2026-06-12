@@ -50,7 +50,7 @@ export default defineConfig(({ mode }) => {
             groups: [
               { name: 'lib-es-toolkit', test: id => id.includes('node_modules/es-toolkit') },
               { name: 'lib-fast-xml-parser', test: id => id.includes('node_modules/fast-xml-parser') },
-              { name: 'lib-mxgraph', test: id => id.includes('node_modules/mxgraph') },
+              { name: 'lib-maxgraph', test: id => id.includes('node_modules/@maxgraph/core') },
               // bpmn-visualization code built from src/
               { name: 'lib-bpmn-visualization', test: id => !id.includes('node_modules') && id.includes('/src/') },
             ],
@@ -62,7 +62,7 @@ export default defineConfig(({ mode }) => {
       // regex/string-heavy fast-xml-parser code ~12 kB less effectively (53.38 kB vs 41.46 kB). Force terser (already a
       // devDependency) to keep the demo bundle sizes consistent with the esbuild output produced before Vite 8.
       minify: 'terser',
-      chunkSizeWarningLimit: 836, // mxgraph
+      chunkSizeWarningLimit: 330, // maxGraph - provisional, confirm at first successful demo build
     },
     preview: {
       port: 10_002,
