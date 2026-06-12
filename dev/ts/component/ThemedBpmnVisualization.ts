@@ -16,7 +16,6 @@ limitations under the License.
 
 import { BpmnVisualization, FlowKind, ShapeBpmnElementKind, ShapeUtil, StyleDefault } from '../../../src/bpmn-visualization';
 import { StyleConfigurator } from '../../../src/component/mxgraph/config/StyleConfigurator';
-import { constants } from '@maxgraph/core';
 import { logStartup } from '../shared/internal-helpers';
 
 interface Theme {
@@ -144,32 +143,32 @@ export class ThemedBpmnVisualization extends BpmnVisualization {
           break;
         }
       }
-      const style = styleSheet.styles[kind];
+      const style = styleSheet.styles.get(kind)!;
       style.fillColor = fillColor;
       style.strokeColor = strokeColor;
     }
 
     // TASK
     for (const kind of ShapeUtil.taskKinds()) {
-      const style = styleSheet.styles[kind];
+      const style = styleSheet.styles.get(kind)!;
       style.fillColor = theme.taskAndCallActivityFillColor;
     }
 
     // CALL ACTIVITY
-    const callActivityStyle = styleSheet.styles[ShapeBpmnElementKind.CALL_ACTIVITY];
+    const callActivityStyle = styleSheet.styles.get(ShapeBpmnElementKind.CALL_ACTIVITY)!;
     callActivityStyle.fillColor = theme.taskAndCallActivityFillColor;
 
     // TEXT ANNOTATION
-    const textAnnotationStyle = styleSheet.styles[ShapeBpmnElementKind.TEXT_ANNOTATION];
+    const textAnnotationStyle = styleSheet.styles.get(ShapeBpmnElementKind.TEXT_ANNOTATION)!;
     textAnnotationStyle.fillColor = theme.textAnnotationFillColor ?? StyleDefault.TEXT_ANNOTATION_FILL_COLOR;
 
     // POOL
-    const poolStyle = styleSheet.styles[ShapeBpmnElementKind.POOL];
+    const poolStyle = styleSheet.styles.get(ShapeBpmnElementKind.POOL)!;
     poolStyle.fillColor = theme.poolFillColor;
     poolStyle.swimlaneFillColor = theme.defaultFillColor;
 
     // LANE
-    const laneStyle = styleSheet.styles[ShapeBpmnElementKind.LANE];
+    const laneStyle = styleSheet.styles.get(ShapeBpmnElementKind.LANE)!;
     laneStyle.fillColor = theme.laneFillColor;
 
     // DEFAULTS
@@ -193,9 +192,9 @@ export class ThemedBpmnVisualization extends BpmnVisualization {
     const stylesheet = this.graph.getStylesheet();
 
     // directly access the 'styles' map to update values. Using stylesheet.getCellStyle returns a copy of the style
-    const seqFlowStyle = stylesheet.styles[FlowKind.SEQUENCE_FLOW];
-    seqFlowStyle[constants.STYLE_STROKECOLOR] = color;
-    seqFlowStyle[constants.STYLE_FILLCOLOR] = color;
+    const seqFlowStyle = stylesheet.styles.get(FlowKind.SEQUENCE_FLOW)!;
+    seqFlowStyle.strokeColor = color;
+    seqFlowStyle.fillColor = color;
 
     logStartup('Sequence flows style updated');
   }

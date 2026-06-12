@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import type { BpmnGraph } from '../BpmnGraph';
-import type { mxCell, Point as mxPointType } from 'mxgraph';
+import type { Cell } from '@maxgraph/core';
 
 import { Point } from '@maxgraph/core';
 
@@ -30,7 +30,7 @@ export default class CoordinatesTranslator {
    * @param parent the cell to use for the new coordinate referential
    * @param absoluteCoordinate
    */
-  computeRelativeCoordinates(parent: mxCell, absoluteCoordinate: mxPointType): mxPointType {
+  computeRelativeCoordinates(parent: Cell, absoluteCoordinate: Point): Point {
     const translateForRoot = this.getTranslateForRoot(parent);
     const relativeX = absoluteCoordinate.x + translateForRoot.x;
     const relativeY = absoluteCoordinate.y + translateForRoot.y;
@@ -41,19 +41,19 @@ export default class CoordinatesTranslator {
   // (i.e. related to the graph default parent) you want to assign as parent to the cell passed as argument of this function.
   // That way, you will be able to express the cell coordinates as relative to its parent cell.
   //
-  // This implementation is taken from the example described in the documentation of mxgraph#getTranslateForRoot (4.1.1)
+  // This implementation is taken from the example described in the documentation of maxGraph#getTranslateForRoot
   // The translation is generally negative
-  private getTranslateForRoot(cell: mxCell): mxPointType {
-    const model = this.graph.getModel();
+  private getTranslateForRoot(cell: Cell): Point {
     const offset = new Point(0, 0);
 
-    while (cell != null) {
-      const geo = model.getGeometry(cell);
+    let current: Cell | null = cell;
+    while (current != null) {
+      const geo = current.getGeometry();
       if (geo != null) {
         offset.x -= geo.x;
         offset.y -= geo.y;
       }
-      cell = model.getParent(cell);
+      current = current.getParent();
     }
 
     return offset;
@@ -65,15 +65,15 @@ export default class CoordinatesTranslator {
    *
    * The center coordinates are given in the same referential as the `Cell`, so relative to its parent.
    */
-  computeEdgeCenter(edge: mxCell): mxPointType {
-    const points: mxPointType[] = edge.geometry.points;
+  computeEdgeCenter(edge: Cell): Point {
+    const points = edge.getGeometry()?.points ?? [];
 
     const p0 = points[0];
     const pe = points.at(-1);
 
     // p0 and pe are always set (all tests passed so far)
-    const dx = pe.x - p0.x;
-    const dy = pe.y - p0.y;
-    return new Point(p0.x + dx / 2, p0.y + dy / 2);
+    const dx = pe!.x - p0!.x;
+    const dy = pe!.y - p0!.y;
+    return new Point(p0!.x + dx / 2, p0!.y + dy / 2);
   }
 }

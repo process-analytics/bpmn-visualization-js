@@ -11,7 +11,7 @@ Status legend: `[ ]` not yet implemented, `[x]` implemented and confirmed.
 - [ ] **3. `BpmnGraph` base class changed** from `mxGraph` to maxGraph (`BaseGraph`). The experimental `BpmnVisualization.graph` property still exists but its API now follows maxGraph naming (e.g. `getDataModel()` instead of `getModel()`).
 - [ ] **4. Theme/style customization contract changed.** Style strings / `StyleMap` are replaced by typed `CellStyle` objects. Extension points and any deep style customization now receive/return `CellStyle` (`BpmnCellStyle`) objects instead of style strings.
 - [x] **5. Public icon/canvas types renamed.** `IconPainter` / `BpmnCanvas` public types switch from `mxAbstractCanvas2D` to `AbstractCanvas2D` (and sibling maxGraph type names). See also the `BpmnCanvas.arcTo` boolean-flags change below.
-- [ ] **6. `getVersion()` output changed.** The dependencies map reports `maxGraph` (from `constants.VERSION`) instead of `mxGraph` (`src/component/version.ts`).
+- [x] **6. `getVersion()` output changed.** The dependencies map reports `maxGraph` (from `constants.VERSION`) instead of `mxGraph` (`src/component/version.ts`). Code reading `getVersion().dependencies.get('mxGraph')` must switch to `get('maxGraph')`.
 
 ## Additional breaks discovered during implementation
 
