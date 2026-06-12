@@ -15,4 +15,6 @@ Status legend: `[ ]` not yet implemented, `[x]` implemented and confirmed.
 
 ## Additional breaks discovered during implementation
 
-(add entries here as tasks land: `BpmnStyleIdentifier` member removals, `bpmn.edge` style name removal if `BpmnConnector` is deleted, etc.)
+- [x] **`BpmnStyleIdentifier` members removed** (public `@experimental` API, `src/component/mxgraph/style/identifiers.ts`). The former `bpmn.*` style-string data keys are replaced by typed properties on the maxGraph `CellStyle` (under its `bpmn` property, see `BpmnCellStyle`). Removed members: `EDGE_START_FILL_COLOR`, `EDGE_END_FILL_COLOR` (now the native maxGraph `startFillColor`/`endFillColor` style properties), `EVENT_BASED_GATEWAY_KIND`, `EVENT_DEFINITION_KIND`, `GLOBAL_TASK_KIND`, `SUB_PROCESS_KIND`, `IS_INITIATING`, `IS_INSTANTIATING`, `IS_INTERRUPTING`, `EXTRA_CSS_CLASSES`, `MARKERS`. Only `EDGE` and `MESSAGE_FLOW_ICON` (registered shape names) remain.
+- [ ] **`bpmn.edge` style name** (`BpmnStyleIdentifier.EDGE`): may be removed if the `BpmnConnector` shape is dropped in favor of the native maxGraph connector (Q4 experiment, Task 8). To be confirmed.
+- [x] **Theme customization helpers operate on `CellStyle` objects** (public `@experimental` `StyleConfigurator`, `StyleDefault`). The stylesheet entries and the runtime style-update helpers now read/write typed `CellStyle` objects instead of mxGraph style strings.
