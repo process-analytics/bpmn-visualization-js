@@ -111,7 +111,7 @@ Implementation order will be refined in plan phase; the complete inventory with 
 2. `cell.getClonedStyle()` before any style mutation (maxGraph#326).
 3. `BaseGraph` subclass + explicit registration (`ShapeRegistry`, `PerimeterRegistry`, `EdgeMarkerRegistry`, swimlane) + plugins `[PanningHandler, FitPlugin]` per ts-example-selected-features.
 4. Overlay rendering via `createOverlayShape`/`configureOverlayShape` in `BpmnCellRenderer` (no `createCellOverlays` reimplementation, no `Dictionary`).
-5. `TODO maxgraph@0.23.0` tagging convention for uncertainties.
+5. `TODO maxgraph@0.23.0` tagging convention for uncertainties. IMPORTANT: the `TODO maxgraph@<version>` comments coming from the former branch (v1/v2) that are NOT addressed in this branch MUST be kept verbatim in the migrated code, they carry the upstream follow-up history and will be reconsidered at the next maxGraph bumps.
 6. Conventional commits per repo rules; JSDoc `@since 0.48.0` for new public APIs; every public break documented.
 
 ## Dependencies
@@ -120,13 +120,18 @@ Implementation order will be refined in plan phase; the complete inventory with 
 - Node/npm per `.nvmrc`; jest stays CJS (maxGraph ships CJS).
 - Reference materials: maxGraph CHANGELOG (authoritative post-0.18 breaks), `packages/ts-example-selected-features`, v1 branch diffs (`git diff e8fa9071b..poc/bump_maxgraph_0.20.0_v1 -- <file>`).
 
-## Open Questions for Plan Phase
+## Decisions (user-validated) and Open Questions for Plan Phase
 
-1. `BaseGraph` (tree-shaking, v1 choice) vs `Graph`: v1 proved BaseGraph works; recommend BaseGraph. Confirm.
-2. `BpmnCellStyle` extension type vs `CellStyle` interface augmentation (v1 TODO, never tested).
-3. arcSize: revert v1's halving given the 0.21.0 fix; verify edge rounding visually.
-4. `BpmnConnector`/start-end fill color workaround: check if maxGraph 0.23.0 natively supports marker fill colors (maxGraph#201/PR#157); delete if so.
-5. FitType.Center own-computation vs FitPlugin.fitCenter: integration tests pin exact scaleAndTranslate args; keep own computation initially, evaluate fitCenter later?
-6. Public replacement (if any) for `export { mxgraph }`: probably none (users import `@maxgraph/core` directly); confirm BREAKING CHANGE wording.
-7. `StyleDefaultsConfig` (0.22.0) adoption now or later (could simplify StyleConfigurator but adds delta vs v1 reference).
-8. e2e strategy: disable e2e CI during migration like v1, or run locally only and inventory diffs at the end (definition of done requires the diff list).
+Decided:
+
+- **Q1 - `BaseGraph`** (tree-shaking, v1 choice): confirmed by the user.
+- **Q2 - `CellStyle` interface augmentation: NOT possible for now**, keep the v1 `BpmnCellStyle` extension-type approach. Mark in the code (TODO) that augmentation will become possible with maxGraph 0.24.0 (to be released).
+- **Q3 - arcSize: revert v1's halving** (0.21.0 fixed the computation), BUT not in the first shot. Do it at the END of the migration as a dedicated step, because the visual (e2e) tests must be checked against this change.
+- **Q5 - FitType.Center: keep the own computation** (integration tests pin exact scaleAndTranslate args). Add a TODO in the code to switch to the maxGraph `FitPlugin.fitCenter` implementation in the future: the maxGraph implementation changes the rendering.
+
+Still open:
+
+- **Q4** - `BpmnConnector`/start-end fill color workaround: check if maxGraph 0.23.0 natively supports marker fill colors (maxGraph#201/PR#157); delete if so.
+- **Q6** - Public replacement (if any) for `export { mxgraph }`: probably none (users import `@maxgraph/core` directly); confirm BREAKING CHANGE wording.
+- **Q7** - `StyleDefaultsConfig` (0.22.0) adoption now or later (could simplify StyleConfigurator but adds delta vs v1 reference).
+- **Q8** - e2e strategy: disable e2e CI during migration like v1, or run locally only and inventory diffs at the end (definition of done requires the diff list).
