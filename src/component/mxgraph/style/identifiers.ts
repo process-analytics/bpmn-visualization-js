@@ -28,10 +28,6 @@ limitations under the License.
  * @experimental
  */
 export const BpmnStyleIdentifier = {
-  // edge
-  EDGE: 'bpmn.edge',
-
-  // other identifiers
   MESSAGE_FLOW_ICON: 'bpmn.messageFlowIcon',
 };
 

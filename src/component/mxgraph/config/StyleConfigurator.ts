@@ -20,7 +20,7 @@ import type { CellStyle, Stylesheet } from '@maxgraph/core';
 import { constants } from '@maxgraph/core';
 
 import { AssociationDirectionKind, FlowKind, SequenceFlowKind, ShapeBpmnElementKind, ShapeUtil } from '../../../model/bpmn/internal';
-import { BpmnStyleIdentifier, MarkerIdentifier, StyleDefault } from '../style';
+import { MarkerIdentifier, StyleDefault } from '../style';
 
 const arrowDefaultSize = 12;
 
@@ -251,7 +251,6 @@ export class StyleConfigurator {
     const style = this.getStylesheet().getDefaultEdgeStyle();
     configureCommonDefaultStyle(style);
 
-    style.shape = BpmnStyleIdentifier.EDGE;
     style.endSize = arrowDefaultSize;
     style.strokeWidth = 1.5;
     style.rounded = true;

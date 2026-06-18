@@ -18,3 +18,6 @@ Rename base classes (`RectangleShape`, `EllipseShape`, `RhombusShape`, canvas `A
 - All shapes extend maxGraph base classes and read typed style; no `mxUtils.getValue`.
 - arc flags are booleans throughout `BpmnCanvas` and `icon-painter`.
 - Q4 outcome decided and recorded; if `BpmnConnector` deleted, its style assertions removed (not ported).
+
+## Outcome (Q4)
+`BpmnConnector` was first slimmed to the pointer-events tweak only, then fully deleted (`edges.ts` removed, along with the `bpmn.edge` registration and `BpmnStyleIdentifier.EDGE`). maxGraph applies the start/end marker fill colors natively via the `startFillColor`/`endFillColor` style properties; the visual theme e2e tests still pass after removal, confirming native handling. The click-capture concern (issue #920) is handled independently in `shape/utils.ts`. See `breaking-changes.md`.

@@ -31,7 +31,6 @@ import {
   TaskShape,
   UserTaskShape,
 } from '../shape/activity-shapes';
-import { BpmnConnector } from '../shape/edges';
 import { EndEventShape, EventShape, IntermediateEventShape, ThrowIntermediateEventShape } from '../shape/event-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { ComplexGatewayShape, EventBasedGatewayShape, ExclusiveGatewayShape, InclusiveGatewayShape, ParallelGatewayShape } from '../shape/gateway-shapes';
@@ -67,7 +66,6 @@ export const registerShapes = (): void => {
     // artifacts
     [ShapeBpmnElementKind.TEXT_ANNOTATION, TextAnnotationShape],
     // shapes for flows
-    [BpmnStyleIdentifier.EDGE, BpmnConnector],
     [BpmnStyleIdentifier.MESSAGE_FLOW_ICON, MessageFlowIconShape],
     // maxGraph built-in shape: BaseGraph registers nothing, so the swimlane shape (pools and lanes) must be registered explicitly
     ['swimlane', SwimlaneShape],
