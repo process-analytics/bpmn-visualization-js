@@ -25,12 +25,12 @@ import type {
   ExpectedIntermediateCatchEventModelElement,
   ExpectedIntermediateThrowEventModelElement,
 } from '../../helpers/model-expect';
-import type { BpmnCellStyle, ExpectedCell } from '../matcher-utils';
+import type { ComparedBpmnCellStyle, ExpectedCell } from '../matcher-utils';
+import type { BpmnCellStyle } from '@lib/component/mxgraph/style/types';
 
 import { getDefaultParentId } from '../../helpers/model-expect';
 import { buildCellMatcher, buildExpectedCellStyleWithCommonAttributes, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
 
-import { constants } from '@maxgraph/core';
 import { ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '@lib/model/bpmn/internal';
 
 import MatcherContext = jest.MatcherContext;
@@ -64,7 +64,7 @@ function expectedStrokeWidth(kind: ShapeBpmnElementKind): number {
       : undefined;
 }
 
-export function buildExpectedShapeCellStyle(expectedModel: ExpectedShapeModelElement): BpmnCellStyle {
+export function buildExpectedShapeCellStyle(expectedModel: ExpectedShapeModelElement): ComparedBpmnCellStyle {
   const style = buildExpectedCellStyleWithCommonAttributes(expectedModel);
   style.shape = expectedModel.styleShape ?? expectedModel.kind;
   style.verticalAlign = expectedModel.verticalAlign ?? 'middle';
@@ -87,15 +87,34 @@ export function buildExpectedShapeCellStyle(expectedModel: ExpectedShapeModelEle
 
   style.swimlaneFillColor = [ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.LANE].includes(expectedModel.kind) && style.fillColor !== 'none' ? style.fillColor : undefined;
 
-  expectedModel.isSwimLaneLabelHorizontal && (style.horizontal = Number(expectedModel.isSwimLaneLabelHorizontal));
+  expectedModel.isSwimLaneLabelHorizontal !== undefined && (style.horizontal = expectedModel.isSwimLaneLabelHorizontal);
 
+  // Activities (tasks, call activity, sub-process) always carry a 'markers' array in the maxGraph style, even when empty.
+  const markers = expectedModel.markers ?? (isActivityKind(expectedModel.kind) ? [] : undefined);
   // ignore marker order, which is only relevant when rendering the shape (it has its own order algorithm)
-  style.markers = expectedModel.markers?.sort();
+  style.markers = markers ? [...markers].sort() : undefined;
 
   return style;
 }
 
-function buildExpectedShapeStylePropertyRegexp(
+function isActivityKind(kind: ShapeBpmnElementKind): boolean {
+  return (
+    kind === ShapeBpmnElementKind.CALL_ACTIVITY ||
+    kind === ShapeBpmnElementKind.SUB_PROCESS ||
+    [
+      ShapeBpmnElementKind.TASK,
+      ShapeBpmnElementKind.TASK_BUSINESS_RULE,
+      ShapeBpmnElementKind.TASK_MANUAL,
+      ShapeBpmnElementKind.TASK_RECEIVE,
+      ShapeBpmnElementKind.TASK_SCRIPT,
+      ShapeBpmnElementKind.TASK_SERVICE,
+      ShapeBpmnElementKind.TASK_SEND,
+      ShapeBpmnElementKind.TASK_USER,
+    ].includes(kind)
+  );
+}
+
+function buildExpectedShapeStyle(
   expectedModel:
     | ExpectedShapeModelElement
     | ExpectedSubProcessModelElement
@@ -105,46 +124,50 @@ function buildExpectedShapeStylePropertyRegexp(
     | ExpectedBoundaryEventModelElement
     | ExpectedEventBasedGatewayModelElement
     | ExpectedCallActivityModelElement,
-): string {
-  let expectedStyle: string = expectedModel.kind;
+): BpmnCellStyle {
+  // The bpmn property is typed loosely to allow asymmetric jest matchers (e.g. expect.arrayContaining) on its fields.
+  const bpmn: Record<string, unknown> = {};
+  // Only assert the bpmn properties set below: the cell may carry additional ones (e.g. 'markers' for activities).
+  const style: BpmnCellStyle = { bpmn: expect.objectContaining(bpmn) };
+  style.baseStyleNames = [expectedModel.kind];
+  bpmn.kind = expectedModel.kind;
+
   if ('eventDefinitionKind' in expectedModel) {
-    expectedStyle = expectedStyle + `.*bpmn.eventDefinitionKind=${expectedModel.eventDefinitionKind}`;
+    bpmn.eventDefinitionKind = expectedModel.eventDefinitionKind;
   }
   if ('subProcessKind' in expectedModel) {
-    expectedStyle = expectedStyle + `.*bpmn.subProcessKind=${expectedModel.subProcessKind}`;
+    bpmn.subProcessKind = expectedModel.subProcessKind;
   }
   if ('globalTaskKind' in expectedModel) {
-    expectedStyle = expectedStyle + `.*bpmn.globalTaskKind=${expectedModel.globalTaskKind}`;
+    bpmn.globalTaskKind = expectedModel.globalTaskKind;
   }
   if (expectedModel.isInstantiating !== undefined) {
-    expectedStyle = expectedStyle + `.*bpmn.isInstantiating=${expectedModel.isInstantiating}`;
+    bpmn.isInstantiating = expectedModel.isInstantiating;
   }
   if (expectedModel.markers?.length > 0) {
-    // There is no guaranteed order, so testing the list of markers with a string is not practical. Markers are therefore checked with BpmnStyle.markers.
-    // Here, we check only that the markers are placed in the style.
-    expectedStyle = expectedStyle + `.*bpmn.markers=*`;
+    // There is no guaranteed order, so the markers are checked with the resolved/state style (ComparedBpmnCellStyle.markers).
+    // Here, we check only that the markers are present in the raw style, ignoring order.
+    bpmn.markers = expect.arrayContaining(expectedModel.markers);
   }
   if ('isInterrupting' in expectedModel) {
-    expectedStyle = expectedStyle + `.*bpmn.isInterrupting=${expectedModel.isInterrupting}`;
+    bpmn.isInterrupting = expectedModel.isInterrupting;
   }
   if ('gatewayKind' in expectedModel) {
-    expectedStyle = expectedStyle + `.*bpmn.gatewayKind=${expectedModel.gatewayKind}`;
+    bpmn.gatewayKind = expectedModel.gatewayKind;
   }
-  if ('sourceIds' in expectedModel) {
-    expectedStyle = expectedStyle + `.*bpmn.linkEventSourceIds=${expectedModel.sourceIds}`;
+  // Production deletes 'extraCssClasses' from the bpmn style when there are none, so only assert it when classes are expected.
+  if (expectedModel.extraCssClasses?.length > 0) {
+    bpmn.extraCssClasses = expectedModel.extraCssClasses;
   }
-  if ('targetId' in expectedModel) {
-    expectedStyle = expectedStyle + `.*bpmn.linkEventTargetId=${expectedModel.targetId}`;
-  }
-  return expectedStyle + '.*';
+  return style;
 }
 
 function buildExpectedCell(id: string, expectedModel: ExpectedShapeModelElement): ExpectedCell {
   const parentId = expectedModel.parentId;
   return {
     id,
-    value: expectedModel.label,
-    styleRawFromModelOrJestExpect: expect.stringMatching(buildExpectedShapeStylePropertyRegexp(expectedModel)),
+    value: expectedModel.label ?? null, // maxGraph sets the value to 'null' when there is no label (mxGraph used 'undefined')
+    styleRawFromModelOrJestExpect: expect.objectContaining(buildExpectedShapeStyle(expectedModel)),
     styleResolvedFromModel: buildExpectedShapeCellStyle(expectedModel),
     styleViewState: buildExpectedShapeCellStyle(expectedModel),
     edge: false,
@@ -158,10 +181,16 @@ function buildShapeMatcher(matcherName: string, matcherContext: MatcherContext, 
   return buildCellMatcher(matcherName, matcherContext, received, expected, 'Shape', buildExpectedCell, buildReceivedCellWithCommonAttributes);
 }
 
+// Activities (tasks, call activity, sub-process) always carry a 'markers' array in the maxGraph style, even when empty.
+function buildActivityMatcher(matcherName: string, matcherContext: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
+  expected.markers ??= [];
+  return buildShapeMatcher(matcherName, matcherContext, received, expected);
+}
+
 function buildContainerMatcher(matcherName: string, matcherContext: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
   return buildShapeMatcher(matcherName, matcherContext, received, {
     ...expected,
-    styleShape: constants.SHAPE_SWIMLANE,
+    styleShape: 'swimlane',
     isSwimLaneLabelHorizontal: expected.isSwimLaneLabelHorizontal ?? false,
   });
 }
@@ -175,7 +204,7 @@ export function toBeLane(this: MatcherContext, received: string, expected: Expec
 }
 
 export function toBeCallActivity(this: MatcherContext, received: string, expected: ExpectedCallActivityModelElement): CustomMatcherResult {
-  return buildShapeMatcher('toBeCallActivity', this, received, { ...expected, kind: ShapeBpmnElementKind.CALL_ACTIVITY });
+  return buildActivityMatcher('toBeCallActivity', this, received, { ...expected, kind: ShapeBpmnElementKind.CALL_ACTIVITY });
 }
 
 export function toBeSubProcess(this: MatcherContext, received: string, expected: ExpectedSubProcessModelElement): CustomMatcherResult {
@@ -183,39 +212,39 @@ export function toBeSubProcess(this: MatcherContext, received: string, expected:
     expected.markers ??= [];
     expected.markers.push(ShapeBpmnMarkerKind.ADHOC);
   }
-  return buildShapeMatcher('toBeSubProcess', this, received, { ...expected, kind: ShapeBpmnElementKind.SUB_PROCESS });
+  return buildActivityMatcher('toBeSubProcess', this, received, { ...expected, kind: ShapeBpmnElementKind.SUB_PROCESS });
 }
 
 export function toBeTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  return buildShapeMatcher('toBeTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK });
+  return buildActivityMatcher('toBeTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK });
 }
 
 export function toBeServiceTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  return buildShapeMatcher('toBeServiceTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_SERVICE });
+  return buildActivityMatcher('toBeServiceTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_SERVICE });
 }
 
 export function toBeUserTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  return buildShapeMatcher('toBeUserTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_USER });
+  return buildActivityMatcher('toBeUserTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_USER });
 }
 
 export function toBeReceiveTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  return buildShapeMatcher('toBeReceiveTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_RECEIVE });
+  return buildActivityMatcher('toBeReceiveTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_RECEIVE });
 }
 
 export function toBeSendTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  return buildShapeMatcher('toBeSendTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_SEND });
+  return buildActivityMatcher('toBeSendTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_SEND });
 }
 
 export function toBeManualTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  return buildShapeMatcher('toBeManualTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_MANUAL });
+  return buildActivityMatcher('toBeManualTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_MANUAL });
 }
 
 export function toBeScriptTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  return buildShapeMatcher('toBeScriptTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_SCRIPT });
+  return buildActivityMatcher('toBeScriptTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_SCRIPT });
 }
 
 export function toBeBusinessRuleTask(this: MatcherContext, received: string, expected: ExpectedShapeModelElement): CustomMatcherResult {
-  return buildShapeMatcher('toBeBusinessRuleTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_BUSINESS_RULE });
+  return buildActivityMatcher('toBeBusinessRuleTask', this, received, { ...expected, kind: ShapeBpmnElementKind.TASK_BUSINESS_RULE });
 }
 
 function buildEventMatcher(matcherName: string, matcherContext: MatcherContext, received: string, expected: ExpectedStartEventModelElement): CustomMatcherResult {
