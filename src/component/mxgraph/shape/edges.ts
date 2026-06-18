@@ -25,6 +25,7 @@ import { ConnectorShape, SvgCanvas2D } from '@maxgraph/core';
  * (maxGraph#157), so this shape no longer needs to set them; that was the other responsibility of `BpmnConnector` with
  * mxGraph. It is still registered under the `bpmn.edge` shape name and used as the default edge shape.
  */
+// TODO maxgraph@0.23.0: remove this class and use the default ConnectorShape instead (no longer needed since maxGraph#157 which can fill the markers with the startFillColor/endFillColor styles)
 export class BpmnConnector extends ConnectorShape {
   override paintEdgeShape(c: AbstractCanvas2D, pts: Point[]): void {
     // The indirection via functions for markers is needed in
