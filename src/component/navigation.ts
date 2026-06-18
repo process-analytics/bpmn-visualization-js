@@ -102,6 +102,10 @@ export class NavigationImpl implements Disposable, Navigation {
   }
 }
 
+function convertNaNToZero(value: number): number {
+  return Number.isNaN(value) ? 0 : value;
+}
+
 function setContainerCursor(graph: BpmnGraph, cursor: 'grab' | 'default'): () => void {
   return (): void => {
     graph.container.style.cursor = cursor;
@@ -181,13 +185,15 @@ class ZoomSupport implements Disposable {
       const clientHeight = this.graph.container.clientHeight - margin;
       const width = bounds.width / this.graph.view.scale;
       const height = bounds.height / this.graph.view.scale;
-      const scale = Math.min(maxScale, Math.min(clientWidth / width, clientHeight / height));
+      let scale = Math.min(maxScale, Math.min(clientWidth / width, clientHeight / height));
       this.setCurrentZoomLevel(scale);
 
+      // guards for jsdom (and degenerate containers): maxGraph rejects a NaN coordinate in Point, unlike mxGraph
+      scale == 0 && (scale = 1);
       this.graph.view.scaleAndTranslate(
         scale,
-        (margin + clientWidth - width * scale) / (2 * scale) - bounds.x / this.graph.view.scale,
-        (margin + clientHeight - height * scale) / (2 * scale) - bounds.y / this.graph.view.scale,
+        convertNaNToZero((margin + clientWidth - width * scale) / (2 * scale) - bounds.x / this.graph.view.scale),
+        convertNaNToZero((margin + clientHeight - height * scale) / (2 * scale) - bounds.y / this.graph.view.scale),
       );
     } else {
       let ignoreWidth = false;

@@ -15,8 +15,8 @@ limitations under the License.
 */
 
 // eslint-disable-next-line import/no-unresolved -- The bpmn-visualization package may not have been built before running eslint (it happens when running GitHub Actions)
+import type { Stylesheet } from '@maxgraph/core';
 import type { BpmnGraph } from 'bpmn-visualization';
-import type { mxStylesheet } from 'mxgraph';
 
 // eslint-disable-next-line import/no-unresolved -- The bpmn-visualization package may not have been built before running eslint (it happens when running GitHub Actions)
 import { BpmnVisualization } from 'bpmn-visualization';
@@ -24,8 +24,8 @@ import { BpmnVisualization } from 'bpmn-visualization';
 const bpmnVisualization = new BpmnVisualization({ container: 'bpmn-container' });
 bpmnVisualization.load(`fake BPMN content`);
 
-// Validate the access to the BpmnGraph type and some mxGraph derived methods and properties
+// Validate the access to the BpmnGraph type and some maxGraph derived methods and properties
 const graph: BpmnGraph = bpmnVisualization.graph;
 graph.view.revalidate();
-const stylesheet: mxStylesheet = graph.getStylesheet();
+const stylesheet: Stylesheet = graph.getStylesheet();
 stylesheet.putCellStyle('customStyle', { fillColor: '#FF0000' });

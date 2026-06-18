@@ -15,19 +15,19 @@ limitations under the License.
 */
 
 import type { ExpectedEdgeModelElement, ExpectedSequenceFlowModelElement } from '../../helpers/model-expect';
-import type { BpmnCellStyle, ExpectedCell } from '../matcher-utils';
+import type { ComparedBpmnCellStyle, ExpectedCell } from '../matcher-utils';
+import type { BpmnCellStyle } from '@lib/component/mxgraph/style/types';
 
 import { getDefaultParentId } from '../../helpers/model-expect';
 import { buildCellMatcher, buildExpectedCellStyleWithCommonAttributes, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
 
-import { constants } from '@maxgraph/core';
 import { BpmnStyleIdentifier } from '@lib/component/mxgraph/style';
-import { FlowKind, MessageVisibleKind } from '@lib/model/bpmn/internal';
+import { AssociationDirectionKind, FlowKind, MessageVisibleKind, SequenceFlowKind } from '@lib/model/bpmn/internal';
 
 import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 
-export function buildExpectedEdgeCellStyle(expectedModel: ExpectedEdgeModelElement): BpmnCellStyle {
+export function buildExpectedEdgeCellStyle(expectedModel: ExpectedEdgeModelElement): ComparedBpmnCellStyle {
   const style = buildExpectedCellStyleWithCommonAttributes(expectedModel);
   style.verticalAlign = expectedModel.verticalAlign ?? 'top';
   style.align = 'center';
@@ -38,29 +38,42 @@ export function buildExpectedEdgeCellStyle(expectedModel: ExpectedEdgeModelEleme
   return style;
 }
 
-function buildExpectedMessageFlowIconCellStyle(expectedModel: ExpectedEdgeModelElement): BpmnCellStyle {
+function buildExpectedMessageFlowIconCellStyle(expectedModel: ExpectedEdgeModelElement): ComparedBpmnCellStyle {
   const style = buildExpectedCellStyleWithCommonAttributes(expectedModel);
   style.align = 'center';
   style.verticalAlign = 'middle';
   style.shape = BpmnStyleIdentifier.MESSAGE_FLOW_ICON;
-  style[BpmnStyleIdentifier.IS_INITIATING] = expectedModel.messageVisibleKind == MessageVisibleKind.INITIATING;
+  style.isInitiating = expectedModel.messageVisibleKind == MessageVisibleKind.INITIATING;
   return style;
 }
 
-function buildExpectedEdgeStylePropertyRegexp(expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement): string {
-  let expectedStyle: string = expectedModel.kind;
-  if ('sequenceFlowKind' in expectedModel) {
-    expectedStyle = expectedStyle + `;${expectedModel.sequenceFlowKind}`;
+function buildExpectedEdgeStyle(expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement): BpmnCellStyle {
+  const bpmn: Record<string, unknown> = { kind: expectedModel.kind };
+  // Only assert the bpmn properties set here: the cell may carry additional ones.
+  const style: BpmnCellStyle = { bpmn: expect.objectContaining(bpmn) };
+  const baseStyleNames: string[] = [expectedModel.kind];
+  if (expectedModel.kind === FlowKind.SEQUENCE_FLOW) {
+    baseStyleNames.push((expectedModel as ExpectedSequenceFlowModelElement).sequenceFlowKind ?? SequenceFlowKind.NORMAL);
   }
-  return expectedStyle + '.*';
+  if (expectedModel.kind === FlowKind.ASSOCIATION_FLOW) {
+    baseStyleNames.push(
+      (expectedModel as ExpectedEdgeModelElement & { associationDirectionKind?: AssociationDirectionKind }).associationDirectionKind ?? AssociationDirectionKind.NONE,
+    );
+  }
+  style.baseStyleNames = baseStyleNames;
+  // Production deletes 'extraCssClasses' from the bpmn style when there are none, so only assert it when classes are expected.
+  if (expectedModel.extraCssClasses?.length > 0) {
+    bpmn.extraCssClasses = expectedModel.extraCssClasses;
+  }
+  return style;
 }
 
 function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement): ExpectedCell {
   const parentId = expectedModel.parentId;
   const expectedCell: ExpectedCell = {
     id,
-    value: expectedModel.label,
-    styleRawFromModelOrJestExpect: expect.stringMatching(buildExpectedEdgeStylePropertyRegexp(expectedModel)),
+    value: expectedModel.label ?? null, // maxGraph sets the value to 'null' when there is no label (mxGraph used 'undefined')
+    styleRawFromModelOrJestExpect: expect.objectContaining(buildExpectedEdgeStyle(expectedModel)),
     styleResolvedFromModel: buildExpectedEdgeCellStyle(expectedModel),
     styleViewState: buildExpectedEdgeCellStyle(expectedModel),
     edge: true,
@@ -74,10 +87,11 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement |
     expectedCell.children = [
       {
         id: `messageFlowIcon_of_${id}`,
-        value: undefined,
-        styleRawFromModelOrJestExpect: expect.stringMatching(
-          `shape=${BpmnStyleIdentifier.MESSAGE_FLOW_ICON};${BpmnStyleIdentifier.IS_INITIATING}=${expectedModel.messageVisibleKind == MessageVisibleKind.INITIATING}`,
-        ),
+        value: null,
+        styleRawFromModelOrJestExpect: expect.objectContaining({
+          shape: BpmnStyleIdentifier.MESSAGE_FLOW_ICON,
+          bpmn: { isInitiating: expectedModel.messageVisibleKind == MessageVisibleKind.INITIATING },
+        } as BpmnCellStyle),
         styleResolvedFromModel: buildExpectedMessageFlowIconCellStyle(expectedModel),
         styleViewState: buildExpectedMessageFlowIconCellStyle(expectedModel),
         edge: false,
@@ -99,7 +113,7 @@ export function toBeSequenceFlow(this: MatcherContext, received: string, expecte
 }
 
 export function toBeMessageFlow(this: MatcherContext, received: string, expected: ExpectedEdgeModelElement): CustomMatcherResult {
-  return buildEdgeMatcher('toBeMessageFlow', this, received, { ...expected, kind: FlowKind.MESSAGE_FLOW, startArrow: constants.ARROW_OVAL, endArrow: 'blockThin' });
+  return buildEdgeMatcher('toBeMessageFlow', this, received, { ...expected, kind: FlowKind.MESSAGE_FLOW, startArrow: 'oval', endArrow: 'blockThin' });
 }
 
 export function toBeAssociationFlow(this: MatcherContext, received: string, expected: ExpectedEdgeModelElement): CustomMatcherResult {
