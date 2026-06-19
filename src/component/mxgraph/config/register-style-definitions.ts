@@ -93,6 +93,8 @@ const dashMarkerFactory: MarkerFactoryFunction = (c, _shape, _type, pe, unitX, u
 export const registerEdgeMarkers = (): void => {
   // maxGraph built-in markers: BaseGraph registers nothing, so the markers referenced by the BPMN edge styles
   // (blockThin, openThin, oval, diamondThin) must be registered explicitly.
+  // TODO maxGraph@0.23.0 there are some edge markers in the maxGraph default that we do not use in bpmn-visualization. Register only the ones we need to reduce the bundle size.
+  // See previous poc
   registerDefaultEdgeMarkers();
   EdgeMarkerRegistry.add(MarkerIdentifier.ARROW_DASH, dashMarkerFactory);
 };
@@ -100,5 +102,7 @@ export const registerEdgeMarkers = (): void => {
 export const registerPerimeters = (): void => {
   // maxGraph built-in perimeters: BaseGraph registers nothing, so the ellipse/rectangle/rhombus perimeters
   // referenced by the BPMN vertex styles must be registered explicitly.
+  // TODO maxGraph@0.23.0 there are some perimeters in the maxGraph default that we do not use in bpmn-visualization. Register only the ones we need to reduce the bundle size.
+  // See previous poc
   registerDefaultPerimeters();
 };
