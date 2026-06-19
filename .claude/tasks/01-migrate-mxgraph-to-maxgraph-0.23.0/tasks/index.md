@@ -24,7 +24,7 @@ Definition of done: `npm run build`, `npm run test:unit`, `npm run test:integrat
 - [x] **Task 11**: Migrate renderer, coordinates, facade, version, dev demo - `task-11.md` (depends on 3, 5, 6) - FIRST full-green `npm run build`
 - [x] **Task 12**: Migrate unit tests to typed style objects - `task-12.md` (depends on 5, 6, 7, 8, 11)
 - [x] **Task 13**: Migrate integration tests and the custom matchers - `task-13.md` (depends on 12 + all production tasks)
-- [ ] **Task 14**: Disable e2e on CI, revert arcSize, inventory snapshots, consolidate breaking changes - `task-14.md` (depends on 12, 13)
+- [x] **Task 14**: Disable e2e on CI, revert arcSize, inventory snapshots, consolidate breaking changes - `task-14.md` (depends on 12, 13)
 
 ## Execution Order
 Tasks are numbered in dependency order; running them in sequence is always safe. Parallelism opportunities once their shared prerequisite is met:
