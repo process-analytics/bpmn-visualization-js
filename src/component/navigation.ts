@@ -19,9 +19,8 @@ import type { FitOptions, NavigationConfiguration, ZoomConfiguration, ZoomType }
 import type { Disposable } from './types';
 import type { FitPlugin, InternalMouseEvent, PanningHandler } from '@maxgraph/core';
 
-import { debounce, throttle } from 'es-toolkit';
-
 import { eventUtils, InternalEvent } from '@maxgraph/core';
+import { debounce, throttle } from 'es-toolkit';
 
 import { ensurePositiveValue, ensureValidZoomConfiguration } from './helpers/validators';
 import { FitType } from './options';
@@ -228,6 +227,7 @@ class ZoomSupport implements Disposable {
     // TODO maxgraph@0.23.0 maxGraph wraps the mouse-wheel listeners internally (InternalEvent.addMouseWheelListener)
     // and exposes no removal API, so they cannot be explicitly detached here. They are released when the graph
     // container is discarded on dispose.
+    // Check how this was done with the mxGraph implementation and add new API in maxGraph if needed.
     this.mouseWheelListeners = [];
   }
 
