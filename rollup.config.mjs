@@ -31,6 +31,10 @@ const pluginsBundleIIFE = [
   typescriptPlugin(),
   // the 'resolve' and 'commonjs' plugins ensure we can bundle commonjs dependencies
   resolve(),
+  // TODO maxgraph@0.23.0 re-evaluate the commonjs plugin. It was historically needed for fast-xml-parser and mxGraph.
+  // mxGraph is now gone (maxGraph is ESM only), and fast-xml-parser was bumped to 5.8.0, which is a dual package
+  // ("type": "module" with both "import" and "require" exports conditions, ESM entry "module": "./src/fxp.js").
+  // So the plugin may now be droppable; verify it does not break the IIFE bundle (npm run test:bundles) before removing.
   commonjs(),
   // to have sizes of dependencies listed at the end of build log
   sizes(),
