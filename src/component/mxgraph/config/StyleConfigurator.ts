@@ -49,6 +49,9 @@ const specificFlowStyles = new MapWithDefault<FlowKind>([
       style.dashPattern = '8 5';
       style.startArrow = 'oval';
       style.startSize = 8;
+      // TODO maxgraph@0.23.0 the startFill/endFill flags could now be removed: maxGraph PR#157 (native marker
+      // start/end fill, the same support that allowed deleting BpmnConnector) has landed. Re-evaluate whether the
+      // explicit startFill/endFill are still needed once we have stable passing e2e visualization tests.
       style.startFill = true;
       style.startFillColor = StyleDefault.MESSAGE_FLOW_MARKER_START_FILL_COLOR;
       style.endArrow = 'blockThin';
@@ -79,6 +82,7 @@ const specificSequenceFlowStyles = new MapWithDefault<SequenceFlowKind>([
     (style: CellStyle) => {
       style.startArrow = 'diamondThin';
       style.startSize = 18;
+      // TODO maxgraph@0.23.0 same startFill re-evaluation as the MESSAGE_FLOW style above (maxGraph PR#157)
       style.startFill = true;
       style.startFillColor = StyleDefault.SEQUENCE_FLOW_CONDITIONAL_FROM_ACTIVITY_MARKER_FILL_COLOR;
     },
