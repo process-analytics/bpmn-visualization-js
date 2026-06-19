@@ -254,10 +254,11 @@ export class StyleConfigurator {
     style.endSize = arrowDefaultSize;
     style.strokeWidth = 1.5;
     style.rounded = true;
-    // TODO maxgraph@0.23.0 revert the arcSize halving in the final migration step: maxGraph 0.21.0 fixed the arc
-    // computation, so the original mxGraph value (5) should render correctly again. Kept halved (2.5) for now so the
+    // TODO maxgraph@0.23.0 we must confirm that reverting the arcSize make more visual tests pass
+    // maxGraph 0.21.0 fixed the arc computation
+    // so the original mxGraph value (5) should render correctly again. Kept halved (2.5) for now so the
     // rendering matches the 0.20.0 POC until that dedicated, individually-reviewable change.
-    style.arcSize = 2.5;
+    style.arcSize = 5;
     style.verticalAlign = 'bottom';
 
     // The end arrow must be redefined in specific style
