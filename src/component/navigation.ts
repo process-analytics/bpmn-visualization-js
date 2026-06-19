@@ -66,7 +66,10 @@ export class NavigationImpl implements Disposable, Navigation {
 
   dispose(): void {
     this.zoomSupport.dispose();
-    // maxGraph 0.21.0 moved panning behind a plugin; 0.23.0 fixed the destroy memory leaks
+    // Each component frees the resources it uses: navigation configures the panning plugin (a plugin since maxGraph
+    // 0.21.0), so it disposes it here. This is redundant with graph.destroy(), which since the maxGraph 0.23.0
+    // memory-leak fix iterates plugins.onDestroy(); the redundancy is harmless because PanningHandler.onDestroy()
+    // only removes listeners and is idempotent.
     this.graph.getPlugin<PanningHandler>('PanningHandler')?.onDestroy();
   }
 
