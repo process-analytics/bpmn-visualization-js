@@ -258,10 +258,9 @@ export class StyleConfigurator {
     style.endSize = arrowDefaultSize;
     style.strokeWidth = 1.5;
     style.rounded = true;
-    // TODO maxgraph@0.23.0 we must confirm that reverting the arcSize make more visual tests pass
-    // maxGraph 0.21.0 fixed the arc computation
-    // so the original mxGraph value (5) should render correctly again. Kept halved (2.5) for now so the
-    // rendering matches the 0.20.0 POC until that dedicated, individually-reviewable change.
+    // arcSize restored to the original mxGraph value (5): maxGraph 0.21.0 fixed the arc computation, so 5 renders
+    // correctly again. The 0.20.0 POC had to halve it to 2.5 to work around the pre-0.21.0 computation.
+    // TODO maxgraph@0.23.0 confirm with the visual (e2e) tests that arcSize = 5 renders as expected (e2e disabled for now)
     style.arcSize = 5;
     style.verticalAlign = 'bottom';
 
