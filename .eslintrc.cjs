@@ -59,8 +59,8 @@ module.exports = {
     'unicorn/prefer-module': 'off', // We don't want to change a working configuration
     'unicorn/prefer-string-replace-all': 'off', // String#replaceAll() doesn't exist in the used ES version
     'unicorn/no-new-array': 'off', // In contradiction with unicorn/new-for-builtins: Use `new Array()` instead of `Array()`
-    'unicorn/no-null': 'off', // We don't know the impact on mxGraph code
-    'unicorn/no-useless-undefined': 'off', // The "undefined" value is useful where we use it and change some mxGraph code
+    'unicorn/no-null': 'off', // null is required when interfacing with the maxGraph API (e.g. nullable geometry/parent, ImageBox)
+    'unicorn/no-useless-undefined': 'off', // explicit undefined is meaningful where we unset optional maxGraph style/shape properties
     'unicorn/prefer-global-this': 'off', // We only target the browser, so it is valid to use the window object. In addition, using 'globalThis' require additional changes in the code/configuration to work.
   },
   overrides: [
