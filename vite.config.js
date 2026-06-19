@@ -54,7 +54,7 @@ export default defineConfig(({ mode }) => {
         },
       },
       // minify: false, // uncomment to see the code in clear
-      chunkSizeWarningLimit: 330, // maxGraph - provisional, confirm at first successful demo build
+      chunkSizeWarningLimit: 325, // maxGraph
     },
     preview: {
       port: 10_002,
