@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import commonjs from '@rollup/plugin-commonjs'; // needed to bundle CommonJS dependencies (e.g. fast-xml-parser) into the IIFE bundle
 import resolve from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
 import cleanup from 'rollup-plugin-cleanup';
@@ -29,13 +28,8 @@ import { computeBanner } from './scripts/shared/banner.mjs';
 const input = 'src/bpmn-visualization.ts';
 const pluginsBundleIIFE = [
   typescriptPlugin(),
-  // the 'resolve' and 'commonjs' plugins ensure we can bundle commonjs dependencies
+  // the 'resolve' plugin lets us bundle the dependencies (all dependencies are ESM)
   resolve(),
-  // TODO maxgraph@0.23.0 re-evaluate the commonjs plugin. It was historically needed for fast-xml-parser and mxGraph.
-  // mxGraph is now gone (maxGraph is ESM only), and fast-xml-parser was bumped to 5.8.0, which is a dual package
-  // ("type": "module" with both "import" and "require" exports conditions, ESM entry "module": "./src/fxp.js").
-  // So the plugin may now be droppable; verify it does not break the IIFE bundle (npm run test:bundles) before removing.
-  commonjs(),
   // to have sizes of dependencies listed at the end of build log
   sizes(),
 ];

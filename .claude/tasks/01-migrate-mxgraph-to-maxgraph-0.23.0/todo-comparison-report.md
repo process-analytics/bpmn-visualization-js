@@ -100,6 +100,6 @@ CURRENT TODOs #3 (arcSize, `StyleConfigurator.ts:257`) and #4 (interface augment
 
 3. **No action for the two cosmetic TODOs** (`toBeCell` "simplify expression?", `style-utils.test` "display style object in test name"). Pure cosmetics; safe to leave dropped.
 
-4. **Rollup commonjs plugin follow-up (re-added).** The space-form `TODO maxgraph 0.15.1` in the old POC's `rollup.config.mjs` was missed by the `@`-only scan. Its removal condition is now met (fast-xml-parser 5.8.0 is a dual/ESM package, mxGraph gone), so a `TODO maxgraph@0.23.0` was re-added near `commonjs()` with the collected fxp facts. Next step (out of scope here): actually test whether `commonjs()` can be dropped via `npm run test:bundles`.
+4. **Rollup commonjs plugin follow-up (DONE).** The space-form `TODO maxgraph 0.15.1` in the old POC's `rollup.config.mjs` was missed by the `@`-only scan. Its removal condition was met (fast-xml-parser 5.8.0 is a dual/ESM package, mxGraph gone), so the `@rollup/plugin-commonjs` plugin was removed from `rollup.config.mjs` and the dev dependency dropped from `package.json` and the lock file. Verified: `npm run build-bundles` produces all three bundles and `npm run test:bundles` passes (chromium), so the IIFE bundle still works without it.
 
 5. **Process note: broaden the TODO scan pattern.** Future TODO audits should match `todo[^a-z]*maxgraph` (case-insensitive), not just `TODO maxgraph@`, to catch space-form notes like the rollup one.
