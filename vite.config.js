@@ -62,7 +62,7 @@ export default defineConfig(({ mode }) => {
       // regex/string-heavy fast-xml-parser code ~12 kB less effectively (53.38 kB vs 41.46 kB). Force terser (already a
       // devDependency) to keep the demo bundle sizes consistent with the esbuild output produced before Vite 8.
       minify: 'terser',
-      chunkSizeWarningLimit: 330, // maxGraph - provisional, confirm at first successful demo build
+      chunkSizeWarningLimit: 325, // maxGraph
     },
     preview: {
       port: 10_002,

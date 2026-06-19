@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { ArrowValue, MarkerFactoryFunction, PerimeterFunction, PerimeterValue, ShapeConstructor } from '@maxgraph/core';
+import type { MarkerFactoryFunction, PerimeterFunction, PerimeterValue, ShapeConstructor, StyleArrowValue } from '@maxgraph/core';
 
 import { EdgeMarker, EdgeMarkerRegistry, Perimeter, PerimeterRegistry, ShapeRegistry, SwimlaneShape } from '@maxgraph/core';
 
@@ -91,15 +91,16 @@ const dashMarkerFactory: MarkerFactoryFunction = (c, _shape, _type, pe, unitX, u
 };
 
 export const registerEdgeMarkers = (): void => {
-  EdgeMarkerRegistry.add(MarkerIdentifier.ARROW_DASH, dashMarkerFactory);
-  // maxGraph built-in markers used in bpmn-visualization: BaseGraph registers nothing, so only the markers referenced
-  // by the BPMN edge styles are registered explicitly (instead of registerDefaultEdgeMarkers()) to reduce the bundle size.
-  // See https://github.com/maxGraph/maxGraph/blob/0a18ab1479f0235087c7763dafc098f12cd5f0c9/packages/core/src/view/style/register.ts#L139
-  const markersToRegister: [ArrowValue, MarkerFactoryFunction][] = [
+  const markersToRegister: [StyleArrowValue, MarkerFactoryFunction][] = [
+    // maxGraph built-in markers used in bpmn-visualization: BaseGraph registers nothing, so only the markers referenced
+    // by the BPMN edge styles are registered explicitly (instead of registerDefaultEdgeMarkers()) to reduce the bundle size.
+    // See https://github.com/maxGraph/maxGraph/blob/0a18ab1479f0235087c7763dafc098f12cd5f0c9/packages/core/src/view/style/register.ts#L139
     ['blockThin', EdgeMarker.createArrow(3)],
     ['openThin', EdgeMarker.createOpenArrow(3)],
     ['oval', EdgeMarker.oval],
     ['diamondThin', EdgeMarker.diamond],
+    // BPMN specific marker used for associations
+    [MarkerIdentifier.ARROW_DASH, dashMarkerFactory],
   ];
   for (const [type, factory] of markersToRegister) {
     EdgeMarkerRegistry.add(type, factory);
