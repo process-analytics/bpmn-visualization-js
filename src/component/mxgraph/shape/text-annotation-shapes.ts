@@ -17,6 +17,7 @@ limitations under the License.
 import type { AbstractCanvas2D } from '@maxgraph/core';
 
 import { RectangleShape } from '@maxgraph/core';
+
 import { StyleDefault } from '../style';
 
 /**

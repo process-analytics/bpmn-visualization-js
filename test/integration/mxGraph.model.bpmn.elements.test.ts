@@ -1724,7 +1724,9 @@ describe('mxGraph model - BPMN elements', () => {
       // TODO maxgraph@0.23.0 capture the error and rethrow it with a convenient message OR validate the coordinate
       // values during parsing (maxGraph provides mathUtils.isNumber()), so a single malformed coordinate degrades only
       // that shape instead of aborting the whole diagram load (as mxGraph did).
-      expect(() => bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/simple-start-task-end_numbers_not_parsable_as_number.bpmn'))).toThrow('Invalid x supplied.');
+      expect(() => bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/simple-start-task-end_numbers_not_parsable_as_number.bpmn'))).toThrow(
+        'Invalid x supplied.',
+      );
     });
   });
 

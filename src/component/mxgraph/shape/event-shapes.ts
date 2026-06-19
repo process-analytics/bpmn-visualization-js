@@ -18,8 +18,9 @@ import type { BpmnCanvas, PaintParameter, IconPainter } from './render';
 import type { BpmnCellStateStyle } from '../style/types';
 import type { AbstractCanvas2D } from '@maxgraph/core';
 
-import { ShapeBpmnEventDefinitionKind } from '../../../model/bpmn/internal';
 import { EllipseShape } from '@maxgraph/core';
+
+import { ShapeBpmnEventDefinitionKind } from '../../../model/bpmn/internal';
 import { StyleDefault } from '../style';
 
 import { buildPaintParameter } from './render/icon-painter';

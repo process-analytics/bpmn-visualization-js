@@ -18,8 +18,9 @@ import type { BpmnCanvas, IconPainter, PaintParameter, ShapeConfiguration } from
 import type { BpmnCellStateStyle } from '../style/types';
 import type { AbstractCanvas2D } from '@maxgraph/core';
 
-import { ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal';
 import { RectangleShape } from '@maxgraph/core';
+
+import { ShapeBpmnElementKind, ShapeBpmnMarkerKind, ShapeBpmnSubProcessKind } from '../../../model/bpmn/internal';
 import { StyleDefault } from '../style';
 import { getBpmnIsInstantiating } from '../style/utils';
 

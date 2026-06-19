@@ -78,9 +78,9 @@ export const registerShapes = (): void => {
 // This implementation is adapted from the draw.io BPMN 'dash' marker
 // https://github.com/jgraph/drawio/blob/f539f1ff362e76127dcc7e68b5a9d83dd7d4965c/src/main/webapp/js/mxgraph/Shapes.js#L2796
 // prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
-const dashMarkerFactory: MarkerFactoryFunction = (c, _shape, _type, pe, unitX, unitY, size, _source, sw, _filled) => {
-  const nx = unitX * (size + sw + 4);
-  const ny = unitY * (size + sw + 4);
+const dashMarkerFactory: MarkerFactoryFunction = (c, _shape, _type, pe, unitX, unitY, size, _source, strokewidth) => {
+  const nx = unitX * (size + strokewidth + 4);
+  const ny = unitY * (size + strokewidth + 4);
 
   return function () {
     c.begin();

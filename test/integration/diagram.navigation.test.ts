@@ -14,9 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import { Rectangle } from '@maxgraph/core';
+
 import { initializeBpmnVisualizationWithHtmlElement } from './helpers/bpmn-visualization-initialization';
 
-import { Rectangle } from '@maxgraph/core';
 import { FitType, ZoomType } from '@lib/component/options';
 import { readFileSync } from '@test/shared/file-helper';
 

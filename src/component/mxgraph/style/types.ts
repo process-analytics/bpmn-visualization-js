@@ -14,8 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { CellStateStyle, CellStyle } from '@maxgraph/core';
-
 import type {
   AssociationDirectionKind,
   FlowKind,
@@ -27,6 +25,7 @@ import type {
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
 } from '../../../model/bpmn/internal';
+import type { CellStateStyle, CellStyle } from '@maxgraph/core';
 
 /**
  * The BPMN specific data attached to a maxGraph style under the {@link BpmnCellStyle.bpmn} property.

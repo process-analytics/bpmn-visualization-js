@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { Fill, Font, ShapeStyleUpdate, Stroke, StyleUpdate, GradientDirection, FillColorGradient } from '../../registry';
 import type { BpmnCellStateStyle, BpmnCellStyle } from './types';
+import type { Fill, Font, ShapeStyleUpdate, Stroke, StyleUpdate, GradientDirection, FillColorGradient } from '../../registry';
 import type { CellStyle, DirectionValue, NumericCellStateStyleKeys } from '@maxgraph/core';
 
 import { constants, styleUtils } from '@maxgraph/core';
