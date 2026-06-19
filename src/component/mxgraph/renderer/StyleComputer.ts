@@ -99,8 +99,8 @@ export default class StyleComputer {
     const font = bpmnCell.label?.font;
     if (font && !this.ignoreLabelStyles) {
       font.name && (style.fontFamily = font.name);
-      font.size && (style.fontSize = font.size);
       // Do not set fontStyle to 0: an explicit 0 would override the default and is not meaningful.
+      font.size && (style.fontSize = font.size);
       const fontStyleValue = getFontStyleValue(font);
       fontStyleValue && (style.fontStyle = fontStyleValue);
     }
