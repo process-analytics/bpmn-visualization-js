@@ -4,14 +4,14 @@
 
 ## 1. What was compared
 
-This report compares the `TODO maxgraph@` comments (pattern matched case-insensitively: `TODO maxgraph@`) between two checkouts of the same project, part of the maxGraph migration.
+This report compares the `TODO maxgraph` comments (matched case-insensitively) between two checkouts of the same project, part of the maxGraph migration. The first pass used the strict pattern `TODO maxgraph@`; it was later broadened to `todo[^a-z]*maxgraph` to also catch the space form `TODO maxgraph <version>` (which the strict pattern had missed: see the rollup item in section 3.1).
 
 - **CURRENT branch** (target of migration, maxGraph 0.23.0, on bpmn-visualization 0.48.0 master architecture)
 - **OLD POC** (previous proof of concept, maxGraph 0.20.0, incremental version-stepping): branch `bump_maxgraph_0.20.0_v1` (PR [#3340](https://github.com/process-analytics/bpmn-visualization-js/pull/3340))
 
 **Project rule that motivates this task:** `TODO maxgraph@<version>` comments coming from the former branch that are NOT addressed in the current branch MUST be kept verbatim, because they carry upstream follow-up history. A TODO present in the OLD POC but absent from the CURRENT branch is a problem ONLY if the code it referred to still exists unaddressed. If the migration genuinely resolved or removed that code, dropping the TODO is correct.
 
-**Count summary:** 41 OLD-POC code TODOs vs 5 CURRENT-branch code TODOs.
+**Count summary:** 42 OLD-POC code TODOs (41 in `TODO maxgraph@` form + 1 in `TODO maxgraph ` space form) vs 5 CURRENT-branch code TODOs.
 
 ## 2. Exclusion note
 
@@ -21,15 +21,18 @@ This report compares the `TODO maxgraph@` comments (pattern matched case-insensi
 
 ### 3.1 MISSING (possibly forgotten) — most actionable
 
-> **Resolved (2026-06-19):** the PR#157 follow-up below was re-added as a single consolidated `TODO maxgraph@0.23.0` near the `StyleConfigurator.ts` MESSAGE_FLOW `startFill` (covering both `startFill` and `endFill`), plus a short cross-reference at the CONDITIONAL_FROM_ACTIVITY `startFill`. No other MISSING items remained.
+> **Resolved (2026-06-19):**
+> - the PR#157 follow-up below was re-added as a single consolidated `TODO maxgraph@0.23.0` near the `StyleConfigurator.ts` MESSAGE_FLOW `startFill` (covering both `startFill` and `endFill`), plus a short cross-reference at the CONDITIONAL_FROM_ACTIVITY `startFill`.
+> - the rollup commonjs follow-up below (initially missed by the `@`-only pattern) was re-added as a `TODO maxgraph@0.23.0` near `commonjs()` in `rollup.config.mjs`, enriched with the collected fast-xml-parser 5.8.0 dual-package facts.
 
 | OLD-POC location | CURRENT location | TODO text | Rationale / evidence |
 |---|---|---|---|
 | `src/component/mxgraph/config/StyleConfigurator.ts:48` (MESSAGE_FLOW startFill) | `src/component/mxgraph/config/StyleConfigurator.ts:53` | `TODO maxgraph@0.1.0 could be removed when maxGraph fixes https://github.com/maxGraph/maxGraph/pull/157 (startFill)` | The code still exists: `style.startFill = true; style.startFillColor = ...` at lines 52-53. The removal trigger ("when maxGraph fixes PR#157") has now occurred in 0.23.0 (the migration even deleted `BpmnConnector` on that basis, commit `e69743946`). The explicit `startFill`/`startFillColor` lines were kept but the follow-up note (re-verify whether they are still needed now that native marker fill landed) was dropped. Borderline: code present, concern arguably still open. |
 | `src/component/mxgraph/config/StyleConfigurator.ts:51` (MESSAGE_FLOW endFill) | `src/component/mxgraph/config/StyleConfigurator.ts:55` | `TODO maxgraph@0.1.0 ... (endFill)` | Same as above: `style.endFill = true; style.endFillColor = ...` at lines 55-56, no TODO. |
 | `src/component/mxgraph/config/StyleConfigurator.ts:77` (CONDITIONAL_FROM_ACTIVITY startFill) | `src/component/mxgraph/config/StyleConfigurator.ts:82` | `TODO maxgraph@0.1.0 ... (startFill)` | Same as above: `style.startFill = true; style.startFillColor = ...` at lines 82-83, no TODO. |
+| `rollup.config.mjs:28` | `rollup.config.mjs` (near `commonjs()`) | `// TODO maxgraph 0.15.1 remove commonjs plugin once fxp v5+ is used as it supports ESM. This plugin was only used for fxp and mxgraph. MaxGraph is ESM only` | **Initially missed**: this TODO uses the space form `TODO maxgraph 0.15.1` (no `@`), so the strict pattern skipped it. The removal condition is now met in the current branch: `fast-xml-parser` was bumped 4.2.5 → **5.8.0** (a dual package: `"type": "module"`, `"module": "./src/fxp.js"`, both `import`/`require` export conditions), and mxGraph (the other CommonJS consumer) is gone. Yet the `commonjs()` plugin and a comment claiming it is needed for fast-xml-parser remain. So the plugin is a real removal candidate, pending a bundle check (`npm run test:bundles`). |
 
-Note: these three are grouped — they are the same PR#157 follow-up concern repeated at three style sites. See Recommendations.
+Note: the three StyleConfigurator rows are grouped — they are the same PR#157 follow-up concern repeated at three style sites. See Recommendations.
 
 ### 3.2 PRESENT (reworded / version bumped)
 
@@ -96,3 +99,7 @@ CURRENT TODOs #3 (arcSize, `StyleConfigurator.ts:257`) and #4 (interface augment
 2. **No action needed for the test-matcher and StyleComputer TODOs.** All `0.1.0` matcher/unit TODOs map to code that was genuinely refactored (shared `buildCellMatcher` / `buildExpectedCellStyleWithCommonAttributes`, typed `BpmnCellStyle`, decided `globalTaskKind` handling) or removed (`BpmnConnector`/`edges.ts`). Dropping them was correct.
 
 3. **No action for the two cosmetic TODOs** (`toBeCell` "simplify expression?", `style-utils.test` "display style object in test name"). Pure cosmetics; safe to leave dropped.
+
+4. **Rollup commonjs plugin follow-up (re-added).** The space-form `TODO maxgraph 0.15.1` in the old POC's `rollup.config.mjs` was missed by the `@`-only scan. Its removal condition is now met (fast-xml-parser 5.8.0 is a dual/ESM package, mxGraph gone), so a `TODO maxgraph@0.23.0` was re-added near `commonjs()` with the collected fxp facts. Next step (out of scope here): actually test whether `commonjs()` can be dropped via `npm run test:bundles`.
+
+5. **Process note: broaden the TODO scan pattern.** Future TODO audits should match `todo[^a-z]*maxgraph` (case-insensitive), not just `TODO maxgraph@`, to catch space-form notes like the rollup one.
