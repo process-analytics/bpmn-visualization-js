@@ -228,6 +228,13 @@ class ZoomSupport implements Disposable {
     // and exposes no removal API, so they cannot be explicitly detached here. They are released when the graph
     // container is discarded on dispose.
     // Check how this was done with the mxGraph implementation and add new API in maxGraph if needed.
+    // TODO maxgraph@0.23.0 restore InternalEvent.removeListener (the comment above seems inaccurate)
+    // there is a type mismatch between the listener type and the expected type for InternalEvent.removeListener, so we cannot remove the listeners for now
+    //     if (this.graph.container) {
+    //       for (const listener of this.mouseWheelListeners) {
+    //         InternalEvent.removeListener(this.graph.container, 'wheel', listener);
+    //       }
+    //     }
     this.mouseWheelListeners = [];
   }
 
