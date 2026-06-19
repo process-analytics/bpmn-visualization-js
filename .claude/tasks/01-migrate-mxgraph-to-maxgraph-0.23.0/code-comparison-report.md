@@ -206,9 +206,9 @@ Not in 0.23.0 (verified): `registerEntityRelationEdgeStyle` and `EdgeStyleRegist
 
 ---
 
-## Ecarts a revoir / open questions
+## Open questions
 
-1. Stale arcSize comment (CURRENT). `config/StyleConfigurator.ts:261-264` sets `style.arcSize = 5` but the comment still says "Kept halved (2.5) for now". The value and comment contradict each other. Human check: confirm 5 is the intended final value (Q3 says revert to 5) and fix the comment, since the comment claims the opposite of the code.
+1. ~~Stale arcSize comment (CURRENT).~~ **Resolved (2026-06-19).** `config/StyleConfigurator.ts` set `style.arcSize = 5` but the comment still said "Kept halved (2.5) for now", contradicting the code. The comment was rewritten to state that arcSize is restored to the original mxGraph value (5) because maxGraph 0.21.0 fixed the arc computation, with a `TODO maxgraph@0.23.0` to confirm via the (currently disabled) visual e2e tests. Matches Q3.
 
 2. Possible double `PanningHandler.onDestroy()` (CURRENT). `NavigationImpl.dispose()` calls `getPlugin<PanningHandler>('PanningHandler')?.onDestroy()` (`navigation.ts:70`), then `BpmnVisualization.dispose()` calls `graph.destroy()`, and maxGraph's `AbstractGraph.destroy()` iterates `plugins.forEach(p => p.onDestroy())` (`view/AbstractGraph.ts`). So `onDestroy()` may run twice. Verify idempotency or drop the explicit call. Likely benign but worth a human check.
 
