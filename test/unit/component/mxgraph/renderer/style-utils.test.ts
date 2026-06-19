@@ -46,7 +46,7 @@ describe('compute base css class names of BPMN elements', () => {
 
 describe('compute all css class names based on style input', () => {
   it.each`
-    style                                                                                                                                       | isLabel  | expectedClassNames
+    style                                                                                                                                        | isLabel  | expectedClassNames
     ${{ bpmn: { kind: ShapeBpmnElementKind.LANE } }}                                                                                             | ${true}  | ${['bpmn-type-container', 'bpmn-lane', 'bpmn-label']}
     ${{ bpmn: { kind: ShapeBpmnElementKind.POOL } }}                                                                                             | ${false} | ${['bpmn-type-container', 'bpmn-pool']}
     ${{ bpmn: { kind: ShapeBpmnElementKind.CALL_ACTIVITY } }}                                                                                    | ${false} | ${['bpmn-type-activity', 'bpmn-call-activity']}

@@ -24,10 +24,11 @@ import type { RenderedModel } from '../registry/bpmn-model-registry';
 import type { BpmnCellStyle } from './style/types';
 import type { Cell } from '@maxgraph/core';
 
+import { Point } from '@maxgraph/core';
+
 import { MessageVisibleKind, ShapeUtil } from '../../model/bpmn/internal';
 import { MessageFlow } from '../../model/bpmn/internal/edge/flows';
 
-import { Point } from '@maxgraph/core';
 import CoordinatesTranslator from './renderer/CoordinatesTranslator';
 import StyleComputer from './renderer/StyleComputer';
 

@@ -17,8 +17,8 @@ limitations under the License.
 import type { Edge } from '../../../model/bpmn/internal/edge/edge';
 import type Label from '../../../model/bpmn/internal/Label';
 import type Shape from '../../../model/bpmn/internal/shape/Shape';
-import type { StyleExtensionPoint } from '../extension-points';
 import type { BpmnCellStyle } from '../../mxgraph/style/types';
+import type { StyleExtensionPoint } from '../extension-points';
 
 import './types';
 

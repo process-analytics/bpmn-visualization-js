@@ -106,7 +106,7 @@ class StyleManager {
   }
 
   resetAllStyles(): void {
-    for (const [cellId, style] of [...this.stylesCache]) {
+    for (const [cellId, style] of this.stylesCache) {
       this.resetStyle(cellId, style);
     }
   }

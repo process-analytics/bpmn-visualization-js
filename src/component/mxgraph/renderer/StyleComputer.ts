@@ -100,7 +100,7 @@ export default class StyleComputer {
     if (font && !this.ignoreLabelStyles) {
       font.name && (style.fontFamily = font.name);
       // Do not set fontStyle to 0: an explicit 0 would override the default and is not meaningful.
-      font.size && (style.fontSize = font.size);
+      font.size > 0 && (style.fontSize = font.size);
       const fontStyleValue = getFontStyleValue(font);
       fontStyleValue && (style.fontStyle = fontStyleValue);
     }

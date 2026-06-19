@@ -18,8 +18,9 @@ import type { IconPainter, PaintParameter } from './render';
 import type { BpmnCellStateStyle } from '../style/types';
 import type { AbstractCanvas2D } from '@maxgraph/core';
 
-import { ShapeBpmnEventBasedGatewayKind } from '../../../model/bpmn/internal';
 import { RhombusShape } from '@maxgraph/core';
+
+import { ShapeBpmnEventBasedGatewayKind } from '../../../model/bpmn/internal';
 import { StyleDefault } from '../style';
 import { getBpmnIsInstantiating } from '../style/utils';
 

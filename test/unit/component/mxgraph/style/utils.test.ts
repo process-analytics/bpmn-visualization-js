@@ -20,9 +20,10 @@ limitations under the License.
 import type { BpmnCellStyle } from '@lib/component/mxgraph/style/types';
 import type { CellStyle } from '@maxgraph/core';
 
+import { constants } from '@maxgraph/core';
+
 import { getBpmnIsInstantiating, setCssClasses, setStyle, setStyleFlag, updateFill, updateFont, updateStroke } from '@lib/component/mxgraph/style/utils';
 import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
-import { constants } from '@maxgraph/core';
 
 describe('setStyle', () => {
   test('sets the value when defined', () => {

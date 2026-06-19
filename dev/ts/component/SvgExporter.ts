@@ -119,7 +119,7 @@ class CanvasForExport extends SvgCanvas2D {
     _y: number,
     w: number,
     _h: number,
-    str: string | Element,
+    string_: string | Element,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _align: AlignValue,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -135,7 +135,7 @@ class CanvasForExport extends SvgCanvas2D {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _rotation: number,
   ): string {
-    return this.computeTruncatedText(str, w);
+    return this.computeTruncatedText(string_, w);
   }
 
   override plainText(
@@ -143,31 +143,31 @@ class CanvasForExport extends SvgCanvas2D {
     y: number,
     w: number,
     h: number,
-    str: string,
+    string_: string,
     align: AlignValue,
     valign: VAlignValue,
     wrap: boolean,
     overflow: OverflowValue,
     clip: boolean,
     rotation: number,
-    dir: TextDirectionValue,
+    direction: TextDirectionValue,
   ): void {
-    str = this.computeTruncatedText(str, w);
-    super.plainText(x, y, w, h, str, align, valign, wrap, overflow, clip, rotation, dir);
+    string_ = this.computeTruncatedText(string_, w);
+    super.plainText(x, y, w, h, string_, align, valign, wrap, overflow, clip, rotation, direction);
   }
 
-  private computeTruncatedText(str: string | Element, w: number): string {
+  private computeTruncatedText(string_: string | Element, w: number): string {
     // Assumes a max character width of 0.5em
-    if (str == null || this.state.fontSize <= 0) {
+    if (string_ == null || this.state.fontSize <= 0) {
       return '';
     }
-    if (str instanceof Element) {
-      str = str.innerHTML;
+    if (string_ instanceof Element) {
+      string_ = string_.innerHTML;
     }
 
     try {
-      this.htmlConverter.innerHTML = str;
-      str = domUtils.extractTextWithWhitespace(Array.from(this.htmlConverter.childNodes) as Element[]);
+      this.htmlConverter.innerHTML = string_;
+      string_ = domUtils.extractTextWithWhitespace([...this.htmlConverter.childNodes] as Element[]);
 
       // Workaround for substring breaking double byte UTF
       const exp = Math.ceil((2 * w) / this.state.fontSize);
@@ -175,14 +175,14 @@ class CanvasForExport extends SvgCanvas2D {
       let length = 0;
       let index = 0;
 
-      while ((exp == 0 || length < exp) && index < str.length) {
-        const char = str.codePointAt(index);
+      while ((exp == 0 || length < exp) && index < string_.length) {
+        const char = string_.codePointAt(index);
         if (char == 10 || char == 13) {
           if (length > 0) {
             break;
           }
         } else {
-          result.push(str.charAt(index));
+          result.push(string_.charAt(index));
           if (char! < 255) {
             length++;
           }
@@ -191,12 +191,12 @@ class CanvasForExport extends SvgCanvas2D {
       }
 
       // Uses result and adds ellipsis if more than 1 char remains
-      if (result.length < str.length && str.length - result.length > 1) {
-        str = stringUtils.trim(result.join('')) + '...';
+      if (result.length < string_.length && string_.length - result.length > 1) {
+        string_ = stringUtils.trim(result.join('')) + '...';
       }
     } catch (error) {
       console.warn('Error while computing txt label', error);
     }
-    return str;
+    return string_;
   }
 }
