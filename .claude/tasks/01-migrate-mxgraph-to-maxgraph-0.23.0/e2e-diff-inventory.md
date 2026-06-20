@@ -4,7 +4,9 @@
 **Run:** `npm run test:e2e` locally, browser **chromium** only (the default; CI matrix browsers were not run, and e2e is disabled on CI per Q8).
 **Snapshots are NOT updated.** This inventory is for review; regenerate snapshots only after the diffs are accepted.
 
-## Summary
+> **RESOLVED (2026-06-20).** The root cause below was fixed in `StyleConfigurator` (the association `startSize` is now set only on the `AssociationDirectionKind.BOTH` style, working around the maxGraph `augmentBoundingBox` `!== NONE` bug). After the fix, the **full e2e suite passes: 261 tests, 257/257 snapshots, 0 diffs**, against the existing committed baselines, with no snapshot regeneration. The sections below document the investigation that led there.
+
+## Summary (before the fix)
 
 | | Count |
 |---|---|
