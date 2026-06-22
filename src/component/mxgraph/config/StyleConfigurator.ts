@@ -49,10 +49,6 @@ const specificFlowStyles = new MapWithDefault<FlowKind>([
       style.dashPattern = '8 5';
       style.startArrow = 'oval';
       style.startSize = 8;
-      // TODO maxgraph@0.23.0 the startFill/endFill flags could now be removed: maxGraph PR#157 (native marker
-      // start/end fill, the same support that allowed deleting BpmnConnector) has landed. Re-evaluate whether the
-      // explicit startFill/endFill are still needed once we have stable passing e2e visualization tests.
-      style.startFill = true;
       style.startFillColor = StyleDefault.MESSAGE_FLOW_MARKER_START_FILL_COLOR;
       style.endArrow = 'blockThin';
       style.endFill = true;
@@ -90,8 +86,6 @@ const specificSequenceFlowStyles = new MapWithDefault<SequenceFlowKind>([
     (style: CellStyle) => {
       style.startArrow = 'diamondThin';
       style.startSize = 18;
-      // TODO maxgraph@0.23.0 same startFill re-evaluation as the MESSAGE_FLOW style above (maxGraph PR#157)
-      style.startFill = true;
       style.startFillColor = StyleDefault.SEQUENCE_FLOW_CONDITIONAL_FROM_ACTIVITY_MARKER_FILL_COLOR;
     },
   ],
@@ -268,9 +262,6 @@ export class StyleConfigurator {
     style.endSize = arrowDefaultSize;
     style.strokeWidth = 1.5;
     style.rounded = true;
-    // arcSize restored to the original mxGraph value (5): maxGraph 0.21.0 fixed the arc computation, so 5 renders
-    // correctly again. The 0.20.0 POC had to halve it to 2.5 to work around the pre-0.21.0 computation.
-    // TODO maxgraph@0.23.0 confirm with the visual (e2e) tests that arcSize = 5 renders as expected (e2e disabled for now)
     style.arcSize = 5;
     style.verticalAlign = 'bottom';
 
