@@ -23,115 +23,114 @@ import { ShapeBpmnElementKind, ShapeBpmnEventDefinitionKind } from './kinds';
 /**
  * Utils to simplify the management of {@link ShapeBpmnElementKind}.
  *
- * This class is mainly used for internal purpose. You may use it to customize the BPMN theme as proposed in the examples but be aware it is subject to change.
+ * This is mainly used for internal purpose. You may use it to customize the BPMN theme as proposed in the examples but be aware it is subject to change.
  *
  * @category BPMN
  * @experimental
  */
-// eslint-disable-next-line unicorn/no-static-only-class -- Breaking change on API
-export class ShapeUtil {
-  static isEvent(kind: ShapeBpmnElementKind | string): boolean {
+export const ShapeUtil = {
+  isEvent(kind: ShapeBpmnElementKind | string): boolean {
     return isKindOf(EVENT_KINDS, kind);
-  }
+  },
 
-  static eventKinds(): ShapeBpmnElementKind[] {
+  eventKinds(): ShapeBpmnElementKind[] {
     return [...EVENT_KINDS];
-  }
+  },
 
-  static isBoundaryEvent(kind: ShapeBpmnElementKind): boolean {
+  isBoundaryEvent(kind: ShapeBpmnElementKind): boolean {
     return ShapeBpmnElementKind.EVENT_BOUNDARY === kind;
-  }
+  },
 
-  static isStartEvent(kind: ShapeBpmnElementKind): boolean {
+  isStartEvent(kind: ShapeBpmnElementKind): boolean {
     return ShapeBpmnElementKind.EVENT_START === kind;
-  }
+  },
 
-  static isCatchEvent(kind: ShapeBpmnElementKind): boolean {
+  isCatchEvent(kind: ShapeBpmnElementKind): boolean {
     return ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH === kind || ShapeBpmnElementKind.EVENT_BOUNDARY === kind || ShapeBpmnElementKind.EVENT_START === kind;
-  }
+  },
 
-  static isIntermediateCatchEvent(kind: ShapeBpmnElementKind): boolean {
+  isIntermediateCatchEvent(kind: ShapeBpmnElementKind): boolean {
     return ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH === kind;
-  }
+  },
 
-  static isIntermediateThrowEvent(kind: ShapeBpmnElementKind): boolean {
+  isIntermediateThrowEvent(kind: ShapeBpmnElementKind): boolean {
     return ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW === kind;
-  }
+  },
 
-  static isCallActivity(kind: ShapeBpmnElementKind): boolean {
+  isCallActivity(kind: ShapeBpmnElementKind): boolean {
     return ShapeBpmnElementKind.CALL_ACTIVITY === kind;
-  }
+  },
 
-  static isSubProcess(kind: ShapeBpmnElementKind): boolean {
+  isSubProcess(kind: ShapeBpmnElementKind): boolean {
     return ShapeBpmnElementKind.SUB_PROCESS === kind;
-  }
+  },
 
-  static canHaveNoneEvent(kind: ShapeBpmnElementKind): boolean {
+  canHaveNoneEvent(kind: ShapeBpmnElementKind): boolean {
     return ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW === kind || ShapeBpmnElementKind.EVENT_END === kind || ShapeBpmnElementKind.EVENT_START === kind;
-  }
+  },
 
-  static isActivity(kind: ShapeBpmnElementKind | string): boolean {
+  isActivity(kind: ShapeBpmnElementKind | string): boolean {
     return isKindOf(ACTIVITY_KINDS, kind);
-  }
+  },
 
-  static activityKinds(): ShapeBpmnElementKind[] {
+  activityKinds(): ShapeBpmnElementKind[] {
     return [...ACTIVITY_KINDS];
-  }
+  },
 
-  static isWithDefaultSequenceFlow(kind: ShapeBpmnElementKind): boolean {
+  isWithDefaultSequenceFlow(kind: ShapeBpmnElementKind): boolean {
     return FLOW_NODE_WITH_DEFAULT_SEQUENCE_FLOW_KINDS.has(kind);
-  }
+  },
 
   /**
    * Returns `true` if `kind` is related to a task, for instance {@link ShapeBpmnElementKind.TASK}, {@link ShapeBpmnElementKind.TASK_SERVICE}, but not a {@link ShapeBpmnElementKind.GLOBAL_TASK}.
    */
-  static isTask(kind: ShapeBpmnElementKind | string): boolean {
+  isTask(kind: ShapeBpmnElementKind | string): boolean {
     return isKindOf(TASK_KINDS, kind);
-  }
+  },
   /**
    * Returns all kinds related to a task, for instance {@link ShapeBpmnElementKind.TASK}, {@link ShapeBpmnElementKind.TASK_SEND}, but not a {@link ShapeBpmnElementKind.GLOBAL_TASK}.
    */
-  static taskKinds(): ShapeBpmnElementKind[] {
+  taskKinds(): ShapeBpmnElementKind[] {
     return [...TASK_KINDS];
-  }
+  },
 
-  static gatewayKinds(): ShapeBpmnElementKind[] {
+  gatewayKinds(): ShapeBpmnElementKind[] {
     return [...GATEWAY_KINDS];
-  }
+  },
 
-  static isGateway(kind: ShapeBpmnElementKind | string): boolean {
+  isGateway(kind: ShapeBpmnElementKind | string): boolean {
     return isKindOf(GATEWAY_KINDS, kind);
-  }
+  },
 
-  static flowNodeKinds(): ShapeBpmnElementKind[] {
+  flowNodeKinds(): ShapeBpmnElementKind[] {
     return Object.values(ShapeBpmnElementKind).filter(kind => !ShapeUtil.isPoolOrLane(kind) && !ShapeUtil.isArtifact(kind));
-  }
+  },
 
   /**
    * @since 0.48.0
    */
-  static isFlowNode(kind: ShapeBpmnElementKind | string): boolean {
+  isFlowNode(kind: ShapeBpmnElementKind | string): boolean {
     return ShapeUtil.flowNodeKinds().includes(kind as ShapeBpmnElementKind);
-  }
+  },
 
-  static isPoolOrLane(kind: ShapeBpmnElementKind | string): boolean {
+  isPoolOrLane(kind: ShapeBpmnElementKind | string): boolean {
     return kind == ShapeBpmnElementKind.POOL || kind == ShapeBpmnElementKind.LANE;
-  }
+  },
 
   /**
    * @since 0.48.0
    */
-  static artifactKinds(): ShapeBpmnElementKind[] {
+  artifactKinds(): ShapeBpmnElementKind[] {
     return [...ARTIFACT_KINDS];
-  }
+  },
 
   /**
    * @since 0.48.0
    */
-  static isArtifact(kind: ShapeBpmnElementKind | string): boolean {
+  isArtifact(kind: ShapeBpmnElementKind | string): boolean {
     return ARTIFACT_KINDS.includes(kind as ShapeBpmnElementKind);
-  }
-}
+  },
+};
 
 function filterKind(suffix: string, options?: FilterParameter): ShapeBpmnElementKind[] {
   return filter(Object.values(ShapeBpmnElementKind), suffix, options);
