@@ -58,7 +58,11 @@ export default defineConfig(({ mode }) => {
         },
       },
       // minify: false, // uncomment to see the code in clear
-      chunkSizeWarningLimit: 834, // mxgraph
+      // Vite 8 (Rolldown) switched the default minifier from esbuild to Oxc. With Vite 8.1.0, Oxc minifies the
+      // regex/string-heavy fast-xml-parser code ~12 kB less effectively (53.38 kB vs 41.46 kB). Force terser (already a
+      // devDependency) to keep the demo bundle sizes consistent with the esbuild output produced before Vite 8.
+      minify: 'terser',
+      chunkSizeWarningLimit: 836, // mxgraph
     },
     preview: {
       port: 10_002,
