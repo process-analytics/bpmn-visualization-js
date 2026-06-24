@@ -44,17 +44,21 @@ export default defineConfig(({ mode }) => {
           chunkFileNames: `dev/public/assets/[name].js`,
           assetFileNames: `dev/public/assets/[name].[ext]`,
           // Put dependencies in dedicated files to track the impact of their updates on the demo.
-          manualChunks(id) {
-            if (id.includes('node_modules/es-toolkit')) return 'lib-es-toolkit';
-            if (id.includes('node_modules/fast-xml-parser')) return 'lib-fast-xml-parser';
-            if (id.includes('node_modules/mxgraph')) return 'lib-mxgraph';
-            // bpmn-visualization code built from src/
-            if (!id.includes('node_modules') && id.includes('/src/')) return 'lib-bpmn-visualization';
+          // Vite 8 (Rolldown) replaces the deprecated `manualChunks` with `codeSplitting.groups`.
+          // Groups are evaluated in order: the first matching group captures the module.
+          codeSplitting: {
+            groups: [
+              { name: 'lib-es-toolkit', test: id => id.includes('node_modules/es-toolkit') },
+              { name: 'lib-fast-xml-parser', test: id => id.includes('node_modules/fast-xml-parser') },
+              { name: 'lib-mxgraph', test: id => id.includes('node_modules/mxgraph') },
+              // bpmn-visualization code built from src/
+              { name: 'lib-bpmn-visualization', test: id => !id.includes('node_modules') && id.includes('/src/') },
+            ],
           },
         },
       },
       // minify: false, // uncomment to see the code in clear
-      chunkSizeWarningLimit: 838, // mxgraph
+      chunkSizeWarningLimit: 834, // mxgraph
     },
     preview: {
       port: 10_002,
