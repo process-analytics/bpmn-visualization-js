@@ -67,7 +67,7 @@ jobs:
             browser: chrome
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Free disk space on Ubuntu runner
         if: runner.os == 'Linux'
         uses: ./.github/actions/free-runner-disk-space-ubuntu
