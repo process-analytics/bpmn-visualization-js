@@ -46,7 +46,7 @@ jobs:
       test-bundles-browser: chromium
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       # START temporary workaround
       # Browser download failure with Node 24. See https://github.com/microsoft/playwright/issues/41185 and https://github.com/microsoft/playwright-cli/issues/419#issuecomment-4646958277 (that mentions that it should work with Node 22)
       #      - name: Build Setup
