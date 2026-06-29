@@ -35,7 +35,7 @@ for bundle in "${BUNDLES[@]}"; do
     exit 1
   fi
   size_bytes=$(stat --format=%s "$file")
-  size_kb=$(LC_NUMERIC=C awk "BEGIN {printf \"%.1f\", $size_bytes / 1024}")
+  size_kb=$(LC_NUMERIC=C awk "BEGIN {printf \"%.1f\", $size_bytes / 1000}")
   # Format bytes with space as thousands separator (e.g. 998629 -> "998 629")
   size_bytes_fmt=$(echo "$size_bytes" | sed ':a;s/\B[0-9]\{3\}\>/ &/;ta')
   names+=("$bundle")
