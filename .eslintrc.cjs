@@ -137,5 +137,17 @@ module.exports = {
         // '@typescript-eslint/unbound-method': 'error',
       },
     },
+    // Vite 8 ships as an `exports`-only package; the default node resolver cannot follow the `vite` import.
+    // Use the TypeScript resolver (already a dependency) which honors the `exports` field.
+    {
+      files: ['vite.config.js'],
+      settings: {
+        'import/resolver': {
+          typescript: {
+            alwaysTryTypes: true,
+          },
+        },
+      },
+    },
   ],
 };
