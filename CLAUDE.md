@@ -186,6 +186,33 @@ GraphConfigurator
 
 **E2E Pattern:** Heavy use of image snapshots (in `__image_snapshots__/`) to verify visual rendering correctness across features.
 
+### E2E Visual Regression Thresholds
+
+E2E tests compare a freshly rendered screenshot against a reference image snapshot using `jest-image-snapshot` (SSIM comparison). A test fails when the measured difference exceeds its allowed `failureThreshold` (a percentage of differing pixels). Because rendering differs slightly by browser engine and OS (mostly font rendering, a few pixels, not visible to a human), thresholds are configured per browser family and per platform.
+
+**How thresholds are resolved** (see `test/e2e/helpers/visu/image-snapshot-config.ts`):
+- `MultiBrowserImageSnapshotThresholds` holds a default per browser family (`chromium`, `firefox`, `webkit`), passed to `super({ chromium, firefox, webkit })`.
+- Each test file subclasses it and overrides `getChromiumThresholds()` / `getFirefoxThresholds()` / `getWebkitThresholds()` to return a `Map` of per-snapshot overrides.
+- Each map entry is keyed by the snapshot identifier (the BPMN diagram name, sometimes with a suffix like `.ignored` / `.not-ignored`) and holds per-platform values: `{ linux?, macos?, windows? }`.
+- At runtime, the browser family selects the map, `getSimplePlatformName()` selects the platform key, and the value found there wins. If there is no dedicated entry or no matching platform key, the browser-family default is used.
+- On CI, macOS runs the `webkit` family, so webkit macOS thresholds come from the `macos` key inside `getWebkitThresholds()`.
+
+**Threshold value convention:**
+- Values are written as `X / 100` (a percentage expressed as a fraction), for example `macos: 0.53 / 100`.
+- Add a trailing comment with the actual observed diff percentage from the report, for example `macos: 0.53 / 100, // 0.5228413635451014%`. The fit test file prefixes it with `max` because one entry covers several test variations sharing the snapshot key.
+- Set the value by rounding the observed diff UP to 2 decimals (ceil), so the threshold sits just above the observed diff.
+- Keep entries ordered by snapshot key to match the surrounding file.
+
+**Updating thresholds from a CI test-results report** (recurring task):
+1. The report bundle (downloaded artifact) contains `index-single-page.html` (jest-html-reporters) and a `__diff_output__/` folder with `<snapshot>-diff.png` per failure.
+2. Parse `index-single-page.html`. Each failed block contains: the suite/title, `was <actual>% different from snapshot ... Failure threshold was set to <old>%`, and a `__diff_output__/<relative-path>-diff.png` link. The relative path (minus `-diff.png`) identifies the snapshot; note some names contain hyphens (`.not-ignored`) and the fit tests live in nested subfolders, so capture the full path up to `-diff.png`.
+3. Group by snapshot key and keep the MAX actual diff (several test variations can share one threshold key, e.g. `with.outside.labels` in the fit tests).
+4. For each failing snapshot, locate the matching entry in the relevant test file's `getWebkitThresholds()` (or the correct browser/platform) and set `macos: ceil2(actual) / 100, // <actual>%`. If no entry exists (the failure was against the browser-family default), add one in key order.
+5. Files that currently carry webkit macOS thresholds: `bpmn.rendering.test.ts`, `bpmn.rendering.ignore.options.test.ts`, `bpmn.colors.test.ts`, `diagram.navigation.fit.test.ts`, `style.api.test.ts` (a test file may hold several threshold subclasses, one per configurator).
+6. Reporting: flag any entry where the increase (`new threshold - old threshold`) exceeds 0.3 percentage points. A large jump usually signals a real rendering change or regression worth a human look, not just pixel noise.
+
+Note (from the class JSDoc): prefer NOT adding a threshold for a new test until it actually fails on CI. Discrepancies mostly come from labels; if labels are not part of what the test verifies, remove labels from the BPMN diagram instead of raising a threshold.
+
 ## Key Architectural Patterns
 
 ### Converter Pattern
