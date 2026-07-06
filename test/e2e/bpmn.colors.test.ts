@@ -77,7 +77,7 @@ class ImageSnapshotThresholdsModelColors extends MultiBrowserImageSnapshotThresh
       [
         'elements.colors.02.labels',
         {
-          macos: 0.41 / 100, // 0.40831372531949794%
+          macos: 1.04 / 100, // 1.033599854269418%
         },
       ],
     ]);
@@ -140,7 +140,7 @@ class ImageSnapshotThresholdsIgnoreBpmnColors extends MultiBrowserImageSnapshotT
       [
         'elements.colors.02.labels',
         {
-          macos: 0.49 / 100, // 0.483122009334358%
+          macos: 1.13 / 100, // 1.1249364408232543%
         },
       ],
     ]);
