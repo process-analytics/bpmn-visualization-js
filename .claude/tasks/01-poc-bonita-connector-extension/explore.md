@@ -73,6 +73,14 @@ specifies only has DI-shaped hooks. The semantic hook and the semantic extension
 - `DiagramConverter.ts:133` / `:157` / `:171` — the three existing call sites.
 - `src/component/parser/json/converter/utils.ts:36` `ConvertedElements`, `:64-68` flow node registry.
 
+### JSON model: no augmentation needed, but a typing obstacle
+
+- `src/model/bpmn/json/baseElement/flowNode/activity/task.ts:43` — `TServiceTask extends TTask` already declares `implementation?: tImplementation` and `operationRef?: string`. **No JSON model augmentation is required** (unlike BPMN in Color, which had to declare non-standard DI attributes).
+- **Obstacle:** `tImplementation` (`src/model/bpmn/json/baseElement/rootElement/globalTask.ts:46`) is an **enum** with only `Unspecified = '##unspecified'` and `WebService = '##WebService'`. `'BonitaConnector'` is not a member, so a direct `=== 'BonitaConnector'` comparison is a type error, and an interface augmentation cannot widen an existing property. Resolution options, in order of preference:
+  1. Compare after an explicit widening to `string`, with the literal held in an extension-owned constant. Simple, local, no core change.
+  2. Enum declaration merging (`declare module ... { enum tImplementation { BonitaConnector = 'BonitaConnector' } }`). More in the spirit of the ADR, but merging an enum from another module is fragile and adds a Bonita-specific member to a BPMN-spec type.
+  Option 1 is planned; note the choice as an ADR input, since any extension reading a spec-constrained attribute hits the same wall.
+
 ### Internal model
 
 - `src/model/bpmn/internal/types.ts` — `ShapeExtensions`, `EdgeExtensions`, `LabelExtensions`, all empty interfaces marked `@internal`, each with an eslint disable for `no-empty-object-type`. A new `ShapeBpmnElementExtensions` follows the same shape.
@@ -112,6 +120,8 @@ specifies only has DI-shaped hooks. The semantic hook and the semantic extension
 - Reading the style inside a shape: `mxUtils.getValue(this.style, BpmnStyleIdentifier.MARKERS, undefined)` (`activity-shapes.ts:65`). Style values are strings, hence the "style property as a string" requirement: test `=== 'true'`.
 - `activity-shapes.ts:73-79` `paintMarkerIcons` brackets each icon with `canvas.save()` / `canvas.restore()` to avoid leaking canvas configuration (colors) into later painting. The connector painting must do the same.
 - `buildPaintParameter` is exported from `./shape/render/icon-painter` but **not** re-exported by the `./shape/render` barrel (`index.ts` exports only `render-types`, `BpmnCanvas`, `IconPainter`, `PaintParameter`). Import it from the module directly.
+- `icon-painter.ts:104` `newBpmnCanvas(paintParameter, originalIconSize)` is **`protected`** on `IconPainter`: it maps a `PaintParameter` onto a `BpmnCanvas` constructor call. A standalone painting function cannot call it. `BpmnCanvas` itself is exported by the barrel, so the mapping would have to be duplicated. Preferred fix: extract the body into an exported module-level function in `icon-painter.ts` and have the method delegate to it (also what phase 3 needs for out-of-library extensions).
+- Reusing the script icon in step 3: `paintScriptIcon` is an `IconPainter` **method**, but `IconPainter` is stateless and publicly exported, so the extension can hold a module-level instance and call it with a top-right origin function. It mutates `paintParameter.iconStyleConfig.fillColor`, so pass a copied `iconStyleConfig`.
 - `src/component/mxgraph/shape/render/icon-painter.ts:50` `buildPaintParameter` — builds `PaintParameter` from the shape style; `ratioFromParent` defaults to `0.25`.
 - `icon-painter.ts:693` `paintScriptIcon` — the icon to reuse in step 3. It is a `paintXxxIcon(paintParameter)` method reading `paintParameter.iconStyleConfig` and calling `this.newBpmnCanvas(...)` with an original size of `458.75 x 461.64`. It mutates `iconStyleConfig.fillColor`, so a copy of the parameter is safer when reusing.
 - `src/component/mxgraph/shape/render/BpmnCanvas.ts:120` `setIconOriginToShapeTopLeftProportionally(20)` — the existing top-left positioning, used by every task icon. `:138` `setIconOriginForIconCentered` and `:147` `setIconOriginForIconBottomCentered` show how to offset by the scaled icon size (`this.iconOriginalSize.width * this.scaleX`), which the top-right variant needs.
@@ -198,8 +208,11 @@ extensions are applied by the cell renderer.
 4. **Rendering: cell renderer decorates the shape instance**, shape classes untouched. See "Rendering mechanism" above.
 5. **Test diagrams: create new focused fixtures**, small, with few elements, rather than reusing the two Bonita exports (which are large, carry messy filenames, and mix unrelated content). The Bonita exports stay as parsing references. Needed cases: a service task with a connector, a service task without one, a non-service task, and one diagram with an enlarged task for the scaling check.
 
-## Still to settle during planning
-
-- Naming and ownership of the style key constant `bonita.hasConnector` (extension-owned constant, not added to the public `BpmnStyleIdentifier`).
-- Exact signature of the top-right positioning helper on `BpmnCanvas` and how far it is mutualized with `setIconOriginToShapeTopLeftProportionally`.
-- Whether the integration test reads the style via `bpmnVisualization.graph` (public `@experimental`) or via a smaller self-contained helper of its own.
+6. **Style key constant**: `bonita.hasConnector` is a constant exported by a file of the extension directory, not added to the public `BpmnStyleIdentifier`.
+7. **Top-right positioning helper**: `BpmnCanvas.setIconOriginToShapeTopRightProportionally(shapeDimensionProportion: number)`, same signature and approach as `setIconOriginToShapeTopLeftProportionally` (`BpmnCanvas.ts:120`). Note: the X computation must additionally subtract the scaled icon width (`this.iconOriginalSize.width * this.scaleX`), as `setIconOriginForIconCentered` does at `:140`, otherwise the icon overflows the right border.
+8. **Integration test reads the style through the public graph accessor**, no library test helper and no custom matcher:
+   ```text
+   const cell = bpmnVisualization.graph.getModel().getCell(id);
+   const style = bpmnVisualization.graph.getView().getState(cell).style;
+   ```
+   `getState(cell).style` returns the resolved key/value style object, so assertions target `style['bonita.hasConnector']` directly.
