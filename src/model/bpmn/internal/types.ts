@@ -14,11 +14,29 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+// TODO update the internal model diagram (docs/users/architecture/images/architecture/internal-model.drawio and its
+// generated .svg) to show the new 'ShapeBpmnElement.extensions: ShapeBpmnElementExtensions' property.
+// TODO the internal model diagram never declares the extension types themselves: ShapeExtensions, EdgeExtensions and
+// LabelExtensions only appear as the declared type of an 'extensions' property on Shape, Edge and Label, with no box of
+// their own. Add them, starting with ShapeExtensions.
+
 /**
  * @internal
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type -- Empty interface to allow module augmentation by extensions
 export interface ShapeExtensions {}
+
+/**
+ * Extension properties computed from the BPMN **semantic** model, as opposed to {@link ShapeExtensions} which holds
+ * properties computed from the BPMN diagram interchange model.
+ *
+ * Both carriers are needed because they are populated at different stages of the parsing pipeline: semantic parsing
+ * builds `ShapeBpmnElement` instances long before the `Shape` objects holding {@link ShapeExtensions} exist.
+ *
+ * @internal
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- Empty interface to allow module augmentation by extensions
+export interface ShapeBpmnElementExtensions {}
 
 /**
  * @internal

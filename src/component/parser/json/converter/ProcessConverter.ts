@@ -24,6 +24,7 @@ import type { TReceiveTask } from '../../../../model/bpmn/json/baseElement/flowN
 import type { TBoundaryEvent, TCatchEvent, TThrowEvent } from '../../../../model/bpmn/json/baseElement/flowNode/event';
 import type { TEventBasedGateway } from '../../../../model/bpmn/json/baseElement/flowNode/gateway';
 import type { TProcess } from '../../../../model/bpmn/json/baseElement/rootElement/rootElement';
+import type { ParsingExtensionPoint } from '../../../extension/extension-points';
 import type { ParsingMessageCollector } from '../../parsing-messages';
 
 import {
@@ -49,6 +50,7 @@ import ShapeBpmnElement, {
   ShapeBpmnSubProcess,
 } from '../../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { eventDefinitionKinds } from '../../../../model/bpmn/internal/shape/utils';
+import { bonitaConnectorParsingExtension } from '../../../extension/bonita-connector/parsing-extension';
 import { ensureIsArray } from '../../../helpers/array-utils';
 import { BoundaryEventNotAttachedToActivityWarning, LaneUnknownFlowNodeReferenceWarning } from '../warnings';
 
@@ -91,6 +93,10 @@ function getShapeBpmnElementKind(bpmnSemanticType: BpmnSemanticType): ShapeBpmnE
  * @internal
  */
 export default class ProcessConverter {
+  // The extension list is hardcoded on purpose: the extension mechanism is currently introduced internally
+  // only; external injection (a public `bpmnExtensions` option) is deferred. See ADR 001 in
+  // docs/contributors/adr/, section "Refactoring scope vs. follow-up work".
+  private readonly parsingExtensions: ParsingExtensionPoint[] = [bonitaConnectorParsingExtension];
   private readonly defaultSequenceFlowIds: string[] = [];
   private readonly elementsWithoutParentByProcessId = new Map<string, ShapeBpmnElement[]>();
   private readonly callActivitiesCallingProcess = new Map<string, ShapeBpmnElement>();
@@ -202,6 +208,7 @@ export default class ProcessConverter {
       }
 
       if (shapeBpmnElement) {
+        for (const extension of this.parsingExtensions) extension.onFlowNodeConverted?.(shapeBpmnElement, bpmnElement);
         this.convertedElements.registerFlowNode(shapeBpmnElement);
         if (!parentId) {
           this.elementsWithoutParentByProcessId.get(processId).push(shapeBpmnElement);

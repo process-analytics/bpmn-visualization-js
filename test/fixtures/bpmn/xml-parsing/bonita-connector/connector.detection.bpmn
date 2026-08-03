@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Focused diagram for the Bonita connector extension: Bonita only exports the connector information on service tasks -->
+<model:definitions xmlns:bonitaConnector="http://www.bonitasoft.org/studio/connector/definition/6.0" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:model="http://www.omg.org/spec/BPMN/20100524/MODEL" exporter="BonitaSoft" exporterVersion="10.4.5" targetNamespace="http://bonitasoft.com/connector-detection">
+  <model:process id="process_1" name="Connector detection">
+    <model:serviceTask id="service_task_with_connector" name="With connector" implementation="BonitaConnector" operationRef="Execscripting-groovy-script"/>
+    <model:serviceTask id="service_task_without_connector" name="Without connector"/>
+    <model:userTask id="user_task" name="User task"/>
+  </model:process>
+  <di:BPMNDiagram name="Connector detection">
+    <di:BPMNPlane id="plane_process_1" bpmnElement="process_1">
+      <di:BPMNShape id="shape_service_task_with_connector" bpmnElement="service_task_with_connector">
+        <dc:Bounds height="50.0" width="100.0" x="50.0" y="50.0"/>
+      </di:BPMNShape>
+      <di:BPMNShape id="shape_service_task_without_connector" bpmnElement="service_task_without_connector">
+        <dc:Bounds height="50.0" width="100.0" x="200.0" y="50.0"/>
+      </di:BPMNShape>
+      <di:BPMNShape id="shape_user_task" bpmnElement="user_task">
+        <dc:Bounds height="50.0" width="100.0" x="350.0" y="50.0"/>
+      </di:BPMNShape>
+    </di:BPMNPlane>
+  </di:BPMNDiagram>
+</model:definitions>

@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import type { BpmnEventKind, GlobalTaskKind, ShapeBpmnCallActivityKind, ShapeBpmnEventDefinitionKind } from './kinds';
+import type { ShapeBpmnElementExtensions } from '../types';
 
 import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind, ShapeBpmnSubProcessKind, ShapeBpmnMarkerKind } from './kinds';
 
@@ -24,6 +25,9 @@ import { ShapeBpmnElementKind, ShapeBpmnEventBasedGatewayKind, ShapeBpmnSubProce
 export default class ShapeBpmnElement {
   incomingIds?: string[] = [];
   outgoingIds?: string[] = [];
+  // Not a constructor parameter property, unlike the other fields: it is populated after construction by the parsing
+  // extensions, as done for 'Shape.extensions'.
+  readonly extensions: ShapeBpmnElementExtensions = {};
 
   constructor(
     readonly id: string,

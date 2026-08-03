@@ -32,6 +32,7 @@ import {
   ShapeBpmnStartEvent,
   ShapeBpmnSubProcess,
 } from '../../../model/bpmn/internal/shape/ShapeBpmnElement';
+import { bonitaConnectorStyleExtension } from '../../extension/bonita-connector/style-extension';
 import { bpmnInColorStyleExtension } from '../../extension/bpmn-in-color/style-extension';
 import { mxConstants } from '../initializer';
 import { BpmnStyleIdentifier } from '../style';
@@ -48,7 +49,12 @@ export default class StyleComputer {
     // The extension list is hardcoded on purpose: the extension mechanism is currently introduced internally
     // only; external injection (a public `bpmnExtensions` option) is deferred. See ADR 001 in
     // docs/contributors/adr/, section "Refactoring scope vs. follow-up work".
-    this.styleExtensions = (options?.ignoreBpmnColors ?? true) ? [] : [bpmnInColorStyleExtension];
+    // The Bonita connector extension is always active. Only BPMN in Color is gated, as `ignoreBpmnColors` is the sole
+    // gating option available today.
+    this.styleExtensions = [bonitaConnectorStyleExtension];
+    if (!(options?.ignoreBpmnColors ?? true)) {
+      this.styleExtensions.push(bpmnInColorStyleExtension);
+    }
   }
 
   computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): string {

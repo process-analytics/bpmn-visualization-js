@@ -16,6 +16,8 @@ limitations under the License.
 
 import type { Edge } from '../../model/bpmn/internal/edge/edge';
 import type Shape from '../../model/bpmn/internal/shape/Shape';
+import type ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
+import type { TFlowNode } from '../../model/bpmn/json/baseElement/flowElement';
 import type { BPMNEdge, BPMNShape } from '../../model/bpmn/json/bpmndi';
 
 /**
@@ -25,6 +27,21 @@ import type { BPMNEdge, BPMNShape } from '../../model/bpmn/json/bpmndi';
  * @internal
  */
 export interface ParsingExtensionPoint {
+  // Hook called during the parsing of the BPMN semantic model.
+
+  /**
+   * Called after a flow node has been converted from the BPMN semantic XML.
+   *
+   * This happens before any {@link Shape} exists, so the extension properties must be stored on the
+   * `ShapeBpmnElement` itself.
+   *
+   * @param shapeBpmnElement The internal model built from the BPMN semantic data.
+   * @param bpmnElement The raw BPMN flow node from the XML.
+   */
+  onFlowNodeConverted?(shapeBpmnElement: ShapeBpmnElement, bpmnElement: TFlowNode): void;
+
+  // Hooks called during the parsing of the BPMN diagram interchange model.
+
   /**
    * Called after a shape has been deserialized from the BPMN XML.
    *

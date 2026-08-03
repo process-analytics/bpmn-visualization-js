@@ -124,6 +124,18 @@ export class BpmnCanvas {
   }
 
   /**
+   * Set the icon origin to the top right corner of the shape.
+   *
+   * @param shapeDimensionProportion proportion of the width/height used to translate the icon origin from the shape origin.
+   * @internal
+   */
+  setIconOriginToShapeTopRightProportionally(shapeDimensionProportion: number): void {
+    const shape = this.shapeConfiguration;
+    this.iconPaintingOriginX = shape.x + shape.width - shape.width / shapeDimensionProportion - this.iconOriginalSize.width * this.scaleX;
+    this.iconPaintingOriginY = shape.y + shape.height / shapeDimensionProportion;
+  }
+
+  /**
    * Set the icon origin to the top left corner of the shape.
    */
   setIconOriginToShapeTopLeft(topMargin: number = StyleDefault.SHAPE_ACTIVITY_TOP_MARGIN, leftMargin: number = StyleDefault.SHAPE_ACTIVITY_LEFT_MARGIN): void {

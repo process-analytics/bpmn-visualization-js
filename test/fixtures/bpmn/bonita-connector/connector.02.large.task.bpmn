@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Focused diagram for the Bonita connector extension: the icon must scale with the task, as the task icon does -->
+<model:definitions xmlns:bonitaConnector="http://www.bonitasoft.org/studio/connector/definition/6.0" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:model="http://www.omg.org/spec/BPMN/20100524/MODEL" exporter="BonitaSoft" exporterVersion="10.4.5" targetNamespace="http://bonitasoft.com/connector-large-task">
+  <model:process id="process_1">
+    <model:serviceTask id="large_service_task_with_connector" implementation="BonitaConnector" operationRef="Execscripting-groovy-script"/>
+    <model:serviceTask id="service_task_with_connector" implementation="BonitaConnector" operationRef="Execscripting-groovy-script"/>
+  </model:process>
+  <di:BPMNDiagram>
+    <di:BPMNPlane id="plane_process_1" bpmnElement="process_1">
+      <di:BPMNShape id="shape_large_service_task_with_connector" bpmnElement="large_service_task_with_connector">
+        <dc:Bounds height="240.0" width="300.0" x="40.0" y="40.0"/>
+      </di:BPMNShape>
+      <di:BPMNShape id="shape_service_task_with_connector" bpmnElement="service_task_with_connector">
+        <dc:Bounds height="80.0" width="100.0" x="400.0" y="40.0"/>
+      </di:BPMNShape>
+    </di:BPMNPlane>
+  </di:BPMNDiagram>
+</model:definitions>
