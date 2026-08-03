@@ -55,7 +55,7 @@ parsing time `Shape` does not exist yet, only `ShapeBpmnElement`.
 
 | Option | Mechanism | Assessment |
 |---|---|---|
-| **A. New extensions carrier on `ShapeBpmnElement`** | Add `readonly extensions: ShapeBpmnElementExtensions = {}` to `ShapeBpmnElement`, augmented by the extension. Style extension reads `shape.bpmnElement.extensions.bonita?.hasConnector`. | **Recommended.** Symmetric with `Shape.extensions` (`Shape.ts:26`), zero state in the extension, honours the ADR's module-augmentation approach, and models the real distinction between semantic and DI extensions. Cost: one new empty interface plus one field on a core model class. |
+| **A. New extensions carrier on `ShapeBpmnElement`** | Add `readonly extensions: ShapeBpmnElementExtensions = {}` to `ShapeBpmnElement`, augmented by the extension. Style extension reads `shape.bpmnElement.extensions.bonita?.hasConnector`. | **CONFIRMED BY THE USER.** Symmetric with `Shape.extensions` (`Shape.ts:26`), zero state in the extension, honours the ADR's module-augmentation approach, and models the real distinction between semantic and DI extensions. Cost: one new empty interface plus one field on a core model class. |
 | B. Side map inside the extension | `onFlowNodeConverted` records ids in a `Set`, `onShapeDeserialized` reads it to fill `shape.extensions`. | Rejected. Gives the extension mutable state across parses (leaks between `load()` calls), and relies on hook ordering (semantic before DI, true today but unguaranteed). |
 | C. Keep raw JSON in `ConvertedElements` | Store the raw `TFlowNode` per id so a DI-phase hook can read it. | Rejected. Enlarges core memory footprint and the core API for one extension's benefit. |
 
@@ -95,14 +95,23 @@ specifies only has DI-shaped hooks. The semantic hook and the semantic extension
 
 ### Rendering
 
-- `src/component/mxgraph/shape/activity-shapes.ts:94` `BaseTaskShape.paintForeground` — **single insertion point covering every task kind**: `TaskShape`, `ServiceTaskShape`, `UserTaskShape`, `ReceiveTaskShape`, `SendTaskShape`, `ManualTaskShape`, `ScriptTaskShape`, `BusinessRuleTaskShape` all extend it and only implement `paintTaskIcon`.
-  ```ts
-  override paintForeground(c, x, y, w, h): void {
-    super.paintForeground(c, x, y, w, h);
-    this.paintTaskIcon(buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this }));
+- `src/component/mxgraph/BpmnCellRenderer.ts:89` `createShape` — **the insertion point** (see "Rendering mechanism" below). Shape classes are NOT modified.
+  ```text
+  override createShape(state: mxCellState): mxShape {
+    const shape = super.createShape(state);
+    if ('iconPainter' in shape) {
+      shape.iconPainter = this.iconPainter;
+    }
+    overrideCreateSvgCanvas(shape);
+    return shape;
   }
   ```
+  It already decorates the freshly created shape instance (injecting `iconPainter`, overriding `createSvgCanvas`), so decorating `paintForeground` there follows an established idiom of this class.
+- `src/component/mxgraph/BpmnGraph.ts:88` — `createCellRenderer()` returns `new BpmnCellRenderer(pendingIconPainter)`, the single instantiation site. Relevant for phase 2 (passing extensions in).
+- `src/component/mxgraph/shape/activity-shapes.ts:94` `BaseTaskShape` — the 8 task shapes (`TaskShape`, `ServiceTaskShape`, `UserTaskShape`, `ReceiveTaskShape`, `SendTaskShape`, `ManualTaskShape`, `ScriptTaskShape`, `BusinessRuleTaskShape`) extend it and only implement `paintTaskIcon`. `BaseTaskShape` is **not exported**, so `instanceof` is unavailable outside the module: use the runtime discriminator `'paintTaskIcon' in shape`, which mirrors the existing `'iconPainter' in shape` idiom and excludes `SubProcessShape` and `CallActivityShape`.
 - Reading the style inside a shape: `mxUtils.getValue(this.style, BpmnStyleIdentifier.MARKERS, undefined)` (`activity-shapes.ts:65`). Style values are strings, hence the "style property as a string" requirement: test `=== 'true'`.
+- `activity-shapes.ts:73-79` `paintMarkerIcons` brackets each icon with `canvas.save()` / `canvas.restore()` to avoid leaking canvas configuration (colors) into later painting. The connector painting must do the same.
+- `buildPaintParameter` is exported from `./shape/render/icon-painter` but **not** re-exported by the `./shape/render` barrel (`index.ts` exports only `render-types`, `BpmnCanvas`, `IconPainter`, `PaintParameter`). Import it from the module directly.
 - `src/component/mxgraph/shape/render/icon-painter.ts:50` `buildPaintParameter` — builds `PaintParameter` from the shape style; `ratioFromParent` defaults to `0.25`.
 - `icon-painter.ts:693` `paintScriptIcon` — the icon to reuse in step 3. It is a `paintXxxIcon(paintParameter)` method reading `paintParameter.iconStyleConfig` and calling `this.newBpmnCanvas(...)` with an original size of `458.75 x 461.64`. It mutates `iconStyleConfig.fillColor`, so a copy of the parameter is safer when reusing.
 - `src/component/mxgraph/shape/render/BpmnCanvas.ts:120` `setIconOriginToShapeTopLeftProportionally(20)` — the existing top-left positioning, used by every task icon. `:138` `setIconOriginForIconCentered` and `:147` `setIconOriginForIconBottomCentered` show how to offset by the scaled icon size (`this.iconOriginalSize.width * this.scaleX`), which the top-right variant needs.
@@ -122,6 +131,45 @@ specifies only has DI-shaped hooks. The semantic hook and the semantic extension
 - `test/e2e/bpmn.colors.test.ts` — the visual-regression template: an `ImageSnapshotThresholdsModelColors extends MultiBrowserImageSnapshotThresholds` subclass, `AvailableTestPages`/`PageTester`, `getBpmnDiagramNames('<dir>')` driving the cases from a fixture directory.
 - e2e diagram directories are flat, e.g. `test/fixtures/bpmn/bpmn-in-color/elements.colors.01.no.label.bpmn`.
 
+## Rendering mechanism (decided)
+
+**Shape classes must not be modified. The cell renderer decorates `paintForeground` on the shape instance.**
+
+Rationale: once the extension lives outside the library it cannot subclass or edit `BaseTaskShape`, but it can be
+applied by the cell renderer, which is library code already responsible for per-instance shape customization.
+
+Sketch, in `BpmnCellRenderer.createShape`:
+
+```
+const shape = super.createShape(state);
+if ('iconPainter' in shape) shape.iconPainter = this.iconPainter;
+overrideCreateSvgCanvas(shape);
+
+if ('paintTaskIcon' in shape) {
+  const originalPaintForeground = shape.paintForeground.bind(shape);
+  shape.paintForeground = (c, x, y, w, h) => {
+    originalPaintForeground(c, x, y, w, h);
+    if (mxUtils.getValue(shape.style, 'bonita.hasConnector', undefined) === 'true') {
+      c.save();
+      paintBonitaConnectorIcon(buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape }));
+      c.restore();
+    }
+  };
+}
+return shape;
+```
+
+Two constraints behind this sketch:
+- The style is read **at paint time**, not at `createShape` time. `mxCellRenderer` reuses shape instances across
+  redraws, and the style API can change a cell style at runtime, so a decision taken once at creation would go stale.
+- `save()`/`restore()` bracket the painting, as `paintMarkerIcons` does, so the connector icon cannot leak canvas
+  configuration into subsequent painting.
+
+**ADR deviation to record:** ADR 001 describes the rendering extension point as hooking "into the mxGraph shape
+painting methods (e.g. `paintForeground` in `BaseTaskShape`)". The mechanism chosen here applies it from
+`BpmnCellRenderer.createShape` instead, leaving shape classes untouched. The ADR should state that rendering
+extensions are applied by the cell renderer.
+
 ## Patterns to Follow
 
 - Extension = one directory under `src/component/extension/<name>/` with `types.ts` (augmentations), `parsing-extension.ts`, `style-extension.ts`. Exported consts typed by the extension-point interfaces, plain module-level functions, no classes, no state.
@@ -140,13 +188,18 @@ specifies only has DI-shaped hooks. The semantic hook and the semantic extension
   3. `src/component/parser/json/converter/ProcessConverter.ts` — call the semantic hook, and receive the extension list (today `parsingExtensions` lives only in `DiagramConverter`).
   4. `src/component/mxgraph/renderer/StyleComputer.ts` — register an always-on style extension alongside the colors-gated one.
   5. `src/component/mxgraph/shape/render/BpmnCanvas.ts` — top-right proportional origin.
-  6. `src/component/mxgraph/shape/activity-shapes.ts` — call the connector painting function from `BaseTaskShape.paintForeground`.
-- How `ProcessConverter` gets the extension list is an open design point: `BpmnJsonParser` constructs the converters, so the list has to be threaded there or hoisted to a shared internal registry. Worth deciding in the plan phase, since phase 2 will inject it from `BpmnVisualization` options anyway.
+  6. `src/component/mxgraph/BpmnCellRenderer.ts` — decorate `paintForeground` on task shape instances. **`activity-shapes.ts` is NOT modified.**
 
-## Open points for the plan phase
+## Decisions taken (answers to the open points)
 
-1. Confirm option A for the semantic extensions carrier.
-2. Decide how the parsing extension list reaches `ProcessConverter` (constructor parameter vs shared registry), knowing phase 2 will make it configurable.
-3. Decide whether `paintForeground` calls a standalone `paintBonitaConnectorIcon(paintParameter)` function imported directly (user's stated preference, since `IconPainter` is stateless) or goes through a rendering extension point. The user asked for the direct call in phase 1; record the ADR consequence.
-4. Naming and ownership of the style key constant `bonita.hasConnector`.
-5. Whether to add dedicated e2e fixtures with clean names (recommended) plus one with an enlarged task, versus reusing the two Bonita exports as-is.
+1. **Semantic extensions carrier: option A confirmed.** New `ShapeBpmnElementExtensions` empty interface in `src/model/bpmn/internal/types.ts`, new `readonly extensions` field on `ShapeBpmnElement`, augmented by the connector extension with `bonita?: { hasConnector?: boolean }`.
+2. **No plumbing for the extension list.** The connector parsing extension is hardcoded in the property holding the extension list, exactly as `bpmnInColorParsingExtension` is at `DiagramConverter.ts:48`. `ProcessConverter` gets its own hardcoded list property. No constructor parameter, no registry: that is phase 2's job.
+3. **Style extension registered unconditionally** in `StyleComputer`, always active, independent of `ignoreBpmnColors`.
+4. **Rendering: cell renderer decorates the shape instance**, shape classes untouched. See "Rendering mechanism" above.
+5. **Test diagrams: create new focused fixtures**, small, with few elements, rather than reusing the two Bonita exports (which are large, carry messy filenames, and mix unrelated content). The Bonita exports stay as parsing references. Needed cases: a service task with a connector, a service task without one, a non-service task, and one diagram with an enlarged task for the scaling check.
+
+## Still to settle during planning
+
+- Naming and ownership of the style key constant `bonita.hasConnector` (extension-owned constant, not added to the public `BpmnStyleIdentifier`).
+- Exact signature of the top-right positioning helper on `BpmnCanvas` and how far it is mutualized with `setIconOriginToShapeTopLeftProportionally`.
+- Whether the integration test reads the style via `bpmnVisualization.graph` (public `@experimental`) or via a smaller self-contained helper of its own.
