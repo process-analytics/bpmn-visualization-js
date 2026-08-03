@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bonitaConnector="http://www.bonitasoft.org/studio/connector/definition/6.0" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di_1="http://www.omg.org/spec/DD/20100524/DI" xmlns:java="http://jcp.org/en/jsr/detail?id=270" xmlns:model="http://www.omg.org/spec/BPMN/20100524/MODEL" xsi:schemaLocation="schemaLocation http://www.omg.org/spec/BPMN/20100524/MODEL schemas/BPMN20.xsd" exporter="BonitaSoft" exporterVersion="10.4.5" expressionLanguage="http://groovy.apache.org/" targetNamespace="http://bonitasoft.com/_KzHuwBb0EfGI_4R2MnGOnA">
+  <model:import importType="http://www.w3.org/2001/XMLSchema" location="connectorDefs/scripting-groovy-script.xsd" namespace="http://www.bonitasoft.org/studio/connector/definition/6.1"/>
+  <model:collaboration id="_KzHuwBb0EfGI_4R2MnGOnA">
+    <model:participant id="_-qWboC6YEfG8cPxsk-PSZQ" name="Pool with connector in" processRef="_KzHuwRb0EfGI_4R2MnGOnA"/>
+    <model:participant id="_KzHu2xb0EfGI_4R2MnGOnA" name="Employee actor">
+      <model:documentation><![CDATA[Ceci est un exemple d'acteur associé à tous les utilisateurs d'ACME]]></model:documentation>
+    </model:participant>
+    <model:participant id="_-qoIcC6YEfG8cPxsk-PSZQ" name="Pool with connector out" processRef="_1ahL0C6UEfGig-korpJRBw"/>
+  </model:collaboration>
+  <model:process id="_KzHuwRb0EfGI_4R2MnGOnA" name="Pool with connector in">
+    <model:ioSpecification id="_-qaGAC6YEfG8cPxsk-PSZQ">
+      <model:inputSet id="_-qaGAS6YEfG8cPxsk-PSZQ"/>
+      <model:outputSet id="_-qatEC6YEfG8cPxsk-PSZQ"/>
+    </model:ioSpecification>
+    <model:laneSet id="pool-with-connector-in_laneSet">
+      <model:lane id="_KzHuwhb0EfGI_4R2MnGOnA" name="Employé (lane)">
+        <model:flowNodeRef>_KzHuwxb0EfGI_4R2MnGOnA</model:flowNodeRef>
+        <model:flowNodeRef>_L6TZQBb0EfGI_4R2MnGOnA</model:flowNodeRef>
+        <model:flowNodeRef>_Z-K5gC6WEfGig-korpJRBw</model:flowNodeRef>
+        <model:flowNodeRef>_ziQF0C6YEfG8cPxsk-PSZQ</model:flowNodeRef>
+      </model:lane>
+    </model:laneSet>
+    <model:startEvent id="_KzHuwxb0EfGI_4R2MnGOnA" name="Démarrer1"/>
+    <model:endEvent id="_L6TZQBb0EfGI_4R2MnGOnA" name="Fin1"/>
+    <model:serviceTask id="_Z-K5gC6WEfGig-korpJRBw" name="task without connector"/>
+    <model:userTask id="_ziQF0C6YEfG8cPxsk-PSZQ" name="task with connector in"/>
+    <model:sequenceFlow id="_KzHu2Bb0EfGI_4R2MnGOnA" name="" sourceRef="_KzHuwxb0EfGI_4R2MnGOnA" targetRef="_ziQF0C6YEfG8cPxsk-PSZQ"/>
+    <model:sequenceFlow id="_L6b8IBb0EfGI_4R2MnGOnA" name="" sourceRef="_Z-K5gC6WEfGig-korpJRBw" targetRef="_L6TZQBb0EfGI_4R2MnGOnA"/>
+    <model:sequenceFlow id="_Z-MusC6WEfGig-korpJRBw" name="" sourceRef="_ziQF0C6YEfG8cPxsk-PSZQ" targetRef="_Z-K5gC6WEfGig-korpJRBw"/>
+  </model:process>
+  <model:process id="_1ahL0C6UEfGig-korpJRBw" name="Pool with connector out">
+    <model:ioSpecification id="_-qovgC6YEfG8cPxsk-PSZQ">
+      <model:inputSet id="_-qovgS6YEfG8cPxsk-PSZQ"/>
+      <model:outputSet id="_-qovgi6YEfG8cPxsk-PSZQ"/>
+    </model:ioSpecification>
+    <model:startEvent id="_6UYdwC6UEfGig-korpJRBw" name="Démarrer2"/>
+    <model:serviceTask id="_7NczwC6UEfGig-korpJRBw" name="task1 with connector out" implementation="BonitaConnector" operationRef="Execscripting-groovy-script">
+      <model:ioSpecification id="_-r1CUC6YEfG8cPxsk-PSZQ">
+        <model:dataInput id="_-r1CUS6YEfG8cPxsk-PSZQ" itemSubjectRef="scripting-groovy-scriptConnectorInput"/>
+        <model:dataOutput id="_-r1pYC6YEfG8cPxsk-PSZQ" itemSubjectRef="scripting-groovy-scriptConnectorOutput"/>
+        <model:inputSet id="_-r1CUi6YEfG8cPxsk-PSZQ">
+          <model:dataInputRefs>_-r1CUS6YEfG8cPxsk-PSZQ</model:dataInputRefs>
+        </model:inputSet>
+        <model:outputSet id="_-r1pYS6YEfG8cPxsk-PSZQ">
+          <model:dataOutputRefs>_-r1pYC6YEfG8cPxsk-PSZQ</model:dataOutputRefs>
+        </model:outputSet>
+      </model:ioSpecification>
+      <model:dataInputAssociation>
+        <model:targetRef>_-r1CUS6YEfG8cPxsk-PSZQ</model:targetRef>
+        <model:assignment>
+          <model:from xsi:type="model:tFormalExpression" id="_-r3ekC6YEfG8cPxsk-PSZQ" evaluatesToTypeRef="java:java.lang.Object"><![CDATA[System.out.println'I am grooving task1 with connector out!!!'
+]]></model:from>
+          <model:to id="_-r3ekS6YEfG8cPxsk-PSZQ">getDataInput('_-r1CUS6YEfG8cPxsk-PSZQ')/bonitaConnector:fakeScriptExpression</model:to>
+        </model:assignment>
+      </model:dataInputAssociation>
+      <model:dataOutputAssociation>
+        <model:targetRef>_-r1pYC6YEfG8cPxsk-PSZQ</model:targetRef>
+        <model:assignment>
+          <model:from id="_-r3eki6YEfG8cPxsk-PSZQ">getDataOutput('_-r1CUS6YEfG8cPxsk-PSZQ')/bonitaConnector:result</model:from>
+        </model:assignment>
+      </model:dataOutputAssociation>
+    </model:serviceTask>
+    <model:scriptTask id="_-_KK0C6UEfGig-korpJRBw" name="task2 with connector in and out"/>
+    <model:endEvent id="_AItz4C6VEfGig-korpJRBw" name="Fin2"/>
+    <model:sequenceFlow id="_8OEjQC6UEfGig-korpJRBw" name="" sourceRef="_6UYdwC6UEfGig-korpJRBw" targetRef="_7NczwC6UEfGig-korpJRBw"/>
+    <model:sequenceFlow id="_9XMHcC6UEfGig-korpJRBw" name="" sourceRef="_7NczwC6UEfGig-korpJRBw" targetRef="_-_KK0C6UEfGig-korpJRBw"/>
+    <model:sequenceFlow id="_AIvCAi6VEfGig-korpJRBw" name="" sourceRef="_-_KK0C6UEfGig-korpJRBw" targetRef="_AItz4C6VEfGig-korpJRBw"/>
+  </model:process>
+  <model:itemDefinition id="scripting-groovy-scriptConnectorInput" structureRef="bonitaConnector:scripting-groovy-scriptInputType"/>
+  <model:message id="scripting-groovy-scriptConnectorMessageInput" itemRef="scripting-groovy-scriptConnectorInput"/>
+  <model:itemDefinition id="scripting-groovy-scriptConnectorOutput" structureRef="bonitaConnector:scripting-groovy-scriptOutputType"/>
+  <model:message id="scripting-groovy-scriptConnectorMessageOutput" itemRef="scripting-groovy-scriptConnectorOutput"/>
+  <model:interface id="scripting-groovy-script_Bonita_Connector_Interface" name="scripting-groovy-script_Bonita_Connector_Interface">
+    <model:operation id="Execscripting-groovy-script" name="Execscripting-groovy-script">
+      <model:inMessageRef>scripting-groovy-scriptConnectorMessageInput</model:inMessageRef>
+      <model:outMessageRef>scripting-groovy-scriptConnectorMessageOutput</model:outMessageRef>
+    </model:operation>
+  </model:interface>
+  <di:BPMNDiagram name="Diagram_1">
+    <di:BPMNPlane id="plane__KzHuwBb0EfGI_4R2MnGOnA" bpmnElement="_KzHuwBb0EfGI_4R2MnGOnA">
+      <di:BPMNShape id="_KzHu9hb0EfGI_4R2MnGOnA" bpmnElement="_-qWboC6YEfG8cPxsk-PSZQ" isHorizontal="true">
+        <dc:Bounds height="250.0" width="1320.0" x="0.0" y="0.0"/>
+      </di:BPMNShape>
+      <di:BPMNShape id="_KzHu-Rb0EfGI_4R2MnGOnA" bpmnElement="_KzHuwhb0EfGI_4R2MnGOnA" isHorizontal="true">
+        <dc:Bounds height="250.0" width="1290.0" x="30.0" y="0.0"/>
+      </di:BPMNShape>
+      <di:BPMNShape id="_KzHu_xb0EfGI_4R2MnGOnA" bpmnElement="_KzHuwxb0EfGI_4R2MnGOnA">
+        <dc:Bounds height="30.0" width="30.0" x="90.0" y="68.0"/>
+        <di:BPMNLabel id="_-qeXcS6YEfG8cPxsk-PSZQ" labelStyle="_-qeXcC6YEfG8cPxsk-PSZQ">
+          <dc:Bounds height="17.0" width="66.0" x="72.0" y="103.0"/>
+        </di:BPMNLabel>
+      </di:BPMNShape>
+      <di:BPMNShape id="_L6XDoBb0EfGI_4R2MnGOnA" bpmnElement="_L6TZQBb0EfGI_4R2MnGOnA">
+        <dc:Bounds height="30.0" width="30.0" x="538.0" y="75.0"/>
+        <di:BPMNLabel id="_-qflkC6YEfG8cPxsk-PSZQ" labelStyle="_-qeXcC6YEfG8cPxsk-PSZQ">
+          <dc:Bounds height="17.0" width="29.0" x="539.0" y="110.0"/>
+        </di:BPMNLabel>
+      </di:BPMNShape>
+      <di:BPMNShape id="_Z-MHqC6WEfGig-korpJRBw" bpmnElement="_Z-K5gC6WEfGig-korpJRBw">
+        <dc:Bounds height="60.0" width="120.0" x="359.0" y="65.0"/>
+      </di:BPMNShape>
+      <di:BPMNShape id="_ziRT8y6YEfG8cPxsk-PSZQ" bpmnElement="_ziQF0C6YEfG8cPxsk-PSZQ">
+        <dc:Bounds height="60.0" width="120.0" x="190.0" y="60.0"/>
+      </di:BPMNShape>
+      <di:BPMNEdge id="_KzHvDhb0EfGI_4R2MnGOnA" bpmnElement="_KzHu2Bb0EfGI_4R2MnGOnA">
+        <di_1:waypoint x="119.0" y="86.0"/>
+        <di_1:waypoint x="190.0" y="86.0"/>
+      </di:BPMNEdge>
+      <di:BPMNEdge id="_L6dxUBb0EfGI_4R2MnGOnA" bpmnElement="_L6b8IBb0EfGI_4R2MnGOnA">
+        <di_1:waypoint x="479.0" y="93.0"/>
+        <di_1:waypoint x="538.0" y="93.0"/>
+      </di:BPMNEdge>
+      <di:BPMNEdge id="_Z-Musy6WEfGig-korpJRBw" bpmnElement="_Z-MusC6WEfGig-korpJRBw">
+        <di_1:waypoint x="310.0" y="92.0"/>
+        <di_1:waypoint x="359.0" y="92.0"/>
+      </di:BPMNEdge>
+      <di:BPMNShape id="_1cDc4C6UEfGig-korpJRBw" bpmnElement="_-qoIcC6YEfG8cPxsk-PSZQ" isHorizontal="true">
+        <dc:Bounds height="250.0" width="1260.0" x="0.0" y="300.0"/>
+      </di:BPMNShape>
+      <di:BPMNShape id="_6Ud9UC6UEfGig-korpJRBw" bpmnElement="_6UYdwC6UEfGig-korpJRBw">
+        <dc:Bounds height="30.0" width="30.0" x="100.0" y="409.0"/>
+        <di:BPMNLabel id="_-qovgy6YEfG8cPxsk-PSZQ" labelStyle="_-qeXcC6YEfG8cPxsk-PSZQ">
+          <dc:Bounds height="17.0" width="66.0" x="82.0" y="444.0"/>
+        </di:BPMNLabel>
+      </di:BPMNShape>
+      <di:BPMNShape id="_7Ni6YC6UEfGig-korpJRBw" bpmnElement="_7NczwC6UEfGig-korpJRBw">
+        <dc:Bounds height="60.0" width="120.0" x="233.0" y="400.0"/>
+      </di:BPMNShape>
+      <di:BPMNShape id="_-_MAAC6UEfGig-korpJRBw" bpmnElement="_-_KK0C6UEfGig-korpJRBw">
+        <dc:Bounds height="60.0" width="120.0" x="427.0" y="402.0"/>
+      </di:BPMNShape>
+      <di:BPMNShape id="_AIua8y6VEfGig-korpJRBw" bpmnElement="_AItz4C6VEfGig-korpJRBw">
+        <dc:Bounds height="30.0" width="30.0" x="591.0" y="409.0"/>
+        <di:BPMNLabel id="_-r4ssC6YEfG8cPxsk-PSZQ" labelStyle="_-qeXcC6YEfG8cPxsk-PSZQ">
+          <dc:Bounds height="17.0" width="29.0" x="592.0" y="444.0"/>
+        </di:BPMNLabel>
+      </di:BPMNShape>
+      <di:BPMNEdge id="_8OI0sC6UEfGig-korpJRBw" bpmnElement="_8OEjQC6UEfGig-korpJRBw">
+        <di_1:waypoint x="129.0" y="428.0"/>
+        <di_1:waypoint x="233.0" y="428.0"/>
+      </di:BPMNEdge>
+      <di:BPMNEdge id="_9XQ_8C6UEfGig-korpJRBw" bpmnElement="_9XMHcC6UEfGig-korpJRBw">
+        <di_1:waypoint x="353.0" y="431.0"/>
+        <di_1:waypoint x="427.0" y="431.0"/>
+      </di:BPMNEdge>
+      <di:BPMNEdge id="_AIvpEi6VEfGig-korpJRBw" bpmnElement="_AIvCAi6VEfGig-korpJRBw">
+        <di_1:waypoint x="547.0" y="428.0"/>
+        <di_1:waypoint x="591.0" y="428.0"/>
+      </di:BPMNEdge>
+    </di:BPMNPlane>
+    <di:BPMNLabelStyle id="_-qeXcC6YEfG8cPxsk-PSZQ">
+      <dc:Font isBold="false" isItalic="false" isStrikeThrough="false" isUnderline="false" name="Ubuntu" size="9.0"/>
+    </di:BPMNLabelStyle>
+  </di:BPMNDiagram>
+</model:definitions>
