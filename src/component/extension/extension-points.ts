@@ -19,6 +19,7 @@ import type Shape from '../../model/bpmn/internal/shape/Shape';
 import type ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 import type { TFlowNode } from '../../model/bpmn/json/baseElement/flowElement';
 import type { BPMNEdge, BPMNShape } from '../../model/bpmn/json/bpmndi';
+import type { IconPainter, PaintParameter } from '../mxgraph/shape/render';
 import type { mxCellState, mxShape } from 'mxgraph';
 
 /**
@@ -128,3 +129,20 @@ export interface RenderingExtensionPoint {
    */
   onShapeCreated?(shape: mxShape, state: mxCellState): void;
 }
+
+/**
+ * Icon painting methods contributed by an extension, keyed by method name. They are injected at library
+ * initialization into the {@link IconPainter} in use, so `this` is that painter and its
+ * {@link IconPainter.newBpmnCanvas} is available to build the canvas.
+ *
+ * Extensions contribute methods, and not a whole {@link IconPainter}, so that several of them can coexist: only one
+ * painter can be in use at a time.
+ *
+ * The extension must also declare the contributed method names on {@link IconPainter} with declaration merging,
+ * otherwise the callers cannot see them. Declare them as optional: an `IconPainter` only holds them when the
+ * extension has been registered.
+ *
+ * @since 0.49.0
+ * @internal
+ */
+export type IconPainterExtensionPoint = Record<string, (this: IconPainter, paintParameter: PaintParameter) => void>;

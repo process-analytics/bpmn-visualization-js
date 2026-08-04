@@ -44,7 +44,9 @@ function paintConnectorIconAfterForeground(shape: BpmnTaskShape): void {
     originalPaintForeground(c, x, y, w, h);
 
     c.save(); // ensure the icon painting cannot leak canvas configuration (colors, ...) into the next painting
-    shape.iconPainter.paintScriptIcon({
+    // The method is injected into the icon painter at library initialization, hence the optional call: it is missing
+    // when the extension is not registered.
+    shape.iconPainter.paintBonitaConnectorIcon?.({
       ...buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape, ratioFromParent: 0.22 }),
       setIconOriginFunct: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopRightProportionally(20),
     });

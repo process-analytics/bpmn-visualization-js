@@ -14,18 +14,39 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { IconPainterExtensionPoint } from '../extension/extension-points';
 import type { RendererOptions } from '../options';
+
+import { bonitaConnectorIconPainterExtension } from '../extension/bonita-connector/icon-painter-extension';
 
 import { BpmnGraph } from './BpmnGraph';
 import { registerEdgeMarkers, registerShapes } from './config/register-style-definitions';
 import { StyleConfigurator } from './config/StyleConfigurator';
 import { IconPainter } from './shape/render';
 
+// The extension list is hardcoded on purpose: the extension mechanism is currently introduced internally
+// only; external injection (a public `bpmnExtensions` option) is deferred. See ADR 001 in
+// docs/contributors/adr/, section "Refactoring scope vs. follow-up work".
+const iconPainterExtensions: IconPainterExtensionPoint[] = [bonitaConnectorIconPainterExtension];
+
 /**
  * @internal
  */
 export function createNewBpmnGraph(container: HTMLElement, rendererOptions?: RendererOptions): BpmnGraph {
-  return new GraphConfigurator(new BpmnGraph(container, rendererOptions?.iconPainter ?? new IconPainter())).configure();
+  return new GraphConfigurator(new BpmnGraph(container, resolveIconPainter(rendererOptions))).configure();
+}
+
+/**
+ * Resolve the icon painter in use, and inject into it the painting methods contributed by the extensions.
+ *
+ * The methods are injected into the instance, and never into the `IconPainter` prototype, so they cannot leak to the
+ * painters used by the other `BpmnVisualization` instances. The user provided painter, when there is one, is
+ * augmented in the same way.
+ */
+function resolveIconPainter(rendererOptions?: RendererOptions): IconPainter {
+  const iconPainter = rendererOptions?.iconPainter ?? new IconPainter();
+  for (const extension of iconPainterExtensions) Object.assign(iconPainter, extension);
+  return iconPainter;
 }
 
 /**

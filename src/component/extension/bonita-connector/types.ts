@@ -36,3 +36,14 @@ declare module '../../../model/bpmn/internal/types' {
     };
   }
 }
+
+// Declare the icon painting method contributed by this extension. All the augmentations of the extension are gathered
+// in this file, which every other file of the extension already imports.
+// The method is optional because an 'IconPainter' only holds it once the extension has been registered.
+// 'PaintParameter' needs no import here: inside the block, the scope is the augmented module, which declares it.
+declare module '../../mxgraph/shape/render/icon-painter' {
+  interface IconPainter {
+    /** Paint the icon marking an element holding at least one Bonita connector. */
+    paintBonitaConnectorIcon?(paintParameter: PaintParameter): void;
+  }
+}

@@ -97,11 +97,14 @@ export class IconPainter {
   /**
    * Utility paint icon methods to easily instantiate a {@link BpmnCanvas} from a {@link PaintParameter}.
    *
+   * This is public, and not protected, because it is the entry point of the icon painting methods contributed by the
+   * extensions: they are injected into an existing instance, so they are not declared within this class and cannot
+   * access its protected members.
+   *
    * @param paintParameter   aggregates the canvas, the shape/icon configuration and the rendering helpers used to paint the icon. See {@link PaintParameter}.
    * @param originalIconSize original size of the icon used to compute the scaling/ratio in {@link BpmnCanvas}.
-   * @protected
    */
-  protected newBpmnCanvas(paintParameter: PaintParameter, originalIconSize: Size): BpmnCanvas {
+  newBpmnCanvas(paintParameter: PaintParameter, originalIconSize: Size): BpmnCanvas {
     const { canvas, ratioFromParent, setIconOriginFunct, shapeConfig, iconStyleConfig } = paintParameter;
     return new BpmnCanvas({
       canvas,

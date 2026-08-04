@@ -1,7 +1,34 @@
-# Implementation: POC Bonita connector extension, step 1
+# Implementation: POC Bonita connector extension, steps 1 and 2
 
-Scope: step 1 of `plan.md` only. Steps 2 (icon painter injection extension point) and 3 (definitive icon) are not
-implemented.
+Scope: steps 1 and 2 of `plan.md`. Step 3 (definitive icon) is not implemented.
+
+## Step 2: icon painter injection
+
+- `src/component/mxgraph/shape/render/icon-painter.ts`: `newBpmnCanvas` went from `protected` to public, with a JSDoc
+  explaining that it is the entry point of the methods contributed by extensions, which are injected into an instance
+  and therefore cannot reach protected members.
+- `src/component/extension/extension-points.ts`: added `IconPainterExtensionPoint`, a `Record` of method name to
+  implementation, typed so `this` is the `IconPainter`.
+- `src/component/extension/bonita-connector/icon-painter-extension.ts`: contributes `paintBonitaConnectorIcon`,
+  painting the placeholder green rectangle through `this.newBpmnCanvas`.
+- `src/component/extension/bonita-connector/types.ts`: declaration merging adding the optional
+  `paintBonitaConnectorIcon` to `IconPainter`. All augmentations of the extension stay gathered in this file, which
+  every other file of the extension already imports. Note: `PaintParameter` needs no import there, because inside a
+  `declare module` block the scope is the augmented module, which declares it. Importing it at the top of the file
+  actually breaks the build with TS6133, the import being seen as unused.
+- `src/component/mxgraph/GraphConfigurator.ts`: new `resolveIconPainter`, which resolves the painter
+  (`rendererOptions.iconPainter` or a new one) and injects the contributed methods into **that instance**, never into
+  the prototype, so nothing leaks to the painters of the other `BpmnVisualization` instances.
+- `src/component/extension/bonita-connector/rendering-extension.ts`: calls
+  `shape.iconPainter.paintBonitaConnectorIcon?.(...)` instead of `paintScriptIcon`. The optional call is not
+  defensive style: the method is declared optional because an `IconPainter` only holds it once the extension has been
+  registered.
+- `test/unit/component/extension/bonita-connector/icon-painter-extension.test.ts`: 3 tests, including the
+  prototype-pollution guard (a second, untouched `IconPainter` must not have the method).
+
+Acceptance criterion met: the 2 e2e snapshots changed, and the diff is confined to the top right corner of the task
+holding the connector. That is the proof the injected method is the one executing, and not the built-in
+`paintScriptIcon`. The icon still scales with the task.
 
 ## Completed
 
