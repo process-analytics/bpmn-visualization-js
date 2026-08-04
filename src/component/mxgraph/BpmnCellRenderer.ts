@@ -100,7 +100,7 @@ export class BpmnCellRenderer extends mxCellRenderer {
       shape.iconPainter = this.iconPainter;
     }
     overrideCreateSvgCanvas(shape);
-    for (const extension of this.renderingExtensions) extension.onShapeCreated?.(shape, state, this.iconPainter);
+    for (const extension of this.renderingExtensions) extension.onShapeCreated?.(shape, state);
     return shape;
   }
 

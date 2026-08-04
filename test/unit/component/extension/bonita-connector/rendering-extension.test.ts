@@ -17,7 +17,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { IconPainter } from '@lib/component/mxgraph/shape/render';
 import type { mxCellState, mxShape } from 'mxgraph';
 
 import { bonitaConnectorRenderingExtension } from '@lib/component/extension/bonita-connector/rendering-extension';
@@ -42,14 +41,12 @@ function newState(hasConnectorStyleValue?: string): mxCellState {
   return { style: hasConnectorStyleValue === undefined ? {} : { 'bonita.hasConnector': hasConnectorStyleValue } } as unknown as mxCellState;
 }
 
-const iconPainter = {} as IconPainter;
-
 describe('Bonita connector — rendering extension', () => {
   describe('onShapeCreated', () => {
     it('decorates the painting of a task shape whose style holds a connector', () => {
       const shape = newTaskShape();
 
-      bonitaConnectorRenderingExtension.onShapeCreated(shape, newState('true'), iconPainter);
+      bonitaConnectorRenderingExtension.onShapeCreated(shape, newState('true'));
 
       expect(shape.paintForeground).not.toBe(paintForeground);
     });
@@ -60,7 +57,7 @@ describe('Bonita connector — rendering extension', () => {
     ])('leaves the painting of a task shape untouched when %s', (_name: string, styleValue: string) => {
       const shape = newTaskShape();
 
-      bonitaConnectorRenderingExtension.onShapeCreated(shape, newState(styleValue), iconPainter);
+      bonitaConnectorRenderingExtension.onShapeCreated(shape, newState(styleValue));
 
       expect(shape.paintForeground).toBe(paintForeground);
     });
@@ -68,7 +65,7 @@ describe('Bonita connector — rendering extension', () => {
     it('leaves the painting of a non task shape untouched even when its style holds a connector', () => {
       const shape = newNonTaskShape();
 
-      bonitaConnectorRenderingExtension.onShapeCreated(shape, newState('true'), iconPainter);
+      bonitaConnectorRenderingExtension.onShapeCreated(shape, newState('true'));
 
       expect(shape.paintForeground).toBe(paintForeground);
     });

@@ -25,9 +25,12 @@ import { buildPaintParameter } from '../../mxgraph/shape/render/icon-painter';
 
 import { bonitaHasConnectorStyleIdentifier } from './identifiers';
 
+/** The `iconPainter` is injected into the shape instances by the cell renderer. */
+type BpmnTaskShape = mxShape & { paintTaskIcon: () => void; iconPainter: IconPainter };
+
 // 'BaseTaskShape' is not exported by the library, so the presence of 'paintTaskIcon' is used to detect the shapes used
 // for the BPMN tasks. This excludes the sub-process and call activity shapes.
-function isTaskShape(shape: mxShape): boolean {
+function isTaskShape(shape: mxShape): shape is BpmnTaskShape {
   return 'paintTaskIcon' in shape;
 }
 
@@ -35,13 +38,13 @@ function hasConnector(state: mxCellState): boolean {
   return mxUtils.getValue(state.style, bonitaHasConnectorStyleIdentifier, undefined) === 'true';
 }
 
-function paintConnectorIconAfterForeground(shape: mxShape, iconPainter: IconPainter): void {
+function paintConnectorIconAfterForeground(shape: BpmnTaskShape): void {
   const originalPaintForeground = shape.paintForeground.bind(shape);
   shape.paintForeground = (c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void => {
     originalPaintForeground(c, x, y, w, h);
 
     c.save(); // ensure the icon painting cannot leak canvas configuration (colors, ...) into the next painting
-    iconPainter.paintScriptIcon({
+    shape.iconPainter.paintScriptIcon({
       ...buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape, ratioFromParent: 0.22 }),
       setIconOriginFunct: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopRightProportionally(20),
     });
@@ -50,9 +53,9 @@ function paintConnectorIconAfterForeground(shape: mxShape, iconPainter: IconPain
 }
 
 export const bonitaConnectorRenderingExtension: RenderingExtensionPoint = {
-  onShapeCreated(shape: mxShape, state: mxCellState, iconPainter: IconPainter): void {
+  onShapeCreated(shape: mxShape, state: mxCellState): void {
     if (isTaskShape(shape) && hasConnector(state)) {
-      paintConnectorIconAfterForeground(shape, iconPainter);
+      paintConnectorIconAfterForeground(shape);
     }
   },
 };

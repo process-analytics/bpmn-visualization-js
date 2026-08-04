@@ -19,7 +19,6 @@ import type Shape from '../../model/bpmn/internal/shape/Shape';
 import type ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 import type { TFlowNode } from '../../model/bpmn/json/baseElement/flowElement';
 import type { BPMNEdge, BPMNShape } from '../../model/bpmn/json/bpmndi';
-import type { IconPainter } from '../mxgraph/shape/render';
 import type { mxCellState, mxShape } from 'mxgraph';
 
 /**
@@ -121,11 +120,11 @@ export interface RenderingExtensionPoint {
    * of its painting methods.
    *
    * The shape is not yet attached to the state and its `style` property is not set yet, so the extension must read the
-   * style from `state.style`.
+   * style from `state.style`. The `IconPainter` in use has already been injected into the shape, so the extension gets
+   * it from there to paint the additional elements.
    *
    * @param shape The freshly created shape.
    * @param state The state of the cell the shape has been created for.
-   * @param iconPainter The icon painter in use, to paint the additional elements.
    */
-  onShapeCreated?(shape: mxShape, state: mxCellState, iconPainter: IconPainter): void;
+  onShapeCreated?(shape: mxShape, state: mxCellState): void;
 }
