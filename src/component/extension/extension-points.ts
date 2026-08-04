@@ -19,6 +19,8 @@ import type Shape from '../../model/bpmn/internal/shape/Shape';
 import type ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 import type { TFlowNode } from '../../model/bpmn/json/baseElement/flowElement';
 import type { BPMNEdge, BPMNShape } from '../../model/bpmn/json/bpmndi';
+import type { IconPainter } from '../mxgraph/shape/render';
+import type { mxCellState, mxShape } from 'mxgraph';
 
 /**
  * Extension point called during BPMN parsing to allow custom processing of deserialized elements.
@@ -105,4 +107,25 @@ export interface StyleExtensionPoint {
    * @param styleValues The mutable map of style key/value pairs to enrich.
    */
   enrichMessageFlowIconStyle?(edge: Edge, styleValues: Map<string, string | number>): void;
+}
+
+/**
+ * Extension point for painting additional elements on the shapes rendered by the library.
+ *
+ * @since 0.49.0
+ * @internal
+ */
+export interface RenderingExtensionPoint {
+  /**
+   * Called after the shape of a cell has been created, to let the extension decorate it, typically by overriding one
+   * of its painting methods.
+   *
+   * The shape is not yet attached to the state and its `style` property is not set yet, so the extension must read the
+   * style from `state.style`.
+   *
+   * @param shape The freshly created shape.
+   * @param state The state of the cell the shape has been created for.
+   * @param iconPainter The icon painter in use, to paint the additional elements.
+   */
+  onShapeCreated?(shape: mxShape, state: mxCellState, iconPainter: IconPainter): void;
 }

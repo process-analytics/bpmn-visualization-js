@@ -14,10 +14,12 @@ implemented.
 - `src/model/bpmn/internal/shape/ShapeBpmnElement.ts`: added `readonly extensions: ShapeBpmnElementExtensions = {}`
   on the base class, with a comment on why it is not a constructor parameter property.
 
-### Core, extension point
+### Core, extension points
 - `src/component/extension/extension-points.ts`: added `onFlowNodeConverted(shapeBpmnElement, bpmnElement)` to
   `ParsingExtensionPoint`, grouped under a comment separating the semantic-phase hook from the
   diagram-interchange-phase hooks.
+- Same file: added `RenderingExtensionPoint` with `onShapeCreated(shape, state, iconPainter)`, so no
+  extension-specific code lives in the cell renderer.
 
 ### The extension itself, `src/component/extension/bonita-connector/`
 - `types.ts`: augments `ShapeBpmnElementExtensions` with `bonita?: { hasConnector?: boolean }`. Records that no JSON
@@ -27,6 +29,9 @@ implemented.
 - `parsing-extension.ts`: detects a connector on a service task whose `implementation` equals `BonitaConnector`, and
   sets `extensions.bonita = { hasConnector: true }` only in that case.
 - `style-extension.ts`: sets the style key to the string `'true'` when the element has a connector.
+- `rendering-extension.ts`: implements `RenderingExtensionPoint`. It owns the whole policy: the task shape detection
+  (`'paintTaskIcon' in shape`), the gate on the style key, and the `paintForeground` decoration painting the script
+  icon on the top right.
 
 ### Core, pipeline wiring
 - `src/component/parser/json/converter/ProcessConverter.ts`: hardcoded `parsingExtensions` property holding the
@@ -38,16 +43,18 @@ implemented.
 - `src/component/mxgraph/shape/render/BpmnCanvas.ts`: added
   `setIconOriginToShapeTopRightProportionally(shapeDimensionProportion)`, mirroring the top-left variant and
   subtracting the scaled icon width.
-- `src/component/mxgraph/BpmnCellRenderer.ts`: `createShape` now decorates the `paintForeground` of task shapes
-  (detected with `'paintTaskIcon' in shape`) through the module-level `paintBonitaConnectorIconOnTaskShape`
-  function. It reads the style at paint time, brackets the painting with `save()`/`restore()`, and calls
-  `paintScriptIcon` with `ratioFromParent: 0.22` and the top-right origin.
+- `src/component/mxgraph/BpmnCellRenderer.ts`: holds a hardcoded `renderingExtensions` list, with the same comment as
+  the parsing and style lists, and `createShape` simply runs it. No connector-specific code, no style key, no task
+  detection: everything is in the extension.
 - `src/component/mxgraph/shape/activity-shapes.ts` was **not** modified, as required.
 
 ### Tests and fixtures
 - `test/unit/component/extension/bonita-connector/parsing-extension.test.ts`: 8 tests, including the kind gate over
   5 non-service-task kinds and the "no empty sub-object" check.
 - `test/unit/component/extension/bonita-connector/style-extension.test.ts`: 3 tests.
+- `test/unit/component/extension/bonita-connector/rendering-extension.test.ts`: 4 tests on the gate, asserting that
+  `paintForeground` is replaced only for a task shape whose style holds the connector. Needs the
+  `@jest-environment jsdom` docblock, since the extension imports the mxGraph initializer.
 - `test/integration/bonita.connector.extension.test.ts`: 4 tests, self-contained (no matcher, no
   `helpers/model-expect`), reading the style with
   `bpmnVisualization.graph.getView().getState(cell).style`. Includes the regression case on the real Bonita 7.12.1
@@ -66,16 +73,25 @@ implemented.
    code. `ratioFromParent` is passed to `buildPaintParameter` directly instead of being overridden afterwards.
 2. **`ratioFromParent` is `0.22`**, copied from `ScriptTaskShape.paintTaskIcon`, so the connector icon has the same
    visual weight as the built-in script task icon.
-3. **Playwright browsers had to be installed** (`npx playwright install chromium`): the cached build was stale after
+3. **The gate now runs once at shape creation, not on every paint.** Requested explicitly. It works because
+   `mxCellRenderer.createShape` returns a shape whose `style` is still unset (mxGraph assigns it later in
+   `configureShape` through `shape.apply(state)`), so the extension reads `state.style`, which is already resolved at
+   that point. Consequence: if a cell style were mutated at runtime to add or remove `bonita.hasConnector`, the
+   decoration would not follow, because mxGraph only recreates a shape when the `shape` style key changes. Not
+   reachable today, since the public style API cannot set that key: only parsing and style computing do, both before
+   shape creation.
+4. **Playwright browsers had to be installed** (`npx playwright install chromium`): the cached build was stale after
    the recent playwright 1.58.2 to 1.61.1 bump, and the e2e run could not start without it. No project file changed.
 
 ## Test results
 
 - `npm run build` (tsc --noEmit): pass.
 - `npm run lint-check`: pass.
-- `npm run test:unit`: 56 suites, 3167 tests, all pass. The 2 new suites contribute 11 tests.
+- `npm run test:unit`: 57 suites, 3171 tests, all pass. The 3 new suites contribute 16 tests.
 - `npm run test:integration`: 15 suites, 323 tests, all pass. The new suite contributes 4 tests.
-- `npx jest test/e2e/bonita.connector.test.ts` (chromium): 2 tests pass, 2 snapshots written.
+- `npx jest test/e2e/bonita.connector.test.ts` (chromium): 2 tests pass. Snapshots written on the first run, then
+  **2 snapshots passed unchanged** after the extraction into the rendering extension point, which proves the refactor
+  is behaviour-preserving down to the pixel.
 - **No pre-existing test changed. No pre-existing image snapshot changed.** `git status` lists only the 7
   intentionally modified source files plus the new files.
 

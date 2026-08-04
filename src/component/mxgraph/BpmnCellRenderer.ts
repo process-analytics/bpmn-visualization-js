@@ -14,18 +14,23 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BpmnCanvas, IconPainter } from './shape/render';
-import type { mxAbstractCanvas2D, mxCellState, mxImageShape as mxImageShapeType, mxShape } from 'mxgraph';
+import type { IconPainter } from './shape/render';
+import type { RenderingExtensionPoint } from '../extension/extension-points';
+import type { mxCellState, mxImageShape as mxImageShapeType, mxShape } from 'mxgraph';
 
-import { bonitaHasConnectorStyleIdentifier } from '../extension/bonita-connector/identifiers';
+import { bonitaConnectorRenderingExtension } from '../extension/bonita-connector/rendering-extension';
 
-import { mxCellRenderer, mxDictionary, mxImageShape, mxRectangle, mxUtils } from './initializer';
+import { mxCellRenderer, mxDictionary, mxImageShape, mxRectangle } from './initializer';
 import { CustomCellOverlay } from './overlay/custom-overlay';
 import { OverlayBadgeShape } from './overlay/shapes';
-import { buildPaintParameter } from './shape/render/icon-painter';
 import { overrideCreateSvgCanvas } from './shape/utils';
 
 export class BpmnCellRenderer extends mxCellRenderer {
+  // The extension list is hardcoded on purpose: the extension mechanism is currently introduced internally
+  // only; external injection (a public `bpmnExtensions` option) is deferred. See ADR 001 in
+  // docs/contributors/adr/, section "Refactoring scope vs. follow-up work".
+  private readonly renderingExtensions: RenderingExtensionPoint[] = [bonitaConnectorRenderingExtension];
+
   constructor(private readonly iconPainter: IconPainter) {
     super();
   }
@@ -95,11 +100,7 @@ export class BpmnCellRenderer extends mxCellRenderer {
       shape.iconPainter = this.iconPainter;
     }
     overrideCreateSvgCanvas(shape);
-    // 'BaseTaskShape' is not exported, so the presence of 'paintTaskIcon' is used to detect the shapes used for the
-    // BPMN tasks. This excludes the sub-process and call activity shapes.
-    if ('paintTaskIcon' in shape) {
-      paintBonitaConnectorIconOnTaskShape(shape, this.iconPainter);
-    }
+    for (const extension of this.renderingExtensions) extension.onShapeCreated?.(shape, state, this.iconPainter);
     return shape;
   }
 
@@ -107,30 +108,4 @@ export class BpmnCellRenderer extends mxCellRenderer {
     super.createLabel(state, value);
     overrideCreateSvgCanvas(state.text);
   }
-}
-
-/**
- * Paint the Bonita connector icon on the top right of the shape when its style requires it.
- *
- * The shape instance is decorated here, and not in the shape implementations, because the extension providing this
- * icon is meant to live outside the library: it will never be able to modify or subclass the shape classes.
- */
-function paintBonitaConnectorIconOnTaskShape(shape: mxShape, iconPainter: IconPainter): void {
-  const originalPaintForeground = shape.paintForeground.bind(shape);
-  shape.paintForeground = (c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void => {
-    originalPaintForeground(c, x, y, w, h);
-
-    // The style is read on each paint, and not once at shape creation, because shape instances are reused across
-    // redraws and the style of a cell can be updated at runtime with the style API.
-    if (mxUtils.getValue(shape.style, bonitaHasConnectorStyleIdentifier, undefined) !== 'true') {
-      return;
-    }
-
-    c.save();
-    iconPainter.paintScriptIcon({
-      ...buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape, ratioFromParent: 0.22 }),
-      setIconOriginFunct: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopRightProportionally(20),
-    });
-    c.restore();
-  };
 }
