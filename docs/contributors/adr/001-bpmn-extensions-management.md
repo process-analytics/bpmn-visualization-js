@@ -2,75 +2,156 @@
 
 ## Status
 
-| Field             | Value          |
-|-------------------|----------------|
-| **Status**        | Early Proposal |
-| **Date**          | 2026-05-13     |
-| **Updated**       | -              |
-| **Supersedes**    | -              |
-| **Superseded by** | -              |
+| Field             | Value      |
+|-------------------|------------|
+| **Status**        | Proposal   |
+| **Date**          | 2026-05-13 |
+| **Updated**       | 2026-08-04 |
+| **Supersedes**    | -          |
+| **Superseded by** | -          |
 
+**IMPORTANT:** this is a proposal. Steps 1 and 2 of the [progression](#progression) are implemented, the rest is not.
+The design is subject to change based on feedback and further analysis.
 
-**IMPORTANT:** This is an early proposal for managing BPMN extensions in `bpmn-visualization`.
-The design is subject to change based on feedback and further analysis. The goal is to introduce a consistent and extensible mechanism for handling BPMN extensions, allowing both built-in and user-defined extensions to coexist without modifying core library code.
+The questions that remain undecided are gathered in [Open questions](#open-questions) at the end of this document, and
+referenced inline as `Qn`.
 
 ## Context
 
-The [BPMN specification](https://www.omg.org/spec/BPMN/2.0.2/) allows for extensions: custom elements and attributes that can be added to BPMN models to provide additional functionality or information beyond the standard.
-Extensions can be applied to both the semantic model (process elements like tasks, events, gateways) and the diagram interchange model (visual elements like shapes, edges, labels).
+The [BPMN specification](https://www.omg.org/spec/BPMN/2.0.2/) allows for extensions: custom elements and attributes
+that can be added to BPMN models to provide additional functionality or information beyond the standard.
+Extensions can be applied to both the semantic model (process elements like tasks, events, gateways) and the diagram
+interchange model (visual elements like shapes, edges, labels).
 
-Examples of BPMN extensions include:
-- [BPMN in Color](https://github.com/bpmn-miwg/bpmn-in-color): Adds color attributes (`background-color`, `border-color`, ...) to shapes, edges, and labels.
-- [Bonita Connector](https://documentation.bonitasoft.com/bonita/2025.2/process/connectivity-overview): Adds connector metadata to tasks and pools, displayed as a specific icon on the top-right of the Tasks (not displayed on Pools).
-- [DF-BPMN](github.com/NourEldin-Ali/df-bpmn/): DataFlow BPMN (DF-BPMN), is a low-coding visual solution, for modeling and analyzing the relationship between process and data.
+Examples of BPMN extensions:
 
-Managing BPMN extensions in a consistent and extensible way is important to allow `bpmn-visualization` to support known extensions and to let users implement their own.
+| Extension                                                                                                | Adds                                                                                              | Kind of change                                            |
+|----------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|-----------------------------------------------------------|
+| [BPMN in Color](https://github.com/bpmn-miwg/bpmn-in-color)                                              | color attributes (`background-color`, `border-color`, ...) on shapes, edges and labels             | styling of existing elements, from diagram interchange data |
+| [Bonita Connector](https://documentation.bonitasoft.com/bonita/2025.2/process/connectivity-overview)      | connector metadata on tasks, displayed as an icon on the top right of the tasks                   | decoration of existing elements, from semantic data       |
+| [DF-BPMN](https://github.com/NourEldin-Ali/df-bpmn/)                                                     | DataFlow BPMN, a low-coding visual solution to model the relationship between process and data     | **new BPMN entities**, see [out of scope](#out-of-scope-extensions-adding-new-bpmn-entities) |
 
-**Open question**: should we mention other examples of extensions, to have a broader scope than just colors and connectors? For example, extensions that add custom properties to elements or extensions that add new visual decorations.
+The three do not require the same things from the library, and that difference drives this ADR: the first two enrich
+elements the library already knows how to draw, the third introduces elements it does not know at all.
+
+Managing BPMN extensions in a consistent and extensible way is important to allow `bpmn-visualization` to support known
+extensions and to let users implement their own (`Q1`).
+
+## What supporting an extension involves
+
+Before discussing any mechanism, it is worth stating what data an extension touches and when.
+
+**Data layers:**
+
+- **BPMN model (XML)** — the extension definition as expressed in the BPMN XML, either via custom attributes or via
+  dedicated extension elements.
+- **JSON model (raw data)** — the typed JSON representation of the XML, produced by the XML parser. Extensions augment
+  this model to expose their custom attributes in a type-safe way.
+- **Internal model (computed properties)** — the domain model used by the rest of the library. Extensions augment it
+  with **computed** properties derived from parsing. These properties may or may not come from XML extensions.
+
+**Pipeline phases:**
+
+- **Parsing** — reads the XML/JSON extension data and populates the internal model's extension properties. It happens
+  in two distinct passes, semantic then diagram interchange, and an extension may need either or both.
+- **Style computing** — derives mxGraph styles from the internal model's extension properties.
+- **Rendering** — paints additional visual elements (icons, decorations) on existing shapes, based on the computed
+  style.
+
+**Data flow:** BPMN model (XML) → JSON model (raw data) → internal model (computed properties) → computed style →
+rendering. Extensions hook into the three phases, and augment the JSON and internal models.
 
 ## Situation before this ADR
 
-`bpmn-visualization` does not provide a generic mechanism for managing BPMN extensions.
+`bpmn-visualization` did not provide any mechanism for managing BPMN extensions.
 
-The only extension currently supported is **BPMN in Color**, which is hardcoded in the codebase:
-- **Parsing**: `DiagramConverter` contains dedicated functions (`setColorExtensionsOnShape`, `setColorExtensionsOnEdge`) that read color attributes from the raw JSON and populate the internal model's extension properties. See `src/component/parser/json/converter/DiagramConverter.ts` lines 191-218.
-- **Style computing**: `StyleComputer` reads the extension properties and maps them to mxGraph style constants. See `src/component/mxgraph/renderer/StyleComputer.ts`.
-- **Model**: `ShapeExtensions`, `EdgeExtensions`, and `LabelExtensions` are defined as type aliases in `src/model/bpmn/internal/types.ts`, with hardcoded color properties.
+The only supported extension was **BPMN in Color**, hardcoded in the codebase:
 
-This approach is not replicable: there is no extension point that would allow adding a new BPMN extension without modifying the core library code.
+- **Parsing**: `DiagramConverter` contained dedicated functions (`setColorExtensionsOnShape`,
+  `setColorExtensionsOnEdge`) reading color attributes from the raw JSON and populating the internal model.
+- **Style computing**: `StyleComputer` read those properties and mapped them to mxGraph style constants.
+- **Model**: `ShapeExtensions`, `EdgeExtensions` and `LabelExtensions` were type aliases in
+  `src/model/bpmn/internal/types.ts`, with hardcoded color properties.
 
+This was not replicable: there was no extension point allowing a new BPMN extension to be added without modifying the
+core library code.
+
+## Progression
+
+The work is split into steps that each answer one question. Only the first two are implemented.
+
+### Step 1 — extract BPMN in Color behind internal extension points (done)
+
+**Question answered:** can the hardcoded logic be expressed as objects conforming to extension point interfaces,
+without changing any public interface?
+
+**Before:** color logic inline in `DiagramConverter` and `StyleComputer`, extension types as type aliases.
+
+**After:** `ParsingExtensionPoint` and `StyleExtensionPoint` interfaces exist; the color logic lives in
+`src/component/extension/bpmn-in-color/` as `bpmnInColorParsingExtension` and `bpmnInColorStyleExtension`; the
+extension types are empty interfaces augmented by the extension; `DiagramConverter` and `StyleComputer` iterate over a
+list of extension points instead of calling color functions.
+
+**Deliberately not delivered:** the extensions are still registered by a hardcoded array literal inside the components
+that consume them. No public API changed, and all existing tests kept passing unmodified.
+
+This step is the reference implementation every other extension follows.
+
+### Step 2 — validate the mechanism with a second extension (done, as a POC)
+
+**Question answered:** does the mechanism actually generalise, or was it shaped by the single extension it was
+extracted from?
+
+The Bonita Connector extension was implemented as a POC: detect the tasks holding connectors and paint an icon on their
+top right. It lives in `src/component/extension/bonita-connector/`, and is always active, exactly as BPMN in Color was
+before this ADR.
+
+**Answer: it generalised only partly.** Three things had to be added, because BPMN in Color happens to be the easiest
+possible case: its data sits in the diagram interchange model, and it only changes existing style properties.
+
+1. **A semantic parsing hook.** Connector data lives on the semantic `serviceTask`, and the diagram-interchange hooks
+   only receive `BPMNShape`/`BPMNEdge`. Nothing carried the semantic attributes forward, so `onFlowNodeConverted` was
+   added, called from `ProcessConverter`.
+2. **A second internal model carrier.** At semantic parsing time no `Shape` exists yet, only `ShapeBpmnElement`, so the
+   computed property could not be stored in `ShapeExtensions`. `ShapeBpmnElementExtensions` was added.
+3. **Two rendering extension points**, one to decorate a shape and one to contribute icon painting methods. See
+   [Extension points](#extension-points).
+
+The POC also confirmed that an extension can be implemented without touching the shape classes, and that the
+positioning and scaling helpers it needs are missing rather than impossible: a
+`BpmnCanvas.setIconOriginToShapeTopRightProportionally` was added next to the existing top-left one.
+
+### Step 3 — inject the extensions from the outside (not started)
+
+**Question to answer:** what has to change so that an extension is registered by the user instead of by a hardcoded
+array literal?
+
+Scope: a public registration API, a `BpmnExtension` grouping interface so one extension is registered as a single
+object, generic enabling/disabling of an extension, and passing the extension lists down to the components that
+consume them (`Q2`, `Q3`).
+
+### Step 4 — support extensions living outside the library (not started)
+
+**Question to answer:** what must the library expose so that an extension can be implemented in a separate package?
+
+This is the real target. It requires deciding which of the types used by the extension points become public API, which
+is not obvious: the rendering extension point exposes mxGraph types, while mxGraph is otherwise an implementation
+detail fully wrapped by the library (`Q4`).
 
 ## Decision
 
-Introduce extension points in the library to manage BPMN extensions consistently and allow users to create and manage their own extensions.
+Introduce extension points in the library to manage BPMN extensions consistently, and let users create and manage their
+own extensions.
 
-### What is involved
+### Extension model: use TypeScript module augmentation
 
-Supporting BPMN extensions touches three layers of data and three phases of the pipeline.
+#### JSON model
 
-**Data layers:**
-- **BPMN model (XML)** — the extension definition as expressed in the BPMN XML, either via custom attributes or via dedicated extension elements.
-- **JSON model (raw data)** — the typed JSON representation of the XML, produced by the XML parser. Extensions augment this model to expose their custom attributes in a type-safe way.
-- **Internal model (computed properties)** — the domain model used by the rest of the library. Extensions augment this model with **computed** properties derived from parsing — these properties may or may not come from XML extensions.
-
-**Pipeline phases:**
-- **Parsing** — reads the XML/JSON extension data and populates the internal model's extension properties.
-- **Style computing** — derives mxGraph styles from the internal model's extension properties.
-- **Rendering** — paints additional visual elements (icons, decorations) on existing shapes, or creates new ones, based on the internal model.
-
-**Summary of the data flow:** BPMN model (XML) ↔ JSON model (raw data) ↔ internal model (computed properties) ↔ extension points in the pipeline (hooks for parsing, style computing, rendering).
-
-
-### Extension Model: use TypeScript module augmentation
-
-#### JSON model: use TypeScript module augmentation
-
-The JSON model interfaces (`BPMNShape`, `BPMNEdge`, `BPMNLabel` in `src/model/bpmn/json/bpmndi.ts`) must also be extended when parsing extensions read custom attributes from the raw BPMN XML data.
-
-For example, the BPMN in Color parsing extension reads color attributes (`background-color`, `fill`, `border-color`, `stroke`, `color`) that are not part of the base JSON model types. Module augmentation is used to declare these properties on the JSON model interfaces:
+The JSON model interfaces must be extended when a parsing extension reads custom attributes absent from the base
+types. For example, BPMN in Color reads color attributes that are not part of the BPMN diagram interchange model:
 
 ```ts
-// In the BPMN in Color extension (src/component/extension/bpmn-in-color/types.ts)
+// In src/component/extension/bpmn-in-color/types.ts
 declare module '../../../model/bpmn/json/bpmndi' {
   interface BPMNShape {
     'background-color'?: string;
@@ -78,238 +159,272 @@ declare module '../../../model/bpmn/json/bpmndi' {
     'border-color'?: string;
     stroke?: string;
   }
-  interface BPMNEdge {
-    'border-color'?: string;
-    stroke?: string;
-  }
-  interface BPMNLabel {
-    color?: string;
-  }
 }
 ```
 
-This way, the parsing extension can read these properties in a type-safe manner without modifying the base JSON model interfaces.
+This is only needed for attributes the base model does not declare. The Bonita Connector extension needs no JSON model
+augmentation at all, because it reads `implementation` and `operationRef`, both already declared on `TServiceTask`.
 
-#### Internal model: use TypeScript module augmentation
+That case revealed a limit worth recording: an extension reading a **vendor value from a standard, spec-constrained
+attribute** cannot do it type-safely through augmentation. `implementation` is typed with the `tImplementation` enum,
+restricted to `##unspecified` and `##WebService`, and an interface augmentation cannot widen an existing property. The
+POC widens the value to `string` for the comparison (`Q5`).
 
-The current extension types (`ShapeExtensions`, `EdgeExtensions`, `LabelExtensions`) are type aliases. They must be migrated to **interfaces** to enable [TypeScript module augmentation](https://www.typescriptlang.org/docs/handbook/declaration-merging.html#module-augmentation). This approach was first suggested during the BPMN in Color implementation in [this PR comment](https://github.com/process-analytics/bpmn-visualization-js/pull/2614#discussion_r1200547629).
+#### Internal model: two carriers, semantic and diagram interchange
 
-After migration, the base interfaces in the library become empty:
+The extension types are empty interfaces, augmented by the extensions that need them:
 
 ```ts
 // In bpmn-visualization (library code)
-export interface ShapeExtensions {}
+export interface ShapeBpmnElementExtensions {} // computed from the BPMN semantic model
+export interface ShapeExtensions {}            // computed from the BPMN diagram interchange model
 export interface EdgeExtensions {}
 export interface LabelExtensions {}
 ```
 
-Users (or built-in extensions like BPMN in Color) augment them to declare the properties they need:
+Two carriers are needed because they are populated at different moments of the pipeline: semantic parsing builds
+`ShapeBpmnElement` instances long before the `Shape` objects that hold `ShapeExtensions` exist. An extension stores its
+computed properties in the carrier matching the phase it reads from.
 
 ```ts
-// Example: a custom extension that adds connector metadata to shapes
-declare module 'bpmn-visualization' {
-  export interface ShapeExtensions {
-    connectorType?: string;
-    connectorVersion?: string;
-  }
-}
-```
-
-This pattern is used by libraries like [MUI for theme customization](https://mui.com/material-ui/customization/theming/#typescript).
-
-The BPMN in Color extension augments both JSON and internal model interfaces in `src/component/extension/bpmn-in-color/types.ts`:
-
-```ts
-// Internal model augmentation
+// In src/component/extension/bonita-connector/types.ts
 declare module '../../../model/bpmn/internal/types' {
-  interface ShapeExtensions {
-    fillColor?: string;
-    strokeColor?: string;
-  }
-  interface EdgeExtensions {
-    strokeColor?: string;
-  }
-  interface LabelExtensions {
-    color?: string;
+  interface ShapeBpmnElementExtensions {
+    bonita?: { hasConnector?: boolean };
   }
 }
 ```
+
+Practical note: inside a `declare module` block, the scope is the augmented module. Types declared there need no import,
+and importing them at the top of the augmenting file makes the compilation fail with `TS6133`, the import being seen as
+unused.
+
+The pattern of augmenting empty interfaces is used by libraries such as
+[MUI for theme customization](https://mui.com/material-ui/customization/theming/#typescript). It was first suggested
+during the BPMN in Color implementation, in [this PR comment](https://github.com/process-analytics/bpmn-visualization-js/pull/2614#discussion_r1200547629).
 
 #### JSON model versus internal model independence
 
-The JSON model already provides `TExtension` (defined in `src/model/bpmn/json/Semantic.ts`) to represent XML extension elements.
-The internal model extensions serve a different purpose: they store **computed results** derived from parsing, which may or may not come from XML extensions.
+The JSON model already provides `TExtension` to represent XML extension elements. The internal model extensions serve a
+different purpose: they store **computed results** derived from parsing, which may or may not come from XML extensions.
 
 These two must remain independent:
-- A user may want internal model extensions without any XML extensions (e.g., extensions computed from external data).
-- A user may want XML extensions without enriching the internal model.
-- When both are used, the parsing extension point acts as the bridge: it reads from the JSON model and populates the internal model extensions.
 
-### Extension Points
+- a user may want internal model extensions without any XML extension, for instance computed from external data;
+- a user may want XML extensions without enriching the internal model;
+- when both are used, the parsing extension point is the bridge.
 
-Three categories of extension points, corresponding to the three phases of the library pipeline:
+### Extension points
 
-#### 1. Parsing extension point
+Four categories, matching the phases of the pipeline.
 
-Called at the end of the existing parsing pipeline in converters (`DiagramConverter`, `ProcessConverter`, potentially others). The extension point receives both the internal model object and the raw JSON data, and enriches the model's extension properties.
-
-Labels are children of shapes and edges. Their extensions are populated during shape/edge deserialization (the label is accessible via the parent shape/edge object). There is no need for a separate label hook.
+#### 1. Parsing
 
 ```ts
 interface ParsingExtensionPoint {
-  /** Called after a Shape has been deserialized. Use shape.label to enrich label extensions. */
+  // BPMN semantic model
+  onFlowNodeConverted?(shapeBpmnElement: ShapeBpmnElement, bpmnElement: TFlowNode): void;
+
+  // BPMN diagram interchange model
   onShapeDeserialized?(shape: Shape, bpmnShape: BPMNShape): void;
-  /** Called after an Edge has been deserialized. Use edge.label to enrich label extensions. */
   onEdgeDeserialized?(edge: Edge, bpmnEdge: BPMNEdge): void;
-  /** Returns true if the given BPMN label data requires a label to be created during deserialization. */
   hasLabelExtensionData?(bpmnLabel: unknown): boolean;
 }
 ```
 
-The `hasLabelExtensionData` method is a workaround for a constraint discovered during the BPMN in Color refactoring: labels are immutable once set on a shape or edge, so extensions that need a label (e.g., to apply font color) must signal that requirement before label creation happens.
-`DiagramConverter.deserializeLabel` calls `hasLabelExtensionData` on all registered extensions. If any extension returns `true`, a `Label` object is created even if the label has no font or bounds — ensuring that the extension can later populate the label's extension properties via `onShapeDeserialized` or `onEdgeDeserialized`.
+`onFlowNodeConverted` is called by `ProcessConverter`, where a raw `TFlowNode` and the `ShapeBpmnElement` built from it
+coexist. It is the only place the raw semantic data is reachable: the converted elements registry stores built model
+objects, not raw JSON.
 
-**Open question**: find a more generic approach for label handling — `hasLabelExtensionData` is a workaround tied to the current immutable label design.
+The other three are called by `DiagramConverter`. Labels are children of shapes and edges, so their extensions are
+populated through the parent, and there is no dedicated label hook.
 
-For example, the current `setColorExtensionsOnShape` function in `DiagramConverter` becomes an implementation of `onShapeDeserialized` in the BPMN in Color extension.
+`hasLabelExtensionData` is a workaround for a constraint found during step 1: labels are immutable once set on a shape
+or an edge, so an extension needing a label must signal it before label creation. `DiagramConverter.deserializeLabel`
+calls it on all registered extensions and creates a `Label` if any returns `true` (`Q6`).
 
-#### 2. Style extension point
+#### 2. Style
 
-Called by `StyleComputer` to compute additional mxGraph style properties from the internal model extensions.
-
-The extension receives the existing style entries map and mutates it directly, avoiding the need for merging in the caller. As with parsing, label styles are handled through the parent shape/edge (accessible via the `label` property on the model object).
+Called by `StyleComputer` to compute additional mxGraph style properties from the internal model extensions. The
+extension mutates the style entries map directly, which avoids merging in the caller.
 
 ```ts
 interface StyleExtensionPoint {
-  /** Enrich style entries for a shape. Use shape.label to enrich label styles. */
   enrichShapeStyle?(shape: Shape, styleValues: Map<string, string | number>): void;
-  /** Enrich style entries for an edge. Use edge.label to enrich label styles. */
   enrichEdgeStyle?(edge: Edge, styleValues: Map<string, string | number>): void;
-  /** Enrich style entries for the message flow icon of an edge. */
   enrichMessageFlowIconStyle?(edge: Edge, styleValues: Map<string, string | number>): void;
 }
 ```
 
-The `styleValues` map uses `string | number` values because mxGraph style properties can be either strings (e.g., color hex codes) or numbers (e.g., font sizes, stroke widths).
+Values are `string | number` because mxGraph style properties can be either. `enrichMessageFlowIconStyle` targets a
+sub-element of an edge, the message flow icon, which is a distinct visual element requiring its own style values
+(`Q7`).
 
-The `enrichMessageFlowIconStyle` hook targets a sub-element of an edge — the message flow icon — which is a distinct visual element painted on a message flow edge and requires its own style values. Without a dedicated hook, the style computation for this icon would still need to hardcode color logic, defeating the goal of moving all extension-specific code out of the core.
+An extension owns its style keys, and must not add them to `BpmnStyleIdentifier`, which is public API and must stay
+free of vendor-specific keys. The keys follow the dotted convention of the library, for instance
+`bonita.hasConnector`. Values are read back as strings by the shapes, so a boolean property is stored as `'true'`.
 
-**Open question**: is "enrich" the right term here? It implies that the extension adds to existing styles, but in practice it may also override them. Alternative terms could be "compute", "mutate", or simply "apply".
-
-#### 3. Rendering extension point
-
-> **Not implemented in this refactoring.** This extension point describes target-state behavior; it is deferred to follow-up work (cf. "Refactoring scope vs. follow-up work" below).
-
-Called during shape rendering to paint additional elements (icons, decorations) on shapes and edges. This hooks into the mxGraph shape painting methods (e.g., `paintForeground` in `BaseTaskShape`, and potentially other painting methods depending on the extension's needs).
+#### 3. Rendering
 
 ```ts
 interface RenderingExtensionPoint {
-  /** Paint additional elements on a shape */
-  paintShape?(paintParameter: PaintParameter): void;
+  onShapeCreated?(shape: mxShape, state: mxCellState): void;
 }
 ```
 
-For the Bonita Connector use case, this extension point would paint a connector icon on the top-right of tasks. The extension provides its own icon painter implementation.
+Called by `BpmnCellRenderer.createShape`, which is where the library already customizes each freshly created shape
+instance. The extension decorates the instance, typically by overriding one of its painting methods, and reads the
+computed style to decide whether to do anything at all.
 
+**The hook belongs to the cell renderer, not to the shape classes.** An earlier version of this ADR proposed hooking
+into `paintForeground` in `BaseTaskShape`. That does not work for the target state: an extension living outside the
+library can never modify or subclass the shape classes, whereas the cell renderer is a library-side seam it can be
+plugged into.
 
-### Configuration
+Two constraints discovered while implementing it:
 
-#### Refactoring scope vs. follow-up work
+- the shape passed to the hook is not attached to the state yet and its `style` property is not assigned, mxGraph does
+  that later in `configureShape`. The extension must read `state.style`;
+- because the style is read once at creation, a style change applied at runtime is not reflected. This is acceptable
+  today, as the public style API cannot set extension style keys, but it is a constraint to revisit if that changes.
 
-This ADR proposes an **internal refactoring to validate the extension mechanism**. Its scope is intentionally limited:
+#### 4. Icon painter methods
 
-- **In scope** — **extracting** the hardcoded BPMN in Color logic from the core components into separate extension modules. The goal is to demonstrate that the implementation _can_ be extracted into objects that conform to the extension point interfaces, without changing any public interface of `DiagramConverter`, `StyleComputer`, or `BpmnVisualization`. Existing tests must keep passing without modification. The internal registration of the built-in extension is still hardcoded in the components that consume it (an array literal in `DiagramConverter` and `StyleComputer`).
-- **Out of scope (follow-up work)** — **injecting** the extensions from the outside. This includes:
-  - exposing a public API such as `new BpmnVisualization({ bpmnExtensions: [...] })`,
-  - introducing a `BpmnExtension` grouping interface so that one extension is registered as a single object instead of multiple per-phase objects,
-  - the icon painter injection mechanism described below,
-  - generalizing the gating behavior of `ignoreBpmnColors` (currently only the style extension is gated; the parsing extension always runs because the internal registration is not yet configurable).
+An extension needing to paint an icon contributes **methods**, which are injected into the `IconPainter` in use:
 
-The rest of this section describes the **target state** for follow-up work, not what this refactoring delivers today.
+```ts
+type IconPainterExtensionPoint = Record<string, (this: IconPainter, paintParameter: PaintParameter) => void>;
+```
 
-#### Single registration point for the end user
+The methods are injected at library initialization, in `createNewBpmnGraph`, into the resolved painter **instance** and
+never into the `IconPainter` prototype, so they cannot leak to the painters of the other `BpmnVisualization` instances.
+A user-provided painter is augmented the same way. The extension declares the same method names on `IconPainter` with
+declaration merging, otherwise callers cannot see them, and declares them optional since a painter only holds them once
+the extension has been registered.
 
-As described above, a single extension involves multiple elements: model augmentation (JSON and internal), a parsing extension point, a style extension point, and potentially a rendering extension point and custom icon painter methods. Requiring end users to configure each of these separately would be impractical — they should not need to understand the internal decomposition of an extension. Only the extension developer needs this knowledge.
+This settles two questions the previous version of this ADR left open:
 
-To address this, a `BpmnExtension` interface groups all extension points for a single extension. The end user registers one object (e.g., `bonitaConnectorExtension`) and the library takes care of distributing the individual extension points to the relevant components (parser, style computer, renderer). From the user's perspective, adding an extension is a single, opaque operation.
+- **contributing methods rather than a whole painter removes the conflict** between two extensions each providing their
+  own `IconPainter`, since only one painter can be in use at a time;
+- **the painter instance does not need to be replaced.** `IconPainter` is stateless and its methods are independent, so
+  injecting methods into the existing instance is enough. There is a single place to configure icon painting, and it
+  stays the `RendererOptions.iconPainter` renderer property.
 
-#### Icon Painter
+Consequence on the library API: `IconPainter.newBpmnCanvas` had to become public. An injected method is not declared
+within the class, so TypeScript denies it access to a protected member even with `this` typed as `IconPainter`. It is
+the only thing an injected method needs from the painter, and it will have to be public API at step 4.
 
-The `IconPainter` is already configurable via `RendererOptions.iconPainter` in the renderer property. There must be a single place to configure icon painting, and it must remain in the renderer property — not be duplicated in the extension configuration.
+### Registration and configuration
 
-An extension that needs custom shape painting should provide additional icon painter **methods** rather than a full `IconPainter` instance. These methods are injected into the existing icon painter implementation at registration time (in the factory). This avoids the conflict of multiple extensions each providing a competing full painter.
+#### Today: hardcoded internal lists
 
-**Open question**: If two extensions each provide a different `IconPainter`, only one can be active. This needs further design work — possible approaches include composing painters, a chain-of-responsibility pattern, or scoping painters to specific element kinds. This will be addressed in a follow-up discussion.
+Each component consuming extension points holds a hardcoded list: `DiagramConverter` and `ProcessConverter` for
+parsing, `StyleComputer` for style, `BpmnCellRenderer` for rendering, `createNewBpmnGraph` for the icon painter
+methods. This is deliberate for steps 1 and 2, and is what step 3 replaces.
 
-**Open question**: should we pass individual icon painter methods (injected in the factory) instead of the whole painter?
-- The `createNewBpmnGraph` function is currently in charge of selecting the icon painter implementation based on the options. It will have to apply the new methods.
-- Interface for the options or Record: key = name of the methods, value = implementation of the method (can be a reference). What signature? This will prevent methods from depending on a property of the painter. It should not be a problem, we don't see this need for now.
-- Also required to use interface augmentation on the `IconPainter` class to make TypeScript aware of these new methods.
-- This would allow avoiding the issue of multiple painters, as each extension would only pass the methods.
+One limit is already visible: `StyleComputer` gates its extension list with `ignoreBpmnColors`, the only gating option
+available. An always-active extension has to be appended by hand next to the gated one. Generic enabling and disabling
+of an extension is required as soon as a second extension exists (`Q3`).
 
-**Open question**: the name of the interfaces may remove the "Point" suffix if it's clear enough without it. Also, the name "BpmnExtension" may be too generic if we want to support non-BPMN extensions in the future — consider "BpmnVisualizationExtension" or similar.
+#### Target: a single registration point for the end user
+
+A single extension involves several elements: model augmentations, a parsing extension point, a style extension point,
+a rendering extension point, and icon painter methods. Requiring end users to configure each separately would be
+impractical, as they should not need to know how an extension is internally decomposed. Only the extension developer
+needs that.
+
+A `BpmnExtension` interface groups them, so the user registers one object and the library distributes the individual
+extension points to the relevant components (`Q8`):
 
 ```ts
 interface BpmnExtension {
   parsing?: ParsingExtensionPoint;
   style?: StyleExtensionPoint;
   rendering?: RenderingExtensionPoint;
+  iconPainter?: IconPainterExtensionPoint;
 }
-```
 
-#### Built-in vs. custom extensions
-
-BPMN in Color is a **built-in extension**: it is always active internally and not exposed or configurable by users. The current behavior does not change — users do not need to register it. Internally, it will be refactored to use the same extension mechanism, but it remains an implementation detail of the library.
-
-Only custom extensions (e.g., Bonita Connector) are passed to `BpmnVisualization` at construction time:
-
-```ts
 const bpmnVisualization = new BpmnVisualization({
   container: 'bpmn-container',
   bpmnExtensions: [bonitaConnectorExtension],
 });
 ```
 
-The naming of interfaces and the detailed API are subject to refinement during implementation.
+#### Built-in versus custom extensions
 
+BPMN in Color is a **built-in** extension: always active internally, not exposed nor configurable. Its behavior does not
+change and users do not register it. The Bonita Connector extension is currently built-in too, because it is a POC
+inside the library; it becomes a custom extension at step 4.
+
+## Out of scope: extensions adding new BPMN entities
+
+Everything above covers extensions that **enrich elements the library already knows**. It does not cover extensions
+introducing **new BPMN entities**, such as DF-BPMN.
+
+Such an extension is not supported, and the mechanism described here is not sufficient for it. Beyond parsing and style
+computing, it would at least need:
+
+- a way to declare new element kinds, today a closed `ShapeBpmnElementKind` enum used across the whole library;
+- parsing of the new elements, which the current hooks cannot express since they are called for elements the core
+  already converted;
+- a way to contribute the associated style sheet definitions, today hardcoded in `StyleConfigurator`;
+- a way to register the shapes rendering the new elements, today hardcoded in `registerShapes`.
+
+This is a materially larger change than the extension points above, and it should be assessed on its own rather than
+grafted onto this ADR (`Q9`).
 
 ## Validation
 
-The solution will be validated by implementing two extensions:
+The mechanism is validated by implementing two extensions.
 
-### 1. Migrate BPMN in Color
+### 1. Migrating BPMN in Color (done, step 1)
 
-Migrate the current hardcoded BPMN in Color implementation to the new extension mechanism. BPMN in Color remains a built-in, always-active extension — this migration is an internal refactoring with no user-facing behavior change.
+An internal refactoring with no user-facing behavior change. All existing BPMN in Color tests pass unmodified, which is
+the acceptance criterion: behavior is unchanged.
 
-#### Migration plan
+Done in [PR #3519](https://github.com/process-analytics/bpmn-visualization-js/pull/3519), commit `fee41ab8` on the
+`master` branch.
 
-1. **Introduce the extension point interfaces needed by this refactoring** — Create `ParsingExtensionPoint` and `StyleExtensionPoint`. `RenderingExtensionPoint` and the `BpmnExtension` grouping interface are deferred to follow-up work (cf. "Refactoring scope vs. follow-up work" above), as they are only useful once extensions can be injected by users.
-2. **Migrate extension types** — Convert `ShapeExtensions`, `EdgeExtensions`, `LabelExtensions` from type aliases to empty interfaces. Move the BPMN in Color properties into a module augmentation declared alongside the built-in extension implementation.
-3. **Create the built-in BPMN in Color extension** — Implement two separate objects, one per phase, since this refactoring does not introduce a `BpmnExtension` grouping interface (cf. "Refactoring scope vs. follow-up work" above):
-   - `bpmnInColorParsingExtension`, an object implementing `ParsingExtensionPoint`, containing the logic currently in `setColorExtensionsOnShape` and `setColorExtensionsOnEdge` (from `DiagramConverter`).
-   - `bpmnInColorStyleExtension`, an object implementing `StyleExtensionPoint`, containing the color-to-mxGraph-style mapping currently in `StyleComputer`.
-4. **Wire the extension mechanism into the pipeline** — Update `DiagramConverter` and `StyleComputer` to call registered extension points instead of hardcoded color logic. Register the built-in BPMN in Color extension internally (not exposed to users).
-5. **Remove hardcoded BPMN in Color code** — Delete the dedicated color functions from `DiagramConverter` and the color-specific branches from `StyleComputer`. The core code should no longer contain any BPMN in Color-specific logic.
-6. **Validate** — Ensure all existing BPMN in Color tests pass without modification (behavior is unchanged).
+### 2. Implementing Bonita Connector (done as a POC, step 2)
 
-### 2. Implement Bonita Connector
+Parsing reads the connector information from the semantic model and stores it in the internal model; style computing
+exposes it as a cell style property; rendering paints the connector icon on the top right of the tasks.
 
-Implement the Bonita Connector extension as a new extension:
-- **Parsing**: Read connector metadata from BPMN XML extensions on tasks/pools and store it in the internal model.
-- **Rendering**: Paint a connector icon on the top-right of shapes that have connectors, using a custom icon painter implementation.
-
+This validation also produced a constraint on how an extension is tested, which matters for step 4: an extension living
+outside the library only has access to the public API, so the only verifications available to it are the **computed
+style of the cells**, read through the graph accessor, and **visual comparison**. The POC integration test therefore
+asserts nothing but the cell style, and uses none of the test infrastructure of the library.
 
 ## Consequences
 
 ### Positive
 
-- **Uniform mechanism**: All BPMN extensions follow the same pattern, making the codebase more consistent.
-- **User-extensible**: Users can implement their own BPMN extensions without forking or modifying the library.
-- **Decoupled**: Extensions are isolated from core code, making both easier to maintain and test.
-- **Type-safe**: Module augmentation provides TypeScript type checking for extension properties.
+- **Uniform mechanism**: all BPMN extensions follow the same pattern.
+- **User-extensible**: users can implement their own BPMN extensions without forking the library, once step 4 is done.
+- **Decoupled**: extensions are isolated from core code, making both easier to maintain and test.
+- **Type-safe**: module augmentation provides TypeScript checking of the extension properties.
+- **No change to the shape classes**: decorating shape instances from the cell renderer keeps the rendering hook usable
+  by an extension that cannot modify the library.
 
 ### Negative
 
-- **Indirection**: Extension points add a level of indirection compared to the current direct implementation.
-- **API surface**: New public interfaces (`BpmnExtension`, `ParsingExtensionPoint`, `StyleExtensionPoint`, `RenderingExtensionPoint`) increase the API surface.
-- **Migration effort**: Existing BPMN in Color code must be refactored to use the new mechanism.
+- **Indirection**: extension points add a level of indirection compared to a direct implementation.
+- **API surface**: the extension point interfaces, plus what they transitively expose, increase the public API.
+- **mxGraph leaks into an extension point**: the rendering extension point exposes `mxShape` and `mxCellState`, whereas
+  mxGraph is otherwise an implementation detail (`Q4`).
+- **Migration effort**: the existing hardcoded code has to be refactored, and the internal model documentation follows
+  (the internal model diagram does not declare the extension types, and lacks the semantic carrier).
+
+## Open questions
+
+| Id  | Question                                                                                                                                                                 | Raised at |
+|-----|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
+| Q1  | Should the ADR mention more extension examples, to widen the scope beyond colors and connectors, for instance extensions adding custom properties or visual decorations?  | initial   |
+| Q2  | How do the extension lists reach the components consuming them once they are configurable: constructor parameters threaded through the parser, or a shared registry?      | step 2    |
+| Q3  | How is an extension generically enabled or disabled? `ignoreBpmnColors` is extension-specific and cannot generalise.                                                      | step 2    |
+| Q4  | Should mxGraph types be exposed to extensions? The rendering extension point needs `mxShape` and `mxCellState`, which contradicts mxGraph being an implementation detail.  | step 2    |
+| Q5  | How can an extension read a vendor value from a spec-constrained attribute in a type-safe way? Enums such as `tImplementation` are closed and cannot be widened.          | step 2    |
+| Q6  | Find a generic approach for label handling. `hasLabelExtensionData` is a workaround tied to the current immutable label design.                                           | step 1    |
+| Q7  | Is "enrich" the right term for the style extension point? It also allows overriding. Alternatives: "compute", "mutate", "apply".                                          | initial   |
+| Q8  | Naming: drop the "Point" suffix if it stays clear? Is `BpmnExtension` too generic if non-BPMN extensions are supported later, versus `BpmnVisualizationExtension`?        | initial   |
+| Q9  | Should extensions adding new BPMN entities be supported, and in which ADR is that assessed?                                                                              | step 2    |
