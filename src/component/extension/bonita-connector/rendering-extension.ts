@@ -47,7 +47,7 @@ function paintConnectorIconAfterForeground(shape: BpmnTaskShape): void {
     // The method is injected into the icon painter at library initialization, hence the optional call: it is missing
     // when the extension is not registered.
     shape.iconPainter.paintBonitaConnectorIcon?.({
-      ...buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape, ratioFromParent: 0.22 }),
+      ...buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape, ratioFromParent: 0.28 }),
       setIconOriginFunct: (canvas: BpmnCanvas) => canvas.setIconOriginToShapeTopRightProportionally(20),
     });
     c.restore();
