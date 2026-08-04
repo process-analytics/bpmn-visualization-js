@@ -2,21 +2,30 @@
 
 Scope: the 3 steps of `plan.md`. Phases 2 and 3, and the ADR rewrite, remain out of scope.
 
-## Step 3: real icon in the injected method
+## Step 3: definitive icon in the injected method
 
-- `src/component/extension/bonita-connector/icon-painter-extension.ts`: the injected method now delegates to
-  `this.paintScriptIcon(paintParameter)` instead of painting the placeholder green rectangle. Delegating is possible
-  because the injected method runs with the painter as `this`, and it keeps the POC free of duplicated path data.
-- No copy of `iconStyleConfig` is passed, for the same reason as in step 1: `buildPaintParameter` builds a fresh
-  `iconStyleConfig` literal on every paint, so the mutation `paintScriptIcon` performs on it cannot leak.
-- The origin and the ratio are already set by the rendering extension, so nothing about the positioning or the scaling
-  changes in this step.
-- The e2e snapshots are back to their step 1 content: they were restored from commit `63ca085f4` and **passed
-  unmodified**. That is the proof that the full extension path (rendering extension, then the icon painter method
-  injected at library initialization) renders pixel-identically to the direct `paintScriptIcon` call of step 1.
+Done in two moves.
 
-Note on the icon itself: the definitive Bonita connector glyph is not available in this repository, so the script task
-icon is used, as agreed. Swapping it later is a one-line change in this single function.
+1. First, the injected method delegated to `this.paintScriptIcon(paintParameter)` instead of painting the placeholder
+   green rectangle. The e2e snapshots were restored from commit `63ca085f4` and **passed unmodified**, which proved
+   that the full extension path (rendering extension, then the icon painter method injected at library initialization)
+   renders pixel-identically to the direct `paintScriptIcon` call of step 1.
+2. Then the definitive glyph replaced it, from the Bonita Studio connector icon provided by the user
+   (`bonita_connector.svg`, 43.609 x 22.686). Its 4 subpaths were converted from relative SVG path data to absolute
+   `BpmnCanvas` commands: the cable (open path, stroked), the 2 pins, and the plug body painted last so it hides the
+   end of the cable, as in the original.
+
+Choices made on the glyph, per the user's instructions:
+- The `linearGradient` and the `#2D6EA2` colors are dropped. No color is set at all, so the icon inherits the stroke
+  and fill colors of the shape, as every other icon of the library does.
+- Not filled: the closed subpaths use `fillAndStroke`, which with `isFilled: false` fills with the shape background.
+  The glyph therefore reads as an outline, and the plug stays opaque over the cable.
+- `iconOriginalSize` is the SVG viewBox, so the aspect ratio is preserved and the icon scales with the task.
+
+Fidelity limit worth knowing: the original SVG uses `stroke-width="2"` for the cable and the plug body but the default
+width for the 2 pins. `BpmnCanvas` applies the stroke width once, when the canvas is built, and exposes no setter, so
+the icon is painted with a uniform stroke. Varying it would mean either a new `BpmnCanvas` method or building 2 canvases
+for one icon.
 
 ## Step 2: icon painter injection
 
