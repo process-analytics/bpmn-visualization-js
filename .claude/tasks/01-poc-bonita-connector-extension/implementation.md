@@ -1,6 +1,22 @@
-# Implementation: POC Bonita connector extension, steps 1 and 2
+# Implementation: POC Bonita connector extension, phase 1 complete
 
-Scope: steps 1 and 2 of `plan.md`. Step 3 (definitive icon) is not implemented.
+Scope: the 3 steps of `plan.md`. Phases 2 and 3, and the ADR rewrite, remain out of scope.
+
+## Step 3: real icon in the injected method
+
+- `src/component/extension/bonita-connector/icon-painter-extension.ts`: the injected method now delegates to
+  `this.paintScriptIcon(paintParameter)` instead of painting the placeholder green rectangle. Delegating is possible
+  because the injected method runs with the painter as `this`, and it keeps the POC free of duplicated path data.
+- No copy of `iconStyleConfig` is passed, for the same reason as in step 1: `buildPaintParameter` builds a fresh
+  `iconStyleConfig` literal on every paint, so the mutation `paintScriptIcon` performs on it cannot leak.
+- The origin and the ratio are already set by the rendering extension, so nothing about the positioning or the scaling
+  changes in this step.
+- The e2e snapshots are back to their step 1 content: they were restored from commit `63ca085f4` and **passed
+  unmodified**. That is the proof that the full extension path (rendering extension, then the icon painter method
+  injected at library initialization) renders pixel-identically to the direct `paintScriptIcon` call of step 1.
+
+Note on the icon itself: the definitive Bonita connector glyph is not available in this repository, so the script task
+icon is used, as agreed. Swapping it later is a one-line change in this single function.
 
 ## Step 2: icon painter injection
 

@@ -19,17 +19,10 @@ import type { IconPainterExtensionPoint } from '../extension-points';
 
 import './types';
 
-const iconOriginalSize = { width: 100, height: 100 };
-
 export const bonitaConnectorIconPainterExtension: IconPainterExtensionPoint = {
   paintBonitaConnectorIcon(this: IconPainter, paintParameter: PaintParameter): void {
-    const canvas = this.newBpmnCanvas(paintParameter, iconOriginalSize);
-
-    // TODO placeholder shape, replaced by the actual connector icon. It only proves that the method injected in the
-    // icon painter is the one being called.
-    canvas.setFillColor('Green');
-    canvas.setStrokeColor('Green');
-    canvas.rect(0, 0, iconOriginalSize.width, iconOriginalSize.height);
-    canvas.fillAndStroke();
+    // Reuse the icon of the script task instead of duplicating its path data. The origin and the ratio have already
+    // been set by the caller, so the icon is painted on the top right of the shape and scales with it.
+    this.paintScriptIcon(paintParameter);
   },
 };
