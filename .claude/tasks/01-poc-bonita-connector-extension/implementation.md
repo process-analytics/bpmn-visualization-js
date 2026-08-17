@@ -10,10 +10,11 @@ Done in two moves.
    green rectangle. The e2e snapshots were restored from commit `63ca085f4` and **passed unmodified**, which proved
    that the full extension path (rendering extension, then the icon painter method injected at library initialization)
    renders pixel-identically to the direct `paintScriptIcon` call of step 1.
-2. Then the definitive glyph replaced it, from the Bonita Studio connector icon provided by the user
-   (`bonita_connector.svg`, 43.609 x 22.686). Its 4 subpaths were converted from relative SVG path data to absolute
-   `BpmnCanvas` commands: the cable (open path, stroked), the 2 pins, and the plug body painted last so it hides the
-   end of the cable, as in the original.
+2. Then the definitive glyph replaced it, from the Bonita Studio connector icon provided by the user. Source file,
+   outside the repository: `/home/toma/Téléchargements/bpmn-visualization_tmp_work/bonita_connector/bonita_connector.svg`,
+   an Illustrator/Inkscape export with `id="StudioConnecteur"`, viewBox `0 0 43.609 22.686`, attribution **Bonitasoft**.
+   Its 4 subpaths were converted from relative SVG path data to absolute `BpmnCanvas` commands: the cable (open path,
+   stroked), the 2 pins, and the plug body painted last so it hides the end of the cable, as in the original.
 
 Choices made on the glyph, per the user's instructions:
 - The `linearGradient` and the `#2D6EA2` colors are dropped. No color is set at all, so the icon inherits the stroke
