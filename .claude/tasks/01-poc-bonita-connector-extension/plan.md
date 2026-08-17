@@ -382,8 +382,10 @@ Recorded here only; the rewrite is out of scope. Sources are in `explore.md`.
 4. **Icon painter injection is confirmed as the right mechanism, and its open questions are answered.** Extensions
    contribute **methods**, injected into the resolved painter instance at library initialization in
    `createNewBpmnGraph`, and declared through interface-to-class declaration merging. Contributing methods rather
-   than whole painters removes the ADR's "two competing painters" problem. The library must additionally expose
-   `IconPainter.newBpmnCanvas`, currently `protected`, since it is what an injected method needs.
+   than whole painters removes the ADR's "two competing painters" problem. ~~The library must additionally expose
+   `IconPainter.newBpmnCanvas`, currently `protected`, since it is what an injected method needs.~~ **Wrong, corrected
+   after implementation**: an injected method typed with `this: IconPainter` reaches the protected members, so
+   `newBpmnCanvas` stays `protected` and nothing has to be exposed.
 5. **Style extension gating is not generic.** `StyleComputer` hardcodes `ignoreBpmnColors` as the only gate, so an
    always-on extension has to be appended by hand. The ADR already lists this as follow-up work; the POC confirms
    it is required as soon as a second extension exists.

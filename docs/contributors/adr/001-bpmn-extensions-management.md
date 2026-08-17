@@ -310,9 +310,11 @@ This settles two questions the previous version of this ADR left open:
   injecting methods into the existing instance is enough. There is a single place to configure icon painting, and it
   stays the `RendererOptions.iconPainter` renderer property.
 
-Consequence on the library API: `IconPainter.newBpmnCanvas` had to become public. An injected method is not declared
-within the class, so TypeScript denies it access to a protected member even with `this` typed as `IconPainter`. It is
-the only thing an injected method needs from the painter, and it will have to be public API at step 4.
+Consequence on the library API: none. An injected method typed with `this: IconPainter` reaches the `protected`
+members of the painter, `newBpmnCanvas` in particular, because TypeScript grants protected access through a `this`
+parameter typed with the class even outside the class body. Whether `newBpmnCanvas` has to be part of the **published**
+API at step 4 is a separate question, and depends on whether the declaration merging can be expressed from outside the
+package.
 
 ### Registration and configuration
 

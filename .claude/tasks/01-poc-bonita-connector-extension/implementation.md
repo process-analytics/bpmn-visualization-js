@@ -10,9 +10,9 @@ Done in two moves.
    green rectangle. The e2e snapshots were restored from commit `63ca085f4` and **passed unmodified**, which proved
    that the full extension path (rendering extension, then the icon painter method injected at library initialization)
    renders pixel-identically to the direct `paintScriptIcon` call of step 1.
-2. Then the definitive glyph replaced it, from the Bonita Studio connector icon provided by the user. Source file,
-   outside the repository: `/home/toma/Téléchargements/bpmn-visualization_tmp_work/bonita_connector/bonita_connector.svg`,
-   an Illustrator/Inkscape export with `id="StudioConnecteur"`, viewBox `0 0 43.609 22.686`, attribution **Bonitasoft**.
+2. Then the definitive glyph replaced it, from the Bonita Studio connector icon provided by the user. Source file, kept
+   outside the repository: `bonita_connector.svg`, an Illustrator/Inkscape export with `id="StudioConnecteur"`, viewBox
+   `0 0 43.609 22.686`, attribution **Bonitasoft**.
    Its 4 subpaths were converted from relative SVG path data to absolute `BpmnCanvas` commands: the cable (open path,
    stroked), the 2 pins, and the plug body painted last so it hides the end of the cable, as in the original.
 
@@ -30,9 +30,10 @@ for one icon.
 
 ## Step 2: icon painter injection
 
-- `src/component/mxgraph/shape/render/icon-painter.ts`: `newBpmnCanvas` went from `protected` to public, with a JSDoc
-  explaining that it is the entry point of the methods contributed by extensions, which are injected into an instance
-  and therefore cannot reach protected members.
+- `src/component/mxgraph/shape/render/icon-painter.ts`: `newBpmnCanvas` **stays `protected`**, with a JSDoc noting it
+  is also the entry point of the methods contributed by extensions. Making it public was tried first, on the wrong
+  assumption that an injected method could not reach a protected member. It can: TypeScript grants protected access
+  through a `this` parameter typed with the class, even outside the class body.
 - `src/component/extension/extension-points.ts`: added `IconPainterExtensionPoint`, a `Record` of method name to
   implementation, typed so `this` is the `IconPainter`.
 - `src/component/extension/bonita-connector/icon-painter-extension.ts`: contributes `paintBonitaConnectorIcon`,
@@ -156,7 +157,7 @@ Visual check of the generated snapshots:
 
 ## Follow-up tasks
 
-- Step 2: icon painter injection extension point, green rectangle glyph, `newBpmnCanvas` from `protected` to
+- Step 2 (done): icon painter injection extension point, green rectangle glyph, `newBpmnCanvas` from `protected` to
   `public`.
 - Step 3: definitive connector icon.
 - The 7 ADR deviations listed at the end of `plan.md`, for the ADR rewrite.

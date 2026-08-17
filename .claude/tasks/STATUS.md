@@ -69,8 +69,8 @@ Core files changed by phase 1: `model/bpmn/internal/types.ts` (new `ShapeBpmnEle
 internal model diagram), `model/bpmn/internal/shape/ShapeBpmnElement.ts`, `extension/extension-points.ts`,
 `parser/json/converter/ProcessConverter.ts`, `mxgraph/renderer/StyleComputer.ts`, `mxgraph/BpmnCellRenderer.ts`,
 `mxgraph/GraphConfigurator.ts`, `mxgraph/shape/render/BpmnCanvas.ts` (new top-right origin),
-`mxgraph/shape/render/icon-painter.ts` (`newBpmnCanvas` made public). `mxgraph/shape/activity-shapes.ts` was
-deliberately **never** touched.
+`mxgraph/shape/activity-shapes.ts` was deliberately **never** touched, and
+`mxgraph/shape/render/icon-painter.ts` needed no change either.
 
 Tests: 4 unit files under `test/unit/component/extension/bonita-connector/`, a self-contained
 `test/integration/bonita.connector.extension.test.ts`, `test/e2e/bonita.connector.test.ts` with 2 snapshots, and
@@ -90,8 +90,9 @@ fixtures in `test/fixtures/bpmn/xml-parsing/bonita-connector/` (parsing) and `te
   `configureShape`), so a rendering extension must read `state.style`.
 - `BpmnGraph.createCellRenderer` is called from the mxGraph super constructor, hence the module-level
   `pendingIconPainter`. Same constraint applies to anything else `BpmnCellRenderer` needs.
-- `IconPainter.newBpmnCanvas` had to become public: an injected method is not declared in the class body, so TypeScript
-  denies it access to protected members even with `this` typed as `IconPainter`.
+- An icon painting method injected into the `IconPainter` **can call its `protected` members**, such as
+  `newBpmnCanvas`, as long as it declares `this` as an `IconPainter`. TypeScript grants protected access through a
+  `this` parameter typed with the class, even outside the class body. Nothing has to be made public for that.
 - `getBpmnDiagramNames` turns **every** `.bpmn` of an e2e diagram directory into a snapshot case, so parsing fixtures
   must live outside those directories.
 - Unit tests default to the **node** environment; a test touching mxGraph needs the `@jest-environment jsdom` docblock.
