@@ -25,6 +25,7 @@ import { getExpectedMarkers } from '../../../helpers/bpmn-model-expect';
 
 import StyleComputer from '@lib/component/mxgraph/renderer/StyleComputer';
 import {
+  FlowKind,
   AssociationDirectionKind,
   MessageVisibleKind,
   SequenceFlowKind,
@@ -204,19 +205,19 @@ describe('Style Computer', () => {
   describe('compute style - edge label', () => {
     it('compute style of edge with no label', () => {
       const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.CONDITIONAL_FROM_GATEWAY));
-      expect(computeStyle(edge)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['sequenceFlow', 'conditional_from_gateway'], bpmn: { kind: 'sequenceFlow' } });
+      expect(computeStyle(edge)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['sequenceFlow', 'conditional_from_gateway'], bpmn: { kind: FlowKind.SEQUENCE_FLOW } });
     });
 
     it('compute style of edge with a no font label', () => {
       const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.NORMAL), undefined, new Label(undefined, undefined));
-      expect(computeStyle(edge)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['sequenceFlow', 'normal'], bpmn: { kind: 'sequenceFlow' } });
+      expect(computeStyle(edge)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['sequenceFlow', 'normal'], bpmn: { kind: FlowKind.SEQUENCE_FLOW } });
     });
 
     it('compute style of edge with label including strike-through font', () => {
       const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY), undefined, new Label(toFont({ size: 14.2, isStrikeThrough: true }), undefined));
       expect(computeStyle(edge)).toStrictEqual<BpmnCellStyle>({
         baseStyleNames: ['sequenceFlow', 'conditional_from_activity'],
-        bpmn: { kind: 'sequenceFlow' },
+        bpmn: { kind: FlowKind.SEQUENCE_FLOW },
         fontSize: 14.2,
         fontStyle: 8,
       });
@@ -224,7 +225,7 @@ describe('Style Computer', () => {
 
     it('compute style of edge with label including underline font', () => {
       const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.DEFAULT), undefined, new Label(toFont({ isUnderline: true }), undefined));
-      expect(computeStyle(edge)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['sequenceFlow', 'default'], bpmn: { kind: 'sequenceFlow' }, fontStyle: 4 });
+      expect(computeStyle(edge)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['sequenceFlow', 'default'], bpmn: { kind: FlowKind.SEQUENCE_FLOW }, fontStyle: 4 });
     });
 
     it('compute style of edge with label including bold/italic/strike-through/underline font', () => {
@@ -234,14 +235,14 @@ describe('Style Computer', () => {
         undefined,
         new Label(toFont({ isBold: true, isItalic: true, isStrikeThrough: true, isUnderline: true }), undefined),
       );
-      expect(computeStyle(edge)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['sequenceFlow', 'normal'], bpmn: { kind: 'sequenceFlow' }, fontStyle: 15 });
+      expect(computeStyle(edge)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['sequenceFlow', 'normal'], bpmn: { kind: FlowKind.SEQUENCE_FLOW }, fontStyle: 15 });
     });
 
     it('compute style of edge with label bounds', () => {
       const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.NORMAL), undefined, new Label(toFont({ name: 'Helvetica' }), new Bounds(20, 20, 30, 120)));
       expect(computeStyle(edge)).toStrictEqual<BpmnCellStyle>({
         baseStyleNames: ['sequenceFlow', 'normal'],
-        bpmn: { kind: 'sequenceFlow' },
+        bpmn: { kind: FlowKind.SEQUENCE_FLOW },
         fontFamily: 'Helvetica',
         verticalAlign: 'top',
         align: 'center',
@@ -256,7 +257,7 @@ describe('Style Computer', () => {
     [SequenceFlowKind.NORMAL, 'normal'],
   ])('compute style - sequence flows: %s', (kind: SequenceFlowKind, expected: string) => {
     const edge = new Edge('id', newSequenceFlow(kind));
-    expect(computeStyle(edge)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['sequenceFlow', expected], bpmn: { kind: 'sequenceFlow' } });
+    expect(computeStyle(edge)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['sequenceFlow', expected], bpmn: { kind: FlowKind.SEQUENCE_FLOW } });
   });
 
   it.each([
@@ -265,7 +266,7 @@ describe('Style Computer', () => {
     [AssociationDirectionKind.BOTH, 'Both'],
   ])('compute style - association flows: %s', (kind: AssociationDirectionKind, expected: string) => {
     const edge = new Edge('id', newAssociationFlow(kind));
-    expect(computeStyle(edge)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['association', expected], bpmn: { kind: 'association' } });
+    expect(computeStyle(edge)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['association', expected], bpmn: { kind: FlowKind.ASSOCIATION_FLOW } });
   });
 
   it.each([
@@ -673,7 +674,7 @@ describe('Style Computer', () => {
       describe('edges', () => {
         it('edge with strike-through font', () => {
           const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY), undefined, new Label(toFont({ size: 14.2, isStrikeThrough: true }), undefined));
-          const style: BpmnCellStyle = { baseStyleNames: ['sequenceFlow', 'conditional_from_activity'], bpmn: { kind: 'sequenceFlow' } };
+          const style: BpmnCellStyle = { baseStyleNames: ['sequenceFlow', 'conditional_from_activity'], bpmn: { kind: FlowKind.SEQUENCE_FLOW } };
           if (expectFontStyles) {
             style.fontSize = 14.2;
             style.fontStyle = 8;
@@ -683,7 +684,7 @@ describe('Style Computer', () => {
 
         it('edge with underline font', () => {
           const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.DEFAULT), undefined, new Label(toFont({ isUnderline: true }), undefined));
-          const style: BpmnCellStyle = { baseStyleNames: ['sequenceFlow', 'default'], bpmn: { kind: 'sequenceFlow' } };
+          const style: BpmnCellStyle = { baseStyleNames: ['sequenceFlow', 'default'], bpmn: { kind: FlowKind.SEQUENCE_FLOW } };
           if (expectFontStyles) {
             style.fontStyle = 4;
           }
@@ -758,7 +759,7 @@ describe('Style Computer', () => {
         it('sequence flow', () => {
           const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.DEFAULT), undefined, newLabelExtension('#aaaaaa'));
           edge.extensions.strokeColor = '#111111';
-          const style: BpmnCellStyle = { baseStyleNames: ['sequenceFlow', 'default'], bpmn: { kind: 'sequenceFlow' } };
+          const style: BpmnCellStyle = { baseStyleNames: ['sequenceFlow', 'default'], bpmn: { kind: FlowKind.SEQUENCE_FLOW } };
           if (expectAdditionalColorsStyle) {
             style.strokeColor = '#111111';
             style.fontColor = '#aaaaaa';
@@ -768,7 +769,7 @@ describe('Style Computer', () => {
         it('message flow', () => {
           const edge = new Edge('id', newMessageFlow(), undefined, newLabelExtension('#aaaabb'));
           edge.extensions.strokeColor = '#1111bb';
-          const style: BpmnCellStyle = { baseStyleNames: ['messageFlow'], bpmn: { kind: 'messageFlow' } };
+          const style: BpmnCellStyle = { baseStyleNames: ['messageFlow'], bpmn: { kind: FlowKind.MESSAGE_FLOW } };
           if (expectAdditionalColorsStyle) {
             style.strokeColor = '#1111bb';
             style.fontColor = '#aaaabb';
@@ -787,7 +788,7 @@ describe('Style Computer', () => {
         it('association flow', () => {
           const edge = new Edge('id', newAssociationFlow(AssociationDirectionKind.ONE), undefined, newLabelExtension('#aaaacc'));
           edge.extensions.strokeColor = '#1111cc';
-          const style: BpmnCellStyle = { baseStyleNames: ['association', 'One'], bpmn: { kind: 'association' } };
+          const style: BpmnCellStyle = { baseStyleNames: ['association', 'One'], bpmn: { kind: FlowKind.ASSOCIATION_FLOW } };
           if (expectAdditionalColorsStyle) {
             style.strokeColor = '#1111cc';
             style.fontColor = '#aaaacc';
