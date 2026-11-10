@@ -54,12 +54,13 @@ export default class StyleComputer {
   }
 
   computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): BpmnCellStyle {
+    // TODO maxgraph@0.23.0 review the naming of the style properties, use bv instead. And remember that the current recommendation is to use flat style property names
     const bpmn: BpmnCellStyleExtension = { kind: bpmnCell.bpmnElement.kind };
     const baseStyleNames: string[] = [bpmnCell.bpmnElement.kind as string];
     const style: BpmnCellStyle = { baseStyleNames, bpmn };
 
     if (bpmnCell instanceof Shape) {
-      this.computeShapeStyle(bpmnCell, style, bpmn);
+      this.computeShapeStyle(bpmnCell, style);
     } else {
       baseStyleNames.push(...computeEdgeBaseStyleNames(bpmnCell));
       this.computeEdgeStyle(bpmnCell, style);
@@ -71,7 +72,8 @@ export default class StyleComputer {
     return style;
   }
 
-  private computeShapeStyle(shape: Shape, style: BpmnCellStyle, bpmn: BpmnCellStyleExtension): void {
+  private computeShapeStyle(shape: Shape, style: BpmnCellStyle): void {
+    const bpmn: BpmnCellStyleExtension = style.bpmn;
     const bpmnElement = shape.bpmnElement;
 
     if (bpmnElement instanceof ShapeBpmnEvent) {
