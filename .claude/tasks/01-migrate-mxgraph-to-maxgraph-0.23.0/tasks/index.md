@@ -1,6 +1,6 @@
 # Tasks: Migrate from mxGraph to maxGraph 0.23.0
 
-**Note**: explore done with Claude Opus 4.8 on 2026-06-12
+**Note**: tasks created with Claude Opus 4.8 on 2026-06-12
 
 ## Overview
 Big-bang migration on branch `poc/claude/bump_maxgraph_0.23.0_bpmn-visu_0.48.0`, executed area by area in dependency order, reapplying the proven `poc/bump_maxgraph_0.20.0_v1` PATTERNS onto the current architecture (never cherry-picking old diffs). Full detail per file lives in `../plan.md`; the exploration and decisions in `../explore.md`.
