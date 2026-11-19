@@ -45,6 +45,10 @@ describe('compute base css class names of BPMN elements', () => {
 });
 
 describe('compute all css class names based on style input', () => {
+  // TODO maxgraph@0.1.0 find a way to correctly display the style object in the test name (currently it's {"bpmn": [Object]})
+  // see also https://jestjs.io/docs/api#1-testeachtablename-fn-timeout
+  // partial solution: $style.bpmn.kind
+  // or switch to the test.each syntax using an array to be able to format the test inputs
   it.each`
     style                                                                                                                                        | isLabel  | expectedClassNames
     ${{ bpmn: { kind: ShapeBpmnElementKind.LANE } }}                                                                                             | ${true}  | ${['bpmn-type-container', 'bpmn-lane', 'bpmn-label']}

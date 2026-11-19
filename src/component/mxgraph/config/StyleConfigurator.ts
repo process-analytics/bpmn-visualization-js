@@ -51,7 +51,7 @@ const specificFlowStyles = new MapWithDefault<FlowKind>([
       style.startSize = 8;
       style.startFillColor = StyleDefault.MESSAGE_FLOW_MARKER_START_FILL_COLOR;
       style.endArrow = 'blockThin';
-      style.endFill = true;
+      style.endFill = true; // TODO maxgraph@0.1.0 could be removed when maxGraph fixes https://github.com/maxGraph/maxGraph/pull/157. Ensure we have stable passing e2e visualization tests prior removing this. PR merged, fixed in maxGraph 0.2.0, so it can be removed now (as done for startFill)
       style.endFillColor = StyleDefault.MESSAGE_FLOW_MARKER_END_FILL_COLOR;
     },
   ],

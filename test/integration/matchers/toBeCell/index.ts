@@ -25,6 +25,7 @@ import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 
 export function toBeCell(this: MatcherContext, received: string): CustomMatcherResult {
+  // TODO maxGraph@0.1.0 - simplify expression?
   const pass = getCell(received) ? true : false;
   return {
     message: () => this.utils.matcherHint(`.${pass ? 'not.' : ''}toBeCell`) + '\n\n' + `Expected cell with id '${received}' ${pass ? 'not ' : ''}to be found in the mxGraph model`,

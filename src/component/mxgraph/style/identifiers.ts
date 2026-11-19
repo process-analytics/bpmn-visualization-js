@@ -27,6 +27,7 @@ limitations under the License.
  * @category BPMN Theme
  * @experimental
  */
+// TODO maxGraph@0.1.0 - real migration - may be renamed into BpmnShapeIdentifier after the maxGraph migration
 export const BpmnStyleIdentifier = {
   MESSAGE_FLOW_ICON: 'bpmn.messageFlowIcon',
 };
