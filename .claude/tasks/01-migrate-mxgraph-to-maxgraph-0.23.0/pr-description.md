@@ -1,57 +1,71 @@
-# PR: migrate from mxGraph to maxGraph 0.23.0
+Proposed title: `refactor: [POC] Replace mxGraph with maxGraph 0.23.0`
 
-Proposed title (squash commit subject): `feat!: migrate rendering engine from mxGraph to maxGraph 0.23.0`
+## Overview
 
-Closes #3238.
+**This is a POC and it is not intended to be merged into master.**
+This is a continuation of #3340 (maxGraph 0.20.0), itself a continuation of #3270.
+Covers #3238
 
-## What
+Start from master baf591fc0 (0.48.0 release, then the version bump to 0.48.0-post).
+- unlike #3340, which replayed newer maxGraph versions on the 0.37.0 codebase, this POC applies maxGraph 0.23.0 to the current architecture of bpmn-visualization (extension points, typed style objects, dispose lifecycle)
+- the patterns proven in #3340 were reapplied file by file, the old commits were not cherry-picked
 
-Replace the mxGraph rendering engine with [maxGraph](https://github.com/maxGraph/maxGraph) `0.23.0`. maxGraph is the maintained, ESM-only, typed successor of the now-unmaintained mxGraph. The 3-layer pipeline (parse -> register -> render) and the public API surface are preserved as much as possible; mxGraph remains fully encapsulated behind `BpmnElementsRegistry`.
+**Please don't rebase on `master`**. If necessary, merge the master branch, or create a new POC with the latest changes from the master branch.
 
-## Why
+## Status
 
-mxGraph is end-of-life. maxGraph ships its own TypeScript types (so `@typed-mxgraph/typed-mxgraph` is no longer needed), is ESM-only, and replaces mxGraph style strings with typed `CellStyle` objects. This is the foundation for future maintenance and bundle-size work.
+`npm run build`, unit tests (3168), integration tests (319) and lint pass.
 
-## How (high level)
+The e2e visual tests pass locally on chromium: 257/257 snapshots, against the existing baselines, with no snapshot regeneration. They run on CI again, which covers the other browsers.
 
-- Dependency and build config swapped to `@maxgraph/core` `0.23.0`; `@typed-mxgraph/typed-mxgraph` removed.
-- `BpmnGraph` now extends maxGraph `BaseGraph` (tree-shakeable: registers nothing by default), so shapes, edge markers and perimeters are registered explicitly, and `PanningHandler`/`FitPlugin` are passed as plugins.
-- All style handling moved from mxGraph style strings to typed maxGraph `CellStyle` objects. BPMN-specific style data now lives under a typed `bpmn` property (`BpmnCellStyle`/`BpmnCellStateStyle`).
-- Custom shapes, the icon painter and the canvas use maxGraph base classes and APIs (`AbstractCanvas2D`, boolean arc flags, `ShapeRegistry`, `EdgeMarkerRegistry`, `registerDefaultPerimeters`).
-- Overlays use the maxGraph `CellRenderer` extension points (`createOverlayShape`/`configureOverlayShape`) via a dedicated `BpmnCellRenderer`, instead of patching prototypes.
-- Navigation (fit, panning, zoom) uses the maxGraph plugin and event APIs (`getPlugin`, `InternalEvent`, `eventUtils`).
-- `BpmnConnector` and its `edges.ts` were deleted: maxGraph paints the start/end arrow marker fill colors natively.
-- `getVersion()` reports the `maxGraph` dependency (from `constants.VERSION`).
+### Main improvements compared to #3340
 
-New public API elements are tagged `@since 0.48.0`.
+- **for the first time in these POCs, all the e2e tests pass**, against the existing snapshots. This makes the migration a viable solution, even if it includes workarounds (see below) that will no longer be necessary with newer versions of maxGraph
+- the edge `arcSize` is back to the mxGraph value (5): maxGraph 0.21.0 fixed the arc computation, so the halving to 2.5 needed in #3340 is gone
+- fit uses the maxGraph `FitPlugin` (0.21.0) with a single options object, and `getPlugin` returns `undefined` when the plugin is missing (0.21.0), so the plugin access is null safe instead of cast
+- `BpmnVisualization.dispose()` releases the graph and the navigation plugins, relying on the destroy lifecycle and the memory leak fixes of maxGraph 0.23.0. #3340 had no teardown at all
+- custom overlays are provided by a `BpmnCellRenderer` passed to the `BaseGraph` constructor, instead of patching the `CellRenderer` prototype
+- `BpmnConnector` is removed: maxGraph paints the fill color of the start and end markers natively (https://github.com/maxGraph/maxGraph/pull/157)
+- the rollup `commonjs` plugin is removed: mxGraph is gone and fast-xml-parser 5 is ESM capable
 
-## Testing
+### Workarounds and follow-ups
 
-- `npm run build`, `npm run test:unit` (3168) and `npm run test:integration` (319) are green. This is the definition of done for the POC.
-- `npm run lint` is clean.
-- e2e visual tests: run locally on chromium, 251/257 snapshots pass. The 6 failures are all association-flow edges (dashed, rounded, multi-waypoint) with ~2.5% pixel diffs localized to the edge corners: an expected minor rendering difference of the new engine. The edge `arcSize` was verified NOT to be the cause (reverting it to the old POC value 2.5 increases failures from 6 to 18; the restored original value 5 is correct). Full characterization in `e2e-diff-inventory.md`. Snapshots are intentionally NOT updated in this PR.
-- e2e is temporarily disabled on CI for this POC (the job condition is forced to a never-true event); restore it once the snapshot diffs are reviewed and regenerated.
+They are tracked as `TODO maxgraph@<version>` comments in the code.
 
-## Follow-ups (tracked as `TODO maxgraph@...` in the code)
+- association edges: maxGraph treats an unset `startArrow` as present when computing the bounding box, which changed the fit scale and broke 6 e2e snapshots. Worked around by setting `startSize` only on the association direction that has a start arrow. Fixed in maxGraph 0.24.0 (https://github.com/maxGraph/maxGraph/pull/1094)
+- the BPMN data of the style is nested under a `bpmn` property of the extended `BpmnCellStyle` type. To align with the maxGraph recommendation, use flat properties sharing a `bv` prefix, and module augmentation of `CellStyle`, available since maxGraph 0.25.0 (https://github.com/maxGraph/maxGraph/pull/1147)
+- the new public types carry `@since 0.x.y` until the release that ships the migration is known
 
-- `maxgraph@0.24.0`: replace the `BpmnCellStyle`/`BpmnCellStateStyle` extension types with interface augmentation of maxGraph `CellStyle`/`CellStateStyle`.
-- `maxgraph@0.23.0`: consider `FitPlugin.fitCenter` instead of the custom center-fit computation; register only the edge markers/perimeters actually used (bundle size); re-evaluate the message-flow `startFill`/`endFill` flags (maxGraph PR#157 native marker fill) and the rollup `commonjs` plugin (fast-xml-parser is now ESM-capable); capture/validate non-numeric coordinates during parsing.
+### Impact on the size of the bundles
 
-## BREAKING CHANGE footer
+The minified IIFE bundle **decreases by about 519 kB / 51.6%**, and the demo chunk of the graph library by about 512 kB / 61.2%.
 
-BREAKING CHANGE:
-- The rendering engine is now maxGraph instead of mxGraph. The experimental `BpmnVisualization.graph` property is a maxGraph `BaseGraph` and follows maxGraph naming (e.g. `getDataModel()` instead of `getModel()`).
-- The aggregated `mxgraph` namespace export is removed with no replacement. Consumers that reached into `mxgraph.*` must depend on `@maxgraph/core` directly.
-- `@typed-mxgraph/typed-mxgraph` is no longer a dependency; maxGraph ships its own types. Consumers must stop installing and referencing it.
-- Theme/style customization now uses typed maxGraph `CellStyle` objects (`BpmnCellStyle`) instead of mxGraph style strings. Extension points and any deep style customization receive/return `CellStyle` objects.
-- `getVersion().dependencies` reports the `maxGraph` key instead of `mxGraph`.
-- Public `@experimental` `BpmnStyleIdentifier` members were removed (`EDGE`, `EDGE_START_FILL_COLOR`, `EDGE_END_FILL_COLOR`, `EVENT_BASED_GATEWAY_KIND`, `EVENT_DEFINITION_KIND`, `GLOBAL_TASK_KIND`, `SUB_PROCESS_KIND`, `IS_INITIATING`, `IS_INSTANTIATING`, `IS_INTERRUPTING`, `EXTRA_CSS_CLASSES`, `MARKERS`); only `MESSAGE_FLOW_ICON` remains. The former `bpmn.*` style-string keys are now typed properties under `CellStyle.bpmn`.
-- Public `@experimental` render types changed: `BpmnCanvas`/`IconPainter`/`PaintParameter` use maxGraph `AbstractCanvas2D` (was `mxAbstractCanvas2D`), and `BpmnCanvas.arcTo` takes `boolean` flags instead of `0 | 1`.
-- `load()` now throws `Invalid x supplied.` when a diagram contains a non-numeric coordinate, instead of silently rendering a broken shape and loading the rest of the diagram (maxGraph's `Point` rejects `NaN`).
+| Bundle | mxGraph 4.2.2 (master baf591fc0) | maxGraph 0.23.0 | Δ kB | Δ % |
+|---|---:|---:|---:|---:|
+| IIFE raw | 1757.32 | 991.34 | -765.98 | -43.59% |
+| IIFE minified | 1005.71 | 486.52 | -519.19 | -51.62% |
+| ESM | 209.92 | 204.54 | -5.38 | -2.56% |
+| Demo chunk mxgraph / maxgraph | 837.26 | 324.98 | -512.27 | -61.18% |
+| Demo chunk bpmn-visualization | 88.17 | 84.69 | -3.48 | -3.94% |
+| Demo chunk es-toolkit | 0.88 | 0.88 | +0.00 | +0.00% |
+| Demo chunk fast-xml-parser | 41.55 | 41.55 | +0.00 | +0.00% |
 
-## Suggested labels (please choose)
+- Sizes in kB of 1000 bytes, not gzipped.
+- The ESM bundle does not include mxGraph or maxGraph: the rollup config marks the dependencies as external, and the bundle imports `@maxgraph/core`. So its change only comes from the bpmn-visualization code, as for the demo chunk of the bpmn-visualization code.
+- The demo chunks of es-toolkit and fast-xml-parser are unchanged.
+- The only toolchain difference between the two builds is the removal of the rollup `commonjs` plugin.
+- On master, `npm ci` refused the lock file, out of sync with `package.json` for `picomatch` (fixed later on master by #3589). That side was installed with `npm install`, which only changed `picomatch` from 4.0.4 to 4.0.7, a build tool that is not part of the bundles. The POC side was installed with `npm ci` from its committed lock file.
 
-- `breaking change`
-- `dependencies`
-- `refactoring`
-- `R<x.y.z>` milestone/release label for 0.48.0 if used
+**How the table was generated**: with the new `pr-bundle-size` Claude Code skill, added by this POC in `.claude/skills/pr-bundle-size/`. Its script builds each commit in a temporary git worktree with the locked dependencies (`npm ci`, `npm run build-bundles`, `npm run demo:build`), reads the sizes of the npm bundles and of the demo `lib-*.js` chunks, then compares the two measurements. The `lib-mxgraph` and `lib-maxgraph` chunks are compared on a single row. The measured commits are:
+- master: baf591fc03678444b2f531146ce11abe5dc41291
+- POC: 86dd502261d16abd58f1c069c38b801c7bae2621
+
+### Breaking changes
+
+- The rendering engine is now maxGraph. The experimental `BpmnVisualization.graph` property is a maxGraph `BaseGraph` and follows the maxGraph naming (e.g. `getDataModel()` instead of `getModel()`).
+- The aggregated `mxgraph` namespace export is removed with no replacement. `@typed-mxgraph/typed-mxgraph` is no longer a dependency, maxGraph ships its own types.
+- Theme and style customization use typed maxGraph `CellStyle` objects (`BpmnCellStyle`) instead of mxGraph style strings.
+- `getVersion().dependencies` reports `maxGraph` instead of `mxGraph`.
+- Most `@experimental` `BpmnStyleIdentifier` members are removed, only `MESSAGE_FLOW_ICON` remains. The former `bpmn.*` style keys are typed properties under `CellStyle.bpmn`.
+- The `@experimental` render types (`BpmnCanvas`, `IconPainter`, `PaintParameter`) use the maxGraph `AbstractCanvas2D`, and `BpmnCanvas.arcTo` takes `boolean` flags.
+- `load()` throws `Invalid x supplied.` when a diagram contains a non-numeric coordinate, instead of rendering a broken shape.
