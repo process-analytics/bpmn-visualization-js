@@ -40,7 +40,7 @@ describe('setStyle', () => {
 
   test('applies the converter', () => {
     const style: CellStyle = {};
-    setStyle(style, 'strokeWidth', 3, value => value * 2);
+    setStyle<number>(style, 'strokeWidth', 3, value => value * 2);
     expect(style.strokeWidth).toBe(6);
   });
 });

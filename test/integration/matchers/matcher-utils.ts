@@ -18,7 +18,7 @@ import type { ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement 
 import type { CustomCellOverlay, CustomCellOverlayStyle } from '@lib/component/mxgraph/overlay/custom-overlay';
 import type { BpmnCellStyle, BpmnCellStateStyle } from '@lib/component/mxgraph/style/types';
 import type { Opacity } from '@lib/component/registry';
-import type { AlignValue, ArrowValue, Cell, Geometry, ShapeValue, VAlignValue } from '@maxgraph/core';
+import type { AlignValue, Cell, Geometry, ShapeValue, StyleArrowValue, VAlignValue } from '@maxgraph/core';
 
 import { bpmnVisualization } from '../helpers/model-expect';
 
@@ -46,8 +46,8 @@ export interface ComparedBpmnCellStyle {
   fontSize: number;
   fontStyle: number;
   fontOpacity: Opacity;
-  startArrow?: ArrowValue;
-  endArrow?: ArrowValue;
+  startArrow?: StyleArrowValue;
+  endArrow?: StyleArrowValue;
   endSize?: number;
   shape?: ShapeValue | string;
   horizontal?: boolean;
