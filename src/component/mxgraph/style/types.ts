@@ -27,6 +27,8 @@ import type {
 } from '../../../model/bpmn/internal';
 import type { CellStateStyle, CellStyle } from '@maxgraph/core';
 
+// TODO maxgraph@0.23.0 replace `@since 0.x.y` in this file by the version that ships the maxGraph migration
+
 // TODO maxgraph@0.23.0 flatten the BPMN style properties instead of nesting them under the `bpmn` object.
 // The maxGraph recommendation is to declare each custom property at the top level of the style, with a shared prefix
 // showing they belong together, see https://github.com/maxGraph/maxGraph/blob/b612af2f016e7b18051d6b28bf9363921e75c2b2/packages/website/docs/guides/extend-maxgraph.md#keep-your-custom-properties-flat
@@ -44,7 +46,7 @@ import type { CellStateStyle, CellStyle } from '@maxgraph/core';
  *
  * @category BPMN Theme
  * @experimental
- * @since 0.48.0
+ * @since 0.x.y
  */
 export interface BpmnCellStyleExtension {
   associationDirectionKind?: AssociationDirectionKind;
@@ -78,7 +80,7 @@ export interface BpmnCellStyleExtension {
  *
  * @category BPMN Theme
  * @experimental
- * @since 0.48.0
+ * @since 0.x.y
  */
 export interface BpmnCellStyle extends CellStyle {
   bpmn?: BpmnCellStyleExtension;
@@ -93,7 +95,7 @@ export interface BpmnCellStyle extends CellStyle {
  *
  * @category BPMN Theme
  * @experimental
- * @since 0.48.0
+ * @since 0.x.y
  */
 export interface BpmnCellStateStyle extends CellStateStyle {
   bpmn?: BpmnCellStyleExtension;
