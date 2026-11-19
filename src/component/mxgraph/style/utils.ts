@@ -14,13 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import type { BpmnCellStateStyle, BpmnCellStyle } from './types';
 import type { Fill, Font, ShapeStyleUpdate, Stroke, StyleUpdate, GradientDirection, FillColorGradient } from '../../registry';
+import type { CellStyle, DirectionValue, NumericCellStateStyleKeys } from '@maxgraph/core';
 
-import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
+import { constants, styleUtils } from '@maxgraph/core';
+
+import { ShapeUtil } from '../../../model/bpmn/internal';
 import { ensureOpacityValue, ensureStrokeWidthValue } from '../../helpers/validators';
-import { mxConstants, mxUtils } from '../initializer';
-
-import { BpmnStyleIdentifier } from './identifiers';
 
 /**
  * Store all rendering defaults used by `bpmn-visualization`.
@@ -55,7 +56,7 @@ export const StyleDefault = {
   // General
   DEFAULT_FILL_COLOR: 'White',
   DEFAULT_STROKE_COLOR: 'Black',
-  DEFAULT_FONT_FAMILY: 'Arial, Helvetica, sans-serif', // define our own to not depend on eventual mxGraph default change
+  DEFAULT_FONT_FAMILY: 'Arial, Helvetica, sans-serif', // define our own to not depend on eventual maxGraph default change
   DEFAULT_FONT_SIZE: 11,
   DEFAULT_FONT_COLOR: 'Black',
   DEFAULT_MARGIN: 0,
@@ -76,100 +77,114 @@ export const StyleDefault = {
 
 /**
  * Get the BPMN 'instantiate' information from the style.
- * @param style the mxGraph style
+ * @param style the maxGraph cell state style
  * @internal
  * @private
  */
-export const getBpmnIsInstantiating = (style: Record<string, unknown>): boolean => mxUtils.getValue(style, BpmnStyleIdentifier.IS_INSTANTIATING, 'false') == 'true';
+export const getBpmnIsInstantiating = (style: BpmnCellStateStyle): boolean => style.bpmn?.isInstantiating ?? false;
 
 const convertDefaultValue = (value: string): string | undefined => (value == 'default' ? undefined : value);
 
-export const updateStroke = (cellStyle: string, stroke: Stroke): string => {
+export const updateStroke = (cellStyle: CellStyle, stroke: Stroke): void => {
   if (stroke) {
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_STROKECOLOR, stroke.color, convertDefaultValue);
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_STROKE_OPACITY, stroke.opacity, ensureOpacityValue);
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_STROKEWIDTH, stroke.width, ensureStrokeWidthValue);
+    setStyle(cellStyle, 'strokeColor', stroke.color, convertDefaultValue);
+    setStyle(cellStyle, 'strokeOpacity', stroke.opacity, ensureOpacityValue);
+    setStyle(cellStyle, 'strokeWidth', stroke.width, ensureStrokeWidthValue);
   }
-  return cellStyle;
 };
 
-export const setStyle = <T extends string | number>(cellStyle: string, key: string, value: T | undefined, converter: (value: T) => T | undefined = (value: T) => value): string => {
-  return value == undefined ? cellStyle : mxUtils.setStyle(cellStyle, key, converter(value));
+export const setStyle = <T extends string | number>(
+  cellStyle: CellStyle,
+  key: keyof CellStyle,
+  value: T | undefined,
+  converter: (value: T) => T | undefined = (value: T) => value,
+): void => {
+  if (value == undefined) return;
+  (cellStyle as Record<string, unknown>)[key] = converter(value);
 };
 
-export const setStyleFlag = (cellStyle: string, key: string, flag: number, value: boolean | undefined): string =>
-  value == undefined ? cellStyle : mxUtils.setStyleFlag(cellStyle, key, flag, value);
+export const setStyleFlag = (cellStyle: CellStyle, key: NumericCellStateStyleKeys, flag: number, value?: boolean): void => {
+  // The maxGraph setStyleFlag function toggles the flag when undefined is passed. In bpmn-visualization, we want to
+  // keep the value as it is in that case (there is no toggle feature), so we guard against undefined.
+  if (value == undefined) return;
 
-export const updateFont = (cellStyle: string, font: Font): string => {
+  styleUtils.setStyleFlag(cellStyle, key, flag, value);
+};
+
+export const updateFont = (cellStyle: CellStyle, font: Font): void => {
   if (font) {
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_FONTCOLOR, font.color, convertDefaultValue);
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_FONTSIZE, font.size);
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_FONTFAMILY, font.family);
+    setStyle(cellStyle, 'fontColor', font.color, convertDefaultValue);
+    setStyle(cellStyle, 'fontSize', font.size);
+    setStyle(cellStyle, 'fontFamily', font.family);
 
-    cellStyle = setStyleFlag(cellStyle, mxConstants.STYLE_FONTSTYLE, mxConstants.FONT_BOLD, font.isBold);
-    cellStyle = setStyleFlag(cellStyle, mxConstants.STYLE_FONTSTYLE, mxConstants.FONT_ITALIC, font.isItalic);
-    cellStyle = setStyleFlag(cellStyle, mxConstants.STYLE_FONTSTYLE, mxConstants.FONT_UNDERLINE, font.isUnderline);
-    cellStyle = setStyleFlag(cellStyle, mxConstants.STYLE_FONTSTYLE, mxConstants.FONT_STRIKETHROUGH, font.isStrikeThrough);
+    setStyleFlag(cellStyle, 'fontStyle', constants.FONT_STYLE_MASK.BOLD, font.isBold);
+    setStyleFlag(cellStyle, 'fontStyle', constants.FONT_STYLE_MASK.ITALIC, font.isItalic);
+    setStyleFlag(cellStyle, 'fontStyle', constants.FONT_STYLE_MASK.UNDERLINE, font.isUnderline);
+    setStyleFlag(cellStyle, 'fontStyle', constants.FONT_STYLE_MASK.STRIKETHROUGH, font.isStrikeThrough);
 
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_TEXT_OPACITY, font.opacity, ensureOpacityValue);
+    setStyle(cellStyle, 'textOpacity', font.opacity, ensureOpacityValue);
   }
-  return cellStyle;
 };
 
-export const getStyleValue = (cellStyle: string, key: string, defaultValue: string): string =>
-  cellStyle
-    ?.split(';')
-    .map(entry => entry.split('='))
-    .filter(([k]) => k === key)
-    .map(([, v]) => v)[0] ?? defaultValue;
-
-const convertDirection = (direction: GradientDirection): string => {
+const convertDirection = (direction: GradientDirection): DirectionValue => {
   switch (direction) {
     case 'right-to-left': {
-      return mxConstants.DIRECTION_WEST;
+      return 'west';
     }
     case 'bottom-to-top': {
-      return mxConstants.DIRECTION_NORTH;
+      return 'north';
     }
     case 'top-to-bottom': {
-      return mxConstants.DIRECTION_SOUTH;
+      return 'south';
     }
     default: {
-      return mxConstants.DIRECTION_EAST;
+      return 'east';
     }
   }
 };
 
-export const updateFill = (cellStyle: string, fill: Fill): string => {
+export const updateFill = (cellStyle: BpmnCellStyle, fill: Fill): void => {
   const color = fill.color;
   if (color) {
     const isGradient = isFillColorGradient(color);
 
     const fillColor = isGradient ? color.startColor : color;
-    cellStyle = setStyle(cellStyle, mxConstants.STYLE_FILLCOLOR, fillColor, convertDefaultValue);
+    setStyle(cellStyle, 'fillColor', fillColor, convertDefaultValue);
 
     if (isGradient) {
       // The values of the color are mandatory. So, no need to check if it's undefined.
-      cellStyle = mxUtils.setStyle(cellStyle, mxConstants.STYLE_GRADIENTCOLOR, color.endColor);
-      cellStyle = mxUtils.setStyle(cellStyle, mxConstants.STYLE_GRADIENT_DIRECTION, convertDirection(color.direction));
+      cellStyle.gradientColor = color.endColor;
+      cellStyle.gradientDirection = convertDirection(color.direction);
     } else if (color === 'default') {
-      cellStyle = mxUtils.setStyle(cellStyle, mxConstants.STYLE_GRADIENTCOLOR, undefined);
-      cellStyle = mxUtils.setStyle(cellStyle, mxConstants.STYLE_GRADIENT_DIRECTION, undefined);
+      delete cellStyle.gradientColor;
+      delete cellStyle.gradientDirection;
     }
 
-    if (cellStyle.includes(ShapeBpmnElementKind.POOL) || cellStyle.includes(ShapeBpmnElementKind.LANE)) {
-      cellStyle = setStyle(cellStyle, mxConstants.STYLE_SWIMLANE_FILLCOLOR, fillColor, convertDefaultValue);
+    const kind = cellStyle.bpmn?.kind;
+    if (kind && ShapeUtil.isPoolOrLane(kind)) {
+      setStyle(cellStyle, 'swimlaneFillColor', fillColor, convertDefaultValue);
     }
   }
 
-  cellStyle = setStyle(cellStyle, mxConstants.STYLE_FILL_OPACITY, fill.opacity, ensureOpacityValue);
-
-  return cellStyle;
+  setStyle(cellStyle, 'fillOpacity', fill.opacity, ensureOpacityValue);
 };
 
 export const isShapeStyleUpdate = (style: StyleUpdate): style is ShapeStyleUpdate => {
   return style && typeof style === 'object' && 'fill' in style;
 };
+
+/**
+ * Set the extra CSS classes on the BPMN part of a {@link CellStyle}, deleting the property when there are none.
+ * @internal
+ */
+export function setCssClasses(cellStyle: BpmnCellStyle, cssClasses: string[]): void {
+  cellStyle.bpmn ??= {};
+  if (cssClasses.length > 0) {
+    cellStyle.bpmn.extraCssClasses = cssClasses;
+  } else {
+    delete cellStyle.bpmn.extraCssClasses;
+  }
+}
 
 const isFillColorGradient = (color: string | FillColorGradient): color is FillColorGradient => {
   return color && typeof color === 'object';

@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import commonjs from '@rollup/plugin-commonjs'; // at least, needed to bundle mxGraph which is only available as a CommonJS module
 import resolve from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
 import cleanup from 'rollup-plugin-cleanup';
@@ -29,9 +28,8 @@ import { computeBanner } from './scripts/shared/banner.mjs';
 const input = 'src/bpmn-visualization.ts';
 const pluginsBundleIIFE = [
   typescriptPlugin(),
-  // the 'resolve' and 'commonjs' plugins ensure we can bundle commonjs dependencies
+  // the 'resolve' plugin lets us bundle the dependencies (all dependencies are ESM)
   resolve(),
-  commonjs(),
   // to have sizes of dependencies listed at the end of build log
   sizes(),
 ];

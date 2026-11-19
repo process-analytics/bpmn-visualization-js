@@ -15,33 +15,20 @@ limitations under the License.
 */
 
 /**
- * Define BPMN specific keys used in mxGraph styles. Use constants defined in this class instead of hard coded string values.
+ * Define BPMN specific shape names registered in the maxGraph `ShapeRegistry`. Use the constants defined in this object
+ * instead of hard coded string values.
+ *
+ * With maxGraph, the former BPMN data keys (event definition kind, markers, css classes, ...) are no longer stored as
+ * style string entries: they are typed properties of the maxGraph `CellStyle` carried under its `bpmn` property (see
+ * {@link BpmnCellStyle}). Only the names still used as registered shape identifiers remain here.
  *
  * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
  *
  * @category BPMN Theme
  * @experimental
  */
+// TODO maxGraph@0.1.0 - real migration - may be renamed into BpmnShapeIdentifier after the maxGraph migration
 export const BpmnStyleIdentifier = {
-  // edge
-  EDGE: 'bpmn.edge',
-  EDGE_START_FILL_COLOR: 'bpmn.edge.startFillColor',
-  EDGE_END_FILL_COLOR: 'bpmn.edge.endFillColor',
-
-  // kind
-  EVENT_BASED_GATEWAY_KIND: 'bpmn.gatewayKind',
-  EVENT_DEFINITION_KIND: 'bpmn.eventDefinitionKind',
-  GLOBAL_TASK_KIND: 'bpmn.globalTaskKind',
-  SUB_PROCESS_KIND: 'bpmn.subProcessKind',
-
-  // state
-  IS_INITIATING: 'bpmn.isInitiating',
-  IS_INSTANTIATING: 'bpmn.isInstantiating',
-  IS_INTERRUPTING: 'bpmn.isInterrupting',
-
-  // other identifiers
-  EXTRA_CSS_CLASSES: 'bpmn.extra.css.classes',
-  MARKERS: 'bpmn.markers',
   MESSAGE_FLOW_ICON: 'bpmn.messageFlowIcon',
 };
 

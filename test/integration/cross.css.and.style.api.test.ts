@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import type { ExpectedEdgeModelElement, ExpectedShapeModelElement } from './helpers/model-expect';
-import type { mxCell } from 'mxgraph';
+import type { Cell } from '@maxgraph/core';
 
 import { initializeBpmnVisualizationWithContainerId } from './helpers/bpmn-visualization-initialization';
 import { HtmlElementLookup } from './helpers/html-utils';
@@ -36,9 +36,8 @@ import { readFileSync } from '@test/shared/file-helper';
 const bv = initializeBpmnVisualizationWithContainerId('bpmn-container-style-css-cross-tests');
 const bpmnElementsRegistry = bv.bpmnElementsRegistry;
 
-const getCell = (bpmnElementId: string): mxCell => {
-  const graph = bv.graph;
-  const cell = graph.model.getCell(bpmnElementId);
+const getCell = (bpmnElementId: string): Cell => {
+  const cell = bv.graph.getDataModel().getCell(bpmnElementId);
   if (!cell) {
     throw new Error(`Unable to find cell in the model with id ${bpmnElementId}`);
   }

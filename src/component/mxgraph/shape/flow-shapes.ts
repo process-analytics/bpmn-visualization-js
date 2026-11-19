@@ -15,21 +15,21 @@ limitations under the License.
 */
 
 import type { IconPainter } from './render';
-import type { mxAbstractCanvas2D } from 'mxgraph';
+import type { BpmnCellStateStyle } from '../style/types';
+import type { AbstractCanvas2D } from '@maxgraph/core';
 
-import { mxRectangleShape, mxUtils } from '../initializer';
-import { BpmnStyleIdentifier } from '../style';
+import { RectangleShape } from '@maxgraph/core';
 
 import { buildPaintParameter } from './render/icon-painter';
 
 /**
  * @internal
  */
-export class MessageFlowIconShape extends mxRectangleShape {
+export class MessageFlowIconShape extends RectangleShape {
   // The actual value is injected at runtime by BpmnCellRenderer
   protected iconPainter: IconPainter = undefined;
 
-  override paintVertexShape(c: mxAbstractCanvas2D, x: number, y: number, w: number, h: number): void {
+  override paintVertexShape(c: AbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const paintParameter = buildPaintParameter({
       canvas: c,
       x,
@@ -38,7 +38,7 @@ export class MessageFlowIconShape extends mxRectangleShape {
       height: h,
       shape: this,
       ratioFromParent: 1,
-      isFilled: mxUtils.getValue(this.style, BpmnStyleIdentifier.IS_INITIATING, 'true') == 'false',
+      isFilled: (this.style as BpmnCellStateStyle).bpmn?.isInitiating === false,
     });
 
     this.iconPainter.paintEnvelopeIcon(paintParameter);

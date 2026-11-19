@@ -16,7 +16,7 @@ limitations under the License.
 
 import type { ExpectedCellWithGeometry } from '../../helpers/model-expect';
 import type { ExpectedCell } from '../matcher-utils';
-import type { mxCell } from 'mxgraph';
+import type { Cell } from '@maxgraph/core';
 
 import { getDefaultParentId } from '../../helpers/model-expect';
 import { buildCellMatcher, getCell } from '../matcher-utils';
@@ -25,6 +25,7 @@ import MatcherContext = jest.MatcherContext;
 import CustomMatcherResult = jest.CustomMatcherResult;
 
 export function toBeCell(this: MatcherContext, received: string): CustomMatcherResult {
+  // TODO maxGraph@0.1.0 - simplify expression?
   const pass = getCell(received) ? true : false;
   return {
     message: () => this.utils.matcherHint(`.${pass ? 'not.' : ''}toBeCell`) + '\n\n' + `Expected cell with id '${received}' ${pass ? 'not ' : ''}to be found in the mxGraph model`,
@@ -32,7 +33,7 @@ export function toBeCell(this: MatcherContext, received: string): CustomMatcherR
   };
 }
 
-function buildReceivedCell(cell: mxCell): ExpectedCell {
+function buildReceivedCell(cell: Cell): ExpectedCell {
   return {
     id: cell.id,
     parent: { id: cell.parent.id },

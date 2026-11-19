@@ -17,12 +17,12 @@ limitations under the License.
 import type { BpmnGraph } from './mxgraph/BpmnGraph';
 import type { FitOptions, NavigationConfiguration, ZoomConfiguration, ZoomType } from './options';
 import type { Disposable } from './types';
-import type { mxMouseEvent } from 'mxgraph';
+import type { FitPlugin, InternalMouseEvent, PanningHandler } from '@maxgraph/core';
 
+import { eventUtils, InternalEvent } from '@maxgraph/core';
 import { debounce, throttle } from 'es-toolkit';
 
 import { ensurePositiveValue, ensureValidZoomConfiguration } from './helpers/validators';
-import { mxEvent } from './mxgraph/initializer';
 import { FitType } from './options';
 
 /**
@@ -66,20 +66,29 @@ export class NavigationImpl implements Disposable, Navigation {
 
   dispose(): void {
     this.zoomSupport.dispose();
-    this.graph.panningHandler.destroy();
+    // Each component frees the resources it uses: navigation configures the panning plugin (a plugin since maxGraph
+    // 0.21.0), so it disposes it here. This is redundant with graph.destroy(), which since the maxGraph 0.23.0
+    // memory-leak fix iterates plugins.onDestroy(); the redundancy is harmless because PanningHandler.onDestroy()
+    // only removes listeners and is idempotent.
+    this.graph.getPlugin<PanningHandler>('PanningHandler')?.onDestroy();
   }
 
   configure(options?: NavigationConfiguration): void {
-    const panningHandler = this.graph.panningHandler;
+    const panningHandler = this.graph.getPlugin<PanningHandler>('PanningHandler');
+    // The plugin is registered in the BpmnGraph constructor, so it is expected to be available.
+    if (!panningHandler) {
+      return;
+    }
+
     if (options?.enabled) {
       // Pan configuration
-      panningHandler.addListener(mxEvent.PAN_START, setContainerCursor(this.graph, 'grab'));
-      panningHandler.addListener(mxEvent.PAN_END, setContainerCursor(this.graph, 'default'));
+      panningHandler.addListener(InternalEvent.PAN_START, setContainerCursor(this.graph, 'grab'));
+      panningHandler.addListener(InternalEvent.PAN_END, setContainerCursor(this.graph, 'default'));
 
       panningHandler.usePopupTrigger = false; // only use the left button to trigger panning
       // Reimplement the function as we also want to trigger 'panning on cells' (ignoreCell to true) and only on left-click
       // The regular implementation doesn't ignore right click in this case, so do it by ourselves
-      panningHandler.isForcePanningEvent = (me: mxMouseEvent): boolean => mxEvent.isLeftMouseButton(me.getEvent()) || mxEvent.isMultiTouchEvent(me.getEvent());
+      panningHandler.isForcePanningEvent = (me: InternalMouseEvent): boolean => eventUtils.isLeftMouseButton(me.getEvent()) || eventUtils.isMultiTouchEvent(me.getEvent());
       this.graph.setPanning(true);
 
       // Zoom configuration
@@ -90,9 +99,13 @@ export class NavigationImpl implements Disposable, Navigation {
       panningHandler.setPinchEnabled(false);
       // Disable panning on touch device
       // eslint-disable-next-line @typescript-eslint/no-unused-vars -- prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
-      panningHandler.isForcePanningEvent = (_me: mxMouseEvent): boolean => false;
+      panningHandler.isForcePanningEvent = (_me: InternalMouseEvent): boolean => false;
     }
   }
+}
+
+function convertNaNToZero(value: number): number {
+  return Number.isNaN(value) ? 0 : value;
 }
 
 function setContainerCursor(graph: BpmnGraph, cursor: 'grab' | 'default'): () => void {
@@ -128,7 +141,8 @@ class ZoomSupport implements Disposable {
   }
 
   private graphFit(border: number, keepOrigin?: boolean, margin?: number, enabled?: boolean, ignoreWidth?: boolean, ignoreHeight?: boolean, maxHeight?: number): number {
-    const scale = this.graph.fit(border, keepOrigin, margin, enabled, ignoreWidth, ignoreHeight, maxHeight);
+    // maxGraph 0.21.0 moved fit() (and minFitScale/maxFitScale) to the FitPlugin.
+    const scale = this.graph.getPlugin<FitPlugin>('fit')?.fit({ border, keepOrigin, margin, enabled, ignoreWidth, ignoreHeight, maxHeight }) ?? this.graph.view.scale;
     this.setCurrentZoomLevel(scale);
     return scale;
   }
@@ -164,6 +178,7 @@ class ZoomSupport implements Disposable {
     const margin = ensurePositiveValue(fitOptions?.margin);
 
     if (type == FitType.Center) {
+      // TODO maxgraph@0.23.0 consider switching to FitPlugin.fitCenter (it changes the rendering, so keep our own computation for now)
       // Inspired from https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxGraph-js.html#mxGraph.fit
       const maxScale = 3;
 
@@ -172,13 +187,15 @@ class ZoomSupport implements Disposable {
       const clientHeight = this.graph.container.clientHeight - margin;
       const width = bounds.width / this.graph.view.scale;
       const height = bounds.height / this.graph.view.scale;
-      const scale = Math.min(maxScale, Math.min(clientWidth / width, clientHeight / height));
+      let scale = Math.min(maxScale, Math.min(clientWidth / width, clientHeight / height));
       this.setCurrentZoomLevel(scale);
 
+      // guards for jsdom (and degenerate containers): maxGraph rejects a NaN coordinate in Point, unlike mxGraph
+      scale == 0 && (scale = 1);
       this.graph.view.scaleAndTranslate(
         scale,
-        (margin + clientWidth - width * scale) / (2 * scale) - bounds.x / this.graph.view.scale,
-        (margin + clientHeight - height * scale) / (2 * scale) - bounds.y / this.graph.view.scale,
+        convertNaNToZero((margin + clientWidth - width * scale) / (2 * scale) - bounds.x / this.graph.view.scale),
+        convertNaNToZero((margin + clientHeight - height * scale) / (2 * scale) - bounds.y / this.graph.view.scale),
       );
     } else {
       let ignoreWidth = false;
@@ -205,22 +222,28 @@ class ZoomSupport implements Disposable {
   }
 
   private addMouseWheelListener(listener: MouseWheelListener): void {
-    mxEvent.addMouseWheelListener(listener, this.graph.container);
+    InternalEvent.addMouseWheelListener(listener, this.graph.container);
     this.mouseWheelListeners.push(listener);
   }
 
   dispose(): void {
-    if (this.graph.container) {
-      for (const listener of this.mouseWheelListeners) {
-        mxEvent.removeListener(this.graph.container, 'wheel', listener);
-      }
-    }
+    // TODO maxgraph@0.23.0 maxGraph wraps the mouse-wheel listeners internally (InternalEvent.addMouseWheelListener)
+    // and exposes no removal API, so they cannot be explicitly detached here. They are released when the graph
+    // container is discarded on dispose.
+    // Check how this was done with the mxGraph implementation and add new API in maxGraph if needed.
+    // TODO maxgraph@0.23.0 restore InternalEvent.removeListener (the comment above seems inaccurate)
+    // there is a type mismatch between the listener type and the expected type for InternalEvent.removeListener, so we cannot remove the listeners for now
+    //     if (this.graph.container) {
+    //       for (const listener of this.mouseWheelListeners) {
+    //         InternalEvent.removeListener(this.graph.container, 'wheel', listener);
+    //       }
+    //     }
     this.mouseWheelListeners = [];
   }
 
   private createMouseWheelZoomListener(performScaling: boolean): MouseWheelListener {
     return (event: Event, up: boolean): void => {
-      if (mxEvent.isConsumed(event) || !(event instanceof MouseEvent)) {
+      if (!(event instanceof MouseEvent) || eventUtils.isConsumed(event)) {
         return;
       }
 
@@ -233,7 +256,7 @@ class ZoomSupport implements Disposable {
           const [offsetX, offsetY] = this.getEventRelativeCoordinates(event);
           const [newScale, dx, dy] = this.getScaleAndTranslationDeltas(offsetX, offsetY);
           this.graph.view.scaleAndTranslate(newScale, this.graph.view.translate.x + dx, this.graph.view.translate.y + dy);
-          mxEvent.consume(event);
+          InternalEvent.consume(event);
         } else {
           this.currentZoomLevel *= up ? zoomFactorIn : zoomFactorOut;
         }
@@ -269,7 +292,7 @@ class ZoomSupport implements Disposable {
   }
 
   private calculateFactorAndScale(): [number, number] {
-    // Rounded in the same way as in the mxGraph.zoom function for consistency.
+    // Rounded in the same way as in the zoom function for consistency.
     const scale = Math.round(this.currentZoomLevel * 100) / 100;
     const factor = scale / this.graph.view.scale;
     return [factor, scale];
