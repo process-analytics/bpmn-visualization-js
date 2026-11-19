@@ -35,7 +35,7 @@ export function createNewBpmnGraph(container: HTMLElement, rendererOptions?: Ren
  *     <li>markers
  * @internal
  */
-export class GraphConfigurator {
+class GraphConfigurator {
   constructor(private readonly graph: BpmnGraph) {}
 
   configure(): BpmnGraph {
