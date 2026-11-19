@@ -27,6 +27,11 @@ import type {
 } from '../../../model/bpmn/internal';
 import type { CellStateStyle, CellStyle } from '@maxgraph/core';
 
+// TODO maxgraph@0.23.0 flatten the BPMN style properties instead of nesting them under the `bpmn` object.
+// The maxGraph recommendation is to declare each custom property at the top level of the style, with a shared prefix
+// showing they belong together, see https://github.com/maxGraph/maxGraph/blob/b612af2f016e7b18051d6b28bf9363921e75c2b2/packages/website/docs/guides/extend-maxgraph.md#keep-your-custom-properties-flat
+// Use the `bv` prefix (for instance `bvKind`, `bvMarkers`).
+
 /**
  * The BPMN specific data attached to a maxGraph style under the {@link BpmnCellStyle.bpmn} property.
  *
@@ -44,6 +49,7 @@ import type { CellStateStyle, CellStyle } from '@maxgraph/core';
 export interface BpmnCellStyleExtension {
   associationDirectionKind?: AssociationDirectionKind;
   eventDefinitionKind?: ShapeBpmnEventDefinitionKind;
+  // TODO maxgraph@0.23.0 rename `extraCssClasses` to `cssClasses`
   extraCssClasses?: string[];
   gatewayKind?: ShapeBpmnEventBasedGatewayKind;
   globalTaskKind?: GlobalTaskKind;
@@ -56,9 +62,12 @@ export interface BpmnCellStyleExtension {
   subProcessKind?: ShapeBpmnSubProcessKind;
 }
 
-// TODO maxgraph@0.24.0 check if we can use interface augmentation on CellStyle/CellStateStyle instead of extending the type.
-// This would avoid having to cast CellStyle/CellStateStyle everywhere in the code. We'd have to check whether the
-// augmentation is visible to libraries consuming bpmn-visualization, otherwise it's useless.
+// TODO maxgraph@0.24.0 use module augmentation on CellStyle/CellStateStyle instead of extending the type, available
+// since maxGraph 0.25.0 (https://github.com/maxGraph/maxGraph/pull/1147), so apply it when upgrading to maxGraph 0.25.0
+// or later. This would avoid having to cast CellStyle/CellStateStyle everywhere in the code. We'd have to check whether
+// the augmentation is visible to libraries consuming bpmn-visualization, otherwise it's useless.
+// Verify it in test/typescript-support, in a dedicated file, as maxGraph does in its ts-support package, see
+// https://github.com/maxGraph/maxGraph/blob/b612af2f016e7b18051d6b28bf9363921e75c2b2/packages/ts-support/src/module-augmentation.ts
 
 /**
  * A maxGraph {@link CellStyle} enriched with the BPMN specific data carried under the {@link bpmn} property.

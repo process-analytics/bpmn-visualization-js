@@ -54,7 +54,6 @@ export default class StyleComputer {
   }
 
   computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): BpmnCellStyle {
-    // TODO maxgraph@0.23.0 review the naming of the style properties, use bv instead. And remember that the current recommendation is to use flat style property names
     const bpmn: BpmnCellStyleExtension = { kind: bpmnCell.bpmnElement.kind };
     const baseStyleNames: string[] = [bpmnCell.bpmnElement.kind as string];
     const style: BpmnCellStyle = { baseStyleNames, bpmn };

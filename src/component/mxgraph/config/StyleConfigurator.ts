@@ -67,8 +67,8 @@ const specificFlowStyles = new MapWithDefault<FlowKind>([
       // (undefined) startArrow, so it wrongly grows the bounding box of arrowless associations by a start-marker margin
       // sized by startSize. That enlarges getGraphBounds and shifts the on-load fit scale (~0.18%), which breaks the e2e
       // visual snapshots. mxGraph used getValue(style, STARTARROW, NONE), defaulting the absent key to NONE and skipping
-      // the branch. Restore the line below (and drop the startSize in the BOTH style) once maxGraph treats an undefined
-      // startArrow as NONE.
+      // the branch. Fixed in maxGraph 0.24.0 by https://github.com/maxGraph/maxGraph/pull/1094: when upgrading to
+      // maxGraph 0.24.0 or later, restore the line below and drop the startSize in the BOTH style.
       // style.startSize = arrowDefaultSize;
     },
   ],
@@ -110,7 +110,7 @@ const specificAssociationFlowStyles = new MapWithDefault<AssociationDirectionKin
     (style: CellStyle) => {
       style.startArrow = 'openThin';
       style.endArrow = 'openThin';
-      // TODO maxgraph@0.23.0 workaround: the startSize is set here on the BOTH style (the only association direction that has a start arrow) instead of on the FlowKind.ASSOCIATION_FLOW style (which applies to all association directions). See the comment in specificFlowStyles for more details.
+      // TODO maxgraph@0.23.0 workaround: the startSize is set here on the BOTH style (the only association direction that has a start arrow) instead of on the FlowKind.ASSOCIATION_FLOW style (which applies to all association directions). Fixed in maxGraph 0.24.0 by https://github.com/maxGraph/maxGraph/pull/1094, remove it when upgrading to maxGraph 0.24.0 or later. See the comment in specificFlowStyles for more details.
       style.startSize = arrowDefaultSize;
     },
   ],
