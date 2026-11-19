@@ -12,11 +12,11 @@ Disable the e2e jobs on CI (v1 trick `if: github.event_name == 'NOT_SUPPORTED'`)
 ## Context
 - `plan.md` Phase 8 + Final steps A/B/C, and Testing Strategy (lint) have the detail.
 - Key files: `.github/workflows/test-e2e.yml`, `StyleConfigurator`/`StyleDefault` (arcSize), `.eslintrc.cjs`.
-- Create `.claude/tasks/01-migrate-mxgraph-to-maxgraph-0.23.0/e2e-diff-inventory.md`.
+- Create `.claude/tasks/01-migrate-mxgraph-to-maxgraph-0.23.0/analyses/e2e-diff-inventory.md`.
 - Snapshots are NEVER silently updated; the inventory is for the user to review.
 
 ## Success Criteria
 - e2e disabled on CI with a documented reason.
 - arcSize reverted in its own commit, with before/after e2e impact noted.
-- `e2e-diff-inventory.md` lists every diff with a short characterization.
+- `../../analyses/e2e-diff-inventory.md` lists every diff with a short characterization.
 - `breaking-changes.md` finalized; `npm run lint` clean.

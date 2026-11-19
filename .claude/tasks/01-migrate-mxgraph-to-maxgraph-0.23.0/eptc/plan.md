@@ -11,7 +11,7 @@ Global rules (apply to every step):
 - Tag every new uncertainty `TODO maxgraph@0.23.0`.
 - JSDoc updates mentioning mxGraph are IN scope; user documentation is OUT of scope.
 - New public API elements get `@since 0.48.0`.
-- Record every public API break as it happens in `.claude/tasks/01-migrate-mxgraph-to-maxgraph-0.23.0/breaking-changes.md` (created in step 1); it feeds the final PR description and the `BREAKING CHANGE:` commit footer.
+- Record every public API break as it happens in `.claude/tasks/01-migrate-mxgraph-to-maxgraph-0.23.0/eptc/breaking-changes.md` (created in step 1); it feeds the final PR description and the `BREAKING CHANGE:` commit footer.
 
 Validated decisions driving the plan: BaseGraph (Q1); `BpmnCellStyle` extension type with TODO about maxGraph 0.24.0 interface augmentation (Q2); arcSize halving reverted only in the FINAL step (Q3); try native marker fill colors, delete `BpmnConnector` if it works (Q4); keep own FitType.Center computation + TODO to later switch to `FitPlugin.fitCenter` (Q5); `export { mxgraph }` removed without replacement, documented breaking (Q6); no `StyleDefaultsConfig`, keep per-graph stylesheet configuration (Q7); e2e disabled on CI, run locally on demand for diff inventories (Q8).
 
@@ -44,7 +44,7 @@ Phase order (a phase assumes the previous ones are done):
 #### `rollup.config.mjs`
 - No structural change expected (deps externalized via `rollup-plugin-node-externals`). Verify the `@rollup/plugin-commonjs` usage note still only concerns fast-xml-parser; keep the existing TODO if present.
 
-#### `.claude/tasks/01-migrate-mxgraph-to-maxgraph-0.23.0/breaking-changes.md`
+#### `.claude/tasks/01-migrate-mxgraph-to-maxgraph-0.23.0/eptc/breaking-changes.md`
 - Create with the 6 known break categories from explore.md section "Public API breakage surface" as a checklist to enrich during implementation.
 
 ### Phase 2 - Style types foundation and initializer removal
@@ -265,7 +265,7 @@ Phase order (a phase assumes the previous ones are done):
 - Run the e2e suite locally before and after this change to isolate its visual impact.
 
 #### Final step B - e2e snapshot inventory (definition of done)
-- Run `npm run test:e2e` locally; write `.claude/tasks/01-migrate-mxgraph-to-maxgraph-0.23.0/e2e-diff-inventory.md` listing every failing test/snapshot with a short characterization (e.g. edge rounding, marker rendering, font metrics) for user review. Do NOT update snapshots.
+- Run `npm run test:e2e` locally; write `.claude/tasks/01-migrate-mxgraph-to-maxgraph-0.23.0/analyses/e2e-diff-inventory.md` listing every failing test/snapshot with a short characterization (e.g. edge rounding, marker rendering, font metrics) for user review. Do NOT update snapshots.
 
 #### Final step C - breaking changes consolidation
 - Finalize `breaking-changes.md`; it feeds the squashed-commit `BREAKING CHANGE:` footer and the PR description (commit conventions: `!` marker + uppercase footer with bullets).

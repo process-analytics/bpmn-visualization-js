@@ -12,7 +12,7 @@ Replace the mxGraph dependencies with `@maxgraph/core` pinned to exact `0.23.0`,
 ## Context
 - `plan.md` Phase 1 has the file-by-file detail.
 - Key files: `package.json`, `vite.config.js:50` (`manualChunks`), `vite.config.js:57` (`chunkSizeWarningLimit`), `rollup.config.mjs`.
-- Create `.claude/tasks/01-migrate-mxgraph-to-maxgraph-0.23.0/breaking-changes.md` seeded with the 6 known break categories from `explore.md` "Public API breakage surface".
+- Create `.claude/tasks/01-migrate-mxgraph-to-maxgraph-0.23.0/eptc/breaking-changes.md` seeded with the 6 known break categories from `explore.md` "Public API breakage surface".
 - maxGraph chunk was ~330 KB in the v1 POC; set the real value at first successful build.
 
 ## Success Criteria
