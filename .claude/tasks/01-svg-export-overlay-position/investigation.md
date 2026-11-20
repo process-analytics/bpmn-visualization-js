@@ -2,6 +2,8 @@
 
 Branch: `fix/svg_export_overlay_position`, from `master` at `f90f6d354`.
 
+Investigation done with Claude Code (model: Claude Opus 5.5), reviewed by a maintainer.
+
 ## Symptom
 
 When exporting to SVG from the demo (`elements-identification.html`, "display overlays" checked), the 1st overlay is
