@@ -93,7 +93,7 @@ ${svgAsString}
 
     svgCanvas.scale(s);
 
-    const imgExport = new ImageExport();
+    const imgExport = new ImageExportWithIsolatedOverlays();
     imgExport.includeOverlays = true;
 
     imgExport.drawState(this.graph.getView().getState(this.graph.model.root), svgCanvas);
@@ -108,7 +108,7 @@ ${svgAsString}
   }
 }
 
-class ImageExport extends mxgraph.mxImageExport {
+class ImageExportWithIsolatedOverlays extends mxgraph.mxImageExport {
   // The mxGraph implementation does not isolate the canvas state when painting each overlay, unlike for shapes and labels.
   // Painting an overlay scales the canvas by the view scale, so this scale compounds from one overlay to the next one:
   // only the first overlay is correctly placed when the view scale is not 1.
