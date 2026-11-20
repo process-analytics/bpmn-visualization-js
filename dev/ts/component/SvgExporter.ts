@@ -89,7 +89,8 @@ ${svgAsString}
     svgCanvas.foOffset = crisp ? -0.5 : 0;
     svgCanvas.textOffset = crisp ? -0.5 : 0;
     svgCanvas.imageOffset = crisp ? -0.5 : 0;
-    svgCanvas.translate(Math.floor((border / scale - bounds.x) / viewScale), Math.floor((border / scale - bounds.y) / viewScale));
+    // The graph bounds are in screen units (scaled by the view scale), while the border is in exported units
+    svgCanvas.translate(Math.floor(border / scale - bounds.x / viewScale), Math.floor(border / scale - bounds.y / viewScale));
 
     svgCanvas.scale(s);
 

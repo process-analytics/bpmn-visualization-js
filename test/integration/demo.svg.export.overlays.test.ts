@@ -17,13 +17,18 @@ limitations under the License.
 // Tests the SVG export of the demo (dev/ts/component/SvgExporter.ts), not the code of the library.
 // The library has no SVG export: the demo provides one for its 'Download SVG' and 'Download PNG' buttons.
 
-import type { BpmnVisualization } from '@lib/bpmn-visualization';
+import type { BpmnVisualization, OverlayPosition } from '@lib/bpmn-visualization';
 
 import { SvgExporter } from '../../dev/ts/component/SvgExporter';
 
 import { initializeBpmnVisualizationWithContainerId } from './helpers/bpmn-visualization-initialization';
 
 import { readFileSync } from '@test/shared/file-helper';
+
+interface OverlayToAdd {
+  bpmnElementId: string;
+  position?: OverlayPosition;
+}
 
 interface ExportedOverlay {
   label: string;
@@ -49,24 +54,21 @@ const exportOverlays = (bpmnVisualization: BpmnVisualization, viewScale: number,
   });
 };
 
-// The SVG export translates the whole diagram by an amount depending on the view scale, so compare the overlay positions
-// relatively to the first overlay.
-const toPositionsRelativeToFirstOverlay = (overlays: ExportedOverlay[]): { label: string; dx: number; dy: number }[] =>
-  overlays.map(overlay => ({ label: overlay.label, dx: overlay.x - overlays[0].x, dy: overlay.y - overlays[0].y }));
+const onElements = (...bpmnElementIds: string[]): OverlayToAdd[] => bpmnElementIds.map(bpmnElementId => ({ bpmnElementId }));
 
 // Overlay bounds are rounded at the current view scale, so allow a 1 pixel difference.
 const positionTolerance = 1;
 const isWithinTolerance = (actual: number, expected: number): boolean => Math.abs(actual - expected) <= positionTolerance;
 
 const expectSameOverlaysAsWithoutZoom = (actualOverlays: ExportedOverlay[], overlaysWithoutZoom: ExportedOverlay[]): void => {
-  expect(actualOverlays.map(overlay => overlay.fontSize)).toEqual(overlaysWithoutZoom.map(overlay => overlay.fontSize));
-
-  const expectedPositions = toPositionsRelativeToFirstOverlay(overlaysWithoutZoom);
-  const actualPositionsWithinTolerance = toPositionsRelativeToFirstOverlay(actualOverlays).map((actualPosition, index) => {
-    const expectedPosition = expectedPositions[index];
-    return isWithinTolerance(actualPosition.dx, expectedPosition.dx) && isWithinTolerance(actualPosition.dy, expectedPosition.dy) ? expectedPosition : actualPosition;
+  // Replace the overlays within tolerance by the expected ones, so a failure only shows the misplaced overlays
+  const actualOverlaysWithinTolerance = actualOverlays.map((actualOverlay, index) => {
+    const expectedOverlay = overlaysWithoutZoom[index];
+    return isWithinTolerance(actualOverlay.x, expectedOverlay.x) && isWithinTolerance(actualOverlay.y, expectedOverlay.y)
+      ? { ...actualOverlay, x: expectedOverlay.x, y: expectedOverlay.y }
+      : actualOverlay;
   });
-  expect(actualPositionsWithinTolerance).toEqual(expectedPositions);
+  expect(actualOverlaysWithinTolerance).toEqual(overlaysWithoutZoom);
 };
 
 describe('SVG export of overlays', () => {
@@ -76,23 +78,25 @@ describe('SVG export of overlays', () => {
     bpmnVisualization.load(readFileSync('../fixtures/bpmn/bpmn-in-color/elements.colors.01.no.label.bpmn'));
   });
 
-  const addOverlays = (bpmnElementIds: string[]): string[] =>
-    bpmnElementIds.map(bpmnElementId => {
-      const label = `overlay-${bpmnElementId}`;
-      bpmnVisualization.bpmnElementsRegistry.addOverlays(bpmnElementId, { label, position: 'top-left' });
+  const addOverlays = (overlaysToAdd: OverlayToAdd[]): string[] =>
+    overlaysToAdd.map(({ bpmnElementId, position = 'top-left' }) => {
+      const label = `overlay-${bpmnElementId}-${position}`;
+      bpmnVisualization.bpmnElementsRegistry.addOverlays(bpmnElementId, { label, position });
       return label;
     });
 
   describe.each([0.5, 2])('view scale %s', (viewScale: number) => {
     it.each`
-      elementKinds                                    | bpmnElementIds
-      ${'tasks'}                                      | ${['Activity_008m408', 'Activity_1g8vjsd', 'Activity_1dixmdj']}
-      ${'expanded sub-process and its child element'} | ${['Activity_008m408', 'Activity_1gsd1n0', 'Activity_0uiaaqk']}
-      ${'call activities'}                            | ${['Activity_008m408', 'Activity_18r3wxy', 'Activity_1qaspqe']}
-      ${'pools'}                                      | ${['Participant_1jbxvu4', 'Participant_1rt5d4d', 'Participant_1s3ajy0']}
-      ${'lanes and their child element'}              | ${['Activity_008m408', 'Lane_1ehh86f', 'Lane_1vz1eqp', 'Activity_1dixmdj']}
-    `('overlays on $elementKinds are exported at the same place as without zoom', ({ bpmnElementIds }: { bpmnElementIds: string[] }) => {
-      const overlayLabels = addOverlays(bpmnElementIds);
+      elementKinds                                    | overlaysToAdd
+      ${'tasks'}                                      | ${onElements('Activity_008m408', 'Activity_1g8vjsd', 'Activity_1dixmdj')}
+      ${'expanded sub-process and its child element'} | ${onElements('Activity_008m408', 'Activity_1gsd1n0', 'Activity_0uiaaqk')}
+      ${'call activities'}                            | ${onElements('Activity_008m408', 'Activity_18r3wxy', 'Activity_1qaspqe')}
+      ${'pools'}                                      | ${onElements('Participant_1jbxvu4', 'Participant_1rt5d4d', 'Participant_1s3ajy0')}
+      ${'lanes and their child element'}              | ${onElements('Activity_008m408', 'Lane_1ehh86f', 'Lane_1vz1eqp', 'Activity_1dixmdj')}
+      ${'edges'}                                      | ${[{ bpmnElementId: 'Flow_00l9sfs', position: 'start' }, { bpmnElementId: 'Flow_1yr9txu', position: 'middle' }, { bpmnElementId: 'Flow_15rgpot', position: 'end' }]}
+      ${'a single element'}                           | ${[{ bpmnElementId: 'Activity_008m408', position: 'top-left' }, { bpmnElementId: 'Activity_008m408', position: 'bottom-right' }, { bpmnElementId: 'Activity_008m408', position: 'middle-left' }]}
+    `('overlays on $elementKinds are exported at the same place as without zoom', ({ overlaysToAdd }: { overlaysToAdd: OverlayToAdd[] }) => {
+      const overlayLabels = addOverlays(overlaysToAdd);
       const overlaysWithoutZoom = exportOverlays(bpmnVisualization, 1, overlayLabels);
 
       expectSameOverlaysAsWithoutZoom(exportOverlays(bpmnVisualization, viewScale, overlayLabels), overlaysWithoutZoom);
