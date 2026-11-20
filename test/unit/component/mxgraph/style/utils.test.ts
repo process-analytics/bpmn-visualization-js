@@ -108,13 +108,13 @@ describe('setCssClasses', () => {
   test('sets the extra CSS classes', () => {
     const style: BpmnCellStyle = {};
     setCssClasses(style, ['class-1', 'class-2']);
-    expect(style.bpmn?.extraCssClasses).toEqual(['class-1', 'class-2']);
+    expect(style.bpmn?.cssClasses).toEqual(['class-1', 'class-2']);
   });
 
   test('deletes the extra CSS classes when empty', () => {
-    const style: BpmnCellStyle = { bpmn: { extraCssClasses: ['class-1'] } };
+    const style: BpmnCellStyle = { bpmn: { cssClasses: ['class-1'] } };
     setCssClasses(style, []);
-    expect(style.bpmn?.extraCssClasses).toBeUndefined();
+    expect(style.bpmn?.cssClasses).toBeUndefined();
   });
 });
 

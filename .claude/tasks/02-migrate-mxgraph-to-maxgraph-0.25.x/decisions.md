@@ -78,6 +78,14 @@ Proof of coverage, in two parts:
   (0.16%) absorbs the difference on the single `Both` association of the fixtures. The change keeps the size of this
   marker unchanged, so this gap does not affect it, but a dedicated test would be needed to pin it.
 
+### D4. Rename `extraCssClasses` to `cssClasses`
+
+Public API change on `BpmnCellStyleExtension`, taken without compatibility alias: the type is introduced by the
+maxGraph migration (`@since 0.x.y`, experimental) and was never released, so no consumer depends on the old name.
+
+The test helpers carrying the same value (`ExpectedModelElement`, `ComparedBpmnCellStyle`) are renamed as well, to
+keep a single name for one concept.
+
 ## Open items
 
 ### O1. ECMAScript target of the generated code

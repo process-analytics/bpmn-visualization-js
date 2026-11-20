@@ -167,7 +167,7 @@ interface ExpectedModelElement {
   verticalAlign?: VerticalAlign;
   opacity?: number;
   // custom bpmn-visualization
-  extraCssClasses?: string[];
+  cssClasses?: string[];
 }
 
 export interface ExpectedFill {

@@ -52,7 +52,7 @@ export interface ComparedBpmnCellStyle {
   shape?: ShapeValue | string;
   horizontal?: boolean;
   // custom bpmn-visualization
-  extraCssClasses?: string[];
+  cssClasses?: string[];
   isInitiating?: boolean;
   markers?: string[];
 }
@@ -153,7 +153,7 @@ export function buildExpectedCellStyleWithCommonAttributes(expectedModelElt: Exp
     fontStyle: getFontStyleValue(font),
     fontOpacity: expectedModelElt.font?.opacity,
     // custom bpmn-visualization
-    extraCssClasses: expectedModelElt.extraCssClasses,
+    cssClasses: expectedModelElt.cssClasses,
   };
 }
 
@@ -199,7 +199,7 @@ function toBpmnStyle(rawStyle: BpmnCellStateStyle, isEdge: boolean): ComparedBpm
     fontStyle: rawStyle.fontStyle,
     fontOpacity: rawStyle.textOpacity,
     // custom bpmn-visualization
-    extraCssClasses: rawStyle.bpmn?.extraCssClasses,
+    cssClasses: rawStyle.bpmn?.cssClasses,
     // ignore marker order, which is only relevant when rendering the shape (it has its own order algorithm)
     markers: rawStyle.bpmn?.markers ? [...rawStyle.bpmn.markers].sort() : undefined,
     // for message flow icon

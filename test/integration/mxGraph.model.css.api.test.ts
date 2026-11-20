@@ -30,7 +30,7 @@ describe('mxGraph model - CSS API', () => {
   test('Add CSS classes on Shape', () => {
     bpmnElementsRegistry.addCssClasses('userTask_2_2', ['class#1', 'class#2']);
     expect('userTask_2_2').toBeUserTask({
-      extraCssClasses: ['class#1', 'class#2'],
+      cssClasses: ['class#1', 'class#2'],
       // not under test
       parentId: 'lane_02',
       label: 'User Task 2.2',
@@ -40,7 +40,7 @@ describe('mxGraph model - CSS API', () => {
   test('Add CSS classes on Edge', () => {
     bpmnElementsRegistry.addCssClasses('sequenceFlow_lane_3_elt_3', ['class-1', 'class-2', 'class-3']);
     expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
-      extraCssClasses: ['class-1', 'class-2', 'class-3'],
+      cssClasses: ['class-1', 'class-2', 'class-3'],
       // not under test
       parentId: 'lane_03',
       verticalAlign: 'bottom',
@@ -63,13 +63,13 @@ describe('mxGraph model - CSS API', () => {
       bpmnElementsRegistry.removeCssClasses(bpmnElementIds, ['class1', 'class3']);
 
       expect('userTask_2_2').toBeUserTask({
-        extraCssClasses: ['class1', 'class2'],
+        cssClasses: ['class1', 'class2'],
         // not under test
         parentId: 'lane_02',
         label: 'User Task 2.2',
       });
       expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
-        extraCssClasses: ['class1', 'class2'],
+        cssClasses: ['class1', 'class2'],
         // not under test
         parentId: 'lane_03',
         verticalAlign: 'bottom',
@@ -84,13 +84,13 @@ describe('mxGraph model - CSS API', () => {
       bpmnElementsRegistry.removeAllCssClasses(nullishResetParameter);
 
       expect('userTask_2_2').toBeUserTask({
-        extraCssClasses: undefined,
+        cssClasses: undefined,
         // not under test
         parentId: 'lane_02',
         label: 'User Task 2.2',
       });
       expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
-        extraCssClasses: undefined,
+        cssClasses: undefined,
         // not under test
         parentId: 'lane_03',
         verticalAlign: 'bottom',
@@ -104,13 +104,13 @@ describe('mxGraph model - CSS API', () => {
       bpmnElementsRegistry.removeAllCssClasses(emptyParameter);
 
       expect('userTask_2_2').toBeUserTask({
-        extraCssClasses: ['class#1', 'class#2'],
+        cssClasses: ['class#1', 'class#2'],
         // not under test
         parentId: 'lane_02',
         label: 'User Task 2.2',
       });
       expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
-        extraCssClasses: ['class#1', 'class#2'],
+        cssClasses: ['class#1', 'class#2'],
         // not under test
         parentId: 'lane_03',
         verticalAlign: 'bottom',

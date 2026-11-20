@@ -39,7 +39,7 @@ import type { CellStateStyle, CellStyle } from '@maxgraph/core';
  *
  * It replaces the custom `bpmn.*` string keys that were stored in mxGraph style strings: each former key is now a
  * typed property. Booleans replace the former `'true'`/`'false'` strings and arrays replace the former delimited
- * strings (`markers`, `extraCssClasses`).
+ * strings (`markers`, `cssClasses`).
  *
  * **WARN**: This is part of the BPMN Theme customization surface. The way the default BPMN theme can be modified is
  * subject to change.
@@ -51,8 +51,7 @@ import type { CellStateStyle, CellStyle } from '@maxgraph/core';
 export interface BpmnCellStyleExtension {
   associationDirectionKind?: AssociationDirectionKind;
   eventDefinitionKind?: ShapeBpmnEventDefinitionKind;
-  // TODO maxgraph@0.23.0 rename `extraCssClasses` to `cssClasses`
-  extraCssClasses?: string[];
+  cssClasses?: string[];
   gatewayKind?: ShapeBpmnEventBasedGatewayKind;
   globalTaskKind?: GlobalTaskKind;
   isInitiating?: boolean;

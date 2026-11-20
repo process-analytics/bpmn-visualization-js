@@ -180,9 +180,9 @@ export const isShapeStyleUpdate = (style: StyleUpdate): style is ShapeStyleUpdat
 export function setCssClasses(cellStyle: BpmnCellStyle, cssClasses: string[]): void {
   cellStyle.bpmn ??= {};
   if (cssClasses.length > 0) {
-    cellStyle.bpmn.extraCssClasses = cssClasses;
+    cellStyle.bpmn.cssClasses = cssClasses;
   } else {
-    delete cellStyle.bpmn.extraCssClasses;
+    delete cellStyle.bpmn.cssClasses;
   }
 }
 

@@ -155,9 +155,9 @@ function buildExpectedShapeStyle(
   if ('gatewayKind' in expectedModel) {
     bpmn.gatewayKind = expectedModel.gatewayKind;
   }
-  // Production deletes 'extraCssClasses' from the bpmn style when there are none, so only assert it when classes are expected.
-  if (expectedModel.extraCssClasses?.length > 0) {
-    bpmn.extraCssClasses = expectedModel.extraCssClasses;
+  // Production deletes 'cssClasses' from the bpmn style when there are none, so only assert it when classes are expected.
+  if (expectedModel.cssClasses?.length > 0) {
+    bpmn.cssClasses = expectedModel.cssClasses;
   }
   return style;
 }

@@ -50,7 +50,7 @@ const checkFlowNode = (bpmnElementId: string, expectedModel: ExpectedShapeModelE
   expect(buildReceivedResolvedModelCellStyle(getCell(bpmnElementId), bv)).toEqual(buildExpectedShapeCellStyle(expectedModel));
   expect(buildReceivedViewStateStyle(getCell(bpmnElementId), bv)).toEqual(buildExpectedShapeCellStyle(expectedModel));
   // check DOM
-  const checks = { label: expectedModel.label, additionalClasses: expectedModel.extraCssClasses };
+  const checks = { label: expectedModel.label, additionalClasses: expectedModel.cssClasses };
   const kind = expectedModel.kind;
   if (kind == ShapeBpmnElementKind.GATEWAY_EXCLUSIVE) {
     htmlElementLookup.expectExclusiveGateway(bpmnElementId, checks);
@@ -68,7 +68,7 @@ const checkSequenceFlow = (bpmnElementId: string, expectedModel: ExpectedEdgeMod
   expect(buildReceivedResolvedModelCellStyle(getCell(bpmnElementId), bv)).toEqual(buildExpectedEdgeCellStyle(expectedModel));
   expect(buildReceivedViewStateStyle(getCell(bpmnElementId), bv)).toEqual(buildExpectedEdgeCellStyle(expectedModel));
   // check DOM
-  htmlElementLookup.expectSequenceFlow(bpmnElementId, { label: expectedModel.label, additionalClasses: expectedModel.extraCssClasses });
+  htmlElementLookup.expectSequenceFlow(bpmnElementId, { label: expectedModel.label, additionalClasses: expectedModel.cssClasses });
 };
 
 describe('Verify interaction between the CSS and style APIs', () => {
@@ -90,7 +90,7 @@ describe('Verify interaction between the CSS and style APIs', () => {
       }
 
       checkFlowNode(bpmnElementId, {
-        extraCssClasses: ['class-1', 'class-2'],
+        cssClasses: ['class-1', 'class-2'],
         kind: ShapeBpmnElementKind.EVENT_END,
         label: 'message end 2',
         stroke: { color: strokeColor },
@@ -116,7 +116,7 @@ describe('Verify interaction between the CSS and style APIs', () => {
 
       // Check that the style has been reset to default values for each element
       checkFlowNode(bpmnElementId, {
-        extraCssClasses: ['class-1', 'class-2'],
+        cssClasses: ['class-1', 'class-2'],
         kind: ShapeBpmnElementKind.EVENT_END,
         label: 'message end 2',
         verticalAlign: 'top', // the element has a label
@@ -137,14 +137,14 @@ describe('Verify interaction between the CSS and style APIs', () => {
 
     // Check some elements
     checkFlowNode('gateway_01', {
-      extraCssClasses: ['class-1', 'class-2', 'class-11'],
+      cssClasses: ['class-1', 'class-2', 'class-11'],
       kind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
       label: 'gateway 1',
       verticalAlign: 'top', // the element has a label
       stroke: { color: 'pink' },
     } as ExpectedShapeModelElement);
     checkSequenceFlow('sequenceFlow_lane_1_elt_1', {
-      extraCssClasses: ['class-1', 'class-2'],
+      cssClasses: ['class-1', 'class-2'],
       stroke: { color: 'pink' },
     } as ExpectedEdgeModelElement);
 
@@ -153,13 +153,13 @@ describe('Verify interaction between the CSS and style APIs', () => {
 
     // Check that the style has been reset to default values for each element
     checkFlowNode('gateway_01', {
-      extraCssClasses: ['class-1', 'class-2', 'class-11'],
+      cssClasses: ['class-1', 'class-2', 'class-11'],
       kind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
       label: 'gateway 1',
       verticalAlign: 'top', // the element has a label
     } as ExpectedShapeModelElement);
     checkSequenceFlow('sequenceFlow_lane_1_elt_1', {
-      extraCssClasses: ['class-1', 'class-2'],
+      cssClasses: ['class-1', 'class-2'],
     } as ExpectedEdgeModelElement);
 
     // Reset the style of remaining elements with 'reset all'
@@ -168,12 +168,12 @@ describe('Verify interaction between the CSS and style APIs', () => {
 
     // Check that the style has been reset to default values for each element
     checkFlowNode('userTask_2_2', {
-      extraCssClasses: ['class-2'],
+      cssClasses: ['class-2'],
       kind: ShapeBpmnElementKind.TASK_USER,
       label: 'User Task 2.2',
     } as ExpectedShapeModelElement);
     checkFlowNode('endEvent_message_1', {
-      extraCssClasses: ['class-1', 'class-2', 'class-11'],
+      cssClasses: ['class-1', 'class-2', 'class-11'],
       kind: ShapeBpmnElementKind.EVENT_END,
       label: 'message end 2',
       verticalAlign: 'top', // the element has a label
@@ -181,12 +181,12 @@ describe('Verify interaction between the CSS and style APIs', () => {
 
     // Check elements whose style were not updated prior calling 'reset all'
     checkFlowNode('userTask_0', {
-      extraCssClasses: ['class-1', 'class-2', 'class-11'],
+      cssClasses: ['class-1', 'class-2', 'class-11'],
       kind: ShapeBpmnElementKind.TASK_USER,
       label: 'User Task 0',
     } as ExpectedShapeModelElement);
     checkSequenceFlow('sequenceFlow_lane_1_elt_6', {
-      extraCssClasses: ['class-1', 'class-2', 'class-11'],
+      cssClasses: ['class-1', 'class-2', 'class-11'],
     } as ExpectedEdgeModelElement);
   });
 });
