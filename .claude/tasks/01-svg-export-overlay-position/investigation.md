@@ -82,7 +82,7 @@ To consider for the mxGraph to maxGraph migration of bpmn-visualization, and as 
 
 ## Tests
 
-`test/integration/svg.export.overlays.test.ts` (jsdom) exports the same overlays at view scale 1 and at 0.5 and 2, and
+`test/integration/demo.svg.export.overlays.test.ts` (jsdom) exports the same overlays at view scale 1 and at 0.5 and 2, and
 compares font sizes and positions relative to the first overlay. Cases: tasks, expanded sub-process and its child,
 call activities, pools, lanes and their child. All 10 cases fail without the fix, pass with it: the second line of the
 former `FIXME` (sub-process and call activity) was the same bug.

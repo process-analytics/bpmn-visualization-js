@@ -14,6 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+// Tests the SVG export of the demo (dev/ts/component/SvgExporter.ts), not the code of the library.
+// The library has no SVG export: the demo provides one for its 'Download SVG' and 'Download PNG' buttons.
+
 import type { BpmnVisualization } from '@lib/bpmn-visualization';
 
 import { SvgExporter } from '../../dev/ts/component/SvgExporter';
