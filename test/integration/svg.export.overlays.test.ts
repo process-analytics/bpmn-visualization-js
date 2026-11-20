@@ -80,10 +80,19 @@ describe('SVG export of overlays', () => {
       return label;
     });
 
-  it.each([0.5, 2])('all overlays on tasks are exported at the same place as without zoom, view scale %s', (viewScale: number) => {
-    const overlayLabels = addOverlays(['Activity_008m408', 'Activity_1g8vjsd', 'Activity_1dixmdj']);
-    const overlaysWithoutZoom = exportOverlays(bpmnVisualization, 1, overlayLabels);
+  describe.each([0.5, 2])('view scale %s', (viewScale: number) => {
+    it.each`
+      elementKinds                                    | bpmnElementIds
+      ${'tasks'}                                      | ${['Activity_008m408', 'Activity_1g8vjsd', 'Activity_1dixmdj']}
+      ${'expanded sub-process and its child element'} | ${['Activity_008m408', 'Activity_1gsd1n0', 'Activity_0uiaaqk']}
+      ${'call activities'}                            | ${['Activity_008m408', 'Activity_18r3wxy', 'Activity_1qaspqe']}
+      ${'pools'}                                      | ${['Participant_1jbxvu4', 'Participant_1rt5d4d', 'Participant_1s3ajy0']}
+      ${'lanes and their child element'}              | ${['Activity_008m408', 'Lane_1ehh86f', 'Lane_1vz1eqp', 'Activity_1dixmdj']}
+    `('overlays on $elementKinds are exported at the same place as without zoom', ({ bpmnElementIds }: { bpmnElementIds: string[] }) => {
+      const overlayLabels = addOverlays(bpmnElementIds);
+      const overlaysWithoutZoom = exportOverlays(bpmnVisualization, 1, overlayLabels);
 
-    expectSameOverlaysAsWithoutZoom(exportOverlays(bpmnVisualization, viewScale, overlayLabels), overlaysWithoutZoom);
+      expectSameOverlaysAsWithoutZoom(exportOverlays(bpmnVisualization, viewScale, overlayLabels), overlaysWithoutZoom);
+    });
   });
 });

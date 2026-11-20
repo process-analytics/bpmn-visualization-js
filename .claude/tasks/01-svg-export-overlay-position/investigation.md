@@ -70,27 +70,25 @@ https://github.com/maxGraph/maxGraph/blob/b612af2f016e7b18051d6b28bf9363921e75c2
 
 To consider for the mxGraph to maxGraph migration of bpmn-visualization, and as an upstream fix in maxGraph.
 
-## Proposed fix (not implemented yet)
+## Fix
 
-In `SvgExporter`, use an `mxImageExport` subclass overriding `drawOverlays` to isolate each overlay paint:
+`SvgExporter` uses an `mxImageExport` subclass overriding `drawOverlays` to wrap each overlay paint in
+`canvas.save()` / `canvas.restore()`. The `FIXME` on overlay positions is removed.
 
-```ts
-override drawOverlays(state: mxCellState, canvas: mxAbstractCanvas2D): void {
-  state.overlays?.visit((_id: string, shape: mxShape) => {
-    if (shape instanceof mxShape) {
-      canvas.save();
-      shape.paint(canvas);
-      canvas.restore();
-    }
-  });
-}
-```
+## Tests
 
-Then remove the `FIXME` on overlay positions.
+`test/integration/svg.export.overlays.test.ts` (jsdom) exports the same overlays at view scale 1 and at 0.5 and 2, and
+compares font sizes and positions relative to the first overlay. Cases: tasks, expanded sub-process and its child,
+call activities, pools, lanes and their child. All 10 cases fail without the fix, pass with it: the second line of the
+former `FIXME` (sub-process and call activity) was the same bug.
 
-## Open points
+## Out of scope: export translation depends on the view scale
 
-- The 2nd line of the `FIXME` ("overlays put on element of subprocess/call-activity are not placed correctly") is
-  probably the same bug (any overlay drawn after the 1st one in traversal order), not verified yet.
-- `dev/` code has no test. Options: a jsdom integration test exporting a diagram with 3 overlays at a zoom different
-  from 1 and asserting badge font sizes or positions, or a manual check in the demo.
+The exporter translates the canvas by `floor((border - bounds.x) / viewScale)` while the drawing ends at scale 1, so
+the border is divided by the view scale: at zoom 2, the whole diagram is shifted by about 12px to the top-left (the
+left margin is 12.5px instead of 25px, the right one grows accordingly). Seen in the jsdom probe; the test compares
+positions relatively to the first overlay to stay independent of it. Not fixed here.
+
+## maxGraph issue
+
+Draft in `ISSUE_MAXGRAPH.md` at the repository root (scratch file, not committed).
