@@ -199,7 +199,14 @@ Progress (analysis in progress, nothing decided):
 - master already uses the same versions of `fast-xml-parser` and `es-toolkit`, so the README claim "they must at least
   support ES2015" is probably already false before the migration.
 
-Next steps:
-1. measure the bundles of the POC (`dist/bpmn-visualization.js` IIFE, which includes the dependencies, and the ESM one);
-2. build the bundles of master and measure them too, to confirm that master already requires ES2020;
-3. then decide on the target of bpmn-visualization and the README.
+Conclusion (measured with `es-check` 9.9.0 on the bundles built by `npm run build-bundles`):
+
+| Bundle | master `f90f6d3543330139d59a8e3e002aeaa0dfa28236` | POC |
+|---|---|---|
+| IIFE `bpmn-visualization.js` | ES2020 (`signal?.aborted`, es-toolkit `debounce`) | ES2020 (`navigator.appName?.`, maxGraph `Client`) |
+| IIFE `bpmn-visualization.min.js` | ES2020 | ES2020 |
+| ESM `bpmn-visualization.esm.js` | ES2015 (dependencies not bundled) | ES2015 (dependencies not bundled) |
+
+Master already requires ES2020, because of es-toolkit and fast-xml-parser (with its `path-expression-matcher`
+dependency). The maxGraph migration does not change the requirement. Switching the target to ES2020 is independent of
+the migration, so it is proposed as a separate task in the 0.49.0 milestone, not done in this POC.
