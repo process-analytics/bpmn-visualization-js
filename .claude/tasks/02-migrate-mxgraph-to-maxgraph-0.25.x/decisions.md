@@ -118,6 +118,13 @@ Options for later, not decided here:
 Note on the first option: augmenting `@maxgraph/core` from a library also changes the maxGraph types of a consumer using
 maxGraph directly, which is worth discussing before shipping it.
 
+Next step, whatever the option (requested during the review of the POC): add a test in `test/typescript-support`, in a
+dedicated file, that reads and writes the `bv` properties on the maxGraph `CellStyle` / `CellStateStyle` types, as
+maxGraph does in its `ts-support` package (`module-augmentation.ts`). It checks the published types, so it fails as
+long as the augmentation is not shipped in `dist/bpmn-visualization.d.ts`, and it guards it once it is. Like the
+maxGraph test, it should also reject an undeclared property with `@ts-expect-error`, otherwise it would pass if the
+style types accepted any property.
+
 ### D7. Rename `BpmnStyleIdentifier` to `BpmnShapeIdentifier`
 
 Unlike D4 and D5, this object is part of the released public API. It is renamed without compatibility alias anyway:
