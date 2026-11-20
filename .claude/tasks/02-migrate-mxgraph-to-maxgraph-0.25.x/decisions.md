@@ -50,3 +50,24 @@ The bump needs no code change. All the checks pass on chromium (e2e: 261 tests, 
 
 `npm run test:perf` rewrites `test/performance/data/linux/data.js` with the measurements of the run. It is reverted
 after each run: the measurements of a local POC run are not reference data.
+
+### D2. Remove the `endFill` workaround of the message flow end marker
+
+maxGraph fixed the default of `endFill` in 0.2.0 (https://github.com/maxGraph/maxGraph/pull/157), so forcing
+`endFill = true` is no longer needed.
+
+Proof of coverage: with `endFill = false`, the theme test with the yellow background (`bpmn.theme.test.ts`,
+`container-background`) still passes, since its chromium threshold (0.98%) absorbs the difference. The full e2e suite
+fails on 2 other tests, which is the proof:
+- `add.overlay.on.message.flow`: 0.1857% different, threshold 0.18%;
+- `fill.color.gradient`: 0.1142% different, threshold 0.11%.
+
+Without the line, every check passes (e2e: 261 tests, 257 snapshots).
+
+## Open items
+
+### O1. ECMAScript target of the generated code
+
+maxGraph ships ES2020 code, bpmn-visualization targets ES2015. If a dependency ships ES2020 syntax, an environment
+supporting only ES2015 fails anyway, so targeting ES2015 gives no compatibility gain. To analyse: the target of every
+runtime dependency (maxGraph and the others), then whether bpmn-visualization should target ES2020 to be consistent.
