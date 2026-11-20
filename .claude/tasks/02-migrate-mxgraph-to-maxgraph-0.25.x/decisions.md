@@ -64,6 +64,20 @@ fails on 2 other tests, which is the proof:
 
 Without the line, every check passes (e2e: 261 tests, 257 snapshots).
 
+### D3. Remove the association `startSize` workaround
+
+maxGraph 0.24.0 stopped growing the bounding box of edges whose start arrow is unset
+(https://github.com/maxGraph/maxGraph/commit/b4ebeb4fb0b3a0550b7ce51037f68caee905e420, PR #1094, included in 0.25.1). `startSize` is set back on the
+`ASSOCIATION_FLOW` style, as in the mxGraph implementation, instead of only on the `BOTH` direction.
+
+Proof of coverage, in two parts:
+- the risk of the change is the bounding box bug: with maxGraph 0.23.0 it shifted the fit scale by about 0.18% and
+  broke the e2e snapshots, as recorded by the 0.23.0 POC in the removed TODO. With 0.25.1 every check passes;
+- **finding**: no e2e test pins the `startSize` of `Both` associations. Removing it entirely (start marker of 6
+  instead of 12) keeps the whole e2e suite passing, because the chromium default threshold of `bpmn.rendering.test.ts`
+  (0.16%) absorbs the difference on the single `Both` association of the fixtures. The change keeps the size of this
+  marker unchanged, so this gap does not affect it, but a dedicated test would be needed to pin it.
+
 ## Open items
 
 ### O1. ECMAScript target of the generated code

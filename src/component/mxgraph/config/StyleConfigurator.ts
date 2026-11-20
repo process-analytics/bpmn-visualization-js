@@ -60,15 +60,7 @@ const specificFlowStyles = new MapWithDefault<FlowKind>([
       style.dashed = true;
       style.dashPattern = '1 2';
       // endArrow and startArrow are defined in specific AssociationDirectionKind styles when needed.
-      // TODO maxgraph@0.23.0 workaround: startSize is set on the AssociationDirectionKind.BOTH style (the only
-      // association direction that has a start arrow) instead of here on every association.
-      // maxGraph ConnectorShape.augmentBoundingBox checks `style.startArrow !== NONE`, which is true for an unset
-      // (undefined) startArrow, so it wrongly grows the bounding box of arrowless associations by a start-marker margin
-      // sized by startSize. That enlarges getGraphBounds and shifts the on-load fit scale (~0.18%), which breaks the e2e
-      // visual snapshots. mxGraph used getValue(style, STARTARROW, NONE), defaulting the absent key to NONE and skipping
-      // the branch. Fixed in maxGraph 0.24.0 by https://github.com/maxGraph/maxGraph/pull/1094: when upgrading to
-      // maxGraph 0.24.0 or later, restore the line below and drop the startSize in the BOTH style.
-      // style.startSize = arrowDefaultSize;
+      style.startSize = arrowDefaultSize;
     },
   ],
 ]);
@@ -109,8 +101,6 @@ const specificAssociationFlowStyles = new MapWithDefault<AssociationDirectionKin
     (style: CellStyle) => {
       style.startArrow = 'openThin';
       style.endArrow = 'openThin';
-      // TODO maxgraph@0.23.0 workaround: the startSize is set here on the BOTH style (the only association direction that has a start arrow) instead of on the FlowKind.ASSOCIATION_FLOW style (which applies to all association directions). Fixed in maxGraph 0.24.0 by https://github.com/maxGraph/maxGraph/pull/1094, remove it when upgrading to maxGraph 0.24.0 or later. See the comment in specificFlowStyles for more details.
-      style.startSize = arrowDefaultSize;
     },
   ],
 ]);
