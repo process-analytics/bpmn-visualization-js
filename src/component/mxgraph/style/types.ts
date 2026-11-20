@@ -67,6 +67,10 @@ export interface BpmnCellStyleExtension {
 // the augmentation is visible to libraries consuming bpmn-visualization, otherwise it's useless.
 // Verify it in test/typescript-support, in a dedicated file, as maxGraph does in its ts-support package, see
 // https://github.com/maxGraph/maxGraph/blob/b612af2f016e7b18051d6b28bf9363921e75c2b2/packages/ts-support/src/module-augmentation.ts
+// Checked with maxGraph 0.25.1: `declare module '@maxgraph/core' { interface CellStateStyle extends BpmnCellStyleExtension {} }`
+// compiles and tsc emits it in build/types, but API Extractor (generate-types:dist) drops it from
+// dist/bpmn-visualization.d.ts, so consumers would not see it. Applying it requires shipping the augmentation in the
+// public types first (for instance by appending it to the generated declarations).
 
 /**
  * A maxGraph {@link CellStyle} enriched with the BPMN specific properties of {@link BpmnCellStyleExtension}.

@@ -102,6 +102,22 @@ Choices:
 - The integration matchers no longer wrap the BPMN properties in `expect.objectContaining`: their caller already wraps
   the whole style in it, so extra properties of the cell are still accepted.
 
+### D6. Module augmentation of `CellStyle`: not applied, TODO kept
+
+The TODO sets its own criterion: the augmentation is useful only if the libraries consuming bpmn-visualization see it.
+
+Experiment with maxGraph 0.25.1: `declare module '@maxgraph/core' { interface CellStateStyle extends
+BpmnCellStyleExtension {} }` in `types.ts` compiles, and `tsc` emits it in `build/types`. But API Extractor
+(`generate-types:dist`) drops it from `dist/bpmn-visualization.d.ts`, the only declaration file of the package, so a
+consumer never sees it. The criterion is not met, so the change is reverted and the TODO now records the finding.
+
+Options for later, not decided here:
+- append the augmentation to the generated declarations (post-processing step, like the existing license header one);
+- or apply it for the internal code only, accepting that the public types keep `BpmnCellStyle` / `BpmnCellStateStyle`.
+
+Note on the first option: augmenting `@maxgraph/core` from a library also changes the maxGraph types of a consumer using
+maxGraph directly, which is worth discussing before shipping it.
+
 ## Open items
 
 ### O1. ECMAScript target of the generated code
