@@ -94,7 +94,7 @@ desktop browsers are known working with `bpmn-visualization@0.47.0`:
   - Chromium 141.0.7390.70
   - Opera 122.0.5643.92
 - Support Chromium Edge but not Legacy Edge
-- The library may work with the other browsers. They must at least support ES2015.
+- The library may work with the other browsers. They must at least support ES2020.
 
 
 ## ♻️ Usage
