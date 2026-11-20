@@ -255,3 +255,9 @@ Conclusion (measured with `es-check` 9.9.0 on the bundles built by `npm run buil
 Master already requires ES2020, because of es-toolkit and fast-xml-parser (with its `path-expression-matcher`
 dependency). The maxGraph migration does not change the requirement. Switching the target to ES2020 is independent of
 the migration, so it is proposed as a separate task in the 0.49.0 milestone, not done in this POC.
+
+Follow-up: the switch to ES2020 is handled on master by issue #3608 and PR #3609 (open, about to be merged). The POC
+does not change the target itself: it gets the change when it is rebased on master.
+
+Do not rebase the POC on master before comparing its bundle sizes with the previous POC (maxGraph 0.23.0): ES2020 also
+reduces the size (no down-leveling of `?.`, `??`, ...), and the comparison would no longer isolate the maxGraph effect.
