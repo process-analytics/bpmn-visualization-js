@@ -175,6 +175,8 @@ class ZoomSupport implements Disposable {
 
     if (type == FitType.Center) {
       // TODO maxgraph@0.23.0 consider switching to FitPlugin.fitCenter (it changes the rendering, so keep our own computation for now)
+      // Checked with maxGraph 0.25.1: fitCenter applies the margin on both sides, rounds the translation down and the scale
+      // to 2 digits, so 29 of the 135 e2e fit tests fail on chromium (2.2% to 18.7% different from the snapshots).
       // Inspired from https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxGraph-js.html#mxGraph.fit
       const maxScale = 3;
 

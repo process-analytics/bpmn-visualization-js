@@ -144,6 +144,14 @@ Choices:
   "Task 1" is. The rendering on master was not compared: with `NaN` coordinates the label was probably not visible, so
   the label may be a visible difference on such a malformed diagram. No e2e test covers this fixture.
 
+### D9. `FitPlugin.fitCenter`: not applied, TODO kept
+
+Experiment with maxGraph 0.25.1: replacing the own computation of `FitType.Center` by `FitPlugin.fitCenter({ margin })`
+makes 29 of the 135 tests of `diagram.navigation.fit.test.ts` fail on chromium, from 2.2% to 18.7% different from the
+snapshots. `fitCenter` applies the margin on both sides (`2 * margin`), rounds the translation down and the scale to 2
+digits, where the own computation does not. It is a rendering change, forbidden by the rules, so the change is reverted
+and the TODO records the measurement.
+
 ## Open items
 
 ### O1. ECMAScript target of the generated code
