@@ -156,10 +156,24 @@ Comparison with master (requested during the review of the POC), on the fixture
   the top left corner of the container (10, 10), in a 2px wide box: a "1" of "Task 1" is visible there. The other
   elements are rendered exactly as on master.
 
-So the fix restores the load of the rest of the diagram, but not the rendering of the malformed shape: the POC shows a
-label artifact that master does not. No e2e test covers this fixture. Possible fix, not applied yet: keep inserting
-the cell (the model keeps the element, as on master) but make it invisible when its bounds hold `NaN`, so nothing is
-rendered for it, as on master.
+So the fix restored the load of the rest of the diagram, but not the rendering of the malformed shape: the POC showed a
+label artifact that master does not. No e2e test covers this fixture.
+
+Follow-up fix: when the bounds of a shape hold `NaN`, the renderer sets `noLabel: true` on its style. Compared with
+master on the same page: same DOM (no node for `Activity_1`, same nodes for the other elements), and the screenshots of
+both pages are identical (0 differing pixels with ImageMagick `compare -metric AE`). The integration test checks the
+`noLabel` style of the malformed shape, and its absence on the other ones.
+
+Rejected on the way:
+- hiding the cell (`cell.setVisible(false)`): nothing is rendered for the shape, but the 2 sequence flows connected to
+  it disappear, while master renders them. maxGraph `GraphView.updateEdgeState` removes an edge connected to a terminal
+  that has no visible state;
+- hiding the cell and giving the connected edges terminal points from their waypoints: no effect, the same condition
+  of `updateEdgeState` applies whatever the terminal points, as long as the edge stays connected to the hidden cell.
+  Disconnecting the edge would change the model compared with master.
+
+Remaining difference, not covered by the fixture: a shape with a `NaN` coordinate but a positive size is drawn at the
+coordinate 0, where mxGraph drew nothing.
 
 ### D9. `FitPlugin.fitCenter`: not applied, TODO kept
 

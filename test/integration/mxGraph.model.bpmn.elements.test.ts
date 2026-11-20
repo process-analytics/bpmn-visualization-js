@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import type { ExpectedShapeModelElement } from './helpers/model-expect';
+import type { BpmnCellStyle } from '@lib/component/mxgraph/style/types';
 
 import { Geometry, Point } from '@maxgraph/core';
 
@@ -27,6 +28,7 @@ import {
   expectTotalShapesInModel,
   getDefaultParentId,
 } from './helpers/model-expect';
+import { getCell } from './matchers/matcher-utils';
 
 import {
   MarkerIdentifier,
@@ -1718,8 +1720,9 @@ describe('mxGraph model - BPMN elements', () => {
     it('Parse a diagram with numbers not parsable as number', () => {
       // The non-numeric coordinates ('not_a_number' / 'not a number too') are parsed to NaN by BpmnXmlParser
       // (Number(value)); this is the intended parser behavior (see the BpmnXmlParser special-cases unit test).
-      // maxGraph rejects NaN in its geometry objects, so the renderer converts it to 0: only this shape is degraded and
-      // the rest of the diagram is loaded, as with mxGraph (which stored NaN in the geometry).
+      // maxGraph rejects NaN in its geometry objects, so the renderer converts it to 0 and removes the label of the shape:
+      // as with mxGraph (which stored NaN in the geometry), the shape stays in the model, nothing is rendered for it here
+      // (its size is negative), and the rest of the diagram is loaded.
       bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/simple-start-task-end_numbers_not_parsable_as_number.bpmn'));
 
       expect('Activity_1').toBeCellWithParentAndGeometry({
@@ -1731,7 +1734,9 @@ describe('mxGraph model - BPMN elements', () => {
           -80,
         ),
       });
+      expect((getCell('Activity_1').style as BpmnCellStyle).noLabel).toBeTruthy();
       expect('StartEvent_1').toBeCell();
+      expect((getCell('StartEvent_1').style as BpmnCellStyle).noLabel).toBeUndefined();
       expect('EndEvent_1').toBeCell();
     });
   });

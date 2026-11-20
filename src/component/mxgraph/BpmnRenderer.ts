@@ -146,6 +146,12 @@ export class BpmnRenderer {
   }
 
   private insertVertex(parent: Cell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: BpmnCellStyle): Cell {
+    if (hasNaNValue(bounds)) {
+      // mxGraph rendered nothing for a shape with a coordinate that is not a number. The NaN values are converted to 0
+      // below, which leaves the label displayed at the origin, so remove it. The cell stays visible: maxGraph does not
+      // render the edges connected to a hidden cell, while mxGraph rendered them.
+      style = { ...style, noLabel: true };
+    }
     const vertexCoordinates = this.coordinatesTranslator.computeRelativeCoordinates(parent, newPoint(bounds.x, bounds.y));
     const cell = this.graph.insertVertex({
       parent,
@@ -198,4 +204,8 @@ export function messageFlowIconId(messageFlowId: string): string {
 // diagram load, as maxGraph rejects NaN in Point (mxGraph stored it and kept rendering the rest of the diagram).
 function newPoint(x: number, y: number): Point {
   return new Point(convertNaNToZero(x), convertNaNToZero(y));
+}
+
+function hasNaNValue(bounds: Bounds): boolean {
+  return [bounds.x, bounds.y, bounds.width, bounds.height].some(value => Number.isNaN(value));
 }
