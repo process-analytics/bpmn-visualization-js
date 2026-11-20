@@ -21,7 +21,7 @@ import type { BpmnCellStyle } from '@lib/component/mxgraph/style/types';
 import { getDefaultParentId } from '../../helpers/model-expect';
 import { buildCellMatcher, buildExpectedCellStyleWithCommonAttributes, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
 
-import { BpmnStyleIdentifier } from '@lib/component/mxgraph/style';
+import { BpmnShapeIdentifier } from '@lib/component/mxgraph/style';
 import { AssociationDirectionKind, FlowKind, MessageVisibleKind, SequenceFlowKind } from '@lib/model/bpmn/internal';
 
 import MatcherContext = jest.MatcherContext;
@@ -42,7 +42,7 @@ function buildExpectedMessageFlowIconCellStyle(expectedModel: ExpectedEdgeModelE
   const style = buildExpectedCellStyleWithCommonAttributes(expectedModel);
   style.align = 'center';
   style.verticalAlign = 'middle';
-  style.shape = BpmnStyleIdentifier.MESSAGE_FLOW_ICON;
+  style.shape = BpmnShapeIdentifier.MESSAGE_FLOW_ICON;
   style.isInitiating = expectedModel.messageVisibleKind == MessageVisibleKind.INITIATING;
   return style;
 }
@@ -87,7 +87,7 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement |
         id: `messageFlowIcon_of_${id}`,
         value: null,
         styleRawFromModelOrJestExpect: expect.objectContaining({
-          shape: BpmnStyleIdentifier.MESSAGE_FLOW_ICON,
+          shape: BpmnShapeIdentifier.MESSAGE_FLOW_ICON,
           bvIsInitiating: expectedModel.messageVisibleKind == MessageVisibleKind.INITIATING,
         } as BpmnCellStyle),
         styleResolvedFromModel: buildExpectedMessageFlowIconCellStyle(expectedModel),

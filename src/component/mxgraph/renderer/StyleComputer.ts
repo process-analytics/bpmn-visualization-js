@@ -36,7 +36,7 @@ import {
   ShapeBpmnSubProcess,
 } from '../../../model/bpmn/internal/shape/ShapeBpmnElement';
 import { bpmnInColorStyleExtension } from '../../extension/bpmn-in-color/style-extension';
-import { BpmnStyleIdentifier } from '../style';
+import { BpmnShapeIdentifier } from '../style';
 
 /**
  * @internal
@@ -107,7 +107,7 @@ export default class StyleComputer {
 
   computeMessageFlowIconStyle(edge: Edge): BpmnCellStyle {
     const style: BpmnCellStyle = {
-      shape: BpmnStyleIdentifier.MESSAGE_FLOW_ICON,
+      shape: BpmnShapeIdentifier.MESSAGE_FLOW_ICON,
       bvIsInitiating: edge.messageVisibleKind === MessageVisibleKind.INITIATING,
     };
 

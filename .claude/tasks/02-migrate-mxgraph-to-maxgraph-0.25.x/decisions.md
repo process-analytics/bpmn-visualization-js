@@ -118,6 +118,15 @@ Options for later, not decided here:
 Note on the first option: augmenting `@maxgraph/core` from a library also changes the maxGraph types of a consumer using
 maxGraph directly, which is worth discussing before shipping it.
 
+### D7. Rename `BpmnStyleIdentifier` to `BpmnShapeIdentifier`
+
+Unlike D4 and D5, this object is part of the released public API. It is renamed without compatibility alias anyway:
+- the migration already broke its content: on master it lists the keys of the mxGraph style strings, and only the
+  shape name `MESSAGE_FLOW_ICON` remains, so a consumer of the former keys has to migrate whatever the name;
+- it is `@experimental`.
+
+The JSDoc mentions the former name, so a consumer searching for it finds the new one.
+
 ## Open items
 
 ### O1. ECMAScript target of the generated code

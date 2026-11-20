@@ -18,17 +18,16 @@ limitations under the License.
  * Define BPMN specific shape names registered in the maxGraph `ShapeRegistry`. Use the constants defined in this object
  * instead of hard coded string values.
  *
- * With maxGraph, the former BPMN data keys (event definition kind, markers, css classes, ...) are no longer stored as
- * style string entries: they are typed properties of the maxGraph `CellStyle`, prefixed with `bv` (see
- * {@link BpmnCellStyleExtension}). Only the names still used as registered shape identifiers remain here.
+ * It replaces `BpmnStyleIdentifier`, which also listed the BPMN data keys of the mxGraph style strings (event
+ * definition kind, markers, css classes, ...). With maxGraph, these keys are typed properties of the `CellStyle`,
+ * prefixed with `bv` (see {@link BpmnCellStyleExtension}), so only the shape names remain here.
  *
  * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
  *
  * @category BPMN Theme
  * @experimental
  */
-// TODO maxGraph@0.1.0 - real migration - may be renamed into BpmnShapeIdentifier after the maxGraph migration
-export const BpmnStyleIdentifier = {
+export const BpmnShapeIdentifier = {
   MESSAGE_FLOW_ICON: 'bpmn.messageFlowIcon',
 };
 
