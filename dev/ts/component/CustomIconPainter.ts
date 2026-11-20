@@ -30,9 +30,9 @@ export class CustomIconPainter extends IconPainter {
 
     canvas.begin();
     canvas.moveTo(12, 13);
-    canvas.arcTo(1, 1, 0, 0, 1, 11, 14);
+    canvas.arcTo(1, 1, 0, false, true, 11, 14);
     canvas.lineTo(1, 14);
-    canvas.arcTo(1, 1, 0, 0, 1, 0, 13);
+    canvas.arcTo(1, 1, 0, false, true, 0, 13);
     canvas.lineTo(0, 12);
     canvas.curveTo(0, 9.37, 4, 8, 4, 8);
     canvas.curveTo(4, 8, 4.23, 8, 4, 8);

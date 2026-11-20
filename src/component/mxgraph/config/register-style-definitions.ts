@@ -14,10 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { mxAbstractCanvas2D, mxCell, mxPoint, mxShape } from 'mxgraph';
+import type { MarkerFactoryFunction, PerimeterFunction, PerimeterValue, ShapeConstructor, StyleArrowValue } from '@maxgraph/core';
+
+import { EdgeMarker, EdgeMarkerRegistry, Perimeter, PerimeterRegistry, ShapeRegistry, SwimlaneShape } from '@maxgraph/core';
 
 import { ShapeBpmnElementKind } from '../../../model/bpmn/internal';
-import { mxCellRenderer, mxMarker } from '../initializer';
 import {
   BusinessRuleTaskShape,
   CallActivityShape,
@@ -30,7 +31,6 @@ import {
   TaskShape,
   UserTaskShape,
 } from '../shape/activity-shapes';
-import { BpmnConnector } from '../shape/edges';
 import { EndEventShape, EventShape, IntermediateEventShape, ThrowIntermediateEventShape } from '../shape/event-shapes';
 import { MessageFlowIconShape } from '../shape/flow-shapes';
 import { ComplexGatewayShape, EventBasedGatewayShape, ExclusiveGatewayShape, InclusiveGatewayShape, ParallelGatewayShape } from '../shape/gateway-shapes';
@@ -38,9 +38,7 @@ import { TextAnnotationShape } from '../shape/text-annotation-shapes';
 import { BpmnStyleIdentifier, MarkerIdentifier } from '../style';
 
 export const registerShapes = (): void => {
-  // Inspired by the default shapes registration done in maxGraph
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- required by the signature of registerShape
-  const shapesToRegister: [string, new (...arguments_: any) => mxShape][] = [
+  const shapesToRegister: [string, ShapeConstructor][] = [
     // events
     [ShapeBpmnElementKind.EVENT_END, EndEventShape],
     [ShapeBpmnElementKind.EVENT_START, EventShape],
@@ -68,28 +66,19 @@ export const registerShapes = (): void => {
     // artifacts
     [ShapeBpmnElementKind.TEXT_ANNOTATION, TextAnnotationShape],
     // shapes for flows
-    [BpmnStyleIdentifier.EDGE, BpmnConnector],
     [BpmnStyleIdentifier.MESSAGE_FLOW_ICON, MessageFlowIconShape],
+    // maxGraph built-in shape: BaseGraph registers nothing, so the swimlane shape (pools and lanes) must be registered explicitly
+    ['swimlane', SwimlaneShape],
   ];
   for (const [shapeName, shapeClass] of shapesToRegister) {
-    mxCellRenderer.registerShape(shapeName, shapeClass);
+    ShapeRegistry.add(shapeName, shapeClass);
   }
 };
+
 // This implementation is adapted from the draw.io BPMN 'dash' marker
 // https://github.com/jgraph/drawio/blob/f539f1ff362e76127dcc7e68b5a9d83dd7d4965c/src/main/webapp/js/mxgraph/Shapes.js#L2796
 // prefix parameter name - common practice to acknowledge the fact that some parameter is unused (e.g. in TypeScript compiler)
-const dashMarkerFactory = (
-  c: mxAbstractCanvas2D,
-  _shape: mxShape,
-  _type: string,
-  pe: mxPoint,
-  unitX: number,
-  unitY: number,
-  size: number,
-  _source: mxCell,
-  strokewidth: number,
-  // eslint-disable-next-line unicorn/consistent-function-scoping -- Code from mxGraph example
-): (() => void) => {
+const dashMarkerFactory: MarkerFactoryFunction = (c, _shape, _type, pe, unitX, unitY, size, _source, strokewidth) => {
   const nx = unitX * (size + strokewidth + 4);
   const ny = unitY * (size + strokewidth + 4);
 
@@ -102,5 +91,32 @@ const dashMarkerFactory = (
 };
 
 export const registerEdgeMarkers = (): void => {
-  mxMarker.addMarker(MarkerIdentifier.ARROW_DASH, dashMarkerFactory);
+  const markersToRegister: [StyleArrowValue, MarkerFactoryFunction][] = [
+    // maxGraph built-in markers used in bpmn-visualization: BaseGraph registers nothing, so only the markers referenced
+    // by the BPMN edge styles are registered explicitly (instead of registerDefaultEdgeMarkers()) to reduce the bundle size.
+    // See https://github.com/maxGraph/maxGraph/blob/0a18ab1479f0235087c7763dafc098f12cd5f0c9/packages/core/src/view/style/register.ts#L139
+    ['blockThin', EdgeMarker.createArrow(3)],
+    ['openThin', EdgeMarker.createOpenArrow(3)],
+    ['oval', EdgeMarker.oval],
+    ['diamondThin', EdgeMarker.diamond],
+    // BPMN specific marker used for associations
+    [MarkerIdentifier.ARROW_DASH, dashMarkerFactory],
+  ];
+  for (const [type, factory] of markersToRegister) {
+    EdgeMarkerRegistry.add(type, factory);
+  }
+};
+
+export const registerPerimeters = (): void => {
+  // maxGraph built-in perimeters used in bpmn-visualization: BaseGraph registers nothing, so only the perimeters
+  // referenced by the BPMN vertex styles are registered explicitly (instead of registerDefaultPerimeters()) to reduce the bundle size.
+  // See https://github.com/maxGraph/maxGraph/blob/0a18ab1479f0235087c7763dafc098f12cd5f0c9/packages/core/src/view/style/register.ts#L74
+  const perimetersToRegister: [PerimeterValue, PerimeterFunction][] = [
+    ['ellipsePerimeter', Perimeter.EllipsePerimeter],
+    ['rectanglePerimeter', Perimeter.RectanglePerimeter],
+    ['rhombusPerimeter', Perimeter.RhombusPerimeter],
+  ];
+  for (const [name, perimeter] of perimetersToRegister) {
+    PerimeterRegistry.add(name, perimeter);
+  }
 };

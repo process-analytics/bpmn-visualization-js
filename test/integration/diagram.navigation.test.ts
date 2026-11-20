@@ -14,9 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import { Rectangle } from '@maxgraph/core';
+
 import { initializeBpmnVisualizationWithHtmlElement } from './helpers/bpmn-visualization-initialization';
 
-import { mxRectangle } from '@lib/component/mxgraph/initializer';
 import { FitType, ZoomType } from '@lib/component/options';
 import { readFileSync } from '@test/shared/file-helper';
 
@@ -51,7 +52,7 @@ describe('diagram navigation', () => {
       // Mock the bounds getter (not 'setGraphBounds', which the 'zoomActual' call in 'fit' would revalidate and clobber)
       // to make the scale/translation deterministic and decoupled from the parse/render pipeline. The full computation
       // on real bounds is covered by the e2e visual tests.
-      getGraphBoundsSpy = jest.spyOn(view, 'getGraphBounds').mockReturnValue(new mxRectangle(bounds.x, bounds.y, bounds.width, bounds.height));
+      getGraphBoundsSpy = jest.spyOn(view, 'getGraphBounds').mockReturnValue(new Rectangle(bounds.x, bounds.y, bounds.width, bounds.height));
       return {
         scaleAndTranslateSpy: jest.spyOn(view, 'scaleAndTranslate').mockClear(),
         setScaleSpy: jest.spyOn(view, 'setScale').mockClear(),

@@ -104,15 +104,13 @@
     "utils:test:model": "node ./scripts/utils/dist/utils.mjs test/fixtures/bpmn/simple-start-task-end.bpmn --output model"
   },
   "dependencies": {
-    "@typed-mxgraph/typed-mxgraph": "~1.0.8",
+    "@maxgraph/core": "0.23.0",
     "es-toolkit": "~1.46.1",
-    "fast-xml-parser": "5.8.0",
-    "mxgraph": "4.2.2"
+    "fast-xml-parser": "5.8.0"
   },
   "devDependencies": {
     "@asciidoctor/core": "~3.0.4",
     "@microsoft/api-extractor": "~7.52.3",
-    "@rollup/plugin-commonjs": "~29.0.0",
     "@rollup/plugin-node-resolve": "~16.0.3",
     "@rollup/plugin-terser": "~0.4.4",
     "@tailwindcss/postcss": "~4.3.4",
