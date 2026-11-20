@@ -147,9 +147,19 @@ Choices:
 - `NaN` becomes 0, through the `convertNaNToZero` helper already used by the fit computation, moved to
   `helpers/validators.ts` to be shared. It applies to the shape and label bounds and to the edge waypoints;
 - remaining difference with master: the geometry holds 0 instead of `NaN`. Both keep the rest of the diagram.
-  Checked in chromium on the fixture: the shape of `Activity_1` is not drawn (negative width and height), but its label
-  "Task 1" is. The rendering on master was not compared: with `NaN` coordinates the label was probably not visible, so
-  the label may be a visible difference on such a malformed diagram. No e2e test covers this fixture.
+
+Comparison with master (requested during the review of the POC), on the fixture
+`simple-start-task-end_numbers_not_parsable_as_number.bpmn` in the `bpmn-rendering.html` demo page, chromium:
+- master (`1607c248b`, mxGraph): nothing is rendered for `Activity_1`, neither the shape nor the label, and the DOM
+  holds no node with `data-bpmn-id="Activity_1"`. The other elements are rendered;
+- POC: the shape of `Activity_1` is not drawn either (negative width and height), but its label group is rendered at
+  the top left corner of the container (10, 10), in a 2px wide box: a "1" of "Task 1" is visible there. The other
+  elements are rendered exactly as on master.
+
+So the fix restores the load of the rest of the diagram, but not the rendering of the malformed shape: the POC shows a
+label artifact that master does not. No e2e test covers this fixture. Possible fix, not applied yet: keep inserting
+the cell (the model keeps the element, as on master) but make it invisible when its bounds hold `NaN`, so nothing is
+rendered for it, as on master.
 
 ### D9. `FitPlugin.fitCenter`: not applied, TODO kept
 
