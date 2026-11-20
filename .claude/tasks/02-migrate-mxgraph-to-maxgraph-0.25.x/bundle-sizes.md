@@ -7,6 +7,18 @@
 - Compared with master (mxGraph 4.2.2), the minified IIFE bundle **decreases by about 603 kB / 59.9%**, and the demo
   chunk of the graph library by about 595 kB / 71.2%.
 
+## master, maxGraph 0.23.0 POC and this POC
+
+| Bundle | mxGraph 4.2.2 (master 1e77ee536) | maxGraph 0.23.0 | maxGraph 0.25.2 | Δ vs 0.23.0 | Δ vs master |
+|---|---:|---:|---:|---:|---:|
+| IIFE raw | 1757.19 | 991.22 | 827.18 | -164.04 kB (-16.55%) | -930.01 kB (-52.93%) |
+| IIFE minified | 1005.42 | 486.23 | 402.79 | -83.44 kB (-17.16%) | -602.63 kB (-59.94%) |
+| ESM | 209.79 | 204.41 | 203.59 | -0.82 kB (-0.40%) | -6.20 kB (-2.95%) |
+| Demo chunk mxgraph / maxgraph | 836.00 | 323.98 | 240.74 | -83.24 kB (-25.69%) | -595.26 kB (-71.20%) |
+| Demo chunk bpmn-visualization | 87.77 | 84.21 | 84.22 | +0.01 kB (+0.01%) | -3.55 kB (-4.04%) |
+| Demo chunk es-toolkit | 0.85 | 0.85 | 0.85 | +0.00 kB (+0.47%) | +0.00 kB (+0.47%) |
+| Demo chunk fast-xml-parser | 41.28 | 41.28 | 41.28 | +0.01 kB (+0.01%) | +0.01 kB (+0.01%) |
+
 ## maxGraph 0.23.0 POC compared with this POC
 
 | Bundle | maxGraph 0.23.0 | maxGraph 0.25.2 | Δ kB | Δ % |
