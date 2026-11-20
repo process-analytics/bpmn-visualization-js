@@ -4,6 +4,7 @@
 
 - Compared with the maxGraph 0.23.0 POC, the minified IIFE bundle **decreases by about 83 kB / 17.2%**, and the demo
   chunk of maxGraph by about 83 kB / 25.7%. The bpmn-visualization code (ESM bundle, demo chunk) barely changes.
+  About 80 kB of it come from the cell handlers, no longer bundled since maxGraph 0.25.0 (see the cause below).
 - Compared with master (mxGraph 4.2.2), the minified IIFE bundle **decreases by about 603 kB / 59.9%**, and the demo
   chunk of the graph library by about 595 kB / 71.2%.
 
@@ -67,5 +68,34 @@ The three sides share the same base: master `1e77ee536539d7d8567ea0ac48e449aad2c
   `decisions.md`).
 - The ESM bundle does not include maxGraph (dependencies are external): its -0.82 kB only comes from the bpmn-visualization
   code that differs between the two POCs.
-- The decrease between the two POCs comes from the maxGraph code (the demo chunk of maxGraph and the IIFE bundle lose
-  the same 83 kB). Which maxGraph changes cause it is not analysed here.
+- The decrease between the two POCs comes from the maxGraph code: the demo chunk of maxGraph and the IIFE bundle lose
+  the same 83 kB. Its cause is analysed below.
+
+## Cause of the decrease between the two POCs
+
+Hypothesis: the cell handlers are no longer bundled. **Confirmed**, they explain about 80 of the 83 kB.
+
+maxGraph 0.25.0 moved the cell handler factories from `AbstractGraph` to the `SelectionCellsHandler` plugin
+([CHANGELOG at v0.25.2](https://github.com/maxGraph/maxGraph/blob/bd728a2afec38753b7de42c2b336edd00e3532fc/CHANGELOG.md#0250),
+[maxGraph#823](https://github.com/maxGraph/maxGraph/pull/823), merge commit
+`adcb78e8bae29fc2c408fe78c1b8a7efdad11e99`): "`BaseGraph` consumers that do not register `SelectionCellsHandler` no
+longer bundle these classes" (`VertexHandler`, `EdgeHandler`, `ElbowEdgeHandler`, `EdgeSegmentHandler`).
+
+Evidence:
+- in maxGraph 0.23.0, `AbstractGraph.ts` imports the four handlers
+  ([source at v0.23.0](https://github.com/maxGraph/maxGraph/blob/363e80291f9f0f5e91d93cc188af6abda04d4719/packages/core/src/view/AbstractGraph.ts#L44-L47)),
+  so any `BaseGraph` bundled them. In 0.25.2, it no longer imports any of them;
+- `BpmnGraph` only registers `PanningHandler` and `FitPlugin`, not `SelectionCellsHandler`;
+- the IIFE bundle of this POC (`dist/bpmn-visualization.js`, not minified, so the class names are kept) contains no
+  occurrence of `VertexHandler`, `EdgeHandler`, `ElbowEdgeHandler`, `EdgeSegmentHandler` nor `ConstraintHandler`, while
+  `PanningHandler`, `FitPlugin` and `EdgeStyleRegistryImpl` are there;
+- maxGraph#823 measured the same order of magnitude on its examples that do not register `SelectionCellsHandler`:
+  -80.94 kB (`js-example-without-defaults`) and -78.59 kB (`ts-example-without-defaults`), against -83.44 kB here for
+  the minified IIFE bundle. The bundlers and minifiers differ, so the values are close but not identical.
+
+The remaining 2 to 4 kB are not attributed precisely. Candidates, from the release notes, each small:
+- maxGraph 0.24.0 converted `ImageMixin` to `ImageBundlePlugin`, not registered by `BpmnGraph`:
+  [maxGraph#1050](https://github.com/maxGraph/maxGraph/pull/1050) measured -0.3 to -0.5 kB on the examples without it;
+- maxGraph 0.25.1, "code modernization reducing the bundle size" (mostly `for of` loops instead of indexed loops),
+  not measured in the release notes;
+- the bpmn-visualization code itself: -0.82 kB on the ESM bundle, which does not include maxGraph.
