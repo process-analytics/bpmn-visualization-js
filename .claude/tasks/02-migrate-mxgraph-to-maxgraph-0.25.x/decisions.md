@@ -181,6 +181,20 @@ Two TODOs of `test/integration/matchers/matcher-utils.ts`, both from the first m
     maxGraph omits the absent properties, so the expectations of absence (no gradient, no CSS class) would fail, or
     would have to be removed, which weakens the tests.
 
+### D12. Bump to maxGraph 0.25.2: impact of the behavior changes
+
+0.25.2 has no breaking change, but 4 behavior changes, from the changelog and the GitHub release:
+
+| Behavior change | Impact on bpmn-visualization |
+|---|---|
+| `setCellStyles` removes the keys set to `null` (`insertEdge` no longer stores `sourcePort: null` / `targetPort: null`) | None: `setCellStyles` is not used, and the tests check the edge styles with `expect.objectContaining` |
+| `GraphLayout` stores booleans in `noEdgeStyle` and `orthogonal` | None: no layout is used |
+| `entryPerimeter` / `exitPerimeter` default to `true` | None: no fixed connection point (`entryX`, `exitX`, ...) is set |
+| `setCellStyles` value typed after the key | None: not used |
+
+The bump needs no code change. All the checks pass on chromium (e2e: 261 tests, 257 snapshots), and the demo pages
+load with no console error.
+
 ## Open items
 
 ### O1. ECMAScript target of the generated code
