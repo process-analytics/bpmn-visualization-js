@@ -4,6 +4,11 @@ Branch: `fix/svg_export_overlay_position`, from `master` at `f90f6d354`.
 
 Investigation done with Claude Code (model: Claude Opus 5.5), reviewed by a maintainer.
 
+Versions checked:
+- mxGraph 4.2.2, the version used by bpmn-visualization;
+- draw.io 32.7.4, `origin/dev` at `f411a11f4f6b8994d869bdbc45f4d4d9e2284f34` (2026-11-17);
+- maxGraph 0.25.1, `origin/main` at `b612af2f016e7b18051d6b28bf9363921e75c2b2` (2026-11-18).
+
 ## Symptom
 
 When exporting to SVG from the demo (`elements-identification.html`, "display overlays" checked), the 1st overlay is

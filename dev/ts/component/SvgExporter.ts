@@ -112,6 +112,7 @@ class ImageExport extends mxgraph.mxImageExport {
   // The mxGraph implementation does not isolate the canvas state when painting each overlay, unlike for shapes and labels.
   // Painting an overlay scales the canvas by the view scale, so this scale compounds from one overlay to the next one:
   // only the first overlay is correctly placed when the view scale is not 1.
+  // The same bug exists in draw.io 32.7.4 (which never exports overlays) and in maxGraph 0.25.1 (ImageExport.drawOverlays).
   override drawOverlays(state: mxCellState, canvas: mxAbstractCanvas2D): void {
     state.overlays?.visit((_id: string, shape: mxShape) => {
       if (shape instanceof mxgraph.mxShape) {
