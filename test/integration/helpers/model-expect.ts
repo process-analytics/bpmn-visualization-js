@@ -250,7 +250,7 @@ const expectElementsInModel = (parentId: string, elementsNumber: number, filter:
 
 export const expectPoolsInModel = (pools: number): void => {
   expectElementsInModel(undefined, pools, (cell: Cell): boolean => {
-    return (cell.style as BpmnCellStyle)?.bpmn?.kind === ShapeBpmnElementKind.POOL;
+    return (cell.style as BpmnCellStyle)?.bvKind === ShapeBpmnElementKind.POOL;
   });
 };
 

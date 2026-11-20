@@ -48,9 +48,7 @@ function buildExpectedMessageFlowIconCellStyle(expectedModel: ExpectedEdgeModelE
 }
 
 function buildExpectedEdgeStyle(expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement): BpmnCellStyle {
-  const bpmn: Record<string, unknown> = { kind: expectedModel.kind };
-  // Only assert the bpmn properties set here: the cell may carry additional ones.
-  const style: BpmnCellStyle = { bpmn: expect.objectContaining(bpmn) };
+  const style: BpmnCellStyle = { bvKind: expectedModel.kind };
   const baseStyleNames: string[] = [expectedModel.kind];
   if (expectedModel.kind === FlowKind.SEQUENCE_FLOW) {
     baseStyleNames.push((expectedModel as ExpectedSequenceFlowModelElement).sequenceFlowKind ?? SequenceFlowKind.NORMAL);
@@ -61,9 +59,9 @@ function buildExpectedEdgeStyle(expectedModel: ExpectedEdgeModelElement | Expect
     );
   }
   style.baseStyleNames = baseStyleNames;
-  // Production deletes 'cssClasses' from the bpmn style when there are none, so only assert it when classes are expected.
+  // Production deletes 'bvCssClasses' from the style when there are none, so only assert it when classes are expected.
   if (expectedModel.cssClasses?.length > 0) {
-    bpmn.cssClasses = expectedModel.cssClasses;
+    style.bvCssClasses = expectedModel.cssClasses;
   }
   return style;
 }
@@ -90,7 +88,7 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement |
         value: null,
         styleRawFromModelOrJestExpect: expect.objectContaining({
           shape: BpmnStyleIdentifier.MESSAGE_FLOW_ICON,
-          bpmn: { isInitiating: expectedModel.messageVisibleKind == MessageVisibleKind.INITIATING },
+          bvIsInitiating: expectedModel.messageVisibleKind == MessageVisibleKind.INITIATING,
         } as BpmnCellStyle),
         styleResolvedFromModel: buildExpectedMessageFlowIconCellStyle(expectedModel),
         styleViewState: buildExpectedMessageFlowIconCellStyle(expectedModel),

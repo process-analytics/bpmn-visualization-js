@@ -47,35 +47,35 @@ describe('compute base css class names of BPMN elements', () => {
 describe('compute all css class names based on style input', () => {
   // TODO maxgraph@0.1.0 find a way to correctly display the style object in the test name (currently it's {"bpmn": [Object]})
   // see also https://jestjs.io/docs/api#1-testeachtablename-fn-timeout
-  // partial solution: $style.bpmn.kind
+  // partial solution: $style.bvKind
   // or switch to the test.each syntax using an array to be able to format the test inputs
   it.each`
-    style                                                                                                                                        | isLabel  | expectedClassNames
-    ${{ bpmn: { kind: ShapeBpmnElementKind.LANE } }}                                                                                             | ${true}  | ${['bpmn-type-container', 'bpmn-lane', 'bpmn-label']}
-    ${{ bpmn: { kind: ShapeBpmnElementKind.POOL } }}                                                                                             | ${false} | ${['bpmn-type-container', 'bpmn-pool']}
-    ${{ bpmn: { kind: ShapeBpmnElementKind.CALL_ACTIVITY } }}                                                                                    | ${false} | ${['bpmn-type-activity', 'bpmn-call-activity']}
-    ${{ bpmn: { kind: ShapeBpmnElementKind.CALL_ACTIVITY, globalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK } }}                                  | ${false} | ${['bpmn-type-activity', 'bpmn-call-activity', 'bpmn-global-task']}
-    ${{ bpmn: { kind: ShapeBpmnElementKind.CALL_ACTIVITY, globalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK_MANUAL } }}                           | ${true}  | ${['bpmn-type-activity', 'bpmn-call-activity', 'bpmn-global-manual-task', 'bpmn-label']}
-    ${{ bpmn: { kind: ShapeBpmnElementKind.EVENT_BOUNDARY } }}                                                                                   | ${true}  | ${['bpmn-type-event', 'bpmn-boundary-event', 'bpmn-label']}
-    ${{ bpmn: { kind: ShapeBpmnElementKind.EVENT_BOUNDARY, eventDefinitionKind: ShapeBpmnEventDefinitionKind.CANCEL, isInterrupting: true } }}   | ${true}  | ${['bpmn-type-event', 'bpmn-boundary-event', 'bpmn-event-def-cancel', 'bpmn-label']}
-    ${{ bpmn: { kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW } }}                                                                         | ${false} | ${['bpmn-type-event', 'bpmn-intermediate-throw-event']}
-    ${{ bpmn: { kind: ShapeBpmnElementKind.EVENT_START, eventDefinitionKind: ShapeBpmnEventDefinitionKind.TIMER, isInterrupting: false } }}      | ${false} | ${['bpmn-type-event', 'bpmn-start-event', 'bpmn-event-def-timer']}
-    ${{ bpmn: { kind: ShapeBpmnElementKind.GATEWAY_EVENT_BASED } }}                                                                              | ${true}  | ${['bpmn-type-gateway', 'bpmn-event-based-gateway', 'bpmn-label']}
-    ${{ bpmn: { kind: ShapeBpmnElementKind.GATEWAY_EVENT_BASED, isInstantiating: true, gatewayKind: ShapeBpmnEventBasedGatewayKind.Parallel } }} | ${false} | ${['bpmn-type-gateway', 'bpmn-event-based-gateway', 'bpmn-gateway-kind-parallel']}
-    ${{ bpmn: { kind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE } }}                                                                                | ${true}  | ${['bpmn-type-gateway', 'bpmn-exclusive-gateway', 'bpmn-label']}
-    ${{ bpmn: { kind: ShapeBpmnElementKind.TASK } }}                                                                                             | ${true}  | ${['bpmn-type-activity', 'bpmn-type-task', 'bpmn-task', 'bpmn-label']}
-    ${{ bpmn: { kind: ShapeBpmnElementKind.TASK_BUSINESS_RULE } }}                                                                               | ${false} | ${['bpmn-type-activity', 'bpmn-type-task', 'bpmn-business-rule-task']}
-    ${{ bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS } }}                                                                                      | ${false} | ${['bpmn-type-activity', 'bpmn-sub-process']}
-    ${{ bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind: ShapeBpmnSubProcessKind.AD_HOC } }}                                      | ${true}  | ${['bpmn-type-activity', 'bpmn-sub-process', 'bpmn-sub-process-adhoc', 'bpmn-label']}
-    ${{ bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind: ShapeBpmnSubProcessKind.EMBEDDED } }}                                    | ${false} | ${['bpmn-type-activity', 'bpmn-sub-process', 'bpmn-sub-process-embedded']}
-    ${{ bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind: ShapeBpmnSubProcessKind.EVENT } }}                                       | ${true}  | ${['bpmn-type-activity', 'bpmn-sub-process', 'bpmn-sub-process-event', 'bpmn-label']}
-    ${{ bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind: ShapeBpmnSubProcessKind.TRANSACTION } }}                                 | ${true}  | ${['bpmn-type-activity', 'bpmn-sub-process', 'bpmn-sub-process-transaction', 'bpmn-label']}
-    ${{ bpmn: { kind: FlowKind.ASSOCIATION_FLOW } }}                                                                                             | ${true}  | ${['bpmn-type-flow', 'bpmn-association', 'bpmn-label']}
-    ${{ bpmn: { kind: FlowKind.MESSAGE_FLOW } }}                                                                                                 | ${false} | ${['bpmn-type-flow', 'bpmn-message-flow']}
-    ${{ bpmn: { kind: FlowKind.SEQUENCE_FLOW } }}                                                                                                | ${false} | ${['bpmn-type-flow', 'bpmn-sequence-flow']}
-    ${{ shape: 'bpmn.messageFlowIcon' }}                                                                                                         | ${false} | ${['bpmn-message-flow-icon']}
-    ${{ shape: 'bpmn.messageFlowIcon', bpmn: { isInitiating: false } }}                                                                          | ${false} | ${['bpmn-message-flow-icon', 'bpmn-icon-non-initiating']}
-    ${{ shape: 'bpmn.messageFlowIcon', bpmn: { isInitiating: true } }}                                                                           | ${true}  | ${['bpmn-message-flow-icon', 'bpmn-icon-initiating', 'bpmn-label']}
+    style                                                                                                                                    | isLabel  | expectedClassNames
+    ${{ bvKind: ShapeBpmnElementKind.LANE }}                                                                                                 | ${true}  | ${['bpmn-type-container', 'bpmn-lane', 'bpmn-label']}
+    ${{ bvKind: ShapeBpmnElementKind.POOL }}                                                                                                 | ${false} | ${['bpmn-type-container', 'bpmn-pool']}
+    ${{ bvKind: ShapeBpmnElementKind.CALL_ACTIVITY }}                                                                                        | ${false} | ${['bpmn-type-activity', 'bpmn-call-activity']}
+    ${{ bvKind: ShapeBpmnElementKind.CALL_ACTIVITY, bvGlobalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK }}                                    | ${false} | ${['bpmn-type-activity', 'bpmn-call-activity', 'bpmn-global-task']}
+    ${{ bvKind: ShapeBpmnElementKind.CALL_ACTIVITY, bvGlobalTaskKind: ShapeBpmnElementKind.GLOBAL_TASK_MANUAL }}                             | ${true}  | ${['bpmn-type-activity', 'bpmn-call-activity', 'bpmn-global-manual-task', 'bpmn-label']}
+    ${{ bvKind: ShapeBpmnElementKind.EVENT_BOUNDARY }}                                                                                       | ${true}  | ${['bpmn-type-event', 'bpmn-boundary-event', 'bpmn-label']}
+    ${{ bvKind: ShapeBpmnElementKind.EVENT_BOUNDARY, bvEventDefinitionKind: ShapeBpmnEventDefinitionKind.CANCEL, bvIsInterrupting: true }}   | ${true}  | ${['bpmn-type-event', 'bpmn-boundary-event', 'bpmn-event-def-cancel', 'bpmn-label']}
+    ${{ bvKind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW }}                                                                             | ${false} | ${['bpmn-type-event', 'bpmn-intermediate-throw-event']}
+    ${{ bvKind: ShapeBpmnElementKind.EVENT_START, bvEventDefinitionKind: ShapeBpmnEventDefinitionKind.TIMER, bvIsInterrupting: false }}      | ${false} | ${['bpmn-type-event', 'bpmn-start-event', 'bpmn-event-def-timer']}
+    ${{ bvKind: ShapeBpmnElementKind.GATEWAY_EVENT_BASED }}                                                                                  | ${true}  | ${['bpmn-type-gateway', 'bpmn-event-based-gateway', 'bpmn-label']}
+    ${{ bvKind: ShapeBpmnElementKind.GATEWAY_EVENT_BASED, bvIsInstantiating: true, bvGatewayKind: ShapeBpmnEventBasedGatewayKind.Parallel }} | ${false} | ${['bpmn-type-gateway', 'bpmn-event-based-gateway', 'bpmn-gateway-kind-parallel']}
+    ${{ bvKind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE }}                                                                                    | ${true}  | ${['bpmn-type-gateway', 'bpmn-exclusive-gateway', 'bpmn-label']}
+    ${{ bvKind: ShapeBpmnElementKind.TASK }}                                                                                                 | ${true}  | ${['bpmn-type-activity', 'bpmn-type-task', 'bpmn-task', 'bpmn-label']}
+    ${{ bvKind: ShapeBpmnElementKind.TASK_BUSINESS_RULE }}                                                                                   | ${false} | ${['bpmn-type-activity', 'bpmn-type-task', 'bpmn-business-rule-task']}
+    ${{ bvKind: ShapeBpmnElementKind.SUB_PROCESS }}                                                                                          | ${false} | ${['bpmn-type-activity', 'bpmn-sub-process']}
+    ${{ bvKind: ShapeBpmnElementKind.SUB_PROCESS, bvSubProcessKind: ShapeBpmnSubProcessKind.AD_HOC }}                                        | ${true}  | ${['bpmn-type-activity', 'bpmn-sub-process', 'bpmn-sub-process-adhoc', 'bpmn-label']}
+    ${{ bvKind: ShapeBpmnElementKind.SUB_PROCESS, bvSubProcessKind: ShapeBpmnSubProcessKind.EMBEDDED }}                                      | ${false} | ${['bpmn-type-activity', 'bpmn-sub-process', 'bpmn-sub-process-embedded']}
+    ${{ bvKind: ShapeBpmnElementKind.SUB_PROCESS, bvSubProcessKind: ShapeBpmnSubProcessKind.EVENT }}                                         | ${true}  | ${['bpmn-type-activity', 'bpmn-sub-process', 'bpmn-sub-process-event', 'bpmn-label']}
+    ${{ bvKind: ShapeBpmnElementKind.SUB_PROCESS, bvSubProcessKind: ShapeBpmnSubProcessKind.TRANSACTION }}                                   | ${true}  | ${['bpmn-type-activity', 'bpmn-sub-process', 'bpmn-sub-process-transaction', 'bpmn-label']}
+    ${{ bvKind: FlowKind.ASSOCIATION_FLOW }}                                                                                                 | ${true}  | ${['bpmn-type-flow', 'bpmn-association', 'bpmn-label']}
+    ${{ bvKind: FlowKind.MESSAGE_FLOW }}                                                                                                     | ${false} | ${['bpmn-type-flow', 'bpmn-message-flow']}
+    ${{ bvKind: FlowKind.SEQUENCE_FLOW }}                                                                                                    | ${false} | ${['bpmn-type-flow', 'bpmn-sequence-flow']}
+    ${{ shape: 'bpmn.messageFlowIcon' }}                                                                                                     | ${false} | ${['bpmn-message-flow-icon']}
+    ${{ shape: 'bpmn.messageFlowIcon', bvIsInitiating: false }}                                                                              | ${false} | ${['bpmn-message-flow-icon', 'bpmn-icon-non-initiating']}
+    ${{ shape: 'bpmn.messageFlowIcon', bvIsInitiating: true }}                                                                               | ${true}  | ${['bpmn-message-flow-icon', 'bpmn-icon-initiating', 'bpmn-label']}
   `('style=$style / isLabel=$isLabel', ({ style, isLabel, expectedClassNames }: { style: BpmnCellStyle; isLabel: boolean; expectedClassNames: string[] }) => {
     expect(computeAllBpmnClassNames(style, isLabel)).toEqual(expectedClassNames);
   });

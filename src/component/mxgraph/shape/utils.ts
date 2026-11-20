@@ -46,7 +46,7 @@ export const overrideCreateSvgCanvas = function (shape: Shape): void {
       const cell = this.state.cell;
       // dialect 'strictHtml' means the current node holds an HTML label
       const allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === 'strictHtml');
-      const cssClasses = (cell.style as BpmnCellStyle).bpmn?.cssClasses;
+      const cssClasses = (cell.style as BpmnCellStyle).bvCssClasses;
       if (cssClasses) {
         allBpmnClassNames.push(...cssClasses);
       }

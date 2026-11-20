@@ -119,7 +119,7 @@ export class EventBasedGatewayShape extends GatewayShape {
       ...paintParameter,
       ratioFromParent: 0.3,
     };
-    if (((this.style as BpmnCellStateStyle).bpmn?.gatewayKind ?? ShapeBpmnEventBasedGatewayKind.Exclusive) === ShapeBpmnEventBasedGatewayKind.Parallel) {
+    if (((this.style as BpmnCellStateStyle).bvGatewayKind ?? ShapeBpmnEventBasedGatewayKind.Exclusive) === ShapeBpmnEventBasedGatewayKind.Parallel) {
       this.iconPainter.paintPlusCrossIcon(innerIconPaintParameter);
     } else {
       this.iconPainter.paintPentagon(innerIconPaintParameter);

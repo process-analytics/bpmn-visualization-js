@@ -29,17 +29,15 @@ import type { CellStateStyle, CellStyle } from '@maxgraph/core';
 
 // TODO maxgraph@0.23.0 replace `@since 0.x.y` in this file by the version that ships the maxGraph migration
 
-// TODO maxgraph@0.23.0 flatten the BPMN style properties instead of nesting them under the `bpmn` object.
-// The maxGraph recommendation is to declare each custom property at the top level of the style, with a shared prefix
-// showing they belong together, see https://github.com/maxGraph/maxGraph/blob/b612af2f016e7b18051d6b28bf9363921e75c2b2/packages/website/docs/guides/extend-maxgraph.md#keep-your-custom-properties-flat
-// Use the `bv` prefix (for instance `bvKind`, `bvMarkers`).
-
 /**
- * The BPMN specific data attached to a maxGraph style under the {@link BpmnCellStyle.bpmn} property.
+ * The BPMN specific properties of a maxGraph style.
  *
- * It replaces the custom `bpmn.*` string keys that were stored in mxGraph style strings: each former key is now a
+ * They are declared at the top level of the style, with the `bv` prefix showing they belong to bpmn-visualization, as
+ * recommended by maxGraph to extend its styles (see https://github.com/maxGraph/maxGraph/blob/b612af2f016e7b18051d6b28bf9363921e75c2b2/packages/website/docs/guides/extend-maxgraph.md#keep-your-custom-properties-flat).
+ *
+ * They replace the custom `bpmn.*` string keys that were stored in mxGraph style strings: each former key is now a
  * typed property. Booleans replace the former `'true'`/`'false'` strings and arrays replace the former delimited
- * strings (`markers`, `cssClasses`).
+ * strings (`bvMarkers`, `bvCssClasses`).
  *
  * **WARN**: This is part of the BPMN Theme customization surface. The way the default BPMN theme can be modified is
  * subject to change.
@@ -49,18 +47,18 @@ import type { CellStateStyle, CellStyle } from '@maxgraph/core';
  * @since 0.x.y
  */
 export interface BpmnCellStyleExtension {
-  associationDirectionKind?: AssociationDirectionKind;
-  eventDefinitionKind?: ShapeBpmnEventDefinitionKind;
-  cssClasses?: string[];
-  gatewayKind?: ShapeBpmnEventBasedGatewayKind;
-  globalTaskKind?: GlobalTaskKind;
-  isInitiating?: boolean;
-  isInstantiating?: boolean;
-  isInterrupting?: boolean;
-  kind?: ShapeBpmnElementKind | FlowKind;
-  markers?: ShapeBpmnMarkerKind[];
-  sequenceFlowKind?: SequenceFlowKind;
-  subProcessKind?: ShapeBpmnSubProcessKind;
+  bvAssociationDirectionKind?: AssociationDirectionKind;
+  bvCssClasses?: string[];
+  bvEventDefinitionKind?: ShapeBpmnEventDefinitionKind;
+  bvGatewayKind?: ShapeBpmnEventBasedGatewayKind;
+  bvGlobalTaskKind?: GlobalTaskKind;
+  bvIsInitiating?: boolean;
+  bvIsInstantiating?: boolean;
+  bvIsInterrupting?: boolean;
+  bvKind?: ShapeBpmnElementKind | FlowKind;
+  bvMarkers?: ShapeBpmnMarkerKind[];
+  bvSequenceFlowKind?: SequenceFlowKind;
+  bvSubProcessKind?: ShapeBpmnSubProcessKind;
 }
 
 // TODO maxgraph@0.24.0 use module augmentation on CellStyle/CellStateStyle instead of extending the type, available
@@ -71,7 +69,7 @@ export interface BpmnCellStyleExtension {
 // https://github.com/maxGraph/maxGraph/blob/b612af2f016e7b18051d6b28bf9363921e75c2b2/packages/ts-support/src/module-augmentation.ts
 
 /**
- * A maxGraph {@link CellStyle} enriched with the BPMN specific data carried under the {@link bpmn} property.
+ * A maxGraph {@link CellStyle} enriched with the BPMN specific properties of {@link BpmnCellStyleExtension}.
  *
  * It is the maxGraph object replacement for the former mxGraph style strings produced by bpmn-visualization.
  *
@@ -81,12 +79,10 @@ export interface BpmnCellStyleExtension {
  * @experimental
  * @since 0.x.y
  */
-export interface BpmnCellStyle extends CellStyle {
-  bpmn?: BpmnCellStyleExtension;
-}
+export interface BpmnCellStyle extends CellStyle, BpmnCellStyleExtension {}
 
 /**
- * A maxGraph {@link CellStateStyle} enriched with the BPMN specific data carried under the {@link bpmn} property.
+ * A maxGraph {@link CellStateStyle} enriched with the BPMN specific properties of {@link BpmnCellStyleExtension}.
  *
  * It is the resolved (cell state) counterpart of {@link BpmnCellStyle}, used when reading the style of a rendered cell.
  *
@@ -96,6 +92,4 @@ export interface BpmnCellStyle extends CellStyle {
  * @experimental
  * @since 0.x.y
  */
-export interface BpmnCellStateStyle extends CellStateStyle {
-  bpmn?: BpmnCellStyleExtension;
-}
+export interface BpmnCellStateStyle extends CellStateStyle, BpmnCellStyleExtension {}

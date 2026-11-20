@@ -38,7 +38,7 @@ export class MessageFlowIconShape extends RectangleShape {
       height: h,
       shape: this,
       ratioFromParent: 1,
-      isFilled: (this.style as BpmnCellStateStyle).bpmn?.isInitiating === false,
+      isFilled: (this.style as BpmnCellStateStyle).bvIsInitiating === false,
     });
 
     this.iconPainter.paintEnvelopeIcon(paintParameter);

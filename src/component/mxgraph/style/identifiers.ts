@@ -19,8 +19,8 @@ limitations under the License.
  * instead of hard coded string values.
  *
  * With maxGraph, the former BPMN data keys (event definition kind, markers, css classes, ...) are no longer stored as
- * style string entries: they are typed properties of the maxGraph `CellStyle` carried under its `bpmn` property (see
- * {@link BpmnCellStyle}). Only the names still used as registered shape identifiers remain here.
+ * style string entries: they are typed properties of the maxGraph `CellStyle`, prefixed with `bv` (see
+ * {@link BpmnCellStyleExtension}). Only the names still used as registered shape identifiers remain here.
  *
  * **WARN**: You may use it to customize the BPMN Theme as suggested in the examples. But be aware that the way the default BPMN theme can be modified is subject to change.
  *

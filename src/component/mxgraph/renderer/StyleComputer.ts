@@ -54,9 +54,8 @@ export default class StyleComputer {
   }
 
   computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): BpmnCellStyle {
-    const bpmn: BpmnCellStyleExtension = { kind: bpmnCell.bpmnElement.kind };
     const baseStyleNames: string[] = [bpmnCell.bpmnElement.kind as string];
-    const style: BpmnCellStyle = { baseStyleNames, bpmn };
+    const style: BpmnCellStyle = { baseStyleNames, bvKind: bpmnCell.bpmnElement.kind };
 
     if (bpmnCell instanceof Shape) {
       this.computeShapeStyle(bpmnCell, style);
@@ -72,21 +71,20 @@ export default class StyleComputer {
   }
 
   private computeShapeStyle(shape: Shape, style: BpmnCellStyle): void {
-    const bpmn: BpmnCellStyleExtension = style.bpmn;
     const bpmnElement = shape.bpmnElement;
 
     if (bpmnElement instanceof ShapeBpmnEvent) {
-      computeEventShapeStyle(bpmnElement, bpmn);
+      computeEventShapeStyle(bpmnElement, style);
     } else if (bpmnElement instanceof ShapeBpmnActivity) {
-      computeActivityShapeStyle(bpmnElement, bpmn);
+      computeActivityShapeStyle(bpmnElement, style);
     } else if (ShapeUtil.isPoolOrLane(bpmnElement.kind)) {
       // 'style.horizontal' is for the label.
       // In BPMN, isHorizontal is for the Shape.
       // So we invert the value when we switch from the BPMN value to the maxGraph value.
       style.horizontal = !shape.isHorizontal;
     } else if (bpmnElement instanceof ShapeBpmnEventBasedGateway) {
-      bpmn.isInstantiating = bpmnElement.instantiate;
-      bpmn.gatewayKind = bpmnElement.gatewayKind;
+      style.bvIsInstantiating = bpmnElement.instantiate;
+      style.bvGatewayKind = bpmnElement.gatewayKind;
     }
 
     for (const extension of this.styleExtensions) extension.enrichShapeStyle?.(shape, style);
@@ -110,7 +108,7 @@ export default class StyleComputer {
   computeMessageFlowIconStyle(edge: Edge): BpmnCellStyle {
     const style: BpmnCellStyle = {
       shape: BpmnStyleIdentifier.MESSAGE_FLOW_ICON,
-      bpmn: { isInitiating: edge.messageVisibleKind === MessageVisibleKind.INITIATING },
+      bvIsInitiating: edge.messageVisibleKind === MessageVisibleKind.INITIATING,
     };
 
     for (const extension of this.styleExtensions) extension.enrichMessageFlowIconStyle?.(edge, style);
@@ -119,24 +117,24 @@ export default class StyleComputer {
   }
 }
 
-function computeEventShapeStyle(bpmnElement: ShapeBpmnEvent, bpmn: BpmnCellStyleExtension): void {
-  bpmn.eventDefinitionKind = bpmnElement.eventDefinitionKind;
+function computeEventShapeStyle(bpmnElement: ShapeBpmnEvent, style: BpmnCellStyleExtension): void {
+  style.bvEventDefinitionKind = bpmnElement.eventDefinitionKind;
 
   if (bpmnElement instanceof ShapeBpmnBoundaryEvent || (bpmnElement instanceof ShapeBpmnStartEvent && bpmnElement.isInterrupting !== undefined)) {
-    bpmn.isInterrupting = bpmnElement.isInterrupting;
+    style.bvIsInterrupting = bpmnElement.isInterrupting;
   }
 }
 
-function computeActivityShapeStyle(bpmnElement: ShapeBpmnActivity, bpmn: BpmnCellStyleExtension): void {
+function computeActivityShapeStyle(bpmnElement: ShapeBpmnActivity, style: BpmnCellStyleExtension): void {
   if (bpmnElement instanceof ShapeBpmnSubProcess) {
-    bpmn.subProcessKind = bpmnElement.subProcessKind;
+    style.bvSubProcessKind = bpmnElement.subProcessKind;
   } else if (bpmnElement.kind === ShapeBpmnElementKind.TASK_RECEIVE) {
-    bpmn.isInstantiating = bpmnElement.instantiate;
+    style.bvIsInstantiating = bpmnElement.instantiate;
   } else if (bpmnElement instanceof ShapeBpmnCallActivity) {
-    bpmn.globalTaskKind = bpmnElement.globalTaskKind;
+    style.bvGlobalTaskKind = bpmnElement.globalTaskKind;
   }
 
-  bpmn.markers = bpmnElement.markers;
+  style.bvMarkers = bpmnElement.markers;
 }
 
 function computeEdgeBaseStyleNames(edge: Edge): string[] {

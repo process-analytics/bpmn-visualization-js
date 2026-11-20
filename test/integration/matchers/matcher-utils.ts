@@ -199,11 +199,11 @@ function toBpmnStyle(rawStyle: BpmnCellStateStyle, isEdge: boolean): ComparedBpm
     fontStyle: rawStyle.fontStyle,
     fontOpacity: rawStyle.textOpacity,
     // custom bpmn-visualization
-    cssClasses: rawStyle.bpmn?.cssClasses,
+    cssClasses: rawStyle.bvCssClasses,
     // ignore marker order, which is only relevant when rendering the shape (it has its own order algorithm)
-    markers: rawStyle.bpmn?.markers ? [...rawStyle.bpmn.markers].sort() : undefined,
+    markers: rawStyle.bvMarkers ? [...rawStyle.bvMarkers].sort() : undefined,
     // for message flow icon
-    isInitiating: rawStyle.bpmn?.isInitiating,
+    isInitiating: rawStyle.bvIsInitiating,
   };
 
   if (isEdge) {

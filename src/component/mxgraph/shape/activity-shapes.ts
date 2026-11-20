@@ -64,7 +64,7 @@ export abstract class BaseActivityShape extends RectangleShape {
   }
 
   protected paintMarkerIcons(paintParameter: PaintParameter): void {
-    const markers = (this.style as BpmnCellStateStyle).bpmn?.markers;
+    const markers = (this.style as BpmnCellStateStyle).bvMarkers;
     if (markers) {
       const orderedMarkers = orderActivityMarkers(markers);
       for (const [index, marker] of orderedMarkers.entries()) {
@@ -207,7 +207,7 @@ export class CallActivityShape extends BaseActivityShape {
 
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this });
 
-    switch ((this.style as BpmnCellStateStyle).bpmn?.globalTaskKind) {
+    switch ((this.style as BpmnCellStateStyle).bvGlobalTaskKind) {
       case ShapeBpmnElementKind.GLOBAL_TASK_MANUAL: {
         this.iconPainter.paintHandIcon({
           ...paintParameter,
@@ -249,7 +249,7 @@ export class CallActivityShape extends BaseActivityShape {
  */
 export class SubProcessShape extends BaseActivityShape {
   override paintBackground(c: AbstractCanvas2D, x: number, y: number, w: number, h: number): void {
-    const subProcessKind = (this.style as BpmnCellStateStyle).bpmn?.subProcessKind;
+    const subProcessKind = (this.style as BpmnCellStateStyle).bvSubProcessKind;
     c.save(); // ensure we can later restore the configuration
     if (subProcessKind === ShapeBpmnSubProcessKind.EVENT) {
       c.setDashed(true, false);

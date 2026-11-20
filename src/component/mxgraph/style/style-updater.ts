@@ -132,9 +132,9 @@ class StyleManager {
     }
 
     // The CSS classes are managed independently (by the CSS classes updater) and must survive a style reset.
-    const cssClasses = (cell.style as BpmnCellStyle).bpmn?.cssClasses;
+    const cssClasses = (cell.style as BpmnCellStyle).bvCssClasses;
     // maxGraph#326: build a fresh style object (not the cell's own instance) so setStyle propagates the change.
-    const styleToApply: BpmnCellStyle = { ...initialStyle, bpmn: { ...initialStyle.bpmn } };
+    const styleToApply: BpmnCellStyle = { ...initialStyle };
     setCssClasses(styleToApply, cssClasses ?? []);
     this.model.setStyle(cell, styleToApply);
   }

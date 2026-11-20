@@ -125,41 +125,37 @@ function buildExpectedShapeStyle(
     | ExpectedEventBasedGatewayModelElement
     | ExpectedCallActivityModelElement,
 ): BpmnCellStyle {
-  // The bpmn property is typed loosely to allow asymmetric jest matchers (e.g. expect.arrayContaining) on its fields.
-  const bpmn: Record<string, unknown> = {};
-  // Only assert the bpmn properties set below: the cell may carry additional ones (e.g. 'markers' for activities).
-  const style: BpmnCellStyle = { bpmn: expect.objectContaining(bpmn) };
-  style.baseStyleNames = [expectedModel.kind];
-  bpmn.kind = expectedModel.kind;
+  // The style is typed loosely to allow asymmetric jest matchers (e.g. expect.arrayContaining) on its properties.
+  const style: Record<string, unknown> = { baseStyleNames: [expectedModel.kind], bvKind: expectedModel.kind };
 
   if ('eventDefinitionKind' in expectedModel) {
-    bpmn.eventDefinitionKind = expectedModel.eventDefinitionKind;
+    style.bvEventDefinitionKind = expectedModel.eventDefinitionKind;
   }
   if ('subProcessKind' in expectedModel) {
-    bpmn.subProcessKind = expectedModel.subProcessKind;
+    style.bvSubProcessKind = expectedModel.subProcessKind;
   }
   if ('globalTaskKind' in expectedModel) {
-    bpmn.globalTaskKind = expectedModel.globalTaskKind;
+    style.bvGlobalTaskKind = expectedModel.globalTaskKind;
   }
   if (expectedModel.isInstantiating !== undefined) {
-    bpmn.isInstantiating = expectedModel.isInstantiating;
+    style.bvIsInstantiating = expectedModel.isInstantiating;
   }
   if (expectedModel.markers?.length > 0) {
     // There is no guaranteed order, so the markers are checked with the resolved/state style (ComparedBpmnCellStyle.markers).
     // Here, we check only that the markers are present in the raw style, ignoring order.
-    bpmn.markers = expect.arrayContaining(expectedModel.markers);
+    style.bvMarkers = expect.arrayContaining(expectedModel.markers);
   }
   if ('isInterrupting' in expectedModel) {
-    bpmn.isInterrupting = expectedModel.isInterrupting;
+    style.bvIsInterrupting = expectedModel.isInterrupting;
   }
   if ('gatewayKind' in expectedModel) {
-    bpmn.gatewayKind = expectedModel.gatewayKind;
+    style.bvGatewayKind = expectedModel.gatewayKind;
   }
-  // Production deletes 'cssClasses' from the bpmn style when there are none, so only assert it when classes are expected.
+  // Production deletes 'bvCssClasses' from the style when there are none, so only assert it when classes are expected.
   if (expectedModel.cssClasses?.length > 0) {
-    bpmn.cssClasses = expectedModel.cssClasses;
+    style.bvCssClasses = expectedModel.cssClasses;
   }
-  return style;
+  return style as BpmnCellStyle;
 }
 
 function buildExpectedCell(id: string, expectedModel: ExpectedShapeModelElement): ExpectedCell {

@@ -81,7 +81,7 @@ export const StyleDefault = {
  * @internal
  * @private
  */
-export const getBpmnIsInstantiating = (style: BpmnCellStateStyle): boolean => style.bpmn?.isInstantiating ?? false;
+export const getBpmnIsInstantiating = (style: BpmnCellStateStyle): boolean => style.bvIsInstantiating ?? false;
 
 const convertDefaultValue = (value: string): string | undefined => (value == 'default' ? undefined : value);
 
@@ -160,7 +160,7 @@ export const updateFill = (cellStyle: BpmnCellStyle, fill: Fill): void => {
       delete cellStyle.gradientDirection;
     }
 
-    const kind = cellStyle.bpmn?.kind;
+    const kind = cellStyle.bvKind;
     if (kind && ShapeUtil.isPoolOrLane(kind)) {
       setStyle(cellStyle, 'swimlaneFillColor', fillColor, convertDefaultValue);
     }
@@ -174,15 +174,14 @@ export const isShapeStyleUpdate = (style: StyleUpdate): style is ShapeStyleUpdat
 };
 
 /**
- * Set the extra CSS classes on the BPMN part of a {@link CellStyle}, deleting the property when there are none.
+ * Set the extra CSS classes of a {@link BpmnCellStyle}, deleting the property when there are none.
  * @internal
  */
 export function setCssClasses(cellStyle: BpmnCellStyle, cssClasses: string[]): void {
-  cellStyle.bpmn ??= {};
   if (cssClasses.length > 0) {
-    cellStyle.bpmn.cssClasses = cssClasses;
+    cellStyle.bvCssClasses = cssClasses;
   } else {
-    delete cellStyle.bpmn.cssClasses;
+    delete cellStyle.bvCssClasses;
   }
 }
 

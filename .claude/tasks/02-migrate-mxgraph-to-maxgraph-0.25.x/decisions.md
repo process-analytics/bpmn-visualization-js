@@ -86,6 +86,22 @@ maxGraph migration (`@since 0.x.y`, experimental) and was never released, so no 
 The test helpers carrying the same value (`ExpectedModelElement`, `ComparedBpmnCellStyle`) are renamed as well, to
 keep a single name for one concept.
 
+### D5. Flatten the BPMN style properties with the `bv` prefix
+
+The BPMN properties move from the nested `bpmn` object to the top level of the style, each name prefixed with `bv`
+(`bpmn.kind` becomes `bvKind`, `bpmn.cssClasses` becomes `bvCssClasses`), as the TODO prescribed, following the
+maxGraph recommendation to keep custom properties flat.
+
+Choices:
+- `BpmnCellStyleExtension` is kept as the interface listing the `bv` properties, and `BpmnCellStyle` /
+  `BpmnCellStateStyle` extend both the maxGraph type and this interface. It gives a single place to declare the BPMN
+  properties, reusable by the module augmentation of the next TODO.
+- No compatibility alias for the nested form: like D4, these types are not released yet.
+- The style reset (`style-updater.ts`) now copies the style with a plain spread: the nested copy of `bpmn` existed only
+  to avoid mutating the shared nested object.
+- The integration matchers no longer wrap the BPMN properties in `expect.objectContaining`: their caller already wraps
+  the whole style in it, so extra properties of the cell are still accepted.
+
 ## Open items
 
 ### O1. ECMAScript target of the generated code

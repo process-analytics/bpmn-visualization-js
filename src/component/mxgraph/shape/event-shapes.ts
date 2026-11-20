@@ -92,7 +92,7 @@ export class EventShape extends EllipseShape {
   override paintVertexShape(c: AbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, isFilled: this.withFilledIcon });
 
-    setDashedOuterShapePattern(paintParameter, (this.style as BpmnCellStateStyle).bpmn?.isInterrupting);
+    setDashedOuterShapePattern(paintParameter, (this.style as BpmnCellStateStyle).bvIsInterrupting);
     this.paintOuterShape(paintParameter);
     restoreOriginalOuterShapePattern(paintParameter);
 
@@ -104,7 +104,7 @@ export class EventShape extends EllipseShape {
   }
 
   private paintInnerShape(paintParameter: PaintParameter): void {
-    const paintIcon = this.iconPainters.get((this.style as BpmnCellStateStyle).bpmn?.eventDefinitionKind ?? ShapeBpmnEventDefinitionKind.NONE);
+    const paintIcon = this.iconPainters.get((this.style as BpmnCellStateStyle).bvEventDefinitionKind ?? ShapeBpmnEventDefinitionKind.NONE);
     paintIcon?.(paintParameter);
   }
 }

@@ -141,12 +141,12 @@ describe('Style Computer', () => {
   describe('compute style - shape label', () => {
     it('compute style of shape with no label', () => {
       const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.TASK_USER));
-      expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['userTask'], bpmn: { kind: ShapeBpmnElementKind.TASK_USER } });
+      expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['userTask'], bvKind: ShapeBpmnElementKind.TASK_USER });
     });
 
     it('compute style of shape with a no font label', () => {
       const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_END), undefined, new Label(undefined, undefined));
-      expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['endEvent'], bpmn: { kind: ShapeBpmnElementKind.EVENT_END } });
+      expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['endEvent'], bvKind: ShapeBpmnElementKind.EVENT_END });
     });
     it('compute style of shape with label including bold font', () => {
       const shape = new Shape(
@@ -157,7 +157,7 @@ describe('Style Computer', () => {
       );
       expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({
         baseStyleNames: ['exclusiveGateway'],
-        bpmn: { kind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE },
+        bvKind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE,
         fontFamily: 'Courier',
         fontSize: 9,
         fontStyle: 1,
@@ -168,7 +168,7 @@ describe('Style Computer', () => {
       const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH), undefined, new Label(toFont({ name: 'Arial', isItalic: true }), undefined));
       expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({
         baseStyleNames: ['intermediateCatchEvent'],
-        bpmn: { kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH },
+        bvKind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH,
         fontFamily: 'Arial',
         fontStyle: 2,
       });
@@ -178,21 +178,21 @@ describe('Style Computer', () => {
       const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW), undefined, new Label(toFont({ isBold: true, isItalic: true }), undefined));
       expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({
         baseStyleNames: ['intermediateThrowEvent'],
-        bpmn: { kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW },
+        bvKind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_THROW,
         fontStyle: 3,
       });
     });
 
     it('compute style of shape with label including font family only', () => {
       const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.TASK_SCRIPT), undefined, new Label(toFont({ name: 'Roboto' }), undefined));
-      expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['scriptTask'], bpmn: { kind: ShapeBpmnElementKind.TASK_SCRIPT }, fontFamily: 'Roboto' });
+      expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['scriptTask'], bvKind: ShapeBpmnElementKind.TASK_SCRIPT, fontFamily: 'Roboto' });
     });
 
     it('compute style of shape with label bounds', () => {
       const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.CALL_ACTIVITY), undefined, new Label(undefined, new Bounds(40, 200, 80, 140)));
       expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({
         baseStyleNames: ['callActivity'],
-        bpmn: { kind: ShapeBpmnElementKind.CALL_ACTIVITY },
+        bvKind: ShapeBpmnElementKind.CALL_ACTIVITY,
         verticalAlign: 'top',
         align: 'center',
         labelWidth: 81,
@@ -205,19 +205,19 @@ describe('Style Computer', () => {
   describe('compute style - edge label', () => {
     it('compute style of edge with no label', () => {
       const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.CONDITIONAL_FROM_GATEWAY));
-      expect(computeStyle(edge)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['sequenceFlow', 'conditional_from_gateway'], bpmn: { kind: FlowKind.SEQUENCE_FLOW } });
+      expect(computeStyle(edge)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['sequenceFlow', 'conditional_from_gateway'], bvKind: FlowKind.SEQUENCE_FLOW });
     });
 
     it('compute style of edge with a no font label', () => {
       const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.NORMAL), undefined, new Label(undefined, undefined));
-      expect(computeStyle(edge)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['sequenceFlow', 'normal'], bpmn: { kind: FlowKind.SEQUENCE_FLOW } });
+      expect(computeStyle(edge)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['sequenceFlow', 'normal'], bvKind: FlowKind.SEQUENCE_FLOW });
     });
 
     it('compute style of edge with label including strike-through font', () => {
       const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY), undefined, new Label(toFont({ size: 14.2, isStrikeThrough: true }), undefined));
       expect(computeStyle(edge)).toStrictEqual<BpmnCellStyle>({
         baseStyleNames: ['sequenceFlow', 'conditional_from_activity'],
-        bpmn: { kind: FlowKind.SEQUENCE_FLOW },
+        bvKind: FlowKind.SEQUENCE_FLOW,
         fontSize: 14.2,
         fontStyle: 8,
       });
@@ -225,7 +225,7 @@ describe('Style Computer', () => {
 
     it('compute style of edge with label including underline font', () => {
       const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.DEFAULT), undefined, new Label(toFont({ isUnderline: true }), undefined));
-      expect(computeStyle(edge)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['sequenceFlow', 'default'], bpmn: { kind: FlowKind.SEQUENCE_FLOW }, fontStyle: 4 });
+      expect(computeStyle(edge)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['sequenceFlow', 'default'], bvKind: FlowKind.SEQUENCE_FLOW, fontStyle: 4 });
     });
 
     it('compute style of edge with label including bold/italic/strike-through/underline font', () => {
@@ -235,14 +235,14 @@ describe('Style Computer', () => {
         undefined,
         new Label(toFont({ isBold: true, isItalic: true, isStrikeThrough: true, isUnderline: true }), undefined),
       );
-      expect(computeStyle(edge)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['sequenceFlow', 'normal'], bpmn: { kind: FlowKind.SEQUENCE_FLOW }, fontStyle: 15 });
+      expect(computeStyle(edge)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['sequenceFlow', 'normal'], bvKind: FlowKind.SEQUENCE_FLOW, fontStyle: 15 });
     });
 
     it('compute style of edge with label bounds', () => {
       const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.NORMAL), undefined, new Label(toFont({ name: 'Helvetica' }), new Bounds(20, 20, 30, 120)));
       expect(computeStyle(edge)).toStrictEqual<BpmnCellStyle>({
         baseStyleNames: ['sequenceFlow', 'normal'],
-        bpmn: { kind: FlowKind.SEQUENCE_FLOW },
+        bvKind: FlowKind.SEQUENCE_FLOW,
         fontFamily: 'Helvetica',
         verticalAlign: 'top',
         align: 'center',
@@ -257,7 +257,7 @@ describe('Style Computer', () => {
     [SequenceFlowKind.NORMAL, 'normal'],
   ])('compute style - sequence flows: %s', (kind: SequenceFlowKind, expected: string) => {
     const edge = new Edge('id', newSequenceFlow(kind));
-    expect(computeStyle(edge)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['sequenceFlow', expected], bpmn: { kind: FlowKind.SEQUENCE_FLOW } });
+    expect(computeStyle(edge)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['sequenceFlow', expected], bvKind: FlowKind.SEQUENCE_FLOW });
   });
 
   it.each([
@@ -266,7 +266,7 @@ describe('Style Computer', () => {
     [AssociationDirectionKind.BOTH, 'Both'],
   ])('compute style - association flows: %s', (kind: AssociationDirectionKind, expected: string) => {
     const edge = new Edge('id', newAssociationFlow(kind));
-    expect(computeStyle(edge)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['association', expected], bpmn: { kind: FlowKind.ASSOCIATION_FLOW } });
+    expect(computeStyle(edge)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['association', expected], bvKind: FlowKind.ASSOCIATION_FLOW });
   });
 
   it.each([
@@ -274,7 +274,7 @@ describe('Style Computer', () => {
     [MessageVisibleKind.INITIATING, true],
   ])('compute style - message flow icon: %s', (messageVisibleKind: MessageVisibleKind, expected: boolean) => {
     const edge = new Edge('id', newMessageFlow(), undefined, undefined, messageVisibleKind);
-    expect(styleComputer.computeMessageFlowIconStyle(edge)).toStrictEqual<BpmnCellStyle>({ shape: 'bpmn.messageFlowIcon', bpmn: { isInitiating: expected } });
+    expect(styleComputer.computeMessageFlowIconStyle(edge)).toStrictEqual<BpmnCellStyle>({ shape: 'bpmn.messageFlowIcon', bvIsInitiating: expected });
   });
 
   describe('compute style - events kind', () => {
@@ -282,7 +282,8 @@ describe('Style Computer', () => {
       const shape = newShape(newShapeBpmnEvent(ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, ShapeBpmnEventDefinitionKind.CONDITIONAL), newLabel({ name: 'Ubuntu' }));
       expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({
         baseStyleNames: ['intermediateCatchEvent'],
-        bpmn: { kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH, eventDefinitionKind: ShapeBpmnEventDefinitionKind.CONDITIONAL },
+        bvKind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH,
+        bvEventDefinitionKind: ShapeBpmnEventDefinitionKind.CONDITIONAL,
         fontFamily: 'Ubuntu',
       });
     });
@@ -291,7 +292,8 @@ describe('Style Computer', () => {
       const shape = newShape(newShapeBpmnEvent(ShapeBpmnElementKind.EVENT_START, ShapeBpmnEventDefinitionKind.SIGNAL), newLabel({ isBold: true }));
       expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({
         baseStyleNames: ['startEvent'],
-        bpmn: { kind: ShapeBpmnElementKind.EVENT_START, eventDefinitionKind: ShapeBpmnEventDefinitionKind.SIGNAL },
+        bvKind: ShapeBpmnElementKind.EVENT_START,
+        bvEventDefinitionKind: ShapeBpmnEventDefinitionKind.SIGNAL,
         fontStyle: 1,
       });
     });
@@ -301,7 +303,9 @@ describe('Style Computer', () => {
       const shape = newShape(newShapeBpmnBoundaryEvent(ShapeBpmnEventDefinitionKind.MESSAGE, true), newLabel({ name: 'Arial' }));
       expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({
         baseStyleNames: ['boundaryEvent'],
-        bpmn: { kind: ShapeBpmnElementKind.EVENT_BOUNDARY, eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE, isInterrupting: true },
+        bvKind: ShapeBpmnElementKind.EVENT_BOUNDARY,
+        bvEventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
+        bvIsInterrupting: true,
         fontFamily: 'Arial',
       });
     });
@@ -310,7 +314,9 @@ describe('Style Computer', () => {
       const shape = newShape(newShapeBpmnBoundaryEvent(ShapeBpmnEventDefinitionKind.TIMER, false), newLabel({ isItalic: true }));
       expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({
         baseStyleNames: ['boundaryEvent'],
-        bpmn: { kind: ShapeBpmnElementKind.EVENT_BOUNDARY, eventDefinitionKind: ShapeBpmnEventDefinitionKind.TIMER, isInterrupting: false },
+        bvKind: ShapeBpmnElementKind.EVENT_BOUNDARY,
+        bvEventDefinitionKind: ShapeBpmnEventDefinitionKind.TIMER,
+        bvIsInterrupting: false,
         fontStyle: 2,
       });
     });
@@ -319,7 +325,9 @@ describe('Style Computer', () => {
       const shape = newShape(newShapeBpmnBoundaryEvent(ShapeBpmnEventDefinitionKind.CANCEL, undefined), newLabel({ isStrikeThrough: true }));
       expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({
         baseStyleNames: ['boundaryEvent'],
-        bpmn: { kind: ShapeBpmnElementKind.EVENT_BOUNDARY, eventDefinitionKind: ShapeBpmnEventDefinitionKind.CANCEL, isInterrupting: true },
+        bvKind: ShapeBpmnElementKind.EVENT_BOUNDARY,
+        bvEventDefinitionKind: ShapeBpmnEventDefinitionKind.CANCEL,
+        bvIsInterrupting: true,
         fontStyle: 8,
       });
     });
@@ -330,7 +338,9 @@ describe('Style Computer', () => {
       const shape = newShape(newShapeBpmnStartEvent(ShapeBpmnEventDefinitionKind.MESSAGE, true), newLabel({ name: 'Arial' }));
       expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({
         baseStyleNames: ['startEvent'],
-        bpmn: { kind: ShapeBpmnElementKind.EVENT_START, eventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE, isInterrupting: true },
+        bvKind: ShapeBpmnElementKind.EVENT_START,
+        bvEventDefinitionKind: ShapeBpmnEventDefinitionKind.MESSAGE,
+        bvIsInterrupting: true,
         fontFamily: 'Arial',
       });
     });
@@ -339,7 +349,9 @@ describe('Style Computer', () => {
       const shape = newShape(newShapeBpmnStartEvent(ShapeBpmnEventDefinitionKind.TIMER, false), newLabel({ isItalic: true }));
       expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({
         baseStyleNames: ['startEvent'],
-        bpmn: { kind: ShapeBpmnElementKind.EVENT_START, eventDefinitionKind: ShapeBpmnEventDefinitionKind.TIMER, isInterrupting: false },
+        bvKind: ShapeBpmnElementKind.EVENT_START,
+        bvEventDefinitionKind: ShapeBpmnEventDefinitionKind.TIMER,
+        bvIsInterrupting: false,
         fontStyle: 2,
       });
     });
@@ -348,7 +360,8 @@ describe('Style Computer', () => {
       const shape = newShape(newShapeBpmnStartEvent(ShapeBpmnEventDefinitionKind.CANCEL, undefined), newLabel({ isStrikeThrough: true }));
       expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({
         baseStyleNames: ['startEvent'],
-        bpmn: { kind: ShapeBpmnElementKind.EVENT_START, eventDefinitionKind: ShapeBpmnEventDefinitionKind.CANCEL },
+        bvKind: ShapeBpmnElementKind.EVENT_START,
+        bvEventDefinitionKind: ShapeBpmnEventDefinitionKind.CANCEL,
         fontStyle: 8,
       });
     });
@@ -366,7 +379,9 @@ describe('Style Computer', () => {
           const shape = newShape(newShapeBpmnSubProcess(subProcessKind, markers), newLabel({ name: 'Arial' }));
           const style: BpmnCellStyle = {
             baseStyleNames: ['subProcess'],
-            bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind, markers },
+            bvKind: ShapeBpmnElementKind.SUB_PROCESS,
+            bvSubProcessKind: subProcessKind,
+            bvMarkers: markers,
             fontFamily: 'Arial',
           };
           if (!markers.includes(ShapeBpmnMarkerKind.EXPAND)) {
@@ -379,7 +394,9 @@ describe('Style Computer', () => {
           const shape = newShape(newShapeBpmnSubProcess(subProcessKind, markers), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
           expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({
             baseStyleNames: ['subProcess'],
-            bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind, markers },
+            bvKind: ShapeBpmnElementKind.SUB_PROCESS,
+            bvSubProcessKind: subProcessKind,
+            bvMarkers: markers,
             fontFamily: 'sans-serif',
             verticalAlign: 'top',
             align: 'center',
@@ -402,7 +419,9 @@ describe('Style Computer', () => {
           const shape = newShape(newShapeBpmnCallActivityCallingProcess(markers), newLabel({ name: 'Arial' }));
           const style: BpmnCellStyle = {
             baseStyleNames: ['callActivity'],
-            bpmn: { kind: ShapeBpmnElementKind.CALL_ACTIVITY, globalTaskKind: undefined, markers },
+            bvKind: ShapeBpmnElementKind.CALL_ACTIVITY,
+            bvGlobalTaskKind: undefined,
+            bvMarkers: markers,
             fontFamily: 'Arial',
           };
           if (!markers.includes(ShapeBpmnMarkerKind.EXPAND)) {
@@ -415,7 +434,9 @@ describe('Style Computer', () => {
           const shape = newShape(newShapeBpmnCallActivityCallingProcess(markers), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
           expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({
             baseStyleNames: ['callActivity'],
-            bpmn: { kind: ShapeBpmnElementKind.CALL_ACTIVITY, globalTaskKind: undefined, markers },
+            bvKind: ShapeBpmnElementKind.CALL_ACTIVITY,
+            bvGlobalTaskKind: undefined,
+            bvMarkers: markers,
             fontFamily: 'sans-serif',
             verticalAlign: 'top',
             align: 'center',
@@ -439,7 +460,9 @@ describe('Style Computer', () => {
           const shape = newShape(newShapeBpmnCallActivityCallingGlobalTask(globalTaskKind), newLabel({ name: 'Arial' }));
           expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({
             baseStyleNames: ['callActivity'],
-            bpmn: { kind: ShapeBpmnElementKind.CALL_ACTIVITY, globalTaskKind, markers: [] },
+            bvKind: ShapeBpmnElementKind.CALL_ACTIVITY,
+            bvGlobalTaskKind: globalTaskKind,
+            bvMarkers: [],
             fontFamily: 'Arial',
           });
         });
@@ -448,7 +471,9 @@ describe('Style Computer', () => {
           const shape = newShape(newShapeBpmnCallActivityCallingGlobalTask(globalTaskKind), newLabel({ name: 'sans-serif' }, new Bounds(20, 20, 300, 200)));
           expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({
             baseStyleNames: ['callActivity'],
-            bpmn: { kind: ShapeBpmnElementKind.CALL_ACTIVITY, globalTaskKind, markers: [] },
+            bvKind: ShapeBpmnElementKind.CALL_ACTIVITY,
+            bvGlobalTaskKind: globalTaskKind,
+            bvMarkers: [],
             fontFamily: 'sans-serif',
             verticalAlign: 'top',
             align: 'center',
@@ -469,7 +494,9 @@ describe('Style Computer', () => {
       const shape = newShape(newShapeBpmnActivity(ShapeBpmnElementKind.TASK_RECEIVE, undefined, instantiate), newLabel({ name: 'Arial' }));
       expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({
         baseStyleNames: ['receiveTask'],
-        bpmn: { kind: ShapeBpmnElementKind.TASK_RECEIVE, isInstantiating: instantiate, markers: [] },
+        bvKind: ShapeBpmnElementKind.TASK_RECEIVE,
+        bvIsInstantiating: instantiate,
+        bvMarkers: [],
         fontFamily: 'Arial',
       });
     });
@@ -478,13 +505,13 @@ describe('Style Computer', () => {
   describe('compute style - text annotation', () => {
     it('without label', () => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.TEXT_ANNOTATION));
-      expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['textAnnotation'], bpmn: { kind: ShapeBpmnElementKind.TEXT_ANNOTATION } });
+      expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['textAnnotation'], bvKind: ShapeBpmnElementKind.TEXT_ANNOTATION });
     });
     it('with label bounds', () => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.TEXT_ANNOTATION), newLabel({ name: 'Segoe UI' }, new Bounds(50, 50, 100, 100)));
       expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({
         baseStyleNames: ['textAnnotation'],
-        bpmn: { kind: ShapeBpmnElementKind.TEXT_ANNOTATION },
+        bvKind: ShapeBpmnElementKind.TEXT_ANNOTATION,
         fontFamily: 'Segoe UI',
         verticalAlign: 'top',
         labelWidth: 101,
@@ -497,13 +524,13 @@ describe('Style Computer', () => {
   describe('compute style - group', () => {
     it('without label', () => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.GROUP));
-      expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['group'], bpmn: { kind: ShapeBpmnElementKind.GROUP } });
+      expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['group'], bvKind: ShapeBpmnElementKind.GROUP });
     });
     it('with label bounds', () => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.GROUP), newLabel({ name: 'Roboto' }, new Bounds(50, 50, 100, 100)));
       expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({
         baseStyleNames: ['group'],
-        bpmn: { kind: ShapeBpmnElementKind.GROUP },
+        bvKind: ShapeBpmnElementKind.GROUP,
         fontFamily: 'Roboto',
         verticalAlign: 'top',
         align: 'center',
@@ -521,7 +548,7 @@ describe('Style Computer', () => {
       ['no isHorizontal value for a', undefined, true],
     ])('%s pool references a Process', (_title: string, isHorizontal: boolean, expected: boolean) => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.POOL), undefined, isHorizontal);
-      expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['pool'], bpmn: { kind: ShapeBpmnElementKind.POOL }, horizontal: expected });
+      expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['pool'], bvKind: ShapeBpmnElementKind.POOL, horizontal: expected });
     });
   });
 
@@ -532,7 +559,7 @@ describe('Style Computer', () => {
       ['no isHorizontal value for a', undefined, true],
     ])('%s lane', (_title: string, isHorizontal: boolean, expected: boolean) => {
       const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.LANE), undefined, isHorizontal);
-      expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['lane'], bpmn: { kind: ShapeBpmnElementKind.LANE }, horizontal: expected });
+      expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['lane'], bvKind: ShapeBpmnElementKind.LANE, horizontal: expected });
     });
   });
 
@@ -553,11 +580,11 @@ describe('Style Computer', () => {
       (markerKind: ShapeBpmnMarkerKind) => {
         it(`${bpmnKind} with ${markerKind} marker`, () => {
           const shape = newShape(newShapeBpmnActivity(bpmnKind, [markerKind]), newLabel({ name: 'Arial' }));
-          const bpmn: BpmnCellStyle['bpmn'] = { kind: bpmnKind, markers: [markerKind] };
+          const expectedStyle: BpmnCellStyle = { baseStyleNames: [bpmnKind], bvKind: bpmnKind, bvMarkers: [markerKind], fontFamily: 'Arial' };
           if (bpmnKind === ShapeBpmnElementKind.TASK_RECEIVE) {
-            bpmn.isInstantiating = false;
+            expectedStyle.bvIsInstantiating = false;
           }
-          expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: [bpmnKind], bpmn, fontFamily: 'Arial' });
+          expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>(expectedStyle);
         });
 
         if (bpmnKind == ShapeBpmnElementKind.SUB_PROCESS) {
@@ -566,7 +593,9 @@ describe('Style Computer', () => {
             const shape = newShape(newShapeBpmnSubProcess(subProcessKind, markers));
             expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({
               baseStyleNames: ['subProcess'],
-              bpmn: { kind: ShapeBpmnElementKind.SUB_PROCESS, subProcessKind, markers: getExpectedMarkers(markers, subProcessKind) },
+              bvKind: ShapeBpmnElementKind.SUB_PROCESS,
+              bvSubProcessKind: subProcessKind,
+              bvMarkers: getExpectedMarkers(markers, subProcessKind),
             });
           });
         }
@@ -576,7 +605,9 @@ describe('Style Computer', () => {
             const shape = newShape(newShapeBpmnCallActivityCallingProcess([markerKind, ShapeBpmnMarkerKind.EXPAND]));
             expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({
               baseStyleNames: ['callActivity'],
-              bpmn: { kind: ShapeBpmnElementKind.CALL_ACTIVITY, globalTaskKind: undefined, markers: [markerKind, ShapeBpmnMarkerKind.EXPAND] },
+              bvKind: ShapeBpmnElementKind.CALL_ACTIVITY,
+              bvGlobalTaskKind: undefined,
+              bvMarkers: [markerKind, ShapeBpmnMarkerKind.EXPAND],
             });
           });
 
@@ -590,7 +621,9 @@ describe('Style Computer', () => {
             const shape = newShape(newShapeBpmnCallActivityCallingGlobalTask(globalTaskKind, [markerKind]));
             expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({
               baseStyleNames: ['callActivity'],
-              bpmn: { kind: ShapeBpmnElementKind.CALL_ACTIVITY, globalTaskKind, markers: [markerKind] },
+              bvKind: ShapeBpmnElementKind.CALL_ACTIVITY,
+              bvGlobalTaskKind: globalTaskKind,
+              bvMarkers: [markerKind],
             });
           });
         }
@@ -613,7 +646,9 @@ describe('Style Computer', () => {
         gatewayKind ??= ShapeBpmnEventBasedGatewayKind.None;
         expect(computeStyle(shape)).toStrictEqual<BpmnCellStyle>({
           baseStyleNames: ['eventBasedGateway'],
-          bpmn: { kind: ShapeBpmnElementKind.GATEWAY_EVENT_BASED, isInstantiating: !!instantiate, gatewayKind },
+          bvKind: ShapeBpmnElementKind.GATEWAY_EVENT_BASED,
+          bvIsInstantiating: !!instantiate,
+          bvGatewayKind: gatewayKind,
           fontFamily: 'Arial',
         });
       },
@@ -632,7 +667,7 @@ describe('Style Computer', () => {
       describe('shapes', () => {
         it('shape with font family only', () => {
           const shape = new Shape('id', newShapeBpmnElement(ShapeBpmnElementKind.TASK_SCRIPT), undefined, new Label(toFont({ name: 'Roboto' }), undefined));
-          const style: BpmnCellStyle = { baseStyleNames: ['scriptTask'], bpmn: { kind: ShapeBpmnElementKind.TASK_SCRIPT } };
+          const style: BpmnCellStyle = { baseStyleNames: ['scriptTask'], bvKind: ShapeBpmnElementKind.TASK_SCRIPT };
           if (expectFontStyles) {
             style.fontFamily = 'Roboto';
           }
@@ -646,7 +681,7 @@ describe('Style Computer', () => {
             undefined,
             new Label(toFont({ name: 'Courier', size: 9, isBold: true }), undefined),
           );
-          const style: BpmnCellStyle = { baseStyleNames: ['exclusiveGateway'], bpmn: { kind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE } };
+          const style: BpmnCellStyle = { baseStyleNames: ['exclusiveGateway'], bvKind: ShapeBpmnElementKind.GATEWAY_EXCLUSIVE };
           if (expectFontStyles) {
             style.fontFamily = 'Courier';
             style.fontSize = 9;
@@ -662,7 +697,7 @@ describe('Style Computer', () => {
             undefined,
             new Label(toFont({ name: 'Arial', isItalic: true }), undefined),
           );
-          const style: BpmnCellStyle = { baseStyleNames: ['intermediateCatchEvent'], bpmn: { kind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH } };
+          const style: BpmnCellStyle = { baseStyleNames: ['intermediateCatchEvent'], bvKind: ShapeBpmnElementKind.EVENT_INTERMEDIATE_CATCH };
           if (expectFontStyles) {
             style.fontFamily = 'Arial';
             style.fontStyle = 2;
@@ -674,7 +709,7 @@ describe('Style Computer', () => {
       describe('edges', () => {
         it('edge with strike-through font', () => {
           const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.CONDITIONAL_FROM_ACTIVITY), undefined, new Label(toFont({ size: 14.2, isStrikeThrough: true }), undefined));
-          const style: BpmnCellStyle = { baseStyleNames: ['sequenceFlow', 'conditional_from_activity'], bpmn: { kind: FlowKind.SEQUENCE_FLOW } };
+          const style: BpmnCellStyle = { baseStyleNames: ['sequenceFlow', 'conditional_from_activity'], bvKind: FlowKind.SEQUENCE_FLOW };
           if (expectFontStyles) {
             style.fontSize = 14.2;
             style.fontStyle = 8;
@@ -684,7 +719,7 @@ describe('Style Computer', () => {
 
         it('edge with underline font', () => {
           const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.DEFAULT), undefined, new Label(toFont({ isUnderline: true }), undefined));
-          const style: BpmnCellStyle = { baseStyleNames: ['sequenceFlow', 'default'], bpmn: { kind: FlowKind.SEQUENCE_FLOW } };
+          const style: BpmnCellStyle = { baseStyleNames: ['sequenceFlow', 'default'], bvKind: FlowKind.SEQUENCE_FLOW };
           if (expectFontStyles) {
             style.fontStyle = 4;
           }
@@ -713,7 +748,7 @@ describe('Style Computer', () => {
           const shape = newShape(newShapeBpmnElement(kind), newLabelExtension('#010101'));
           shape.extensions.fillColor = '#000003';
           shape.extensions.strokeColor = '#FF0203';
-          const style: BpmnCellStyle = { baseStyleNames: [kind], bpmn: { kind } };
+          const style: BpmnCellStyle = { baseStyleNames: [kind], bvKind: kind };
           if (expectAdditionalColorsStyle) {
             style.fillColor = '#000003';
             style.strokeColor = '#FF0203';
@@ -726,7 +761,7 @@ describe('Style Computer', () => {
           const shape = newShape(newShapeBpmnElement(kind), newLabelExtension('#aa0101'));
           shape.extensions.fillColor = '#AA0003';
           shape.extensions.strokeColor = '#FF02AA';
-          const style: BpmnCellStyle = { baseStyleNames: [kind], bpmn: { kind }, horizontal: true };
+          const style: BpmnCellStyle = { baseStyleNames: [kind], bvKind: kind, horizontal: true };
           if (expectAdditionalColorsStyle) {
             style.fillColor = '#AA0003';
             style.swimlaneFillColor = '#AA0003';
@@ -740,7 +775,7 @@ describe('Style Computer', () => {
           const shape = newShape(newShapeBpmnElement(kind), newLabelExtension('#aa0101'));
           shape.extensions.fillColor = '#AA0003';
           shape.extensions.strokeColor = '#FF02AA';
-          const style: BpmnCellStyle = { baseStyleNames: [kind], bpmn: { kind } };
+          const style: BpmnCellStyle = { baseStyleNames: [kind], bvKind: kind };
           if (expectAdditionalColorsStyle) {
             style.fillColor = '#AA0003';
             style.strokeColor = '#FF02AA';
@@ -751,7 +786,7 @@ describe('Style Computer', () => {
 
         it('no extension', () => {
           const shape = newShape(newShapeBpmnElement(ShapeBpmnElementKind.TASK));
-          expect(computeStyleWithRendererOptions(shape)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['task'], bpmn: { kind: ShapeBpmnElementKind.TASK } });
+          expect(computeStyleWithRendererOptions(shape)).toStrictEqual<BpmnCellStyle>({ baseStyleNames: ['task'], bvKind: ShapeBpmnElementKind.TASK });
         });
       });
 
@@ -759,7 +794,7 @@ describe('Style Computer', () => {
         it('sequence flow', () => {
           const edge = new Edge('id', newSequenceFlow(SequenceFlowKind.DEFAULT), undefined, newLabelExtension('#aaaaaa'));
           edge.extensions.strokeColor = '#111111';
-          const style: BpmnCellStyle = { baseStyleNames: ['sequenceFlow', 'default'], bpmn: { kind: FlowKind.SEQUENCE_FLOW } };
+          const style: BpmnCellStyle = { baseStyleNames: ['sequenceFlow', 'default'], bvKind: FlowKind.SEQUENCE_FLOW };
           if (expectAdditionalColorsStyle) {
             style.strokeColor = '#111111';
             style.fontColor = '#aaaaaa';
@@ -769,7 +804,7 @@ describe('Style Computer', () => {
         it('message flow', () => {
           const edge = new Edge('id', newMessageFlow(), undefined, newLabelExtension('#aaaabb'));
           edge.extensions.strokeColor = '#1111bb';
-          const style: BpmnCellStyle = { baseStyleNames: ['messageFlow'], bpmn: { kind: FlowKind.MESSAGE_FLOW } };
+          const style: BpmnCellStyle = { baseStyleNames: ['messageFlow'], bvKind: FlowKind.MESSAGE_FLOW };
           if (expectAdditionalColorsStyle) {
             style.strokeColor = '#1111bb';
             style.fontColor = '#aaaabb';
@@ -779,7 +814,7 @@ describe('Style Computer', () => {
         it('message flow icon', () => {
           const edge = new Edge('id', newMessageFlow());
           edge.extensions.strokeColor = '#11aabb';
-          const style: BpmnCellStyle = { shape: 'bpmn.messageFlowIcon', bpmn: { isInitiating: false } };
+          const style: BpmnCellStyle = { shape: 'bpmn.messageFlowIcon', bvIsInitiating: false };
           if (expectAdditionalColorsStyle) {
             style.strokeColor = '#11aabb';
           }
@@ -788,7 +823,7 @@ describe('Style Computer', () => {
         it('association flow', () => {
           const edge = new Edge('id', newAssociationFlow(AssociationDirectionKind.ONE), undefined, newLabelExtension('#aaaacc'));
           edge.extensions.strokeColor = '#1111cc';
-          const style: BpmnCellStyle = { baseStyleNames: ['association', 'One'], bpmn: { kind: FlowKind.ASSOCIATION_FLOW } };
+          const style: BpmnCellStyle = { baseStyleNames: ['association', 'One'], bvKind: FlowKind.ASSOCIATION_FLOW };
           if (expectAdditionalColorsStyle) {
             style.strokeColor = '#1111cc';
             style.fontColor = '#aaaacc';

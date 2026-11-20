@@ -41,8 +41,8 @@ export function computeAllBpmnClassNamesOfCell(cell: Cell, isLabel: boolean): st
 export function computeAllBpmnClassNames(style: BpmnCellStyle, isLabel: boolean): string[] {
   const classes: string[] = [];
 
-  // if the kind is not set, fall back on the shape: bpmn.messageFlowIcon --> messageFlowIcon
-  const bpmnElementKind = style.bpmn?.kind ?? style.shape?.replace(/bpmn./g, '') ?? '';
+  // if the kind is not set, fall back on the shape: style.bvMessageFlowIcon --> messageFlowIcon
+  const bpmnElementKind = style.bvKind ?? style.shape?.replace(/bpmn./g, '') ?? '';
 
   const typeClasses = new Map<string, boolean>();
   typeClasses.set('bpmn-type-activity', ShapeUtil.isActivity(bpmnElementKind));
@@ -55,22 +55,21 @@ export function computeAllBpmnClassNames(style: BpmnCellStyle, isLabel: boolean)
 
   classes.push(computeBpmnBaseClassName(bpmnElementKind));
 
-  const bpmn = style.bpmn;
-  if (bpmn?.eventDefinitionKind) {
-    classes.push(`bpmn-event-def-${bpmn.eventDefinitionKind}`);
+  if (style.bvEventDefinitionKind) {
+    classes.push(`bpmn-event-def-${style.bvEventDefinitionKind}`);
   }
-  if (bpmn?.gatewayKind) {
-    classes.push(`bpmn-gateway-kind-${bpmn.gatewayKind.toLowerCase()}`);
+  if (style.bvGatewayKind) {
+    classes.push(`bpmn-gateway-kind-${style.bvGatewayKind.toLowerCase()}`);
   }
-  if (bpmn?.isInitiating !== undefined) {
+  if (style.bvIsInitiating !== undefined) {
     // message flow icon
-    classes.push(bpmn.isInitiating ? 'bpmn-icon-initiating' : 'bpmn-icon-non-initiating');
+    classes.push(style.bvIsInitiating ? 'bpmn-icon-initiating' : 'bpmn-icon-non-initiating');
   }
-  if (bpmn?.subProcessKind) {
-    classes.push(`bpmn-sub-process-${bpmn.subProcessKind.toLowerCase()}`);
+  if (style.bvSubProcessKind) {
+    classes.push(`bpmn-sub-process-${style.bvSubProcessKind.toLowerCase()}`);
   }
-  if (bpmn?.globalTaskKind) {
-    classes.push(computeBpmnBaseClassName(bpmn.globalTaskKind));
+  if (style.bvGlobalTaskKind) {
+    classes.push(computeBpmnBaseClassName(style.bvGlobalTaskKind));
   }
 
   if (isLabel) {

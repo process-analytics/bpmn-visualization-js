@@ -90,14 +90,14 @@ describe('updateFont', () => {
 
 describe('updateFill', () => {
   test('sets the fill color', () => {
-    const style: BpmnCellStyle = { bpmn: { kind: ShapeBpmnElementKind.TASK } };
+    const style: BpmnCellStyle = { bvKind: ShapeBpmnElementKind.TASK };
     updateFill(style, { color: '#abcdef' });
     expect(style.fillColor).toBe('#abcdef');
     expect(style.swimlaneFillColor).toBeUndefined();
   });
 
   test('also sets the swimlane fill color for a pool', () => {
-    const style: BpmnCellStyle = { bpmn: { kind: ShapeBpmnElementKind.POOL } };
+    const style: BpmnCellStyle = { bvKind: ShapeBpmnElementKind.POOL };
     updateFill(style, { color: '#abcdef' });
     expect(style.fillColor).toBe('#abcdef');
     expect(style.swimlaneFillColor).toBe('#abcdef');
@@ -108,13 +108,13 @@ describe('setCssClasses', () => {
   test('sets the extra CSS classes', () => {
     const style: BpmnCellStyle = {};
     setCssClasses(style, ['class-1', 'class-2']);
-    expect(style.bpmn?.cssClasses).toEqual(['class-1', 'class-2']);
+    expect(style.bvCssClasses).toEqual(['class-1', 'class-2']);
   });
 
   test('deletes the extra CSS classes when empty', () => {
-    const style: BpmnCellStyle = { bpmn: { cssClasses: ['class-1'] } };
+    const style: BpmnCellStyle = { bvCssClasses: ['class-1'] };
     setCssClasses(style, []);
-    expect(style.bpmn?.cssClasses).toBeUndefined();
+    expect(style.bvCssClasses).toBeUndefined();
   });
 });
 
@@ -125,6 +125,6 @@ describe('getBpmnIsInstantiating', () => {
     ${false}        | ${false}
     ${undefined}    | ${false}
   `('returns $expected when bpmn.isInstantiating is $isInstantiating', ({ isInstantiating, expected }: { isInstantiating: boolean | undefined; expected: boolean }) => {
-    expect(getBpmnIsInstantiating({ bpmn: { isInstantiating } })).toBe(expected);
+    expect(getBpmnIsInstantiating({ bvIsInstantiating: isInstantiating })).toBe(expected);
   });
 });
