@@ -87,12 +87,20 @@ compares font sizes and positions relative to the first overlay. Cases: tasks, e
 call activities, pools, lanes and their child. All 10 cases fail without the fix, pass with it: the second line of the
 former `FIXME` (sub-process and call activity) was the same bug.
 
-## Out of scope: export translation depends on the view scale
+## Export translation depended on the view scale (fixed after the review)
 
-The exporter translates the canvas by `floor((border - bounds.x) / viewScale)` while the drawing ends at scale 1, so
-the border is divided by the view scale: at zoom 2, the whole diagram is shifted by about 12px to the top-left (the
-left margin is 12.5px instead of 25px, the right one grows accordingly). Seen in the jsdom probe; the test compares
-positions relatively to the first overlay to stay independent of it. Not fixed here.
+The exporter translated the canvas by `floor((border - bounds.x) / viewScale)` while the drawing ends at scale 1, so
+the border was divided by the view scale: at zoom 2, the whole diagram was shifted by about 12px to the top-left. The
+graph bounds are in screen units but the border is in exported units, so the translation is now
+`floor(border - bounds.x / viewScale)`. Found with the jsdom probe; first left out of scope, then fixed to let the
+test compare absolute positions.
+
+## Review
+
+Independent correctness and test reviews: no blocking finding. Minors fixed: absolute positions in the test (needed
+the translation fix above), new cases for edges and several overlays on one element, the exporter class renamed to
+`ImageExportWithIsolatedOverlays` to avoid confusion with the maxGraph `ImageExport` class. With both fixes, the 14
+cases pass; reverting either fix makes all 14 fail.
 
 ## maxGraph issue
 
