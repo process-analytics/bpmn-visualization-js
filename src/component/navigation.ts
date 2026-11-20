@@ -22,7 +22,7 @@ import type { FitPlugin, InternalMouseEvent, PanningHandler } from '@maxgraph/co
 import { eventUtils, InternalEvent } from '@maxgraph/core';
 import { debounce, throttle } from 'es-toolkit';
 
-import { ensurePositiveValue, ensureValidZoomConfiguration } from './helpers/validators';
+import { convertNaNToZero, ensurePositiveValue, ensureValidZoomConfiguration } from './helpers/validators';
 import { FitType } from './options';
 
 /**
@@ -102,10 +102,6 @@ export class NavigationImpl implements Disposable, Navigation {
       panningHandler.isForcePanningEvent = (_me: InternalMouseEvent): boolean => false;
     }
   }
-}
-
-function convertNaNToZero(value: number): number {
-  return Number.isNaN(value) ? 0 : value;
 }
 
 function setContainerCursor(graph: BpmnGraph, cursor: 'grab' | 'default'): () => void {

@@ -127,6 +127,23 @@ Unlike D4 and D5, this object is part of the released public API. It is renamed 
 
 The JSDoc mentions the former name, so a consumer searching for it finds the new one.
 
+### D8. A coordinate that is not a number degrades only its shape
+
+Behavior on master (mxGraph): a non-numeric BPMN coordinate is parsed to `NaN`, stored as is in the geometry, and the
+rest of the diagram is loaded. Behavior of the 0.23.0 POC: maxGraph rejects `NaN` in `Point` and `Rectangle`, so the
+whole load throws `Invalid x supplied.`. That is a behavior change, so the option "validate the coordinates" of the TODO
+is chosen over "rethrow with a convenient message", which would keep the load aborted.
+
+Choices:
+- the conversion happens in the renderer (`BpmnRenderer`), where the maxGraph geometry objects are built, not in the
+  parser: the parser is independent of maxGraph, and a unit test pins that it produces `NaN` on purpose;
+- `NaN` becomes 0, through the `convertNaNToZero` helper already used by the fit computation, moved to
+  `helpers/validators.ts` to be shared. It applies to the shape and label bounds and to the edge waypoints;
+- remaining difference with master: the geometry holds 0 instead of `NaN`. Both keep the rest of the diagram.
+  Checked in chromium on the fixture: the shape of `Activity_1` is not drawn (negative width and height), but its label
+  "Task 1" is. The rendering on master was not compared: with `NaN` coordinates the label was probably not visible, so
+  the label may be a visible difference on such a malformed diagram. No e2e test covers this fixture.
+
 ## Open items
 
 ### O1. ECMAScript target of the generated code

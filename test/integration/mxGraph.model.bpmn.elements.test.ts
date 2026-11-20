@@ -1718,15 +1718,21 @@ describe('mxGraph model - BPMN elements', () => {
     it('Parse a diagram with numbers not parsable as number', () => {
       // The non-numeric coordinates ('not_a_number' / 'not a number too') are parsed to NaN by BpmnXmlParser
       // (Number(value)); this is the intended parser behavior (see the BpmnXmlParser special-cases unit test).
-      // maxGraph then rejects NaN coordinates: its Point setter throws 'Invalid x supplied.' (Point.ts). mxGraph used
-      // to silently store NaN and render a broken/invisible shape while keeping the rest of the diagram, so this is a
-      // behavior change: a single malformed coordinate now aborts the whole diagram load.
-      // TODO maxgraph@0.23.0 capture the error and rethrow it with a convenient message OR validate the coordinate
-      // values during parsing (maxGraph provides mathUtils.isNumber()), so a single malformed coordinate degrades only
-      // that shape instead of aborting the whole diagram load (as mxGraph did).
-      expect(() => bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/simple-start-task-end_numbers_not_parsable_as_number.bpmn'))).toThrow(
-        'Invalid x supplied.',
-      );
+      // maxGraph rejects NaN in its geometry objects, so the renderer converts it to 0: only this shape is degraded and
+      // the rest of the diagram is loaded, as with mxGraph (which stored NaN in the geometry).
+      bpmnVisualization.load(readFileSync('../fixtures/bpmn/xml-parsing/special/simple-start-task-end_numbers_not_parsable_as_number.bpmn'));
+
+      expect('Activity_1').toBeCellWithParentAndGeometry({
+        parentId: defaultParentId,
+        geometry: new Geometry(
+          0, // from 'not_a_number'
+          0, // from 'not a number too'
+          -100,
+          -80,
+        ),
+      });
+      expect('StartEvent_1').toBeCell();
+      expect('EndEvent_1').toBeCell();
     });
   });
 

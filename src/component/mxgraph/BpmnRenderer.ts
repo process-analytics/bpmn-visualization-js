@@ -28,6 +28,7 @@ import { Point } from '@maxgraph/core';
 
 import { MessageVisibleKind, ShapeUtil } from '../../model/bpmn/internal';
 import { MessageFlow } from '../../model/bpmn/internal/edge/flows';
+import { convertNaNToZero } from '../helpers/validators';
 
 import CoordinatesTranslator from './renderer/CoordinatesTranslator';
 import StyleComputer from './renderer/StyleComputer';
@@ -111,7 +112,7 @@ export class BpmnRenderer {
 
   private insertWaypoints(waypoints: Waypoint[], edge: Cell): void {
     if (waypoints) {
-      edge.geometry!.points = waypoints.map(waypoint => this.coordinatesTranslator.computeRelativeCoordinates(edge.getParent()!, new Point(waypoint.x, waypoint.y)));
+      edge.geometry!.points = waypoints.map(waypoint => this.coordinatesTranslator.computeRelativeCoordinates(edge.getParent()!, newPoint(waypoint.x, waypoint.y)));
     }
   }
 
@@ -131,29 +132,29 @@ export class BpmnRenderer {
 
     if (labelBounds) {
       const geometry = edge.geometry!;
-      geometry.width = labelBounds.width;
-      geometry.height = labelBounds.height;
+      geometry.width = convertNaNToZero(labelBounds.width);
+      geometry.height = convertNaNToZero(labelBounds.height);
       geometry.relative = false;
 
       const edgeCenterCoordinate = this.coordinatesTranslator.computeEdgeCenter(edge);
-      const labelBoundsRelativeCoordinateFromParent = this.coordinatesTranslator.computeRelativeCoordinates(edge.getParent()!, new Point(labelBounds.x, labelBounds.y));
-      const relativeLabelX = labelBoundsRelativeCoordinateFromParent.x + labelBounds.width / 2 - edgeCenterCoordinate.x;
+      const labelBoundsRelativeCoordinateFromParent = this.coordinatesTranslator.computeRelativeCoordinates(edge.getParent()!, newPoint(labelBounds.x, labelBounds.y));
+      const relativeLabelX = labelBoundsRelativeCoordinateFromParent.x + geometry.width / 2 - edgeCenterCoordinate.x;
       const relativeLabelY = labelBoundsRelativeCoordinateFromParent.y - edgeCenterCoordinate.y;
-      geometry.offset = new Point(relativeLabelX, relativeLabelY);
+      geometry.offset = newPoint(relativeLabelX, relativeLabelY);
     }
     return edge;
   }
 
   private insertVertex(parent: Cell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: BpmnCellStyle): Cell {
-    const vertexCoordinates = this.coordinatesTranslator.computeRelativeCoordinates(parent, new Point(bounds.x, bounds.y));
+    const vertexCoordinates = this.coordinatesTranslator.computeRelativeCoordinates(parent, newPoint(bounds.x, bounds.y));
     const cell = this.graph.insertVertex({
       parent,
       id: id ?? undefined,
       value,
       x: vertexCoordinates.x,
       y: vertexCoordinates.y,
-      width: bounds.width,
-      height: bounds.height,
+      width: convertNaNToZero(bounds.width),
+      height: convertNaNToZero(bounds.height),
       style,
     });
 
@@ -161,7 +162,7 @@ export class BpmnRenderer {
       // label coordinates are relative in the cell referential coordinates
       const relativeLabelX = labelBounds.x - bounds.x;
       const relativeLabelY = labelBounds.y - bounds.y;
-      cell.geometry!.offset = new Point(relativeLabelX, relativeLabelY);
+      cell.geometry!.offset = newPoint(relativeLabelX, relativeLabelY);
     }
     return cell;
   }
@@ -191,4 +192,10 @@ export function newBpmnRenderer(graph: BpmnGraph, options: RendererOptions): Bpm
  */
 export function messageFlowIconId(messageFlowId: string): string {
   return `messageFlowIcon_of_${messageFlowId}`;
+}
+
+// A coordinate that is not a number (parsed from a malformed BPMN value) degrades to 0 instead of aborting the whole
+// diagram load, as maxGraph rejects NaN in Point (mxGraph stored it and kept rendering the rest of the diagram).
+function newPoint(x: number, y: number): Point {
+  return new Point(convertNaNToZero(x), convertNaNToZero(y));
 }

@@ -25,6 +25,14 @@ export function ensureInRange(value: number, min: number, max: number, defaultVa
 }
 
 /**
+ * maxGraph rejects `NaN` in its geometry objects (`Point`, `Rectangle`, ...), where mxGraph stored it silently.
+ * @internal
+ */
+export function convertNaNToZero(value: number): number {
+  return Number.isNaN(value) ? 0 : value;
+}
+
+/**
  * @internal
  */
 export function ensurePositiveValue(input: number | undefined | null): number {
