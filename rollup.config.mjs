@@ -104,7 +104,7 @@ function withMinification(plugins, banner) {
   return [
     ...plugins,
     terser({
-      ecma: 2015,
+      ecma: 2020,
       format: {
         preamble: banner,
       },
