@@ -188,3 +188,18 @@ Two TODOs of `test/integration/matchers/matcher-utils.ts`, both from the first m
 maxGraph ships ES2020 code, bpmn-visualization targets ES2015. If a dependency ships ES2020 syntax, an environment
 supporting only ES2015 fails anyway, so targeting ES2015 gives no compatibility gain. To analyse: the target of every
 runtime dependency (maxGraph and the others), then whether bpmn-visualization should target ES2020 to be consistent.
+
+Progress (analysis in progress, nothing decided):
+- tool: `es-check` 9.9.0, lowest ECMAScript version parsing every file;
+- `@maxgraph/core` 0.25.1, `lib/esm`: ES2020;
+- `fast-xml-parser` 5.8.0, `src`: ES2020 for the code used by `XMLParser` (`??` in `xmlparser/OptionsBuilder.js:110`).
+  The whole `src` folder requires more, but only because of code the library does not use: the CLI (`src/cli/cli.js`,
+  shebang, ES2023) and the experimental v6 parser (`src/v6/`, class fields, ES2022);
+- `es-toolkit` 1.46.1, `debounce` and `throttle` (the only functions used): ES2020;
+- master already uses the same versions of `fast-xml-parser` and `es-toolkit`, so the README claim "they must at least
+  support ES2015" is probably already false before the migration.
+
+Next steps:
+1. measure the bundles of the POC (`dist/bpmn-visualization.js` IIFE, which includes the dependencies, and the ESM one);
+2. build the bundles of master and measure them too, to confirm that master already requires ES2020;
+3. then decide on the target of bpmn-visualization and the README.
