@@ -159,7 +159,6 @@ export function buildExpectedCellStyleWithCommonAttributes(expectedModelElt: Exp
 
 // TODO maxgraph@0.1.0 why building ExpectedStateStyle now maxGraph manage style in object. We should use 'stateStyle' directly (and remove this function)
 // investigate "check style properties from the model: keep a single check by merging the code previously used to check the style string and the StyleMap to check the CellStyle (with bpmn addons)
-// TODO maxgraph@0.1.0 rename into 'receivedStateStyle' (in master branch)
 /**
  * This function really gets style from the state of the cell in the graph view.
  * The functions that return ComparedBpmnCellStyle objects are in fact, returning a computed style by using the style properties from the model augmented with the properties resolved
