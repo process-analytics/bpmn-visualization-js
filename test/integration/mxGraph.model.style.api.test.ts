@@ -77,75 +77,64 @@ describe('mxGraph model - update style', () => {
     });
 
     it('Update the style twice - specify the property both times', () => {
-      const strokeColor = 'yellow';
       bpmnVisualization.bpmnElementsRegistry.updateStyle(['endEvent_terminate_1'], { stroke: { color: 'to_override' } });
-      bpmnVisualization.bpmnElementsRegistry.updateStyle(['endEvent_terminate_1'], { stroke: { color: strokeColor } });
+      expectTerminateEndEventWithStrokeColor('to_override');
 
-      expect('endEvent_terminate_1').toBeEndEvent({
-        stroke: { color: strokeColor },
-        // not under test
-        eventDefinitionKind: ShapeBpmnEventDefinitionKind.TERMINATE,
-        parentId: 'lane_01',
-        label: 'terminate end 1',
-      });
+      bpmnVisualization.bpmnElementsRegistry.updateStyle(['endEvent_terminate_1'], { stroke: { color: 'yellow' } });
+      expectTerminateEndEventWithStrokeColor('yellow');
     });
 
     it('Update the style twice - specify the property only the first time', () => {
-      const strokeColor = 'green';
-      bpmnVisualization.bpmnElementsRegistry.updateStyle(['endEvent_terminate_1'], { stroke: { color: strokeColor } });
-      bpmnVisualization.bpmnElementsRegistry.updateStyle(['endEvent_terminate_1'], {});
+      bpmnVisualization.bpmnElementsRegistry.updateStyle(['endEvent_terminate_1'], { stroke: { color: 'green' } });
+      expectTerminateEndEventWithStrokeColor('green');
 
-      expect('endEvent_terminate_1').toBeEndEvent({
-        stroke: { color: strokeColor },
-        // not under test
-        eventDefinitionKind: ShapeBpmnEventDefinitionKind.TERMINATE,
-        parentId: 'lane_01',
-        label: 'terminate end 1',
-      });
+      bpmnVisualization.bpmnElementsRegistry.updateStyle(['endEvent_terminate_1'], {});
+      expectTerminateEndEventWithStrokeColor('green');
     });
 
     it('Font style already set and no font style as api parameter', () => {
-      const font = {
+      const font: Font = {
         isBold: true,
         isItalic: true,
         isUnderline: true,
         isStrikeThrough: true,
       };
+      const expectUserTaskWithAllFontStyles = (): void =>
+        expect('userTask_2_2').toBeUserTask({
+          font,
+          // not under test
+          parentId: 'lane_02',
+          label: 'User Task 2.2',
+        });
+
       bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { font });
-      // TODO maxGraph@0.10.3 - add such additional check in the master branch and do it when several style update actions are done (from maxgraph@0.1.0 migration)
+      expectUserTaskWithAllFontStyles();
+
       // this doesn't change the style as the font property is empty
       bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { font: {} });
-
-      expect('userTask_2_2').toBeUserTask({
-        font,
-        // not under test
-        parentId: 'lane_02',
-        label: 'User Task 2.2',
-      });
+      expectUserTaskWithAllFontStyles();
     });
 
     it('Font style already set and update only the specified font styles', () => {
-      bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', {
-        font: {
-          isBold: true,
-          isItalic: true,
-          isUnderline: true,
-          isStrikeThrough: true,
-        },
-      });
-      bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { font: { isItalic: false, isUnderline: false } });
+      const expectUserTaskWithFont = (font: Font): void =>
+        expect('userTask_2_2').toBeUserTask({
+          font,
+          // not under test
+          parentId: 'lane_02',
+          label: 'User Task 2.2',
+        });
 
-      expect('userTask_2_2').toBeUserTask({
-        font: {
-          isBold: true,
-          isItalic: false,
-          isUnderline: false,
-          isStrikeThrough: true,
-        },
-        // not under test
-        parentId: 'lane_02',
-        label: 'User Task 2.2',
-      });
+      const allFontStyles: Font = {
+        isBold: true,
+        isItalic: true,
+        isUnderline: true,
+        isStrikeThrough: true,
+      };
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { font: allFontStyles });
+      expectUserTaskWithFont(allFontStyles);
+
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('userTask_2_2', { font: { isItalic: false, isUnderline: false } });
+      expectUserTaskWithFont({ isBold: true, isItalic: false, isUnderline: false, isStrikeThrough: true });
     });
 
     it('Update the fill style of a lane', () => {
@@ -441,72 +430,64 @@ describe('mxGraph model - update style', () => {
     });
 
     it('Update the style twice - specify the property both times', () => {
-      const strokeColor = 'gray';
       bpmnVisualization.bpmnElementsRegistry.updateStyle(['sequenceFlow_lane_1_elt_1'], { stroke: { color: 'to_override' } });
-      bpmnVisualization.bpmnElementsRegistry.updateStyle(['sequenceFlow_lane_1_elt_1'], { stroke: { color: strokeColor } });
+      expectSequenceFlowOfLane1WithStrokeColor('to_override');
 
-      expect('sequenceFlow_lane_1_elt_1').toBeSequenceFlow({
-        stroke: { color: strokeColor },
-        // not under test
-        parentId: 'lane_01',
-        verticalAlign: 'bottom',
-      });
+      bpmnVisualization.bpmnElementsRegistry.updateStyle(['sequenceFlow_lane_1_elt_1'], { stroke: { color: 'gray' } });
+      expectSequenceFlowOfLane1WithStrokeColor('gray');
     });
 
     it('Update the style twice - specify the property only the first time', () => {
-      const strokeColor = 'DarkBlue';
-      bpmnVisualization.bpmnElementsRegistry.updateStyle(['sequenceFlow_lane_1_elt_1'], { stroke: { color: strokeColor } });
-      bpmnVisualization.bpmnElementsRegistry.updateStyle(['sequenceFlow_lane_1_elt_1'], {});
+      bpmnVisualization.bpmnElementsRegistry.updateStyle(['sequenceFlow_lane_1_elt_1'], { stroke: { color: 'DarkBlue' } });
+      expectSequenceFlowOfLane1WithStrokeColor('DarkBlue');
 
-      expect('sequenceFlow_lane_1_elt_1').toBeSequenceFlow({
-        stroke: { color: strokeColor },
-        // not under test
-        parentId: 'lane_01',
-        verticalAlign: 'bottom',
-      });
+      bpmnVisualization.bpmnElementsRegistry.updateStyle(['sequenceFlow_lane_1_elt_1'], {});
+      expectSequenceFlowOfLane1WithStrokeColor('DarkBlue');
     });
 
     it('Font style already set and no font style as api parameter', () => {
-      const font = {
+      const font: Font = {
         isBold: true,
         isItalic: true,
         isUnderline: true,
         isStrikeThrough: true,
       };
+      const expectSequenceFlowWithAllFontStyles = (): void =>
+        expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
+          font,
+          // not under test
+          parentId: 'lane_03',
+          verticalAlign: 'bottom',
+        });
+
       bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', { font });
+      expectSequenceFlowWithAllFontStyles();
+
       // this doesn't change the style as the font property is empty
       bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', { font: {} });
-
-      expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
-        font,
-        // not under test
-        parentId: 'lane_03',
-        verticalAlign: 'bottom',
-      });
+      expectSequenceFlowWithAllFontStyles();
     });
 
     it('Font style already set and update only the specified font styles', () => {
-      bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', {
-        font: {
-          isBold: true,
-          isItalic: true,
-          isUnderline: true,
-          isStrikeThrough: true,
-        },
-      });
-      bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', { font: { isItalic: false, isUnderline: false } });
+      const expectSequenceFlowWithFont = (font: Font): void =>
+        expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
+          font,
+          // not under test
+          parentId: 'lane_03',
+          verticalAlign: 'bottom',
+        });
 
-      expect('sequenceFlow_lane_3_elt_3').toBeSequenceFlow({
-        font: {
-          isBold: true,
-          isItalic: false,
-          isUnderline: false,
-          isStrikeThrough: true,
-        },
-        // not under test
-        parentId: 'lane_03',
-        verticalAlign: 'bottom',
-      });
+      const allFontStyles: Font = {
+        isBold: true,
+        isItalic: true,
+        isUnderline: true,
+        isStrikeThrough: true,
+      };
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', { font: allFontStyles });
+      expectSequenceFlowWithFont(allFontStyles);
+
+      bpmnVisualization.bpmnElementsRegistry.updateStyle('sequenceFlow_lane_3_elt_3', { font: { isItalic: false, isUnderline: false } });
+      expectSequenceFlowWithFont({ isBold: true, isItalic: false, isUnderline: false, isStrikeThrough: true });
     });
 
     it('Update all opacity properties with wrong value', () => {
@@ -1131,3 +1112,22 @@ describe('mxGraph model - reset style', () => {
     });
   });
 });
+
+function expectTerminateEndEventWithStrokeColor(color: string): void {
+  expect('endEvent_terminate_1').toBeEndEvent({
+    stroke: { color },
+    // not under test
+    eventDefinitionKind: ShapeBpmnEventDefinitionKind.TERMINATE,
+    parentId: 'lane_01',
+    label: 'terminate end 1',
+  });
+}
+
+function expectSequenceFlowOfLane1WithStrokeColor(color: string): void {
+  expect('sequenceFlow_lane_1_elt_1').toBeSequenceFlow({
+    stroke: { color },
+    // not under test
+    parentId: 'lane_01',
+    verticalAlign: 'bottom',
+  });
+}

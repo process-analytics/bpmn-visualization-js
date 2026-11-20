@@ -152,6 +152,20 @@ snapshots. `fitCenter` applies the margin on both sides (`2 * margin`), rounds t
 digits, where the own computation does not. It is a rendering change, forbidden by the rules, so the change is reverted
 and the TODO records the measurement.
 
+### D10. Interpretation of the "additional check" TODO of the style API tests
+
+The TODO (`mxGraph.model.style.api.test.ts`) did not say which check. Its origin, in the history of the first maxGraph
+POC (commit `8f4ee05391b259ecfb14eab0f213b50cf0eee640`, 2023-06-16), shows it: an `expect` added between two
+`updateStyle` calls, checking the intermediate state. The TODO asked to apply it to every test chaining several update
+actions.
+
+Scope: the 8 tests chaining two `updateStyle` calls without intermediate check (4 on shapes, 4 on edges: "Update the
+style twice" and "Font style already set"). The other tests found with several calls either already check the
+intermediate state (`Common shape`, `Fill color as gradient`, `Lane`, `Pool`, restore of the edge default values) or
+belong to the reset tests, out of the scope of the TODO.
+
+The expectations are factored in assertion functions, so each state is checked with one call and no duplication.
+
 ## Open items
 
 ### O1. ECMAScript target of the generated code
