@@ -157,8 +157,6 @@ export function buildExpectedCellStyleWithCommonAttributes(expectedModelElt: Exp
   };
 }
 
-// TODO maxgraph@0.1.0 why building ExpectedStateStyle now maxGraph manage style in object. We should use 'stateStyle' directly (and remove this function)
-// investigate "check style properties from the model: keep a single check by merging the code previously used to check the style string and the StyleMap to check the CellStyle (with bpmn addons)
 /**
  * This function really gets style from the state of the cell in the graph view.
  * The functions that return ComparedBpmnCellStyle objects are in fact, returning a computed style by using the style properties from the model augmented with the properties resolved
@@ -183,6 +181,11 @@ export function buildReceivedResolvedModelCellStyle(cell: Cell, bv = bpmnVisuali
   return toBpmnStyle(bv.graph.getCellStyle(cell), cell.edge);
 }
 
+// Although maxGraph styles are objects, the received styles are not compared as is, but projected on the properties
+// under test:
+// - the names and values are aligned with the expected model (textOpacity is fontOpacity, the order of the markers is ignored);
+// - a style resolved by maxGraph holds every default of the stylesheet, and the matchers use subsetEquality, which requires
+//   the property to be present when the expected value is undefined (for instance, no gradient expected).
 function toBpmnStyle(rawStyle: BpmnCellStateStyle, isEdge: boolean): ComparedBpmnCellStyle {
   const style: ComparedBpmnCellStyle = {
     opacity: rawStyle.opacity,

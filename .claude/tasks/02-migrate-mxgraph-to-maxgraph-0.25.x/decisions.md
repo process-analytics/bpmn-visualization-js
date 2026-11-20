@@ -166,6 +166,21 @@ belong to the reset tests, out of the scope of the TODO.
 
 The expectations are factored in assertion functions, so each state is checked with one call and no duplication.
 
+### D11. Test matchers: keep the projection of the received styles
+
+Two TODOs of `test/integration/matchers/matcher-utils.ts`, both from the first maxGraph POC:
+- "rename into 'receivedStateStyle'": it targeted a local variable `expectedStateStyle` holding the received style
+  (commit `2895cc964d1457a6125523a52b081515cd43a7d4`, 2022-12-05). That code no longer exists, so the TODO is removed
+  as obsolete.
+- "why building ExpectedStateStyle now maxGraph manage style in object, use 'stateStyle' directly": answered, the
+  projection (`toBpmnStyle`) is kept, and a comment replaces the TODO. Without it:
+  - the names and values of the received style would have to match the expected model as is (`textOpacity` instead of
+    `fontOpacity`, `bv` prefixed properties, markers in rendering order);
+  - the matchers compare with `subsetEquality`, which requires the property to exist on the received object for every
+    expected key, including the ones expected `undefined` (checked in `@jest/expect-utils`). The raw style resolved by
+    maxGraph omits the absent properties, so the expectations of absence (no gradient, no CSS class) would fail, or
+    would have to be removed, which weakens the tests.
+
 ## Open items
 
 ### O1. ECMAScript target of the generated code
