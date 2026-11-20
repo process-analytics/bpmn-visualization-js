@@ -16,9 +16,8 @@ limitations under the License.
 
 import type { ExpectedEdgeModelElement, ExpectedFont, ExpectedShapeModelElement } from '../helpers/model-expect';
 import type { CustomCellOverlay, CustomCellOverlayStyle } from '@lib/component/mxgraph/overlay/custom-overlay';
-import type { BpmnCellStyle, BpmnCellStateStyle } from '@lib/component/mxgraph/style/types';
 import type { Opacity } from '@lib/component/registry';
-import type { AlignValue, Cell, Geometry, ShapeValue, StyleArrowValue, VAlignValue } from '@maxgraph/core';
+import type { AlignValue, Cell, CellStateStyle, CellStyle, Geometry, ShapeValue, StyleArrowValue, VAlignValue } from '@maxgraph/core';
 
 import { bpmnVisualization } from '../helpers/model-expect';
 
@@ -61,7 +60,7 @@ export interface ExpectedCell {
   value?: string;
   geometry?: Geometry;
   /** The Cell style object in the model or a jest expect (e.g. `expect.objectContaining`). */
-  styleRawFromModelOrJestExpect?: BpmnCellStyle;
+  styleRawFromModelOrJestExpect?: CellStyle;
   /**
    * The style of the Cell in the model where all properties have been resolved by also applying properties coming from the referenced styles.
    *
@@ -186,7 +185,7 @@ export function buildReceivedResolvedModelCellStyle(cell: Cell, bv = bpmnVisuali
 // - the names and values are aligned with the expected model (textOpacity is fontOpacity, the order of the markers is ignored);
 // - a style resolved by maxGraph holds every default of the stylesheet, and the matchers use subsetEquality, which requires
 //   the property to be present when the expected value is undefined (for instance, no gradient expected).
-function toBpmnStyle(rawStyle: BpmnCellStateStyle, isEdge: boolean): ComparedBpmnCellStyle {
+function toBpmnStyle(rawStyle: CellStateStyle, isEdge: boolean): ComparedBpmnCellStyle {
   const style: ComparedBpmnCellStyle = {
     opacity: rawStyle.opacity,
     verticalAlign: rawStyle.verticalAlign,

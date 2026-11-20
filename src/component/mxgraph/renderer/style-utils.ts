@@ -14,8 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BpmnCellStyle } from '../style/types';
-import type { Cell } from '@maxgraph/core';
+import type { Cell, CellStyle } from '@maxgraph/core';
 
 import { ShapeUtil } from '../../../model/bpmn/internal';
 import { isFlowKind } from '../../../model/bpmn/internal/edge/utils';
@@ -28,17 +27,17 @@ import { isFlowKind } from '../../../model/bpmn/internal/edge/utils';
  * @internal
  */
 export function computeAllBpmnClassNamesOfCell(cell: Cell, isLabel: boolean): string[] {
-  return computeAllBpmnClassNames(cell.style as BpmnCellStyle, isLabel);
+  return computeAllBpmnClassNames(cell.style as CellStyle, isLabel);
 }
 
 /**
  * Compute the all class names associated to a given bpmn element in a hyphen case form.
  *
- * @param style the {@link BpmnCellStyle} related to a {@link BpmnElementKind}. Message flow icon is a special case, as it is not related to `BpmnElementKind`.
+ * @param style the {@link CellStyle} related to a {@link BpmnElementKind}. Message flow icon is a special case, as it is not related to `BpmnElementKind`.
  * @param isLabel the boolean that indicates if class must be computed for label.
  * @internal exported for testing purpose
  */
-export function computeAllBpmnClassNames(style: BpmnCellStyle, isLabel: boolean): string[] {
+export function computeAllBpmnClassNames(style: CellStyle, isLabel: boolean): string[] {
   const classes: string[] = [];
 
   // if the kind is not set, fall back on the shape: style.bvMessageFlowIcon --> messageFlowIcon

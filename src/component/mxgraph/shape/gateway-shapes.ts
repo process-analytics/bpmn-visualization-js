@@ -15,7 +15,6 @@ limitations under the License.
 */
 
 import type { IconPainter, PaintParameter } from './render';
-import type { BpmnCellStateStyle } from '../style/types';
 import type { AbstractCanvas2D } from '@maxgraph/core';
 
 import { RhombusShape } from '@maxgraph/core';
@@ -107,7 +106,7 @@ export class EventBasedGatewayShape extends GatewayShape {
       ...paintParameter,
       ratioFromParent: 0.55,
     });
-    if (!getBpmnIsInstantiating(this.style as BpmnCellStateStyle)) {
+    if (!getBpmnIsInstantiating(this.style)) {
       this.iconPainter.paintCircleIcon({
         ...paintParameter,
         ratioFromParent: 0.45,
@@ -119,7 +118,7 @@ export class EventBasedGatewayShape extends GatewayShape {
       ...paintParameter,
       ratioFromParent: 0.3,
     };
-    if (((this.style as BpmnCellStateStyle).bvGatewayKind ?? ShapeBpmnEventBasedGatewayKind.Exclusive) === ShapeBpmnEventBasedGatewayKind.Parallel) {
+    if ((this.style.bvGatewayKind ?? ShapeBpmnEventBasedGatewayKind.Exclusive) === ShapeBpmnEventBasedGatewayKind.Parallel) {
       this.iconPainter.paintPlusCrossIcon(innerIconPaintParameter);
     } else {
       this.iconPainter.paintPentagon(innerIconPaintParameter);

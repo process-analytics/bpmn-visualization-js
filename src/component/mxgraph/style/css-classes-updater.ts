@@ -15,7 +15,6 @@ limitations under the License.
 */
 
 import type { BpmnGraph } from '../BpmnGraph';
-import type { BpmnCellStyle } from './types';
 
 import { messageFlowIconId } from '../BpmnRenderer';
 
@@ -49,7 +48,7 @@ export class CssClassesUpdater {
 
     // maxGraph#326: model.setStyle no-ops when handed the cell's own style instance, so mutate a clone.
     // See https://github.com/maxGraph/maxGraph/issues/326
-    const cellStyle = cell.getClonedStyle() as BpmnCellStyle;
+    const cellStyle = cell.getClonedStyle();
     setCssClasses(cellStyle, cssClasses);
     model.setStyle(cell, cellStyle);
   }

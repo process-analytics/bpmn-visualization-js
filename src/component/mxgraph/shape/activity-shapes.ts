@@ -15,7 +15,6 @@ limitations under the License.
 */
 
 import type { BpmnCanvas, IconPainter, PaintParameter, ShapeConfiguration } from './render';
-import type { BpmnCellStateStyle } from '../style/types';
 import type { AbstractCanvas2D } from '@maxgraph/core';
 
 import { RectangleShape } from '@maxgraph/core';
@@ -64,7 +63,7 @@ export abstract class BaseActivityShape extends RectangleShape {
   }
 
   protected paintMarkerIcons(paintParameter: PaintParameter): void {
-    const markers = (this.style as BpmnCellStateStyle).bvMarkers;
+    const markers = this.style.bvMarkers;
     if (markers) {
       const orderedMarkers = orderActivityMarkers(markers);
       for (const [index, marker] of orderedMarkers.entries()) {
@@ -135,7 +134,7 @@ export class UserTaskShape extends BaseTaskShape {
  */
 export class ReceiveTaskShape extends BaseTaskShape {
   protected paintTaskIcon(paintParameter: PaintParameter): void {
-    if (!getBpmnIsInstantiating(this.style as BpmnCellStateStyle)) {
+    if (!getBpmnIsInstantiating(this.style)) {
       this.paintEnvelopeIcon(paintParameter, false);
       return;
     }
@@ -207,7 +206,7 @@ export class CallActivityShape extends BaseActivityShape {
 
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this });
 
-    switch ((this.style as BpmnCellStateStyle).bvGlobalTaskKind) {
+    switch (this.style.bvGlobalTaskKind) {
       case ShapeBpmnElementKind.GLOBAL_TASK_MANUAL: {
         this.iconPainter.paintHandIcon({
           ...paintParameter,
@@ -249,7 +248,7 @@ export class CallActivityShape extends BaseActivityShape {
  */
 export class SubProcessShape extends BaseActivityShape {
   override paintBackground(c: AbstractCanvas2D, x: number, y: number, w: number, h: number): void {
-    const subProcessKind = (this.style as BpmnCellStateStyle).bvSubProcessKind;
+    const subProcessKind = this.style.bvSubProcessKind;
     c.save(); // ensure we can later restore the configuration
     if (subProcessKind === ShapeBpmnSubProcessKind.EVENT) {
       c.setDashed(true, false);

@@ -19,7 +19,8 @@ import type { Edge } from '../../../model/bpmn/internal/edge/edge';
 import type { Font } from '../../../model/bpmn/internal/Label';
 import type { StyleExtensionPoint } from '../../extension/extension-points';
 import type { RendererOptions } from '../../options';
-import type { BpmnCellStyle, BpmnCellStyleExtension } from '../style/types';
+import type { BpmnCellStyleExtension } from '../style/types';
+import type { CellStyle } from '@maxgraph/core';
 
 import { constants } from '@maxgraph/core';
 
@@ -53,9 +54,9 @@ export default class StyleComputer {
     this.styleExtensions = (options?.ignoreBpmnColors ?? true) ? [] : [bpmnInColorStyleExtension];
   }
 
-  computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): BpmnCellStyle {
+  computeStyle(bpmnCell: Shape | Edge, labelBounds: Bounds): CellStyle {
     const baseStyleNames: string[] = [bpmnCell.bpmnElement.kind as string];
-    const style: BpmnCellStyle = { baseStyleNames, bvKind: bpmnCell.bpmnElement.kind };
+    const style: CellStyle = { baseStyleNames, bvKind: bpmnCell.bpmnElement.kind };
 
     if (bpmnCell instanceof Shape) {
       this.computeShapeStyle(bpmnCell, style);
@@ -70,7 +71,7 @@ export default class StyleComputer {
     return style;
   }
 
-  private computeShapeStyle(shape: Shape, style: BpmnCellStyle): void {
+  private computeShapeStyle(shape: Shape, style: CellStyle): void {
     const bpmnElement = shape.bpmnElement;
 
     if (bpmnElement instanceof ShapeBpmnEvent) {
@@ -90,11 +91,11 @@ export default class StyleComputer {
     for (const extension of this.styleExtensions) extension.enrichShapeStyle?.(shape, style);
   }
 
-  private computeEdgeStyle(edge: Edge, style: BpmnCellStyle): void {
+  private computeEdgeStyle(edge: Edge, style: CellStyle): void {
     for (const extension of this.styleExtensions) extension.enrichEdgeStyle?.(edge, style);
   }
 
-  private computeFontStyle(bpmnCell: Shape | Edge, style: BpmnCellStyle): void {
+  private computeFontStyle(bpmnCell: Shape | Edge, style: CellStyle): void {
     const font = bpmnCell.label?.font;
     if (font && !this.ignoreLabelStyles) {
       font.name && (style.fontFamily = font.name);
@@ -105,8 +106,8 @@ export default class StyleComputer {
     }
   }
 
-  computeMessageFlowIconStyle(edge: Edge): BpmnCellStyle {
-    const style: BpmnCellStyle = {
+  computeMessageFlowIconStyle(edge: Edge): CellStyle {
+    const style: CellStyle = {
       shape: BpmnShapeIdentifier.MESSAGE_FLOW_ICON,
       bvIsInitiating: edge.messageVisibleKind === MessageVisibleKind.INITIATING,
     };
@@ -151,7 +152,7 @@ function computeEdgeBaseStyleNames(edge: Edge): string[] {
   return styles;
 }
 
-function computeLabelStyle(bpmnCell: Shape | Edge, labelBounds: Bounds, style: BpmnCellStyle): void {
+function computeLabelStyle(bpmnCell: Shape | Edge, labelBounds: Bounds, style: CellStyle): void {
   const bpmnElement = bpmnCell.bpmnElement;
   if (labelBounds) {
     style.verticalAlign = 'top';

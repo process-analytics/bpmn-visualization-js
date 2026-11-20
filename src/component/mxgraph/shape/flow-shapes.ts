@@ -15,7 +15,6 @@ limitations under the License.
 */
 
 import type { IconPainter } from './render';
-import type { BpmnCellStateStyle } from '../style/types';
 import type { AbstractCanvas2D } from '@maxgraph/core';
 
 import { RectangleShape } from '@maxgraph/core';
@@ -38,7 +37,7 @@ export class MessageFlowIconShape extends RectangleShape {
       height: h,
       shape: this,
       ratioFromParent: 1,
-      isFilled: (this.style as BpmnCellStateStyle).bvIsInitiating === false,
+      isFilled: this.style.bvIsInitiating === false,
     });
 
     this.iconPainter.paintEnvelopeIcon(paintParameter);

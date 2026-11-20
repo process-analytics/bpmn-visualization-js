@@ -15,7 +15,6 @@ limitations under the License.
 */
 
 import type { ExpectedShapeModelElement } from './helpers/model-expect';
-import type { BpmnCellStyle } from '@lib/component/mxgraph/style/types';
 
 import { Geometry, Point } from '@maxgraph/core';
 
@@ -1734,9 +1733,9 @@ describe('mxGraph model - BPMN elements', () => {
           -80,
         ),
       });
-      expect((getCell('Activity_1').style as BpmnCellStyle).noLabel).toBeTruthy();
+      expect(getCell('Activity_1').style.noLabel).toBeTruthy();
       expect('StartEvent_1').toBeCell();
-      expect((getCell('StartEvent_1').style as BpmnCellStyle).noLabel).toBeUndefined();
+      expect(getCell('StartEvent_1').style.noLabel).toBeUndefined();
       expect('EndEvent_1').toBeCell();
     });
   });

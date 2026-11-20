@@ -17,20 +17,20 @@ limitations under the License.
 import type { Edge } from '../../../model/bpmn/internal/edge/edge';
 import type Label from '../../../model/bpmn/internal/Label';
 import type Shape from '../../../model/bpmn/internal/shape/Shape';
-import type { BpmnCellStyle } from '../../mxgraph/style/types';
 import type { StyleExtensionPoint } from '../extension-points';
+import type { CellStyle } from '@maxgraph/core';
 
 import './types';
 
 import { ShapeUtil } from '../../../model/bpmn/internal';
 
-function enrichLabelStyle(label: Label | undefined, style: BpmnCellStyle): void {
+function enrichLabelStyle(label: Label | undefined, style: CellStyle): void {
   const color = label?.extensions.color;
   color && (style.fontColor = color);
 }
 
 export const bpmnInColorStyleExtension: StyleExtensionPoint = {
-  enrichShapeStyle(shape: Shape, style: BpmnCellStyle): void {
+  enrichShapeStyle(shape: Shape, style: CellStyle): void {
     const extensions = shape.extensions;
     const fillColor = extensions.fillColor;
     if (fillColor) {
@@ -42,12 +42,12 @@ export const bpmnInColorStyleExtension: StyleExtensionPoint = {
     extensions.strokeColor && (style.strokeColor = extensions.strokeColor);
     enrichLabelStyle(shape.label, style);
   },
-  enrichEdgeStyle(edge: Edge, style: BpmnCellStyle): void {
+  enrichEdgeStyle(edge: Edge, style: CellStyle): void {
     const extensions = edge.extensions;
     extensions.strokeColor && (style.strokeColor = extensions.strokeColor);
     enrichLabelStyle(edge.label, style);
   },
-  enrichMessageFlowIconStyle(edge: Edge, style: BpmnCellStyle): void {
+  enrichMessageFlowIconStyle(edge: Edge, style: CellStyle): void {
     edge.extensions.strokeColor && (style.strokeColor = edge.extensions.strokeColor);
   },
 };

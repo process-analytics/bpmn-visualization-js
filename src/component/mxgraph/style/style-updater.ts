@@ -16,8 +16,7 @@ limitations under the License.
 
 import type { StyleUpdate } from '../../registry';
 import type { BpmnGraph } from '../BpmnGraph';
-import type { BpmnCellStyle } from './types';
-import type { Cell, GraphDataModel } from '@maxgraph/core';
+import type { Cell, CellStyle, GraphDataModel } from '@maxgraph/core';
 
 import { ensureIsArray } from '../../helpers/array-utils';
 import { ensureOpacityValue } from '../../helpers/validators';
@@ -75,7 +74,7 @@ export class StyleUpdater {
         updateFont(cellStyle, styleUpdate.font);
 
         if (isShapeStyleUpdate(styleUpdate)) {
-          updateFill(cellStyle as BpmnCellStyle, styleUpdate.fill);
+          updateFill(cellStyle, styleUpdate.fill);
         }
 
         model.setStyle(cell, cellStyle);
@@ -97,7 +96,7 @@ export class StyleUpdater {
 }
 
 class StyleManager {
-  private readonly stylesCache = new Map<string, BpmnCellStyle>();
+  private readonly stylesCache = new Map<string, CellStyle>();
 
   constructor(private readonly model: GraphDataModel) {}
 
@@ -123,7 +122,7 @@ class StyleManager {
     }
   }
 
-  private resetStyle(cellId: string, initialStyle: BpmnCellStyle): void {
+  private resetStyle(cellId: string, initialStyle: CellStyle): void {
     this.stylesCache.delete(cellId);
 
     const cell = this.model.getCell(cellId);
@@ -132,9 +131,9 @@ class StyleManager {
     }
 
     // The CSS classes are managed independently (by the CSS classes updater) and must survive a style reset.
-    const cssClasses = (cell.style as BpmnCellStyle).bvCssClasses;
+    const cssClasses = cell.style.bvCssClasses;
     // maxGraph#326: build a fresh style object (not the cell's own instance) so setStyle propagates the change.
-    const styleToApply: BpmnCellStyle = { ...initialStyle };
+    const styleToApply: CellStyle = { ...initialStyle };
     setCssClasses(styleToApply, cssClasses ?? []);
     this.model.setStyle(cell, styleToApply);
   }
@@ -142,7 +141,7 @@ class StyleManager {
   ensureStyleIsStored(cell: Cell): void {
     const cellId = cell.getId();
     if (cellId && !this.stylesCache.has(cellId)) {
-      this.stylesCache.set(cellId, cell.getClonedStyle() as BpmnCellStyle);
+      this.stylesCache.set(cellId, cell.getClonedStyle());
     }
   }
 }

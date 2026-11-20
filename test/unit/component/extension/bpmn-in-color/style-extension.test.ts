@@ -1,6 +1,8 @@
 /**
  * @jest-environment jsdom
  */
+
+import type { CellStyle } from '@maxgraph/core';
 /*
 Copyright 2026 Bonitasoft S.A.
 
@@ -16,8 +18,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-
-import type { BpmnCellStyle } from '@lib/component/mxgraph/style/types';
 
 import { bpmnInColorStyleExtension } from '@lib/component/extension/bpmn-in-color/style-extension';
 import { ShapeBpmnElementKind } from '@lib/model/bpmn/internal';
@@ -52,7 +52,7 @@ describe('BPMN in Color — style extension', () => {
       const shape = newShape(ShapeBpmnElementKind.TASK);
       shape.extensions.fillColor = '#aabbcc';
       shape.extensions.strokeColor = '#112233';
-      const style: BpmnCellStyle = {};
+      const style: CellStyle = {};
 
       bpmnInColorStyleExtension.enrichShapeStyle(shape, style);
 
@@ -64,7 +64,7 @@ describe('BPMN in Color — style extension', () => {
     it.each([ShapeBpmnElementKind.POOL, ShapeBpmnElementKind.LANE])('also sets swimlane fill color for %s', (kind: ShapeBpmnElementKind) => {
       const shape = newShape(kind);
       shape.extensions.fillColor = '#abcdef';
-      const style: BpmnCellStyle = {};
+      const style: CellStyle = {};
 
       bpmnInColorStyleExtension.enrichShapeStyle(shape, style);
 
@@ -74,7 +74,7 @@ describe('BPMN in Color — style extension', () => {
 
     it('does not set swimlane fill color when fillColor is absent on a pool', () => {
       const shape = newShape(ShapeBpmnElementKind.POOL);
-      const style: BpmnCellStyle = {};
+      const style: CellStyle = {};
 
       bpmnInColorStyleExtension.enrichShapeStyle(shape, style);
 
@@ -84,7 +84,7 @@ describe('BPMN in Color — style extension', () => {
 
     it('sets font color from label extensions', () => {
       const shape = newShape(ShapeBpmnElementKind.TASK, newLabel('#fontcolor'));
-      const style: BpmnCellStyle = {};
+      const style: CellStyle = {};
 
       bpmnInColorStyleExtension.enrichShapeStyle(shape, style);
 
@@ -93,7 +93,7 @@ describe('BPMN in Color — style extension', () => {
 
     it('produces an empty style when no extension data is present', () => {
       const shape = newShape(ShapeBpmnElementKind.TASK);
-      const style: BpmnCellStyle = {};
+      const style: CellStyle = {};
 
       bpmnInColorStyleExtension.enrichShapeStyle(shape, style);
 
@@ -105,7 +105,7 @@ describe('BPMN in Color — style extension', () => {
     it('sets stroke color from edge extensions', () => {
       const edge = newSequenceFlowEdge();
       edge.extensions.strokeColor = '#abc123';
-      const style: BpmnCellStyle = {};
+      const style: CellStyle = {};
 
       bpmnInColorStyleExtension.enrichEdgeStyle(edge, style);
 
@@ -114,7 +114,7 @@ describe('BPMN in Color — style extension', () => {
 
     it('sets font color from label extensions', () => {
       const edge = newSequenceFlowEdge(newLabel('#labelcolor'));
-      const style: BpmnCellStyle = {};
+      const style: CellStyle = {};
 
       bpmnInColorStyleExtension.enrichEdgeStyle(edge, style);
 
@@ -123,7 +123,7 @@ describe('BPMN in Color — style extension', () => {
 
     it('produces an empty style when no extension data is present', () => {
       const edge = newSequenceFlowEdge();
-      const style: BpmnCellStyle = {};
+      const style: CellStyle = {};
 
       bpmnInColorStyleExtension.enrichEdgeStyle(edge, style);
 
@@ -135,7 +135,7 @@ describe('BPMN in Color — style extension', () => {
     it('sets stroke color from the edge stroke color extension', () => {
       const edge = newMessageFlowEdge();
       edge.extensions.strokeColor = '#deadbe';
-      const style: BpmnCellStyle = {};
+      const style: CellStyle = {};
 
       bpmnInColorStyleExtension.enrichMessageFlowIconStyle(edge, style);
 
@@ -144,7 +144,7 @@ describe('BPMN in Color — style extension', () => {
 
     it('does not set anything when no stroke color is present', () => {
       const edge = newMessageFlowEdge();
-      const style: BpmnCellStyle = {};
+      const style: CellStyle = {};
 
       bpmnInColorStyleExtension.enrichMessageFlowIconStyle(edge, style);
 

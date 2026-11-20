@@ -14,9 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BpmnCellStateStyle, BpmnCellStyle } from './types';
 import type { Fill, Font, ShapeStyleUpdate, Stroke, StyleUpdate, GradientDirection, FillColorGradient } from '../../registry';
-import type { CellStyle, DirectionValue, NumericCellStateStyleKeys } from '@maxgraph/core';
+import type { CellStateStyle, CellStyle, DirectionValue, NumericCellStateStyleKeys } from '@maxgraph/core';
 
 import { constants, styleUtils } from '@maxgraph/core';
 
@@ -81,7 +80,7 @@ export const StyleDefault = {
  * @internal
  * @private
  */
-export const getBpmnIsInstantiating = (style: BpmnCellStateStyle): boolean => style.bvIsInstantiating ?? false;
+export const getBpmnIsInstantiating = (style: CellStateStyle): boolean => style.bvIsInstantiating ?? false;
 
 const convertDefaultValue = (value: string): string | undefined => (value == 'default' ? undefined : value);
 
@@ -143,7 +142,7 @@ const convertDirection = (direction: GradientDirection): DirectionValue => {
   }
 };
 
-export const updateFill = (cellStyle: BpmnCellStyle, fill: Fill): void => {
+export const updateFill = (cellStyle: CellStyle, fill: Fill): void => {
   const color = fill.color;
   if (color) {
     const isGradient = isFillColorGradient(color);
@@ -174,10 +173,10 @@ export const isShapeStyleUpdate = (style: StyleUpdate): style is ShapeStyleUpdat
 };
 
 /**
- * Set the extra CSS classes of a {@link BpmnCellStyle}, deleting the property when there are none.
+ * Set the extra CSS classes of a {@link CellStyle}, deleting the property when there are none.
  * @internal
  */
-export function setCssClasses(cellStyle: BpmnCellStyle, cssClasses: string[]): void {
+export function setCssClasses(cellStyle: CellStyle, cssClasses: string[]): void {
   if (cssClasses.length > 0) {
     cellStyle.bvCssClasses = cssClasses;
   } else {

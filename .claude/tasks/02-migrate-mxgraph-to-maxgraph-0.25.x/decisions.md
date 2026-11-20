@@ -102,28 +102,40 @@ Choices:
 - The integration matchers no longer wrap the BPMN properties in `expect.objectContaining`: their caller already wraps
   the whole style in it, so extra properties of the cell are still accepted.
 
-### D6. Module augmentation of `CellStyle`: not applied, TODO kept
+### D6. Module augmentation of `CellStyle`: shipped in the public types
 
-The TODO sets its own criterion: the augmentation is useful only if the libraries consuming bpmn-visualization see it.
+The TODO set its own criterion: the augmentation is useful only if the libraries consuming bpmn-visualization see it.
 
-Experiment with maxGraph 0.25.1: `declare module '@maxgraph/core' { interface CellStateStyle extends
+First experiment, with maxGraph 0.25.1: `declare module '@maxgraph/core' { interface CellStateStyle extends
 BpmnCellStyleExtension {} }` in `types.ts` compiles, and `tsc` emits it in `build/types`. But API Extractor
 (`generate-types:dist`) drops it from `dist/bpmn-visualization.d.ts`, the only declaration file of the package, so a
-consumer never sees it. The criterion is not met, so the change is reverted and the TODO now records the finding.
+consumer never sees it. The change was reverted and the finding recorded.
 
-Options for later, not decided here:
-- append the augmentation to the generated declarations (post-processing step, like the existing license header one);
-- or apply it for the internal code only, accepting that the public types keep `BpmnCellStyle` / `BpmnCellStateStyle`.
+Options considered:
+1. append the augmentation to the generated declarations (post-processing step, like the license header one);
+2. apply it for the internal code only, the public types keeping `BpmnCellStyle` / `BpmnCellStateStyle`;
+3. keep the extended types and decide during the real migration.
 
-Note on the first option: augmenting `@maxgraph/core` from a library also changes the maxGraph types of a consumer using
-maxGraph directly, which is worth discussing before shipping it.
+Option 1 chosen during the review of the POC, test first:
+- `test/typescript-support/src/style-module-augmentation.ts`, modeled on the maxGraph `ts-support` test: it writes the
+  `bv` properties on a `CellStyle`, reads them from a `CellStateStyle` without cast, and rejects an undeclared property
+  with `@ts-expect-error`, otherwise it would pass if the style types accepted any property. Run against the published
+  types before the change, it fails with 5 errors (the `bv` properties are unknown), as expected.
+- new step `generate-types:add-module-augmentation` (`scripts/add-module-augmentation.mjs`), between API Extractor and
+  the license header: it copies the `declare module '@maxgraph/core'` blocks emitted by `tsc` in `build/types` to the
+  end of `dist/bpmn-visualization.d.ts`. Copying from the `tsc` output rather than writing the block in the script
+  keeps a single source. It fails when it finds no block, so a change of the `tsc` output format cannot silently ship
+  declarations without the augmentation.
+- the augmentation targets `CellStateStyle`: `CellStyle` extends it, so both get the properties, as do `Shape.style`
+  and `CellState.style`.
 
-Next step, whatever the option (requested during the review of the POC): add a test in `test/typescript-support`, in a
-dedicated file, that reads and writes the `bv` properties on the maxGraph `CellStyle` / `CellStateStyle` types, as
-maxGraph does in its `ts-support` package (`module-augmentation.ts`). It checks the published types, so it fails as
-long as the augmentation is not shipped in `dist/bpmn-visualization.d.ts`, and it guards it once it is. Like the
-maxGraph test, it should also reject an undeclared property with `@ts-expect-error`, otherwise it would pass if the
-style types accepted any property.
+Touchy decision: `BpmnCellStyle` and `BpmnCellStateStyle` are removed rather than kept. With the augmentation, they
+are identical to `CellStyle` / `CellStateStyle`, and they were introduced by the migration, never released, so no
+consumer depends on them. All their usages, including the extension points and the casts in the shapes, now use the
+maxGraph types directly. `BpmnCellStyleExtension` stays public: it is the type the augmentation is built on.
+
+Side effect to keep in mind: a consumer who imports bpmn-visualization also gets the `bv` properties on its own maxGraph
+style types. The `bv` prefix makes a clash with another extension unlikely.
 
 ### D7. Rename `BpmnStyleIdentifier` to `BpmnShapeIdentifier`
 

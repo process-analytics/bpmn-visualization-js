@@ -27,7 +27,6 @@ import type {
   ShapeBpmnSubProcessKind,
   Stroke,
 } from '@lib/bpmn-visualization';
-import type { BpmnCellStyle } from '@lib/component/mxgraph/style/types';
 import type { Cell, Geometry } from '@maxgraph/core';
 
 import {
@@ -250,7 +249,7 @@ const expectElementsInModel = (parentId: string, elementsNumber: number, filter:
 
 export const expectPoolsInModel = (pools: number): void => {
   expectElementsInModel(undefined, pools, (cell: Cell): boolean => {
-    return (cell.style as BpmnCellStyle)?.bvKind === ShapeBpmnElementKind.POOL;
+    return cell.style?.bvKind === ShapeBpmnElementKind.POOL;
   });
 };
 

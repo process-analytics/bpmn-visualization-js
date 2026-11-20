@@ -17,7 +17,7 @@ limitations under the License.
 import type { Edge } from '../../model/bpmn/internal/edge/edge';
 import type Shape from '../../model/bpmn/internal/shape/Shape';
 import type { BPMNEdge, BPMNShape } from '../../model/bpmn/json/bpmndi';
-import type { BpmnCellStyle } from '../mxgraph/style/types';
+import type { CellStyle } from '@maxgraph/core';
 
 /**
  * Extension point called during BPMN parsing to allow custom processing of deserialized elements.
@@ -68,17 +68,17 @@ export interface StyleExtensionPoint {
    * Enriches the style computed for a shape before rendering.
    *
    * @param shape The internal shape model.
-   * @param style The mutable {@link BpmnCellStyle} to enrich.
+   * @param style The mutable {@link CellStyle} to enrich.
    */
-  enrichShapeStyle?(shape: Shape, style: BpmnCellStyle): void;
+  enrichShapeStyle?(shape: Shape, style: CellStyle): void;
 
   /**
    * Enriches the style computed for an edge before rendering.
    *
    * @param edge The internal edge model.
-   * @param style The mutable {@link BpmnCellStyle} to enrich.
+   * @param style The mutable {@link CellStyle} to enrich.
    */
-  enrichEdgeStyle?(edge: Edge, style: BpmnCellStyle): void;
+  enrichEdgeStyle?(edge: Edge, style: CellStyle): void;
 
   /**
    * Enriches the style computed for the message flow icon of an edge before rendering.
@@ -86,7 +86,7 @@ export interface StyleExtensionPoint {
    * The message flow icon is a distinct visual element painted on a message flow edge.
    *
    * @param edge The internal edge model carrying the message flow icon.
-   * @param style The mutable {@link BpmnCellStyle} to enrich.
+   * @param style The mutable {@link CellStyle} to enrich.
    */
-  enrichMessageFlowIconStyle?(edge: Edge, style: BpmnCellStyle): void;
+  enrichMessageFlowIconStyle?(edge: Edge, style: CellStyle): void;
 }

@@ -16,7 +16,7 @@ limitations under the License.
 
 import type { ExpectedEdgeModelElement, ExpectedSequenceFlowModelElement } from '../../helpers/model-expect';
 import type { ComparedBpmnCellStyle, ExpectedCell } from '../matcher-utils';
-import type { BpmnCellStyle } from '@lib/component/mxgraph/style/types';
+import type { CellStyle } from '@maxgraph/core';
 
 import { getDefaultParentId } from '../../helpers/model-expect';
 import { buildCellMatcher, buildExpectedCellStyleWithCommonAttributes, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
@@ -47,8 +47,8 @@ function buildExpectedMessageFlowIconCellStyle(expectedModel: ExpectedEdgeModelE
   return style;
 }
 
-function buildExpectedEdgeStyle(expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement): BpmnCellStyle {
-  const style: BpmnCellStyle = { bvKind: expectedModel.kind };
+function buildExpectedEdgeStyle(expectedModel: ExpectedEdgeModelElement | ExpectedSequenceFlowModelElement): CellStyle {
+  const style: CellStyle = { bvKind: expectedModel.kind };
   const baseStyleNames: string[] = [expectedModel.kind];
   if (expectedModel.kind === FlowKind.SEQUENCE_FLOW) {
     baseStyleNames.push((expectedModel as ExpectedSequenceFlowModelElement).sequenceFlowKind ?? SequenceFlowKind.NORMAL);
@@ -89,7 +89,7 @@ function buildExpectedCell(id: string, expectedModel: ExpectedEdgeModelElement |
         styleRawFromModelOrJestExpect: expect.objectContaining({
           shape: BpmnShapeIdentifier.MESSAGE_FLOW_ICON,
           bvIsInitiating: expectedModel.messageVisibleKind == MessageVisibleKind.INITIATING,
-        } as BpmnCellStyle),
+        } as CellStyle),
         styleResolvedFromModel: buildExpectedMessageFlowIconCellStyle(expectedModel),
         styleViewState: buildExpectedMessageFlowIconCellStyle(expectedModel),
         edge: false,

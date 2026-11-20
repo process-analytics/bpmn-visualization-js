@@ -25,8 +25,6 @@ import type {
   ShapeBpmnMarkerKind,
   ShapeBpmnSubProcessKind,
 } from '../../../model/bpmn/internal';
-import type { CellStateStyle, CellStyle } from '@maxgraph/core';
-
 // TODO maxgraph@0.23.0 replace `@since 0.x.y` in this file by the version that ships the maxGraph migration
 
 /**
@@ -38,6 +36,9 @@ import type { CellStateStyle, CellStyle } from '@maxgraph/core';
  * They replace the custom `bpmn.*` string keys that were stored in mxGraph style strings: each former key is now a
  * typed property. Booleans replace the former `'true'`/`'false'` strings and arrays replace the former delimited
  * strings (`bvMarkers`, `bvCssClasses`).
+ *
+ * They are merged into the maxGraph `CellStyle` and `CellStateStyle` types by module augmentation, so they can be read
+ * and written on any maxGraph style, without casting it.
  *
  * **WARN**: This is part of the BPMN Theme customization surface. The way the default BPMN theme can be modified is
  * subject to change.
@@ -61,39 +62,11 @@ export interface BpmnCellStyleExtension {
   bvSubProcessKind?: ShapeBpmnSubProcessKind;
 }
 
-// TODO maxgraph@0.24.0 use module augmentation on CellStyle/CellStateStyle instead of extending the type, available
-// since maxGraph 0.25.0 (https://github.com/maxGraph/maxGraph/pull/1147), so apply it when upgrading to maxGraph 0.25.0
-// or later. This would avoid having to cast CellStyle/CellStateStyle everywhere in the code. We'd have to check whether
-// the augmentation is visible to libraries consuming bpmn-visualization, otherwise it's useless.
-// Verify it in test/typescript-support, in a dedicated file, as maxGraph does in its ts-support package, see
-// https://github.com/maxGraph/maxGraph/blob/b612af2f016e7b18051d6b28bf9363921e75c2b2/packages/ts-support/src/module-augmentation.ts
-// Checked with maxGraph 0.25.1: `declare module '@maxgraph/core' { interface CellStateStyle extends BpmnCellStyleExtension {} }`
-// compiles and tsc emits it in build/types, but API Extractor (generate-types:dist) drops it from
-// dist/bpmn-visualization.d.ts, so consumers would not see it. Applying it requires shipping the augmentation in the
-// public types first (for instance by appending it to the generated declarations).
-
-/**
- * A maxGraph {@link CellStyle} enriched with the BPMN specific properties of {@link BpmnCellStyleExtension}.
- *
- * It is the maxGraph object replacement for the former mxGraph style strings produced by bpmn-visualization.
- *
- * **WARN**: This is part of the BPMN Theme customization surface and is subject to change.
- *
- * @category BPMN Theme
- * @experimental
- * @since 0.x.y
- */
-export interface BpmnCellStyle extends CellStyle, BpmnCellStyleExtension {}
-
-/**
- * A maxGraph {@link CellStateStyle} enriched with the BPMN specific properties of {@link BpmnCellStyleExtension}.
- *
- * It is the resolved (cell state) counterpart of {@link BpmnCellStyle}, used when reading the style of a rendered cell.
- *
- * **WARN**: This is part of the BPMN Theme customization surface and is subject to change.
- *
- * @category BPMN Theme
- * @experimental
- * @since 0.x.y
- */
-export interface BpmnCellStateStyle extends CellStateStyle, BpmnCellStyleExtension {}
+declare module '@maxgraph/core' {
+  // Augment CellStateStyle rather than CellStyle: CellStyle extends CellStateStyle, so the BPMN properties are available on
+  // both, and on everything built on CellStateStyle (CellState.style, Shape.style, the Stylesheet default and named styles).
+  // API Extractor drops this block from the public declarations: the "generate-types:add-module-augmentation" script adds
+  // it back, and test/typescript-support checks that a consumer sees the BPMN properties on the maxGraph style types.
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type -- the interface is declared to merge the BPMN properties into the maxGraph one
+  interface CellStateStyle extends BpmnCellStyleExtension {}
+}

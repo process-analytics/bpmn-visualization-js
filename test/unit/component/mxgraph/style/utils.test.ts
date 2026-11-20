@@ -17,7 +17,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BpmnCellStyle } from '@lib/component/mxgraph/style/types';
 import type { CellStyle } from '@maxgraph/core';
 
 import { constants } from '@maxgraph/core';
@@ -90,14 +89,14 @@ describe('updateFont', () => {
 
 describe('updateFill', () => {
   test('sets the fill color', () => {
-    const style: BpmnCellStyle = { bvKind: ShapeBpmnElementKind.TASK };
+    const style: CellStyle = { bvKind: ShapeBpmnElementKind.TASK };
     updateFill(style, { color: '#abcdef' });
     expect(style.fillColor).toBe('#abcdef');
     expect(style.swimlaneFillColor).toBeUndefined();
   });
 
   test('also sets the swimlane fill color for a pool', () => {
-    const style: BpmnCellStyle = { bvKind: ShapeBpmnElementKind.POOL };
+    const style: CellStyle = { bvKind: ShapeBpmnElementKind.POOL };
     updateFill(style, { color: '#abcdef' });
     expect(style.fillColor).toBe('#abcdef');
     expect(style.swimlaneFillColor).toBe('#abcdef');
@@ -106,13 +105,13 @@ describe('updateFill', () => {
 
 describe('setCssClasses', () => {
   test('sets the extra CSS classes', () => {
-    const style: BpmnCellStyle = {};
+    const style: CellStyle = {};
     setCssClasses(style, ['class-1', 'class-2']);
     expect(style.bvCssClasses).toEqual(['class-1', 'class-2']);
   });
 
   test('deletes the extra CSS classes when empty', () => {
-    const style: BpmnCellStyle = { bvCssClasses: ['class-1'] };
+    const style: CellStyle = { bvCssClasses: ['class-1'] };
     setCssClasses(style, []);
     expect(style.bvCssClasses).toBeUndefined();
   });

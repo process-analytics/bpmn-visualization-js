@@ -21,8 +21,7 @@ import type Shape from '../../model/bpmn/internal/shape/Shape';
 import type ShapeBpmnElement from '../../model/bpmn/internal/shape/ShapeBpmnElement';
 import type { RendererOptions } from '../options';
 import type { RenderedModel } from '../registry/bpmn-model-registry';
-import type { BpmnCellStyle } from './style/types';
-import type { Cell } from '@maxgraph/core';
+import type { Cell, CellStyle } from '@maxgraph/core';
 
 import { Point } from '@maxgraph/core';
 
@@ -145,7 +144,7 @@ export class BpmnRenderer {
     return edge;
   }
 
-  private insertVertex(parent: Cell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: BpmnCellStyle): Cell {
+  private insertVertex(parent: Cell, id: string | null, value: string, bounds: Bounds, labelBounds: Bounds, style?: CellStyle): Cell {
     if (hasNaNValue(bounds)) {
       // mxGraph rendered nothing for a shape with a coordinate that is not a number. The NaN values are converted to 0
       // below, which leaves the label displayed at the origin, so remove it. The cell stays visible: maxGraph does not

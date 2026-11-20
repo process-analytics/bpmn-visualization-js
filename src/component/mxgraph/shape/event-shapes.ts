@@ -15,7 +15,6 @@ limitations under the License.
 */
 
 import type { BpmnCanvas, PaintParameter, IconPainter } from './render';
-import type { BpmnCellStateStyle } from '../style/types';
 import type { AbstractCanvas2D } from '@maxgraph/core';
 
 import { EllipseShape } from '@maxgraph/core';
@@ -92,7 +91,7 @@ export class EventShape extends EllipseShape {
   override paintVertexShape(c: AbstractCanvas2D, x: number, y: number, w: number, h: number): void {
     const paintParameter = buildPaintParameter({ canvas: c, x, y, width: w, height: h, shape: this, isFilled: this.withFilledIcon });
 
-    setDashedOuterShapePattern(paintParameter, (this.style as BpmnCellStateStyle).bvIsInterrupting);
+    setDashedOuterShapePattern(paintParameter, this.style.bvIsInterrupting);
     this.paintOuterShape(paintParameter);
     restoreOriginalOuterShapePattern(paintParameter);
 
@@ -104,7 +103,7 @@ export class EventShape extends EllipseShape {
   }
 
   private paintInnerShape(paintParameter: PaintParameter): void {
-    const paintIcon = this.iconPainters.get((this.style as BpmnCellStateStyle).bvEventDefinitionKind ?? ShapeBpmnEventDefinitionKind.NONE);
+    const paintIcon = this.iconPainters.get(this.style.bvEventDefinitionKind ?? ShapeBpmnEventDefinitionKind.NONE);
     paintIcon?.(paintParameter);
   }
 }

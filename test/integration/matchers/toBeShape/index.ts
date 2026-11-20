@@ -26,7 +26,7 @@ import type {
   ExpectedIntermediateThrowEventModelElement,
 } from '../../helpers/model-expect';
 import type { ComparedBpmnCellStyle, ExpectedCell } from '../matcher-utils';
-import type { BpmnCellStyle } from '@lib/component/mxgraph/style/types';
+import type { CellStyle } from '@maxgraph/core';
 
 import { getDefaultParentId } from '../../helpers/model-expect';
 import { buildCellMatcher, buildExpectedCellStyleWithCommonAttributes, buildReceivedCellWithCommonAttributes } from '../matcher-utils';
@@ -124,7 +124,7 @@ function buildExpectedShapeStyle(
     | ExpectedBoundaryEventModelElement
     | ExpectedEventBasedGatewayModelElement
     | ExpectedCallActivityModelElement,
-): BpmnCellStyle {
+): CellStyle {
   // The style is typed loosely to allow asymmetric jest matchers (e.g. expect.arrayContaining) on its properties.
   const style: Record<string, unknown> = { baseStyleNames: [expectedModel.kind], bvKind: expectedModel.kind };
 
@@ -155,7 +155,7 @@ function buildExpectedShapeStyle(
   if (expectedModel.cssClasses?.length > 0) {
     style.bvCssClasses = expectedModel.cssClasses;
   }
-  return style as BpmnCellStyle;
+  return style as CellStyle;
 }
 
 function buildExpectedCell(id: string, expectedModel: ExpectedShapeModelElement): ExpectedCell {

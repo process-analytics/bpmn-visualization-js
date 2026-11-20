@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { BpmnCellStyle } from '../style/types';
 import type { Shape, SvgCanvas2D } from '@maxgraph/core';
 
 import { computeAllBpmnClassNamesOfCell } from '../renderer/style-utils';
@@ -46,7 +45,7 @@ export const overrideCreateSvgCanvas = function (shape: Shape): void {
       const cell = this.state.cell;
       // dialect 'strictHtml' means the current node holds an HTML label
       const allBpmnClassNames = computeAllBpmnClassNamesOfCell(cell, this.dialect === 'strictHtml');
-      const cssClasses = (cell.style as BpmnCellStyle).bvCssClasses;
+      const cssClasses = cell.style.bvCssClasses;
       if (cssClasses) {
         allBpmnClassNames.push(...cssClasses);
       }
