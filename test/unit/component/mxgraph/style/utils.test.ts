@@ -123,7 +123,7 @@ describe('getBpmnIsInstantiating', () => {
     ${true}         | ${true}
     ${false}        | ${false}
     ${undefined}    | ${false}
-  `('returns $expected when bpmn.isInstantiating is $isInstantiating', ({ isInstantiating, expected }: { isInstantiating: boolean | undefined; expected: boolean }) => {
+  `('returns $expected when bvIsInstantiating is $isInstantiating', ({ isInstantiating, expected }: { isInstantiating: boolean | undefined; expected: boolean }) => {
     expect(getBpmnIsInstantiating({ bvIsInstantiating: isInstantiating })).toBe(expected);
   });
 });
