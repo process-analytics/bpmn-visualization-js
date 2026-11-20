@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { mxGraph, mxSvgCanvas2D as mxSvgCanvas2DType } from 'mxgraph';
+import type { mxAbstractCanvas2D, mxCellState, mxGraph, mxShape, mxSvgCanvas2D as mxSvgCanvas2DType } from 'mxgraph';
 
 import { mxClient, mxConstants, mxgraph, mxSvgCanvas2D, mxUtils } from '../../../src/component/mxgraph/initializer';
 import { logExportWarning } from '../shared/internal-helpers';
@@ -93,9 +93,7 @@ ${svgAsString}
 
     svgCanvas.scale(s);
 
-    const imgExport = new mxgraph.mxImageExport();
-    // FIXME only the first overlay is placed at the right position
-    // overlays put on element of subprocess/call-activity are not placed correctly in svg export
+    const imgExport = new ImageExport();
     imgExport.includeOverlays = true;
 
     imgExport.drawState(this.graph.getView().getState(this.graph.model.root), svgCanvas);
@@ -107,6 +105,21 @@ ${svgAsString}
     // from the draw.io code, may not be needed here
     canvas.pointerEvents = true;
     return canvas;
+  }
+}
+
+class ImageExport extends mxgraph.mxImageExport {
+  // The mxGraph implementation does not isolate the canvas state when painting each overlay, unlike for shapes and labels.
+  // Painting an overlay scales the canvas by the view scale, so this scale compounds from one overlay to the next one:
+  // only the first overlay is correctly placed when the view scale is not 1.
+  override drawOverlays(state: mxCellState, canvas: mxAbstractCanvas2D): void {
+    state.overlays?.visit((_id: string, shape: mxShape) => {
+      if (shape instanceof mxgraph.mxShape) {
+        canvas.save();
+        shape.paint(canvas);
+        canvas.restore();
+      }
+    });
   }
 }
 
