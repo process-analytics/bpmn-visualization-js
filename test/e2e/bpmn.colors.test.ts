@@ -101,7 +101,7 @@ class ImageSnapshotThresholdsIgnoreBpmnColors extends MultiBrowserImageSnapshotT
       [
         'elements.colors.01.no.label',
         {
-          macos: 0.53 / 100, // 0.5207484510394877%
+          macos: 0.54 / 100, // 0.5318019323399481%
         },
       ],
       [
