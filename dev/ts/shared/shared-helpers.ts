@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { _log } from './internal-helpers';
+import { _log, demoLogPrefix } from './internal-helpers';
 
 export function documentReady(callbackFunction: () => void): void {
   // see if DOM is already available
@@ -27,7 +27,7 @@ export function documentReady(callbackFunction: () => void): void {
 }
 
 export function log(message?: string, ...optionalParameters: unknown[]): void {
-  _log('[DEMO]', message, ...optionalParameters);
+  _log(demoLogPrefix, message, ...optionalParameters);
 }
 
 export { logError } from './internal-helpers';

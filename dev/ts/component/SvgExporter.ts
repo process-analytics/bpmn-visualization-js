@@ -17,6 +17,7 @@ limitations under the License.
 import type { mxGraph, mxSvgCanvas2D as mxSvgCanvas2DType } from 'mxgraph';
 
 import { mxClient, mxConstants, mxgraph, mxSvgCanvas2D, mxUtils } from '../../../src/component/mxgraph/initializer';
+import { logExportWarning } from '../shared/internal-helpers';
 
 interface SvgExportOptions {
   scale: number;
@@ -196,7 +197,7 @@ class CanvasForExport extends mxSvgCanvas2D {
         content = mxUtils.trim(result.join('')) + '...';
       }
     } catch (error) {
-      console.warn('Error while computing txt label', error);
+      logExportWarning('Error while computing txt label', error);
     }
     return content;
   }

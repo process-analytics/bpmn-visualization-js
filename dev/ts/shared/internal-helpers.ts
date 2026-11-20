@@ -16,13 +16,15 @@ limitations under the License.
 
 import { log } from './shared-helpers';
 
+export const demoLogPrefix = '[bv-demo]';
+
 export function _log(header: string, message: string, ...optionalParameters: unknown[]): void {
   // eslint-disable-next-line no-console
   console.info(`${header} ${message}`, ...optionalParameters);
 }
 
 export function logStartup(message?: string, ...optionalParameters: unknown[]): void {
-  _log('[DEMO STARTUP]', message, ...optionalParameters);
+  _log(`${demoLogPrefix} (startup)`, message, ...optionalParameters);
 }
 
 export function logErrorAndOpenAlert(error: string, alertMessage?: string): void {
@@ -31,11 +33,15 @@ export function logErrorAndOpenAlert(error: string, alertMessage?: string): void
 }
 
 export function logError(error: string): void {
-  console.error(`[DEMO]`, error);
+  console.error(demoLogPrefix, error);
 }
 
 export function logDownload(message?: string, ...optionalParameters: unknown[]): void {
-  _log('[DEMO DOWNLOAD]', message, ...optionalParameters);
+  _log(`${demoLogPrefix} (download)`, message, ...optionalParameters);
+}
+
+export function logExportWarning(message: string, ...optionalParameters: unknown[]): void {
+  console.warn(`${demoLogPrefix} (export) ${message}`, ...optionalParameters);
 }
 
 export async function fetchBpmnContent(url: string): Promise<string> {
