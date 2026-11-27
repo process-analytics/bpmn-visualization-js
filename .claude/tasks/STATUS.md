@@ -106,3 +106,4 @@ fixtures in `test/fixtures/bpmn/xml-parsing/bonita-connector/` (parsing) and `te
 | `.claude/tasks/01-poc-bonita-connector-extension/plan.md` | phase 1 plan, and the 7 ADR deviations it found |
 | `.claude/tasks/01-poc-bonita-connector-extension/implementation.md` | what was built, deviations, test results |
 | `.claude/tasks/02-inject-extensions-by-configuration/explore.md` | phase 2 exploration and open points |
+| `.claude/tasks/03-bonita-connector-from-process-design/explore.md` | alternative under study, outside the POC: connector data from the Bonita process design REST API |
